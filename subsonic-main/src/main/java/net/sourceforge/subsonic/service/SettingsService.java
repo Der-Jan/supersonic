@@ -130,7 +130,7 @@ public class SettingsService {
     private static final String KEY_SORT_ALBUMS_BY_YEAR = "SortAlbumsByYear";
     private static final String KEY_MEDIA_LIBRARY_STATISTICS = "MediaLibraryStatistics";
     private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
-
+    private static final String KEY_SUBSONIC_URL = "SubsonicUrl";
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
     private static final String DEFAULT_IGNORED_ARTICLES = "The El La Los Las Le Les";
@@ -191,7 +191,8 @@ public class SettingsService {
     private static final boolean DEFAULT_SORT_ALBUMS_BY_YEAR = true;
     private static final String DEFAULT_MEDIA_LIBRARY_STATISTICS = "0 0 0 0 0";
     private static final String DEFAULT_TRIAL_EXPIRES = null;
-
+    private static final String DEFAULT_SUBSONIC_URL = "http://www.yourdomain.com";
+     
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "AutoCoverBatch", "MusicMask", "VideoMask", "CoverArtMask, HlsCommand",
@@ -821,6 +822,14 @@ public class SettingsService {
 
     public void setServerId(String serverId) {
         properties.setProperty(KEY_SERVER_ID, serverId);
+    }
+    
+    public String getSubsonicUrl() {
+        return properties.getProperty(KEY_SUBSONIC_URL, DEFAULT_SUBSONIC_URL);
+    }
+
+    public void setSubsonicUrl(String subsonicUrl) {
+        properties.setProperty(KEY_SUBSONIC_URL, subsonicUrl);
     }
 
     public long getSettingsChanged() {
