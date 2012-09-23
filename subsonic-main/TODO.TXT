@@ -1,8 +1,15 @@
-DONE IN 4.7
+DONE IN 4.8
 -------------
+Updated Dutch translation, courtesy of W. van der Heijden.
 
-TODO IN 4.7
+TODO IN 4.8
 -----------------
+Links to minisub and apps icons doesn't honor context path.
+Bump up video dimensions.
+  http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
+  Add video size to REST
+  
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
 Reconsider album artist.
@@ -740,7 +747,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy https://subsonic.svn.sourceforge.net/svnroot/subsonic/trunk https://subsonic.svn.sourceforge.net/svnroot/subsonic/tags/release-4.7 -m "Tagging 4.7"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.7 -m "Tagging 4.7"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.
@@ -757,9 +764,10 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   mkdir /usr/local/jakarta/tomcat/webapps-2012-08-03/
 
   scp subsonic-site/src/main/webapp/apps.jsp root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/pages
+
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/pages
 
 
   Checkpoint database (db.view)
@@ -768,7 +776,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2012-08-03 webapps
+  ln -s webapps-2012-09-14 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
