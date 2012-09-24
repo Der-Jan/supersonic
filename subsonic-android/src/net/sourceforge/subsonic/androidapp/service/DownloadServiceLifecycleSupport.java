@@ -209,13 +209,9 @@ public class DownloadServiceLifecycleSupport {
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
             case KeyEvent.KEYCODE_HEADSETHOOK:
-            	downloadService.togglePlayPause();
-                break;
-            case 126: // KeyEvent.KEYCODE_MEDIA_PLAY:
-                downloadService.play();
-                break;
-            case 127: // KeyEvent.KEYCODE_MEDIA_PAUSE:
-                downloadService.pause();
+            case 126: // KeyEvent.KEYCODE_MEDIA_PLAY
+            case 127: // KeyEvent.KEYCODE_MEDIA_PAUSE
+                downloadService.togglePlayPause();
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 downloadService.previous();
