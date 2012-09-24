@@ -123,6 +123,8 @@ Fix "Host name cannot be null"
   https://mail.google.com/mail/u/0/?shva=1#inbox/138ec0b544998d8b
 Remove "Random play" button in SelectArtistView.
 Support Bluetooth play/pause buttons in ICS.
+Show error if server url contains underscore.
+  https://mail.google.com/mail/?shva=1#inbox/1365ef6ddc03e31a
 
 TODO IN ANDROID 3.4
 --------------------
@@ -130,8 +132,6 @@ Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
 Wifi lock.
 HLS video.
-Problem if underscore/dash in server name.
-  https://mail.google.com/mail/?shva=1#inbox/1365ef6ddc03e31a
 Music controls in notification.
   https://mail.google.com/mail/?ui=2&shva=1#inbox/136242ab25baddad
 Holo theme
