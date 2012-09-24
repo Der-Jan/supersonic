@@ -121,11 +121,11 @@ Fix "Host name cannot be null"
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=8606#p36312
   https://mail.google.com/mail/?ui=2&shva=1#inbox/137195c3dc8510ad
   https://mail.google.com/mail/u/0/?shva=1#inbox/138ec0b544998d8b
+Remove "Random play" button in SelectArtistView.
+Support Bluetooth play/pause buttons in ICS.
 
 TODO IN ANDROID 3.4
 --------------------
-Remove "Random play" button in SelectArtistView.
-Support Bluetooth play/pause buttons in ICS.
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
 Wifi lock.
