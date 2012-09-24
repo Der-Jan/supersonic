@@ -19,6 +19,9 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -41,9 +44,6 @@ import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SelectArtistActivity extends SubsonicTabActivity implements AdapterView.OnItemClickListener {
 
@@ -76,17 +76,8 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
 
         setTitle(Util.isOffline(this) ? R.string.music_library_label_offline : R.string.music_library_label);
 
-        // Button 1: shuffle
-        ImageButton shuffleButton = (ImageButton) findViewById(R.id.action_button_1);
-        shuffleButton.setImageResource(R.drawable.action_shuffle);
-        shuffleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectArtistActivity.this, DownloadActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
-                Util.startActivityWithoutTransition(SelectArtistActivity.this, intent);
-            }
-        });
+        // Button 1: gone
+        findViewById(R.id.action_button_1).setVisibility(View.GONE);
 
         // Button 2: refresh
         ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_2);

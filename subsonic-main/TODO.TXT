@@ -124,6 +124,7 @@ Fix "Host name cannot be null"
 
 TODO IN ANDROID 3.4
 --------------------
+Remove "Random play" button in SelectArtistView.
 Support Bluetooth play/pause buttons in ICS.
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
