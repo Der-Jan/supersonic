@@ -111,22 +111,10 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.4
+DONE IN ANDROID 3.5
 --------------------
-Ensure readable text in notification when background is dark.
-Fix crash when using fast scrolling.
-Enable fast scrolling of playlists, search results and songs.
-Improve caching of artist list.
-Fix "Host name cannot be null"
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=8606#p36312
-  https://mail.google.com/mail/?ui=2&shva=1#inbox/137195c3dc8510ad
-  https://mail.google.com/mail/u/0/?shva=1#inbox/138ec0b544998d8b
-Remove "Random play" button in SelectArtistView.
-Support Bluetooth play/pause buttons in ICS.
-Show error if server url contains underscore.
-  https://mail.google.com/mail/?shva=1#inbox/1365ef6ddc03e31a
 
-TODO IN ANDROID 3.4
+TODO IN ANDROID 3.5
 --------------------
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
@@ -812,11 +800,11 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy https://subsonic.svn.sourceforge.net/svnroot/subsonic/trunk/subsonic-android https://subsonic.svn.sourceforge.net/svnroot/subsonic/tags/android-release-3.3 -m "Tagging Android 3.3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.4 -m "Tagging Android 3.4"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
-Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.3/subsonic-3.3.apk
+Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.4/subsonic-3.4.apk
 
 
 HOW TO RELEASE TRANSCODING PACK
