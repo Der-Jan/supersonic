@@ -117,9 +117,23 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+Overflow button
+Remove obsolete font
+Remove obsolete wheat resources
+Reduce size of main_header_icon
+Dark gray background of action bar
+Cyan colour
+Large album cover art.
+Nicer icons for tabs.
+Use cyan line to indicate selected tab.
+
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
 Wifi lock.
+  In DownloadFile
+  Use WifiManager.WIFI_MODE_FULL_HIGH_PERF if API level >= 12
+
+New minimum Android version: 2.1
 HLS video.
 Music controls in notification.
   https://mail.google.com/mail/?ui=2&shva=1#inbox/136242ab25baddad

@@ -213,9 +213,6 @@ public class SubsonicTabActivity extends Activity {
 
         // Set the font of title in the action bar.
         TextView text = (TextView) findViewById(R.id.actionbar_title_text);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
-        text.setTypeface(typeface);
-
         text.setText(title);
     }
 
