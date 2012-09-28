@@ -5,12 +5,6 @@
               android:layout_height="fill_parent">
 
     <include layout="@layout/action_bar"/>
-
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/dividerColor"/>
-
     <include layout="@layout/tab_progress"/>
 
     <ListView

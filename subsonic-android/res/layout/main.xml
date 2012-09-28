@@ -10,11 +10,6 @@
             android:layout_height="45dp"
             />
 
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/dividerColor"/>
-
     <ListView
             android:id="@+id/main_list"
             android:layout_width="fill_parent"
