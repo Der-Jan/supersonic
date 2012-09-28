@@ -117,8 +117,9 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Tabs:   Home   Library  Playlists  Player
 
+Add search button to library view.
+Fix button bar background.
 Delete obsolete icons in button bar.
 Clean up drawable-hdpi-v4
 Drop ldpi resources.

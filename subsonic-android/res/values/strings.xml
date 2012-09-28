@@ -14,7 +14,6 @@
 
     <string name="button_bar.home">HOME</string>
     <string name="button_bar.browse">LIBRARY</string>
-    <string name="button_bar.search">SEARCH</string>
     <string name="button_bar.playlists">PLAYLISTS</string>
     <string name="button_bar.now_playing">PLAYER</string>
 
