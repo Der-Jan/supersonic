@@ -117,6 +117,12 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+Tabs:   Home   Library  Playlists  Player
+
+Delete obsolete icons in button bar.
+Clean up drawable-hdpi-v4
+Drop ldpi resources.
+Remove theme support
 Overflow button
 Remove obsolete font
 Remove obsolete wheat resources
@@ -126,6 +132,7 @@ Cyan colour
 Large album cover art.
 Nicer icons for tabs.
 Use cyan line to indicate selected tab.
+Dedicated offline button
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864

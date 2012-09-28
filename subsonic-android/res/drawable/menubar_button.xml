@@ -5,9 +5,9 @@
           android:drawable="@drawable/menubar_button_pressed"/>
 
     <item android:state_enabled="true"
-          android:drawable="@drawable/menubar_button_normal"/>
+          android:drawable="@drawable/ab_bottom_transparent_dark_holo"/>
 
-    <item android:drawable="@drawable/menubar_button_disabled"/>
+    <item android:drawable="@drawable/ab_transparent_dark_holo"/>
 
 </selector>
         

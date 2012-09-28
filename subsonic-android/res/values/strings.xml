@@ -12,11 +12,11 @@
     <string name="common.unpin">Unpin</string>
     <string name="common.delete">Delete</string>
 
-    <string name="button_bar.home">Subsonic home</string>
-    <string name="button_bar.browse">Media library</string>
-    <string name="button_bar.search">Search</string>
-    <string name="button_bar.playlists">Playlists</string>
-    <string name="button_bar.now_playing">Now playing</string>
+    <string name="button_bar.home">HOME</string>
+    <string name="button_bar.browse">LIBRARY</string>
+    <string name="button_bar.search">SEARCH</string>
+    <string name="button_bar.playlists">PLAYLISTS</string>
+    <string name="button_bar.now_playing">PLAYER</string>
 
     <string name="main.welcome_title">Welcome!</string>
     <string name="main.welcome_text">Welcome to Subsonic! The app is currently configured to use the Subsonic demo server. After you\'ve

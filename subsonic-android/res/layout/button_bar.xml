@@ -7,45 +7,50 @@
               android:layout_height="wrap_content"
               android:gravity="center_horizontal">
 
-    <ImageButton android:id="@+id/button_bar_home"
-                 android:src="@drawable/menu_home"
-                 android:contentDescription="@string/button_bar.home"
-                 android:background="@drawable/menubar_button"
-                 android:layout_weight="1"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_bar_home"
+            android:text="@string/button_bar.home"
+            android:textSize="12sp"
+            android:textColor="@color/buttonBarTextColor"
+            android:background="@drawable/menubar_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
-    <ImageButton android:id="@+id/button_bar_music"
-                 android:src="@drawable/menu_browse"
-                 android:contentDescription="@string/button_bar.browse"
-                 android:background="@drawable/menubar_button"
-                 android:layout_weight="1"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_bar_music"
+            android:text="@string/button_bar.browse"
+            android:textSize="12sp"
+            android:textColor="@color/buttonBarTextColor"
+            android:background="@drawable/menubar_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
-    <ImageButton android:id="@+id/button_bar_search"
-                 android:src="@drawable/menu_search"
-                 android:contentDescription="@string/button_bar.search"
-                 android:background="@drawable/menubar_button"
-                 android:layout_weight="1"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_bar_search"
+            android:text="@string/button_bar.search"
+            android:textSize="12sp"
+            android:textColor="@color/buttonBarTextColor"
+            android:background="@drawable/menubar_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
-    <ImageButton android:id="@+id/button_bar_playlists"
-                 android:src="@drawable/menu_playlists"
-                 android:contentDescription="@string/button_bar.playlists"
-                 android:background="@drawable/menubar_button"
-                 android:layout_weight="1"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_bar_playlists"
+            android:text="@string/button_bar.playlists"
+            android:textSize="12sp"
+            android:textColor="@color/buttonBarTextColor"
+            android:background="@drawable/menubar_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
-    <ImageButton android:id="@+id/button_bar_now_playing"
-                 android:src="@drawable/menu_now_playing"
-                 android:contentDescription="@string/button_bar.now_playing"
-                 android:background="@drawable/menubar_button"
-                 android:layout_weight="1"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_bar_now_playing"
+            android:text="@string/button_bar.now_playing"
+            android:textSize="12sp"
+            android:textColor="@color/buttonBarTextColor"
+            android:background="@drawable/menubar_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
 
