@@ -76,16 +76,25 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
 
         setTitle(Util.isOffline(this) ? R.string.music_library_label_offline : R.string.music_library_label);
 
-        // Button 1: gone
-        findViewById(R.id.action_button_1).setVisibility(View.GONE);
-
-        // Button 2: refresh
-        ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_2);
+        // Button 1: refresh
+        ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_1);
         refreshButton.setImageResource(R.drawable.action_refresh);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 refresh();
+            }
+        });
+
+        // Button 2: search
+        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        actionSearchButton.setImageResource(R.drawable.action_search);
+        actionSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            	Intent intent = new Intent(SelectArtistActivity.this, SearchActivity.class);
+            	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
+                Util.startActivityWithoutTransition(SelectArtistActivity.this, intent);
             }
         });
 
