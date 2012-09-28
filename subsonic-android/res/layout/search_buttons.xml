@@ -10,7 +10,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="0dp"
-            android:drawableLeft="@drawable/search"
+            android:drawableLeft="@drawable/action_search"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:padding="12dp"/>
