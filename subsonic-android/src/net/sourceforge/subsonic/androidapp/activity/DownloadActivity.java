@@ -84,10 +84,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private static final int COLOR_BUTTON_DISABLED = Color.rgb(164, 166, 158);
 
     private ViewFlipper playlistFlipper;
-    private ViewFlipper buttonBarFlipper;
     private TextView emptyTextView;
     private TextView songTitleTextView;
-    private TextView albumTextView;
     private TextView artistTextView;
     private ImageView albumArtImageView;
     private ListView playlistView;
@@ -130,10 +128,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         gestureScanner = new GestureDetector(this);
 
         playlistFlipper = (ViewFlipper) findViewById(R.id.download_playlist_flipper);
-        buttonBarFlipper = (ViewFlipper) findViewById(R.id.download_button_bar_flipper);
         emptyTextView = (TextView) findViewById(R.id.download_empty);
         songTitleTextView = (TextView) findViewById(R.id.download_song_title);
-        albumTextView = (TextView) findViewById(R.id.download_album);
         artistTextView = (TextView) findViewById(R.id.download_artist);
         albumArtImageView = (ImageView) findViewById(R.id.download_album_art_image);
         positionTextView = (TextView) findViewById(R.id.download_position);
@@ -169,7 +165,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         equalizerButton.setOnTouchListener(touchListener);
         visualizerButton.setOnTouchListener(touchListener);
         jukeboxButton.setOnTouchListener(touchListener);
-        buttonBarFlipper.setOnTouchListener(touchListener);
         emptyTextView.setOnTouchListener(touchListener);
         albumArtImageView.setOnTouchListener(touchListener);
 
@@ -347,10 +342,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         }
 
         // TODO: Extract to utility method and cache.
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
-        equalizerButton.setTypeface(typeface);
-        visualizerButton.setTypeface(typeface);
-        jukeboxButton.setTypeface(typeface);
+//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
+//        equalizerButton.setTypeface(typeface);
+//        visualizerButton.setTypeface(typeface);
+//        jukeboxButton.setTypeface(typeface);
 
         // Button 1: gone
         ImageButton button1 = (ImageButton) findViewById(R.id.action_button_1);
@@ -401,7 +396,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         DownloadService downloadService = getDownloadService();
         if (downloadService == null || downloadService.getCurrentPlaying() == null) {
             playlistFlipper.setDisplayedChild(1);
-            buttonBarFlipper.setDisplayedChild(1);
         }
 
         onDownloadListChanged();
@@ -658,18 +652,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_out));
             playlistFlipper.setDisplayedChild(0);
-            buttonBarFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_in));
-            buttonBarFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_out));
-            buttonBarFlipper.setDisplayedChild(0);
-
-
         } else {
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
             playlistFlipper.setDisplayedChild(1);
-            buttonBarFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
-            buttonBarFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
-            buttonBarFlipper.setDisplayedChild(1);
         }
     }
 
@@ -726,12 +712,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         if (currentPlaying != null) {
             MusicDirectory.Entry song = currentPlaying.getSong();
             songTitleTextView.setText(song.getTitle());
-            albumTextView.setText(song.getAlbum());
             artistTextView.setText(song.getArtist());
             getImageLoader().loadImage(albumArtImageView, song, true, true);
         } else {
             songTitleTextView.setText(null);
-            albumTextView.setText(null);
             artistTextView.setText(null);
             getImageLoader().loadImage(albumArtImageView, null, true, false);
         }

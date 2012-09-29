@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#80000000"
+        >
+
+    <Button
+            android:id="@+id/download_jukebox"
+            android:text="RC"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            />
+
+    <Button
+            android:id="@+id/download_equalizer"
+            android:text="EQ"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"/>
+
+    <Button
+            android:id="@+id/download_visualizer"
+            android:text="VIS"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"/>
+
+</LinearLayout>
