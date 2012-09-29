@@ -20,8 +20,16 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="@drawable/album_art_background">
+                android:layout_weight="1">
+
+            <ImageView
+                    android:id="@+id/download_album_art_image"
+                    android:src="@drawable/unknown_album_large"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"/>
 
             <ImageButton
                     android:id="@+id/download_repeat"
@@ -77,15 +85,6 @@
                     android:paddingTop="12dip"
                     android:paddingRight="12dip"
                     android:paddingBottom="12dip"/>
-
-            <ImageView
-                    android:id="@+id/download_album_art_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="24dip"
-                    android:scaleType="fitCenter"/>
 
             <TextView
                     android:id="@+id/download_status"

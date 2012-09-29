@@ -20,11 +20,6 @@ package net.sourceforge.subsonic.androidapp.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.LinearGradient;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -66,7 +61,7 @@ public class ImageLoader implements Runnable {
         // Determine the density-dependent image sizes.
         imageSizeDefault = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        imageSizeLarge = (int) Math.round(Math.min(metrics.widthPixels, metrics.heightPixels) * 0.6);
+        imageSizeLarge = Math.min(metrics.widthPixels, metrics.heightPixels);
 
         for (int i = 0; i < CONCURRENCY; i++) {
             new Thread(this, "ImageLoader").start();
@@ -78,7 +73,6 @@ public class ImageLoader implements Runnable {
     private void createLargeUnknownImage(Context context) {
         BitmapDrawable drawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.unknown_album_large);
         Bitmap bitmap = Bitmap.createScaledBitmap(drawable.getBitmap(), imageSizeLarge, imageSizeLarge, true);
-        bitmap = createReflection(bitmap);
         largeUnknownImage = Util.createDrawableFromBitmap(context, bitmap);
     }
 
@@ -98,7 +92,7 @@ public class ImageLoader implements Runnable {
         if (!large) {
             setUnknownImage(view, large);
         }
-        queue.offer(new Task(view, entry, size, large, large, crossfade));
+        queue.offer(new Task(view, entry, size, large, crossfade));
     }
 
     private String getKey(String coverArtId, int size) {
@@ -159,68 +153,18 @@ public class ImageLoader implements Runnable {
         }
     }
 
-    private Bitmap createReflection(Bitmap originalImage) {
-
-        int width = originalImage.getWidth();
-        int height = originalImage.getHeight();
-
-        // The gap we want between the reflection and the original image
-        final int reflectionGap = 4;
-
-        // This will not scale but will flip on the Y axis
-        Matrix matrix = new Matrix();
-        matrix.preScale(1, -1);
-
-        // Create a Bitmap with the flip matix applied to it.
-        // We only want the bottom half of the image
-        Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0, height / 2, width, height / 2, matrix, false);
-
-        // Create a new bitmap with same width but taller to fit reflection
-        Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + height / 2), Bitmap.Config.ARGB_8888);
-
-        // Create a new Canvas with the bitmap that's big enough for
-        // the image plus gap plus reflection
-        Canvas canvas = new Canvas(bitmapWithReflection);
-
-        // Draw in the original image
-        canvas.drawBitmap(originalImage, 0, 0, null);
-
-        // Draw in the gap
-        Paint defaultPaint = new Paint();
-        canvas.drawRect(0, height, width, height + reflectionGap, defaultPaint);
-
-        // Draw in the reflection
-        canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
-
-        // Create a shader that is a linear gradient that covers the reflection
-        Paint paint = new Paint();
-        LinearGradient shader = new LinearGradient(0, originalImage.getHeight(), 0,
-                bitmapWithReflection.getHeight() + reflectionGap, 0x70000000, 0xff000000,
-                Shader.TileMode.CLAMP);
-
-        // Set the paint to use this shader (linear gradient)
-        paint.setShader(shader);
-
-        // Draw a rectangle using the paint with our linear gradient
-        canvas.drawRect(0, height, width, bitmapWithReflection.getHeight() + reflectionGap, paint);
-
-        return bitmapWithReflection;
-    }
-
     private class Task {
         private final View view;
         private final MusicDirectory.Entry entry;
         private final Handler handler;
         private final int size;
-        private final boolean reflection;
         private final boolean saveToFile;
         private final boolean crossfade;
 
-        public Task(View view, MusicDirectory.Entry entry, int size, boolean reflection, boolean saveToFile, boolean crossfade) {
+        public Task(View view, MusicDirectory.Entry entry, int size, boolean saveToFile, boolean crossfade) {
             this.view = view;
             this.entry = entry;
             this.size = size;
-            this.reflection = reflection;
             this.saveToFile = saveToFile;
             this.crossfade = crossfade;
             handler = new Handler();
@@ -230,10 +174,6 @@ public class ImageLoader implements Runnable {
             try {
                 MusicService musicService = MusicServiceFactory.getMusicService(view.getContext());
                 Bitmap bitmap = musicService.getCoverArt(view.getContext(), entry, size, saveToFile, null);
-
-                if (reflection) {
-                    bitmap = createReflection(bitmap);
-                }
 
                 final Drawable drawable = Util.createDrawableFromBitmap(view.getContext(), bitmap);
                 cache.put(getKey(entry.getCoverArt(), size), drawable);
