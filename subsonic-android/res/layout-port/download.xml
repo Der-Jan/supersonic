@@ -4,9 +4,7 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <include layout="@layout/action_bar"
-             android:layout_width="fill_parent"
-             android:layout_height="45dp"/>
+    <include layout="@layout/action_bar"/>
 
     <include layout="@layout/download_song_info"
              android:layout_width="fill_parent"
@@ -19,7 +17,6 @@
                  android:layout_weight="1">
 
         <RelativeLayout
-                android:id="@+id/download_album_art_layout"
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
