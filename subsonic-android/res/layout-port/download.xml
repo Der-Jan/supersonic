@@ -8,44 +8,9 @@
              android:layout_width="fill_parent"
              android:layout_height="45dp"/>
 
-    <!--TODO: include and reuse in landscape.-->
-    <RelativeLayout
-                  android:orientation="horizontal"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:padding="8dip"
-                  android:background="@color/mediaControlBackground">
-        <TextView
-                android:text="The Celestials"
-                android:id="@+id/download_song_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="@color/mediaControlForeground"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:ellipsize="end"/>
-
-        <TextView
-                android:text="The Smashing Pumpkins"
-                android:id="@+id/download_artist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/download_song_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:ellipsize="end"/>
-
-        <ImageButton
-                android:id="@+id/download_toggle_list"
-                android:src="@drawable/media_toggle_list"
-                android:background="@drawable/media_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
-
-    </RelativeLayout>
+    <include layout="@layout/download_song_info"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"/>
 
     <net.sourceforge.subsonic.androidapp.util.MyViewFlipper
                  android:id="@+id/download_playlist_flipper"
