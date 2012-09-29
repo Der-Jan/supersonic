@@ -123,6 +123,7 @@ Button bar improvements
   Change text color of selected tab?
   Delete obsolete icons.
 Remove content from search activity.
+New media buttons, in all resolutions.
 Clean up drawable-hdpi-v4
 Drop ldpi resources.
 Remove theme support

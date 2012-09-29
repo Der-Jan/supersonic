@@ -147,7 +147,7 @@
         <ImageButton
                 android:id="@+id/download_previous"
                 android:src="@drawable/media_backward"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:padding="0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
         <ImageButton
                 android:id="@+id/download_pause"
                 android:src="@drawable/media_pause"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:padding="0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
         <ImageButton
                 android:id="@+id/download_stop"
                 android:src="@drawable/media_stop"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:padding="0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
         <ImageButton
                 android:id="@+id/download_start"
                 android:src="@drawable/media_start"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:padding="0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
         <ImageButton
                 android:id="@+id/download_next"
                 android:src="@drawable/media_forward"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:padding="0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
         <ImageButton
                 android:id="@+id/download_toggle_list"
                 android:src="@drawable/media_toggle_list"
-                android:background="@android:color/transparent"
+                android:background="@drawable/media_button"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical|right"
