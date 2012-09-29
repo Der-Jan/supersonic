@@ -9,11 +9,12 @@
         android:background="@color/mediaControlBackground">
 
     <TextView
-            android:text="The Celestials askldjf asjf laskdfj l lasdkjf lakjdf laj"
+            android:text="The Celestials"
             android:id="@+id/download_song_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/download_toggle_list"
+            android:layout_alignParentLeft="true"
             android:textColor="@color/mediaControlForeground"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/download_song_title"
             android:layout_toLeftOf="@+id/download_toggle_list"
+            android:layout_alignParentLeft="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:singleLine="true"
             android:ellipsize="end"/>
