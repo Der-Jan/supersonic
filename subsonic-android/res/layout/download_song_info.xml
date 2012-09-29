@@ -9,29 +9,33 @@
         android:background="@color/mediaControlBackground">
 
     <TextView
-            android:text="The Celestials"
+            android:text="The Celestials askldjf asjf laskdfj l lasdkjf lakjdf laj"
             android:id="@+id/download_song_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:layout_toLeftOf="@id/download_toggle_list"
             android:textColor="@color/mediaControlForeground"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
+            android:singleLine="true"
             android:ellipsize="end"/>
 
     <TextView
-            android:text="The Smashing Pumpkins"
+            android:text="The Smashing Pumpkins bla ablasdf lksjdf lskdjf lkjdf "
             android:id="@+id/download_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/download_song_title"
+            android:layout_toLeftOf="@id/download_toggle_list"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:singleLine="true"
             android:ellipsize="end"/>
 
     <ImageButton
             android:id="@+id/download_toggle_list"
             android:src="@drawable/media_toggle_list"
             android:background="@drawable/media_button"
+            android:paddingLeft="10dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

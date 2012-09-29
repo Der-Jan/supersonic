@@ -5,10 +5,7 @@
               android:layout_height="fill_parent">
 
     <include layout="@layout/action_bar"/>
-
-    <include layout="@layout/download_song_info"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"/>
+    <include layout="@layout/download_song_info"/>
 
     <net.sourceforge.subsonic.androidapp.util.MyViewFlipper
                  android:id="@+id/download_playlist_flipper"
