@@ -42,6 +42,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.ArtistAdapter;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -95,6 +96,15 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
             	Intent intent = new Intent(SelectArtistActivity.this, SearchActivity.class);
             	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
                 Util.startActivityWithoutTransition(SelectArtistActivity.this, intent);
+            }
+        });
+
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(SelectArtistActivity.this, overflowButton, R.menu.main);
             }
         });
 

@@ -48,6 +48,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -172,7 +173,6 @@ public class SubsonicTabActivity extends Activity {
         getImageLoader().clear();
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean isVolumeDown = keyCode == KeyEvent.KEYCODE_VOLUME_DOWN;
@@ -186,6 +186,7 @@ public class SubsonicTabActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
     @Override
     public void finish() {

@@ -4,6 +4,11 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
+    <include
+            layout="@layout/action_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"/>
+
     <net.sourceforge.subsonic.androidapp.util.MyViewFlipper
                  android:id="@+id/download_playlist_flipper"
                  android:layout_width="fill_parent"

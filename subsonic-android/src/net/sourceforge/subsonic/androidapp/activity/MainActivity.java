@@ -26,6 +26,7 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import android.content.Intent;
@@ -117,7 +118,7 @@ public class MainActivity extends SubsonicTabActivity {
         // Title: Subsonic
         setTitle(R.string.common_appname);
 
-        // Button 1: shuffle
+        // Button 1: gone
         ImageButton actionShuffleButton = (ImageButton)findViewById(R.id.action_button_1);
         actionShuffleButton.setImageResource(R.drawable.action_shuffle);
         actionShuffleButton.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +139,15 @@ public class MainActivity extends SubsonicTabActivity {
             	Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
                 Util.startActivityWithoutTransition(MainActivity.this, intent);
+            }
+        });
+
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(MainActivity.this, overflowButton, R.menu.main);
             }
         });
 

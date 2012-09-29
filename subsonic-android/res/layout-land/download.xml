@@ -4,6 +4,11 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
+    <include
+            layout="@layout/action_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"/>
+
     <RelativeLayout android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="0dip"
@@ -14,8 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_alignParentRight="true"
-                android:background="@color/mediaControlBackground"
-                >
+                android:background="@color/mediaControlBackground">
 
             <LinearLayout
                     android:orientation="horizontal"

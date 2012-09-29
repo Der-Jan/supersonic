@@ -68,6 +68,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.HorizontalSlider;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
 import net.sourceforge.subsonic.androidapp.util.Util;
@@ -350,6 +351,31 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         equalizerButton.setTypeface(typeface);
         visualizerButton.setTypeface(typeface);
         jukeboxButton.setTypeface(typeface);
+
+        // Button 1: gone
+        ImageButton button1 = (ImageButton) findViewById(R.id.action_button_1);
+        button1.setVisibility(View.GONE);
+
+        // Button 2: search
+        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        actionSearchButton.setImageResource(R.drawable.action_search);
+        actionSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            	Intent intent = new Intent(DownloadActivity.this, SearchActivity.class);
+            	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
+                Util.startActivityWithoutTransition(DownloadActivity.this, intent);
+            }
+        });
+
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(DownloadActivity.this, overflowButton, R.menu.nowplaying);
+            }
+        });
     }
 
     @Override
