@@ -70,7 +70,8 @@
             android:gravity="center_vertical"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:ellipsize="middle"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:inputType="none"
             />
 
