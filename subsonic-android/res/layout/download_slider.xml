@@ -18,17 +18,15 @@
             android:textColor="@color/mediaControlForeground"
             />
 
-    <net.sourceforge.subsonic.androidapp.util.HorizontalSlider
-            style="?android:attr/progressBarStyleHorizontal"
+    <SeekBar
             android:id="@+id/download_progress_bar"
-            android:indeterminate="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/download_position"
             android:layout_toLeftOf="@id/download_duration"
             android:layout_centerVertical="true"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
             android:paddingTop="0dip"
             android:paddingBottom="0dip"/>
 

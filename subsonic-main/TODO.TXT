@@ -141,7 +141,7 @@ Action bar back button: ic_ab_back_holo_dark
 Checkmark: ic_checkmark_holo_light
 Media: ic_media_*
 Use GridView to show albums.
-Use a standard slider for position
+Use a standard slider for remote volume
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864

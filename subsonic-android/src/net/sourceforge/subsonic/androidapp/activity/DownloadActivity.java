@@ -32,7 +32,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -56,6 +55,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import net.sourceforge.subsonic.androidapp.R;
@@ -67,7 +67,6 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.HorizontalSlider;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
@@ -92,7 +91,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private TextView positionTextView;
     private TextView durationTextView;
     private TextView statusTextView;
-    private HorizontalSlider progressBar;
+    private SeekBar progressBar;
     private View previousButton;
     private View nextButton;
     private View pauseButton;
@@ -112,6 +111,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private int swipeDistance;
     private int swipeVelocity;
     private VisualizerView visualizerView;
+    private boolean seekInProgress = false;
 
     /**
      * Called when the activity is first created.
@@ -135,7 +135,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         positionTextView = (TextView) findViewById(R.id.download_position);
         durationTextView = (TextView) findViewById(R.id.download_duration);
         statusTextView = (TextView) findViewById(R.id.download_status);
-        progressBar = (HorizontalSlider) findViewById(R.id.download_progress_bar);
+        progressBar = (SeekBar) findViewById(R.id.download_progress_bar);
         playlistView = (ListView) findViewById(R.id.download_list);
         previousButton = findViewById(R.id.download_previous);
         nextButton = findViewById(R.id.download_next);
@@ -290,16 +290,31 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             }
         });
 
-        progressBar.setOnSliderChangeListener(new HorizontalSlider.OnSliderChangeListener() {
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
-            public void onSliderChanged(View view, int position, boolean inProgress) {
-                Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
-                if (!inProgress) {
-                    getDownloadService().seekTo(position);
-                    onProgressChanged();
+            public void onProgressChanged(SeekBar seekBar, int position, boolean fromUser) {
+                if (fromUser) {
+                    Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
                 }
             }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Notification that the user has started a touch gesture. Clients may want to use this to disable advancing the seekbar.
+                seekInProgress = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Notification that the user has finished a touch gesture. Clients may want to use this to re-enable advancing the seekbar.
+                seekInProgress = false;
+                int position = seekBar.getProgress();
+                Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
+                getDownloadService().seekTo(position);
+            }
         });
+
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -718,13 +733,15 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             positionTextView.setText(Util.formatDuration(millisPlayed / 1000));
             durationTextView.setText(Util.formatDuration(millisTotal / 1000));
             progressBar.setMax(millisTotal == 0 ? 100 : millisTotal); // Work-around for apparent bug.
-            progressBar.setProgress(millisPlayed);
-            progressBar.setSlidingEnabled(currentPlaying.isCompleteFileAvailable() || getDownloadService().isJukeboxEnabled());
+            if (!seekInProgress) {
+                progressBar.setProgress(millisPlayed);
+            }
+            progressBar.setEnabled(currentPlaying.isCompleteFileAvailable() || getDownloadService().isJukeboxEnabled());
         } else {
             positionTextView.setText("0:00");
             durationTextView.setText("-:--");
             progressBar.setProgress(0);
-            progressBar.setSlidingEnabled(false);
+            progressBar.setEnabled(false);
         }
 
         PlayerState playerState = getDownloadService().getPlayerState();
