@@ -7,8 +7,4 @@
     <color name="notificationArtist">#434343</color>
     <color name="notificationTitle">#000000</color>
     <color name="buttonBarTextColor">#A0A0A0</color>
-
-    <color name="wheatBackground">#F1F0E6</color>
-    <color name="wheatForeground1">#494B26</color>
-    <color name="wheatForeground2">#830009</color>
 </resources>

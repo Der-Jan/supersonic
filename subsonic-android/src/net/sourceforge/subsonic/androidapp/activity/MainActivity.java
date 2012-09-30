@@ -50,8 +50,6 @@ public class MainActivity extends SubsonicTabActivity {
     private static final int MENU_ITEM_SERVER_3 = 103;
     private static final int MENU_ITEM_OFFLINE = 104;
 
-    private String theme;
-
     private static boolean infoDialogDisplayed;
 
     /**
@@ -151,9 +149,6 @@ public class MainActivity extends SubsonicTabActivity {
             }
         });
 
-        // Remember the current theme.
-        theme = Util.getTheme(this);
-
         showInfoDialog();
     }
 
@@ -164,16 +159,6 @@ public class MainActivity extends SubsonicTabActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, FileUtil.getDefaultMusicDirectory().getPath());
             editor.commit();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Restart activity if theme has changed.
-        if (theme != null && !theme.equals(Util.getTheme(this))) {
-            restart();
         }
     }
 

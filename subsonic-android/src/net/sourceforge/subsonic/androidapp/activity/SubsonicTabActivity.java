@@ -48,7 +48,6 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
-import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -68,7 +67,6 @@ public class SubsonicTabActivity extends Activity {
     @Override
     protected void onCreate(Bundle bundle) {
         setUncaughtExceptionHandler();
-        applyTheme();
         super.onCreate(bundle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         startService(new Intent(this, DownloadServiceImpl.class));
@@ -206,15 +204,6 @@ public class SubsonicTabActivity extends Activity {
     @Override
     public void setTitle(int titleId) {
         setTitle(getString(titleId));
-    }
-
-    private void applyTheme() {
-        String theme = Util.getTheme(this);
-        if ("dark".equals(theme)) {
-            setTheme(android.R.style.Theme);
-        } else if ("light".equals(theme)) {
-            setTheme(android.R.style.Theme_Light);
-        }
     }
 
     public boolean isDestroyed() {
