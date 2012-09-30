@@ -5,7 +5,7 @@
 
     <ImageView
             android:id="@+id/actionbar_home_icon"
-            android:src="@drawable/main_header_icon"
+            android:src="@drawable/launch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
