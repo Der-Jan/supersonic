@@ -117,6 +117,7 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+Create xhdpi launch icon (96x96)
 Background image
 Hide controls after a while.
 Button bar improvements
