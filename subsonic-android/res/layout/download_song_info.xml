@@ -40,6 +40,16 @@
             android:paddingLeft="10dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/download_overflow"
+            android:layout_centerVertical="true"/>
+
+    <ImageButton
+            android:id="@+id/download_overflow"
+            android:src="@drawable/action_overflow"
+            android:background="@drawable/media_button"
+            android:paddingLeft="10dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
 

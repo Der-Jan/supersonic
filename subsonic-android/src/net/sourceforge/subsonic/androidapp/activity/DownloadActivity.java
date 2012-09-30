@@ -347,24 +347,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 //        visualizerButton.setTypeface(typeface);
 //        jukeboxButton.setTypeface(typeface);
 
-        // Button 1: gone
-        ImageButton button1 = (ImageButton) findViewById(R.id.action_button_1);
-        button1.setVisibility(View.GONE);
-
-        // Button 2: search
-        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
-        actionSearchButton.setImageResource(R.drawable.action_search);
-        actionSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            	Intent intent = new Intent(DownloadActivity.this, SearchActivity.class);
-            	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
-                Util.startActivityWithoutTransition(DownloadActivity.this, intent);
-            }
-        });
-
-        // Button 3: overflow
-        final View overflowButton = findViewById(R.id.action_button_3);
+        final View overflowButton = findViewById(R.id.download_overflow);
         overflowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
