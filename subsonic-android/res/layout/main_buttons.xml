@@ -47,10 +47,9 @@
             android:text="@string/main.albums_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#EFEFEF"
-            android:textStyle="bold"
-            android:background="#A5A5A5"
+            android:textSize="12sp"
+            android:textColor="@color/mediaControlForeground"
+            android:background="@color/dividerColor"
             android:gravity="center_vertical"
             android:paddingLeft="4dp"/>
 
