@@ -58,8 +58,8 @@
 
     </net.sourceforge.subsonic.androidapp.util.MyViewFlipper>
 
-    <include layout="@layout/download_media_buttons"/>
     <include layout="@layout/download_slider"/>
+    <include layout="@layout/download_media_buttons"/>
     <include layout="@layout/button_bar"/>
 
 </LinearLayout>

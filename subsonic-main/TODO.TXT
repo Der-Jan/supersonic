@@ -117,6 +117,7 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+Add glowing shadow to VIS, EQ, RC
 HelpActivity
 Background image
 Button bar improvements

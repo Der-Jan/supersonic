@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PlaybackControl">
+        <item name="android:background">@drawable/media_button</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:padding">6dip</item>
+        <item name="android:layout_marginLeft">4dip</item>
+        <item name="android:layout_marginRight">4dip</item>
+        <item name="android:layout_width">54dip</item>
+        <item name="android:layout_height">54dip</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="PlaybackControl.Small" parent="@style/PlaybackControl">
+        <item name="android:layout_width">46dip</item>
+        <item name="android:layout_height">46dip</item>
+    </style>
+    <!--<style name="PlaybackControl.Next" parent="@style/PlaybackControl">-->
+        <!--<item name="android:src">@drawable/btn_playback_ff_normal_jb_dark</item>-->
+        <!--<item name="android:contentDescription">@string/accessibility_next</item>-->
+    <!--</style>-->
+    <!--<style name="PlaybackControl.Play" parent="@style/PlaybackControl">-->
+        <!--<item name="android:contentDescription">@string/accessibility_pause</item>-->
+        <!--<item name="pauseImage">@drawable/btn_playback_pause_normal_jb_dark</item>-->
+        <!--<item name="playImage">@drawable/btn_playback_play_normal_jb_dark</item>-->
+        <!--<item name="stopImage">@drawable/btn_playback_stop_normal_jb_dark</item>-->
+    <!--</style>-->
+    <!--<style name="SeekBarStyle" parent="@android:style/Widget.SeekBar" />-->
+    <!--<style name="SeekBar">-->
+        <!--<item name="android:paddingLeft">16.0dip</item>-->
+        <!--<item name="android:paddingRight">16.0dip</item>-->
+        <!--<item name="android:focusable">true</item>-->
+        <!--<item name="android:indeterminateOnly">false</item>-->
+        <!--<item name="android:indeterminateDrawable">@drawable/scrubber_progress_horizontal_holo_dark</item>-->
+        <!--<item name="android:progressDrawable">@drawable/scrubber_progress_horizontal_holo_dark</item>-->
+        <!--<item name="android:thumb">@drawable/scrubber_control_selector_holo</item>-->
+        <!--<item name="android:thumbOffset">16.0dip</item>-->
+        <!--<item name="android:height">13.0dip</item>-->
+    <!--</style>-->
+</resources>
