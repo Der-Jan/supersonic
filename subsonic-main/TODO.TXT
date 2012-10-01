@@ -117,7 +117,6 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Hide controls after a while.
 HelpActivity
 Background image
 Button bar improvements

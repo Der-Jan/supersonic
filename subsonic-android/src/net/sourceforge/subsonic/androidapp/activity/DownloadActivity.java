@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.app.AlertDialog;
@@ -32,6 +33,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -92,6 +96,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private TextView durationTextView;
     private TextView statusTextView;
     private SeekBar progressBar;
+    private Drawable progressBarThumb;
+    private ShapeDrawable invisibleProgressBarThumb;
     private View previousButton;
     private View nextButton;
     private View pauseButton;
@@ -112,6 +118,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private int swipeVelocity;
     private VisualizerView visualizerView;
     private boolean seekInProgress = false;
+    private ScheduledFuture<?> hideControlsFuture;
 
     /**
      * Called when the activity is first created.
@@ -148,6 +155,12 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         visualizerButton = (Button) findViewById(R.id.download_visualizer);
         jukeboxButton = (Button) findViewById(R.id.download_jukebox);
         LinearLayout visualizerViewLayout = (LinearLayout) findViewById(R.id.download_visualizer_view_layout);
+
+        progressBarThumb = progressBar.getThumb();
+        invisibleProgressBarThumb = new ShapeDrawable(new RectShape());
+        invisibleProgressBarThumb.getPaint().setColor(Color.argb(0, 0, 0, 0));
+        invisibleProgressBarThumb.setIntrinsicHeight(progressBarThumb.getIntrinsicHeight());
+        invisibleProgressBarThumb.setIntrinsicWidth(progressBarThumb.getIntrinsicWidth());
 
         toggleListButton = findViewById(R.id.download_toggle_list);
 
@@ -296,6 +309,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             public void onProgressChanged(SeekBar seekBar, int position, boolean fromUser) {
                 if (fromUser) {
                     Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
+                    scheduleHideControls();
+                    setControlsVisible(true);
                 }
             }
 
@@ -375,6 +390,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     protected void onResume() {
         super.onResume();
 
+        executorService = Executors.newSingleThreadScheduledExecutor();
+
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
@@ -387,9 +404,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 });
             }
         };
-
-        executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleWithFixedDelay(runnable, 0L, 1000L, TimeUnit.MILLISECONDS);
+
+        scheduleHideControls();
 
         DownloadService downloadService = getDownloadService();
         if (downloadService == null || downloadService.getCurrentPlaying() == null) {
@@ -411,6 +428,37 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         }
 
         updateButtons();
+    }
+
+    private void scheduleHideControls() {
+        if (hideControlsFuture != null) {
+            hideControlsFuture.cancel(false);
+        }
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setControlsVisible(false);
+                    }
+                });
+            }
+        };
+        hideControlsFuture = executorService.schedule(runnable, 3000L, TimeUnit.MILLISECONDS);
+    }
+
+    private void setControlsVisible(boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+        findViewById(R.id.download_overlay_buttons).setVisibility(visibility);
+        shuffleButton.setVisibility(visibility);
+        repeatButton.setVisibility(visibility);
+        durationTextView.setVisibility(visibility);
+        positionTextView.setVisibility(visibility);
+
+        progressBar.setThumb(visible ? progressBarThumb : invisibleProgressBarThumb);
     }
 
     private void updateButtons() {
@@ -655,6 +703,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
             playlistFlipper.setDisplayedChild(1);
         }
+        scheduleHideControls();
+        setControlsVisible(true);
     }
 
     private void start() {
@@ -814,6 +864,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
 	@Override
 	public boolean onDown(MotionEvent me) {
+        scheduleHideControls();
+        setControlsVisible(true);
 		return false;
 	}
 
