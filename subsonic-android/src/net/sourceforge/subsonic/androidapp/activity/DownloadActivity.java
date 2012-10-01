@@ -71,6 +71,7 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
@@ -108,7 +109,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private Button equalizerButton;
     private Button visualizerButton;
     private Button jukeboxButton;
-    private View toggleListButton;
+    private ImageButton toggleListButton;
     private ScheduledExecutorService executorService;
     private DownloadFile currentPlaying;
     private long currentRevision;
@@ -162,7 +163,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         invisibleProgressBarThumb.setIntrinsicHeight(progressBarThumb.getIntrinsicHeight());
         invisibleProgressBarThumb.setIntrinsicWidth(progressBarThumb.getIntrinsicWidth());
 
-        toggleListButton = findViewById(R.id.download_toggle_list);
+        toggleListButton = (ImageButton) findViewById(R.id.download_toggle_list);
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
@@ -700,10 +701,15 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_out));
             playlistFlipper.setDisplayedChild(0);
+            toggleListButton.setImageResource(R.drawable.media_toggle_list);
         } else {
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
             playlistFlipper.setDisplayedChild(1);
+            DownloadService downloadService = getDownloadService();
+            if (downloadService != null && downloadService.getCurrentPlaying() != null) {
+                getImageLoader().loadImage(toggleListButton, downloadService.getCurrentPlaying().getSong(), false, true);
+            }
         }
         setControlsVisible(true, true);
     }
