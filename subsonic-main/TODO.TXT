@@ -117,9 +117,9 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Create xhdpi launch icon (96x96)
-Background image
 Hide controls after a while.
+HelpActivity
+Background image
 Button bar improvements
   Background.
   Pressed rendering.
@@ -127,7 +127,6 @@ Button bar improvements
   Delete obsolete icons.
 Remove content from search activity.
 New media buttons, in all resolutions.
-Clean up drawable-hdpi-v4
 Drop ldpi resources.
 Remove theme support
 Overflow button
