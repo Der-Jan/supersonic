@@ -3,6 +3,7 @@
 
     <style name="SubsonicTheme" parent="@android:style/Theme.Holo">
         <!-- Any customizations for your app running on devices with Theme.Holo here -->
+        <item name="android:windowBackground">@drawable/background</item>
     </style>
 
 </resources>

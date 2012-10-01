@@ -3,6 +3,7 @@
 
     <style name="SubsonicTheme" parent="@android:style/Theme">
         <!-- Any customizations for your app running on pre-3.0 devices here -->
+        <item name="android:windowBackground">@drawable/background</item>
     </style>
 
 </resources>
