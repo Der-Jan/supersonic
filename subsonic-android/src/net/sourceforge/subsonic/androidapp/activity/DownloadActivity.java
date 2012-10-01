@@ -181,13 +181,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         emptyTextView.setOnTouchListener(touchListener);
         albumArtImageView.setOnTouchListener(touchListener);
 
-        albumArtImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFullscreenAlbumArt();
-            }
-        });
-
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,8 +302,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             public void onProgressChanged(SeekBar seekBar, int position, boolean fromUser) {
                 if (fromUser) {
                     Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
-                    scheduleHideControls();
-                    setControlsVisible(true);
+                    setControlsVisible(true, false);
                 }
             }
 
@@ -442,7 +434,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setControlsVisible(false);
+                        setControlsVisible(false, true);
                     }
                 });
             }
@@ -450,15 +442,20 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         hideControlsFuture = executorService.schedule(runnable, 3000L, TimeUnit.MILLISECONDS);
     }
 
-    private void setControlsVisible(boolean visible) {
-        int visibility = visible ? View.VISIBLE : View.INVISIBLE;
-        findViewById(R.id.download_overlay_buttons).setVisibility(visibility);
-        shuffleButton.setVisibility(visibility);
-        repeatButton.setVisibility(visibility);
-        durationTextView.setVisibility(visibility);
-        positionTextView.setVisibility(visibility);
+    private void setControlsVisible(boolean visible, boolean animate) {
+        long duration = visible ? 200L : 1000L;
+
+        Util.fade(shuffleButton, visible, duration, animate);
+        Util.fade(repeatButton, visible, duration, animate);
+        Util.fade(durationTextView, visible, duration, animate);
+        Util.fade(positionTextView, visible, duration, animate);
+        Util.fade(findViewById(R.id.download_overlay_buttons), visible, duration, animate);
 
         progressBar.setThumb(visible ? progressBarThumb : invisibleProgressBarThumb);
+
+        if (visible) {
+            scheduleHideControls();
+        }
     }
 
     private void updateButtons() {
@@ -703,8 +700,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
             playlistFlipper.setDisplayedChild(1);
         }
-        scheduleHideControls();
-        setControlsVisible(true);
+        setControlsVisible(true, true);
     }
 
     private void start() {
@@ -864,8 +860,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
 	@Override
 	public boolean onDown(MotionEvent me) {
-        scheduleHideControls();
-        setControlsVisible(true);
+        setControlsVisible(true, true);
 		return false;
 	}
 
