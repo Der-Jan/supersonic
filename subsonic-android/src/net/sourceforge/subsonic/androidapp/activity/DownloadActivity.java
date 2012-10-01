@@ -236,6 +236,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             public void onClick(View view) {
                 getDownloadService().shuffle();
                 Util.toast(DownloadActivity.this, R.string.download_menu_shuffle_notification);
+                setControlsVisible(true, false);
             }
         });
 
@@ -258,6 +259,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                     default:
                         break;
                 }
+                setControlsVisible(true, false);
             }
         });
 
@@ -265,6 +267,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DownloadActivity.this, EqualizerActivity.class));
+                setControlsVisible(true, false);
             }
         });
 
@@ -276,6 +279,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 getDownloadService().setShowVisualization(visualizerView.isActive());
                 updateButtons();
                 Util.toast(DownloadActivity.this, active ? R.string.download_visualizer_on : R.string.download_visualizer_off);
+                setControlsVisible(true, false);
             }
         });
 
@@ -286,6 +290,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 getDownloadService().setJukeboxEnabled(jukeboxEnabled);
                 updateButtons();
                 Util.toast(DownloadActivity.this, jukeboxEnabled ? R.string.download_jukebox_on : R.string.download_jukebox_off, false);
+                setControlsVisible(true, false);
             }
         });
 
