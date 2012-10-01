@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="45dp">
+        android:layout_height="50dp">
 
     <ImageView
             android:id="@+id/actionbar_home_icon"
             android:src="@drawable/launch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_width="48dip"
+            android:layout_height="48dip"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:paddingLeft="4dip"
-            android:paddingRight="4dip"
-            android:paddingTop="2dip"
-            android:paddingBottom="2dip"
-            android:scaleType="centerInside"
+            android:layout_alignParentLeft="true"
             />
 
     <ImageButton
@@ -24,10 +18,9 @@
             android:src="@drawable/action_overflow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:scaleType="center"
+            android:layout_alignParentRight="true"
             android:padding="10dp"
             android:background="@drawable/actionbar_button"
             />
@@ -40,7 +33,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/action_button_3"
-            android:scaleType="center"
             android:padding="10dp"
             android:background="@drawable/actionbar_button"
             />
@@ -53,27 +45,27 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/action_button_2"
-            android:scaleType="center"
             android:padding="10dp"
             android:background="@drawable/actionbar_button"
             />
 
     <TextView
-            android:id="@+id/actionbar_title_text"
-            android:text="Subsonic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/action_button_1"
-            android:layout_toRightOf="@id/actionbar_home_icon"
-            android:gravity="center_vertical"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:inputType="none"
-            />
+                android:id="@+id/actionbar_title_text"
+                android:text="Subsonic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@id/action_button_1"
+                android:layout_toRightOf="@id/actionbar_home_icon"
+                android:paddingLeft="6dip"
+                android:gravity="center_vertical"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:inputType="none"
+                />
 
     <View
             android:layout_width="fill_parent"
