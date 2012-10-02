@@ -15,7 +15,7 @@
             android:paddingLeft="3dip"/>
 
     <TextView
-            android:text="This is"
+            android:text="This iskajshdf askkjshdskjdfkajs"
             android:id="@+id/song_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,13 +27,14 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:paddingTop="11dip"
+            android:drawableRight="@drawable/now_playing"
+            android:drawablePadding="2dip"
             android:paddingLeft="10dip"
             android:paddingRight="4dip"/>
 
     <ImageView
             android:id="@+id/song_download_button"
             android:src="@drawable/download_pinned"
-            android:background="@drawable/menubar_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

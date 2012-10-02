@@ -67,6 +67,13 @@ public class SongView extends RelativeLayout implements Checkable {
         statusTextView = (TextView) findViewById(R.id.song_status);
         downloadButton = (ImageView) findViewById(R.id.song_download_button);
 
+//        TODO
+//        downloadButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("XXXX", "hei");
+//            }
+//        });
         INSTANCES.put(this, null);
         int instanceCount = INSTANCES.size();
         if (instanceCount > 50) {
@@ -122,12 +129,12 @@ public class SongView extends RelativeLayout implements Checkable {
             downloadButton.setImageResource(R.drawable.download_streaming);
         } else {
             statusTextView.setText(Util.formatDuration(song.getDuration()));
-            downloadButton.setImageResource(0);
+            downloadButton.setImageDrawable(null);
         }
 
         boolean playing = downloadService.getCurrentPlaying() == downloadFile;
         if (playing) {
-            titleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.stat_notify_playing, 0, 0, 0);
+            titleTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.now_playing, 0);
         } else {
             titleTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
