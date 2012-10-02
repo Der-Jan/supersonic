@@ -117,26 +117,31 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Use ToggleButton in equalizer (and for Offline)
-  http://developer.android.com/guide/topics/ui/controls/togglebutton.html
+HelpActivity
+VideoActivity
+Visualizer
+Test on Android 2 and 3.
+Show toast after turning screen on/off.
+Fix bug with fading controls.
+Improve color of ALBUMS header.
+Replace refresh with search button.
+Add confirmation after clicking Shuffle play button.
+Remove padding below album list.
+Change checkmark
+  ic_checkmark_holo_light
+Use allcaps
+Check quality of large album cover art.
+Unknown album image.
 Use ImageButton for navigation buttons.
 Notification icon.
 Make pin icons clickable.
-HelpActivity
-Background image
-Button bar improvements
-  Background.
-  Pressed rendering.
-  Change text color of selected tab?
-  Delete obsolete icons.
+Delete obsolete icons.
 Remove content from search activity.
 Drop ldpi resources.
 Remove obsolete font
 Reduce size of main_header_icon
-Large album cover art.
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
-Checkmark: ic_checkmark_holo_light
 Use GridView to show albums.
 
 Subphonic
