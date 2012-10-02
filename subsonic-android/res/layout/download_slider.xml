@@ -21,12 +21,12 @@
             android:id="@+id/download_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/download_position"
-            android:layout_toLeftOf="@id/download_duration"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dip"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip"/>
+            android:paddingLeft="55dip"
+            android:paddingRight="55dip"/>
 
     <TextView
             android:id="@+id/download_duration"
