@@ -121,6 +121,9 @@ HelpActivity
 VideoActivity
 Visualizer
 Test on Android 2 and 3.
+       java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
+       at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
+
 Show toast after turning screen on/off.
 Fix bug with fading controls.
 Improve color of ALBUMS header.
