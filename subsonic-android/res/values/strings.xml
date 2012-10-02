@@ -204,7 +204,8 @@
     <string name="select_artist.all_folders">All folders</string>
 
     <string name="equalizer.label">Equalizer</string>
-    <string name="equalizer.enabled">Enabled</string>
+    <string name="equalizer.on">Equalizer on</string>
+    <string name="equalizer.off">Equalizer off</string>
     <string name="equalizer.preset">Select preset</string>
 
     <string name="widget.initial_text">Touch to select music</string>
