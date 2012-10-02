@@ -7,34 +7,22 @@
               android:layout_height="wrap_content"
               android:background="#80000000">
 
-    <Button
+    <ToggleButton
+            style="@style/OverlayToggleButton"
             android:id="@+id/download_jukebox"
-            android:text="RC"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dip"/>
+            android:textOn="RC"
+            android:textOff="RC"/>
 
-    <Button
+    <ToggleButton
+            style="@style/OverlayToggleButton"
             android:id="@+id/download_equalizer"
-            android:text="EQ"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dip"/>
+            android:textOn="EQ"
+            android:textOff="EQ"/>
 
-    <Button
+    <ToggleButton
+            style="@style/OverlayToggleButton"
             android:id="@+id/download_visualizer"
-            android:text="VIS"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dip"/>
+            android:textOn="VIS"
+            android:textOff="VIS"/>
 
 </LinearLayout>
