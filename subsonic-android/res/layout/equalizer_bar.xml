@@ -28,6 +28,7 @@
             />
 
     <SeekBar
+            style="@style/SeekBar"
             android:id="@+id/equalizer.bar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

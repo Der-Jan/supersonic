@@ -18,6 +18,7 @@
             android:textColor="@color/mediaControlForeground"/>
 
     <SeekBar
+            style="@style/SeekBar"
             android:id="@+id/download_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

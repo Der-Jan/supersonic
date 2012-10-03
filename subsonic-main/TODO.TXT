@@ -117,6 +117,7 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+SettingsActivity still have bad background in Android 2.
 HelpActivity
 VideoActivity
 SearchActivity (with results)
@@ -125,7 +126,6 @@ Progress indicator
 Test on Android 2 and 3.
   java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
    at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
-  Android 2: Ugly seek bar.
   java.lang.NoSuchMethodError: android.view.View.setAlpha
           at net.sourceforge.subsonic.androidapp.util.Util.fade(Util.java:368)
           at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.setControlsVisible(DownloadActivity.java:458)

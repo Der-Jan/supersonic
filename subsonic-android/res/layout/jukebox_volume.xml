@@ -33,7 +33,8 @@
             android:layout_below="@+id/jukebox_volume_title"
             android:paddingRight="12dip"
             />
-    <SeekBar android:id="@+id/jukebox_volume_progress_bar"
+    <SeekBar style="@style/SeekBar"
+             android:id="@+id/jukebox_volume_progress_bar"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:layout_alignParentRight="true"
