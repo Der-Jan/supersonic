@@ -14,8 +14,8 @@
     </parent>
 
     <properties>
-        <exe4j.home>c:/Program Files/exe4j</exe4j.home>
-        <nsis.home>c:/Program Files/NSIS</nsis.home>
+        <exe4j.home>c:/Program Files (x86)/exe4j</exe4j.home>
+        <nsis.home>c:/Program Files (x86)/NSIS</nsis.home>
     </properties>
 
     <dependencies>
