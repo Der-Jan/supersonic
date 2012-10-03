@@ -97,8 +97,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private TextView durationTextView;
     private TextView statusTextView;
     private SeekBar progressBar;
-    private Drawable progressBarThumb;
-    private ShapeDrawable invisibleProgressBarThumb;
+//    private Drawable progressBarThumb;
+//    private ShapeDrawable invisibleProgressBarThumb;
     private View previousButton;
     private View nextButton;
     private View pauseButton;
@@ -157,11 +157,11 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         jukeboxButton = (Button) findViewById(R.id.download_jukebox);
         LinearLayout visualizerViewLayout = (LinearLayout) findViewById(R.id.download_visualizer_view_layout);
 
-        progressBarThumb = progressBar.getThumb();
-        invisibleProgressBarThumb = new ShapeDrawable(new RectShape());
-        invisibleProgressBarThumb.getPaint().setColor(Color.argb(0, 0, 0, 0));
-        invisibleProgressBarThumb.setIntrinsicHeight(progressBarThumb.getIntrinsicHeight());
-        invisibleProgressBarThumb.setIntrinsicWidth(progressBarThumb.getIntrinsicWidth());
+//        progressBarThumb = progressBar.getThumb();
+//        invisibleProgressBarThumb = new ShapeDrawable(new RectShape());
+//        invisibleProgressBarThumb.getPaint().setColor(Color.argb(0, 0, 0, 0));
+//        invisibleProgressBarThumb.setIntrinsicHeight(progressBarThumb.getIntrinsicHeight());
+//        invisibleProgressBarThumb.setIntrinsicWidth(progressBarThumb.getIntrinsicWidth());
 
         toggleListButton = (ImageButton) findViewById(R.id.download_toggle_list);
 
@@ -457,7 +457,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         Util.fade(positionTextView, visible, duration, animate);
         Util.fade(findViewById(R.id.download_overlay_buttons), visible, duration, animate);
 
-        progressBar.setThumb(visible ? progressBarThumb : invisibleProgressBarThumb);
+//        progressBar.setThumb(visible ? progressBarThumb : invisibleProgressBarThumb);
 
         if (visible) {
             scheduleHideControls();
