@@ -20,30 +20,30 @@
 package net.sourceforge.subsonic.androidapp.activity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.net.Uri;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.SearchCritera;
 import net.sourceforge.subsonic.androidapp.domain.SearchResult;
+import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
-import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.util.ArtistAdapter;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
@@ -72,7 +72,7 @@ public class SearchActivity extends SubsonicTabActivity {
     private View artistsHeading;
     private View albumsHeading;
     private View songsHeading;
-    private TextView searchButton;
+    private TextView noMatchTextView;
     private View moreArtistsButton;
     private View moreAlbumsButton;
     private View moreSongsButton;
@@ -98,7 +98,7 @@ public class SearchActivity extends SubsonicTabActivity {
         albumsHeading = buttons.findViewById(R.id.search_albums);
         songsHeading = buttons.findViewById(R.id.search_songs);
 
-        searchButton = (TextView) buttons.findViewById(R.id.search_search);
+        noMatchTextView = (TextView) buttons.findViewById(R.id.search_no_match);
         moreArtistsButton = buttons.findViewById(R.id.search_more_artists);
         moreAlbumsButton = buttons.findViewById(R.id.search_more_albums);
         moreSongsButton = buttons.findViewById(R.id.search_more_songs);
@@ -108,9 +108,7 @@ public class SearchActivity extends SubsonicTabActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (view == searchButton) {
-                    onSearchRequested();
-                } else if (view == moreArtistsButton) {
+                if (view == moreArtistsButton) {
                     expandArtists();
                 } else if (view == moreAlbumsButton) {
                     expandAlbums();
@@ -259,10 +257,17 @@ public class SearchActivity extends SubsonicTabActivity {
 
     private void populateList() {
         mergeAdapter = new MergeAdapter();
-        mergeAdapter.addView(searchButton, true);
 
         if (searchResult != null) {
             List<Artist> artists = searchResult.getArtists();
+            List<MusicDirectory.Entry> albums = searchResult.getAlbums();
+            List<MusicDirectory.Entry> songs = searchResult.getSongs();
+
+            boolean empty = artists.isEmpty() && albums.isEmpty() && songs.isEmpty();
+            if (empty) {
+                mergeAdapter.addView(noMatchTextView, true);
+            }
+
             if (!artists.isEmpty()) {
                 mergeAdapter.addView(artistsHeading);
                 List<Artist> displayedArtists = new ArrayList<Artist>(artists.subList(0, Math.min(DEFAULT_ARTISTS, artists.size())));
@@ -273,7 +278,6 @@ public class SearchActivity extends SubsonicTabActivity {
                 }
             }
 
-            List<MusicDirectory.Entry> albums = searchResult.getAlbums();
             if (!albums.isEmpty()) {
                 mergeAdapter.addView(albumsHeading);
                 List<MusicDirectory.Entry> displayedAlbums = new ArrayList<MusicDirectory.Entry>(albums.subList(0, Math.min(DEFAULT_ALBUMS, albums.size())));
@@ -284,7 +288,6 @@ public class SearchActivity extends SubsonicTabActivity {
                 }
             }
 
-            List<MusicDirectory.Entry> songs = searchResult.getSongs();
             if (!songs.isEmpty()) {
                 mergeAdapter.addView(songsHeading);
                 List<MusicDirectory.Entry> displayedSongs = new ArrayList<MusicDirectory.Entry>(songs.subList(0, Math.min(DEFAULT_SONGS, songs.size())));
@@ -294,9 +297,6 @@ public class SearchActivity extends SubsonicTabActivity {
                     moreSongsAdapter = mergeAdapter.addView(moreSongsButton, true);
                 }
             }
-
-            boolean empty = searchResult.getArtists().isEmpty() && searchResult.getAlbums().isEmpty() && searchResult.getSongs().isEmpty();
-            searchButton.setText(empty ? R.string.search_no_match : R.string.search_search);
         }
 
         list.setAdapter(mergeAdapter);

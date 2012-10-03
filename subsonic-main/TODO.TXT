@@ -122,7 +122,7 @@ HelpActivity
 VideoActivity
 SearchActivity (with results)
 Visualizer
-Progress indicator
+Progress indicator (spinner)
 Test on Android 2 and 3.
   java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
    at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
@@ -136,14 +136,11 @@ Replace refresh with search button.
 Add confirmation after clicking Shuffle play button.
 Change checkmark
   ic_checkmark_holo_light
-Use allcaps
 Check quality of large album cover art.
 Unknown album image.
-Use ImageButton for navigation buttons.
 Notification icon.
 Make pin icons clickable.
 Delete obsolete icons.
-Remove content from search activity.
 Drop ldpi resources.
 Remove obsolete font
 Reduce size of main_header_icon
