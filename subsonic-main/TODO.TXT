@@ -120,6 +120,7 @@ TODO IN ANDROID 3.5
 HelpActivity
 VideoActivity
 Visualizer
+Progress indicator
 Test on Android 2 and 3.
        java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
        at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
@@ -129,7 +130,6 @@ Fix bug with fading controls.
 Improve color of ALBUMS header.
 Replace refresh with search button.
 Add confirmation after clicking Shuffle play button.
-Remove padding below album list.
 Change checkmark
   ic_checkmark_holo_light
 Use allcaps

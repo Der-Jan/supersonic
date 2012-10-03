@@ -23,8 +23,6 @@
               android:fastScrollEnabled="true"/>
 
     <LinearLayout android:orientation="horizontal"
-                  android:layout_marginTop="6dp"
-                  android:layout_marginBottom="3dp"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content">
 
