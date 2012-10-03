@@ -119,11 +119,16 @@ TODO IN ANDROID 3.5
 --------------------
 HelpActivity
 VideoActivity
+SearchActivity (with results)
 Visualizer
 Progress indicator
 Test on Android 2 and 3.
-       java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
-       at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
+  java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
+   at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
+  Android 2: Ugly seek bar.
+  java.lang.NoSuchMethodError: android.view.View.setAlpha
+          at net.sourceforge.subsonic.androidapp.util.Util.fade(Util.java:368)
+          at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.setControlsVisible(DownloadActivity.java:458)
 
 Show toast after turning screen on/off.
 Fix bug with fading controls.

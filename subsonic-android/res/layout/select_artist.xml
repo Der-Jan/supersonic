@@ -7,7 +7,8 @@
     <include layout="@layout/action_bar"/>
     <include layout="@layout/tab_progress"/>
 
-    <ListView android:id="@+id/select_artist_list"
+    <ListView style="@style/ListView"
+              android:id="@+id/select_artist_list"
               android:textFilterEnabled="true"
               android:fastScrollEnabled="true"
               android:layout_width="fill_parent"

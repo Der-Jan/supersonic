@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:padding="10dip"/>
 
-    <ListView android:id="@+id/select_album_entries"
+    <ListView style="@style/ListView"
+              android:id="@+id/select_album_entries"
               android:textFilterEnabled="true"
               android:layout_width="fill_parent"
               android:layout_height="0dip"

@@ -6,7 +6,8 @@
 
     <include layout="@layout/action_bar"/>
 
-    <ListView android:id="@+id/main_list"
+    <ListView style="@style/ListView"
+              android:id="@+id/main_list"
               android:layout_width="fill_parent"
               android:layout_height="0px"
               android:layout_weight="1"/>
