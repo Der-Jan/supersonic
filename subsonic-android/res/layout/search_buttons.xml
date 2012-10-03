@@ -16,40 +16,19 @@
             android:padding="12dp"/>
 
     <TextView
+            style="@style/TextViewHeader"
             android:id="@+id/search_artists"
-            android:text="@string/search.artists"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#EFEFEF"
-            android:textStyle="bold"
-            android:background="#A5A5A5"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"/>
+            android:text="@string/search.artists"/>
 
     <TextView
+            style="@style/TextViewHeader"
             android:id="@+id/search_albums"
-            android:text="@string/search.albums"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#EFEFEF"
-            android:textStyle="bold"
-            android:background="#A5A5A5"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"/>
+            android:text="@string/search.albums"/>
 
     <TextView
             android:id="@+id/search_songs"
             android:text="@string/search.songs"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#EFEFEF"
-            android:textStyle="bold"
-            android:background="#A5A5A5"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"/>
+            style="@style/TextViewHeader"/>
 
     <TextView
             android:id="@+id/search_more_artists"

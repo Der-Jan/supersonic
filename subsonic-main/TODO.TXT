@@ -132,7 +132,6 @@ Test on Android 2 and 3.
 
 Show toast after turning screen on/off.
 Fix bug with fading controls.
-Improve color of ALBUMS header.
 Replace refresh with search button.
 Add confirmation after clicking Shuffle play button.
 Change checkmark

@@ -43,15 +43,9 @@
     </LinearLayout>
 
     <TextView
+            style="@style/TextViewHeader"
             android:id="@+id/main_albums"
-            android:text="@string/main.albums_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/mediaControlForeground"
-            android:background="@color/dividerColor"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"/>
+            android:text="@string/main.albums_title"/>
 
     <TextView
             android:id="@+id/main_albums_newest"

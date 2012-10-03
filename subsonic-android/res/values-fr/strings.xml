@@ -40,9 +40,9 @@
     <string name="search.title">Recherche</string>
     <string name="search.search">Cliquer pour rechercher</string>
     <string name="search.no_match">Aucun résultat, veuillez essayer à nouveau</string>
-    <string name="search.artists">Artistes</string>
-    <string name="search.albums">Albums</string>
-    <string name="search.songs">Pièces</string>
+    <string name="search.artists">ARTISTES</string>
+    <string name="search.albums">ALBUMS</string>
+    <string name="search.songs">PIÈCES</string>
     <string name="search.more">Afficher plus</string>
 
     <string name="progress.wait">Veuillez patienter...</string>

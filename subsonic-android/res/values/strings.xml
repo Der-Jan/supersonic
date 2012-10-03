@@ -51,9 +51,9 @@
     <string name="search.title">Search</string>
     <string name="search.search">Click to search</string>
     <string name="search.no_match">No matches, please try again</string>
-    <string name="search.artists">Artists</string>
-    <string name="search.albums">Albums</string>
-    <string name="search.songs">Songs</string>
+    <string name="search.artists">ARTISTS</string>
+    <string name="search.albums">ALBUMS</string>
+    <string name="search.songs">SONGS</string>
     <string name="search.more">Show more</string>
 
     <string name="progress.wait">Please wait...</string>

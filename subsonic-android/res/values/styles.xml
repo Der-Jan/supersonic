@@ -26,11 +26,23 @@
         <item name="android:padding">10dip</item>
     </style>
 
+    <style name="TextViewHeader">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/mediaControlForeground</item>
+        <item name="android:background">@color/dividerColor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
+    <!-- Work-around for bug in Android 2 -->
     <style name="ListView">
-        <!-- Work-around for bug in Android 2 -->
         <item name="android:cacheColorHint">@android:color/transparent</item>
     </style>
 
+    <!-- Holo-style seekbar -->
     <style name="SeekBar">
         <item name="android:paddingLeft">16.0dip</item>
         <item name="android:paddingRight">16.0dip</item>
