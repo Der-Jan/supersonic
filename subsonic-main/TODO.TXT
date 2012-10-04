@@ -140,7 +140,6 @@ Notification icon.
 Make pin icons clickable.
 Delete obsolete icons.
 Drop ldpi resources.
-Remove obsolete font
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
