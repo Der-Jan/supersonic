@@ -51,6 +51,7 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name="net.sourceforge.subsonic.androidapp.activity.SettingsActivity"
+                  android:theme="@style/SubsonicTheme.NoBackground"
                   android:configChanges="orientation|keyboardHidden"
                   android:launchMode="singleTask"/>
 
