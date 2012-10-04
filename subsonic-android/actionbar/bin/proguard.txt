@@ -1,3 +1,0 @@
-# view AndroidManifest.xml #generated:27
--keep class com.example.android.actionbarcompat.MainActivity { <init>(...); }
-
