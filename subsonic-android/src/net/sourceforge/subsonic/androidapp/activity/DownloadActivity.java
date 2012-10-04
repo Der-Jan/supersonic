@@ -33,9 +33,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -71,7 +68,6 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
@@ -368,12 +364,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 }
             });
         }
-
-        // TODO: Extract to utility method and cache.
-//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
-//        equalizerButton.setTypeface(typeface);
-//        visualizerButton.setTypeface(typeface);
-//        jukeboxButton.setTypeface(typeface);
 
         final View overflowButton = findViewById(R.id.download_overflow);
         overflowButton.setOnClickListener(new View.OnClickListener() {

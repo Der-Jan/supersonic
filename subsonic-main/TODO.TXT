@@ -134,8 +134,6 @@ Show toast after turning screen on/off.
 Fix bug with fading controls.
 Replace refresh with search button.
 Add confirmation after clicking Shuffle play button.
-Change checkmark
-  ic_checkmark_holo_light
 Check quality of large album cover art.
 Unknown album image.
 Notification icon.
