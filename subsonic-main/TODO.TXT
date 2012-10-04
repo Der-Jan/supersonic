@@ -117,6 +117,7 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
+Spacers in download_media_buttons causes layout issues.
 Must change small album art when song changes, in DownloadActivity.
 Song status
 HelpActivity

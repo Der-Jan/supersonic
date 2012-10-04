@@ -9,7 +9,7 @@
         <item name="android:layout_marginRight">4dip</item>
         <item name="android:layout_width">54dip</item>
         <item name="android:layout_height">54dip</item>
-        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:contentDescription">@null</item>
     </style>
 
     <style name="PlaybackControl.Small" parent="@style/PlaybackControl">
