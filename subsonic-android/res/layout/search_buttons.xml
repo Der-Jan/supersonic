@@ -14,19 +14,19 @@
             android:padding="12dp"/>
 
     <TextView
-            style="@style/TextViewHeader"
+            style="@style/HeaderTextView"
             android:id="@+id/search_artists"
             android:text="@string/search.artists"/>
 
     <TextView
-            style="@style/TextViewHeader"
+            style="@style/HeaderTextView"
             android:id="@+id/search_albums"
             android:text="@string/search.albums"/>
 
     <TextView
             android:id="@+id/search_songs"
             android:text="@string/search.songs"
-            style="@style/TextViewHeader"/>
+            style="@style/HeaderTextView"/>
 
     <TextView
             android:id="@+id/search_more_artists"

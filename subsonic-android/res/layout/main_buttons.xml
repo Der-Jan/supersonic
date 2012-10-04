@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <TextView
-            style="@style/TextViewHeader"
+            style="@style/HeaderTextView"
             android:id="@+id/main_albums"
             android:text="@string/main.albums_title"/>
 
