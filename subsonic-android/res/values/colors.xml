@@ -3,6 +3,7 @@
     <color name="mediaControlBackground">#222E42</color> <!--Same as Google Music -->
     <color name="mediaControlForeground">#F0F0F0</color>
     <color name="dividerColor">#FF33B5E5</color> <!-- Cyan Holo -->
+    <color name="overlayColor">#80000000</color>
     <color name="appwidget_text">#FFFFFF</color>
     <color name="notificationArtist">#434343</color>
     <color name="notificationTitle">#000000</color>

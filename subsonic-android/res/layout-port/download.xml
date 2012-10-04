@@ -25,7 +25,8 @@
                     android:layout_height="fill_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentTop="true"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@null"/>
 
             <include layout="@layout/download_overlay_buttons"
                      android:layout_width="fill_parent"
@@ -47,10 +48,7 @@
                     android:id="@+id/download_visualizer_view_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="60dip"
-                    android:layout_marginLeft="80dip"
-                    android:layout_marginRight="80dip"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_above="@+id/download_song_title"/>
+                    android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
