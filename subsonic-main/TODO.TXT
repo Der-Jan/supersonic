@@ -123,12 +123,7 @@ VideoActivity
 Visualizer
 Progress indicator (spinner)
 Test on Android 2 and 3.
-  java.lang.NoSuchMethodError: android.view.View.setAlpha
-          at net.sourceforge.subsonic.androidapp.util.Util.fade(Util.java:368)
-          at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.setControlsVisible(DownloadActivity.java:458)
-
 Show toast after turning screen on/off.
-Fix bug with fading controls.
 Replace refresh with search button.
 Add confirmation after clicking Shuffle play button.
 Check quality of large album cover art.

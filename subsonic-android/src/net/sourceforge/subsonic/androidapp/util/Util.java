@@ -59,10 +59,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -353,40 +350,6 @@ public final class Util {
             toast.setDuration(shortDuration ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
         }
         toast.show();
-    }
-
-    public static void fade(final View view, final boolean in, long durationMillis, boolean animate) {
-//
-//        if (in && view.getVisibility() == View.VISIBLE) {
-//            return;
-//        }
-//        if (!in && view.getVisibility() == View.INVISIBLE) {
-//            return;
-//        }
-
-        view.clearAnimation();
-        view.setVisibility(View.VISIBLE);
-
-        if (!animate) {
-            return;
-        }
-
-        AlphaAnimation animation = in ? new AlphaAnimation(view.getAlpha(), 1.0F) : new AlphaAnimation(view.getAlpha(), 0.0F);
-        animation.setDuration(durationMillis);
-
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {
-            }
-
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(in ? View.VISIBLE : View.INVISIBLE);
-            }
-        });
-
-        view.startAnimation(animation);
     }
 
     /**
