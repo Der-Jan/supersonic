@@ -117,12 +117,10 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Spacers in download_media_buttons causes layout issues.
 Must change small album art when song changes, in DownloadActivity.
 Song status
 HelpActivity
 VideoActivity
-Improve layout of landscape downloadactivity on tablet.
 Progress indicator (spinner)
 Test on Android 2 and 3.
 Show toast after turning screen on/off.

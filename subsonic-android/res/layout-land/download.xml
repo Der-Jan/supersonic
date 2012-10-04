@@ -29,38 +29,53 @@
 
         </net.sourceforge.subsonic.androidapp.util.MyViewFlipper>
 
-        <LinearLayout
-                android:orientation="vertical"
+        <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@color/mediaControlBackground">
 
-            <include layout="@layout/download_song_info"/>
+            <include layout="@layout/download_song_info"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentTop="true"/>
 
-            <LinearLayout
-                    android:id="@+id/download_visualizer_view_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="60dip"/>
-
+            <!--TODO-->
             <TextView
                     android:id="@+id/download_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_centerInParent="true"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#c0c0c0"/>
 
+            <LinearLayout
+                    android:id="@+id/download_visualizer_view_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dip"
+                    android:layout_above="@+id/download_overlay_buttons"/>
+
             <include layout="@layout/download_overlay_buttons"
+                     android:id="@+id/download_overlay_buttons"
                      android:layout_width="fill_parent"
-                     android:layout_height="wrap_content"/>
+                     android:layout_height="wrap_content"
+                     android:layout_above="@+id/download_slider"/>
 
-            <include layout="@layout/download_slider"/>
-            <include layout="@layout/download_media_buttons"/>
+            <include layout="@layout/download_slider"
+                     android:id="@+id/download_slider"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_above="@+id/download_media_buttons"/>
 
-        </LinearLayout>
+            <include layout="@layout/download_media_buttons"
+                     android:id="@+id/download_media_buttons"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
