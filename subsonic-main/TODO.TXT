@@ -120,12 +120,9 @@ TODO IN ANDROID 3.5
 SettingsActivity still have bad background in Android 2.
 HelpActivity
 VideoActivity
-SearchActivity (with results)
 Visualizer
 Progress indicator (spinner)
 Test on Android 2 and 3.
-  java.lang.NoSuchMethodError: android.widget.SeekBar.getThumb
-   at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.onCreate(DownloadActivity.java:160)
   java.lang.NoSuchMethodError: android.view.View.setAlpha
           at net.sourceforge.subsonic.androidapp.util.Util.fade(Util.java:368)
           at net.sourceforge.subsonic.androidapp.activity.DownloadActivity.setControlsVisible(DownloadActivity.java:458)
@@ -139,7 +136,6 @@ Unknown album image.
 Notification icon.
 Make pin icons clickable.
 Delete obsolete icons.
-Drop ldpi resources.
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
