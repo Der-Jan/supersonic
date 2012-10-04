@@ -18,6 +18,25 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpEntity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -57,24 +76,6 @@ import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider;
 import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import org.apache.http.HttpEntity;
-
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sindre Mehus
@@ -355,35 +356,32 @@ public final class Util {
     }
 
     public static void fade(final View view, final boolean in, long durationMillis, boolean animate) {
-
-        if (in && view.getVisibility() == View.VISIBLE) {
-            return;
-        }
-        if (!in && view.getVisibility() == View.INVISIBLE) {
-            return;
-        }
+//
+//        if (in && view.getVisibility() == View.VISIBLE) {
+//            return;
+//        }
+//        if (!in && view.getVisibility() == View.INVISIBLE) {
+//            return;
+//        }
 
         view.clearAnimation();
+        view.setVisibility(View.VISIBLE);
+
         if (!animate) {
-            view.setAlpha(in ? 1.0F : 0.0F);
-            view.setVisibility(in ? View.VISIBLE : View.INVISIBLE);
             return;
         }
 
-        AlphaAnimation animation = in ? new AlphaAnimation(0.0F, 1.0F) : new AlphaAnimation(1.0F, 0.0F);
+        AlphaAnimation animation = in ? new AlphaAnimation(view.getAlpha(), 1.0F) : new AlphaAnimation(view.getAlpha(), 0.0F);
         animation.setDuration(durationMillis);
-        animation.setFillAfter(true);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {
-                view.setVisibility(View.VISIBLE);
             }
 
             public void onAnimationRepeat(Animation animation) {
             }
 
             public void onAnimationEnd(Animation animation) {
-                view.clearAnimation();
                 view.setVisibility(in ? View.VISIBLE : View.INVISIBLE);
             }
         });
