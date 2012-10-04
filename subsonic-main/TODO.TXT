@@ -117,23 +117,22 @@ Now requires Android 2.1 or later (API level 7)
 
 TODO IN ANDROID 3.5
 --------------------
-Must change small album art when song changes, in DownloadActivity.
-Song status
+Song status. Remove?
 HelpActivity
 VideoActivity
 Progress indicator (spinner)
 Test on Android 2 and 3.
+Delete obsolete icons.
+Make pin icons clickable.
+
 Show toast after turning screen on/off.
 Replace refresh with search button.
 Add Settings menu item in DownloadActivity.
 Add confirmation after clicking Shuffle play button.
-Check quality of large album cover art.
-Unknown album image.
-Make pin icons clickable.
-Delete obsolete icons.
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
+Widget
 Use GridView to show albums.
 
 Subphonic

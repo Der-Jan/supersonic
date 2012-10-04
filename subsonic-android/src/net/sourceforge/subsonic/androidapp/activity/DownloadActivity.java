@@ -736,16 +736,11 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         }
 
         currentPlaying = getDownloadService().getCurrentPlaying();
-        if (currentPlaying != null) {
-            MusicDirectory.Entry song = currentPlaying.getSong();
-            songTitleTextView.setText(song.getTitle());
-            artistTextView.setText(song.getArtist());
-            getImageLoader().loadImage(albumArtImageView, song, true, true);
-        } else {
-            songTitleTextView.setText(null);
-            artistTextView.setText(null);
-            getImageLoader().loadImage(albumArtImageView, null, true, false);
-        }
+        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
+        songTitleTextView.setText(song == null ? null : song.getTitle());
+        artistTextView.setText(song == null ? null : song.getArtist());
+        getImageLoader().loadImage(albumArtImageView, song, true, true);
+        getImageLoader().loadImage(toggleListButton, song, false, true);
     }
 
     private void onProgressChanged() {
