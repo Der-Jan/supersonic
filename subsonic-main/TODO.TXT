@@ -124,10 +124,10 @@ Progress indicator (spinner)
 Test on Android 2 and 3.
 Show toast after turning screen on/off.
 Replace refresh with search button.
+Add Settings menu item in DownloadActivity.
 Add confirmation after clicking Shuffle play button.
 Check quality of large album cover art.
 Unknown album image.
-Notification icon.
 Make pin icons clickable.
 Delete obsolete icons.
 Reduce size of main_header_icon
