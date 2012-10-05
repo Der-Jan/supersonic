@@ -33,6 +33,7 @@
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"/>
 
+            <!--TODO-->
             <TextView
                     android:id="@+id/download_status"
                     android:layout_width="wrap_content"
@@ -56,8 +57,7 @@
 
     </net.sourceforge.subsonic.androidapp.util.MyViewFlipper>
 
-    <include layout="@layout/download_slider"/>
-    <include layout="@layout/download_media_buttons"/>
+    <include layout="@layout/download_media_controls"/>
     <include layout="@layout/button_bar"/>
 
 </LinearLayout>

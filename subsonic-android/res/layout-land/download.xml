@@ -61,16 +61,10 @@
                      android:id="@+id/download_overlay_buttons"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
-                     android:layout_above="@+id/download_slider"/>
+                     android:layout_above="@+id/download_media_controls"/>
 
-            <include layout="@layout/download_slider"
-                     android:id="@+id/download_slider"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_above="@+id/download_media_buttons"/>
-
-            <include layout="@layout/download_media_buttons"
-                     android:id="@+id/download_media_buttons"
+            <include layout="@layout/download_media_controls"
+                     android:id="@+id/download_media_controls"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"/>
