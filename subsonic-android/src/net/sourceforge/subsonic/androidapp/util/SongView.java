@@ -67,13 +67,12 @@ public class SongView extends RelativeLayout implements Checkable {
         statusTextView = (TextView) findViewById(R.id.song_status);
         downloadButton = (ImageView) findViewById(R.id.song_download_button);
 
-//        TODO
-//        downloadButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("XXXX", "hei");
-//            }
-//        });
+        downloadButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SongView.this.showContextMenu();
+            }
+        });
         INSTANCES.put(this, null);
         int instanceCount = INSTANCES.size();
         if (instanceCount > 50) {

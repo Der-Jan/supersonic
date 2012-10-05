@@ -118,7 +118,6 @@ Now requires Android 2.1 or later (API level 7)
 TODO IN ANDROID 3.5
 --------------------
 Make pin icons clickable.
-VideoActivity
 Test on Android 2 and 3.
 
 Show toast after turning screen on/off.
