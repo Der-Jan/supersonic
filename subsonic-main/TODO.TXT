@@ -122,7 +122,6 @@ HelpActivity
 VideoActivity
 Progress indicator (spinner)
 Test on Android 2 and 3.
-Delete obsolete icons.
 Make pin icons clickable.
 
 Show toast after turning screen on/off.
