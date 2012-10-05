@@ -33,18 +33,6 @@
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"/>
 
-            <!--TODO-->
-            <TextView
-                    android:id="@+id/download_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#c0c0c0"/>
-
             <LinearLayout
                     android:id="@+id/download_visualizer_view_layout"
                     android:layout_width="fill_parent"
