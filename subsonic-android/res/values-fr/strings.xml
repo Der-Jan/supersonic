@@ -31,9 +31,9 @@
     <string name="help.back">Retour</string>
     <string name="help.close">Fermer</string>
     <string name="help.url">file:///android_asset/html/fr/index.html</string>
-    <string name="help.loading">Chargement...</string>
+    <string name="help.loading">Chargement…</string>
 
-    <string name="play_video.loading">Chargement de la vidéo...</string>
+    <string name="play_video.loading">Chargement de la vidéo…</string>
     <string name="play_video.noplugin">Veuillez installer Adobe Flash Player à partir du marché Android.</string>
 
     <string name="search.label">Recherche</string>
@@ -45,7 +45,7 @@
     <string name="search.songs">PIÈCES</string>
     <string name="search.more">Afficher plus</string>
 
-    <string name="progress.wait">Veuillez patienter...</string>
+    <string name="progress.wait">Veuillez patienter…</string>
 
     <string name="music_library.label">Bibliothèque musicale</string>
     <string name="music_library.label_offline">Musique hors-ligne</string>
@@ -56,7 +56,7 @@
     <!--<string name="select_album.n_unselected">TODO: %d tracks unselected.</string>-->
     <string name="select_album.more">Plus</string>
     <string name="select_album.offline">Hors-ligne</string>
-    <string name="select_album.searching">Recherche en cours...</string>
+    <string name="select_album.searching">Recherche en cours…</string>
     <string name="select_album.no_sdcard">Erreur: Aucune carte SD disponible.</string>
     <string name="select_album.no_network">Avis: Aucun réseau disponible.</string>
     <string name="select_album.not_licensed">Serveur sans licence. %d jours d\'essai restant.</string>
@@ -80,7 +80,7 @@
     <string name="download.menu_shuffle_notification">Playlist mélangée</string>
     <string name="download.playlist_title">Enregistrer la playlist</string>
     <string name="download.playlist_name">Saisissez le nom de la playlist:</string>
-    <string name="download.playlist_saving">Enregistrement de la playlist \"%s\"...</string>
+    <string name="download.playlist_saving">Enregistrement de la playlist \"%s\"…</string>
     <string name="download.playlist_done">Playlist enregistrée avec succès.</string>
     <string name="download.playlist_error">Échec de l\'enregistrement de la playlist, veuillez réessayer plus tard.</string>
 
@@ -103,7 +103,7 @@
     <string name="settings.cache_title">Cache musicale</string>
     <string name="settings.preload">Pièces à pré-charger</string>
     <string name="settings.cache_size">Taille de la cache</string>
-    <string name="settings.testing_connection">Connexion en cours de test...</string>
+    <string name="settings.testing_connection">Connexion en cours de test…</string>
     <string name="settings.testing_ok">Connexion correcte</string>
     <string name="settings.testing_unlicensed">Connection correcte. Serveur sans licence.</string>
     <string name="settings.connection_failure">Connection échouée.</string>
@@ -154,7 +154,7 @@
 
     <string name="music_service.retry">Une erreur de réseau s\'est produite. Essai %1$d de %2$d.</string>
 
-    <string name="background_task.wait">Veuillez patienter...</string>
+    <string name="background_task.wait">Veuillez patienter…</string>
     <string name="background_task.loading">Chargement.</string>
     <string name="background_task.no_network">Cette application requiert un accès au réseau. Veuillez activer le Wi-Fi ou le réseau mobile.</string>
     <string name="background_task.network_error">Une erreur réseau est survenue. Veuillez vérifier l\'adresse du serveur ou réessayer plus tard.</string>

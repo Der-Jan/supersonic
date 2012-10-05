@@ -119,7 +119,6 @@ TODO IN ANDROID 3.5
 --------------------
 HelpActivity
 VideoActivity
-Progress indicator (spinner)
 Test on Android 2 and 3.
 Make pin icons clickable.
 
