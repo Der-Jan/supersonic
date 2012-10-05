@@ -740,7 +740,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         songTitleTextView.setText(song == null ? null : song.getTitle());
         artistTextView.setText(song == null ? null : song.getArtist());
         getImageLoader().loadImage(albumArtImageView, song, true, true);
-        getImageLoader().loadImage(toggleListButton, song, false, true);
+        if (playlistFlipper.getDisplayedChild() == 1) {
+            getImageLoader().loadImage(toggleListButton, song, false, true);
+        }
     }
 
     private void onProgressChanged() {
