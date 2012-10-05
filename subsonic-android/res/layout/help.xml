@@ -6,11 +6,9 @@
     <LinearLayout android:id="@+id/help_buttons"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:layout_weight="0"
                   android:layout_alignParentBottom="true"
                   android:padding="4dip"
-                  android:gravity="center_horizontal"
-                  android:background="#ffcccccc">
+                  android:gravity="center_horizontal">
 
         <Button android:id="@+id/help_back"
                 android:text="@string/help.back"
@@ -29,14 +27,12 @@
                 android:paddingRight="25dip"/>
     </LinearLayout>
 
-
     <WebView
             android:id="@+id/help_contents"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/help_buttons"
-            android:layout_weight="1"
             android:fadingEdge="vertical"
             android:fadingEdgeLength="12dip"/>
 
-  </RelativeLayout>
+</RelativeLayout>

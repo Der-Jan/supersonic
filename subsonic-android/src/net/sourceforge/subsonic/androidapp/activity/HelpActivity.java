@@ -20,6 +20,7 @@
 package net.sourceforge.subsonic.androidapp.activity;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -100,6 +101,12 @@ public final class HelpActivity extends Activity {
             setProgressBarIndeterminateVisibility(true);
             setTitle(getResources().getString(R.string.help_loading));
             super.onLoadResource(webView, url);
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            backButton.setEnabled(view.canGoBack());
         }
 
         @Override
