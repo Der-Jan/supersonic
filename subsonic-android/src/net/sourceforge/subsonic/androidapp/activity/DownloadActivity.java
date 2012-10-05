@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.androidapp.activity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -555,15 +556,12 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             DownloadFile downloadFile = (DownloadFile) playlistView.getItemAtPosition(info.position);
 
             MenuInflater inflater = getMenuInflater();
-    		inflater.inflate(R.menu.nowplaying_context, menu);
+            inflater.inflate(R.menu.nowplaying_context, menu);
 
-            if (downloadFile.getSong().getParent() == null) {
-            	menu.findItem(R.id.menu_show_album).setVisible(false);
-            }
-            if (Util.isOffline(this)) {
-                menu.findItem(R.id.menu_lyrics).setVisible(false);
-                menu.findItem(R.id.menu_save_playlist).setVisible(false);
-            }
+            menu.findItem(R.id.menu_pin).setVisible(downloadFile.isCompleteFileAvailable() && !downloadFile.isSaved());
+            menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
+            menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
         }
     }
 
@@ -581,6 +579,13 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
     private boolean menuItemSelected(int menuItemId, DownloadFile song) {
         switch (menuItemId) {
+            case R.id.menu_pin:
+                // TODO: Create separate pin method?
+                getDownloadService().download(Arrays.asList(song.getSong()), true, false, false);
+                return true;
+            case R.id.menu_unpin:
+                getDownloadService().unpin(Arrays.asList(song.getSong()));
+                return true;
             case R.id.menu_show_album:
                 Intent intent = new Intent(this, SelectAlbumActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, song.getSong().getParent());
