@@ -120,8 +120,9 @@ TODO IN ANDROID 3.5
 Make pin icons clickable.
   Fix pinning in Downloadactivity.
   Add option to delete file. (Rename to "Remove from playlist").
-
+Animation bug when first switching to Player tab.
 Test on Android 2 and 3.
+  Notification icon too big and bright.
 
 Show toast after turning screen on/off.
 Replace refresh with search button.
