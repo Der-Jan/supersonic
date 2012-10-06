@@ -377,7 +377,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         };
         executorService.scheduleWithFixedDelay(runnable, 0L, 1000L, TimeUnit.MILLISECONDS);
 
-        scheduleHideControls();
+        setControlsVisible(true);
 
         DownloadService downloadService = getDownloadService();
         if (downloadService == null || downloadService.getCurrentPlaying() == null) {
