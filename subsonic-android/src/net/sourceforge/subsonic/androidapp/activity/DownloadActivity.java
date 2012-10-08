@@ -558,8 +558,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.nowplaying_context, menu);
 
-            menu.findItem(R.id.menu_pin).setVisible(downloadFile.isCompleteFileAvailable() && !downloadFile.isSaved());
+            menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.menu_remove).setVisible(true);
             menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
             menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
         }
@@ -580,11 +581,14 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private boolean menuItemSelected(int menuItemId, DownloadFile song) {
         switch (menuItemId) {
             case R.id.menu_pin:
-                // TODO: Create separate pin method?
-                getDownloadService().download(Arrays.asList(song.getSong()), true, false, false);
+                getDownloadService().pin(Arrays.asList(song.getSong()));
                 return true;
             case R.id.menu_unpin:
                 getDownloadService().unpin(Arrays.asList(song.getSong()));
+                return true;
+            case R.id.menu_remove:
+                getDownloadService().remove(song);
+                onDownloadListChanged();
                 return true;
             case R.id.menu_show_album:
                 Intent intent = new Intent(this, SelectAlbumActivity.class);
@@ -597,10 +601,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ARTIST, song.getSong().getArtist());
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_TITLE, song.getSong().getTitle());
                 Util.startActivityWithoutTransition(this, intent);
-                return true;
-            case R.id.menu_remove:
-                getDownloadService().remove(song);
-                onDownloadListChanged();
                 return true;
             case R.id.menu_remove_all:
                 getDownloadService().setShufflePlayEnabled(false);

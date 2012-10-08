@@ -242,6 +242,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
+            DownloadFile downloadFile = getDownloadService().forSong(entry);
+            menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
         }
     }
 
@@ -269,6 +272,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 break;
             case R.id.song_menu_play_last:
                 getDownloadService().download(songs, false, false, false);
+                break;
+            case R.id.song_menu_pin:
+                getDownloadService().pin(songs);
+                break;
+            case R.id.song_menu_unpin:
+                getDownloadService().unpin(songs);
                 break;
             default:
                 return super.onContextItemSelected(menuItem);

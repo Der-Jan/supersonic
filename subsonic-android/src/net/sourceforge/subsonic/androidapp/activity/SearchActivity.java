@@ -41,6 +41,7 @@ import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.SearchCritera;
 import net.sourceforge.subsonic.androidapp.domain.SearchResult;
+import net.sourceforge.subsonic.androidapp.service.DownloadFile;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
@@ -193,8 +194,13 @@ public class SearchActivity extends SubsonicTabActivity {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
         } else if (isSong) {
+            MusicDirectory.Entry entry = (MusicDirectory.Entry) list.getItemAtPosition(info.position);
+            DownloadFile downloadFile = getDownloadService().forSong(entry);
+
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
+            menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
         }
     }
 
@@ -225,6 +231,12 @@ public class SearchActivity extends SubsonicTabActivity {
                 break;
             case R.id.song_menu_play_last:
                 onSongSelected(entry, false, true, false, false);
+                break;
+            case R.id.song_menu_pin:
+                getDownloadService().pin(Arrays.asList(entry));
+                break;
+            case R.id.song_menu_unpin:
+                getDownloadService().unpin(Arrays.asList(entry));
                 break;
             default:
                 return super.onContextItemSelected(menuItem);
