@@ -627,9 +627,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.menu_search:
-                intent = new Intent(this, SearchActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
-                Util.startActivityWithoutTransition(this, intent);
+                onSearchRequested();
                 return true;
             default:
                 return false;

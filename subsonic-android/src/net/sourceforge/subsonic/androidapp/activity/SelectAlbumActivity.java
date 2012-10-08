@@ -188,9 +188,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         actionSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectAlbumActivity.this, SearchActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
-                Util.startActivityWithoutTransition(SelectAlbumActivity.this, intent);
+                onSearchRequested();
             }
         });
 

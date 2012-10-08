@@ -165,7 +165,6 @@ public class SearchActivity extends SubsonicTabActivity {
         super.onNewIntent(intent);
         String query = intent.getStringExtra(Constants.INTENT_EXTRA_NAME_QUERY);
         boolean autoplay = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
-        boolean requestsearch = intent.getBooleanExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, false);
 
         if (query != null) {
             mergeAdapter = new MergeAdapter();
@@ -173,8 +172,6 @@ public class SearchActivity extends SubsonicTabActivity {
             search(query, autoplay);
         } else {
             populateList();
-            if (requestsearch)
-                onSearchRequested();
         }
     }
 
