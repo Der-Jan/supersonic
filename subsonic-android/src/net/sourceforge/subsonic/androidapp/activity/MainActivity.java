@@ -21,14 +21,8 @@ package net.sourceforge.subsonic.androidapp.activity;
 
 import java.util.Arrays;
 
-import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.service.DownloadService;
-import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
-import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
-import net.sourceforge.subsonic.androidapp.util.Util;
-import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +35,14 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.service.DownloadService;
+import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
+import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.Util;
 
 public class MainActivity extends SubsonicTabActivity {
 
@@ -122,9 +124,7 @@ public class MainActivity extends SubsonicTabActivity {
         actionShuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
-                Util.startActivityWithoutTransition(MainActivity.this, intent);
+                startShufflePlay();
             }
         });
 
@@ -148,6 +148,27 @@ public class MainActivity extends SubsonicTabActivity {
         });
 
         showInfoDialog();
+    }
+
+    private void startShufflePlay() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.main_shuffle_confirm)
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
+                        intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
+                        Util.startActivityWithoutTransition(MainActivity.this, intent);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void loadSettings() {

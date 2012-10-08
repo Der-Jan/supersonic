@@ -128,7 +128,7 @@ Test on Android 2 and 3.
 
 Test: Show in song status when playing remote.
 Test: Show toast after turning screen on.
-Add confirmation after clicking Shuffle play button.
+Test: Add confirmation after clicking Shuffle play button.
 Pause when disconnected from Bluetooth
 Reduce size of main_header_icon
 Dedicated offline button
