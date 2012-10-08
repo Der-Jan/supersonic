@@ -127,7 +127,7 @@ Test on Android 2 and 3.
   Notification icon too big and bright.
 
 Test: Show in song status when playing remote.
-Show toast after turning screen on/off.
+Test: Show toast after turning screen on.
 Add confirmation after clicking Shuffle play button.
 Pause when disconnected from Bluetooth
 Reduce size of main_header_icon

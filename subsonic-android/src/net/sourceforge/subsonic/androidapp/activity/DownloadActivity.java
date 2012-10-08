@@ -614,7 +614,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             	} else {
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             		getDownloadService().setKeepScreenOn(true);
-            	}
+                    Util.toast(this, R.string.download_screen_on);
+                }
                 return true;
             case R.id.menu_shuffle:
                 getDownloadService().shuffle();
