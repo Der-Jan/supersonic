@@ -15,7 +15,7 @@
             android:paddingLeft="3dip"/>
 
     <TextView
-            android:text="This iskajshdf askkjshdskjdfkajs"
+            android:text="Foo Bar"
             android:id="@+id/song_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,10 +41,11 @@
             android:paddingTop="10dip"
             android:paddingRight="6dip"
             android:paddingLeft="6dip"
+            android:background="@drawable/media_button"
             android:contentDescription="@null"/>
 
     <TextView
-            android:text="This is zonk"
+            android:text="Bar Foo"
             android:id="@+id/song_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
