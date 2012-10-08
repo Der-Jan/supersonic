@@ -55,6 +55,8 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -821,5 +823,18 @@ public final class Util {
             else if (group.getChildAt(i) instanceof ViewGroup)
                 findNotificationTextColors((ViewGroup) group.getChildAt(i), title, content);
         }
+    }
+
+    public static WifiManager.WifiLock createWifiLock(Context context, String tag) {
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
+        int lockType = WifiManager.WIFI_MODE_FULL;
+
+        // Use WIFI_MODE_FULL_HIGH_PERF if API level 12 or higher.
+        if (Build.VERSION.SDK_INT >= 12) {
+            lockType = 3; // WifiManager.WIFI_MODE_FULL_HIGH_PERF
+        }
+
+        return wm.createWifiLock(lockType, tag);
     }
 }

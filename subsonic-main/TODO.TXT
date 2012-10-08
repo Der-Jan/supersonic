@@ -118,6 +118,7 @@ DONE IN ANDROID 3.5
 Now requires Android 2.1 or later (API level 7)
 UI overhaul
 Detect Bluetooth connect/disconnect in ICS.
+Wifi lock.
 
 TODO IN ANDROID 3.5
 --------------------
@@ -128,20 +129,12 @@ Make pin icons clickable.
 Test on Android 2 and 3.
   Notification icon too big and bright.
 
-Test: Show in song status when playing remote.
-Test: Show toast after turning screen on.
-Test: Add confirmation after clicking Shuffle play button.
-Pause when disconnected from Bluetooth
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
 Widget
 Use GridView to show albums.
 Display song info on Bluetooth displays. AVRCP
-Wifi lock.
-  In DownloadFile
-  Use WifiManager.WIFI_MODE_FULL_HIGH_PERF if API level >= 12
-
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864

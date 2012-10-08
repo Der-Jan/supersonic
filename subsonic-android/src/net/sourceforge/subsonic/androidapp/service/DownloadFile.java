@@ -24,18 +24,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
+import net.sourceforge.subsonic.androidapp.util.CacheCleaner;
 import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.Util;
-import net.sourceforge.subsonic.androidapp.util.CacheCleaner;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 
 /**
  * @author Sindre Mehus
@@ -194,14 +195,18 @@ public class DownloadFile {
             InputStream in = null;
             FileOutputStream out = null;
             PowerManager.WakeLock wakeLock = null;
+            WifiManager.WifiLock wifiLock = null;
             try {
-
                 if (Util.isScreenLitOnDownload(context)) {
                     PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
                     wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, toString());
                     wakeLock.acquire();
                     Log.i(TAG, "Acquired wake lock " + wakeLock);
                 }
+
+                wifiLock = Util.createWifiLock(context, toString());
+                wifiLock.acquire();
+                Log.i(TAG, "Acquired wifi lock " + wifiLock);
 
                 if (saveFile.exists()) {
                     Log.i(TAG, saveFile + " already exists. Skipping.");
@@ -257,10 +262,16 @@ public class DownloadFile {
             } finally {
                 Util.close(in);
                 Util.close(out);
+
                 if (wakeLock != null) {
                     wakeLock.release();
                     Log.i(TAG, "Released wake lock " + wakeLock);
                 }
+                if (wifiLock != null) {
+                    wifiLock.release();
+                    Log.i(TAG, "Released wifi lock " + wifiLock);
+                }
+
                 new CacheCleaner(context, DownloadServiceImpl.getInstance()).clean();
             }
         }
