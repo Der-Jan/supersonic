@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16"/>
 
@@ -96,6 +97,7 @@
         <receiver android:name="net.sourceforge.subsonic.androidapp.receiver.BluetoothIntentReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.a2dp.action.SINK_STATE_CHANGED"/>
+                <action android:name="android.bluetooth.headset.profile.action.CONNECTION_STATE_CHANGED"/> <!-- API Level 11 -->
             </intent-filter>
         </receiver>
 

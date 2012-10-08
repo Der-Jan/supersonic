@@ -116,6 +116,8 @@ Linux locale issue
 DONE IN ANDROID 3.5
 --------------------
 Now requires Android 2.1 or later (API level 7)
+UI overhaul
+Detect Bluetooth connect/disconnect in ICS.
 
 TODO IN ANDROID 3.5
 --------------------
