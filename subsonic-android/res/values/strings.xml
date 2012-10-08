@@ -80,6 +80,7 @@
     <string name="download.playerstate_downloading">Downloading - %s</string>
     <string name="download.playerstate_buffering">Buffering</string>
     <string name="download.playerstate_playing_shuffle">Playing shuffle</string>
+    <string name="download.playerstate_playing_remote">Playing remote</string>
     <string name="download.menu_pin">Pin</string>
     <string name="download.menu_unpin">Unpin</string>
     <string name="download.menu_show_album">Show album</string>
