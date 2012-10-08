@@ -623,6 +623,14 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             case R.id.menu_save_playlist:
                 showDialog(DIALOG_SAVE_PLAYLIST);
                 return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.menu_search:
+                intent = new Intent(this, SearchActivity.class);
+                intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
+                Util.startActivityWithoutTransition(this, intent);
+                return true;
             default:
                 return false;
         }

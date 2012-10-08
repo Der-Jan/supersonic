@@ -123,10 +123,9 @@ Make pin icons clickable.
   Review album/artist pinning.
 Test on Android 2 and 3.
   Notification icon too big and bright.
+Simplify search - don't go to SearchActivity.
 
 Show toast after turning screen on/off.
-Replace refresh with search button.
-Add Settings menu item in DownloadActivity.
 Add confirmation after clicking Shuffle play button.
 Reduce size of main_header_icon
 Dedicated offline button

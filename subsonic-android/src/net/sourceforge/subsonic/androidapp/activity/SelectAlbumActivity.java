@@ -182,13 +182,15 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
         });
 
-        // Button 2: refresh
-        ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_2);
-        refreshButton.setImageResource(R.drawable.action_refresh);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        // Button 2: search
+        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        actionSearchButton.setImageResource(R.drawable.action_search);
+        actionSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refresh();
+                Intent intent = new Intent(SelectAlbumActivity.this, SearchActivity.class);
+                intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
+                Util.startActivityWithoutTransition(SelectAlbumActivity.this, intent);
             }
         });
 
@@ -220,13 +222,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             download(false, false, true, false);
             selectAll(false, false);
         }
-    }
-
-    private void refresh() {
-        finish();
-        Intent intent = getIntent();
-        intent.putExtra(Constants.INTENT_EXTRA_NAME_REFRESH, true);
-        Util.startActivityWithoutTransition(this, intent);
     }
 
     @Override

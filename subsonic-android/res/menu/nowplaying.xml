@@ -13,4 +13,10 @@
     <item android:id="@+id/menu_screen_on_off"
           android:title="@string/download.menu_screen_on"/>
 
+    <item android:id="@+id/menu_search"
+          android:title="@string/search.title"/>
+
+    <item android:id="@+id/menu_settings"
+          android:title="@string/menu.settings"/>
+
 </menu>
