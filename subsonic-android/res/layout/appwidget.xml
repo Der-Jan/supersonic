@@ -6,7 +6,6 @@
               android:gravity="top"
               android:orientation="vertical"
               android:background="@drawable/appwidget_bg"
-              android:padding="@dimen/widget_padding"
               android:baselineAligned="false">
 
     <LinearLayout
@@ -21,6 +20,7 @@
                 android:layout_height="@dimen/widget_album_art_size"
                 android:focusable="true">
             <ImageView android:id="@+id/widget_albumart"
+                       android:src="@drawable/appwidget_art_unknown"
                        android:layout_width="@dimen/widget_album_art_size"
                        android:layout_height="@dimen/widget_album_art_size"
                        android:scaleType="centerInside"
@@ -71,7 +71,7 @@
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textStyle="bold"
                 android:textColor="@color/appwidget_text_primary"
-                android:ellipsize="none"
+                android:ellipsize="end"
                 android:singleLine="true" />
 
         <TextView
@@ -81,6 +81,7 @@
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textStyle="bold"
                 android:textColor="@color/appwidget_text_secondary"
+                android:visibility="gone"
                 android:ellipsize="none"
                 android:paddingLeft="5.0dip"
                 android:paddingRight="5.0dip"
@@ -95,16 +96,6 @@
                 android:textColor="@color/appwidget_text_secondary"
                 android:ellipsize="none"
                 android:singleLine="true"/>
-
-        <TextView
-                android:id="@+id/widget_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="@color/appwidget_text_primary"
-                android:ellipsize="none"
-                android:paddingLeft="10.0dip"
-                android:singleLine="true" />
 
     </LinearLayout>
 

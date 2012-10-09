@@ -41,7 +41,7 @@ import net.sourceforge.subsonic.androidapp.util.FileUtil;
 
 /**
  * Simple widget to show currently playing album art along
- * with play/pause and next track buttons.
+ * with play/pause and next/prev track buttons.
  * <p/>
  * Based on source code from the stock Android Music app.
  *
@@ -116,30 +116,30 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         MusicDirectory.Entry currentPlaying = service.getCurrentPlaying() == null ? null : service.getCurrentPlaying().getSong();
         String title = currentPlaying == null ? null : currentPlaying.getTitle();
         CharSequence artist = currentPlaying == null ? null : currentPlaying.getArtist();
-        CharSequence errorState = null;
+        CharSequence errorText = null;
 
         // Show error message?
         String status = Environment.getExternalStorageState();
-        if (status.equals(Environment.MEDIA_SHARED) ||
-                status.equals(Environment.MEDIA_UNMOUNTED)) {
-            errorState = res.getText(R.string.widget_sdcard_busy);
+        if (status.equals(Environment.MEDIA_SHARED) || status.equals(Environment.MEDIA_UNMOUNTED)) {
+            errorText = res.getText(R.string.widget_sdcard_busy);
         } else if (status.equals(Environment.MEDIA_REMOVED)) {
-            errorState = res.getText(R.string.widget_sdcard_missing);
+            errorText = res.getText(R.string.widget_sdcard_missing);
         } else if (currentPlaying == null) {
-            errorState = res.getText(R.string.widget_initial_text);
+            errorText = res.getText(R.string.widget_initial_text);
         }
 
-        if (errorState != null) {
+        if (errorText != null) {
             // Show error state to user
             views.setTextViewText(R.id.widget_title, null);
-            views.setTextViewText(R.id.widget_artist, errorState);
+            views.setTextViewText(R.id.widget_artist, errorText);
+            views.setViewVisibility(R.id.widget_text_separator, View.GONE);
             views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_default);
         } else {
             // No error, so show normal titles
             views.setTextViewText(R.id.widget_title, title);
             views.setTextViewText(R.id.widget_artist, artist);
+            views.setViewVisibility(R.id.widget_text_separator, title != null && artist != null ? View.VISIBLE : View.GONE);
         }
-        // TODO: Separator
 
         // Set correct visibility for pause and play buttons.
         views.setViewVisibility(R.id.widget_play, playing ? View.GONE : View.VISIBLE);
@@ -154,7 +154,6 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
                 // Set default cover art
                 views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_unknown);
             } else {
-//                bitmap = getRoundedCornerBitmap(bitmap);
                 views.setImageViewBitmap(R.id.widget_albumart, bitmap);
             }
         } catch (Exception x) {
@@ -180,7 +179,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, playerActive ? DownloadActivity.class : MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_albumart, pendingIntent);
-//        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent);
+//        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent); // TODO
 
         // Emulate media button clicks.
         intent = new Intent("1");
