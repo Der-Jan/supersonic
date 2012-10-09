@@ -126,15 +126,22 @@ Make pin icons clickable.
   Fix pinning in Downloadactivity.
   Add option to delete file. (Rename to "Remove from playlist").
   Review album/artist pinning.
+Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
+
+Widget
+  preview image
+  http://developer.android.com/guide/practices/ui_guidelines/widget_design.html
+  http://developer.android.com/guide/topics/appwidgets/index.html#AddingMargins
+  Padding in 4.0 vs earlier
 
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
 Widget
 Use GridView to show albums.
-Display song info on Bluetooth displays. AVRCP
+Album header.
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864

@@ -36,6 +36,7 @@ import android.graphics.RectF;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RemoteViews;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.activity.DownloadActivity;
@@ -78,7 +79,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         final Resources res = context.getResources();
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget);
 
-        views.setTextViewText(R.id.artist, res.getText(R.string.widget_initial_text));
+        views.setTextViewText(R.id.widget_artist, res.getText(R.string.widget_initial_text));
 
         linkButtons(context, views, false);
         pushUpdate(context, appWidgetIds, views);
@@ -137,21 +138,19 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
         if (errorState != null) {
             // Show error state to user
-        	views.setTextViewText(R.id.title,null);
-            views.setTextViewText(R.id.artist, errorState);
-            views.setImageViewResource(R.id.appwidget_coverart, R.drawable.appwidget_art_default);
+        	views.setTextViewText(R.id.widget_title,null);
+            views.setTextViewText(R.id.widget_artist, errorState);
+            views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_default);
         } else {
             // No error, so show normal titles
-            views.setTextViewText(R.id.title, title);
-            views.setTextViewText(R.id.artist, artist);
+            views.setTextViewText(R.id.widget_title, title);
+            views.setTextViewText(R.id.widget_artist, artist);
         }
+        // TODO: Separator
 
-        // Set correct drawable for pause state
-        if (playing) {
-            views.setImageViewResource(R.id.control_play, R.drawable.ic_appwidget_music_pause);
-        } else {
-            views.setImageViewResource(R.id.control_play, R.drawable.ic_appwidget_music_play);
-        }
+        // Set correct visibility for pause and play buttons.
+        views.setViewVisibility(R.id.widget_play, playing ? View.GONE : View.VISIBLE);
+        views.setViewVisibility(R.id.widget_pause, playing ? View.VISIBLE : View.GONE);
 
         // Set the cover art
         try {
@@ -160,46 +159,20 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
             if (bitmap == null) {
                 // Set default cover art
-                views.setImageViewResource(R.id.appwidget_coverart, R.drawable.appwidget_art_unknown);
+                views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_unknown);
             } else {
-                bitmap = getRoundedCornerBitmap(bitmap);
-                views.setImageViewBitmap(R.id.appwidget_coverart, bitmap);
+//                bitmap = getRoundedCornerBitmap(bitmap);
+                views.setImageViewBitmap(R.id.widget_albumart, bitmap);
             }
         } catch (Exception x) {
             Log.e(TAG, "Failed to load cover art", x);
-            views.setImageViewResource(R.id.appwidget_coverart, R.drawable.appwidget_art_unknown);
+            views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_unknown);
         }
 
         // Link actions buttons to intents
         linkButtons(context, views, currentPlaying != null);
 
         pushUpdate(context, appWidgetIds, views);
-    }
-    
-    /**
-     * Round the corners of a bitmap for the cover art image
-     */
-    private static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final float roundPx = 10;
-
-        // Add extra width to the rect so the right side wont be rounded.
-        final Rect rect = new Rect(0, 0, bitmap.getWidth() + (int) roundPx, bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
     }
 
     /**
@@ -213,26 +186,27 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
         Intent intent = new Intent(context, playerActive ? DownloadActivity.class : MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.appwidget_coverart, pendingIntent);
-        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_albumart, pendingIntent);
+//        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent);
         
         // Emulate media button clicks.
         intent = new Intent("1");
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
         pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.control_play, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_play, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_pause, pendingIntent);
 
         intent = new Intent("2");  // Use a unique action name to ensure a different PendingIntent to be created.
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
         pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.control_next, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_next, pendingIntent);
         
         intent = new Intent("3");  // Use a unique action name to ensure a different PendingIntent to be created.
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PREVIOUS));
         pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.control_previous, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_prev, pendingIntent);
     }
 }
