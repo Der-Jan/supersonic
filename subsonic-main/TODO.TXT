@@ -122,10 +122,8 @@ Wifi lock.
 
 TODO IN ANDROID 3.5
 --------------------
-Make pin icons clickable.
-  Fix pinning in Downloadactivity.
-  Add option to delete file. (Rename to "Remove from playlist").
-  Review album/artist pinning.
+Add option to delete file. (Rename to "Remove from playlist").
+Review album/artist pinning.
 Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.

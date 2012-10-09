@@ -371,7 +371,14 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
     @Override
     public synchronized void pin(List<MusicDirectory.Entry> songs) {
-        Util.toast(this, "Not implemented!");
+        for (MusicDirectory.Entry song : songs) {
+            DownloadFile downloadFile = forSong(song);
+            downloadFile.pin();
+            if (!downloadFile.isWorkDone() && !downloadList.contains(downloadFile)) {
+                downloadList.add(downloadFile);
+                revision++;
+            }
+        }
     }
 
     @Override
