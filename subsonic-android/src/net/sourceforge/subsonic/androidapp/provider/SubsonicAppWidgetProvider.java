@@ -133,7 +133,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_title, null);
             views.setTextViewText(R.id.widget_artist, errorText);
             views.setViewVisibility(R.id.widget_text_separator, View.GONE);
-            views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_default);
+            views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_unknown);
         } else {
             // No error, so show normal titles
             views.setTextViewText(R.id.widget_title, title);
@@ -147,7 +147,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
         // Set the cover art
         try {
-            int size = context.getResources().getDrawable(R.drawable.appwidget_art_default).getIntrinsicHeight();
+            int size = context.getResources().getDimensionPixelSize(R.dimen.widget_album_art_size);
             Bitmap bitmap = currentPlaying == null ? null : FileUtil.getAlbumArtBitmap(context, currentPlaying, size);
 
             if (bitmap == null) {
@@ -179,7 +179,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, playerActive ? DownloadActivity.class : MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_albumart, pendingIntent);
-//        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent); // TODO
+        views.setOnClickPendingIntent(R.id.widget_text_layout, pendingIntent);
 
         // Emulate media button clicks.
         intent = new Intent("1");

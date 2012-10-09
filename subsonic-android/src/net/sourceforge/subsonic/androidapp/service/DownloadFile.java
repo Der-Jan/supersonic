@@ -150,8 +150,18 @@ public class DownloadFile {
     }
 
     public void unpin() {
+        // TODO: Does it work if currently playing?
         if (saveFile.exists()) {
             saveFile.renameTo(completeFile);
+        }
+    }
+
+    public void pin() {
+        // TODO: Does it work if currently playing?
+        if (completeFile.exists()) {
+            completeFile.renameTo(saveFile);
+        } else {
+            // TODO
         }
     }
 
