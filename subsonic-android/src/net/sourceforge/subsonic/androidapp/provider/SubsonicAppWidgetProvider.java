@@ -26,13 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -128,7 +121,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         // Show error message?
         String status = Environment.getExternalStorageState();
         if (status.equals(Environment.MEDIA_SHARED) ||
-            status.equals(Environment.MEDIA_UNMOUNTED)) {
+                status.equals(Environment.MEDIA_UNMOUNTED)) {
             errorState = res.getText(R.string.widget_sdcard_busy);
         } else if (status.equals(Environment.MEDIA_REMOVED)) {
             errorState = res.getText(R.string.widget_sdcard_missing);
@@ -138,7 +131,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
         if (errorState != null) {
             // Show error state to user
-        	views.setTextViewText(R.id.widget_title,null);
+            views.setTextViewText(R.id.widget_title, null);
             views.setTextViewText(R.id.widget_artist, errorState);
             views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_default);
         } else {
@@ -188,7 +181,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_albumart, pendingIntent);
 //        views.setOnClickPendingIntent(R.id.appwidget_top, pendingIntent);
-        
+
         // Emulate media button clicks.
         intent = new Intent("1");
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
@@ -202,7 +195,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
         pendingIntent = PendingIntent.getService(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_next, pendingIntent);
-        
+
         intent = new Intent("3");  // Use a unique action name to ensure a different PendingIntent to be created.
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PREVIOUS));
