@@ -55,6 +55,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private static final String TAG = SelectAlbumActivity.class.getSimpleName();
 
     private ListView entryList;
+    private ViewGroup header;
     private ViewGroup footer;
     private View emptyView;
     private Button selectButton;
@@ -78,6 +79,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
         entryList = (ListView) findViewById(R.id.select_album_entries);
 
+        header = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
         footer = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_footer, entryList, false);
         entryList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -203,7 +205,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         });
 
         // TODO
-        Util.createAd(this, footer);
+        Util.createAd(this, header);
     }
 
     private void playAll() {
@@ -561,6 +563,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
             if (songCount > 0) {
                 getImageLoader().loadImage(coverArtView, entries.get(0), false, true);
+                entryList.addHeaderView(header);
                 entryList.addFooterView(footer);
                 selectButton.setVisibility(View.VISIBLE);
                 playNowButton.setVisibility(View.VISIBLE);
