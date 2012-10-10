@@ -137,14 +137,14 @@ Test on Android 2 and 3.
   Notification icon too big and bright.
 Ad support, in-app purchase. (inneractive?)
   https://developers.google.com/mobile-ads-sdk/docs/
-  Don't show more often than every XX seconds.
+  Don't show more often than every 60 seconds.
+  Consider ad placement. Also on main page?
 Widget
   preview image
-Smaller header icon
 Album header.
   Crashes when clicked.
-
 Reduce size of main_header_icon
+
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
 Widget

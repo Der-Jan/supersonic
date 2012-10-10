@@ -741,7 +741,16 @@ public final class Util {
         }
     }
 
+    private static long timeOfLastAd = 0L;
+    private final static long AD_INTERVAL_MILLIS = 10000; // TODO: Change to 1 minute.
+
     public static void createAd(Activity activity, ViewGroup parent) {
+        long now = System.currentTimeMillis();
+        if (now - timeOfLastAd < AD_INTERVAL_MILLIS) {
+            return;
+        }
+
+        timeOfLastAd = now;
         double random = Math.random();
         if (random < 0.25) {
             createGoogleAd(activity, parent, AdSize.BANNER);
