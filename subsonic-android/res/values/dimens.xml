@@ -6,4 +6,5 @@
     <dimen name="widget_button_size">48dip</dimen>
     <dimen name="widget_button_padding">8dip</dimen>
     <dimen name="widget_text_padding_top">5dip</dimen>
+    <dimen name="widget_margin">8dip</dimen>
 </resources>
