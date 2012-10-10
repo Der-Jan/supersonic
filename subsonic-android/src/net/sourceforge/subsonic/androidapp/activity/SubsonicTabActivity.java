@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -126,6 +127,11 @@ public class SubsonicTabActivity extends Activity {
         }
 
         updateButtonVisibility();
+
+        View adView = findViewById(R.id.ad);
+        if (adView != null) {
+            Util.createAd(this, (ViewGroup) adView);
+        }
     }
 
     @Override

@@ -172,8 +172,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             getMusicDirectory(id, name);
         }
 
-        Util.createAd(SelectAlbumActivity.this, (ViewGroup) findViewById(R.id.select_album_ad));
-
         // Button 1: play all
         playAllButton = (ImageButton) findViewById(R.id.action_button_1);
         playAllButton.setImageResource(R.drawable.action_play_all);
