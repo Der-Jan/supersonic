@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -54,7 +55,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private static final String TAG = SelectAlbumActivity.class.getSimpleName();
 
     private ListView entryList;
-    private View footer;
+    private ViewGroup footer;
     private View emptyView;
     private Button selectButton;
     private Button playNowButton;
@@ -77,7 +78,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
         entryList = (ListView) findViewById(R.id.select_album_entries);
 
-        footer = LayoutInflater.from(this).inflate(R.layout.select_album_footer, entryList, false);
+        footer = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_footer, entryList, false);
         entryList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -200,6 +201,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 new PopupMenuHelper().showMenu(SelectAlbumActivity.this, overflowButton, R.menu.main);
             }
         });
+
+        // TODO
+        Util.createAd(this, footer);
     }
 
     private void playAll() {

@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <!--For location-based apps.-->
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16"/>
 
@@ -84,6 +85,11 @@
             </intent-filter>
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
+
+        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView"/>
+
+        <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <service android:name="net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl"
                  android:label="Subsonic Download Service"/>

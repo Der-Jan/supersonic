@@ -37,6 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.HttpEntity;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+import com.inneractive.api.ads.InneractiveAd;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -735,6 +740,28 @@ public final class Util {
             Log.i(TAG, "Service.stopForeground() not available. Using work-around.");
         }
     }
+
+    public static void createAd(Activity activity, ViewGroup parent) {
+//        createInnerActiveAd(activity, parent);
+        createGoogleAd(activity, parent);
+    }
+
+    private static void createInnerActiveAd(Activity activity, ViewGroup parent) {
+        InneractiveAd banner = new InneractiveAd(activity, "Subsonic_Subsonic_Android", InneractiveAd.IaAdType.Banner, 90);
+        parent.addView(banner);
+    }
+
+    private static void createGoogleAd(Activity activity, ViewGroup parent) {
+        // Use BANNER or SMART_BANNER?
+        AdView adView = new AdView(activity, AdSize.SMART_BANNER, "a150756282623f0");
+        parent.addView(adView);
+        AdRequest adRequest = new AdRequest();
+//        adRequest.setLocation(location); // TODO: No
+        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+        adRequest.addTestDevice("A99C330D17021F035126ACCC93E60E54"); // TODO: Remove
+//        adRequest.addKeywords() // TODO
+        adView.loadAd(adRequest);}
+
 
     /**
      * <p>Broadcasts the given song info as the new song being played.</p>
