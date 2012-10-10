@@ -742,7 +742,7 @@ public final class Util {
     }
 
     private static long timeOfLastAd = System.currentTimeMillis();
-    private final static long AD_INTERVAL_MILLIS = 10000; // TODO: Change to 1 minute.
+    private final static long AD_INTERVAL_MILLIS = 60000;
 
     public static void createAd(Activity activity, ViewGroup parent) {
         long now = System.currentTimeMillis();
