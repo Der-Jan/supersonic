@@ -742,8 +742,14 @@ public final class Util {
     }
 
     public static void createAd(Activity activity, ViewGroup parent) {
-//        createInnerActiveAd(activity, parent);
-        createGoogleAd(activity, parent);
+        double random = Math.random();
+        if (random < 0.25) {
+            createGoogleAd(activity, parent, AdSize.BANNER);
+        } else if (random < 0.50) {
+            createGoogleAd(activity, parent, AdSize.SMART_BANNER);
+        } else {
+            createInnerActiveAd(activity, parent);
+        }
     }
 
     private static void createInnerActiveAd(Activity activity, ViewGroup parent) {
@@ -751,16 +757,17 @@ public final class Util {
         parent.addView(banner);
     }
 
-    private static void createGoogleAd(Activity activity, ViewGroup parent) {
+    private static void createGoogleAd(Activity activity, ViewGroup parent, AdSize adSize) {
         // Use BANNER or SMART_BANNER?
-        AdView adView = new AdView(activity, AdSize.SMART_BANNER, "a150756282623f0");
+        AdView adView = new AdView(activity, adSize, "a150756282623f0");
         parent.addView(adView);
         AdRequest adRequest = new AdRequest();
 //        adRequest.setLocation(location); // TODO: No
         adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        adRequest.addTestDevice("A99C330D17021F035126ACCC93E60E54"); // TODO: Remove
+//        adRequest.addTestDevice("A99C330D17021F035126ACCC93E60E54"); // TODO: Remove
 //        adRequest.addKeywords() // TODO
-        adView.loadAd(adRequest);}
+        adView.loadAd(adRequest);
+    }
 
 
     /**

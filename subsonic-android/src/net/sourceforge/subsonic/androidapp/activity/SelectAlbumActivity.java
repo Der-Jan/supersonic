@@ -18,6 +18,11 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,8 +38,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.DownloadFile;
@@ -47,15 +52,11 @@ import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SelectAlbumActivity extends SubsonicTabActivity {
 
     private static final String TAG = SelectAlbumActivity.class.getSimpleName();
 
     private ListView entryList;
-    private ViewGroup header;
     private ViewGroup footer;
     private View emptyView;
     private Button selectButton;
@@ -65,7 +66,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private Button unpinButton;
     private Button deleteButton;
     private Button moreButton;
-    private ImageView coverArtView;
     private boolean licenseValid;
     private ImageButton playAllButton;
 
@@ -79,7 +79,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
         entryList = (ListView) findViewById(R.id.select_album_entries);
 
-        header = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
         footer = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_footer, entryList, false);
         entryList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,7 +100,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
         });
 
-        coverArtView = (ImageView) findViewById(R.id.actionbar_home_icon);
         selectButton = (Button) findViewById(R.id.select_album_select);
         playNowButton = (Button) findViewById(R.id.select_album_play_now);
         playLastButton = (Button) findViewById(R.id.select_album_play_last);
@@ -174,6 +172,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             getMusicDirectory(id, name);
         }
 
+        Util.createAd(SelectAlbumActivity.this, (ViewGroup) findViewById(R.id.select_album_ad));
+
         // Button 1: play all
         playAllButton = (ImageButton) findViewById(R.id.action_button_1);
         playAllButton.setImageResource(R.drawable.action_play_all);
@@ -203,9 +203,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 new PopupMenuHelper().showMenu(SelectAlbumActivity.this, overflowButton, R.menu.main);
             }
         });
-
-        // TODO
-        Util.createAd(this, header);
     }
 
     private void playAll() {
@@ -554,16 +551,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         protected void done(Pair<MusicDirectory, Boolean> result) {
             List<MusicDirectory.Entry> entries = result.getFirst().getChildren();
 
-            int songCount = 0;
+            boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {
                 if (!entry.isDirectory()) {
-                    songCount++;
+                    hasSongs = true;
+                    break;
                 }
             }
 
-            if (songCount > 0) {
-                getImageLoader().loadImage(coverArtView, entries.get(0), false, true);
-                entryList.addHeaderView(header);
+            if (hasSongs) {
+                entryList.addHeaderView(createHeader(entries));
                 entryList.addFooterView(footer);
                 selectButton.setVisibility(View.VISIBLE);
                 playNowButton.setVisibility(View.VISIBLE);
@@ -578,9 +575,45 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             licenseValid = result.getSecond();
 
             boolean playAll = getIntent().getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
-            if (playAll && songCount > 0) {
+            if (playAll && hasSongs) {
                 playAll();
             }
         }
+    }
+
+    private View createHeader(List<MusicDirectory.Entry> entries) {
+        View header = LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
+
+        View coverArtView = header.findViewById(R.id.select_album_art);
+        getImageLoader().loadImage(coverArtView, entries.get(0), false, true);
+
+        TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
+        titleView.setText(getTitle());
+
+        int songCount = 0;
+
+        Set<String> artists = new HashSet<String>();
+        for (MusicDirectory.Entry entry : entries) {
+            if (!entry.isDirectory()) {
+                songCount++;
+                if (entry.getArtist() != null) {
+                    artists.add(entry.getArtist());
+                }
+            }
+        }
+
+        TextView artistView = (TextView) header.findViewById(R.id.select_album_artist);
+        if (artists.size() == 1) {
+            artistView.setText(artists.iterator().next());
+            artistView.setVisibility(View.VISIBLE);
+        } else {
+            artistView.setVisibility(View.GONE);
+        }
+
+        TextView songCountView = (TextView) header.findViewById(R.id.select_album_song_count);
+        String s = getResources().getQuantityString(R.plurals.select_album_n_songs, songCount, songCount);
+        songCountView.setText(s.toUpperCase());
+
+        return header;
     }
 }

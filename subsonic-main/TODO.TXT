@@ -2,6 +2,7 @@ DONE IN 4.8
 -------------
 Updated Dutch translation, courtesy of W. van der Heijden.
 
+
 TODO IN 4.8
 --------------
 Fix init exception in podcast bean
@@ -17,7 +18,7 @@ Problems with alphabetic track sorting, see forum.
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
 Reconsider album artist.
-Prefill minisub
+Prefill minisubu
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1394bd52aaaf4969
 FLAC crashes Flash in Firefox (with server on Linux).
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10027&p=44673#p44673
@@ -136,15 +137,18 @@ Test on Android 2 and 3.
   Notification icon too big and bright.
 Ad support, in-app purchase. (inneractive?)
   https://developers.google.com/mobile-ads-sdk/docs/
+  Don't show more often than every XX seconds.
 Widget
   preview image
+Smaller header icon
+Album header.
+  Crashes when clicked.
 
 Reduce size of main_header_icon
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
 Widget
 Use GridView to show albums.
-Album header.
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864

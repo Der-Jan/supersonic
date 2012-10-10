@@ -1,16 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/select_album_art"
+            android:src="@drawable/unknown_album_large"
+            android:layout_width="120dip"
+            android:layout_height="120dip"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dip"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"/>
 
     <TextView
-            />
-    <LinearLayout android:id="@+id/select_album_ad"
-                  android:orientation="horizontal"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content">
-    </LinearLayout>
+            android:text="This is the album title"
+            android:id="@+id/select_album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/select_album_art"
+            android:paddingTop="20dip"
+            android:paddingBottom="8dip"
+            android:paddingRight="4dip"
+            android:textColor="@color/mediaControlForeground"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="end"/>
 
-</LinearLayout>
+    <TextView
+            android:text="This is the artist name"
+            android:id="@+id/select_album_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/select_album_title"
+            android:layout_toRightOf="@+id/select_album_art"
+            android:paddingBottom="2dip"
+            android:paddingRight="4dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
+            android:ellipsize="end"/>
+
+
+    <TextView
+            android:text="XX SONGS"
+            android:id="@+id/select_album_song_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/select_album_artist"
+            android:layout_toRightOf="@+id/select_album_art"
+            android:paddingRight="4dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="10sp"
+            android:singleLine="true"
+            android:ellipsize="none"/>
+
+</RelativeLayout>
+
 
