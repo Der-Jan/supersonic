@@ -17,6 +17,21 @@
         <item name="android:layout_height">46dip</item>
     </style>
 
+    <style name="MainMenuTextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:paddingRight">6dip</item>
+        <item name="android:minHeight">50dip</item>
+    </style>
+
+    <style name="MainMenuTextView.AlbumList" parent="MainMenuTextView">
+        <item name="android:drawableRight">@drawable/navigate_right</item>
+        <item name="android:drawablePadding">6dip</item>
+    </style>
+
     <style name="WidgetButton">
         <item name="android:background">@drawable/media_button</item>
         <item name="android:padding">@dimen/widget_button_padding</item>

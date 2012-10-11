@@ -25,6 +25,7 @@
     <string name="main.shuffle_confirm">Do you want to start shuffle play?</string>
     <string name="main.offline">Offline</string>
     <string name="main.settings">Settings</string>
+    <string name="main.purchase">Remove ads</string>
     <string name="main.albums_title">ALBUMS</string>
     <string name="main.albums_newest">Recently added</string>
     <string name="main.albums_recent">Recently played</string>
