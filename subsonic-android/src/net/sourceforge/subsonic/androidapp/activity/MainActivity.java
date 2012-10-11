@@ -209,7 +209,8 @@ public class MainActivity extends SubsonicTabActivity {
     }
 
     private void purchase() {
-        billingService.requestPurchase("android.test.purchased", Consts.ITEM_TYPE_INAPP, null);
+//        billingService.requestPurchase("android.test.purchased", Consts.ITEM_TYPE_INAPP, null);
+        billingService.requestPurchase("ad_removal", Consts.ITEM_TYPE_INAPP, null);
     }
 
     private void loadSettings() {
