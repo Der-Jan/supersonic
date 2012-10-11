@@ -243,7 +243,7 @@ public class BillingService extends Service implements ServiceConnection {
     /**
      * Wrapper class that requests a purchase.
      */
-    class RequestPurchase extends BillingRequest {
+    public class RequestPurchase extends BillingRequest {
         public final String productId;
         public final String developerPayload;
         public final String productType;
@@ -376,7 +376,7 @@ public class BillingService extends Service implements ServiceConnection {
     /**
      * Wrapper class that sends a RESTORE_TRANSACTIONS message to the server.
      */
-    class RestoreTransactions extends BillingRequest {
+    public class RestoreTransactions extends BillingRequest {
         long nonce;
 
         public RestoreTransactions() {

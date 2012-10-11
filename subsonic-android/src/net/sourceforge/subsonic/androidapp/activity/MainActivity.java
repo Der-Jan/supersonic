@@ -26,7 +26,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +38,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.billing.BillingService;
+import net.sourceforge.subsonic.androidapp.billing.Consts;
+import net.sourceforge.subsonic.androidapp.billing.PurchaseObserver;
+import net.sourceforge.subsonic.androidapp.billing.ResponseHandler;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.Constants;
@@ -46,6 +52,8 @@ import net.sourceforge.subsonic.androidapp.util.Util;
 
 public class MainActivity extends SubsonicTabActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private static final int MENU_GROUP_SERVER = 10;
     private static final int MENU_ITEM_SERVER_1 = 101;
     private static final int MENU_ITEM_SERVER_2 = 102;
@@ -53,6 +61,9 @@ public class MainActivity extends SubsonicTabActivity {
     private static final int MENU_ITEM_OFFLINE = 104;
 
     private static boolean infoDialogDisplayed;
+
+    private SubsonicPurchaseObserver purchaseObserver;
+    private BillingService billingService;
 
     /**
      * Called when the activity is first created.
@@ -104,7 +115,7 @@ public class MainActivity extends SubsonicTabActivity {
                 if (view == serverButton) {
                     dummyView.showContextMenu();
                 } else if (view == purchaseButton) {
-                    Util.toast(MainActivity.this, "Not implemented.");
+                    purchase();
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
                 } else if (view == albumsRandomButton) {
@@ -118,6 +129,10 @@ public class MainActivity extends SubsonicTabActivity {
                 }
             }
         });
+
+        purchaseObserver = new SubsonicPurchaseObserver(new Handler());
+        billingService = new BillingService();
+        billingService.setContext(this);
 
         // Title: Subsonic
         setTitle(R.string.common_appname);
@@ -154,6 +169,24 @@ public class MainActivity extends SubsonicTabActivity {
         showInfoDialog();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ResponseHandler.register(purchaseObserver);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ResponseHandler.unregister(purchaseObserver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        billingService.unbind();
+    }
+
     private void startShufflePlay() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.main_shuffle_confirm)
@@ -173,6 +206,10 @@ public class MainActivity extends SubsonicTabActivity {
                     }
                 })
                 .show();
+    }
+
+    private void purchase() {
+        billingService.requestPurchase("android.test.purchased", Consts.ITEM_TYPE_INAPP, null);
     }
 
     private void loadSettings() {
@@ -273,4 +310,110 @@ public class MainActivity extends SubsonicTabActivity {
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
 		Util.startActivityWithoutTransition(this, intent);
 	}
+
+    /**
+     * A {@link PurchaseObserver} is used to get callbacks when Android Market sends
+     * messages to this application so that we can update the UI.
+     */
+    private class SubsonicPurchaseObserver extends PurchaseObserver {
+
+        public SubsonicPurchaseObserver(Handler handler) {
+            super(MainActivity.this, handler);
+        }
+
+        @Override
+        public void onBillingSupported(boolean supported, String type) {
+            if (Consts.DEBUG) {
+                Log.i(TAG, "supported: " + supported);
+            }
+            if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
+                if (supported) {
+//                    restoreDatabase();
+//                    mBuyButton.setEnabled(true);
+//                    mEditPayloadButton.setEnabled(true);
+                } else {
+//                    showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
+                }
+            } else if (type.equals(Consts.ITEM_TYPE_SUBSCRIPTION)) {
+//                mCatalogAdapter.setSubscriptionsSupported(supported);
+            } else {
+//                showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
+            }
+        }
+
+        @Override
+        public void onPurchaseStateChange(Consts.PurchaseState purchaseState, String itemId,
+                int quantity, long purchaseTime, String developerPayload) {
+            if (Consts.DEBUG) {
+                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+            }
+
+            if (developerPayload == null) {
+                logProductActivity(itemId, purchaseState.toString());
+            } else {
+                logProductActivity(itemId, purchaseState + "\n\t" + developerPayload);
+            }
+
+            if (purchaseState == Consts.PurchaseState.PURCHASED) {
+//                mOwnedItems.add(itemId);
+
+                // If this is a subscription, then enable the "Edit
+                // Subscriptions" button.
+//                for (CatalogEntry e : CATALOG) {
+//                    if (e.sku.equals(itemId) &&
+//                            e.managed.equals(Managed.SUBSCRIPTION)) {
+//                        mEditSubscriptionsButton.setVisibility(View.VISIBLE);
+//                    }
+//                }
+            }
+//            mCatalogAdapter.setOwnedItems(mOwnedItems);
+//            mOwnedItemsCursor.requery();
+        }
+
+        @Override
+        public void onRequestPurchaseResponse(BillingService.RequestPurchase request, Consts.ResponseCode responseCode) {
+            if (Consts.DEBUG) {
+                Log.d(TAG, request.productId + ": " + responseCode);
+            }
+            if (responseCode == Consts.ResponseCode.RESULT_OK) {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "purchase was successfully sent to server");
+                }
+                logProductActivity(request.productId, "sending purchase request");
+            } else if (responseCode == Consts.ResponseCode.RESULT_USER_CANCELED) {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "user canceled purchase");
+                }
+                logProductActivity(request.productId, "dismissed purchase dialog");
+            } else {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "purchase failed");
+                }
+                logProductActivity(request.productId, "request purchase returned " + responseCode);
+            }
+        }
+
+        @Override
+        public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, Consts.ResponseCode responseCode) {
+            if (responseCode == Consts.ResponseCode.RESULT_OK) {
+                if (Consts.DEBUG) {
+                    Log.d(TAG, "completed RestoreTransactions request");
+                }
+                // Update the shared preferences so that we don't perform
+                // a RestoreTransactions again.
+//                SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+//                SharedPreferences.Editor edit = prefs.edit();
+//                edit.putBoolean(DB_INITIALIZED, true);
+//                edit.commit();
+            } else {
+                if (Consts.DEBUG) {
+                    Log.d(TAG, "RestoreTransactions error: " + responseCode);
+                }
+            }
+        }
+
+        private void logProductActivity(String productId, String activity) {
+            Log.d(TAG, productId + " - " + activity);
+        }
+    }
 }
