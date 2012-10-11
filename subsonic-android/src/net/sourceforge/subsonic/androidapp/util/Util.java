@@ -36,6 +36,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import org.apache.http.HttpEntity;
 
 import com.google.ads.AdRequest;
@@ -120,6 +121,18 @@ public final class Util {
     public static boolean isScreenLitOnDownload(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCREEN_LIT_ON_DOWNLOAD, false);
+    }
+
+    public static PurchaseMode getPurchaseMode(Context context) {
+        SharedPreferences prefs = getPreferences(context);
+        return PurchaseMode.valueOf(prefs.getString(Constants.PREFERENCES_KEY_PURCHASE_MODE, PurchaseMode.UNKNOWN.name()));
+    }
+
+    public static void setPurchaseMode(Context context, PurchaseMode purchaseMode) {
+        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.PREFERENCES_KEY_PURCHASE_MODE, purchaseMode.name());
+        editor.commit();
     }
 
     public static RepeatMode getRepeatMode(Context context) {

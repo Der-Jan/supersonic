@@ -40,6 +40,7 @@ import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.billing.BillingService;
 import net.sourceforge.subsonic.androidapp.billing.Consts;
+import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.billing.PurchaseObserver;
 import net.sourceforge.subsonic.androidapp.billing.ResponseHandler;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
@@ -131,8 +132,13 @@ public class MainActivity extends SubsonicTabActivity {
         });
 
         purchaseObserver = new SubsonicPurchaseObserver(new Handler());
+        ResponseHandler.register(purchaseObserver);
+
         billingService = new BillingService();
         billingService.setContext(this);
+
+        // Check if billing is supported.
+        billingService.checkBillingSupported(Consts.ITEM_TYPE_SUBSCRIPTION);
 
         // Title: Subsonic
         setTitle(R.string.common_appname);
@@ -327,18 +333,10 @@ public class MainActivity extends SubsonicTabActivity {
             if (Consts.DEBUG) {
                 Log.i(TAG, "supported: " + supported);
             }
-            if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
-                if (supported) {
-//                    restoreDatabase();
-//                    mBuyButton.setEnabled(true);
-//                    mEditPayloadButton.setEnabled(true);
-                } else {
-//                    showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
-                }
-            } else if (type.equals(Consts.ITEM_TYPE_SUBSCRIPTION)) {
-//                mCatalogAdapter.setSubscriptionsSupported(supported);
-            } else {
-//                showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
+            // TODO: Enable purchase button.
+            // Request restore if this is the first time the app is run.
+            if (supported && Util.getPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
+                billingService.restoreTransactions();
             }
         }
 
@@ -349,26 +347,11 @@ public class MainActivity extends SubsonicTabActivity {
                 Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
             }
 
-            if (developerPayload == null) {
-                logProductActivity(itemId, purchaseState.toString());
-            } else {
-                logProductActivity(itemId, purchaseState + "\n\t" + developerPayload);
-            }
+            logProductActivity(itemId, purchaseState.toString());
 
             if (purchaseState == Consts.PurchaseState.PURCHASED) {
-//                mOwnedItems.add(itemId);
-
-                // If this is a subscription, then enable the "Edit
-                // Subscriptions" button.
-//                for (CatalogEntry e : CATALOG) {
-//                    if (e.sku.equals(itemId) &&
-//                            e.managed.equals(Managed.SUBSCRIPTION)) {
-//                        mEditSubscriptionsButton.setVisibility(View.VISIBLE);
-//                    }
-//                }
+                Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_PURCHASED);
             }
-//            mCatalogAdapter.setOwnedItems(mOwnedItems);
-//            mOwnedItemsCursor.requery();
         }
 
         @Override
@@ -402,10 +385,7 @@ public class MainActivity extends SubsonicTabActivity {
                 }
                 // Update the shared preferences so that we don't perform
                 // a RestoreTransactions again.
-//                SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-//                SharedPreferences.Editor edit = prefs.edit();
-//                edit.putBoolean(DB_INITIALIZED, true);
-//                edit.commit();
+                Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_NOT_PURCHASED);
             } else {
                 if (Consts.DEBUG) {
                     Log.d(TAG, "RestoreTransactions error: " + responseCode);
