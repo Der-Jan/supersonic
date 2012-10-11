@@ -103,6 +103,8 @@ public class MainActivity extends SubsonicTabActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view == serverButton) {
                     dummyView.showContextMenu();
+                } else if (view == purchaseButton) {
+                    Util.toast(MainActivity.this, "Not implemented.");
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
                 } else if (view == albumsRandomButton) {
