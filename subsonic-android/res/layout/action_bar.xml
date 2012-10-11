@@ -8,10 +8,10 @@
             android:src="@drawable/launch"
             android:layout_width="48dip"
             android:layout_height="48dip"
+            android:layout_marginLeft="8dip"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            />
+            android:layout_alignParentLeft="true"/>
 
     <ImageButton
             android:id="@+id/action_button_3"
@@ -22,8 +22,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:background="@drawable/actionbar_button"
-            />
+            android:background="@drawable/actionbar_button"/>
 
     <ImageButton
             android:id="@+id/action_button_2"
@@ -34,8 +33,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/action_button_3"
             android:padding="10dp"
-            android:background="@drawable/actionbar_button"
-            />
+            android:background="@drawable/actionbar_button"/>
 
     <ImageButton
             android:id="@+id/action_button_1"
@@ -46,8 +44,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/action_button_2"
             android:padding="10dp"
-            android:background="@drawable/actionbar_button"
-            />
+            android:background="@drawable/actionbar_button"/>
 
     <TextView
                 android:id="@+id/actionbar_title_text"
@@ -64,15 +61,12 @@
                 android:textSize="18sp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:inputType="none"
-                />
+                android:inputType="none"/>
 
     <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="@color/dividerColor"
-            android:layout_alignParentBottom="true"
-            />
-
+            android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
