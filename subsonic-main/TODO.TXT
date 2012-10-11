@@ -135,10 +135,6 @@ Review album/artist pinning.
 Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
-Ad support
-  https://developers.google.com/mobile-ads-sdk/docs/
-  Don't show more often than every 60 seconds.
-  Consider ad placement. Also on main page?
 In-app purchase
   Sample in SDK
 Widget

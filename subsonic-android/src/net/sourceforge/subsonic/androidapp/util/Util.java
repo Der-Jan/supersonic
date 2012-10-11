@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -762,22 +763,18 @@ public final class Util {
     }
 
     private static void createInnerActiveAd(Activity activity, ViewGroup parent) {
-        InneractiveAd banner = new InneractiveAd(activity, "Subsonic_Subsonic_Android", InneractiveAd.IaAdType.Banner, 90);
+        Hashtable<InneractiveAd.IaOptionalParams, String> metaData = new Hashtable<InneractiveAd.IaOptionalParams, String>();
+        metaData.put(InneractiveAd.IaOptionalParams.Key_Alignment, InneractiveAd.IaAdAlignment.CENTER.toString());
+        InneractiveAd banner = new InneractiveAd(activity, "Subsonic_Subsonic_Android", InneractiveAd.IaAdType.Banner, 90, metaData);
         parent.addView(banner);
     }
 
     private static void createGoogleAd(Activity activity, ViewGroup parent, AdSize adSize) {
-        // Use BANNER or SMART_BANNER?
         AdView adView = new AdView(activity, adSize, "a150756282623f0");
         parent.addView(adView);
         AdRequest adRequest = new AdRequest();
-//        adRequest.setLocation(location); // TODO: No
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-//        adRequest.addTestDevice("A99C330D17021F035126ACCC93E60E54"); // TODO: Remove
-//        adRequest.addKeywords() // TODO
         adView.loadAd(adRequest);
     }
-
 
     /**
      * <p>Broadcasts the given song info as the new song being played.</p>
