@@ -109,6 +109,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
     @Override
     public void onCreate() {
+        Util.setUncaughtExceptionHandler(this);
         super.onCreate();
 
         mediaPlayer = new MediaPlayer();

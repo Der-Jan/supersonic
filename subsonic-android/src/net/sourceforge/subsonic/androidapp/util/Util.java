@@ -890,4 +890,11 @@ public final class Util {
 
         return wm.createWifiLock(lockType, tag);
     }
+
+    public static void setUncaughtExceptionHandler(Context context) {
+        Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+        if (!(handler instanceof SubsonicUncaughtExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new SubsonicUncaughtExceptionHandler(context));
+        }
+    }
 }
