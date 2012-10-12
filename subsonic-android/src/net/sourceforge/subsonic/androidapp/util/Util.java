@@ -123,16 +123,16 @@ public final class Util {
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCREEN_LIT_ON_DOWNLOAD, false);
     }
 
-    public static PurchaseMode getPurchaseMode(Context context) {
+    public static PurchaseMode getAdRemovalPurchaseMode(Context context) {
         SharedPreferences prefs = getPreferences(context);
-        return PurchaseMode.valueOf(prefs.getString(Constants.PREFERENCES_KEY_PURCHASE_MODE, PurchaseMode.UNKNOWN.name()));
+        return PurchaseMode.valueOf(prefs.getString(Constants.PREFERENCES_KEY_AD_REMOVAL_PURCHASE_MODE, PurchaseMode.UNKNOWN.name()));
     }
 
-    public static void setPurchaseMode(Context context, PurchaseMode purchaseMode) {
-        Log.d(TAG, "setPurchaseMode(" + purchaseMode + ")");
+    public static void setAdRemovalPurchaseMode(Context context, PurchaseMode purchaseMode) {
+        Log.d(TAG, "setAdRemovalPurchaseMode(" + purchaseMode + ")");
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.PREFERENCES_KEY_PURCHASE_MODE, purchaseMode.name());
+        editor.putString(Constants.PREFERENCES_KEY_AD_REMOVAL_PURCHASE_MODE, purchaseMode.name());
         editor.commit();
     }
 
@@ -760,6 +760,9 @@ public final class Util {
     private final static long AD_INTERVAL_MILLIS = 60000;
 
     public static void createAd(Activity activity, ViewGroup parent) {
+        if (getAdRemovalPurchaseMode(activity) != PurchaseMode.NOT_PURCHASED) {
+            return;
+        }
         long now = System.currentTimeMillis();
         if (now - timeOfLastAd < AD_INTERVAL_MILLIS) {
             return;

@@ -71,7 +71,7 @@ public final class Constants {
     public static final String PREFERENCES_KEY_SCREEN_LIT_ON_DOWNLOAD = "screenLitOnDownload";
     public static final String PREFERENCES_KEY_SCROBBLE = "scrobble";
     public static final String PREFERENCES_KEY_REPEAT_MODE = "repeatMode";
-    public static final String PREFERENCES_KEY_PURCHASE_MODE = "purchaseMode";
+    public static final String PREFERENCES_KEY_AD_REMOVAL_PURCHASE_MODE = "adRemovalPurchaseMode";
     public static final String PREFERENCES_KEY_WIFI_REQUIRED_FOR_DOWNLOAD = "wifiRequiredForDownload";
 
     // Name of the preferences file.
@@ -86,7 +86,7 @@ public final class Constants {
     public static final String ALBUM_ART_FILE = "folder.jpeg";
 
     // Product IDs for in-app purchases.
-    public static final String PRODUCT_ID_AD_REMOVAL = "test01";
+    public static final String PRODUCT_ID_AD_REMOVAL = "ad_removal";
 
     private Constants() {
     }

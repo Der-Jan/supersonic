@@ -24,6 +24,6 @@ package net.sourceforge.subsonic.androidapp.billing;
  */
 public enum PurchaseMode {
     UNKNOWN,
-    AD_REMOVAL_PURCHASED,
-    AD_REMOVAL_NOT_PURCHASED
+    PURCHASED,
+    NOT_PURCHASED
 }
