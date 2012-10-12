@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.androidapp.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +86,10 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 0) {
-                    MusicDirectory.Entry entry = (MusicDirectory.Entry) parent.getItemAtPosition(position);
+                    MusicDirectory.Entry entry = getEntryAtPosition(position);
+                    if (entry == null) {
+                        return;
+                    }
                     if (entry.isDirectory()) {
                         Intent intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
                         intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, entry.getId());
@@ -97,7 +101,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         enableButtons();
                     }
                 }
-            }
+                }
         });
 
         selectButton = (Button) findViewById(R.id.select_album_select);
@@ -184,7 +188,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         });
 
         // Button 2: search
-        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        ImageButton actionSearchButton = (ImageButton) findViewById(R.id.action_button_2);
         actionSearchButton.setImageResource(R.drawable.action_search);
         actionSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +210,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private void playAll() {
         boolean hasSubFolders = false;
         for (int i = 0; i < entryList.getCount(); i++) {
-            MusicDirectory.Entry entry = (MusicDirectory.Entry) entryList.getItemAtPosition(i);
+            MusicDirectory.Entry entry = getEntryAtPosition(i);
             if (entry != null && entry.isDirectory()) {
                 hasSubFolders = true;
                 break;
@@ -228,8 +232,10 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        MusicDirectory.Entry entry = (MusicDirectory.Entry) entryList.getItemAtPosition(info.position);
-
+        MusicDirectory.Entry entry = getEntryAtPosition(info.position);
+        if (entry == null) {
+            return;
+        }
         if (entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
@@ -245,9 +251,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     @Override
     public boolean onContextItemSelected(MenuItem menuItem) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
-        MusicDirectory.Entry entry = (MusicDirectory.Entry) entryList.getItemAtPosition(info.position);
-        List<MusicDirectory.Entry> songs = new ArrayList<MusicDirectory.Entry>(10);
-        songs.add((MusicDirectory.Entry) entryList.getItemAtPosition(info.position));
+        MusicDirectory.Entry entry = getEntryAtPosition(info.position);
+        if (entry == null) {
+            return true;
+        }
+
+        List<MusicDirectory.Entry> songs = Arrays.asList(entry);
         switch (menuItem.getItemId()) {
             case R.id.album_menu_play_now:
                 downloadRecursively(entry.getId(), false, false, true);
@@ -355,7 +364,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         boolean someUnselected = false;
         int count = entryList.getCount();
         for (int i = 0; i < count; i++) {
-            if (!entryList.isItemChecked(i) && entryList.getItemAtPosition(i) instanceof MusicDirectory.Entry) {
+            MusicDirectory.Entry entry = getEntryAtPosition(i);
+            if (!entryList.isItemChecked(i) && entry != null) {
                 someUnselected = true;
                 break;
             }
@@ -367,7 +377,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         int count = entryList.getCount();
         int selectedCount = 0;
         for (int i = 0; i < count; i++) {
-            MusicDirectory.Entry entry = (MusicDirectory.Entry) entryList.getItemAtPosition(i);
+            MusicDirectory.Entry entry = getEntryAtPosition(i);
             if (entry != null && !entry.isDirectory() && !entry.isVideo()) {
                 entryList.setItemChecked(i, selected);
                 selectedCount++;
@@ -377,11 +387,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         // Display toast: N tracks selected / N tracks unselected
         if (toast) {
             int toastResId = selected ? R.string.select_album_n_selected
-                                      : R.string.select_album_n_unselected;
+                    : R.string.select_album_n_unselected;
             Util.toast(this, getString(toastResId, selectedCount));
         }
 
         enableButtons();
+    }
+
+    private MusicDirectory.Entry getEntryAtPosition(int i) {
+        Object item = entryList.getItemAtPosition(i);
+        return item instanceof MusicDirectory.Entry ? (MusicDirectory.Entry) item : null;
     }
 
     private void enableButtons() {
@@ -416,7 +431,10 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         int count = entryList.getCount();
         for (int i = 0; i < count; i++) {
             if (entryList.isItemChecked(i)) {
-                songs.add((MusicDirectory.Entry) entryList.getItemAtPosition(i));
+                MusicDirectory.Entry entry = getEntryAtPosition(i);
+                if (entry != null) {
+                    songs.add(entry);
+                }
             }
         }
         return songs;
@@ -445,10 +463,10 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                     Util.startActivityWithoutTransition(SelectAlbumActivity.this, DownloadActivity.class);
                 } else if (save) {
                     Util.toast(SelectAlbumActivity.this,
-                               getResources().getQuantityString(R.plurals.select_album_n_songs_downloading, songs.size(), songs.size()));
+                            getResources().getQuantityString(R.plurals.select_album_n_songs_downloading, songs.size(), songs.size()));
                 } else if (append) {
                     Util.toast(SelectAlbumActivity.this,
-                               getResources().getQuantityString(R.plurals.select_album_n_songs_added, songs.size(), songs.size()));
+                            getResources().getQuantityString(R.plurals.select_album_n_songs_added, songs.size(), songs.size()));
                 }
             }
         };
@@ -502,29 +520,29 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             builder.setTitle(R.string.select_album_donate_dialog_0_trial_days_left);
         } else {
             builder.setTitle(getResources().getQuantityString(R.plurals.select_album_donate_dialog_n_trial_days_left,
-                                                              trialDaysLeft, trialDaysLeft));
+                    trialDaysLeft, trialDaysLeft));
         }
 
         builder.setMessage(R.string.select_album_donate_dialog_message);
 
         builder.setPositiveButton(R.string.select_album_donate_dialog_now,
-                                  new DialogInterface.OnClickListener() {
-                                      @Override
-                                      public void onClick(DialogInterface dialogInterface, int i) {
-                                          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DONATION_URL)));
-                                      }
-                                  });
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DONATION_URL)));
+                    }
+                });
 
         builder.setNegativeButton(R.string.select_album_donate_dialog_later,
-                                  new DialogInterface.OnClickListener() {
-                                      @Override
-                                      public void onClick(DialogInterface dialogInterface, int i) {
-                                          dialogInterface.dismiss();
-                                          if (onValid != null) {
-                                              onValid.run();
-                                          }
-                                      }
-                                  });
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        if (onValid != null) {
+                            onValid.run();
+                        }
+                    }
+                });
 
         builder.create().show();
     }

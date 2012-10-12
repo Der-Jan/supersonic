@@ -136,12 +136,10 @@ Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
 In-app purchase
-  Sample in SDK
 Widget
   preview image
-Album header.
-  Crashes when clicked.
 Reduce size of main_header_icon
+Poor quality of album art in album header.
 
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark
