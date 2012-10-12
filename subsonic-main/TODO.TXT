@@ -136,12 +136,7 @@ Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
 In-app purchase
-  Ensure preference is set before confirming purchase.
-  Problem when refunding?
-Widget
-  preview image
-Reduce size of main_header_icon
-Poor quality of album art in album header.
+Poor quality of album art in album header?
 
 Dedicated offline button
 Action bar back button: ic_ab_back_holo_dark

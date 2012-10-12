@@ -86,6 +86,9 @@ public class MainActivity extends SubsonicTabActivity {
         final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
         purchaseButton = (TextView) buttons.findViewById(R.id.main_purchase);
+        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.NOT_PURCHASED;
+        purchaseButton.setVisibility(purchaseEnabled ? View.VISIBLE : View.GONE);
+
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
         final View albumsRandomButton = buttons.findViewById(R.id.main_albums_random);
@@ -117,7 +120,7 @@ public class MainActivity extends SubsonicTabActivity {
                 if (view == serverButton) {
                     dummyView.showContextMenu();
                 } else if (view == purchaseButton) {
-                    billingService.requestPurchase(Constants.PRODUCT_ID_AD_REMOVAL, BillingConstants.ITEM_TYPE_INAPP, null);
+                    purchaseAdRemoval();
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
                 } else if (view == albumsRandomButton) {
@@ -179,7 +182,6 @@ public class MainActivity extends SubsonicTabActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        purchaseButton.setText(Util.getAdRemovalPurchaseMode(this).toString());
         ResponseHandler.register(purchaseObserver);
     }
 
@@ -204,6 +206,26 @@ public class MainActivity extends SubsonicTabActivity {
                         Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
                         intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
                         Util.startActivityWithoutTransition(MainActivity.this, intent);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void purchaseAdRemoval() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.main_purchase)
+                .setMessage(R.string.main_purchase_confirm)
+                .setPositiveButton(R.string.common_continue, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        billingService.requestPurchase(Constants.PRODUCT_ID_AD_REMOVAL, BillingConstants.ITEM_TYPE_INAPP, null);
                         dialog.dismiss();
                     }
                 })
@@ -327,10 +349,6 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onBillingSupported(boolean supported, String type) {
-            if (BillingConstants.DEBUG) {
-                Log.i(TAG, "supported: " + supported);
-            }
-            // TODO: Enable purchase button.
             // Request restore if this is the first time the app is run.
             if (supported && Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
                 billingService.restoreTransactions();
@@ -339,16 +357,11 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String productId, long purchaseTime, String developerPayload) {
-            if (BillingConstants.DEBUG) {
-                Log.i(TAG, "onPurchaseStateChange() itemId: " + productId + " " + purchaseState);
-            }
-
             logProductActivity(productId, purchaseState.toString());
 
             if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
                 Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.PURCHASED);
-                purchaseButton.setText(Util.getAdRemovalPurchaseMode(MainActivity.this).toString()); // TODO
-                Log.d(TAG, "New purchase mode: " + Util.getAdRemovalPurchaseMode(MainActivity.this));
+                purchaseButton.setVisibility(View.GONE);
             }
         }
 
@@ -384,7 +397,7 @@ public class MainActivity extends SubsonicTabActivity {
                 // Update the shared preferences so that we don't perform a RestoreTransactions again.
                 if (Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
                     Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_PURCHASED);
-                    purchaseButton.setText(Util.getAdRemovalPurchaseMode(MainActivity.this).toString()); // TODO
+                    purchaseButton.setVisibility(View.VISIBLE);
                 }
             } else {
                 if (BillingConstants.DEBUG) {

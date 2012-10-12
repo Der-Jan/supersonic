@@ -3,6 +3,7 @@
 
     <string name="common.appname">Subsonic</string>
     <string name="common.ok">OK</string>
+    <string name="common.continue">Continue</string>
     <string name="common.save">Save</string>
     <string name="common.cancel">Cancel</string>
     <string name="common.play_now">Play now</string>
@@ -26,6 +27,7 @@
     <string name="main.offline">Offline</string>
     <string name="main.settings">Settings</string>
     <string name="main.purchase">Remove ads</string>
+    <string name="main.purchase_confirm">Click Continue to purchase permanent ad removal in Google Play.</string>
     <string name="main.albums_title">ALBUMS</string>
     <string name="main.albums_newest">Recently added</string>
     <string name="main.albums_recent">Recently played</string>

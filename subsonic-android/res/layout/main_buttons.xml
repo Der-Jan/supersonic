@@ -42,7 +42,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView style="@style/MainMenuTextView" android:id="@+id/main_purchase" android:text="@string/main.purchase"/>
+    <TextView style="@style/MainMenuTextView"
+              android:id="@+id/main_purchase"
+              android:text="@string/main.purchase"
+              android:visibility="visible"
+              android:drawablePadding="12dip"
+              android:drawableLeft="@drawable/content_remove"/>
+
     <TextView style="@style/HeaderTextView" android:id="@+id/main_albums" android:text="@string/main.albums_title"/>
     <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_newest" android:text="@string/main.albums_newest"/>
     <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_recent" android:text="@string/main.albums_recent"/>
