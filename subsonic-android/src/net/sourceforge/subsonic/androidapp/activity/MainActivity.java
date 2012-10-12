@@ -38,8 +38,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants;
 import net.sourceforge.subsonic.androidapp.billing.BillingService;
-import net.sourceforge.subsonic.androidapp.billing.Consts;
 import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.billing.PurchaseObserver;
 import net.sourceforge.subsonic.androidapp.billing.ResponseHandler;
@@ -139,7 +139,7 @@ public class MainActivity extends SubsonicTabActivity {
         billingService.setContext(this);
 
         // Check if billing is supported.
-        billingService.checkBillingSupported(Consts.ITEM_TYPE_SUBSCRIPTION);
+        billingService.checkBillingSupported(BillingConstants.ITEM_TYPE_SUBSCRIPTION);
 
         // Title: Subsonic
         setTitle(R.string.common_appname);
@@ -217,8 +217,9 @@ public class MainActivity extends SubsonicTabActivity {
     }
 
     private void purchase() {
-//        billingService.requestPurchase("android.test.purchased", Consts.ITEM_TYPE_INAPP, null);
-        billingService.requestPurchase("ad_removal", Consts.ITEM_TYPE_INAPP, null);
+//        billingService.requestPurchase("android.test.purchased", BillingConstants.ITEM_TYPE_INAPP, null);
+//        billingService.requestPurchase("ad_removal", BillingConstants.ITEM_TYPE_INAPP, null);
+        billingService.requestPurchase(Constants.PRODUCT_ID_AD_REMOVAL, BillingConstants.ITEM_TYPE_INAPP, null);
     }
 
     private void loadSettings() {
@@ -332,7 +333,7 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onBillingSupported(boolean supported, String type) {
-            if (Consts.DEBUG) {
+            if (BillingConstants.DEBUG) {
                 Log.i(TAG, "supported: " + supported);
             }
             // TODO: Enable purchase button.
@@ -343,15 +344,14 @@ public class MainActivity extends SubsonicTabActivity {
         }
 
         @Override
-        public void onPurchaseStateChange(Consts.PurchaseState purchaseState, String itemId,
-                int quantity, long purchaseTime, String developerPayload) {
-            if (Consts.DEBUG) {
-                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+        public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String productId, long purchaseTime, String developerPayload) {
+            if (BillingConstants.DEBUG) {
+                Log.i(TAG, "onPurchaseStateChange() itemId: " + productId + " " + purchaseState);
             }
 
-            logProductActivity(itemId, purchaseState.toString());
+            logProductActivity(productId, purchaseState.toString());
 
-            if (purchaseState == Consts.PurchaseState.PURCHASED) {
+            if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
                 Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_PURCHASED);
                 purchaseButton.setText(Util.getPurchaseMode(MainActivity.this).toString()); // TODO
                 Log.d(TAG, "New purchase mode: " + Util.getPurchaseMode(MainActivity.this));
@@ -359,22 +359,22 @@ public class MainActivity extends SubsonicTabActivity {
         }
 
         @Override
-        public void onRequestPurchaseResponse(BillingService.RequestPurchase request, Consts.ResponseCode responseCode) {
-            if (Consts.DEBUG) {
+        public void onRequestPurchaseResponse(BillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
+            if (BillingConstants.DEBUG) {
                 Log.d(TAG, request.productId + ": " + responseCode);
             }
-            if (responseCode == Consts.ResponseCode.RESULT_OK) {
-                if (Consts.DEBUG) {
+            if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "purchase was successfully sent to server");
                 }
                 logProductActivity(request.productId, "sending purchase request");
-            } else if (responseCode == Consts.ResponseCode.RESULT_USER_CANCELED) {
-                if (Consts.DEBUG) {
+            } else if (responseCode == BillingConstants.ResponseCode.RESULT_USER_CANCELED) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "user canceled purchase");
                 }
                 logProductActivity(request.productId, "dismissed purchase dialog");
             } else {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "purchase failed");
                 }
                 logProductActivity(request.productId, "request purchase returned " + responseCode);
@@ -382,9 +382,9 @@ public class MainActivity extends SubsonicTabActivity {
         }
 
         @Override
-        public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, Consts.ResponseCode responseCode) {
-            if (responseCode == Consts.ResponseCode.RESULT_OK) {
-                if (Consts.DEBUG) {
+        public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
+            if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
+                if (BillingConstants.DEBUG) {
                     Log.d(TAG, "completed RestoreTransactions request");
                 }
                 // Update the shared preferences so that we don't perform
@@ -394,7 +394,7 @@ public class MainActivity extends SubsonicTabActivity {
                     purchaseButton.setText(Util.getPurchaseMode(MainActivity.this).toString()); // TODO
                 }
             } else {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.d(TAG, "RestoreTransactions error: " + responseCode);
                 }
             }

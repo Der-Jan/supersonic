@@ -19,8 +19,8 @@ package net.sourceforge.subsonic.androidapp.billing;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RequestPurchase;
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RestoreTransactions;
-import net.sourceforge.subsonic.androidapp.billing.Consts.PurchaseState;
-import net.sourceforge.subsonic.androidapp.billing.Consts.ResponseCode;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.ResponseCode;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -123,10 +123,10 @@ public class Dungeons extends Activity implements OnClickListener,
 
         @Override
         public void onBillingSupported(boolean supported, String type) {
-            if (Consts.DEBUG) {
+            if (BillingConstants.DEBUG) {
                 Log.i(TAG, "supported: " + supported);
             }
-            if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
+            if (type == null || type.equals(BillingConstants.ITEM_TYPE_INAPP)) {
                 if (supported) {
                     restoreDatabase();
                     mBuyButton.setEnabled(true);
@@ -134,7 +134,7 @@ public class Dungeons extends Activity implements OnClickListener,
                 } else {
                     showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
                 }
-            } else if (type.equals(Consts.ITEM_TYPE_SUBSCRIPTION)) {
+            } else if (type.equals(BillingConstants.ITEM_TYPE_SUBSCRIPTION)) {
                 mCatalogAdapter.setSubscriptionsSupported(supported);
             } else {
                 showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
@@ -142,25 +142,25 @@ public class Dungeons extends Activity implements OnClickListener,
         }
 
         @Override
-        public void onPurchaseStateChange(PurchaseState purchaseState, String itemId,
-                int quantity, long purchaseTime, String developerPayload) {
-            if (Consts.DEBUG) {
-                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+        public void onPurchaseStateChange(PurchaseState purchaseState, String productId,
+                long purchaseTime, String developerPayload) {
+            if (BillingConstants.DEBUG) {
+                Log.i(TAG, "onPurchaseStateChange() itemId: " + productId + " " + purchaseState);
             }
 
             if (developerPayload == null) {
-                logProductActivity(itemId, purchaseState.toString());
+                logProductActivity(productId, purchaseState.toString());
             } else {
-                logProductActivity(itemId, purchaseState + "\n\t" + developerPayload);
+                logProductActivity(productId, purchaseState + "\n\t" + developerPayload);
             }
             
             if (purchaseState == PurchaseState.PURCHASED) {
-                mOwnedItems.add(itemId);
+                mOwnedItems.add(productId);
                 
                 // If this is a subscription, then enable the "Edit
                 // Subscriptions" button.
                 for (CatalogEntry e : CATALOG) {
-                    if (e.sku.equals(itemId) &&
+                    if (e.sku.equals(productId) &&
                             e.managed.equals(Managed.SUBSCRIPTION)) {
                         mEditSubscriptionsButton.setVisibility(View.VISIBLE);
                     }
@@ -173,21 +173,21 @@ public class Dungeons extends Activity implements OnClickListener,
         @Override
         public void onRequestPurchaseResponse(RequestPurchase request,
                 ResponseCode responseCode) {
-            if (Consts.DEBUG) {
+            if (BillingConstants.DEBUG) {
                 Log.d(TAG, request.productId + ": " + responseCode);
             }
             if (responseCode == ResponseCode.RESULT_OK) {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "purchase was successfully sent to server");
                 }
                 logProductActivity(request.productId, "sending purchase request");
             } else if (responseCode == ResponseCode.RESULT_USER_CANCELED) {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "user canceled purchase");
                 }
                 logProductActivity(request.productId, "dismissed purchase dialog");
             } else {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.i(TAG, "purchase failed");
                 }
                 logProductActivity(request.productId, "request purchase returned " + responseCode);
@@ -198,7 +198,7 @@ public class Dungeons extends Activity implements OnClickListener,
         public void onRestoreTransactionsResponse(RestoreTransactions request,
                 ResponseCode responseCode) {
             if (responseCode == ResponseCode.RESULT_OK) {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.d(TAG, "completed RestoreTransactions request");
                 }
                 // Update the shared preferences so that we don't perform
@@ -208,7 +208,7 @@ public class Dungeons extends Activity implements OnClickListener,
                 edit.putBoolean(DB_INITIALIZED, true);
                 edit.commit();
             } else {
-                if (Consts.DEBUG) {
+                if (BillingConstants.DEBUG) {
                     Log.d(TAG, "RestoreTransactions error: " + responseCode);
                 }
             }
@@ -257,7 +257,7 @@ public class Dungeons extends Activity implements OnClickListener,
             showDialog(DIALOG_CANNOT_CONNECT_ID);
         }
         
-        if (!mBillingService.checkBillingSupported(Consts.ITEM_TYPE_SUBSCRIPTION)) {
+        if (!mBillingService.checkBillingSupported(BillingConstants.ITEM_TYPE_SUBSCRIPTION)) {
             showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
         }
     }
@@ -328,7 +328,7 @@ public class Dungeons extends Activity implements OnClickListener,
 
     private Dialog createDialog(int titleId, int messageId) {
         String helpUrl = replaceLanguageAndRegion(getString(R.string.help_url));
-        if (Consts.DEBUG) {
+        if (BillingConstants.DEBUG) {
             Log.i(TAG, helpUrl);
         }
         final Uri helpUri = Uri.parse(helpUrl);
@@ -486,14 +486,14 @@ public class Dungeons extends Activity implements OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == mBuyButton) {
-            if (Consts.DEBUG) {
+            if (BillingConstants.DEBUG) {
                 Log.d(TAG, "buying: " + mItemName + " sku: " + mSku);
             }
 
             if (mManagedType != Managed.SUBSCRIPTION &&
-                    !mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_INAPP, mPayloadContents)) {
+                    !mBillingService.requestPurchase(mSku, BillingConstants.ITEM_TYPE_INAPP, mPayloadContents)) {
                 showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
-            } else if (!mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_SUBSCRIPTION, mPayloadContents)) {
+            } else if (!mBillingService.requestPurchase(mSku, BillingConstants.ITEM_TYPE_SUBSCRIPTION, mPayloadContents)) {
                 // Note: mManagedType == Managed.SUBSCRIPTION
                 showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
             }

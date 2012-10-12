@@ -22,7 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import net.sourceforge.subsonic.androidapp.billing.Consts.PurchaseState;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
 
 /**
  * An example database that records the state of each purchase. You should use

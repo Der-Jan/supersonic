@@ -85,6 +85,9 @@ public final class Constants {
 
     public static final String ALBUM_ART_FILE = "folder.jpeg";
 
+    // Product IDs for in-app purchases.
+    public static final String PRODUCT_ID_AD_REMOVAL = "test01";
+
     private Constants() {
     }
 }

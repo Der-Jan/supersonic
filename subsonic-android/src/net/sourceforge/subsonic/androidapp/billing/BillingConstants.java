@@ -20,7 +20,8 @@ package net.sourceforge.subsonic.androidapp.billing;
  * This class holds global constants that are used throughout the application
  * to support in-app billing.
  */
-public class Consts {
+public class BillingConstants {
+
     // The response codes for a request, defined by Android Market.
     public enum ResponseCode {
         RESULT_OK,

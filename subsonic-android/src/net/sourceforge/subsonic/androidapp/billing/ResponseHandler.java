@@ -4,8 +4,8 @@ package net.sourceforge.subsonic.androidapp.billing;
 
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RequestPurchase;
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RestoreTransactions;
-import net.sourceforge.subsonic.androidapp.billing.Consts.PurchaseState;
-import net.sourceforge.subsonic.androidapp.billing.Consts.ResponseCode;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.ResponseCode;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -74,7 +74,7 @@ public class ResponseHandler {
      */
     public static void buyPageIntentResponse(PendingIntent pendingIntent, Intent intent) {
         if (purchaseObserver == null) {
-            if (Consts.DEBUG) {
+            if (BillingConstants.DEBUG) {
                 Log.d(TAG, "UI is not running");
             }
             return;
@@ -105,14 +105,19 @@ public class ResponseHandler {
             final Context context, final PurchaseState purchaseState, final String productId,
             final String orderId, final long purchaseTime, final String developerPayload) {
 
+                    if (purchaseObserver != null) {
+                        purchaseObserver.onPurchaseStateChange(purchaseState, productId, purchaseTime, developerPayload);
+                    }
+
+
         // Update the database with the purchase state. We shouldn't do that
         // from the main thread so we do the work in a background thread.
         // We don't update the UI here. We will update the UI after we update
         // the database because we need to read and update the current quantity
         // first.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
 //                PurchaseDatabase db = new PurchaseDatabase(context);
 //                int quantity = db.updatePurchase(
 //                        orderId, productId, purchaseState, purchaseTime, developerPayload);
@@ -120,14 +125,14 @@ public class ResponseHandler {
 
                 // This needs to be synchronized because the UI thread can change the
                 // value of purchaseObserver.
-                synchronized(ResponseHandler.class) {
-                    if (purchaseObserver != null) {
-                        purchaseObserver.postPurchaseStateChange(
-                                purchaseState, productId, 1, purchaseTime, developerPayload);
-                    }
-                }
-            }
-        }).start();
+//                synchronized(ResponseHandler.class) {
+//                    if (purchaseObserver != null) {
+//                        purchaseObserver.postPurchaseStateChange(
+//                                purchaseState, productId, 1, purchaseTime, developerPayload);
+//                    }
+//                }
+//            }
+//        }).start();
     }
 
     /**

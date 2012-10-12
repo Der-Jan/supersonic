@@ -14,15 +14,14 @@ import android.os.Handler;
 import android.util.Log;
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RequestPurchase;
 import net.sourceforge.subsonic.androidapp.billing.BillingService.RestoreTransactions;
-import net.sourceforge.subsonic.androidapp.billing.Consts.PurchaseState;
-import net.sourceforge.subsonic.androidapp.billing.Consts.ResponseCode;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.ResponseCode;
 
 /**
  * An interface for observing changes related to purchases. The main application
  * extends this class and registers an instance of that derived class with
  * {@link ResponseHandler}. The main application implements the callbacks
- * {@link #onBillingSupported(boolean, String)} and
- * {@link #onPurchaseStateChange(PurchaseState, String, int, long, String)}.  These methods
+ * {@link #onBillingSupported} and {@link #onPurchaseStateChange}.  These methods
  * are used to update the UI.
  */
 public abstract class PurchaseObserver {
@@ -61,19 +60,18 @@ public abstract class PurchaseObserver {
      * {@link ResponseHandler#purchaseResponse(Context, PurchaseState, String, String, long, String)}.
      *
      * @param purchaseState the purchase state of the item
-     * @param itemId        a string identifying the item (the "SKU")
-     * @param quantity      the current quantity of this item after the purchase
+     * @param productId        a string identifying the item (the "SKU")
      * @param purchaseTime  the time the product was purchased, in
      *                      milliseconds since the epoch (Jan 1, 1970)
      */
     public abstract void onPurchaseStateChange(PurchaseState purchaseState,
-            String itemId, int quantity, long purchaseTime, String developerPayload);
+            String productId, long purchaseTime, String developerPayload);
 
     /**
      * This is called when we receive a response code from Market for a
      * RequestPurchase request that we made.  This is NOT used for any
      * purchase state changes.  All purchase state changes are received in
-     * {@link #onPurchaseStateChange(PurchaseState, String, int, long, String)}.
+     * {@link #onPurchaseStateChange(PurchaseState, String, long, String)}.
      * This is used for reporting various errors, or if the user backed out
      * and didn't purchase the item.  The possible response codes are:
      * RESULT_OK means that the order was sent successfully to the server.
@@ -140,25 +138,5 @@ public abstract class PurchaseObserver {
                 Log.e(TAG, "error starting activity", e);
             }
         }
-    }
-
-    /**
-     * Updates the UI after the database has been updated.  This method runs
-     * in a background thread so it has to post a Runnable to run on the UI
-     * thread.
-     *
-     * @param purchaseState the purchase state of the item
-     * @param itemId        a string identifying the item
-     * @param quantity      the quantity of items in this purchase
-     */
-    void postPurchaseStateChange(final PurchaseState purchaseState, final String itemId,
-            final int quantity, final long purchaseTime, final String developerPayload) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                onPurchaseStateChange(
-                        purchaseState, itemId, quantity, purchaseTime, developerPayload);
-            }
-        });
     }
 }

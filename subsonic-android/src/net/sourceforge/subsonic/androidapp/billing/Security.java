@@ -54,14 +54,14 @@ public class Security {
      * A class to hold the verified purchase information.
      */
     public static class VerifiedPurchase {
-        public Consts.PurchaseState purchaseState;
+        public BillingConstants.PurchaseState purchaseState;
         public String notificationId;
         public String productId;
         public String orderId;
         public long purchaseTime;
         public String developerPayload;
 
-        public VerifiedPurchase(Consts.PurchaseState purchaseState, String notificationId,
+        public VerifiedPurchase(BillingConstants.PurchaseState purchaseState, String notificationId,
                 String productId, String orderId, long purchaseTime, String developerPayload) {
             this.purchaseState = purchaseState;
             this.notificationId = notificationId;
@@ -94,7 +94,7 @@ public class Security {
      * the list of verified purchases. The data is in JSON format and contains
      * a nonce (number used once) that we generated and that was signed
      * (as part of the whole data string) with a private key. The data also
-     * contains the {@link Consts.PurchaseState} and product ID of the purchase.
+     * contains the {@link BillingConstants.PurchaseState} and product ID of the purchase.
      * In the general case, there can be an array of purchase transactions
      * because there may be delays in processing the purchase on the backend
      * and then several purchases can be batched together.
@@ -107,7 +107,7 @@ public class Security {
             Log.e(TAG, "data is null");
             return null;
         }
-        if (Consts.DEBUG) {
+        if (BillingConstants.DEBUG) {
             Log.i(TAG, "signedData: " + signedData);
         }
         boolean verified = false;
@@ -164,7 +164,7 @@ public class Security {
             for (int i = 0; i < numTransactions; i++) {
                 JSONObject jElement = jTransactionsArray.getJSONObject(i);
                 int response = jElement.getInt("purchaseState");
-                Consts.PurchaseState purchaseState = Consts.PurchaseState.valueOf(response);
+                BillingConstants.PurchaseState purchaseState = BillingConstants.PurchaseState.valueOf(response);
                 String productId = jElement.getString("productId");
                 String packageName = jElement.getString("packageName");
                 long purchaseTime = jElement.getLong("purchaseTime");
@@ -177,7 +177,7 @@ public class Security {
 
                 // If the purchase state is PURCHASED, then we require a
                 // verified nonce.
-                if (purchaseState == Consts.PurchaseState.PURCHASED && !verified) {
+                if (purchaseState == BillingConstants.PurchaseState.PURCHASED && !verified) {
                     continue;
                 }
                 purchases.add(new VerifiedPurchase(purchaseState, notifyId, productId,
@@ -224,7 +224,7 @@ public class Security {
      * @return true if the data and signature match
      */
     public static boolean verify(PublicKey publicKey, String signedData, String signature) {
-        if (Consts.DEBUG) {
+        if (BillingConstants.DEBUG) {
             Log.i(TAG, "signature: " + signature);
         }
         Signature sig;
