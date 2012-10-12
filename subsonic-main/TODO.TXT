@@ -136,6 +136,7 @@ Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
 In-app purchase
+  Ensure preference is set before confirming purchase.
 Widget
   preview image
 Reduce size of main_header_icon

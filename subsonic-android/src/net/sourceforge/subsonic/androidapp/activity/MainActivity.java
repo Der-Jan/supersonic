@@ -65,6 +65,7 @@ public class MainActivity extends SubsonicTabActivity {
 
     private SubsonicPurchaseObserver purchaseObserver;
     private BillingService billingService;
+    private TextView purchaseButton;
 
     /**
      * Called when the activity is first created.
@@ -84,7 +85,7 @@ public class MainActivity extends SubsonicTabActivity {
         final View serverButton = buttons.findViewById(R.id.main_select_server);
         final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
-        final View purchaseButton = buttons.findViewById(R.id.main_purchase);
+        purchaseButton = (TextView) buttons.findViewById(R.id.main_purchase);
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
         final View albumsRandomButton = buttons.findViewById(R.id.main_albums_random);
@@ -178,6 +179,7 @@ public class MainActivity extends SubsonicTabActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        purchaseButton.setText(Util.getPurchaseMode(this).toString());
         ResponseHandler.register(purchaseObserver);
     }
 
@@ -351,6 +353,8 @@ public class MainActivity extends SubsonicTabActivity {
 
             if (purchaseState == Consts.PurchaseState.PURCHASED) {
                 Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_PURCHASED);
+                purchaseButton.setText(Util.getPurchaseMode(MainActivity.this).toString()); // TODO
+                Log.d(TAG, "New purchase mode: " + Util.getPurchaseMode(MainActivity.this));
             }
         }
 
@@ -385,7 +389,10 @@ public class MainActivity extends SubsonicTabActivity {
                 }
                 // Update the shared preferences so that we don't perform
                 // a RestoreTransactions again.
-                Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_NOT_PURCHASED);
+                if (Util.getPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
+                    Util.setPurchaseMode(MainActivity.this, PurchaseMode.AD_REMOVAL_NOT_PURCHASED);
+                    purchaseButton.setText(Util.getPurchaseMode(MainActivity.this).toString()); // TODO
+                }
             } else {
                 if (Consts.DEBUG) {
                     Log.d(TAG, "RestoreTransactions error: " + responseCode);

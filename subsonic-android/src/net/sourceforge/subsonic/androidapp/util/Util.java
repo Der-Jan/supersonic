@@ -129,6 +129,7 @@ public final class Util {
     }
 
     public static void setPurchaseMode(Context context, PurchaseMode purchaseMode) {
+        Log.d(TAG, "setPurchaseMode(" + purchaseMode + ")");
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.PREFERENCES_KEY_PURCHASE_MODE, purchaseMode.name());
