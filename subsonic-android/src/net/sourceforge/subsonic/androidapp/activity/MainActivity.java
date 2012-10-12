@@ -357,8 +357,7 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String productId, long purchaseTime, String developerPayload) {
-            logProductActivity(productId, purchaseState.toString());
-
+            Log.i(TAG, "onPurchaseStateChange: " + productId + ": " + purchaseState);
             if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
                 Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.PURCHASED);
                 purchaseButton.setVisibility(View.GONE);
@@ -367,47 +366,29 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onRequestPurchaseResponse(BillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
-            if (BillingConstants.DEBUG) {
-                Log.d(TAG, request.productId + ": " + responseCode);
-            }
+            Log.i(TAG, "onRequestPurchaseResponse: " + request.productId + ": " + responseCode);
             if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
-                if (BillingConstants.DEBUG) {
-                    Log.i(TAG, "purchase was successfully sent to server");
-                }
-                logProductActivity(request.productId, "sending purchase request");
+                Log.i(TAG, "Purchase was successfully sent to server");
             } else if (responseCode == BillingConstants.ResponseCode.RESULT_USER_CANCELED) {
-                if (BillingConstants.DEBUG) {
-                    Log.i(TAG, "user canceled purchase");
-                }
-                logProductActivity(request.productId, "dismissed purchase dialog");
+                Log.i(TAG, "User canceled purchase");
             } else {
-                if (BillingConstants.DEBUG) {
-                    Log.i(TAG, "purchase failed");
-                }
-                logProductActivity(request.productId, "request purchase returned " + responseCode);
+                Log.i(TAG, "Purchase failed");
             }
         }
 
         @Override
         public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
             if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
-                if (BillingConstants.DEBUG) {
-                    Log.d(TAG, "completed RestoreTransactions request");
-                }
+                Log.d(TAG, "Completed RestoreTransactions request");
+
                 // Update the shared preferences so that we don't perform a RestoreTransactions again.
                 if (Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
                     Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_PURCHASED);
                     purchaseButton.setVisibility(View.VISIBLE);
                 }
             } else {
-                if (BillingConstants.DEBUG) {
-                    Log.d(TAG, "RestoreTransactions error: " + responseCode);
-                }
+                Log.d(TAG, "RestoreTransactions error: " + responseCode);
             }
-        }
-
-        private void logProductActivity(String productId, String activity) {
-            Log.d(TAG, productId + " - " + activity);
         }
     }
 }
