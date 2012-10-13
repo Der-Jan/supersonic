@@ -23,7 +23,30 @@ package net.sourceforge.subsonic.androidapp.billing;
  * @version $Id$
  */
 public enum PurchaseMode {
-    UNKNOWN,
-    PURCHASED,
-    NOT_PURCHASED
+    UNKNOWN(true, true, true),
+    NOT_SUPPORTED(false, false, true),
+    PURCHASED(false, false, false),
+    NOT_PURCHASED(true, false, true);
+
+    private final boolean shouldPurcaseButtonBeVisible;
+    private final boolean shouldRestoreTransactions;
+    private final boolean shouldDisplayAd;
+
+    private PurchaseMode(boolean shouldPurcaseButtonBeVisible, boolean shouldRestoreTransactions, boolean shouldDisplayAd) {
+        this.shouldPurcaseButtonBeVisible = shouldPurcaseButtonBeVisible;
+        this.shouldRestoreTransactions = shouldRestoreTransactions;
+        this.shouldDisplayAd = shouldDisplayAd;
+    }
+
+    public boolean shouldPurcaseButtonBeVisible() {
+        return shouldPurcaseButtonBeVisible;
+    }
+
+    public boolean shouldRestoreTransactions() {
+        return  shouldRestoreTransactions;
+    }
+
+    public boolean shouldDisplayAd() {
+        return  shouldDisplayAd;
+    }
 }

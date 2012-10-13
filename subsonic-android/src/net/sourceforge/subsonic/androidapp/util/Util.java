@@ -36,7 +36,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import org.apache.http.HttpEntity;
 
 import com.google.ads.AdRequest;
@@ -75,6 +74,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.activity.DownloadActivity;
+import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
@@ -760,7 +760,7 @@ public final class Util {
     private final static long AD_INTERVAL_MILLIS = 60000;
 
     public static void createAd(Activity activity, ViewGroup parent) {
-        if (getAdRemovalPurchaseMode(activity) != PurchaseMode.NOT_PURCHASED) {
+        if (!getAdRemovalPurchaseMode(activity).shouldDisplayAd()) {
             return;
         }
         long now = System.currentTimeMillis();

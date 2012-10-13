@@ -86,8 +86,7 @@ public class MainActivity extends SubsonicTabActivity {
         final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
         purchaseButton = (TextView) buttons.findViewById(R.id.main_purchase);
-        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.NOT_PURCHASED;
-        purchaseButton.setVisibility(purchaseEnabled ? View.VISIBLE : View.GONE);
+        updatePurchaseButtonVisibility();
 
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
@@ -238,6 +237,11 @@ public class MainActivity extends SubsonicTabActivity {
                 .show();
     }
 
+    private void updatePurchaseButtonVisibility() {
+        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this).shouldPurcaseButtonBeVisible();
+        purchaseButton.setVisibility(purchaseEnabled ? View.VISIBLE : View.GONE);
+    }
+
     private void loadSettings() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         SharedPreferences prefs = Util.getPreferences(this);
@@ -349,8 +353,14 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onBillingSupported(boolean supported, String type) {
+            if (!supported) {
+                Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_SUPPORTED);
+            } else if (Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.NOT_SUPPORTED) {
+                Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.UNKNOWN);
+            }
+
             // Request restore if this is the first time the app is run.
-            if (supported && Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
+            if (supported && Util.getAdRemovalPurchaseMode(MainActivity.this).shouldRestoreTransactions()) {
                 billingService.restoreTransactions();
             }
         }
@@ -360,7 +370,7 @@ public class MainActivity extends SubsonicTabActivity {
             Log.i(TAG, "onPurchaseStateChange: " + productId + ": " + purchaseState);
             if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
                 Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.PURCHASED);
-                purchaseButton.setVisibility(View.GONE);
+                updatePurchaseButtonVisibility();
             }
         }
 
@@ -382,13 +392,14 @@ public class MainActivity extends SubsonicTabActivity {
                 Log.d(TAG, "Completed RestoreTransactions request");
 
                 // Update the shared preferences so that we don't perform a RestoreTransactions again.
-                if (Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.UNKNOWN) {
+                if (Util.getAdRemovalPurchaseMode(MainActivity.this).shouldRestoreTransactions()) {
                     Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_PURCHASED);
-                    purchaseButton.setVisibility(View.VISIBLE);
                 }
             } else {
+                // This happens when running a debug version of the app.
                 Log.d(TAG, "RestoreTransactions error: " + responseCode);
             }
+            updatePurchaseButtonVisibility();
         }
     }
 }
