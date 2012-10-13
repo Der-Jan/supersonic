@@ -760,6 +760,7 @@ public final class Util {
     private final static long AD_INTERVAL_MILLIS = 60000;
 
     public static void createAd(Activity activity, ViewGroup parent) {
+
         if (!getAdRemovalPurchaseMode(activity).shouldDisplayAd()) {
             return;
         }

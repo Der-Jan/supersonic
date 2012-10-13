@@ -129,8 +129,6 @@ Add option to delete file. (Rename to "Remove from playlist").
   Save queue / Save as playlist
   Delete
   Keep on device / Don't keep on device
-
-Show ad in player screen.
 Add to playlist
 Review album/artist pinning.
 Rename menu items (Pin, Unpin, Delete, Remove)

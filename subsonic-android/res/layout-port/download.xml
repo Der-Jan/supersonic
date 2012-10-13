@@ -28,6 +28,9 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@null"/>
 
+            <include layout="@layout/ad"
+                     android:layout_alignParentTop="true"/>
+
             <include layout="@layout/download_overlay_buttons"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
