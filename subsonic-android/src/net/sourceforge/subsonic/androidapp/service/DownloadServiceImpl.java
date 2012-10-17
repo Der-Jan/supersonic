@@ -18,6 +18,12 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -37,12 +43,6 @@ import net.sourceforge.subsonic.androidapp.util.LRUCache;
 import net.sourceforge.subsonic.androidapp.util.ShufflePlayBuffer;
 import net.sourceforge.subsonic.androidapp.util.SimpleServiceBinder;
 import net.sourceforge.subsonic.androidapp.util.Util;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
 
@@ -178,6 +178,11 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     }
 
     @Override
+    public synchronized void pin(List<MusicDirectory.Entry> songs) {
+        download(songs, true, false, false);
+    }
+
+    @Override
     public synchronized void download(List<MusicDirectory.Entry> songs, boolean save, boolean autoplay, boolean playNext) {
         shufflePlay = false;
         int offset = 1;
@@ -185,23 +190,36 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         if (songs.isEmpty()) {
             return;
         }
-        if (playNext) {
+
+        if (save) {
+            for (MusicDirectory.Entry song : songs) {
+                DownloadFile downloadFile = forSong(song);
+                downloadFile.pin();
+                if (!downloadFile.isWorkDone() && !downloadList.contains(downloadFile)) {
+                    downloadList.add(downloadFile);
+                }
+            }
+        }
+
+        else if (playNext) {
             if (autoplay && getCurrentPlayingIndex() >= 0) {
                 offset = 0;
             }
             for (MusicDirectory.Entry song : songs) {
+                // TODO: Remove "save" parameter.
                 DownloadFile downloadFile = new DownloadFile(this, song, save);
                 downloadList.add(getCurrentPlayingIndex() + offset, downloadFile);
                 offset++;
             }
-            revision++;
+
         } else {
             for (MusicDirectory.Entry song : songs) {
                 DownloadFile downloadFile = new DownloadFile(this, song, save);
                 downloadList.add(downloadFile);
             }
-            revision++;
         }
+
+        revision++;
         updateJukeboxPlaylist();
 
         if (autoplay) {
@@ -367,18 +385,6 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     public synchronized void delete(List<MusicDirectory.Entry> songs) {
         for (MusicDirectory.Entry song : songs) {
             forSong(song).delete();
-        }
-    }
-
-    @Override
-    public synchronized void pin(List<MusicDirectory.Entry> songs) {
-        for (MusicDirectory.Entry song : songs) {
-            DownloadFile downloadFile = forSong(song);
-            downloadFile.pin();
-            if (!downloadFile.isWorkDone() && !downloadList.contains(downloadFile)) {
-                downloadList.add(downloadFile);
-                revision++;
-            }
         }
     }
 
