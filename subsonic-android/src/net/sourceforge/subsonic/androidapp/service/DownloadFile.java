@@ -57,10 +57,9 @@ public class DownloadFile {
     private boolean failed;
     private int bitRate;
 
-    public DownloadFile(Context context, MusicDirectory.Entry song, boolean save) {
+    public DownloadFile(Context context, MusicDirectory.Entry song) {
         this.context = context;
         this.song = song;
-        this.save = save;
         saveFile = FileUtil.getSongFile(context, song);
         bitRate = Util.getMaxBitrate(context);
         partialFile = new File(saveFile.getParent(), FileUtil.getBaseName(saveFile.getName()) +

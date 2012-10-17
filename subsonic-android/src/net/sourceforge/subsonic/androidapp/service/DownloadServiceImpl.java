@@ -206,15 +206,14 @@ public class DownloadServiceImpl extends Service implements DownloadService {
                 offset = 0;
             }
             for (MusicDirectory.Entry song : songs) {
-                // TODO: Remove "save" parameter.
-                DownloadFile downloadFile = new DownloadFile(this, song, save);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(getCurrentPlayingIndex() + offset, downloadFile);
                 offset++;
             }
 
         } else {
             for (MusicDirectory.Entry song : songs) {
-                DownloadFile downloadFile = new DownloadFile(this, song, save);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(downloadFile);
             }
         }
@@ -319,7 +318,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
         DownloadFile downloadFile = downloadFileCache.get(song);
         if (downloadFile == null) {
-            downloadFile = new DownloadFile(this, song, false);
+            downloadFile = new DownloadFile(this, song);
             downloadFileCache.put(song, downloadFile);
         }
         return downloadFile;
@@ -854,7 +853,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         int size = size();
         if (size < listSize) {
             for (MusicDirectory.Entry song : shufflePlayBuffer.get(listSize - size)) {
-                DownloadFile downloadFile = new DownloadFile(this, song, false);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(downloadFile);
                 revision++;
             }
@@ -866,7 +865,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         if (currIndex > 4) {
             int songsToShift = currIndex - 2;
             for (MusicDirectory.Entry song : shufflePlayBuffer.get(songsToShift)) {
-                downloadList.add(new DownloadFile(this, song, false));
+                downloadList.add(new DownloadFile(this, song));
                 downloadList.get(0).cancelDownload();
                 downloadList.remove(0);
                 revision++;
