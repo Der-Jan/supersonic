@@ -120,10 +120,12 @@ DONE IN ANDROID 3.5
 Now requires Android 2.1 or later (API level 7)
 UI overhaul
 Detect Bluetooth connect/disconnect in ICS.
+Ad support
 Wifi lock.
 
 TODO IN ANDROID 3.5
 --------------------
+Create new screenshots.
 Add option to delete file. (Rename to "Remove from playlist").
 Add to playlist
 Test on Android 2 and 3.
