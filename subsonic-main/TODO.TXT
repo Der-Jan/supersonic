@@ -125,13 +125,7 @@ Wifi lock.
 TODO IN ANDROID 3.5
 --------------------
 Add option to delete file. (Rename to "Remove from playlist").
-  Remove from queue
-  Clear queue
-  Save queue / Save as playlist
-  Delete
-  Keep on device / Don't keep on device
 Add to playlist
-Rename menu items (Pin, Unpin, Delete, Remove)
 Test on Android 2 and 3.
   Notification icon too big and bright.
 In-app purchase
