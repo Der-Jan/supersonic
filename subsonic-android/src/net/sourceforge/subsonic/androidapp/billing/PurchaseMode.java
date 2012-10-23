@@ -38,7 +38,7 @@ public enum PurchaseMode {
         this.shouldDisplayAd = shouldDisplayAd;
     }
 
-    public boolean shouldPurcaseButtonBeVisible() {
+    public boolean shouldPurchaseButtonBeVisible() {
         return shouldPurcaseButtonBeVisible;
     }
 

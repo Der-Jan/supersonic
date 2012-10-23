@@ -74,6 +74,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.activity.DownloadActivity;
+import net.sourceforge.subsonic.androidapp.activity.MainActivity;
 import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.PlayerState;
@@ -112,10 +113,6 @@ public final class Util {
     private static Toast toast;
 
     private Util() {
-    }
-
-    public static boolean isOffline(Context context) {
-        return getActiveServer(context) == 0;
     }
 
     public static boolean isScreenLitOnDownload(Context context) {
@@ -163,15 +160,24 @@ public final class Util {
         editor.commit();
     }
 
+    public static boolean isOffline(Context context) {
+        SharedPreferences prefs = getPreferences(context);
+        return prefs.getBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
+    }
+
+    public static void setOffline(Context context, boolean offline) {
+        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, offline);
+        editor.commit();
+    }
+
     public static int getActiveServer(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
     }
 
     public static String getServerName(Context context, int instance) {
-        if (instance == 0) {
-            return context.getResources().getString(R.string.main_offline);
-        }
         SharedPreferences prefs = getPreferences(context);
         return prefs.getString(Constants.PREFERENCES_KEY_SERVER_NAME + instance, null);
     }

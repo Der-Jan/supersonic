@@ -30,8 +30,8 @@
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dip"
-                      android:layout_marginTop="6dip"
-                      android:textAppearance="?android:attr/textAppearanceLarge"/>
+                      android:layout_marginTop="8dip"
+                      android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView android:id="@+id/main.select_server_2"
                       android:layout_width="fill_parent"
@@ -43,9 +43,14 @@
     </LinearLayout>
 
     <TextView style="@style/MainMenuTextView"
+              android:id="@+id/main_offline"
+              android:text="@string/main.use_offline"
+              android:drawablePadding="12dip"
+              android:drawableLeft="@drawable/collections_cloud"/>
+
+    <TextView style="@style/MainMenuTextView"
               android:id="@+id/main_purchase"
               android:text="@string/main.purchase"
-              android:visibility="visible"
               android:drawablePadding="12dip"
               android:drawableLeft="@drawable/content_remove"/>
 

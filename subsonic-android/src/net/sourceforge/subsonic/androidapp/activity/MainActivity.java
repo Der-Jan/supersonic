@@ -59,7 +59,6 @@ public class MainActivity extends SubsonicTabActivity {
     private static final int MENU_ITEM_SERVER_1 = 101;
     private static final int MENU_ITEM_SERVER_2 = 102;
     private static final int MENU_ITEM_SERVER_3 = 103;
-    private static final int MENU_ITEM_OFFLINE = 104;
 
     private static boolean infoDialogDisplayed;
 
@@ -85,6 +84,9 @@ public class MainActivity extends SubsonicTabActivity {
         final View serverButton = buttons.findViewById(R.id.main_select_server);
         final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
+        final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
+        offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
+
         purchaseButton = (TextView) buttons.findViewById(R.id.main_purchase);
         updatePurchaseButtonVisibility();
 
@@ -104,9 +106,13 @@ public class MainActivity extends SubsonicTabActivity {
         ListView list = (ListView) findViewById(R.id.main_list);
 
         MergeAdapter adapter = new MergeAdapter();
-        adapter.addViews(Arrays.asList(serverButton), true);
+
+        adapter.addView(offlineButton, true);
         if (!Util.isOffline(this)) {
-            adapter.addView(purchaseButton, true);
+            adapter.addView(serverButton, true);
+            if (Util.getAdRemovalPurchaseMode(this).shouldPurchaseButtonBeVisible()) {
+                adapter.addView(purchaseButton, true);
+            }
             adapter.addView(albumsTitle, false);
             adapter.addViews(Arrays.asList(albumsNewestButton, albumsRandomButton, albumsHighestButton, albumsRecentButton, albumsFrequentButton), true);
         }
@@ -116,7 +122,9 @@ public class MainActivity extends SubsonicTabActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (view == serverButton) {
+                if (view == offlineButton) {
+                    toggleOffline();
+                } else if (view == serverButton) {
                     dummyView.showContextMenu();
                 } else if (view == purchaseButton) {
                     purchaseAdRemoval();
@@ -238,7 +246,7 @@ public class MainActivity extends SubsonicTabActivity {
     }
 
     private void updatePurchaseButtonVisibility() {
-        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this).shouldPurcaseButtonBeVisible();
+        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this).shouldPurchaseButtonBeVisible();
         purchaseButton.setVisibility(purchaseEnabled ? View.VISIBLE : View.GONE);
     }
 
@@ -250,6 +258,13 @@ public class MainActivity extends SubsonicTabActivity {
             editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, FileUtil.getDefaultMusicDirectory().getPath());
             editor.commit();
         }
+
+        if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
+            editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
+            editor.commit();
+        }
     }
 
     @Override
@@ -259,14 +274,10 @@ public class MainActivity extends SubsonicTabActivity {
         MenuItem menuItem1 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_1, MENU_ITEM_SERVER_1, Util.getServerName(this, 1));
         MenuItem menuItem2 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_2, MENU_ITEM_SERVER_2, Util.getServerName(this, 2));
         MenuItem menuItem3 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_3, MENU_ITEM_SERVER_3, Util.getServerName(this, 3));
-        MenuItem menuItem4 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_OFFLINE, MENU_ITEM_OFFLINE, Util.getServerName(this, 0));
         menu.setGroupCheckable(MENU_GROUP_SERVER, true, true);
         menu.setHeaderTitle(R.string.main_select_server);
 
         switch (Util.getActiveServer(this)) {
-            case 0:
-                menuItem4.setChecked(true);
-                break;
             case 1:
                 menuItem1.setChecked(true);
                 break;
@@ -282,9 +293,6 @@ public class MainActivity extends SubsonicTabActivity {
     @Override
     public boolean onContextItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case MENU_ITEM_OFFLINE:
-                setActiveServer(0);
-                break;
             case MENU_ITEM_SERVER_1:
                 setActiveServer(1);
                 break;
@@ -301,6 +309,11 @@ public class MainActivity extends SubsonicTabActivity {
         // Restart activity
         restart();
         return true;
+    }
+
+    private void toggleOffline() {
+        Util.setOffline(this, !Util.isOffline(this));
+        restart();
     }
 
     private void setActiveServer(int instance) {

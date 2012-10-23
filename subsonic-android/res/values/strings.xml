@@ -24,7 +24,8 @@
     <string name="main.select_server">Select server</string>
     <string name="main.shuffle">Shuffle play</string>
     <string name="main.shuffle_confirm">Do you want to start shuffle play?</string>
-    <string name="main.offline">Offline</string>
+    <string name="main.use_offline">Use offline</string>
+    <string name="main.use_connected">Use connected</string>
     <string name="main.settings">Settings</string>
     <string name="main.purchase">Remove ads</string>
     <string name="main.purchase_confirm">Click Continue to purchase permanent ad removal in Google Play.</string>
