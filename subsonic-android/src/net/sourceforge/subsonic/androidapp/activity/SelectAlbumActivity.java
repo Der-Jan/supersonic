@@ -567,6 +567,13 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         protected void done(Pair<MusicDirectory, Boolean> result) {
             List<MusicDirectory.Entry> entries = result.getFirst().getChildren();
 
+            setBackAction(new Runnable() {
+                @Override
+                public void run() {
+                Util.toast(SelectAlbumActivity.this, "Go back!");
+                }
+            });
+
             boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {
                 if (!entry.isDirectory()) {
