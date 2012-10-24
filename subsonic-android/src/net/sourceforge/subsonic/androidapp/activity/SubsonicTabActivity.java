@@ -260,26 +260,17 @@ public class SubsonicTabActivity extends Activity {
 
 
     protected void setBackAction(final Runnable runnable) {
-        View iconButton = findViewById(R.id.actionbar_icon);
-        iconButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                runnable.run();
-            }
-        });
-        iconButton.setEnabled(true);
-        iconButton.setBackgroundResource(R.drawable.actionbar_button);
 
-        View backButton = findViewById(R.id.actionbar_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        View backLayout = findViewById(R.id.actionbar_back_layout);
+        backLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 runnable.run();
             }
         });
-        backButton.setVisibility(View.VISIBLE);
-        backButton.setEnabled(true);
-        backButton.setBackgroundResource(R.drawable.actionbar_button);
+        backLayout.setBackgroundResource(R.drawable.actionbar_button);
+
+        findViewById(R.id.actionbar_back).setVisibility(View.VISIBLE);
     }
 
     protected void downloadRecursively(final String id, final boolean save, final boolean append, final boolean autoplay) {

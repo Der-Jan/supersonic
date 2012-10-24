@@ -134,6 +134,7 @@ In-app purchase
   - Review ad providers
 Poor quality of album art in album header?
 Action bar back/up button: ic_ab_back_holo_dark
+  Improve back button by adding parent_id when known.
 
 Review patches for AVRCP and lockscreen controls
   https://sourceforge.net/p/subsonic/patches/9/
