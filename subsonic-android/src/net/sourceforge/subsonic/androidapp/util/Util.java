@@ -74,7 +74,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.activity.DownloadActivity;
-import net.sourceforge.subsonic.androidapp.activity.MainActivity;
 import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.PlayerState;
@@ -776,14 +775,14 @@ public final class Util {
         }
 
         timeOfLastAd = now;
-        double random = Math.random();
-        if (random < 0.25) {
-            createGoogleAd(activity, parent, AdSize.BANNER);
-        } else if (random < 0.50) {
-            createGoogleAd(activity, parent, AdSize.SMART_BANNER);
-        } else {
+//        double random = Math.random();
+//        if (random < 0.25) {
+//            createGoogleAd(activity, parent, AdSize.BANNER);
+//        } else if (random < 0.50) {
+//            createGoogleAd(activity, parent, AdSize.SMART_BANNER);
+//        } else {
             createInnerActiveAd(activity, parent);
-        }
+//        }
     }
 
     private static void createInnerActiveAd(Activity activity, ViewGroup parent) {
