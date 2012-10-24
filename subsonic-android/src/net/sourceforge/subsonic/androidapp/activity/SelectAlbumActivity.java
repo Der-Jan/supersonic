@@ -46,12 +46,13 @@ import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.DownloadFile;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
-import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.Pair;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import static net.sourceforge.subsonic.androidapp.util.Constants.*;
 
 public class SelectAlbumActivity extends SubsonicTabActivity {
 
@@ -78,13 +79,23 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_album);
 
+        final String id = getIntent().getStringExtra(INTENT_EXTRA_NAME_ID);
+        final String name = getIntent().getStringExtra(INTENT_EXTRA_NAME_NAME);
+        final String parentId = getIntent().getStringExtra(INTENT_EXTRA_NAME_PARENT_ID);
+        final String parentName = getIntent().getStringExtra(INTENT_EXTRA_NAME_PARENT_NAME);
+        String playlistId = getIntent().getStringExtra(INTENT_EXTRA_NAME_PLAYLIST_ID);
+        String playlistName = getIntent().getStringExtra(INTENT_EXTRA_NAME_PLAYLIST_NAME);
+        String albumListType = getIntent().getStringExtra(INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
+        int albumListSize = getIntent().getIntExtra(INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 0);
+        int albumListOffset = getIntent().getIntExtra(INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
+
         entryList = (ListView) findViewById(R.id.select_album_entries);
 
         footer = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.select_album_footer, entryList, false);
         entryList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long i) {
                 if (position >= 0) {
                     MusicDirectory.Entry entry = getEntryAtPosition(position);
                     if (entry == null) {
@@ -92,8 +103,10 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                     }
                     if (entry.isDirectory()) {
                         Intent intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                        intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, entry.getId());
-                        intent.putExtra(Constants.INTENT_EXTRA_NAME_NAME, entry.getTitle());
+                        intent.putExtra(INTENT_EXTRA_NAME_ID, entry.getId());
+                        intent.putExtra(INTENT_EXTRA_NAME_NAME, entry.getTitle());
+                        intent.putExtra(INTENT_EXTRA_NAME_PARENT_ID, id);
+                        intent.putExtra(INTENT_EXTRA_NAME_PARENT_NAME, name);
                         Util.startActivityWithoutTransition(SelectAlbumActivity.this, intent);
                     } else if (entry.isVideo()) {
                         playVideo(entry);
@@ -160,20 +173,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
         enableButtons();
 
-        String id = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_ID);
-        String name = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_NAME);
-        String playlistId = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_PLAYLIST_ID);
-        String playlistName = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_PLAYLIST_NAME);
-        String albumListType = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
-        int albumListSize = getIntent().getIntExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 0);
-        int albumListOffset = getIntent().getIntExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
-
         if (playlistId != null) {
             getPlaylist(playlistId, playlistName);
         } else if (albumListType != null) {
             getAlbumList(albumListType, albumListSize, albumListOffset);
         } else {
-            getMusicDirectory(id, name);
+            getMusicDirectory(id, name, parentId, parentName);
         }
 
         // Button 1: play all
@@ -217,7 +222,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
         }
 
-        String id = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_ID);
+        String id = getIntent().getStringExtra(INTENT_EXTRA_NAME_ID);
         if (hasSubFolders && id != null) {
             downloadRecursively(id, false, false, true);
         } else {
@@ -288,13 +293,13 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         return true;
     }
 
-    private void getMusicDirectory(final String id, String name) {
+    private void getMusicDirectory(final String id, String name, final String parentId, final String parentName) {
         setTitle(name);
 
         new LoadTask() {
             @Override
             protected MusicDirectory load(MusicService service) throws Exception {
-                boolean refresh = getIntent().getBooleanExtra(Constants.INTENT_EXTRA_NAME_REFRESH, false);
+                boolean refresh = getIntent().getBooleanExtra(INTENT_EXTRA_NAME_REFRESH, false);
                 return service.getMusicDirectory(id, refresh, SelectAlbumActivity.this, this);
             }
 
@@ -308,7 +313,11 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         Intent intent;
                         if (result.getFirst().getParentId() != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                            intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, result.getFirst().getParentId());
+                            intent.putExtra(INTENT_EXTRA_NAME_ID, result.getFirst().getParentId());
+                        } else if (parentId != null) {
+                            intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
+                            intent.putExtra(INTENT_EXTRA_NAME_ID, parentId);
+                            intent.putExtra(INTENT_EXTRA_NAME_NAME, parentName);
                         } else {
                             intent = new Intent(SelectAlbumActivity.this, SelectArtistActivity.class);
                         }
@@ -376,13 +385,13 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                            String type = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
-                            int size = getIntent().getIntExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 0);
-                            int offset = getIntent().getIntExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0) + size;
+                            String type = getIntent().getStringExtra(INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
+                            int size = getIntent().getIntExtra(INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 0);
+                            int offset = getIntent().getIntExtra(INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0) + size;
 
-                            intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE, type);
-                            intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, size);
-                            intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, offset);
+                            intent.putExtra(INTENT_EXTRA_NAME_ALBUM_LIST_TYPE, type);
+                            intent.putExtra(INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, size);
+                            intent.putExtra(INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, offset);
                             Util.startActivityWithoutTransition(SelectAlbumActivity.this, intent);
                         }
                     });
@@ -487,7 +496,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
                 warnIfNetworkOrStorageUnavailable();
                 getDownloadService().download(songs, save, autoplay, playNext);
-                String playlistName = getIntent().getStringExtra(Constants.INTENT_EXTRA_NAME_PLAYLIST_NAME);
+                String playlistName = getIntent().getStringExtra(INTENT_EXTRA_NAME_PLAYLIST_NAME);
                 if (playlistName != null) {
                     getDownloadService().setSuggestedPlaylistName(playlistName);
                 }
@@ -536,7 +545,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
 
         if (trialDaysLeft == 0) {
             showDonationDialog(trialDaysLeft, null);
-        } else if (trialDaysLeft < Constants.FREE_TRIAL_DAYS / 2) {
+        } else if (trialDaysLeft < FREE_TRIAL_DAYS / 2) {
             showDonationDialog(trialDaysLeft, onValid);
         } else {
             Util.toast(this, getResources().getString(R.string.select_album_not_licensed, trialDaysLeft));
@@ -561,7 +570,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DONATION_URL)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DONATION_URL)));
                     }
                 });
 
@@ -615,14 +624,14 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 playLastButton.setVisibility(View.VISIBLE);
             }
 
-            boolean isAlbumList = getIntent().hasExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
+            boolean isAlbumList = getIntent().hasExtra(INTENT_EXTRA_NAME_ALBUM_LIST_TYPE);
 
             emptyView.setVisibility(entries.isEmpty() ? View.VISIBLE : View.GONE);
             playAllButton.setVisibility(isAlbumList || entries.isEmpty() ? View.GONE : View.VISIBLE);
             entryList.setAdapter(new EntryAdapter(SelectAlbumActivity.this, getImageLoader(), entries, true));
             licenseValid = result.getSecond();
 
-            boolean playAll = getIntent().getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
+            boolean playAll = getIntent().getBooleanExtra(INTENT_EXTRA_NAME_AUTOPLAY, false);
             if (playAll && hasSongs) {
                 playAll();
             }
