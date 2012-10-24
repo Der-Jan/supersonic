@@ -23,8 +23,8 @@ package net.sourceforge.subsonic.androidapp.billing;
  * @version $Id$
  */
 public enum PurchaseMode {
-    UNKNOWN(true, true, true),
-    NOT_SUPPORTED(false, false, true),
+    UNKNOWN(true, true, false),
+    NOT_SUPPORTED(false, false, false),
     PURCHASED(false, false, false),
     NOT_PURCHASED(true, false, true);
 

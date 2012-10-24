@@ -11,6 +11,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
  * This class contains the methods that handle responses from Android Market.  The
@@ -105,9 +107,13 @@ public class ResponseHandler {
             final Context context, final PurchaseState purchaseState, final String productId,
             final String orderId, final long purchaseTime, final String developerPayload) {
 
-                    if (purchaseObserver != null) {
-                        purchaseObserver.onPurchaseStateChange(purchaseState, productId, purchaseTime, developerPayload);
-                    }
+        if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
+            Util.setAdRemovalPurchaseMode(context, PurchaseMode.PURCHASED);
+        }
+
+        if (purchaseObserver != null) {
+            purchaseObserver.onPurchaseStateChange(purchaseState, productId, purchaseTime, developerPayload);
+        }
 
 
         // Update the database with the purchase state. We shouldn't do that

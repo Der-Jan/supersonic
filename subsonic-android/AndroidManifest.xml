@@ -117,7 +117,6 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info"/>
         </receiver>
 
-
         <receiver android:name="net.sourceforge.subsonic.androidapp.billing.BillingReceiver">
             <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
@@ -125,7 +124,6 @@
                 <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
-
 
         <provider android:name="net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider"
                   android:authorities="net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider"/>

@@ -380,9 +380,11 @@ public class MainActivity extends SubsonicTabActivity {
 
         @Override
         public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String productId, long purchaseTime, String developerPayload) {
+
+            // Note: Util.setAdRemovalPurchaseMode() is done in ResponseHandler.purchaseResponse(), since this activity may be
+            // gone when the response comes in.
             Log.i(TAG, "onPurchaseStateChange: " + productId + ": " + purchaseState);
             if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
-                Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.PURCHASED);
                 updatePurchaseButtonVisibility();
             }
         }
