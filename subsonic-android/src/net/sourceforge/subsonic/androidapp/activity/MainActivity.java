@@ -390,27 +390,17 @@ public class MainActivity extends SubsonicTabActivity {
         @Override
         public void onRequestPurchaseResponse(BillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
             Log.i(TAG, "onRequestPurchaseResponse: " + request.productId + ": " + responseCode);
-            if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
-                Log.i(TAG, "Purchase was successfully sent to server");
-            } else if (responseCode == BillingConstants.ResponseCode.RESULT_USER_CANCELED) {
-                Log.i(TAG, "User canceled purchase");
-            } else {
-                Log.i(TAG, "Purchase failed");
-            }
         }
 
         @Override
         public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
+            Log.i(TAG, "onRestoreTransactionsResponse: " + responseCode);
             if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
-                Log.d(TAG, "Completed RestoreTransactions request");
 
                 // Update the shared preferences so that we don't perform a RestoreTransactions again.
                 if (Util.getAdRemovalPurchaseMode(MainActivity.this).shouldRestoreTransactions()) {
                     Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_PURCHASED);
                 }
-            } else {
-                // This happens when running a debug version of the app.
-                Log.d(TAG, "RestoreTransactions error: " + responseCode);
             }
             updatePurchaseButtonVisibility();
         }

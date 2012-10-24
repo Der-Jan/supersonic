@@ -28,25 +28,25 @@ public enum PurchaseMode {
     PURCHASED(false, false, false),
     NOT_PURCHASED(true, false, true);
 
-    private final boolean shouldPurcaseButtonBeVisible;
+    private final boolean shouldPurchaseButtonBeVisible;
     private final boolean shouldRestoreTransactions;
     private final boolean shouldDisplayAd;
 
-    private PurchaseMode(boolean shouldPurcaseButtonBeVisible, boolean shouldRestoreTransactions, boolean shouldDisplayAd) {
-        this.shouldPurcaseButtonBeVisible = shouldPurcaseButtonBeVisible;
+    private PurchaseMode(boolean shouldPurchaseButtonBeVisible, boolean shouldRestoreTransactions, boolean shouldDisplayAd) {
+        this.shouldPurchaseButtonBeVisible = shouldPurchaseButtonBeVisible;
         this.shouldRestoreTransactions = shouldRestoreTransactions;
         this.shouldDisplayAd = shouldDisplayAd;
     }
 
     public boolean shouldPurchaseButtonBeVisible() {
-        return shouldPurcaseButtonBeVisible;
+        return shouldPurchaseButtonBeVisible;
     }
 
     public boolean shouldRestoreTransactions() {
-        return  shouldRestoreTransactions;
+        return shouldRestoreTransactions;
     }
 
     public boolean shouldDisplayAd() {
-        return  shouldDisplayAd;
+        return shouldDisplayAd;
     }
 }
