@@ -2,15 +2,14 @@
 
 package net.sourceforge.subsonic.androidapp.billing;
 
-import net.sourceforge.subsonic.androidapp.billing.BillingService.RequestPurchase;
-import net.sourceforge.subsonic.androidapp.billing.BillingService.RestoreTransactions;
-import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
-import net.sourceforge.subsonic.androidapp.billing.BillingConstants.ResponseCode;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.PurchaseState;
+import net.sourceforge.subsonic.androidapp.billing.BillingConstants.ResponseCode;
+import net.sourceforge.subsonic.androidapp.billing.BillingService.RequestPurchase;
+import net.sourceforge.subsonic.androidapp.billing.BillingService.RestoreTransactions;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -107,6 +106,7 @@ public class ResponseHandler {
             final Context context, final PurchaseState purchaseState, final String productId,
             final String orderId, final long purchaseTime, final String developerPayload) {
 
+        Log.i(TAG, "purchaseResponse: " + purchaseState + ", " + productId + ", " + orderId);
         if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
             Util.setAdRemovalPurchaseMode(context, PurchaseMode.PURCHASED);
         }
@@ -129,8 +129,8 @@ public class ResponseHandler {
 //                        orderId, productId, purchaseState, purchaseTime, developerPayload);
 //                db.close();
 
-                // This needs to be synchronized because the UI thread can change the
-                // value of purchaseObserver.
+        // This needs to be synchronized because the UI thread can change the
+        // value of purchaseObserver.
 //                synchronized(ResponseHandler.class) {
 //                    if (purchaseObserver != null) {
 //                        purchaseObserver.postPurchaseStateChange(
