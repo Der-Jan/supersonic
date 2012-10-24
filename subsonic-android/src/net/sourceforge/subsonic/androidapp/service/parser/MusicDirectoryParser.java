@@ -54,6 +54,7 @@ public class MusicDirectoryParser extends MusicDirectoryEntryParser {
                     dir.addChild(parseEntry());
                 } else if ("directory".equals(name)) {
                     dir.setName(get("name"));
+                    dir.setParentId(get("parent"));
                 } else if ("error".equals(name)) {
                     handleError();
                 }

@@ -297,11 +297,36 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 boolean refresh = getIntent().getBooleanExtra(Constants.INTENT_EXTRA_NAME_REFRESH, false);
                 return service.getMusicDirectory(id, refresh, SelectAlbumActivity.this, this);
             }
+
+            @Override
+            protected void done(final Pair<MusicDirectory, Boolean> result) {
+                super.done(result);
+                setTitle(result.getFirst().getName());
+                setBackAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent;
+                        if (result.getFirst().getParentId() != null) {
+                            intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
+                            intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, result.getFirst().getParentId());
+                        } else {
+                            intent = new Intent(SelectAlbumActivity.this, SelectArtistActivity.class);
+                        }
+                        Util.startActivityWithoutTransition(SelectAlbumActivity.this, intent);
+                    }
+                });
+            }
         }.execute();
     }
 
     private void getPlaylist(final String playlistId, String playlistName) {
         setTitle(playlistName);
+        setBackAction(new Runnable() {
+            @Override
+            public void run() {
+                Util.startActivityWithoutTransition(SelectAlbumActivity.this, SelectPlaylistActivity.class);
+            }
+        });
 
         new LoadTask() {
             @Override
@@ -324,6 +349,13 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         } else if ("frequent".equals(albumListType)) {
             setTitle(R.string.main_albums_frequent);
         }
+
+        setBackAction(new Runnable() {
+            @Override
+            public void run() {
+                Util.startActivityWithoutTransition(SelectAlbumActivity.this, MainActivity.class);
+            }
+        });
 
         new LoadTask() {
             @Override
@@ -566,13 +598,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         @Override
         protected void done(Pair<MusicDirectory, Boolean> result) {
             List<MusicDirectory.Entry> entries = result.getFirst().getChildren();
-
-            setBackAction(new Runnable() {
-                @Override
-                public void run() {
-                Util.toast(SelectAlbumActivity.this, "Go back!");
-                }
-            });
 
             boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {

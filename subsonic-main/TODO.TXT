@@ -5,6 +5,7 @@ Updated Dutch translation, courtesy of W. van der Heijden.
 
 TODO IN 4.8
 --------------
+REST: Support "parent" attribute in getMusicDirectory
 Fix init exception in podcast bean
   https://mail.google.com/mail/u/0/?shva=1#inbox/13a142c12583a0ae
 Links to minisub and apps icons doesn't honor context path.
