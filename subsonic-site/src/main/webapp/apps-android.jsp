@@ -21,7 +21,8 @@
             </p>
             <p>
                 Developed and maintained by Sindre Mehus, the author of Subsonic. Available
-                on <a href="https://market.android.com/details?id=net.sourceforge.subsonic.androidapp">Android Market</a>.
+                on <a href="https://market.android.com/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>
+                (ad-supported), or download ad-free version <a href="http://sourceforge.net/projects/subsonic/files/android/" target="_blank">here</a>.
             </p>
 
             <a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt="" style="padding:3px;padding-left:40px;padding-right:20px"/></a>
