@@ -1,5 +1,5 @@
 <div class="sidebox">
-    <h2>Donate</h2>
+    <h2>Premium Version</h2>
     <p>
         Love Subsonic? Support us by purchasing a license and enjoy premium features like:
     </p>
