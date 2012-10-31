@@ -1,6 +1,7 @@
 DONE IN 4.8
 -------------
 Updated Dutch translation, courtesy of W. van der Heijden.
+Updated German translation, courtesy of deejay2302.
 
 
 TODO IN 4.8
@@ -129,6 +130,7 @@ Dedicated offline button
 
 TODO IN ANDROID 3.6
 --------------------
+Update help page.
 Create new screenshots.
 Update app description on subsonic.org
 Add option to delete file. (Rename to "Remove from playlist").
