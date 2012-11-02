@@ -21,8 +21,6 @@ Problems with alphabetic track sorting, see forum.
 Something wrong with matching players/users in Now Playing.
   https://mail.google.com/mail/?tab=cm#inbox/137dcaaddeba0936
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
-Audio focus
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
 Reconsider album artist.
@@ -130,7 +128,13 @@ Dedicated offline button
 
 TODO IN ANDROID 3.6
 --------------------
+Notification
+  progress
+  compat lib
+Run CacheCleaner in bg, see dsub
 Update help page.
+Audio focus
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
 Create new screenshots.
 Update app description on subsonic.org
 Add option to delete file. (Rename to "Remove from playlist").
