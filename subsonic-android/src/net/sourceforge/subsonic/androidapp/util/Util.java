@@ -46,9 +46,7 @@ import com.inneractive.api.ads.InneractiveAd;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -637,7 +635,7 @@ public final class Util {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                startForeground(downloadService, Constants.NOTIFICATION_ID_PLAYING, notification);
+                downloadService.startForeground(Constants.NOTIFICATION_ID_PLAYING, notification);
             }
         });
 
@@ -651,7 +649,7 @@ public final class Util {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                stopForeground(downloadService, true);
+                downloadService.stopForeground(true);
             }
         });
 
@@ -730,34 +728,6 @@ public final class Util {
             method.invoke(audioManager, componentName);
         } catch (Throwable x) {
             // Ignored.
-        }
-    }
-
-    private static void startForeground(Service service, int notificationId, Notification notification) {
-        // Service.startForeground() was introduced in Android 2.0.
-        // Use reflection to maintain compatibility with 1.5.
-        try {
-            Method method = Service.class.getMethod("startForeground", int.class, Notification.class);
-            method.invoke(service, notificationId, notification);
-            Log.i(TAG, "Successfully invoked Service.startForeground()");
-        } catch (Throwable x) {
-            NotificationManager notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(Constants.NOTIFICATION_ID_PLAYING, notification);
-            Log.i(TAG, "Service.startForeground() not available. Using work-around.");
-        }
-    }
-
-    private static void stopForeground(Service service, boolean removeNotification) {
-        // Service.stopForeground() was introduced in Android 2.0.
-        // Use reflection to maintain compatibility with 1.5.
-        try {
-            Method method = Service.class.getMethod("stopForeground", boolean.class);
-            method.invoke(service, removeNotification);
-            Log.i(TAG, "Successfully invoked Service.stopForeground()");
-        } catch (Throwable x) {
-            NotificationManager notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(Constants.NOTIFICATION_ID_PLAYING);
-            Log.i(TAG, "Service.stopForeground() not available. Using work-around.");
         }
     }
 
