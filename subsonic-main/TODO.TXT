@@ -2,10 +2,12 @@ DONE IN 4.8
 -------------
 Updated Dutch translation, courtesy of W. van der Heijden.
 Updated German translation, courtesy of deejay2302.
-
+Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
 
 TODO IN 4.8
 --------------
+New Windows Phone app
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13a7daefa59cbeb6
 REST: Support "parent" attribute in getMusicDirectory
 Fix init exception in podcast bean
   https://mail.google.com/mail/u/0/?shva=1#inbox/13a142c12583a0ae
