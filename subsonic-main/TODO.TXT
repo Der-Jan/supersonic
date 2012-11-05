@@ -124,11 +124,11 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.6
+DONE IN ANDROID 3.7
 --------------------
-Dedicated offline button
+Updated French translation, courtesy of Simon Trahan.
 
-TODO IN ANDROID 3.6
+TODO IN ANDROID 3.7
 --------------------
 Notification
   progress
