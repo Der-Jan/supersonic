@@ -6,8 +6,6 @@ Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
 
 TODO IN 4.8
 --------------
-New Windows Phone app
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13a7daefa59cbeb6
 Change language in donation dialog.
 REST: Support "parent" attribute in getMusicDirectory
 Fix init exception in podcast bean
