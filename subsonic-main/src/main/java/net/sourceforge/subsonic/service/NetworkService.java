@@ -253,11 +253,13 @@ public class NetworkService {
                 switch (status.getStatusCode()) {
                     case HttpStatus.SC_BAD_REQUEST:
                         urlRedirectionStatus.setText(EntityUtils.toString(response.getEntity()));
+                        testUrlRedirection = false;
                         break;
                     case HttpStatus.SC_OK:
                         urlRedirectionStatus.setText(enable ? "Successfully registered web address." : "Web address disabled.");
                         break;
                     default:
+                        testUrlRedirection = false;
                         throw new IOException(status.getStatusCode() + " " + status.getReasonPhrase());
                 }
 
