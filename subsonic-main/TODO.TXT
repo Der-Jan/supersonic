@@ -6,6 +6,11 @@ Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
 
 TODO IN 4.8
 --------------
+REST: Genre support
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
+Track number removed from RR podcasts.
+Why is RR edit tags so slow?
+Update exe4j. Make it work with java 7
 Change language in donation dialog.
 REST: Support "parent" attribute in getMusicDirectory
 Fix init exception in podcast bean
