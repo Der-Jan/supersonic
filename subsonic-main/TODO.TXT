@@ -7,6 +7,8 @@ Settings > Network doesn't show error if a subsonic.org address is in use.
 
 TODO IN 4.8
 --------------
+Support CORS
+  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
 REST: Genre support
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
 Track number removed from RR podcasts.
@@ -135,10 +137,14 @@ Updated French translation, courtesy of Simon Trahan.
 
 TODO IN ANDROID 3.7
 --------------------
+RC volume
+  https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Notification
   progress
   compat lib
 Run CacheCleaner in bg, see dsub
+Starring support
+Podcast support
 Update help page.
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
