@@ -13,6 +13,8 @@ REST: Genre support
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
 Track number removed from RR podcasts.
 Why is RR edit tags so slow?
+Ogg dates not always parsed properly
+  https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
 Update exe4j. Make it work with java 7
 Change language in donation dialog.
 REST: Support "parent" attribute in getMusicDirectory
@@ -131,12 +133,14 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.7
+DONE IN ANDROID 3.8
 --------------------
-Updated French translation, courtesy of Simon Trahan.
+Fixed illegal xml in french locale.
 
-TODO IN ANDROID 3.7
+TODO IN ANDROID 3.8
 --------------------
+Problem with shuffle + offline
+  https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Notification

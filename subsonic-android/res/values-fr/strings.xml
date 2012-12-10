@@ -178,14 +178,14 @@
     <string name="settings.search_history_cleared">Historique des recherches effacé</string>
     <string name="settings.other_title">Autres paramètres</string>
     <string name="settings.scrobble_title">Scrobbler sur Last.fm</string>
-    <string name="settings.scrobble_summary">N\'oubliez pas de configurer votre identifiant et mot de passe Last.fm sur votre serveur Subsonic</string>-->
+    <string name="settings.scrobble_summary">N\'oubliez pas de configurer votre identifiant et mot de passe Last.fm sur votre serveur Subsonic</string>
     <string name="settings.hide_media_title">Masquer aux autres</string>
     <string name="settings.hide_media_summary">Masquer les fichiers musicaux et les couvertures d\'album aux autres applis (Gallerie, Musique, etc.)</string>
     <string name="settings.hide_media_toast">Prendra effet la prochaine fois qu\'Android recensera les médias disponibles sur l\'appareil.</string>
     <string name="settings.media_button_title">Boutons média</string>
     <string name="settings.media_button_summary">Répondre au boutons média de l\'appareil, du casque et du Bluetooth</string>
     <string name="settings.screen_lit_title">Garder l\'écran allumé</string>
-    <string name="settings.screen_lit_summary">Garder l\'écran allumé lors d\'un téléchargement peut en améliorer la vitesse</string>-->
+    <string name="settings.screen_lit_summary">Garder l\'écran allumé lors d\'un téléchargement peut en améliorer la vitesse</string>
 
     <string name="music_service.retry">Une erreur de réseau s\'est produite. Essai %1$d de %2$d.</string>
 
