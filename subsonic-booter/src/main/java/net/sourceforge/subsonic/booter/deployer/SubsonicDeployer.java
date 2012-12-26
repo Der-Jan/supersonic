@@ -13,10 +13,10 @@ import java.util.zip.ZipEntry;
 
 import org.apache.commons.io.IOUtils;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.security.Constraint;
 import org.mortbay.jetty.security.ConstraintMapping;
 import org.mortbay.jetty.security.SslSocketConnector;
-import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
@@ -173,8 +173,7 @@ public class SubsonicDeployer implements SubsonicDeployerService {
             return IOUtils.toString(in);
 
         } catch (Exception x) {
-            System.err.println("Failed to resolve build number from WAR: " + war);
-            x.printStackTrace();
+            System.err.println("Failed to resolve build number from WAR " + war + ": " + x);
             return null;
         } finally {
             IOUtils.closeQuietly(in);

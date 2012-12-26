@@ -115,10 +115,10 @@
     </form>
 </c:if>
 
-<a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="/icons/apps.png" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+<a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="<c:url value="/icons/apps.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
 <h2><img src="<spring:theme code="androidImage"/>" alt=""/>&nbsp;<fmt:message key="more.apps.title"/></h2>
 <fmt:message key="more.apps.text"/> 
-<a href="/mini/index.html" target="_blank"><img alt="MiniSub" src="/icons/minisub.png" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+<a href="<c:url value="/mini/index.html"/>" target="_blank"><img alt="MiniSub" src="<c:url value="/icons/minisub.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
 <h2><fmt:message key="more.minisub.title"/></h2>
 <fmt:message key="more.minisub.text"/>
 

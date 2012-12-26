@@ -4,6 +4,8 @@ Updated Dutch translation, courtesy of W. van der Heijden.
 Updated German translation, courtesy of deejay2302.
 Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
 Settings > Network doesn't show error if a subsonic.org address is in use.
+Links to minisub and apps icons doesn't honor context path.
+  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b8f11f3ecb2b98
 
 TODO IN 4.8
 --------------
@@ -27,8 +29,6 @@ Fix init exception in podcast bean
   https://mail.google.com/mail/u/0/?shva=1#inbox/13a142c12583a0ae
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
-Links to minisub and apps icons doesn't honor context path.
-  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b8f11f3ecb2b98
 Change bitrate to resolution mapping.
    http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
@@ -149,6 +149,10 @@ Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
+Lock screen controls
+Notification controls
+Add option to restore transactions.
+Update help page in app.
 Notification
   progress
   compat lib
@@ -164,14 +168,7 @@ Add option to delete file. (Rename to "Remove from playlist").
 Add to playlist
 Test on Android 2 and 3.
   Notification icon too big and bright.
-In-app purchase
-  - Create separate property for determining if restore should be done.
-  - Handle "already bought".
-  - Add option to force restore.
-  - Review ad providers
 Poor quality of album art in album header?
-Action bar back/up button: ic_ab_back_holo_dark
-  Improve back button by adding parent_id when known.
 
 Review patches for AVRCP and lockscreen controls
   https://sourceforge.net/p/subsonic/patches/9/
