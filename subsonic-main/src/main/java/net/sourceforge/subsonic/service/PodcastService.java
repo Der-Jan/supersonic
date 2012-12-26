@@ -18,26 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.PodcastDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.PodcastChannel;
-import net.sourceforge.subsonic.domain.PodcastEpisode;
-import net.sourceforge.subsonic.domain.PodcastStatus;
-import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -57,6 +37,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.PodcastDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.PodcastChannel;
+import net.sourceforge.subsonic.domain.PodcastEpisode;
+import net.sourceforge.subsonic.domain.PodcastStatus;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Provides services for Podcast reception.
@@ -180,7 +181,8 @@ public class PodcastService {
      *         reverse chronological order (newest episode first).
      */
     public List<PodcastEpisode> getEpisodes(int channelId, boolean includeDeleted) {
-        List<PodcastEpisode> all = podcastDao.getEpisodes(channelId);
+        List<PodcastEpisode> all = filterAllowed(podcastDao.getEpisodes(channelId));
+
         addMediaFileIdToEpisodes(all);
         if (includeDeleted) {
             return all;
@@ -193,6 +195,16 @@ public class PodcastService {
             }
         }
         return filtered;
+    }
+
+    private List<PodcastEpisode> filterAllowed(List<PodcastEpisode> episodes) {
+        List<PodcastEpisode> result = new ArrayList<PodcastEpisode>(episodes.size());
+        for (PodcastEpisode episode : episodes) {
+            if (episode.getPath() == null || securityService.isReadAllowed(new File(episode.getPath()))) {
+                result.add(episode);
+            }
+        }
+        return result;
     }
 
     public PodcastEpisode getEpisode(int episodeId, boolean includeDeleted) {
