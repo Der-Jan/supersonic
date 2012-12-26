@@ -7,6 +7,11 @@ Settings > Network doesn't show error if a subsonic.org address is in use.
 
 TODO IN 4.8
 --------------
+Update imported playlists if file timestamp has changed.
+Make playlist folder setting visible again.
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
+HLS broken with context path
+  https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 Support CORS
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
 REST: Genre support
@@ -23,6 +28,7 @@ Fix init exception in podcast bean
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 Links to minisub and apps icons doesn't honor context path.
+  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b8f11f3ecb2b98
 Change bitrate to resolution mapping.
    http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
