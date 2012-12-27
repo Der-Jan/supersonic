@@ -270,6 +270,7 @@
             <code><a href="#getAlbumList">getAlbumList</a></code>,
             <code><a href="#getAlbumList2">getAlbumList2</a></code>,
             <code><a href="#getRandomSongs">getRandomSongs</a></code>,
+            <code><a href="#getSongsByGenre">getSongsByGenre</a></code>,
             <code><a href="#getNowPlaying">getNowPlaying</a></code>,
             <code><a href="#getStarred">getStarred</a></code>,
             <code><a href="#getStarred2">getStarred2</a></code>
@@ -369,6 +370,7 @@
 <%@ include file="api-getAlbumList.jsp" %>
 <%@ include file="api-getAlbumList2.jsp" %>
 <%@ include file="api-getRandomSongs.jsp" %>
+<%@ include file="api-getSongsByGenre.jsp" %>
 <%@ include file="api-getNowPlaying.jsp" %>
 <%@ include file="api-getStarred.jsp" %>
 <%@ include file="api-getStarred2.jsp" %>

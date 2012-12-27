@@ -18,15 +18,16 @@
  */
 package net.sourceforge.subsonic.dao;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -221,6 +222,11 @@ public class MediaFileDao extends AbstractDao {
         String orderBy = byArtist ? "artist, album" : "album";
         return query("select " + COLUMNS + " from media_file where type=? and artist != '' and present order by " + orderBy + " limit ? offset ?",
                 rowMapper, ALBUM.name(), count, offset);
+    }
+
+    public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {
+        return query("select " + COLUMNS + " from media_file where type in (?,?,?) and genre=? and present limit ? offset ?",
+                rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), genre, count, offset);
     }
 
     /**

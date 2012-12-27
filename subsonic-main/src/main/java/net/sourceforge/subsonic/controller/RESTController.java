@@ -250,6 +250,27 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    public void getSongsByGenre(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        Player player = playerService.getPlayer(request, response);
+        String username = securityService.getCurrentUsername(request);
+
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+        builder.add("songsByGenre", false);
+
+        String genre = ServletRequestUtils.getRequiredStringParameter(request, "genre");
+        int offset = ServletRequestUtils.getIntParameter(request, "offset", 0);
+        int count = ServletRequestUtils.getIntParameter(request, "count", 10);
+        count = Math.max(0, Math.min(count, 500));
+
+        for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count)) {
+            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
+            builder.add("song", attributes, true);
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
     public void getArtists(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         XMLBuilder builder = createXMLBuilder(request, response, true);
