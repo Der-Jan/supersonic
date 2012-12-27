@@ -11,6 +11,7 @@ Fix init exception in podcast bean
 REST: Added getGenres
 REST: Added getSongsByGenre
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
+Improved speed of tag editing.
 
 TODO IN 4.8
 --------------
@@ -23,7 +24,6 @@ HLS broken with context path
 Support CORS
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
 Track number removed from RR podcasts.
-Why is RR edit tags so slow?
 Ogg dates not always parsed properly
   https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
 Update exe4j. Make it work with java 7
@@ -43,7 +43,7 @@ Something wrong with matching players/users in Now Playing.
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
 Reconsider album artist.
-Prefill minisubu
+Prefill minisub
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1394bd52aaaf4969
 FLAC crashes Flash in Firefox (with server on Linux).
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10027&p=44673#p44673
