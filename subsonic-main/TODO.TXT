@@ -16,9 +16,11 @@ REST: Support CORS
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
 Ogg dates not always parsed properly
   https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
+Sort songs by filename if track number is missing.
 
 TODO IN 4.8
 --------------
+Support duplicate songs.
 Track number removed from RR podcasts.
 Change svn links for api examples.
 Update imported playlists if file timestamp has changed.
@@ -34,9 +36,8 @@ Try to reproduce playlist import problem
 Change bitrate to resolution mapping.
    http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
-  REST: Add "size" param to stream.view and hls.view
+REST: Add "size" param to stream.view and hls.view
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
-Problems with alphabetic track sorting, see forum.
 Something wrong with matching players/users in Now Playing.
   https://mail.google.com/mail/?tab=cm#inbox/137dcaaddeba0936
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09

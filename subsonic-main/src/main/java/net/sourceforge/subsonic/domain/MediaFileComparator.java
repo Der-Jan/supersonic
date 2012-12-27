@@ -71,7 +71,7 @@ public class MediaFileComparator implements Comparator<MediaFile> {
             return i;
         }
 
-        return a.getName().compareToIgnoreCase(b.getName());
+        return a.getPath().compareToIgnoreCase(b.getPath());
     }
 
     private <T extends Comparable<T>>  int nullSafeCompare(T a, T b, boolean nullIsSmaller) {
