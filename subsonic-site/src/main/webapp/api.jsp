@@ -176,6 +176,10 @@
         <th class="param-heading">Subsonic version</th>
         <th class="param-heading">REST API version</th>
     </tr>
+    <tr>
+        <td>4.8</td>
+        <td>1.9.0</td>
+    </tr>
     <tr class="table-altrow">
         <td>4.7</td>
         <td>1.8.0</td>
@@ -252,6 +256,7 @@
             <code><a href="#getMusicFolders">getMusicFolders</a></code>,
             <code><a href="#getIndexes">getIndexes</a></code>,
             <code><a href="#getMusicDirectory">getMusicDirectory</a></code>,
+            <code><a href="#getGenres">getGenres</a></code>,
             <code><a href="#getArtists">getArtists</a></code>,
             <code><a href="#getArtist">getArtist</a></code>,
             <code><a href="#getAlbum">getAlbum</a></code>,
@@ -354,6 +359,7 @@
 <%@ include file="api-getMusicFolders.jsp" %>
 <%@ include file="api-getIndexes.jsp" %>
 <%@ include file="api-getMusicDirectory.jsp" %>
+<%@ include file="api-getGenres.jsp" %>
 <%@ include file="api-getArtists.jsp" %>
 <%@ include file="api-getArtist.jsp" %>
 <%@ include file="api-getAlbum.jsp" %>

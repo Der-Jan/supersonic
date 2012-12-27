@@ -237,6 +237,19 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    public void getGenres(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("genres", false);
+
+        for (String genre : mediaFileDao.getGenres()) {
+            builder.add("genre", (Iterable<Attribute>) null, genre, true);
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
     public void getArtists(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         XMLBuilder builder = createXMLBuilder(request, response, true);

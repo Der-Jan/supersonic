@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.8.0">
+           version="1.9.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -13,6 +13,7 @@
             <xs:element name="musicFolders" type="sub:MusicFolders" minOccurs="1" maxOccurs="1"/>
             <xs:element name="indexes" type="sub:Indexes" minOccurs="1" maxOccurs="1"/>
             <xs:element name="directory" type="sub:Directory" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="genres" type="sub:Genres" minOccurs="1" maxOccurs="1"/>
             <xs:element name="artists" type="sub:ArtistsID3" minOccurs="1" maxOccurs="1"/>
             <xs:element name="artist" type="sub:ArtistWithAlbumsID3" minOccurs="1" maxOccurs="1"/>
             <xs:element name="album" type="sub:AlbumWithSongsID3" minOccurs="1" maxOccurs="1"/>
@@ -87,6 +88,12 @@
     <xs:complexType name="Artist">
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="Genres">
+        <xs:sequence>
+            <xs:element name="genre" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="ArtistsID3">

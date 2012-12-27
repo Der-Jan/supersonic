@@ -8,9 +8,13 @@ Links to minisub and apps icons doesn't honor context path.
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b8f11f3ecb2b98
 Fix init exception in podcast bean
   https://mail.google.com/mail/u/0/?shva=1#inbox/13a142c12583a0ae
+REST: Added getGenres
 
 TODO IN 4.8
 --------------
+Change svn links for api examples.
+REST: Genre support
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
 Update imported playlists if file timestamp has changed.
 Make playlist folder setting visible again.
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
@@ -18,8 +22,6 @@ HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 Support CORS
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
-REST: Genre support
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
 Track number removed from RR podcasts.
 Why is RR edit tags so slow?
 Ogg dates not always parsed properly
