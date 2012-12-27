@@ -25,5 +25,5 @@
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;song&gt;</code>
     element on success.
-    <a href="http://subsonic.svn.sourceforge.net/viewvc/subsonic/trunk/subsonic-main/src/main/webapp/xsd/song_example_1.xml?view=markup">Example</a>.
+    <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/song_example_1.xml">Example</a>.
 </p>

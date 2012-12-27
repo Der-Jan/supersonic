@@ -27,6 +27,6 @@
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;directory&gt;</code>
     element on success.
-    <a href="http://subsonic.svn.sourceforge.net/viewvc/subsonic/trunk/subsonic-main/src/main/webapp/xsd/directory_example_1.xml?view=markup">Example 1</a>.
-    <a href="http://subsonic.svn.sourceforge.net/viewvc/subsonic/trunk/subsonic-main/src/main/webapp/xsd/directory_example_2.xml?view=markup">Example 2</a>.
+    <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/directory_example_1.xml">Example 1</a>.
+    <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/directory_example_2.xml">Example 2</a>.
 </p>
