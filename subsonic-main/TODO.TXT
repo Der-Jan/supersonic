@@ -20,10 +20,10 @@ Sort songs by filename if track number is missing.
 Update imported playlists if file timestamp has changed.
 Make playlist folder setting visible again.
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
+Less aggressive removal of track number from title.
 
 TODO IN 4.8
 --------------
-Track number removed from RR podcasts.
 HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 Update exe4j. Make it work with java 7

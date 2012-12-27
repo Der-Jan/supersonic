@@ -151,8 +151,8 @@ public abstract class MetaDataParser {
     protected String removeTrackNumberFromTitle(String title, Integer trackNumber) {
         title = title.trim();
 
-        // Don't remove numbers if true track number is given, and title does not start with it.
-        if (trackNumber != null && !title.matches("0?" + trackNumber + "[\\.\\- ].*")) {
+        // Don't remove numbers if true track number is missing, or if title does not start with it.
+        if (trackNumber == null || !title.matches("0?" + trackNumber + "[\\.\\- ].*")) {
             return title;
         }
 
