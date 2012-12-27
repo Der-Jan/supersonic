@@ -18,9 +18,12 @@
  */
 package net.sourceforge.subsonic.service;
 
-import junit.framework.*;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+
+import junit.framework.TestCase;
 
 /**
  * Unit test of {@link SettingsService}.
@@ -49,6 +52,7 @@ public class SettingsServiceTestCase extends TestCase {
         assertEquals("Wrong default cover art limit.", 30, settingsService.getCoverArtLimit());
         assertEquals("Wrong default index creation interval.", 1, settingsService.getIndexCreationInterval());
         assertEquals("Wrong default index creation hour.", 3, settingsService.getIndexCreationHour());
+        assertTrue("Wrong default playlist folder.", settingsService.getPlaylistFolder().endsWith("playlists"));
         assertEquals("Wrong default theme.", "default", settingsService.getThemeId());
         assertEquals("Wrong default stream port.", 0, settingsService.getStreamPort());
         assertNull("Wrong default license email.", settingsService.getLicenseEmail());
@@ -71,6 +75,7 @@ public class SettingsServiceTestCase extends TestCase {
         settingsService.setIndexString("indexString");
         settingsService.setIgnoredArticles("a the foo bar");
         settingsService.setShortcuts("new incoming \"rock 'n' roll\"");
+        settingsService.setPlaylistFolder("playlistFolder");
         settingsService.setMusicFileTypes("mp3 ogg  aac");
         settingsService.setCoverArtFileTypes("jpeg gif  png");
         settingsService.setCoverArtLimit(99);
@@ -110,6 +115,7 @@ public class SettingsServiceTestCase extends TestCase {
         assertEquals("Wrong shortcuts.", "new incoming \"rock 'n' roll\"", ss.getShortcuts());
         assertTrue("Wrong ignored articles array.", Arrays.equals(new String[] {"a", "the", "foo", "bar"}, ss.getIgnoredArticlesAsArray()));
         assertTrue("Wrong shortcut array.", Arrays.equals(new String[] {"new", "incoming", "rock 'n' roll"}, ss.getShortcutsAsArray()));
+        assertEquals("Wrong playlist folder.", "playlistFolder", ss.getPlaylistFolder());
         assertEquals("Wrong music mask.", "mp3 ogg  aac", ss.getMusicFileTypes());
         assertTrue("Wrong music mask array.", Arrays.equals(new String[] {"mp3", "ogg", "aac"}, ss.getMusicFileTypesAsArray()));
         assertEquals("Wrong cover art mask.", "jpeg gif  png", ss.getCoverArtFileTypes());

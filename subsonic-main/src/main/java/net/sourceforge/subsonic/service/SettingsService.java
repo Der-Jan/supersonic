@@ -33,7 +33,6 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
@@ -50,6 +49,7 @@ import net.sourceforge.subsonic.dao.MusicFolderDao;
 import net.sourceforge.subsonic.dao.UserDao;
 import net.sourceforge.subsonic.domain.Avatar;
 import net.sourceforge.subsonic.domain.InternetRadio;
+import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Theme;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -365,6 +365,10 @@ public class SettingsService {
 
     public String getPlaylistFolder() {
         return properties.getProperty(KEY_PLAYLIST_FOLDER, DEFAULT_PLAYLIST_FOLDER);
+    }
+
+    public void setPlaylistFolder(String playlistFolder) {
+        setProperty(KEY_PLAYLIST_FOLDER, playlistFolder);
     }
 
     public String getMusicFileTypes() {

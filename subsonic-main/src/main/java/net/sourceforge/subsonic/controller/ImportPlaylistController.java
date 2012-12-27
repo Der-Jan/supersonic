@@ -69,7 +69,7 @@ public class ImportPlaylistController extends ParameterizableViewController {
                         String fileName = FilenameUtils.getName(item.getName());
                         String format = StringUtils.lowerCase(FilenameUtils.getExtension(item.getName()));
                         String username = securityService.getCurrentUsername(request);
-                        Playlist playlist = playlistService.importPlaylist(username, playlistName, fileName, format, item.getInputStream());
+                        Playlist playlist = playlistService.importPlaylist(username, playlistName, fileName, format, item.getInputStream(), null);
                         map.put("playlist", playlist);
                     }
                 }

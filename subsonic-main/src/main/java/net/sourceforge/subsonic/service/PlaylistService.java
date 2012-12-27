@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.util.Util;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -50,10 +48,12 @@ import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.dao.PlaylistDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * Provides services for loading and saving playlists to and from persistent storage.
@@ -134,7 +134,8 @@ public class PlaylistService {
         playlistDao.updatePlaylist(playlist);
     }
 
-    public Playlist importPlaylist(String username, String playlistName, String fileName, String format, InputStream inputStream) throws Exception {
+    public Playlist importPlaylist(String username, String playlistName, String fileName, String format,
+            InputStream inputStream, Playlist existingPlaylist) throws Exception {
         PlaylistFormat playlistFormat = getPlaylistFormat(format);
         if (playlistFormat == null) {
             throw new Exception("Unsupported playlist format: " + format);
@@ -148,17 +149,22 @@ public class PlaylistService {
         for (String error : result.getSecond()) {
             LOG.warn("File in playlist '" + fileName + "' not found: " + error);
         }
-
         Date now = new Date();
-        Playlist playlist = new Playlist();
-        playlist.setUsername(username);
-        playlist.setCreated(now);
-        playlist.setChanged(now);
-        playlist.setPublic(true);
-        playlist.setName(playlistName);
-        playlist.setImportedFrom(fileName);
+        Playlist playlist;
+        if (existingPlaylist == null) {
+            playlist = new Playlist();
+            playlist.setUsername(username);
+            playlist.setCreated(now);
+            playlist.setChanged(now);
+            playlist.setPublic(true);
+            playlist.setName(playlistName);
+            playlist.setComment("Auto-imported from " + fileName);
+            playlist.setImportedFrom(fileName);
+            createPlaylist(playlist);
+        } else {
+            playlist = existingPlaylist;
+        }
 
-        createPlaylist(playlist);
         setFilesInPlaylist(playlist.getId(), result.getFirst());
 
         return playlist;
@@ -211,7 +217,7 @@ public class PlaylistService {
         List<Playlist> allPlaylists = playlistDao.getAllPlaylists();
         for (File file : playlistFolder.listFiles()) {
             try {
-                importPlaylistIfNotExisting(file, allPlaylists);
+                importPlaylistIfUpdated(file, allPlaylists);
             } catch (Exception x) {
                 LOG.warn("Failed to auto-import playlist " + file + ". " + x.getMessage());
             }
@@ -235,21 +241,26 @@ public class PlaylistService {
         }
     }
 
-    private void importPlaylistIfNotExisting(File file, List<Playlist> allPlaylists) throws Exception {
+    private void importPlaylistIfUpdated(File file, List<Playlist> allPlaylists) throws Exception {
         String format = FilenameUtils.getExtension(file.getPath());
         if (getPlaylistFormat(format) == null) {
             return;
         }
 
         String fileName = file.getName();
+        Playlist existingPlaylist = null;
         for (Playlist playlist : allPlaylists) {
             if (fileName.equals(playlist.getImportedFrom())) {
-                return; // Already imported.
+                existingPlaylist = playlist;
+                if (file.lastModified() <= playlist.getChanged().getTime()) {
+                    // Already imported and not changed since.
+                    return;
+                }
             }
         }
         InputStream in = new FileInputStream(file);
         try {
-            importPlaylist(User.USERNAME_ADMIN, FilenameUtils.getBaseName(fileName), fileName, format, in);
+            importPlaylist(User.USERNAME_ADMIN, FilenameUtils.getBaseName(fileName), fileName, format, in, existingPlaylist);
             LOG.info("Auto-imported playlist " + file);
         } finally {
             IOUtils.closeQuietly(in);
