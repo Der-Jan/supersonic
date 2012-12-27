@@ -24,9 +24,9 @@ Less aggressive removal of track number from title.
 
 TODO IN 4.8
 --------------
+Update exe4j. Make it work with java 7
 HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
-Update exe4j. Make it work with java 7
 Change language in donation dialog.
 REST: Support "parent" attribute in getMusicDirectory
 Try to reproduce playlist import problem

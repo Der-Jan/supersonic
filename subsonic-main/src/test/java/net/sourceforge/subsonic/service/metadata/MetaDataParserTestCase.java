@@ -51,13 +51,13 @@ public class MetaDataParserTestCase extends TestCase {
 
         assertEquals("", parser.removeTrackNumberFromTitle("", null));
         assertEquals("kokos", parser.removeTrackNumberFromTitle("kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("01 kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("01 - kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("01-kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("01 - kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("99 - kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle("99.- kokos", null));
-        assertEquals("kokos", parser.removeTrackNumberFromTitle(" 01 kokos", null));
+        assertEquals("01 kokos", parser.removeTrackNumberFromTitle("01 kokos", null));
+        assertEquals("01 - kokos", parser.removeTrackNumberFromTitle("01 - kokos", null));
+        assertEquals("01-kokos", parser.removeTrackNumberFromTitle("01-kokos", null));
+        assertEquals("01 - kokos", parser.removeTrackNumberFromTitle("01 - kokos", null));
+        assertEquals("99 - kokos", parser.removeTrackNumberFromTitle("99 - kokos", null));
+        assertEquals("99.- kokos", parser.removeTrackNumberFromTitle("99.- kokos", null));
+        assertEquals("01 kokos", parser.removeTrackNumberFromTitle(" 01 kokos", null));
         assertEquals("400 years", parser.removeTrackNumberFromTitle("400 years", null));
         assertEquals("49ers", parser.removeTrackNumberFromTitle("49ers", null));
         assertEquals("01", parser.removeTrackNumberFromTitle("01", null));
