@@ -96,17 +96,20 @@ public class PodcastService {
     }
 
     public synchronized void init() {
-        // Clean up partial downloads.
-        for (PodcastChannel channel : getAllChannels()) {
-            for (PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
-                if (episode.getStatus() == PodcastStatus.DOWNLOADING) {
-                    deleteEpisode(episode.getId(), false);
-                    LOG.info("Deleted Podcast episode '" + episode.getTitle() + "' since download was interrupted.");
+        try {
+            // Clean up partial downloads.
+            for (PodcastChannel channel : getAllChannels()) {
+                for (PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
+                    if (episode.getStatus() == PodcastStatus.DOWNLOADING) {
+                        deleteEpisode(episode.getId(), false);
+                        LOG.info("Deleted Podcast episode '" + episode.getTitle() + "' since download was interrupted.");
+                    }
                 }
             }
+            schedule();
+        } catch (Throwable x) {
+            LOG.error("Failed to initialize PodcastService: " + x, x);
         }
-
-        schedule();
     }
 
     public synchronized void schedule() {

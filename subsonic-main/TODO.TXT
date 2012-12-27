@@ -14,18 +14,18 @@ REST: Added getSongsByGenre
 Improved speed of tag editing.
 REST: Support CORS
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
+Ogg dates not always parsed properly
+  https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
 
 TODO IN 4.8
 --------------
+Track number removed from RR podcasts.
 Change svn links for api examples.
 Update imported playlists if file timestamp has changed.
 Make playlist folder setting visible again.
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
 HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
-Track number removed from RR podcasts.
-Ogg dates not always parsed properly
-  https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
 Update exe4j. Make it work with java 7
 Change language in donation dialog.
 REST: Support "parent" attribute in getMusicDirectory
