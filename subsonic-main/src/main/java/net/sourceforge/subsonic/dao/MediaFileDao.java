@@ -44,7 +44,7 @@ public class MediaFileDao extends AbstractDao {
             "track_number, year, genre, bit_rate, variable_bit_rate, duration_seconds, file_size, width, height, cover_art_path, " +
             "parent_path, play_count, last_played, comment, created, changed, last_scanned, children_last_updated, present, version";
 
-    private static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     private final RowMapper rowMapper = new MediaFileMapper();
     private final RowMapper musicFileInfoRowMapper = new MusicFileInfoMapper();
@@ -342,7 +342,8 @@ public class MediaFileDao extends AbstractDao {
                     rs.getTimestamp(26),
                     rs.getTimestamp(27),
                     rs.getTimestamp(28),
-                    rs.getBoolean(29));
+                    rs.getBoolean(29),
+                    rs.getInt(30));
         }
     }
 
