@@ -21,14 +21,15 @@ Update imported playlists if file timestamp has changed.
 Make playlist folder setting visible again.
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
 Less aggressive removal of track number from title.
+REST: Support "parent" attribute in getMusicDirectory
 
 TODO IN 4.8
 --------------
-Update exe4j. Make it work with java 7
+Update exe4j. Make it work with java 7 and with 32/64 bit VM
+  http://nsis.sourceforge.net/Java_Runtime_Environment_Dynamic_Installer
 HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 Change language in donation dialog.
-REST: Support "parent" attribute in getMusicDirectory
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 Change bitrate to resolution mapping.
@@ -50,9 +51,6 @@ FLAC crashes Flash in Firefox (with server on Linux).
 DAAP support.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
-
-SourceForge, hosted apps retirement
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/1386c503c5c2c564
 
 Postponed:
   - ConcurrentModificationException

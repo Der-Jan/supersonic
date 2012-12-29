@@ -415,13 +415,23 @@ public class RESTController extends MultiActionController {
             return;
         }
 
+        MediaFile parent = mediaFileService.getParentOf(dir);
+        AttributeSet attributes = new AttributeSet();
+        attributes.add("id", id);
+        try {
+            if (!mediaFileService.isRoot(parent)) {
+                attributes.add("parent", parent.getId());
+            }
+        } catch (SecurityException x) {
+            // Ignored.
+        }
+        attributes.add("name", dir.getName());
+
         XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("directory", false,
-                new Attribute("id", dir.getId()),
-                new Attribute("name", dir.getName()));
+        builder.add("directory", attributes, false);
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
-            AttributeSet attributes = createAttributesForMediaFile(player, child, username);
+            attributes = createAttributesForMediaFile(player, child, username);
             builder.add("child", attributes, true);
         }
         builder.endAll();
