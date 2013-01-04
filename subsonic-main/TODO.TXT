@@ -22,6 +22,9 @@ Make playlist folder setting visible again.
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
 Less aggressive removal of track number from title.
 REST: Support "parent" attribute in getMusicDirectory
+Change bitrate to resolution mapping.
+   http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
+   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
 
 TODO IN 4.8
 --------------
@@ -32,9 +35,6 @@ HLS broken with context path
 Change language in donation dialog.
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
-Change bitrate to resolution mapping.
-   http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
 REST: Add "size" param to stream.view and hls.view
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
 Something wrong with matching players/users in Now Playing.

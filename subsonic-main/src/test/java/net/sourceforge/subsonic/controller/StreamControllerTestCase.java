@@ -59,38 +59,36 @@ public class StreamControllerTestCase extends TestCase {
     public void testGetSuitableVideoSize() {
 
         // 4:3 aspect rate
-        doTestGetSuitableVideoSize(720, 540, 200, 320, 240);
-        doTestGetSuitableVideoSize(720, 540, 300, 320, 240);
-        doTestGetSuitableVideoSize(720, 540, 400, 320, 240);
-        doTestGetSuitableVideoSize(720, 540, 500, 320, 240);
-        doTestGetSuitableVideoSize(720, 540, 600, 320, 240);
-
-        doTestGetSuitableVideoSize(720, 540, 700, 480, 360);
-        doTestGetSuitableVideoSize(720, 540, 800, 480, 360);
-        doTestGetSuitableVideoSize(720, 540, 900, 480, 360);
-        doTestGetSuitableVideoSize(720, 540, 1000, 480, 360);
-
-        doTestGetSuitableVideoSize(720, 540, 1100, 640, 480);
-        doTestGetSuitableVideoSize(720, 540, 1200, 640, 480);
-        doTestGetSuitableVideoSize(720, 540, 1500, 640, 480);
-        doTestGetSuitableVideoSize(720, 540, 2000, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 200, 400, 300);
+        doTestGetSuitableVideoSize(1280, 960, 300, 400, 300);
+        doTestGetSuitableVideoSize(1280, 960, 400, 480, 360);
+        doTestGetSuitableVideoSize(1280, 960, 500, 480, 360);
+        doTestGetSuitableVideoSize(1280, 960, 600, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 700, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 800, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 900, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 1000, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 1100, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 1200, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 1500, 640, 480);
+        doTestGetSuitableVideoSize(1280, 960, 1800, 960, 720);
+        doTestGetSuitableVideoSize(1280, 960, 2000, 960, 720);
 
         // 16:9 aspect rate
-        doTestGetSuitableVideoSize(960, 540, 200, 428, 240);
-        doTestGetSuitableVideoSize(960, 540, 300, 428, 240);
-        doTestGetSuitableVideoSize(960, 540, 400, 428, 240);
-        doTestGetSuitableVideoSize(960, 540, 500, 428, 240);
-        doTestGetSuitableVideoSize(960, 540, 600, 428, 240);
-
-        doTestGetSuitableVideoSize(960, 540, 700, 640, 360);
-        doTestGetSuitableVideoSize(960, 540, 800, 640, 360);
-        doTestGetSuitableVideoSize(960, 540, 900, 640, 360);
-        doTestGetSuitableVideoSize(960, 540, 1000, 640, 360);
-
-        doTestGetSuitableVideoSize(960, 540, 1100, 854, 480);
-        doTestGetSuitableVideoSize(960, 540, 1200, 854, 480);
-        doTestGetSuitableVideoSize(960, 540, 1500, 854, 480);
-        doTestGetSuitableVideoSize(960, 540, 2000, 854, 480);
+        doTestGetSuitableVideoSize(1280, 720, 200, 400, 226);
+        doTestGetSuitableVideoSize(1280, 720, 300, 400, 226);
+        doTestGetSuitableVideoSize(1280, 720, 400, 480, 270);
+        doTestGetSuitableVideoSize(1280, 720, 500, 480, 270);
+        doTestGetSuitableVideoSize(1280, 720, 600, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 700, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 800, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 900, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 1000, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 1100, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 1200, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 1500, 640, 360);
+        doTestGetSuitableVideoSize(1280, 720, 1800, 960, 540);
+        doTestGetSuitableVideoSize(1280, 720, 2000, 960, 540);
 
         // Small original size.
         doTestGetSuitableVideoSize(100, 100, 1000, 100, 100);
@@ -98,15 +96,15 @@ public class StreamControllerTestCase extends TestCase {
         doTestGetSuitableVideoSize(1000, 100, 100, 1000, 100);
 
         // Unknown original size.
-        doTestGetSuitableVideoSize(720, null, 200, 320, 240);
-        doTestGetSuitableVideoSize(null, 540, 300, 320, 240);
-        doTestGetSuitableVideoSize(null, null, 400, 320, 240);
-        doTestGetSuitableVideoSize(720, null, 500, 320, 240);
-        doTestGetSuitableVideoSize(null, 540, 600, 320, 240);
-        doTestGetSuitableVideoSize(null, null, 700, 480, 360);
+        doTestGetSuitableVideoSize(720, null, 200, 400, 300);
+        doTestGetSuitableVideoSize(null, 540, 300, 400, 300);
+        doTestGetSuitableVideoSize(null, null, 400, 480, 360);
+        doTestGetSuitableVideoSize(720, null, 500, 480, 360);
+        doTestGetSuitableVideoSize(null, 540, 600, 640, 480);
+        doTestGetSuitableVideoSize(null, null, 700, 640, 480);
         doTestGetSuitableVideoSize(720, null, 1200, 640, 480);
         doTestGetSuitableVideoSize(null, 540, 1500, 640, 480);
-        doTestGetSuitableVideoSize(null, null, 2000, 640, 480);
+        doTestGetSuitableVideoSize(null, null, 2000, 960, 720);
 
         // Odd original size.
         doTestGetSuitableVideoSize(853, 464, 1500, 854, 464);

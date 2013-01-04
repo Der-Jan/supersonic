@@ -344,16 +344,18 @@ public class StreamController implements Controller {
 
     protected Dimension getSuitableVideoSize(Integer existingWidth, Integer existingHeight, Integer maxBitRate) {
         if (maxBitRate == null) {
-            return new Dimension(320, 240);
+            return new Dimension(400, 300);
         }
 
         int w, h;
-        if (maxBitRate <= 600) {
-            w = 320; h = 240;
-        } else if (maxBitRate <= 1000) {
+        if (maxBitRate < 400) {
+            w = 400; h = 300;
+        } else if (maxBitRate < 600) {
             w = 480; h = 360;
-        } else {
+        } else if (maxBitRate < 1800) {
             w = 640; h = 480;
+        } else {
+            w = 960; h = 720;
         }
 
         if (existingWidth == null || existingHeight == null) {
@@ -365,7 +367,7 @@ public class StreamController implements Controller {
         }
 
         double aspectRate = existingWidth.doubleValue() / existingHeight.doubleValue();
-        w = (int) Math.round(h * aspectRate);
+        h = (int) Math.round(w / aspectRate);
 
         return new Dimension(even(w), even(h));
     }
