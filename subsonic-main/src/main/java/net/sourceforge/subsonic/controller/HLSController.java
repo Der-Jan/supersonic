@@ -22,6 +22,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +30,11 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.awt.Dimension;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller which produces the HLS (Http Live Streaming) playlist.
@@ -69,6 +74,22 @@ public class HLSController implements Controller {
             generateNormalPlaylist(id, player, bitRates.length == 1 ? bitRates[0] : null, duration, writer);
         }
 
+        return null;
+    }
+
+    private List<Pair<Integer, Dimension>> parseBitRates(HttpServletRequest request) throws IllegalArgumentException {
+        List<Pair<Integer, Dimension>> result = new ArrayList<Pair<Integer, Dimension>>();
+        for (String bitRate : request.getParameterValues("bitRate")) {
+            result.add(parseBitRate(bitRate));
+        }
+        return result;
+    }
+
+    /**
+     * Parses a string containing the bitrate and an optional width/height, e.g., 1200@640x480
+     */
+    private Pair<Integer, Dimension> parseBitRate(String bitRate) throws IllegalArgumentException {
+        // TODO
         return null;
     }
 
