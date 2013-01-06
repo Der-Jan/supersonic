@@ -18,23 +18,26 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.awt.Dimension;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.awt.Dimension;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller which produces the HLS (Http Live Streaming) playlist.
@@ -44,6 +47,7 @@ import java.util.List;
 public class HLSController implements Controller {
 
     private static final int SEGMENT_DURATION = 10;
+    private static final Pattern BITRATE_PATTERN = Pattern.compile("(\\d+)(@(\\d+)x(\\d+))?");
 
     private PlayerService playerService;
     private MediaFileService mediaFileService;
@@ -65,13 +69,12 @@ public class HLSController implements Controller {
         Player player = playerService.getPlayer(request, response);
         response.setContentType("application/vnd.apple.mpegurl");
         response.setCharacterEncoding(StringUtil.ENCODING_UTF8);
-        int[] bitRates = ServletRequestUtils.getIntParameters(request, "bitRate");
-
+        List<Pair<Integer, Dimension>> bitRates = parseBitRates(request);
         PrintWriter writer = response.getWriter();
-        if (bitRates.length > 1) {
+        if (bitRates.size() > 1) {
             generateVariantPlaylist(id, player, bitRates, writer);
         } else {
-            generateNormalPlaylist(id, player, bitRates.length == 1 ? bitRates[0] : null, duration, writer);
+            generateNormalPlaylist(id, player, bitRates.size() == 1 ? bitRates.get(0) : null, duration, writer);
         }
 
         return null;
@@ -88,24 +91,41 @@ public class HLSController implements Controller {
     /**
      * Parses a string containing the bitrate and an optional width/height, e.g., 1200@640x480
      */
-    private Pair<Integer, Dimension> parseBitRate(String bitRate) throws IllegalArgumentException {
-        // TODO
-        return null;
+    protected Pair<Integer, Dimension> parseBitRate(String bitRate) throws IllegalArgumentException {
+
+        Matcher matcher = BITRATE_PATTERN.matcher(bitRate);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid bitrate specification: " + bitRate);
+        }
+        int kbps = Integer.parseInt(matcher.group(1));
+        if (matcher.group(3) == null) {
+            return new Pair<Integer, Dimension>(kbps, null);
+        } else {
+            int width = Integer.parseInt(matcher.group(3));
+            int height = Integer.parseInt(matcher.group(4));
+            return new Pair<Integer, Dimension>(kbps, new Dimension(width, height));
+        }
     }
 
-    private void generateVariantPlaylist(int id, Player player, int[] bitRatesKbps, PrintWriter writer) {
+    private void generateVariantPlaylist(int id, Player player, List<Pair<Integer, Dimension>> bitRates, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
 //        writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
 
-        for (int bitRateKbps : bitRatesKbps) {
-            writer.println("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=" + bitRateKbps * 1000L);
-            writer.println("/hls/hls.m3u8?id=" + id + "&player=" + player.getId() + "&bitRate=" + bitRateKbps);
+        for (Pair<Integer, Dimension> bitRate : bitRates) {
+            Integer kbps = bitRate.getFirst();
+            writer.println("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=" + kbps * 1000L);
+            writer.print("/hls/hls.m3u8?id=" + id + "&player=" + player.getId() + "&bitRate=" + kbps);
+            Dimension dimension = bitRate.getSecond();
+            if (dimension != null) {
+                writer.print("@" + dimension.width + "x" + dimension.height);
+            }
+            writer.println();
         }
 //        writer.println("#EXT-X-ENDLIST");
     }
 
-    private void generateNormalPlaylist(int id, Player player, Integer bitRate, int totalDuration, PrintWriter writer) {
+    private void generateNormalPlaylist(int id, Player player, Pair<Integer, Dimension> bitRate, int totalDuration, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
         writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
@@ -125,12 +145,16 @@ public class HLSController implements Controller {
         writer.println("#EXT-X-ENDLIST");
     }
 
-    private String createStreamUrl(Player player, int id, int offset, int duration, Integer maxBitRate) {
+    private String createStreamUrl(Player player, int id, int offset, int duration, Pair<Integer, Dimension> bitRate) {
         StringBuilder builder = new StringBuilder();
         builder.append("/stream/stream.ts?id=").append(id).append("&hls=true&timeOffset=").append(offset).append("&player=")
                 .append(player.getId()).append("&duration=").append(duration);
-        if (maxBitRate != null) {
-            builder.append("&maxBitRate=").append(maxBitRate);
+        if (bitRate != null) {
+            builder.append("&maxBitRate=").append(bitRate.getFirst());
+            Dimension dimension = bitRate.getSecond();
+            if (dimension != null) {
+                builder.append("&size=").append(dimension.width).append("x").append(dimension.height);
+            }
         }
         return builder.toString();
     }
