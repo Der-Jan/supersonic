@@ -25,6 +25,8 @@ REST: Support "parent" attribute in getMusicDirectory
 Change bitrate to resolution mapping.
    http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
    https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
+Bugfix: HLS broken with context path
+  https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 
 TODO IN 4.8
 --------------
@@ -33,8 +35,6 @@ Update exe4j. Make it work with java 7 and with 32/64 bit VM
   http://nsis.sourceforge.net/Java_Runtime_Environment_Dynamic_Installer
   SetRegView 64
 
-HLS broken with context path
-  https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 Change language in donation dialog.
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09

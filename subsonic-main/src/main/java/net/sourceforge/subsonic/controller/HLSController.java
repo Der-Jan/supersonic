@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -72,9 +73,9 @@ public class HLSController implements Controller {
         List<Pair<Integer, Dimension>> bitRates = parseBitRates(request);
         PrintWriter writer = response.getWriter();
         if (bitRates.size() > 1) {
-            generateVariantPlaylist(id, player, bitRates, writer);
+            generateVariantPlaylist(request, id, player, bitRates, writer);
         } else {
-            generateNormalPlaylist(id, player, bitRates.size() == 1 ? bitRates.get(0) : null, duration, writer);
+            generateNormalPlaylist(request, id, player, bitRates.size() == 1 ? bitRates.get(0) : null, duration, writer);
         }
 
         return null;
@@ -110,15 +111,16 @@ public class HLSController implements Controller {
         }
     }
 
-    private void generateVariantPlaylist(int id, Player player, List<Pair<Integer, Dimension>> bitRates, PrintWriter writer) {
+    private void generateVariantPlaylist(HttpServletRequest request, int id, Player player, List<Pair<Integer, Dimension>> bitRates, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
 //        writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
 
+        String contextPath = getContextPath(request);
         for (Pair<Integer, Dimension> bitRate : bitRates) {
             Integer kbps = bitRate.getFirst();
             writer.println("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=" + kbps * 1000L);
-            writer.print("/hls/hls.m3u8?id=" + id + "&player=" + player.getId() + "&bitRate=" + kbps);
+            writer.print(contextPath + "hls/hls.m3u8?id=" + id + "&player=" + player.getId() + "&bitRate=" + kbps);
             Dimension dimension = bitRate.getSecond();
             if (dimension != null) {
                 writer.print("@" + dimension.width + "x" + dimension.height);
@@ -128,7 +130,7 @@ public class HLSController implements Controller {
 //        writer.println("#EXT-X-ENDLIST");
     }
 
-    private void generateNormalPlaylist(int id, Player player, Pair<Integer, Dimension> bitRate, int totalDuration, PrintWriter writer) {
+    private void generateNormalPlaylist(HttpServletRequest request, int id, Player player, Pair<Integer, Dimension> bitRate, int totalDuration, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
         writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
@@ -136,22 +138,22 @@ public class HLSController implements Controller {
         for (int i = 0; i < totalDuration / SEGMENT_DURATION; i++) {
             int offset = i * SEGMENT_DURATION;
             writer.println("#EXTINF:" + SEGMENT_DURATION + ",");
-            writer.println(createStreamUrl(player, id, offset, SEGMENT_DURATION, bitRate));
+            writer.println(createStreamUrl(request, player, id, offset, SEGMENT_DURATION, bitRate));
         }
 
         int remainder = totalDuration % SEGMENT_DURATION;
         if (remainder > 0) {
             writer.println("#EXTINF:" + remainder + ",");
             int offset = totalDuration - remainder;
-            writer.println(createStreamUrl(player, id, offset, remainder, bitRate));
+            writer.println(createStreamUrl(request, player, id, offset, remainder, bitRate));
         }
         writer.println("#EXT-X-ENDLIST");
     }
 
-    private String createStreamUrl(Player player, int id, int offset, int duration, Pair<Integer, Dimension> bitRate) {
+    private String createStreamUrl(HttpServletRequest request, Player player, int id, int offset, int duration, Pair<Integer, Dimension> bitRate) {
         StringBuilder builder = new StringBuilder();
-        builder.append("/stream/stream.ts?id=").append(id).append("&hls=true&timeOffset=").append(offset).append("&player=")
-                .append(player.getId()).append("&duration=").append(duration);
+        builder.append(getContextPath(request)).append("stream/stream.ts?id=").append(id).append("&hls=true&timeOffset=").append(offset)
+                .append("&player=").append(player.getId()).append("&duration=").append(duration);
         if (bitRate != null) {
             builder.append("&maxBitRate=").append(bitRate.getFirst());
             Dimension dimension = bitRate.getSecond();
@@ -160,6 +162,16 @@ public class HLSController implements Controller {
             }
         }
         return builder.toString();
+    }
+
+    private String getContextPath(HttpServletRequest request) {
+        String contextPath = request.getContextPath();
+        if (StringUtils.isEmpty(contextPath)) {
+            contextPath = "/";
+        } else {
+            contextPath += "/";
+        }
+        return contextPath;
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {
