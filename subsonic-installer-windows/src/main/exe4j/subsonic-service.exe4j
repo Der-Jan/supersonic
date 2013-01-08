@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<exe4j version="4.4.4" transformSequenceNumber="1">
+<exe4j version="4.5.1" transformSequenceNumber="1">
   <directoryPresets config="." />
   <application name="Subsonic" distributionSourceDir="../../../target">
     <languages>
@@ -8,7 +8,13 @@
   </application>
   <executable name="subsonic-service" type="1" iconSet="true" iconFile="subsonic-16.ico" executableDir="" redirectStderr="true" stderrFile="log/subsonic-service.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="3" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="Subsonic Music Streamer (http://subsonic.org)" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" amd64="false">
     <messageSet>
-      <message id="NoJvmFound" text="Java was not found on your system. Please download Java from www.java.com." />
+      <message id="NoJvmFound" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="JvmInPath" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="JvmDefinedPath" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="NoJvmFound3264" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="JvmInPath3264" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="JvmDefinedPath32" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
+      <message id="JvmDefinedPath64" text="Java was not found on your system. Please download Java (32-bit version) from java.com." />
     </messageSet>
     <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" companyName="" productVersion="" />
   </executable>
