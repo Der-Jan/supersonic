@@ -27,9 +27,11 @@ Change bitrate to resolution mapping.
    https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
 Bugfix: HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
+REST: Podcast methods.
 
 TODO IN 4.8
 --------------
+Test REST podcast methods.
 Improve track number removal. Should remove it if title is guessed from file name.
 Update exe4j. Make it work with java 7 and with 32/64 bit VM
   http://nsis.sourceforge.net/Java_Runtime_Environment_Dynamic_Installer

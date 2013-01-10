@@ -1310,6 +1310,80 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    public void refreshPodcasts(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+        podcastService.refreshAllChannels(true);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void createPodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        String url = ServletRequestUtils.getRequiredStringParameter(request, "url");
+        podcastService.createChannel(url);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deletePodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        podcastService.deleteChannel(id);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deletePodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        podcastService.deleteEpisode(id, true);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void downloadPodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        PodcastEpisode episode = podcastService.getEpisode(id, true);
+        if (episode == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Podcast episode " + id + " not found.");
+            return;
+        }
+
+        podcastService.downloadEpisode(episode);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
     public void getShares(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);

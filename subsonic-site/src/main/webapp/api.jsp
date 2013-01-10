@@ -327,6 +327,11 @@
         <td>Podcast</td>
         <td>
             <code><a href="#getPodcasts">getPodcasts</a></code>
+            <code><a href="#refreshPodcasts">refreshPodcasts</a></code>
+            <code><a href="#createPodcastChannel">createPodcastChannel</a></code>
+            <code><a href="#deletePodcastChannel">deletePodcastChannel</a></code>
+            <code><a href="#deletePodcastEpisode">deletePodcastEpisode</a></code>
+            <code><a href="#downloadPodcastEpisode">downloadPodcastEpisode</a></code>
         </td>
     </tr>
     <tr>
@@ -403,6 +408,11 @@
 <%@ include file="api-deleteShare.jsp" %>
 
 <%@ include file="api-getPodcasts.jsp" %>
+<%@ include file="api-refreshPodcasts.jsp" %>
+<%@ include file="api-createPodcastChannel.jsp" %>
+<%@ include file="api-deletePodcastChannel.jsp" %>
+<%@ include file="api-deletePodcastEpisode.jsp" %>
+<%@ include file="api-downloadPodcastEpisode.jsp" %>
 
 <%@ include file="api-jukeboxControl.jsp" %>
 
