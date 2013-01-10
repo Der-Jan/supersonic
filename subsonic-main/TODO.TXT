@@ -32,6 +32,8 @@ REST: Podcast methods.
 TODO IN 4.8
 --------------
 Test REST podcast methods.
+REST: Add includeEpisodes to getPodcasts.
+REST: Add getPodcastEpisodes
 Improve track number removal. Should remove it if title is guessed from file name.
 Update exe4j. Make it work with java 7 and with 32/64 bit VM
   http://nsis.sourceforge.net/Java_Runtime_Environment_Dynamic_Installer
