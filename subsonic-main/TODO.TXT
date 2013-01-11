@@ -32,6 +32,16 @@ Update exe4j. Install Java 7 when needed.
 
 TODO IN 4.8
 --------------
+UPnP/DLNA
+  http://4thline.org/projects/cling/
+  Use 2.0?
+  shutdown hook
+  Test with Tomcat
+  Premium
+  https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
+  https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
+  SkatteFUNN
+
 Test HLS
 Go through forum feedback for 4.7
 Improve track number removal. Should remove it if title is guessed from file name.

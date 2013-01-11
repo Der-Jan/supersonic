@@ -275,6 +275,18 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.teleal.cling</groupId>
+            <artifactId>cling-core</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.teleal.cling</groupId>
+            <artifactId>cling-support</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
