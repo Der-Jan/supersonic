@@ -28,23 +28,15 @@ Change bitrate to resolution mapping.
 Bugfix: HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 REST: Podcast methods.
+Update exe4j. Install Java 7 when needed.
 
 TODO IN 4.8
 --------------
+Test HLS
+Go through forum feedback for 4.7
 Improve track number removal. Should remove it if title is guessed from file name.
-Update exe4j. Make it work with java 7 and with 32/64 bit VM
-  http://nsis.sourceforge.net/Java_Runtime_Environment_Dynamic_Installer
-  SetRegView 64
-
-Change language in donation dialog.
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
-REST: Add "size" param to stream.view and hls.view
-  Add width/height to xsd
-  Support 1200@640x80
-  Add max checks.
-  Test
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
 Something wrong with matching players/users in Now Playing.
   https://mail.google.com/mail/?tab=cm#inbox/137dcaaddeba0936
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
