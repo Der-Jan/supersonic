@@ -1270,41 +1270,46 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
+        boolean includeEpisodes = ServletRequestUtils.getBooleanParameter(request, "includeEpisodes", true);
+        Integer channelId = ServletRequestUtils.getIntParameter(request, "id");
 
         XMLBuilder builder = createXMLBuilder(request, response, true);
         builder.add("podcasts", false);
 
         for (PodcastChannel channel : podcastService.getAllChannels()) {
-            AttributeSet channelAttrs = new AttributeSet();
-            channelAttrs.add("id", channel.getId());
-            channelAttrs.add("url", channel.getUrl());
-            channelAttrs.add("status", channel.getStatus().toString().toLowerCase());
-            channelAttrs.add("title", channel.getTitle());
-            channelAttrs.add("description", channel.getDescription());
-            channelAttrs.add("errorMessage", channel.getErrorMessage());
-            builder.add("channel", channelAttrs, false);
+            if (channelId == null || channelId.equals(channel.getId())) {
+                AttributeSet channelAttrs = new AttributeSet();
+                channelAttrs.add("id", channel.getId());
+                channelAttrs.add("url", channel.getUrl());
+                channelAttrs.add("status", channel.getStatus().toString().toLowerCase());
+                channelAttrs.add("title", channel.getTitle());
+                channelAttrs.add("description", channel.getDescription());
+                channelAttrs.add("errorMessage", channel.getErrorMessage());
+                builder.add("channel", channelAttrs, false);
 
-            List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
-            for (PodcastEpisode episode : episodes) {
-                AttributeSet episodeAttrs = new AttributeSet();
+                if (includeEpisodes) {
+                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
+                    for (PodcastEpisode episode : episodes) {
+                        AttributeSet episodeAttrs = new AttributeSet();
 
-                String path = episode.getPath();
-                if (path != null) {
-                    MediaFile mediaFile = mediaFileService.getMediaFile(path);
-                    episodeAttrs.addAll(createAttributesForMediaFile(player, mediaFile, username));
-                    episodeAttrs.add("streamId", mediaFile.getId());
+                        String path = episode.getPath();
+                        if (path != null) {
+                            MediaFile mediaFile = mediaFileService.getMediaFile(path);
+                            episodeAttrs.addAll(createAttributesForMediaFile(player, mediaFile, username));
+                            episodeAttrs.add("streamId", mediaFile.getId());
+                        }
+
+                        episodeAttrs.add("id", episode.getId());  // Overwrites the previous "id" attribute.
+                        episodeAttrs.add("status", episode.getStatus().toString().toLowerCase());
+                        episodeAttrs.add("title", episode.getTitle());
+                        episodeAttrs.add("description", episode.getDescription());
+                        episodeAttrs.add("publishDate", episode.getPublishDate());
+
+                        builder.add("episode", episodeAttrs, true);
+                    }
                 }
-
-                episodeAttrs.add("id", episode.getId());  // Overwrites the previous "id" attribute.
-                episodeAttrs.add("status", episode.getStatus().toString().toLowerCase());
-                episodeAttrs.add("title", episode.getTitle());
-                episodeAttrs.add("description", episode.getDescription());
-                episodeAttrs.add("publishDate", episode.getPublishDate());
-
-                builder.add("episode", episodeAttrs, true);
+                builder.end(); // <channel>
             }
-
-            builder.end(); // <channel>
         }
         builder.endAll();
         response.getWriter().print(builder);
