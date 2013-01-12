@@ -1,3 +1,21 @@
+/*
+ This file is part of Subsonic.
+
+ Subsonic is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Subsonic is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+
+ Copyright 2009 (C) Sindre Mehus
+ */
 package net.sourceforge.subsonic.service;
 
 import net.sourceforge.subsonic.dao.AlbumDao;
@@ -5,9 +23,14 @@ import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
+import org.apache.commons.lang.StringUtils;
 import org.teleal.cling.UpnpService;
 import org.teleal.cling.UpnpServiceImpl;
 import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -42,6 +65,7 @@ import org.teleal.cling.support.model.item.Item;
 import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.common.util.MimeType;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,19 +80,17 @@ public class UPnPService {
 
     private SettingsService settingsService;
     private PlayerService playerService;
+    private VersionService versionService;
+    private TranscodingService transcodingService;
     private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
-//    public static void main(String[] args) throws Exception {
-//        new UPnPService();
-//        Thread.sleep(Long.MAX_VALUE);
-//    }
+    public void init() throws Exception {
 
-    public UPnPService() throws Exception {
-
-        // TODO: Shutdown hook
+        // TODO: Run in background.
         // TODO: Handle exception.
+
         final UpnpService upnpService = new UpnpServiceImpl();
 
         upnpService.getRegistry().addDevice(createDevice());
@@ -90,12 +112,17 @@ public class UPnPService {
         DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Subsonic"));
         DeviceType type = new UDADeviceType("MediaServer", 1);
 
-        // TODO: Version and license info
         // TODO: DLNADoc, DLNACaps
+        Version version = versionService.getLocalVersion();
+        String versionString = version == null ? null : version.toString();
+        String licenseEmail = settingsService.getLicenseEmail();
+        String licenseString = licenseEmail == null ? "Unlicensed" : ("Licensed to " + licenseEmail);
+
         DeviceDetails details = new DeviceDetails("Subsonic Media Streamer", new ManufacturerDetails("Subsonic"),
-                new ModelDetails("Subsonic", "Licensed to sindre@activeobjects.no ", "4.9"));
+                new ModelDetails("Subsonic", licenseString, versionString));
         // TODO: icon
-//        Icon icon = new Icon("image/png", 48, 48, 8, getClass().getResource("icon.png"));
+
+        Icon icon = new Icon("image/png", 512, 512, 32, getClass().getResource("subsonic-512.png"));
 
         LocalService<ContentDirectory> contentDirectoryservice = new AnnotationLocalServiceBinder().read(ContentDirectory.class);
         contentDirectoryservice.setManager(new DefaultServiceManager<ContentDirectory>(contentDirectoryservice) {
@@ -109,8 +136,7 @@ public class UPnPService {
         LocalService<ConnectionManagerService> connetionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
         connetionManagerService.setManager(new DefaultServiceManager<ConnectionManagerService>(connetionManagerService, ConnectionManagerService.class));
 
-        return new LocalDevice(identity, type, details, new Icon[0],
-                new LocalService[] {contentDirectoryservice, connetionManagerService});
+        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -131,6 +157,14 @@ public class UPnPService {
 
     public void setPlayerService(PlayerService playerService) {
         this.playerService = playerService;
+    }
+
+    public void setTranscodingService(TranscodingService transcodingService) {
+        this.transcodingService = transcodingService;
+    }
+
+    public void setVersionService(VersionService versionService) {
+        this.versionService = versionService;
     }
 
 
@@ -282,12 +316,14 @@ public class UPnPService {
             return container;
         }
 
-        private Container createAlbumContainer(Artist artist, Album album) {
+        private Container createAlbumContainer(Artist artist, Album album) throws Exception {
             MusicAlbum container = new MusicAlbum();
             container.setId(ALBUM_COVERART_PREFIX + album.getId());
             container.setParentID(ARTIST_COVERART_PREFIX + artist.getId());
             container.setTitle(album.getName());
-//            container.setAlbumArtURIs(); // TODO
+
+            String albumArtUrl = getBaseUrl() + "coverArt.view?id=" + container.getId() + "&size=" + CoverArtScheme.LARGE.getSize();
+            container.setAlbumArtURIs(new URI[] {new URI(albumArtUrl)});
             container.setArtists(new PersonWithRole[]{new PersonWithRole(artist.getName())});
 //            container.setDate(); //TODO
             container.setDescription(album.getComment());
@@ -304,7 +340,10 @@ public class UPnPService {
             if (song.getArtist() != null ) {
                 item.setArtists(new PersonWithRole[]{new PersonWithRole(song.getArtist())});
             }
-//            item.setDate(); // TODO
+            Integer year = song.getYear();
+            if (year != null) {
+                item.setDate(year + "-01-01");
+            }
             item.setOriginalTrackNumber(song.getTrackNumber());
             if (song.getGenre() != null) {
                 item.setGenres(new String[]{song.getGenre()});
@@ -315,11 +354,30 @@ public class UPnPService {
         }
 
         private Res createResourceForsong(MediaFile song) {
+
             // TODO
-            MimeType mimeType = new MimeType("audio", "mpeg");
             Player player = playerService.getGuestPlayer(null);
-            return new Res(mimeType, song.getFileSize(), "00:03:25", 8192L, "http://192.168.10.158:4040/stream?id="
-                    + song.getId() + "&player=" + player.getId());
+            String suffix = transcodingService.getSuffix(player, song, null);
+            String mimeTypeString = StringUtil.getMimeType(suffix);
+            MimeType mimeType = mimeTypeString == null ? null : MimeType.valueOf(mimeTypeString);
+            String url = getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
+            System.err.println(url);
+
+            Res res = new Res(mimeType, null, url);
+            res.setDuration(song.getDurationString());
+            return res;
+        }
+
+        private String getBaseUrl() {
+            int port = settingsService.getPort();
+            String contextPath = settingsService.getUrlRedirectContextPath();
+
+            StringBuilder url = new StringBuilder("http://").append(Util.getLocalIpAddress())
+                    .append(":").append(port).append("/");
+            if (StringUtils.isNotEmpty(contextPath)) {
+                url.append(contextPath).append("/");
+            }
+            return url.toString();
         }
 
         private Artist getArtistByObjectId(String objectId) {

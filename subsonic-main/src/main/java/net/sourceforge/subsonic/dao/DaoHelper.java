@@ -78,7 +78,7 @@ public class DaoHelper {
             public void run() {
                 System.err.println("Shutting down database.");
                 getJdbcTemplate().execute("shutdown");
-                System.err.println("Done.");
+                System.err.println("Shutting down database - Done!");
             }
         });
     }
