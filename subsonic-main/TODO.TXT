@@ -37,9 +37,12 @@ UPnP/DLNA
   Use 2.0?
   shutdown hook
   Test with Tomcat
+  Test streaming
+  Run inside jetty
   Premium
   https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
   https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
+  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
   SkatteFUNN
 
 Test HLS
