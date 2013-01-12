@@ -41,7 +41,7 @@ public class DaoHelper {
                 System.err.println("Shutting down database.");
                 try {
                     getJdbcTemplate().execute("shutdown");
-                    System.err.println("Done.");
+                    System.err.println("Shutting down database - Done!");
                 } catch (Throwable x) {
                     System.err.println("Failed to shut down database.");
                     x.printStackTrace();

@@ -176,6 +176,7 @@
 
     <bean id="upnpService" class="net.sourceforge.subsonic.service.UPnPService">
         <property name="settingsService" ref="settingsService"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>
