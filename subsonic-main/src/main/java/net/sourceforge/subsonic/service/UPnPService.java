@@ -7,6 +7,7 @@ import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
+import net.sourceforge.subsonic.domain.Player;
 import org.teleal.cling.UpnpService;
 import org.teleal.cling.UpnpServiceImpl;
 import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -54,6 +55,7 @@ import static net.sourceforge.subsonic.controller.CoverArtController.ARTIST_COVE
 public class UPnPService {
 
     private SettingsService settingsService;
+    private PlayerService playerService;
     private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
@@ -125,6 +127,10 @@ public class UPnPService {
 
     public void setMediaFileDao(MediaFileDao mediaFileDao) {
         this.mediaFileDao = mediaFileDao;
+    }
+
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
 
@@ -311,7 +317,9 @@ public class UPnPService {
         private Res createResourceForsong(MediaFile song) {
             // TODO
             MimeType mimeType = new MimeType("audio", "mpeg");
-            return new Res(mimeType, 123456L, "00:03:25", 8192L, "http://10.0.0.1/files/101.mp3");
+            Player player = playerService.getGuestPlayer(null);
+            return new Res(mimeType, song.getFileSize(), "00:03:25", 8192L, "http://192.168.10.158:4040/stream?id="
+                    + song.getId() + "&player=" + player.getId());
         }
 
         private Artist getArtistByObjectId(String objectId) {

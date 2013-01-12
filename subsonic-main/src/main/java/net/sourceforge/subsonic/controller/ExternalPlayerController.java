@@ -21,14 +21,11 @@ package net.sourceforge.subsonic.controller;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.ShareDao;
 import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
-import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -50,10 +47,8 @@ import java.util.Map;
 public class ExternalPlayerController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(ExternalPlayerController.class);
-    private static final String GUEST_USERNAME = "guest";
 
     private SettingsService settingsService;
-    private SecurityService securityService;
     private PlayerService playerService;
     private ShareDao shareDao;
     private MediaFileService mediaFileService;
@@ -96,7 +91,7 @@ public class ExternalPlayerController extends ParameterizableViewController {
             map.put("coverArt", coverArts.get(0));
         }
         map.put("redirectFrom", settingsService.getUrlRedirectFrom());
-        map.put("player", getPlayer(request).getId());
+        map.put("player", playerService.getGuestPlayer(request).getId());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -132,31 +127,6 @@ public class ExternalPlayerController extends ParameterizableViewController {
     }
 
 
-    private Player getPlayer(HttpServletRequest request) {
-
-        // Create guest user if necessary.
-        User user = securityService.getUserByName(GUEST_USERNAME);
-        if (user == null) {
-            user = new User(GUEST_USERNAME, RandomStringUtils.randomAlphanumeric(30), null);
-            user.setStreamRole(true);
-            securityService.createUser(user);
-        }
-
-        // Look for existing player.
-        List<Player> players = playerService.getPlayersForUserAndClientId(GUEST_USERNAME, null);
-        if (!players.isEmpty()) {
-            return players.get(0);
-        }
-
-        // Create player if necessary.
-        Player player = new Player();
-        player.setIpAddress(request.getRemoteAddr());
-        player.setUsername(GUEST_USERNAME);
-        playerService.createPlayer(player);
-
-        return player;
-    }
-
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
     }
@@ -167,10 +137,6 @@ public class ExternalPlayerController extends ParameterizableViewController {
 
     public void setShareDao(ShareDao shareDao) {
         this.shareDao = shareDao;
-    }
-
-    public void setSecurityService(SecurityService securityService) {
-        this.securityService = securityService;
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {

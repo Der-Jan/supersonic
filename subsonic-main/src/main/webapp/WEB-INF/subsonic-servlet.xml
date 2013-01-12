@@ -306,7 +306,6 @@
         <property name="viewName" value="externalPlayer"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="shareDao" ref="shareDao"/>
     </bean>
