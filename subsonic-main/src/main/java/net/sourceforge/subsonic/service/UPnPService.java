@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.service;
 
+import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
@@ -54,6 +55,9 @@ import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.BrowseResult;
 import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.PersonWithRole;
+import org.teleal.cling.support.model.Protocol;
+import org.teleal.cling.support.model.ProtocolInfo;
+import org.teleal.cling.support.model.ProtocolInfos;
 import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.WriteStatus;
@@ -78,6 +82,8 @@ import static net.sourceforge.subsonic.controller.CoverArtController.ARTIST_COVE
  */
 public class UPnPService {
 
+    private static final Logger LOG = Logger.getLogger(UPnPService.class);
+
     private SettingsService settingsService;
     private PlayerService playerService;
     private VersionService versionService;
@@ -85,13 +91,41 @@ public class UPnPService {
     private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
+    private UpnpService upnpService;
 
-    public void init() throws Exception {
+    public void init() {
+        startService();
+    }
 
-        // TODO: Run in background.
-        // TODO: Handle exception.
+    public void startService() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                try {
+                    LOG.info("Starting UPnP service...");
+                    createService();
+                    LOG.info("Starting UPnP service - Done!");
+                } catch (Throwable x) {
+                    LOG.error("Failed to start UPnP service: " + x, x);
+                }
+            }
+        };
+        new Thread(runnable).start();
+    }
 
-        final UpnpService upnpService = new UpnpServiceImpl();
+    public synchronized void stopService() {
+        if (upnpService == null) {
+            return;
+        }
+        try {
+            upnpService.shutdown();
+            upnpService = null;
+        } catch (Throwable x) {
+            LOG.error("Failed to shutdown UPnP service: " + x, x);
+        }
+    }
+
+    private synchronized void createService() throws Exception {
+        upnpService = new UpnpServiceImpl();
 
         upnpService.getRegistry().addDevice(createDevice());
         LocalService<ConnectionManagerService> service = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
@@ -100,9 +134,9 @@ public class UPnPService {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                System.err.println("Shutting down UPnP.");
+                System.err.println("Shutting down UPnP service.");
                 upnpService.shutdown();
-                System.err.println("Shutting down UPnP - Done!");
+                System.err.println("Shutting down UPnP service - Done!");
             }
         });
     }
@@ -120,8 +154,8 @@ public class UPnPService {
 
         DeviceDetails details = new DeviceDetails("Subsonic Media Streamer", new ManufacturerDetails("Subsonic"),
                 new ModelDetails("Subsonic", licenseString, versionString));
-        // TODO: icon
 
+        // TODO: icon
         Icon icon = new Icon("image/png", 512, 512, 32, getClass().getResource("subsonic-512.png"));
 
         LocalService<ContentDirectory> contentDirectoryservice = new AnnotationLocalServiceBinder().read(ContentDirectory.class);
@@ -133,8 +167,18 @@ public class UPnPService {
         });
 
         // TODO: Provide protocol info
+
+        final ProtocolInfos sourceProtocols = new ProtocolInfos(
+                new ProtocolInfo(Protocol.HTTP_GET, ProtocolInfo.WILDCARD, "audio/mpeg", "DLNA.ORG_PN=MP3;DLNA.ORG_OP=01"),
+                new ProtocolInfo(Protocol.HTTP_GET, ProtocolInfo.WILDCARD, "video/mpeg", "DLNA.ORG_PN=MPEG1;DLNA.ORG_OP=01;DLNA.ORG_CI=0"));
+
         LocalService<ConnectionManagerService> connetionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
-        connetionManagerService.setManager(new DefaultServiceManager<ConnectionManagerService>(connetionManagerService, ConnectionManagerService.class));
+        connetionManagerService.setManager(new DefaultServiceManager<ConnectionManagerService>(connetionManagerService) {
+            @Override
+            protected ConnectionManagerService createServiceInstance() throws Exception {
+                return new ConnectionManagerService(sourceProtocols, null);
+            }
+        });
 
         return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
     }
@@ -172,11 +216,6 @@ public class UPnPService {
 
         public static final String ROOT_CONTAINER_ID = "0";
 
-        public ContentDirectory() {
-            // TODO: Specify sort & search capabilities?
-            super();
-        }
-
         @Override
         public BrowseResult browse(String objectId, BrowseFlag browseFlag, String filter, long firstResult,
                                    long maxResults, SortCriterion[] orderby) throws ContentDirectoryException {
@@ -208,20 +247,9 @@ public class UPnPService {
                     return browseAlbum(objectId, browseFlag, firstResult, maxResults);
                 }
 
-                throw new Exception("Not implemented");
-/*
-                    String album = ("Black Gives Way To Blue");
-                    String creator = "Alice In Chains"; // Required
-                    PersonWithRole artist = new PersonWithRole(creator, "Performer");
-                    MimeType mimeType = new MimeType("audio", "mpeg");
-                    didl.addItem(new MusicTrack(
-                            "101", ROOT_CONTAINER_ID, // 101 is the Item ID, 0 is the parent Container ID
-                            "All Secrets Known",
-                            creator, album, artist,
-                            new Res(mimeType, 123456l, "00:03:25", 8192l, "http://10.0.0.1/files/101.mp3")
-                    ));
-*/
+                // TODO: else {...}
 
+                throw new Exception("Not implemented");
                 // TODO: Container update ID.
 
             } catch (Exception ex) {
@@ -245,9 +273,9 @@ public class UPnPService {
             MediaLibraryStatistics statistics = settingsService.getMediaLibraryStatistics();
             root.setStorageUsed(statistics == null ? 0 : statistics.getTotalLengthInBytes());
             root.setTitle("Subsonic Media");
-            root.setRestricted(true); // TODO
-            root.setSearchable(false); // TODO
-            root.setWriteStatus(WriteStatus.NOT_WRITABLE); // TODO
+            root.setRestricted(true);
+            root.setSearchable(false);
+            root.setWriteStatus(WriteStatus.NOT_WRITABLE);
             // TODO: Support videos
             root.setChildCount(artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE).size());
 
@@ -325,7 +353,6 @@ public class UPnPService {
             String albumArtUrl = getBaseUrl() + "coverArt.view?id=" + container.getId() + "&size=" + CoverArtScheme.LARGE.getSize();
             container.setAlbumArtURIs(new URI[] {new URI(albumArtUrl)});
             container.setArtists(new PersonWithRole[]{new PersonWithRole(artist.getName())});
-//            container.setDate(); //TODO
             container.setDescription(album.getComment());
             container.setChildCount(album.getSongCount());
             return container;
@@ -354,8 +381,6 @@ public class UPnPService {
         }
 
         private Res createResourceForsong(MediaFile song) {
-
-            // TODO
             Player player = playerService.getGuestPlayer(null);
             String suffix = transcodingService.getSuffix(player, song, null);
             String mimeTypeString = StringUtil.getMimeType(suffix);
