@@ -34,6 +34,7 @@ Update exe4j. Install Java 7 when needed.
 TODO IN 4.8
 --------------
 UPnP/DLNA
+  AbstractMediaReceiverRegistrarService
   http://4thline.org/projects/cling/
   Use 2.0?
   shutdown hook
