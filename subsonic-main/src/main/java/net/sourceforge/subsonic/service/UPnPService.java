@@ -18,6 +18,48 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.fourthline.cling.UpnpService;
+import org.fourthline.cling.UpnpServiceImpl;
+import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
+import org.fourthline.cling.model.DefaultServiceManager;
+import org.fourthline.cling.model.meta.DeviceDetails;
+import org.fourthline.cling.model.meta.DeviceIdentity;
+import org.fourthline.cling.model.meta.Icon;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.LocalService;
+import org.fourthline.cling.model.meta.ManufacturerDetails;
+import org.fourthline.cling.model.meta.ModelDetails;
+import org.fourthline.cling.model.types.DeviceType;
+import org.fourthline.cling.model.types.UDADeviceType;
+import org.fourthline.cling.model.types.UDN;
+import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
+import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
+import org.fourthline.cling.support.model.BrowseFlag;
+import org.fourthline.cling.support.model.BrowseResult;
+import org.fourthline.cling.support.model.DIDLContent;
+import org.fourthline.cling.support.model.PersonWithRole;
+import org.fourthline.cling.support.model.Protocol;
+import org.fourthline.cling.support.model.ProtocolInfo;
+import org.fourthline.cling.support.model.ProtocolInfos;
+import org.fourthline.cling.support.model.Res;
+import org.fourthline.cling.support.model.SortCriterion;
+import org.fourthline.cling.support.model.WriteStatus;
+import org.fourthline.cling.support.model.container.Container;
+import org.fourthline.cling.support.model.container.MusicAlbum;
+import org.fourthline.cling.support.model.container.MusicArtist;
+import org.fourthline.cling.support.model.container.StorageFolder;
+import org.fourthline.cling.support.model.item.Item;
+import org.fourthline.cling.support.model.item.MusicTrack;
+import org.seamless.util.MimeType;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
@@ -31,47 +73,6 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Version;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
-import org.apache.commons.lang.StringUtils;
-import org.teleal.cling.UpnpService;
-import org.teleal.cling.UpnpServiceImpl;
-import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
-import org.teleal.cling.model.DefaultServiceManager;
-import org.teleal.cling.model.meta.DeviceDetails;
-import org.teleal.cling.model.meta.DeviceIdentity;
-import org.teleal.cling.model.meta.Icon;
-import org.teleal.cling.model.meta.LocalDevice;
-import org.teleal.cling.model.meta.LocalService;
-import org.teleal.cling.model.meta.ManufacturerDetails;
-import org.teleal.cling.model.meta.ModelDetails;
-import org.teleal.cling.model.types.DeviceType;
-import org.teleal.cling.model.types.UDADeviceType;
-import org.teleal.cling.model.types.UDN;
-import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
-import org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService;
-import org.teleal.cling.support.contentdirectory.ContentDirectoryErrorCode;
-import org.teleal.cling.support.contentdirectory.ContentDirectoryException;
-import org.teleal.cling.support.contentdirectory.DIDLParser;
-import org.teleal.cling.support.model.BrowseFlag;
-import org.teleal.cling.support.model.BrowseResult;
-import org.teleal.cling.support.model.DIDLContent;
-import org.teleal.cling.support.model.PersonWithRole;
-import org.teleal.cling.support.model.Protocol;
-import org.teleal.cling.support.model.ProtocolInfo;
-import org.teleal.cling.support.model.ProtocolInfos;
-import org.teleal.cling.support.model.Res;
-import org.teleal.cling.support.model.SortCriterion;
-import org.teleal.cling.support.model.WriteStatus;
-import org.teleal.cling.support.model.container.Container;
-import org.teleal.cling.support.model.container.MusicAlbum;
-import org.teleal.cling.support.model.container.MusicArtist;
-import org.teleal.cling.support.model.container.StorageFolder;
-import org.teleal.cling.support.model.item.Item;
-import org.teleal.cling.support.model.item.MusicTrack;
-import org.teleal.common.util.MimeType;
-
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
 
 import static net.sourceforge.subsonic.controller.CoverArtController.ALBUM_COVERART_PREFIX;
 import static net.sourceforge.subsonic.controller.CoverArtController.ARTIST_COVERART_PREFIX;
@@ -128,8 +129,6 @@ public class UPnPService {
         upnpService = new UpnpServiceImpl();
 
         upnpService.getRegistry().addDevice(createDevice());
-        LocalService<ConnectionManagerService> service = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
-        service.setManager(new DefaultServiceManager<ConnectionManagerService>(service, ConnectionManagerService.class));
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -180,6 +179,12 @@ public class UPnPService {
             }
         });
 
+        // For compatibility with Microsoft
+//        LocalService<MSMediaReceiverRegistrarService> receiverService = new AnnotationLocalServiceBinder().read(MSMediaReceiverRegistrarService.class);
+//        receiverService.setManager(new DefaultServiceManager<MSMediaReceiverRegistrarService>(receiverService, MSMediaReceiverRegistrarService.class));
+//        System.err.println(receiverService); // TODO
+//
+//        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService, receiverService});
         return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
     }
 
@@ -426,4 +431,5 @@ public class UPnPService {
             return super.search(containerId, searchCriteria, filter, firstResult, maxResults, orderBy);
         }
     }
+
 }

@@ -37,6 +37,7 @@ UPnP/DLNA
   AbstractMediaReceiverRegistrarService
   http://4thline.org/projects/cling/
   Use 2.0?
+  Fails to play nrk podcast.
   shutdown hook
   Test with Tomcat
   Run inside jetty
