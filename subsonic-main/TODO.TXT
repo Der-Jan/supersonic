@@ -1,5 +1,6 @@
 DONE IN 4.8
 -------------
+Updated Norwegion Nynorsk translation, courtesy of Kevin Brubeck Unhammer.
 Updated Dutch translation, courtesy of W. van der Heijden.
 Updated German translation, courtesy of deejay2302.
 Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
