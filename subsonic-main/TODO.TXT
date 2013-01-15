@@ -35,19 +35,22 @@ TODO IN 4.8
 --------------
 UPnP/DLNA
   AbstractMediaReceiverRegistrarService
+  MiniDLNA
+    http://minidlna.sourceforge.net/
   http://4thline.org/projects/cling/
   Use 2.0?
   Fails to play nrk podcast.
-  shutdown hook
   Test with Tomcat
-  Run inside jetty
   Make it work in Skifta
   Premium
   https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
   https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
   http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
+  Intel UPnP Spy
+    http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
   SkatteFUNN
 
+Update ffmpeg
 Test HLS
 Go through forum feedback for 4.7
 Improve track number removal. Should remove it if title is guessed from file name.
