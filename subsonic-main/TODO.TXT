@@ -33,6 +33,9 @@ Update exe4j. Install Java 7 when needed.
 
 TODO IN 4.8
 --------------
+Auth bypass
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
+Donation > Premium
 UPnP/DLNA
   AbstractMediaReceiverRegistrarService
   MiniDLNA
