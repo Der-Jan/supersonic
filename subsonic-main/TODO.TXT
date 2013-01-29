@@ -37,6 +37,7 @@ Auth bypass
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
 Donation > Premium
 UPnP/DLNA
+  Conflict with existing UPnP classes.
   AbstractMediaReceiverRegistrarService
   MiniDLNA
     http://minidlna.sourceforge.net/
@@ -53,10 +54,11 @@ UPnP/DLNA
     http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
   SkatteFUNN
 
-Update ffmpeg
-Test HLS
-Go through forum feedback for 4.7
 Improve track number removal. Should remove it if title is guessed from file name.
+Update ffmpeg?
+Remove UPnP support
+REST: Add internet tv/radio
+Go through forum feedback for 4.7
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 Something wrong with matching players/users in Now Playing.
