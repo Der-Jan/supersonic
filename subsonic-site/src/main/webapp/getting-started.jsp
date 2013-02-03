@@ -153,7 +153,7 @@
                         <li><a href="#2.1">2.1 Automatic port forwarding</a></li>
                         <li><a href="#2.2">2.2 Manual port forwarding</a></li>
                         <li><a href="#2.3">2.3 Setting up your personal subsonic.org address</a></li>
-                        <li><a href="#2.3">2.4 Troubleshooting</a></li>
+                        <li><a href="#2.4">2.4 Troubleshooting</a></li>
                     </ul>
                     <li><a href="#3">3 Registering your license key</a></li>
                     <li><a href="#4">4 Using https</a></li>
