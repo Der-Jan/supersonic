@@ -343,7 +343,7 @@ public class MediaFileService {
         mediaFileDao.createOrUpdateMediaFile(parent);
     }
 
-    private List<File> filterMediaFiles(File[] candidates) {
+    public List<File> filterMediaFiles(File[] candidates) {
         List<File> result = new ArrayList<File>();
         for (File candidate : candidates) {
             String suffix = FilenameUtils.getExtension(candidate.getName()).toLowerCase();

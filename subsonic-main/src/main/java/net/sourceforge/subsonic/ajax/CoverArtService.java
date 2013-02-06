@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.ajax;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -69,6 +70,7 @@ public class CoverArtService {
 
     private void saveCoverArt(String path, String url) throws Exception {
         InputStream input = null;
+        OutputStream output = null;
         HttpClient client = new DefaultHttpClient();
 
         try {
@@ -97,29 +99,40 @@ public class CoverArtService {
             backup(newCoverFile, new File(path, "cover.backup." + suffix));
 
             // Write file.
-            IOUtils.copy(input, new FileOutputStream(newCoverFile));
+            output = new FileOutputStream(newCoverFile);
+            IOUtils.copy(input, output);
 
-            MediaFile mediaFile = mediaFileService.getMediaFile(path);
+            MediaFile dir = mediaFileService.getMediaFile(path);
+
+            // Refresh database.
+            mediaFileService.refreshMediaFile(dir);
+            dir = mediaFileService.getMediaFile(dir.getId());
 
             // Rename existing cover file if new cover file is not the preferred.
             try {
-                File coverFile = mediaFileService.getCoverArt(mediaFile);
-                if (coverFile != null) {
+                File coverFile = mediaFileService.getCoverArt(dir);
+                if (coverFile != null && !isMediaFile(coverFile)) {
                     if (!newCoverFile.equals(coverFile)) {
                         coverFile.renameTo(new File(coverFile.getCanonicalPath() + ".old"));
                         LOG.info("Renamed old image file " + coverFile);
+
+                        // Must refresh again.
+                        mediaFileService.refreshMediaFile(dir);
                     }
                 }
             } catch (Exception x) {
                 LOG.warn("Failed to rename existing cover file.", x);
             }
 
-            mediaFileService.refreshMediaFile(mediaFile);
-
         } finally {
             IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
             client.getConnectionManager().shutdown();
         }
+    }
+
+    private boolean isMediaFile(File file) {
+        return !mediaFileService.filterMediaFiles(new File[]{file}).isEmpty();
     }
 
     private void backup(File newCoverFile, File backup) {

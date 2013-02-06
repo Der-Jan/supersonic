@@ -33,11 +33,13 @@ REST: Added getInternetRadioStations
 Update exe4j. Install Java 7 when needed.
 Video player Auth bypass
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
+Download cover to replace in-metadata image results in renaming music file (".old")
+  http://sourceforge.net/p/subsonic/bugs/76/
 
 TODO IN 4.8
 --------------
-Download cover to replace in-metadata image results in renaming music file (".old")
-  http://sourceforge.net/p/subsonic/bugs/76/
+Update Subclient description
+  https://mail.google.com/mail/u/0/?shva=1#inbox/13c9f6ec9f325903
 Donation > Premium
 UPnP/DLNA
   Conflict with existing UPnP classes.
