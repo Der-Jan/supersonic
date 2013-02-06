@@ -42,7 +42,7 @@ public class SBBIRouter implements Router {
         try {
             devices = InternetGatewayDevice.getDevices(DISCOVERY_TIMEOUT);
         } catch (IOException e) {
-            throw new Exception("Could not find router", e);
+            return null;
         }
 
         if (devices == null || devices.length == 0) {
