@@ -30,13 +30,13 @@ Bugfix: HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 REST: Podcast methods.
 Update exe4j. Install Java 7 when needed.
+Video player auth bypass
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
 
 TODO IN 4.8
 --------------
 Download cover to replace in-metadata image results in renaming music file (".old")
   http://sourceforge.net/p/subsonic/bugs/76/
-Auth bypass
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
 Donation > Premium
 UPnP/DLNA
   Conflict with existing UPnP classes.
