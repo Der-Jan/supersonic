@@ -27,6 +27,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.service.ServiceLocator;
 import net.sourceforge.subsonic.service.SettingsService;
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -127,7 +128,7 @@ public abstract class MetaDataParser {
      * Guesses the title for the given file.
      */
     public String guessTitle(File file) {
-        return removeTrackNumberFromTitle(FilenameUtils.getBaseName(file.getPath()), null);
+        return StringUtils.trim(FilenameUtils.getBaseName(file.getPath()));
     }
 
     private boolean isRoot(File file) {

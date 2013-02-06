@@ -58,7 +58,6 @@ UPnP/DLNA
     http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
   SkatteFUNN
 
-Improve track number removal. Should remove it if title is guessed from file name.
 Update ffmpeg?
 Remove UPnP support
 Go through forum feedback for 4.7
