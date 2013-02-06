@@ -39,7 +39,28 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
-Donation > Premium
+
+webapp
+  top: show #days left of trial
+  use only one trial period
+  about: show license status
+  donate: add link to signup page
+  networksettings
+  main: "donate to remove this ad"
+  sharing
+  video
+  Interaction with REST clients
+
+site
+  ad (also the one showing in webapp)
+  premium page
+
+backend
+  support subscriptions
+
+other
+  reconsider sourceforge
+
 UPnP/DLNA
   Conflict with existing UPnP classes.
   AbstractMediaReceiverRegistrarService
@@ -59,7 +80,6 @@ UPnP/DLNA
   SkatteFUNN
 
 Update ffmpeg?
-Remove UPnP support
 Go through forum feedback for 4.7
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
