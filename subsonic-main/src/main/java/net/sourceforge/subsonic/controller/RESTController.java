@@ -51,6 +51,7 @@ import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicIndex;
@@ -1386,6 +1387,23 @@ public class RESTController extends MultiActionController {
 
         podcastService.downloadEpisode(episode);
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void getInternetRadioStations(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("internetRadioStations", false);
+        for (InternetRadio radio : settingsService.getAllInternetRadios()) {
+            AttributeSet attrs = new AttributeSet();
+            attrs.add("id", radio.getId());
+            attrs.add("name", radio.getName());
+            attrs.add("streamUrl", radio.getStreamUrl());
+            attrs.add("homePageUrl", radio.getHomepageUrl());
+            builder.add("internetRadioStation", attrs, true);
+        }
+        builder.endAll();
         response.getWriter().print(builder);
     }
 

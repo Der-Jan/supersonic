@@ -29,8 +29,9 @@ Change bitrate to resolution mapping.
 Bugfix: HLS broken with context path
   https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
 REST: Podcast methods.
+REST: Added getInternetRadioStations
 Update exe4j. Install Java 7 when needed.
-Video player auth bypass
+Video player Auth bypass
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
 
 TODO IN 4.8
@@ -59,7 +60,6 @@ UPnP/DLNA
 Improve track number removal. Should remove it if title is guessed from file name.
 Update ffmpeg?
 Remove UPnP support
-REST: Add internet tv/radio
 Go through forum feedback for 4.7
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09

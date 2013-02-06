@@ -341,13 +341,19 @@
         </td>
     </tr>
     <tr class="table-altrow">
+        <td>Internet radio</td>
+        <td>
+            <code><a href="#getInternetRadioStations">getInternetRadioStations</a></code>
+        </td>
+    </tr>
+    <tr>
         <td>Chat</td>
         <td>
             <code><a href="#getChatMessages">getChatMessages</a></code>,
             <code><a href="#addChatMessage">addChatMessage</a></code>
         </td>
     </tr>
-    <tr>
+    <tr class="table-altrow">
         <td style="white-space: nowrap; padding-right: 0.6em">User management</td>
         <td>
             <code><a href="#getUser">getUser</a></code>,
@@ -415,6 +421,8 @@
 <%@ include file="api-downloadPodcastEpisode.jsp" %>
 
 <%@ include file="api-jukeboxControl.jsp" %>
+
+<%@ include file="api-getInternetRadioStations.jsp" %>
 
 <%@ include file="api-getChatMessages.jsp" %>
 <%@ include file="api-addChatMessage.jsp" %>
