@@ -70,7 +70,7 @@ public class ShareManagementController extends MultiActionController {
         Share share = shareService.createShare(request, files);
         map.put("playUrl", shareService.getShareUrl(share));
 
-        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+        Date trialExpires = settingsService.getTrialExpires();
         map.put("trialExpires", trialExpires);
         map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
         map.put("trial", trialExpires != null && !settingsService.isLicenseValid());

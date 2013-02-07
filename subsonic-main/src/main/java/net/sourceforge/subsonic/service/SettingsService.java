@@ -68,6 +68,9 @@ public class SettingsService {
     private static final File SUBSONIC_HOME_WINDOWS = new File("c:/subsonic");
     private static final File SUBSONIC_HOME_OTHER = new File("/var/subsonic");
 
+    // Number of free trial days.
+    private static final long TRIAL_DAYS = 30L;
+
     // Global settings.
     private static final String KEY_INDEX_STRING = "IndexString";
     private static final String KEY_IGNORED_ARTICLES = "IgnoredArticles";
@@ -114,16 +117,14 @@ public class SettingsService {
     private static final String KEY_HTTPS_PORT = "HttpsPort";
     private static final String KEY_URL_REDIRECTION_ENABLED = "UrlRedirectionEnabled";
     private static final String KEY_URL_REDIRECT_FROM = "UrlRedirectFrom";
-    private static final String KEY_URL_REDIRECT_TRIAL_EXPIRES = "UrlRedirectTrialExpires";
     private static final String KEY_URL_REDIRECT_CONTEXT_PATH = "UrlRedirectContextPath";
-    private static final String KEY_REST_TRIAL_EXPIRES = "RestTrialExpires-";
-    private static final String KEY_VIDEO_TRIAL_EXPIRES = "VideoTrialExpires";
     private static final String KEY_SERVER_ID = "ServerId";
     private static final String KEY_SETTINGS_CHANGED = "SettingsChanged";
     private static final String KEY_LAST_SCANNED = "LastScanned";
     private static final String KEY_ORGANIZE_BY_FOLDER_STRUCTURE = "OrganizeByFolderStructure";
     private static final String KEY_SORT_ALBUMS_BY_YEAR = "SortAlbumsByYear";
     private static final String KEY_MEDIA_LIBRARY_STATISTICS = "MediaLibraryStatistics";
+    private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -178,19 +179,18 @@ public class SettingsService {
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
-    private static final String DEFAULT_URL_REDIRECT_TRIAL_EXPIRES = null;
     private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = null;
-    private static final String DEFAULT_REST_TRIAL_EXPIRES = null;
-    private static final String DEFAULT_VIDEO_TRIAL_EXPIRES = null;
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
     private static final boolean DEFAULT_SORT_ALBUMS_BY_YEAR = true;
     private static final String DEFAULT_MEDIA_LIBRARY_STATISTICS = "0 0 0 0 0";
+    private static final String DEFAULT_TRIAL_EXPIRES = null;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
-            "DownsamplingCommand", "DownsamplingCommand2", "AutoCoverBatch", "MusicMask", "VideoMask", "CoverArtMask, HlsCommand");
+            "DownsamplingCommand", "DownsamplingCommand2", "AutoCoverBatch", "MusicMask", "VideoMask", "CoverArtMask, HlsCommand",
+            "UrlRedirectTrialExpires", "VideoTrialExpires");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -237,6 +237,12 @@ public class SettingsService {
                     iterator.remove();
                 }
             }
+        }
+
+        // Start trial.
+        if (getTrialExpires() == null) {
+            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
+            setTrialExpires(expiryDate);
         }
 
         save(false);
@@ -769,24 +775,14 @@ public class SettingsService {
         properties.setProperty(KEY_URL_REDIRECT_FROM, urlRedirectFrom);
     }
 
-    public Date getUrlRedirectTrialExpires() {
-        String value = properties.getProperty(KEY_URL_REDIRECT_TRIAL_EXPIRES, DEFAULT_URL_REDIRECT_TRIAL_EXPIRES);
+    public Date getTrialExpires() {
+        String value = properties.getProperty(KEY_TRIAL_EXPIRES, DEFAULT_TRIAL_EXPIRES);
         return value == null ? null : new Date(Long.parseLong(value));
     }
 
-    public void setUrlRedirectTrialExpires(Date date) {
+    private void setTrialExpires(Date date) {
         String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_URL_REDIRECT_TRIAL_EXPIRES, value);
-    }
-
-    public Date getVideoTrialExpires() {
-        String value = properties.getProperty(KEY_VIDEO_TRIAL_EXPIRES, DEFAULT_VIDEO_TRIAL_EXPIRES);
-        return value == null ? null : new Date(Long.parseLong(value));
-    }
-
-    public void setVideoTrialExpires(Date date) {
-        String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_VIDEO_TRIAL_EXPIRES, value);
+        setProperty(KEY_TRIAL_EXPIRES, value);
     }
 
     public String getUrlRedirectContextPath() {
@@ -795,16 +791,6 @@ public class SettingsService {
 
     public void setUrlRedirectContextPath(String contextPath) {
         properties.setProperty(KEY_URL_REDIRECT_CONTEXT_PATH, contextPath);
-    }
-
-    public Date getRESTTrialExpires(String client) {
-        String value = properties.getProperty(KEY_REST_TRIAL_EXPIRES + client, DEFAULT_REST_TRIAL_EXPIRES);
-        return value == null ? null : new Date(Long.parseLong(value));
-    }
-
-    public void setRESTTrialExpires(String client, Date date) {
-        String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_REST_TRIAL_EXPIRES + client, value);
     }
 
     public String getServerId() {

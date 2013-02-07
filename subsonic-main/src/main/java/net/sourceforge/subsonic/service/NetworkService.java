@@ -225,7 +225,7 @@ public class NetworkService {
 
             int port = settingsService.getPort();
             boolean trial = !settingsService.isLicenseValid();
-            Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+            Date trialExpires = settingsService.getTrialExpires();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("serverId", settingsService.getServerId()));

@@ -49,7 +49,7 @@ public class NetworkSettingsController extends SimpleFormController {
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
         command.setPort(settingsService.getPort());
 
-        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+        Date trialExpires = settingsService.getTrialExpires();
         command.setTrialExpires(trialExpires);
         command.setTrialExpired(trialExpires != null && trialExpires.before(new Date()));
         command.setTrial(trialExpires != null && !settingsService.isLicenseValid());
@@ -64,11 +64,6 @@ public class NetworkSettingsController extends SimpleFormController {
         settingsService.setPortForwardingEnabled(command.isPortForwardingEnabled());
         settingsService.setUrlRedirectionEnabled(command.isUrlRedirectionEnabled());
         settingsService.setUrlRedirectFrom(StringUtils.lowerCase(command.getUrlRedirectFrom()));
-
-        if (!settingsService.isLicenseValid() && settingsService.getUrlRedirectTrialExpires() == null) {
-            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
-            settingsService.setUrlRedirectTrialExpires(expiryDate);
-        }
 
         if (settingsService.getServerId() == null) {
             Random rand = new Random(System.currentTimeMillis());

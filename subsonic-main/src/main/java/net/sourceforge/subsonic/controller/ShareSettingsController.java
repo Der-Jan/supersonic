@@ -66,7 +66,7 @@ public class ShareSettingsController extends ParameterizableViewController {
         map.put("shareInfos", getShareInfos(request));
         map.put("user", securityService.getCurrentUser(request));
 
-        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+        Date trialExpires = settingsService.getTrialExpires();
         map.put("trialExpires", trialExpires);
         map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
         map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
