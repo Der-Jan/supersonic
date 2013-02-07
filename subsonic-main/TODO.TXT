@@ -42,16 +42,10 @@ TODO IN 4.8
 Show more albums on home page
 
 webapp
+  make podcast premium
   top: show #days left of trial
-  use only one trial period
   about: show license status
   donate: add link to signup page
-  networksettings
-  main: "donate to remove this ad"
-  sharing
-  video
-  Interaction with REST clients
-  make podcast premium
 
 site
   ad (also the one showing in webapp)

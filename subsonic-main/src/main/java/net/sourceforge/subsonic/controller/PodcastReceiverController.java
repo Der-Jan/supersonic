@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,6 +69,12 @@ public class PodcastReceiverController extends ParameterizableViewController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("channels", channels);
         map.put("expandedChannels", StringUtil.parseInts(request.getParameter("expandedChannels")));
+
+        Date trialExpires = settingsService.getTrialExpires();
+        map.put("trialExpires", trialExpires);
+        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
+        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
+
         return result;
     }
 

@@ -425,6 +425,10 @@ public class PodcastService {
 
         HttpClient client = new DefaultHttpClient();
         try {
+            if (trial && trialExpired) {
+                throw new Exception("Trial period is expired.");
+            }
+
             PodcastChannel channel = getChannel(episode.getChannelId());
 
             HttpConnectionParams.setConnectionTimeout(client.getParams(), 2 * 60 * 1000); // 2 minutes
