@@ -45,7 +45,7 @@ webapp
   make podcast premium
   top: show #days left of trial
   about: show license status
-  donate: add link to signup page
+  donate: add link to signup page, mention podcast
 
 site
   ad (also the one showing in webapp)
@@ -58,6 +58,10 @@ backend
 
 other
   reconsider sourceforge
+
+paypal
+  Use USD (0.30 USD fee rather than 0.35 EUR)
+  micropayment?
 
 UPnP/DLNA
   Conflict with existing UPnP classes.

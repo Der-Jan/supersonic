@@ -425,7 +425,8 @@ public class PodcastService {
 
         HttpClient client = new DefaultHttpClient();
         try {
-            if (trial && trialExpired) {
+
+            if (!isLicensedOrTrial()) {
                 throw new Exception("Trial period is expired.");
             }
 
@@ -490,6 +491,14 @@ public class PodcastService {
             IOUtils.closeQuietly(out);
             client.getConnectionManager().shutdown();
         }
+    }
+
+    private boolean isLicensedOrTrial() {
+        boolean licensed = settingsService.isLicenseValid();
+        Date trialExpires = settingsService.getTrialExpires();
+        boolean trialValid = trialExpires.after(new Date());
+
+        return licensed || trialValid;
     }
 
     private synchronized void deleteObsoleteEpisodes(PodcastChannel channel) {
