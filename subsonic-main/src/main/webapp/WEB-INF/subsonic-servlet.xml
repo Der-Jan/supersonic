@@ -319,8 +319,8 @@
     </bean>
     <bean id="donateController" class="net.sourceforge.subsonic.controller.DonateController">
         <property name="commandClass" value="net.sourceforge.subsonic.command.DonateCommand"/>
-        <property name="successView" value="donate"/>
-        <property name="formView" value="donate"/>
+        <property name="successView" value="premium"/>
+        <property name="formView" value="premium"/>
         <property name="validator" ref="donateValidator"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
@@ -436,7 +436,7 @@
                 <prop key="/statusChart.view">statusChartController</prop>
                 <prop key="/userChart.view">userChartController</prop>
                 <prop key="/download.view">downloadController</prop>
-                <prop key="/donate.view">donateController</prop>
+                <prop key="/premium.view">donateController</prop>
                 <prop key="/db.view">dbController</prop>
                 <prop key="/test.view">multiController</prop>
                 <prop key="/podcastReceiver.view">podcastReceiverController</prop>

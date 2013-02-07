@@ -47,9 +47,9 @@
 
 <p></p>
 
-<table width="75%"><tr>
-    <td><a href="<c:url value="/donate.view"/>"><img src="<spring:theme code="paypalImage"/>" alt=""></a></td>
-    <td><fmt:message key="help.donate"><fmt:param value="${model.brand}"/></fmt:message></td>
+<table width="60%"><tr>
+    <td><a href="<c:url value="/premium.view"/>"><img src="<spring:theme code="paypalImage"/>" alt=""></a></td>
+    <td><fmt:message key="help.premium"/></td>
 </tr></table>
 
 <h2><img src="<spring:theme code="logImage"/>" alt="">&nbsp;<fmt:message key="help.log"/></h2>

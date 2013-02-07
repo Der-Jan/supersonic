@@ -429,10 +429,10 @@
                         ${model.ad}
                     <br/>
                     <br/>
-                    <sub:url value="donate.view" var="donateUrl">
+                    <sub:url value="premium.view" var="premiumUrl">
                         <sub:param name="path" value="${model.dir.path}"/>
                     </sub:url>
-                    <fmt:message key="main.donate"><fmt:param value="${donateUrl}"/><fmt:param value="${model.brand}"/></fmt:message>
+                    <fmt:message key="main.premium"><fmt:param value="${premiumUrl}"/></fmt:message>
                 </div>
             </c:if>
         </div>

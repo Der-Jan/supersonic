@@ -39,6 +39,7 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
+Show more albums on home page
 
 webapp
   top: show #days left of trial
@@ -50,6 +51,7 @@ webapp
   sharing
   video
   Interaction with REST clients
+  make podcast premium
 
 site
   ad (also the one showing in webapp)
