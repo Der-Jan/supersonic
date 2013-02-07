@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,11 @@ public class ShareManagementController extends MultiActionController {
         map.put("user", securityService.getCurrentUser(request));
         Share share = shareService.createShare(request, files);
         map.put("playUrl", shareService.getShareUrl(share));
+
+        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+        map.put("trialExpires", trialExpires);
+        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
+        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
 
         return new ModelAndView("createShare", "model", map);
     }

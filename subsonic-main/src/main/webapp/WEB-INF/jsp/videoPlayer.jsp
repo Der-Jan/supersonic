@@ -131,11 +131,11 @@
     <p class="warning" style="padding-top:1em">
         <c:choose>
             <c:when test="${model.trialExpired}">
-                <fmt:message key="networksettings.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+                <fmt:message key="common.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
             </c:when>
             <c:otherwise>
                 <fmt:message
-                        key="networksettings.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+                        key="common.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
             </c:otherwise>
         </c:choose>
     </p>

@@ -56,9 +56,11 @@ webapp
 site
   ad (also the one showing in webapp)
   premium page
+  redirect-expired.jsp
 
 backend
   support subscriptions
+  Change message "Trial period expired. Please donate to activate web address."
 
 other
   reconsider sourceforge

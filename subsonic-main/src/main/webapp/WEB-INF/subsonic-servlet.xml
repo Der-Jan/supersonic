@@ -163,6 +163,7 @@
         <property name="shareService" ref="shareService"/>
         <property name="securityService" ref="securityService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="musicFolderSettingsController" class="net.sourceforge.subsonic.controller.MusicFolderSettingsController">
         <property name="commandClass" value="net.sourceforge.subsonic.command.MusicFolderSettingsCommand"/>

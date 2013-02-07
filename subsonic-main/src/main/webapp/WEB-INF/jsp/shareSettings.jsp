@@ -61,14 +61,29 @@
             </tr>
         </c:forEach>
 
-        <tr>
-            <td colspan="4" style="padding-top:1.5em">
-                <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
-                <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
-            </td>
-        </tr>
-
     </table>
+
+    <c:if test="${model.trial}">
+        <fmt:formatDate value="${model.trialExpires}" dateStyle="long" var="expiryDate"/>
+
+        <p class="warning" style="padding-top:1em">
+            <c:choose>
+                <c:when test="${model.trialExpired}">
+                    <fmt:message key="common.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+                </c:when>
+                <c:otherwise>
+                    <fmt:message
+                            key="common.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+                </c:otherwise>
+            </c:choose>
+        </p>
+    </c:if>
+
+    <p style="padding-top:1em">
+        <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
+        <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
+    </p>
+
 </form>
 
 </body></html>

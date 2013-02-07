@@ -23,6 +23,7 @@ import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +48,7 @@ public class ShareSettingsController extends ParameterizableViewController {
     private ShareService shareService;
     private SecurityService securityService;
     private MediaFileService mediaFileService;
+    private SettingsService settingsService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -63,6 +65,11 @@ public class ShareSettingsController extends ParameterizableViewController {
         map.put("shareBaseUrl", shareService.getShareBaseUrl());
         map.put("shareInfos", getShareInfos(request));
         map.put("user", securityService.getCurrentUser(request));
+
+        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+        map.put("trialExpires", trialExpires);
+        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
+        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
 
         result.addObject("model", map);
         return result;
@@ -140,6 +147,10 @@ public class ShareSettingsController extends ParameterizableViewController {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 
     public static class ShareInfo {

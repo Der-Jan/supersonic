@@ -37,6 +37,21 @@
     </c:otherwise>
 </c:choose>
 
+<c:if test="${model.trial}">
+    <fmt:formatDate value="${model.trialExpires}" dateStyle="long" var="expiryDate"/>
+
+    <p class="warning" style="padding-top:1em">
+        <c:choose>
+            <c:when test="${model.trialExpired}">
+                <fmt:message key="common.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+            </c:when>
+            <c:otherwise>
+                <fmt:message
+                        key="common.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
+            </c:otherwise>
+        </c:choose>
+    </p>
+</c:if>
 
 <div style="padding-top:1em">
     <c:if test="${not empty model.dir}">
