@@ -42,7 +42,6 @@ TODO IN 4.8
 Show more albums on home page
 
 webapp
-  make podcast premium
   top: show #days left of trial
   about: show license status
   donate: add link to signup page, mention podcast
@@ -80,6 +79,9 @@ UPnP/DLNA
   Intel UPnP Spy
     http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
   SkatteFUNN
+  DAAP support.
+    https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
+    http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
 
 Update ffmpeg?
 Go through forum feedback for 4.7
@@ -96,9 +98,6 @@ Prefill minisub
 FLAC crashes Flash in Firefox (with server on Linux).
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10027&p=44673#p44673
 
-DAAP support.
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
-  http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
 
 Postponed:
   - ConcurrentModificationException

@@ -292,7 +292,7 @@ public class PodcastService {
         } catch (Exception x) {
             LOG.warn("Failed to get/parse RSS file for Podcast channel " + channel.getUrl(), x);
             channel.setStatus(PodcastStatus.ERROR);
-            channel.setErrorMessage(x.toString());
+            channel.setErrorMessage(getErrorMessage(x));
             podcastDao.updateChannel(channel);
         } finally {
             IOUtils.closeQuietly(in);
@@ -306,6 +306,10 @@ public class PodcastService {
                 }
             }
         }
+    }
+
+    private String getErrorMessage(Exception x) {
+        return x.getMessage() != null ? x.getMessage() : x.toString();
     }
 
     public void downloadEpisode(final PodcastEpisode episode) {
@@ -427,7 +431,7 @@ public class PodcastService {
         try {
 
             if (!isLicensedOrTrial()) {
-                throw new Exception("Trial period is expired.");
+                throw new Exception("Sorry, the trial period is expired.");
             }
 
             PodcastChannel channel = getChannel(episode.getChannelId());
@@ -484,7 +488,7 @@ public class PodcastService {
         } catch (Exception x) {
             LOG.warn("Failed to download Podcast from " + episode.getUrl(), x);
             episode.setStatus(PodcastStatus.ERROR);
-            episode.setErrorMessage(x.toString());
+            episode.setErrorMessage(getErrorMessage(x));
             podcastDao.updateEpisode(episode);
         } finally {
             IOUtils.closeQuietly(in);
