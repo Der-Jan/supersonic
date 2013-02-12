@@ -149,8 +149,6 @@
                 </p>
             </div>
 
-            <%@ include file="merchandise.jsp" %>
-
         </div>
 
         <div class="clear">

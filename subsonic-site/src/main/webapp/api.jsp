@@ -439,7 +439,6 @@
 
     <%@ include file="google-translate.jsp" %>
     <%@ include file="donate.jsp" %>
-    <%@ include file="merchandise.jsp" %>
 
 </div>
 

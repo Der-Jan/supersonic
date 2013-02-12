@@ -47,6 +47,7 @@ site
   ad (also the one showing in webapp)
   premium page
   redirect-expired.jsp
+  Use new email address
 
 backend
   support subscriptions
