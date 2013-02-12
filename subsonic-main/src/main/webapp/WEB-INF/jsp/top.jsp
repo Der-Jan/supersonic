@@ -80,6 +80,10 @@
                         <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt=""></a>
                         <a href="premium.view" target="main"><fmt:message key="top.premium"/></a>
                     </c:if>
+                    <c:if test="${model.trialValid}">
+                        <br>
+                    <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.trialDaysLeft}"/></fmt:message></a>
+                    </c:if>
                 </p>
             </td>
 

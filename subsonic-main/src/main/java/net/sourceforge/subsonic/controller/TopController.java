@@ -29,6 +29,8 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +52,17 @@ public class TopController extends ParameterizableViewController {
         List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
         User user = securityService.getCurrentUser(request);
 
+        Date trialExpires = settingsService.getTrialExpires();
+        Date now = new Date();
+        boolean trialValid = trialExpires.after(now);
+        long trialDaysLeft = trialValid ? (trialExpires.getTime() - now.getTime()) /  (24L * 3600L * 1000L) : 0L;
+
         map.put("user", user);
         map.put("musicFoldersExist", !allMusicFolders.isEmpty());
         map.put("brand", settingsService.getBrand());
         map.put("licensed", settingsService.isLicenseValid());
+        map.put("trialValid", trialValid);
+        map.put("trialDaysLeft", trialDaysLeft);
 
         UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
         if (userSettings.isFinalVersionNotificationEnabled() && versionService.isNewFinalVersionAvailable()) {

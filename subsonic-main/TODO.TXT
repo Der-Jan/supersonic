@@ -42,7 +42,6 @@ TODO IN 4.8
 Show more albums on home page
 
 webapp
-  top: show #days left of trial
   about: show license status
 
 site
