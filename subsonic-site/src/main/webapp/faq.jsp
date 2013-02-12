@@ -41,7 +41,7 @@
         <div id="side-col">
             <%@ include file="google-translate.jsp" %>
             <%@ include file="download-subsonic.jsp" %>
-            <%@ include file="donate.jsp" %>
+            <%@ include file="premium-column.jsp" %>
 
         </div>
 

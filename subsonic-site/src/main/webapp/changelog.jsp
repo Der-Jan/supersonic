@@ -1036,7 +1036,7 @@
         </ul>
     </div>
 
-    <%@ include file="donate.jsp" %>
+    <%@ include file="premium-column.jsp" %>
 
 </div>
 

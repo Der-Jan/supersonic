@@ -49,7 +49,7 @@
 
     <div id="side-col">
         <%@ include file="google-translate.jsp" %>
-        <%@ include file="donate.jsp" %>
+        <%@ include file="premium-column.jsp" %>
     </div>
 
     <div class="clear">

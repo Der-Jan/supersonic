@@ -48,6 +48,9 @@ site
   premium page
   redirect-expired.jsp
   Use new email address
+  faq
+  search "donate"
+  add podcast
 
 backend
   support subscriptions
