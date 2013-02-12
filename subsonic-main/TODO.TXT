@@ -39,7 +39,6 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
-Show more albums on home page
 
 webapp
   about: show license status

@@ -51,7 +51,7 @@ public class HomeController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(HomeController.class);
 
-    private static final int DEFAULT_LIST_SIZE = 10;
+    private static final int DEFAULT_LIST_SIZE = 15;
     private static final int MAX_LIST_SIZE = 500;
     private static final int DEFAULT_LIST_OFFSET = 0;
     private static final int MAX_LIST_OFFSET = 5000;
