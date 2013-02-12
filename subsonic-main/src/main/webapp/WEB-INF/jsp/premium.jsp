@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
-<%--@elvariable id="command" type="net.sourceforge.subsonic.command.DonateCommand"--%>
+<%--@elvariable id="command" type="net.sourceforge.subsonic.command.PremiumCommand"--%>
 <html>
 <head>
     <%@ include file="head.jsp" %>
@@ -42,7 +42,7 @@
 
         <p><fmt:message key="premium.register"/></p>
 
-        <form:form commandName="command" method="post" action="donate.view">
+        <form:form commandName="command" method="post" action="premium.view">
             <form:hidden path="path"/>
             <table>
                 <tr>

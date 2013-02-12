@@ -18,7 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.command.DonateCommand;
+import net.sourceforge.subsonic.command.PremiumCommand;
 import net.sourceforge.subsonic.service.SettingsService;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,16 +29,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
- * Controller for the donation page.
+ * Controller for the Subsonic Premium page.
  *
  * @author Sindre Mehus
  */
-public class DonateController extends SimpleFormController {
+public class PremiumController extends SimpleFormController {
 
     private SettingsService settingsService;
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        DonateCommand command = new DonateCommand();
+        PremiumCommand command = new PremiumCommand();
         command.setPath(request.getParameter("path"));
 
         command.setEmailAddress(settingsService.getLicenseEmail());
@@ -52,7 +52,7 @@ public class DonateController extends SimpleFormController {
 
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object com, BindException errors)
             throws Exception {
-        DonateCommand command = (DonateCommand) com;
+        PremiumCommand command = (PremiumCommand) com;
         Date now = new Date();
 
         settingsService.setLicenseCode(command.getLicense());

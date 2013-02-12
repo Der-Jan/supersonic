@@ -18,18 +18,18 @@
  */
 package net.sourceforge.subsonic.command;
 
-import net.sourceforge.subsonic.controller.DonateController;
+import net.sourceforge.subsonic.controller.PremiumController;
 
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Command used in {@link DonateController}.
+ * Command used in {@link PremiumController}.
  *
  * @author Sindre Mehus
  */
-public class DonateCommand {
+public class PremiumCommand {
 
     private String path;
     private String emailAddress;

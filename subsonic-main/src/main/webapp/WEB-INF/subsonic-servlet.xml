@@ -318,11 +318,11 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
-    <bean id="donateController" class="net.sourceforge.subsonic.controller.DonateController">
-        <property name="commandClass" value="net.sourceforge.subsonic.command.DonateCommand"/>
+    <bean id="premiumController" class="net.sourceforge.subsonic.controller.PremiumController">
+        <property name="commandClass" value="net.sourceforge.subsonic.command.PremiumCommand"/>
         <property name="successView" value="premium"/>
         <property name="formView" value="premium"/>
-        <property name="validator" ref="donateValidator"/>
+        <property name="validator" ref="premiumValidator"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="multiController" class="net.sourceforge.subsonic.controller.MultiController">
@@ -373,7 +373,7 @@
         <property name="viewName" value="db"/>
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
-    <bean id="donateValidator" class="net.sourceforge.subsonic.validator.DonateValidator">
+    <bean id="premiumValidator" class="net.sourceforge.subsonic.validator.PremiumValidator">
         <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="userSettingsValidator" class="net.sourceforge.subsonic.validator.UserSettingsValidator">
@@ -437,7 +437,7 @@
                 <prop key="/statusChart.view">statusChartController</prop>
                 <prop key="/userChart.view">userChartController</prop>
                 <prop key="/download.view">downloadController</prop>
-                <prop key="/premium.view">donateController</prop>
+                <prop key="/premium.view">premiumController</prop>
                 <prop key="/db.view">dbController</prop>
                 <prop key="/test.view">multiController</prop>
                 <prop key="/podcastReceiver.view">podcastReceiverController</prop>

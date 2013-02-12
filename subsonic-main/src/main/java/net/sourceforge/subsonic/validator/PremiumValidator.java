@@ -20,28 +20,28 @@ package net.sourceforge.subsonic.validator;
 
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
-import net.sourceforge.subsonic.command.PasswordSettingsCommand;
-import net.sourceforge.subsonic.command.DonateCommand;
-import net.sourceforge.subsonic.controller.DonateController;
+
+import net.sourceforge.subsonic.command.PremiumCommand;
+import net.sourceforge.subsonic.controller.PremiumController;
 import net.sourceforge.subsonic.service.SettingsService;
 
 /**
- * Validator for {@link DonateController}.
+ * Validator for {@link PremiumController}.
  *
  * @author Sindre Mehus
  */
-public class DonateValidator implements Validator {
+public class PremiumValidator implements Validator {
     private SettingsService settingsService;
 
     public boolean supports(Class clazz) {
-        return clazz.equals(DonateCommand.class);
+        return clazz.equals(PremiumCommand.class);
     }
 
     public void validate(Object obj, Errors errors) {
-        DonateCommand command = (DonateCommand) obj;
+        PremiumCommand command = (PremiumCommand) obj;
 
         if (!settingsService.isLicenseValid(command.getEmailAddress(), command.getLicense())) {
-            errors.rejectValue("license", "donate.invalidlicense");
+            errors.rejectValue("license", "premium.invalidlicense");
         }
     }
 
