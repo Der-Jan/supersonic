@@ -178,6 +178,9 @@ ol {
 	background: url('../img/topnav-hover.gif') 0px -49px repeat-x !important;
 	color: #ffffff !important;
 }
+#nav li#menu-premium a{
+    color: #FFDA23 !important;
+}
 #nav li#menu-home a.open {
 	background: url('../img/home-rollover.gif') 1px -49px no-repeat !important;
 	color: #ffffff !important;

@@ -47,6 +47,7 @@ site
   ad (also the one showing in webapp)
   premium page
   redirect-expired.jsp
+  getting-started.jsp
   Use new email address
   faq
   search "donate"
@@ -55,6 +56,7 @@ site
 backend
   support subscriptions
   Change message "Trial period expired. Please donate to activate web address."
+  License key email
 
 other
   reconsider sourceforge
@@ -63,6 +65,7 @@ other
 paypal
   Use USD (0.30 USD fee rather than 0.35 EUR)
   micropayment?
+  Create new account
 
 UPnP/DLNA
   Conflict with existing UPnP classes.
