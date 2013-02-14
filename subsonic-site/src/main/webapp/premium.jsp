@@ -16,15 +16,7 @@
         <div id="main-col">
             <h1>Subsonic Premium</h1>
 
-
-            TODO:
-
-            TRIAL
-            PICTURES
-
-
-            <%--TODO: Feature matrix?--%>
-            <p>Upgrade to Subsonic Premium to enjoy these extra features:</p>
+            <h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
 
             <div class="floatcontainer margin10-t margin10-b">
                 <ul class="stars column-left">
@@ -42,8 +34,10 @@
 
             <p style="font-size:9px;">* Some apps must be purchased separately or are ad-supported.</p>
 
+            <p>The basic version of Subsonic is free. When you first install Subsonic, the premium features are available for 30 days so
+                you can try them out before deciding to upgrade.</p>
 
-            <table style="padding-top:1em;padding-bottom:2em;width:90%">
+            <table style="padding-top:1em;padding-bottom:1.7em;width:90%">
                 <tr>
                     <td style="font-size:26pt;padding:20pt">1</td>
                     <td>
@@ -68,14 +62,51 @@
 
             </table>
 
-            <p>
+            <table style="padding-left:3em; padding-bottom: 2em">
+                <tr>
+                    <th style="padding-bottom: 0.6em;padding-right: 3em">$2 per month</th>
+                    <th style="padding-bottom: 0.6em;padding-right: 3em">$9 per year</th>
+                    <th style="padding-bottom: 0.6em">$39 for lifetime</th>
+                </tr>
+                <tr>
+                    <td style="padding-right: 3em">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="FZS3NADTYABNC">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </td>
+                    <td style="padding-right: 3em">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="SDHSJ5T5E2DC4">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="PQRZ7FEEXDAKA">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                        </form>
 
-                As a donor you will receive a license key which is valid for personal, non-commercial use for this and all future releases of Subsonic. For commercial use, please contact us for licensing options.
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                All license options include free upgrades of new Subsonic versions.
+            </p>
+            <p>
+                Note: The Subsonic Premium license is valid for personal, non-commercial use. For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options.
             </p>
 
-            If you have any questions, please send an email to subsonic_donation@activeobjects.no.
-
-
+            <p>
+                If you have any questions, please send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a>
+            </p>
 
         </div>
 

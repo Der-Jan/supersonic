@@ -66,6 +66,7 @@ paypal
   Use USD (0.30 USD fee rather than 0.35 EUR)
   micropayment?
   Create new account
+  Use paypal-landing
 
 UPnP/DLNA
   Conflict with existing UPnP classes.
