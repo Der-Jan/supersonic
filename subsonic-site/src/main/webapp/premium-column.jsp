@@ -11,7 +11,7 @@
         <li>No ads in the web interface.</li>
         <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
     </ul>
-    <p style="font-size:1.2em;padding-left:0.8em"><b><a href="premium.jsp">&raquo; Get Subsonic Premium</a></b></p>
+    <p style="font-size:1.2em"><b><a href="premium.jsp">&raquo; Get Subsonic Premium</a></b></p>
 
     <p style="font-size:9px;">* Some <a href="apps.jsp">apps</a> must be purchased separately or are ad-supported.</p>
 </div> 
