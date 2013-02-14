@@ -98,7 +98,7 @@
             </table>
 
             <p>
-                All payment options include free upgrades of new Subsonic versions.
+                All payment options include free upgrades to new Subsonic versions.
             </p>
             <p>
                 Note: The Subsonic Premium license is valid for personal, non-commercial use. For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options.

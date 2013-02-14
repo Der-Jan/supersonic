@@ -17,16 +17,16 @@
             <h1 class="bottomspace">Frequently Asked Questions</h1>
 
             <h3>Are there other payment options than PayPal?</h3>
-            <p>Yes. You can make a payment to subsonic_donation@activeobjects.no on <a href="http://www.moneybookers.com/" target="_blank">Moneybookers</a>.</p>
+            <p>Yes, but only for the "lifetime" license. You can make a payment to mail@subsonic.org on <a href="http://www.moneybookers.com/" target="_blank">Moneybookers</a>.</p>
 
-            <h3>How long does it take to get the license after I have donated?</h3>
-            <p>Normally no more than ten minutes.  If it should take longer, please <a href="mailto:sindre@activeobjects.no">take contact</a>,
+            <h3>How long does it take to get the license after I have made the payment?</h3>
+            <p>Normally no more than ten minutes.  If it should take longer, please <a href="mailto:mail@subsonic.org">take contact</a>,
                 but please check your spam filter first.</p>
 
             <h3>How do I install the license key I received by email?</h3>
             <p>Please follow the guide in the <a href="getting-started.jsp#3">Getting Started</a> documentation.</p>
 
-            <h3>I can't access my Subsonic server from the internet or from my iPhone/Android phone.</h3>
+            <h3>I can't access my Subsonic server from the internet or from my phone.</h3>
             <p>Please follow the guide in the <a href="getting-started.jsp#2">Getting Started</a> documentation.</p>
 
             <h3>I forgot my Subsonic password. Can it be retrieved?</h3>
