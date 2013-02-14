@@ -19,7 +19,7 @@
 	 height: 398px;
 	 border: 1px solid gray;">
     <div style="margin:6px;padding-top:0.5em"> 
-        <h2 style=""><img src="inc/img/donate.png" alt="">&nbsp;&nbsp;Love Subsonic?</h2>
+        <h2 style=""><img src="inc/img/love.png" alt="">&nbsp;&nbsp;Love Subsonic?</h2>
         <p>
             Support us by upgrading to Subsonic Premium and enjoy features like:
         </p>

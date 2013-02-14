@@ -44,14 +44,9 @@ webapp
   about: show license status
 
 site
-  ad (also the one showing in webapp)
-  premium page
-  redirect-expired.jsp
-  getting-started.jsp
+  Update images in getting-started.
   Use new email address
-  faq
   search "donate"
-  add podcast
 
 backend
   support subscriptions

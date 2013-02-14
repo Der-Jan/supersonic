@@ -113,12 +113,12 @@
             </ul>
 
             <a name="3"><h2>3 Registering your license key</h2></a>
-            <p>Most features in Subsonic are free, but some (like mobile phone streaming) require a license after the 30-day
-                free trial. You get the license key by donating &euro;10 or more to the Subsonic project. After you receive the license key
+            <p>Most features in Subsonic are free, but some (like mobile phone streaming) require that you upgrade to
+                <a href="premium.jsp">Subsonic Premium</a> after the 30-day free trial. After you receive the license key
                 by email, you must register it on your server as follows:</p>
 
             <ul class="list">
-                <li>Click the "Donate" link in the top right corner of the Subsonic web interface.</li>
+                <li>Click the "Get Subsonic Premium" link in the top right corner of the Subsonic web interface.</li>
                 <li>Enter the email address and license key you received by email.</li>
             </ul>
 
