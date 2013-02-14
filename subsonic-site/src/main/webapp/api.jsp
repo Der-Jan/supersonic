@@ -158,7 +158,7 @@
     </tr>
     <tr class="table-altrow">
         <td><code>60</code></td>
-        <td>The trial period for the Subsonic server is over. Please donate to get a license key. Visit subsonic.org for details.</td>
+        <td>The trial period for the Subsonic server is over. Please upgrade to Subsonic Premium. Visit subsonic.org for details.</td>
     </tr>
     <tr>
         <td><code>70</code></td>

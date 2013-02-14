@@ -82,10 +82,8 @@
                 Please note that most of the apps are made by third-party developers, and are not maintained by
                 the Subsonic project. Some apps are commercial, while some are available for free.
             </p>
-            <p>Also note that after a 30-day trial period you need a license key to use the apps.
-                You get a license key by giving a donation to the Subsonic project. The license never expires and is
-                valid for all current and future apps. By donating you also get other benefits; see info box on the
-                right.
+            <p>Also note that after a 30-day trial period you need to upgrade to <a href="premium.jsp">Subsonic Premium</a> to use the apps.
+                By upgrading you also get other benefits; see info box on the right.
             </p>
             <p>
                 Interested in making your own Subsonic app? Check out the <a href="api.jsp">API</a>.
