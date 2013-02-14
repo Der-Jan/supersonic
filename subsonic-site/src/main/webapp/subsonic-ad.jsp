@@ -24,27 +24,15 @@
             Support us by upgrading to Subsonic Premium and enjoy features like:
         </p>
         <div style="font-size:12px;">
-            <div style="color:#00008b"><a href="http://subsonic.org/pages/apps.jsp" target="blank">Apps</a> for Android, iPhone, WP&nbsp;7, PlayBook, Roku ++.</div>
-            <div style="color:green;padding-top:5px">Video streaming.</div>
-            <div style="color:#00008b;padding-top:5px">Share on Facebook, Twitter, Google+</div>
-            <div style="color:green;padding-top:5px">Your personal server address: <em>you</em>.subsonic.org</div>
-            <div style="color:#00008b;padding-top:5px">No ads.</div>
-            <div style="color:green;padding-top:5px">Podcast receiver.</div>
+            <div style="color:#00008b;padding-top:6px"><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, WP&nbsp;7, PlayBook, Roku ++.</div>
+            <div style="color:green;padding-top:12px">Video streaming.</div>
+            <div style="color:#00008b;padding-top:12px">Share on Facebook, Twitter, Google+</div>
+            <div style="color:green;padding-top:12px">Your personal server address: <em>you</em>.subsonic.org</div>
+            <div style="color:#00008b;padding-top:12px">No ads.</div>
+            <div style="color:green;padding-top:12px">Podcast receiver.</div>
         </div>
 
-        <p style="padding-top:12px">
-            The suggested donation amount is &euro;20, but you can give any amount you like.
-        </p>
-        <p style="text-align: center;">
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JUF7FRS6WTLHC">&euro;10</a>,
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LQGGXPWSHEFRQ">&euro;15</a>,
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BMH2GB5E4MU7G">&euro;20</a>,
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YS72FN3AFG3LN">&euro;25</a>,
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G9FTC3YWKEGS6">&euro;30</a>
-        </p>
-        <p>
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BMH2GB5E4MU7G"><img src="inc/img/paypal.gif" alt="Donate" class="img-center"/></a>
-        </p>
+        <p style="padding-top:30px;font-size:1.0em"><b><a href="http://subsonic.org/pages/premium.jsp" target="_blank">&raquo; Get Subsonic Premium</a></b></p>
 
     </div>
 </div>

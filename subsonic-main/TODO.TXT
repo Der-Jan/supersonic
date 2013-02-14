@@ -62,6 +62,8 @@ other
   reconsider sourceforge
   new email instead of subsonic_donation@activeobjects.no
 
+android
+
 paypal
   Use USD (0.30 USD fee rather than 0.35 EUR)
   micropayment?
