@@ -96,7 +96,7 @@
 </table>
 
 <p>
-    All payment options include free upgrades of new Subsonic versions.
+    All payment options include free upgrades to future Subsonic versions.
 </p>
 <p>
     If you have any questions, please send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a>, or visit <a href="http://subsonic.org/">subsonic.org</a>

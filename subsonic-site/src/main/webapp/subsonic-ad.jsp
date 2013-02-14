@@ -21,7 +21,7 @@
     <div style="margin:6px;padding-top:0.5em"> 
         <h2 style=""><img src="inc/img/donate.png" alt="">&nbsp;&nbsp;Love Subsonic?</h2>
         <p>
-            Support us by giving a donation and enjoy premium features like:
+            Support us by upgrading to Subsonic Premium and enjoy features like:
         </p>
         <div style="font-size:12px;">
             <div style="color:#00008b"><a href="http://subsonic.org/pages/apps.jsp" target="blank">Apps</a> for Android, iPhone, WP&nbsp;7, PlayBook, Roku ++.</div>
@@ -29,6 +29,7 @@
             <div style="color:#00008b;padding-top:5px">Share on Facebook, Twitter, Google+</div>
             <div style="color:green;padding-top:5px">Your personal server address: <em>you</em>.subsonic.org</div>
             <div style="color:#00008b;padding-top:5px">No ads.</div>
+            <div style="color:green;padding-top:5px">Podcast receiver.</div>
         </div>
 
         <p style="padding-top:12px">
