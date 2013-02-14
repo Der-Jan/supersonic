@@ -7,9 +7,17 @@
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/grid/grid.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/base/base.css">
+    <style type="text/css">
+        a { text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
     <%@ include file="tracking.jsp" %>
 </head>
 <body style="padding-left:5em; padding-top:1em; width:42em">
+
+<div>
+    <img src="inc/img/subsonic.png" alt="Subsonic"/>
+</div>
 
 <h1>Thank you!</h1>
 
@@ -19,12 +27,12 @@
 
 <p>
     If you haven't received the email within an hour, <b>remember to check your spam folder</b>. Feel free to
-    <a href="mailto:sindre@activeobjects.no">take contact</a> if you have any questions or issues
+    <a href="mailto:mail@subsonic.org">take contact</a> if you have any questions or issues
     regarding the payment or the Subsonic license key.
 </p>
 
 <p>
-    To install the license, click the "Donate" link in the top right corner of the Subsonic web interface
+    To install the license, click the "Get Subsonic Premium" link in the top right corner of the Subsonic web interface
     (<a href="getting-started.jsp#3">more info</a>).
 </p>
 

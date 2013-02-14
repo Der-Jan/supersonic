@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Subsonic &raquo; Music Streamer</title>
+    <title>Subsonic &raquo; Free Music Streamer</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/reset/reset.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/grid/grid.css">
@@ -15,10 +15,13 @@
 </head>
 <body>
 
-<h1><img src="inc/img/donate.png" alt="" style="vertical-align:middle; padding-right:0.25em"/>Subsonic Premium</h1>
+<div>
+    <img src="inc/img/subsonic.png" alt="Subsonic"/>
+</div>
 
+<h1>Subsonic Premium</h1>
 
-<h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
+<p>Upgrade to Subsonic Premium to enjoy these extra features:</p>
 
 <ul>
     <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, PlayBook, Roku, Mac, Chrome and more*.</li>
