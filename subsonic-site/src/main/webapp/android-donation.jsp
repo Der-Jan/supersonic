@@ -2,87 +2,104 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Subsonic &raquo; Free Music Streamer</title>
+    <title>Subsonic &raquo; Music Streamer</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/reset/reset.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/grid/grid.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/base/base.css">
+
+    <style>
+        th {border:none}
+        td {border:none}
+    </style>
 </head>
 <body>
 
-<h1><img src="inc/img/donate.png" alt="" style="vertical-align:middle; padding-right:0.25em"/>Love Subsonic?</h1>
+<h1><img src="inc/img/donate.png" alt="" style="vertical-align:middle; padding-right:0.25em"/>Subsonic Premium</h1>
 
-<p>
-    Please support continued development and maintenance by giving a donation.
-</p>
 
-<p>
-    As a donor you get the following benefits:
-</p>
+<h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
+
 <ul>
-    <li>Stream music to Android, iPhone and Windows Phone.</li>
+    <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, PlayBook, Roku, Mac, Chrome and more*.</li>
     <li>Video streaming.</li>
-    <li>A personal web address for your Subsonic server (<em>yourname</em>.subsonic.org).</li>
-    <li>No ads in the Subsonic web interface.</li>
-    <li>Free access to new premium features.</li>
+    <li>Podcast receiver.</li>
+    <li>No ads in the web interface.</li>
+    <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
+    <li>Share your media on Facebook, Twitter, Google+.</li>
+    <li>Other features to be released later.</li>
 </ul>
 
-<p>
-    The suggested donation amount is <b>&euro;20</b>, but you can give any amount you like.
-</p>
+<p style="font-size:9px;">* Some apps must be purchased separately or are ad-supported.</p>
 
-<p>
-    Click one of the buttons to go to PayPal where you can pay by credit card or by using your PayPal account.
-    Once the donation is processed, you will receive a license key by email.
-</p>
+<p>The basic version of Subsonic is free. When you first install Subsonic, the premium features are available for 30 days so
+    you can try them out before deciding to upgrade.</p>
 
-<table>
+<table style="padding-top:1em;padding-bottom:1.7em;">
     <tr>
-        <td style="border:none;">
-            <table>
-                <tr>
-                    <td style="border:none;padding:0;padding:0"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3RTGWJRNAW2PU"><img src="inc/img/paypal.gif" alt=""/></a> </td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;border:none;padding:0">&euro;10</td>
-                </tr>
-            </table>
+        <td style="font-size:26pt;padding:10pt">1</td>
+        <td>
+            <div style="font-size:14pt">Buy</div>
+            <div style="padding-top:5pt">Select a payment option below to go to PayPal where you can pay by credit card or by using your PayPal account.</div>
         </td>
-        <td style="border:none;">
-            <table>
-                <tr>
-                    <td style="border:none;padding:0"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UCUUB2TYE4PGN"><img src="inc/img/paypal.gif" alt=""/></a> </td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;border:none;padding:0">&euro;20</td>
-                </tr>
-            </table>
+    </tr>
+    <tr>
+        <td style="font-size:26pt;padding:10pt">2</td>
+        <td>
+            <div style="font-size:14pt">Receive</div>
+            <div style="padding-top:5pt">You'll receive the license key by email within a few minutes.</div>
         </td>
-        <td style="border:none;">
-            <table>
-                <tr>
-                    <td style="border:none;padding:0"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3M6TFHWEPSU44"><img src="inc/img/paypal.gif" alt=""/></a> </td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;border:none;padding:0">&euro;25</td>
-                </tr>
-            </table>
+    </tr>
+    <tr>
+        <td style="font-size:26pt;padding:10pt">3</td>
+        <td>
+            <div style="font-size:14pt">Register</div>
+            <div style="padding-top:5pt"><a href="getting-started.jsp#3">Register</a> the license key on your Subsonic server to unlock all the premium features.</div>
         </td>
-        <td style="border:none;">
-            <table>
-                <tr>
-                    <td style="border:none;padding:0"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5KP7LPQU77UAS"><img src="inc/img/paypal.gif" alt=""/></a> </td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;border:none;padding:0">&euro;30</td>
-                </tr>
-            </table>
+    </tr>
+
+</table>
+
+<table style="padding-left:3em; padding-bottom: 2em">
+    <tr>
+        <th style="padding-bottom: 0.6em;padding-right: 3em">$2 per month</th>
+        <th style="padding-bottom: 0.6em;padding-right: 3em">$9 per year</th>
+        <th style="padding-bottom: 0.6em;">$39 for lifetime</th>
+    </tr>
+    <tr>
+        <td style="padding-right: 3em">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="FZS3NADTYABNC">
+                <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </td>
+        <td style="padding-right: 3em">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="SDHSJ5T5E2DC4">
+                <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </td>
+        <td>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="PQRZ7FEEXDAKA">
+                <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+
         </td>
     </tr>
 </table>
 
 <p>
-    For more information, please visit <a href="http://subsonic.org/">subsonic.org</a>
+    All payment options include free upgrades of new Subsonic versions.
+</p>
+<p>
+    If you have any questions, please send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a>, or visit <a href="http://subsonic.org/">subsonic.org</a>
 </p>
 </body>
 </html>
