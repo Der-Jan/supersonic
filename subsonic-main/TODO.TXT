@@ -42,7 +42,7 @@ TODO IN 4.8
 
 webapp
   about: show license status
-
+  what is communicated if license is invalid or expired?
 site
   Update images in getting-started.
   Use new email address

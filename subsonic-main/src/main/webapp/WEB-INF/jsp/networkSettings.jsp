@@ -74,21 +74,8 @@
         </p>
     </div>
 
-    <c:if test="${command.trial}">
-        <fmt:formatDate value="${command.trialExpires}" dateStyle="long" var="expiryDate"/>
-
-        <p class="warning" style="padding-top:1em">
-            <c:choose>
-                <c:when test="${command.trialExpired}">
-                    <fmt:message key="common.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
-                </c:when>
-                <c:otherwise>
-                    <fmt:message
-                            key="common.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
-                </c:otherwise>
-            </c:choose>
-        </p>
-    </c:if>
+    <c:set var="licenseInfo" value="${command.licenseInfo}"/>
+    <%@ include file="licenseNotice.jsp" %>
 
     <p style="padding-top:1em">
         <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">

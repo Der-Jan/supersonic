@@ -125,22 +125,8 @@
     <h1>${model.video.title}</h1>
 </c:if>
 
-<c:if test="${model.trial}">
-    <fmt:formatDate value="${model.trialExpires}" dateStyle="long" var="expiryDate"/>
-
-    <p class="warning" style="padding-top:1em">
-        <c:choose>
-            <c:when test="${model.trialExpired}">
-                <fmt:message key="common.trialexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
-            </c:when>
-            <c:otherwise>
-                <fmt:message
-                        key="common.trialnotexpired"><fmt:param>${expiryDate}</fmt:param></fmt:message>
-            </c:otherwise>
-        </c:choose>
-    </p>
-</c:if>
-
+<c:set var="licenseInfo" value="${model.licenseInfo}"/>
+<%@ include file="licenseNotice.jsp" %>
 
 <div id="wrapper" style="padding-top:1em">
     <div id="placeholder1"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>

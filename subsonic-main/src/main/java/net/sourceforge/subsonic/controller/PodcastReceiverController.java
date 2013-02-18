@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.User;
@@ -69,12 +69,7 @@ public class PodcastReceiverController extends ParameterizableViewController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("channels", channels);
         map.put("expandedChannels", StringUtil.parseInts(request.getParameter("expandedChannels")));
-
-        Date trialExpires = settingsService.getTrialExpires();
-        map.put("trialExpires", trialExpires);
-        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
-        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
-
+        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
         return result;
     }
 

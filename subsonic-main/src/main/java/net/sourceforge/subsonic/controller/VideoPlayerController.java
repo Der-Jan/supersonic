@@ -18,21 +18,23 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Controller for the page used to play videos.
@@ -71,11 +73,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("duration", duration);
         map.put("timeOffset", timeOffset);
         map.put("bitRates", BIT_RATES);
-
-        Date trialExpires = settingsService.getTrialExpires();
-        map.put("trialExpires", trialExpires);
-        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
-        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
+        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

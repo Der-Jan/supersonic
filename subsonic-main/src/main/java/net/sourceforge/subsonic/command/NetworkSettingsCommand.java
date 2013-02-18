@@ -18,7 +18,7 @@
  */
 package net.sourceforge.subsonic.command;
 
-import java.util.Date;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 
 /**
  * @author Sindre Mehus
@@ -30,10 +30,8 @@ public class NetworkSettingsCommand {
     private boolean urlRedirectionEnabled;
     private String urlRedirectFrom;
     private int port;
-    private boolean trial;
-    private Date trialExpires;
-    private boolean trialExpired;
     private boolean toast;
+    private LicenseInfo licenseInfo;
 
     public void setPortForwardingEnabled(boolean portForwardingEnabled) {
         this.portForwardingEnabled = portForwardingEnabled;
@@ -67,35 +65,19 @@ public class NetworkSettingsCommand {
         this.port = port;
     }
 
-    public void setTrial(boolean trial) {
-        this.trial = trial;
-    }
-
-    public boolean isTrial() {
-        return trial;
-    }
-
-    public void setTrialExpires(Date trialExpires) {
-        this.trialExpires = trialExpires;
-    }
-
-    public Date getTrialExpires() {
-        return trialExpires;
-    }
-
-    public void setTrialExpired(boolean trialExpired) {
-        this.trialExpired = trialExpired;
-    }
-
-    public boolean isTrialExpired() {
-        return trialExpired;
-    }
-
     public boolean isToast() {
         return toast;
     }
 
     public void setToast(boolean toast) {
         this.toast = toast;
+    }
+
+    public void setLicenseInfo(LicenseInfo licenseInfo) {
+        this.licenseInfo = licenseInfo;
+    }
+
+    public LicenseInfo getLicenseInfo() {
+        return licenseInfo;
     }
 }

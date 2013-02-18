@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.Date;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.NetworkSettingsCommand;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.service.NetworkService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -37,8 +37,6 @@ import net.sourceforge.subsonic.service.SettingsService;
  */
 public class NetworkSettingsController extends SimpleFormController {
 
-    private static final long TRIAL_DAYS = 30L;
-
     private SettingsService settingsService;
     private NetworkService networkService;
 
@@ -48,11 +46,7 @@ public class NetworkSettingsController extends SimpleFormController {
         command.setUrlRedirectionEnabled(settingsService.isUrlRedirectionEnabled());
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
         command.setPort(settingsService.getPort());
-
-        Date trialExpires = settingsService.getTrialExpires();
-        command.setTrialExpires(trialExpires);
-        command.setTrialExpired(trialExpires != null && trialExpires.before(new Date()));
-        command.setTrial(trialExpires != null && !settingsService.isLicenseValid());
+        command.setLicenseInfo(new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
 
         return command;
     }

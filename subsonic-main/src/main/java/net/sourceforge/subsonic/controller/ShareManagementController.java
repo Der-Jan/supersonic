@@ -21,7 +21,6 @@ package net.sourceforge.subsonic.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +28,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.service.*;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.LicenseInfo;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.ShareService;
 
 /**
  * Controller for sharing music on Twitter, Facebook etc.
@@ -69,11 +73,7 @@ public class ShareManagementController extends MultiActionController {
         map.put("user", securityService.getCurrentUser(request));
         Share share = shareService.createShare(request, files);
         map.put("playUrl", shareService.getShareUrl(share));
-
-        Date trialExpires = settingsService.getTrialExpires();
-        map.put("trialExpires", trialExpires);
-        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
-        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
+        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
 
         return new ModelAndView("createShare", "model", map);
     }
