@@ -1,16 +1,18 @@
 package net.sourceforge.subsonic.backend.dao;
 
-import net.sourceforge.subsonic.backend.domain.Payment;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedSingleColumnRowMapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 
 /**
  * Provides database services for PayPal payments.
@@ -59,7 +61,7 @@ public class PaymentDao extends AbstractDao {
      * @param status The status.
      * @return List of payments.
      */
-    public List<Payment> getPaymentsByProcessingStatus(Payment.ProcessingStatus status) {
+    public List<Payment> getPaymentsByProcessingStatus(ProcessingStatus status) {
         return query("select " + COLUMNS + " from payment where processing_status=?", paymentRowMapper, status.name());
     }
 
@@ -118,7 +120,7 @@ public class PaymentDao extends AbstractDao {
         public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Payment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
                                rs.getString(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getString(11),
-                               rs.getString(12), rs.getString(13), Payment.ProcessingStatus.valueOf(rs.getString(14)),
+                               rs.getString(12), rs.getString(13), ProcessingStatus.valueOf(rs.getString(14)),
                                rs.getTimestamp(15), rs.getTimestamp(16));
         }
     }

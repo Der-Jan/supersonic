@@ -1,11 +1,5 @@
 package net.sourceforge.subsonic.backend.service;
 
-import net.sourceforge.subsonic.backend.dao.PaymentDao;
-import net.sourceforge.subsonic.backend.domain.Payment;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
-
-import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Date;
@@ -13,6 +7,15 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import javax.mail.MessagingException;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.log4j.Logger;
+
+import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 
 /**
  * Runs a task at regular intervals, checking for incoming donations and sending
@@ -46,7 +49,7 @@ public class LicenseGenerator {
     }
 
     private void processPayments() throws Exception {
-        List<Payment> payments = paymentDao.getPaymentsByProcessingStatus(Payment.ProcessingStatus.NEW);
+        List<Payment> payments = paymentDao.getPaymentsByProcessingStatus(ProcessingStatus.NEW);
         LOG.info(payments.size() + " new payment(s).");
         if (payments.isEmpty()) {
             return;
@@ -76,7 +79,7 @@ public class LicenseGenerator {
             }
 
             if (eligible || ignorable) {
-                payment.setProcessingStatus(Payment.ProcessingStatus.COMPLETED);
+                payment.setProcessingStatus(ProcessingStatus.COMPLETED);
                 payment.setLastUpdated(new Date());
                 paymentDao.updatePayment(payment);
             }

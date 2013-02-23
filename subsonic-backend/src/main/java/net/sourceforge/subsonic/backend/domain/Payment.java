@@ -192,9 +192,4 @@ public class Payment {
                 ", email='" + payerEmail + '\'' +
                 '}';
     }
-
-    public enum ProcessingStatus {
-        NEW,
-        COMPLETED
-    }
 }

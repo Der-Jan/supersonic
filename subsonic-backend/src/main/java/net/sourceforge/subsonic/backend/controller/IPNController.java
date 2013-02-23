@@ -18,25 +18,27 @@
  */
 package net.sourceforge.subsonic.backend.controller;
 
-import org.apache.log4j.Logger;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.params.HttpConnectionParams;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.Date;
-import java.io.UnsupportedEncodingException;
 
-import net.sourceforge.subsonic.backend.domain.Payment;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.log4j.Logger;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 
 /**
  * Processes IPNs (Instant Payment Notifications) from PayPal.
@@ -108,7 +110,7 @@ public class IPNController implements Controller {
         if (payment == null) {
             payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                                   paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
-                                  payerCountry, Payment.ProcessingStatus.NEW, new Date(), new Date());
+                                  payerCountry, ProcessingStatus.NEW, new Date(), new Date());
             paymentDao.createPayment(payment);
         } else {
             payment.setTransactionType(txnType);
