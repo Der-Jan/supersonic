@@ -36,13 +36,14 @@ public class Subscription {
     private String period;
     private Double amount;
     private String currency;
-    private boolean active;
+    private Date validFrom;
+    private Date validTo;
     private ProcessingStatus processingStatus;
     private Date created;
     private Date updated;
 
     public Subscription(String id, String subscrId, String payerId, String btnId, String email, String firstName,
-            String lastName, String country, String period, Double amount, String currency, boolean active,
+            String lastName, String country, String period, Double amount, String currency, Date validFrom, Date validTo,
             ProcessingStatus processingStatus, Date created, Date updated) {
         this.id = id;
         this.subscrId = subscrId;
@@ -55,7 +56,8 @@ public class Subscription {
         this.period = period;
         this.amount = amount;
         this.currency = currency;
-        this.active = active;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
         this.processingStatus = processingStatus;
         this.created = created;
         this.updated = updated;
@@ -149,12 +151,20 @@ public class Subscription {
         this.currency = currency;
     }
 
-    public boolean isActive() {
-        return active;
+    public Date getValidFrom() {
+        return validFrom;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
     }
 
     public ProcessingStatus getProcessingStatus() {
@@ -184,12 +194,14 @@ public class Subscription {
     @Override
     public String toString() {
         return "Subscription{" +
-                "lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", email='" + email + '\'' +
-                ", btnId='" + btnId + '\'' +
+                "subscrId='" + subscrId + '\'' +
                 ", payerId='" + payerId + '\'' +
-                ", subscrId='" + subscrId + '\'' +
+                ", btnId='" + btnId + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", validFrom=" + validFrom +
+                ", validTo=" + validTo +
                 '}';
     }
 }

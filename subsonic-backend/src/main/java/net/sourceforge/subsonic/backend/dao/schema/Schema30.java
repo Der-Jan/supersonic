@@ -46,7 +46,8 @@ public class Schema30 extends Schema {
                     "period varchar," +
                     "amount double," +  // Total amount
                     "currency varchar," +
-                    "active boolean not null," +
+                    "valid_from datetime," +
+                    "valid_to datetime," +
                     "processing_status varchar not null," +
                     "created datetime not null," +
                     "updated datetime not null)");
