@@ -17,6 +17,7 @@
 
     <bean id="ipnController" class="net.sourceforge.subsonic.backend.controller.IPNController">
         <property name="paymentDao" ref="paymentDao"/>
+        <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>
 
     <bean id="redirectionManagementController" class="net.sourceforge.subsonic.backend.controller.RedirectionManagementController">

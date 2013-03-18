@@ -37,8 +37,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
+import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
 
 /**
  * Processes IPNs (Instant Payment Notifications) from PayPal.
@@ -52,6 +54,7 @@ public class IPNController implements Controller {
     private static final String PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr";
 
     private PaymentDao paymentDao;
+    private SubscriptionDao subscriptionDao;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
@@ -64,7 +67,7 @@ public class IPNController implements Controller {
             } else {
                 LOG.warn("Failed to verify payment. " + url);
             }
-            createOrUpdatePayment(request);
+            processIpnRequest(request);
 
             return null;
         } catch (Exception x) {
@@ -73,24 +76,38 @@ public class IPNController implements Controller {
         }
     }
 
-    private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {
-        Enumeration<?> en = request.getParameterNames();
-        StringBuilder url = new StringBuilder(PAYPAL_URL).append("?cmd=_notify-validate");
-        String encoding = request.getParameter("charset");
-        if (encoding == null) {
-            encoding = "ISO-8859-1";
+    private void processIpnRequest(HttpServletRequest request) {
+        if (isSubscriptionRequest(request)) {
+            processSubscriptionRequest(request);
+        } else {
+            processPaymentRequest(request);
         }
-
-        while (en.hasMoreElements()) {
-            String paramName = (String) en.nextElement();
-            String paramValue = request.getParameter(paramName);
-            url.append("&").append(paramName).append("=").append(URLEncoder.encode(paramValue, encoding));
-        }
-
-        return url.toString();
     }
 
-    private void createOrUpdatePayment(HttpServletRequest request) {
+    private boolean isSubscriptionRequest(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.startsWith("subscr_");
+    }
+
+    private void processSubscriptionRequest(HttpServletRequest request) {
+        createSubscriptionNotification(request);
+        // TODO
+    }
+
+    private void createSubscriptionNotification(HttpServletRequest request) {
+        String subscrId = request.getParameter("subscr_id");
+        String payerId = request.getParameter("payer_id");
+        String btnId = request.getParameter("btn_id");
+        String ipnTrackId = request.getParameter("ipn_track_id");
+        String txnType = request.getParameter("txn_type");
+        String email = request.getParameter("payer_email");
+        Date created = new Date();
+
+        subscriptionDao.createSubscriptionNotification(new SubscriptionNotification(null, subscrId, payerId, btnId,
+                ipnTrackId, txnType, email, created));
+    }
+
+    private void processPaymentRequest(HttpServletRequest request) {
         String item = request.getParameter("item_number");
         if (item == null) {
             item = request.getParameter("item_number1");
@@ -109,8 +126,8 @@ public class IPNController implements Controller {
         Payment payment = paymentDao.getPaymentByTransactionId(txnId);
         if (payment == null) {
             payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
-                                  paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
-                                  payerCountry, ProcessingStatus.NEW, new Date(), new Date());
+                    paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
+                    payerCountry, ProcessingStatus.NEW, new Date(), new Date());
             paymentDao.createPayment(payment);
         } else {
             payment.setTransactionType(txnType);
@@ -128,6 +145,23 @@ public class IPNController implements Controller {
         }
 
         LOG.info("Received " + payment);
+    }
+
+    private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {
+        Enumeration<?> en = request.getParameterNames();
+        StringBuilder url = new StringBuilder(PAYPAL_URL).append("?cmd=_notify-validate");
+        String encoding = request.getParameter("charset");
+        if (encoding == null) {
+            encoding = "ISO-8859-1";
+        }
+
+        while (en.hasMoreElements()) {
+            String paramName = (String) en.nextElement();
+            String paramValue = request.getParameter(paramName);
+            url.append("&").append(paramName).append("=").append(URLEncoder.encode(paramValue, encoding));
+        }
+
+        return url.toString();
     }
 
     private boolean validate(String url) throws Exception {
@@ -151,4 +185,7 @@ public class IPNController implements Controller {
         this.paymentDao = paymentDao;
     }
 
+    public SubscriptionDao getSubscriptionDao() {
+        return subscriptionDao;
+    }
 }

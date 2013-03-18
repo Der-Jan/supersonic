@@ -12,6 +12,10 @@
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
 
+    <bean id="subscriptionDao" class="net.sourceforge.subsonic.backend.dao.SubscriptionDao">
+        <property name="daoHelper" ref="daoHelper"/>
+    </bean>
+
     <bean id="daoHelper" class="net.sourceforge.subsonic.backend.dao.DaoHelper"/>
 
     <bean id="licenseGenerator" class="net.sourceforge.subsonic.backend.service.LicenseGenerator" init-method="init">
