@@ -36,14 +36,13 @@ public class Schema30 extends Schema {
             LOG.info("Database table 'subscription' not found.  Creating it.");
             template.execute("create cached table subscription (" +
                     "id identity," +
-                    "subscr_id varchar not null," +  // PayPal subscription ID
-                    "payer_id varchar not null," +  // PayPal payer ID
+                    "subscr_id varchar," +  // PayPal subscription ID
+                    "payer_id varchar," +  // PayPal payer ID
                     "btn_id varchar," +  // PayPal button ID
                     "email varchar_ignorecase," +
                     "first_name varchar," +
                     "last_name varchar," +
                     "country varchar," +
-                    "period varchar," +
                     "amount double," +  // Total amount
                     "currency varchar," +
                     "valid_from datetime," +
@@ -65,13 +64,15 @@ public class Schema30 extends Schema {
             LOG.info("Database table 'subscription_payment' not found.  Creating it.");
             template.execute("create cached table subscription_payment (" +
                     "id identity," +
-                    "subscr_id varchar not null," +  // PayPal subscription ID
-                    "payer_id varchar not null," +  // PayPal payer ID
+                    "subscr_id varchar," +  // PayPal subscription ID
+                    "payer_id varchar," +  // PayPal payer ID
                     "btn_id varchar," +  // PayPal button ID
                     "ipn_track_id varchar," +  // PayPal IPN track ID
                     "email varchar_ignorecase," +
                     "amount double," +
                     "currency varchar," +
+                    "valid_from datetime," +
+                    "valid_to datetime," +
                     "created datetime not null)");
             template.execute("create index idx_subscription_payment_email on subscription_payment(email)");
 
@@ -82,11 +83,11 @@ public class Schema30 extends Schema {
             LOG.info("Database table 'subscription_notification' not found.  Creating it.");
             template.execute("create cached table subscription_notification (" +
                     "id identity," +
-                    "subscr_id varchar not null," +  // PayPal subscription ID
-                    "payer_id varchar not null," +  // PayPal payer ID
+                    "subscr_id varchar," +  // PayPal subscription ID
+                    "payer_id varchar," +  // PayPal payer ID
                     "btn_id varchar," +  // PayPal button ID
                     "ipn_track_id varchar," +  // PayPal IPN track ID
-                    "txn_type varchar not null," +
+                    "txn_type varchar," +
                     "email varchar_ignorecase," +
                     "created datetime not null)");
             template.execute("create index idx_subscription_notification_email on subscription_notification(email)");

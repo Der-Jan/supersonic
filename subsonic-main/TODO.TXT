@@ -49,9 +49,13 @@ site
   search "donate"
 
 backend
+  Only create yearly recurring to start with.
   support subscriptions
   Change message "Trial period expired. Please donate to activate web address."
   License key email
+  Add custom parameter to buttons (# months)
+  Make possible to purchase for many years
+    https://lastpass.com/features_joinpremium.php
 
 other
   reconsider sourceforge
