@@ -40,9 +40,78 @@ Update Subclient description
 TODO IN 4.8
 --------------
 
+https://www.x.com/sites/default/files/ipnguide.pdf
+Handle subscr_cancel, subscr_eot, subscr_failed etc
+
+subscr_date: Start date or cancellation date depending on whether transaction is
+             subscr_signup or subscr_cancel.
+
+
+transaction_subject=Subsonic Premium monthly subscription&
+payment_date=13:19:40 Feb 18, 2013 PST&
+txn_type=subscr_payment&
+subscr_id=I-MTPUPXXXB04R&
+last_name=sdfsd&
+residence_country=NO&
+item_name=Subsonic Premium monthly subscription&
+payment_gross=2.00&
+mc_currency=USD&
+business=sindre@activeobjects.no&
+payment_type=instant&
+protection_eligibility=Ineligible&
+verify_sign=XXX
+payer_status=unverified&
+payer_email=xxx@bar.com
+txn_id=DBA12835L850964D&
+receiver_email=sindre@activeobjects.no&
+first_name=Be&
+payer_id=E5M69CJFC9CKC&
+receiver_id=N7F9CD4A95CQ&
+item_number=subsonic-premium-subscription-month&
+payment_status=Completed&
+payment_fee=0.35&
+mc_fee=0.35&
+btn_id=57671524&
+mc_gross=2.00&
+charset=windows-1252&
+notify_version=3.7&
+ipn_track_id=797f5cad6acb6
+
+txn_type=subscr_signup&
+subscr_id=I-MTPUPXXXB04R&
+last_name=dsdsd&
+residence_country=NO&
+mc_currency=USD&
+item_name=Subsonic Premium monthly subscription&
+business=sindre@activeobjects.no&
+amount3=2.00&
+recurring=1&
+verify_sign=AshGYGClYIw1tbZ.asdfwdf7R1jRxTgpGY2AU83p18CKEbhYXCxsNOkjh7-ovxY&
+payer_status=unverified&
+payer_email=xxx@bar.com
+first_name=Bente&
+receiver_email=sindre@activeobjects.no&
+payer_id=E5M69CJFC9CKC&
+reattempt=1&
+item_number=subsonic-premium-subscription-month&
+subscr_date=13:19:37 Feb 18, 2013 PST&
+btn_id=57671524&
+charset=windows-1252&
+notify_version=3.7&
+period3=1 M&
+mc_amount3=2.00&
+ipn_track_id=797f5d0c6acb6
+
+java.lang.NullPointerException
+        at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:991)
+        at java.lang.Float.valueOf(Float.java:388)
+        at java.lang.Float.<init>(Float.java:489)
+        at net.sourceforge.subsonic.backend.controller.IPNController.createOrUpdatePayment(IPNController.java:98)
+
 webapp
   about: show license status
   what is communicated if license is invalid or expired?
+
 site
   Update images in getting-started.
   Use new email address
@@ -50,7 +119,9 @@ site
 
 backend
   Only create yearly recurring to start with.
+  Missing index payment(processing_status)?
   support subscriptions
+  possible to change subscr amount
   Change message "Trial period expired. Please donate to activate web address."
   License key email
   Add custom parameter to buttons (# months)
@@ -67,7 +138,6 @@ paypal
   Use USD (0.30 USD fee rather than 0.35 EUR)
   micropayment?
   Create new account
-  Use paypal-landing
 
 UPnP/DLNA
   Conflict with existing UPnP classes.
