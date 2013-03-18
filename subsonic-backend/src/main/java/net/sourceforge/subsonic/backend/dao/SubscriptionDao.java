@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
+import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,10 +22,17 @@ import net.sourceforge.subsonic.backend.domain.Subscription;
 public class SubscriptionDao extends AbstractDao {
 
     private static final Logger LOG = Logger.getLogger(SubscriptionDao.class);
-    private static final String COLUMNS = "id, subscr_id, payer_id, btn_id, email, first_name, last_name, country, " +
-            "amount, currency, valid_from, valid_to, processing_status, created, updated";
 
-    private RowMapper subscriptionRowMapper = new SubscriptionRowMapper();
+    private static final String SUBSCRIPTION_COLUMNS = "id, subscr_id, payer_id, btn_id, email, first_name, " +
+            "last_name, country, amount, currency, valid_from, valid_to, processing_status, created, updated";
+
+    private static final String SUBSCRIPTION_PAYMENT_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
+            "email, amount, currency, valid_from, valid_to, created";
+
+    private static final String SUBSCRIPTION_NOTIFICATION_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
+            "txn_type, email, created";
+
+     private RowMapper subscriptionRowMapper = new SubscriptionRowMapper();
 
     /**
      * Returns the subscription with the given email.
@@ -35,7 +44,7 @@ public class SubscriptionDao extends AbstractDao {
         if (email == null) {
             return null;
         }
-        String sql = "select " + COLUMNS + " from subscription where email=?";
+        String sql = "select " + SUBSCRIPTION_COLUMNS + " from subscription where email=?";
         return queryOne(sql, subscriptionRowMapper, email.toLowerCase());
     }
 
@@ -46,14 +55,14 @@ public class SubscriptionDao extends AbstractDao {
      * @return List of subscriptions.
      */
     public List<Subscription> getSubscriptionsByProcessingStatus(ProcessingStatus status) {
-        return query("select " + COLUMNS + " from subscription where processing_status=?", subscriptionRowMapper, status.name());
+        return query("select " + SUBSCRIPTION_COLUMNS + " from subscription where processing_status=?", subscriptionRowMapper, status.name());
     }
 
     /**
      * Creates a new subscription.
      */
     public void createSubscription(Subscription s) {
-        String sql = "insert into subscription (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")";
+        String sql = "insert into subscription (" + SUBSCRIPTION_COLUMNS + ") values (" + questionMarks(SUBSCRIPTION_COLUMNS) + ")";
         update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), StringUtils.lowerCase(s.getEmail()),
                 s.getFirstName(), s.getLastName(), s.getCountry(), s.getAmount(), s.getCurrency(),
                 s.getValidFrom(), s.getValidTo(), s.getProcessingStatus().name(), s.getCreated(), s.getUpdated());
@@ -73,6 +82,29 @@ public class SubscriptionDao extends AbstractDao {
         LOG.info("Updated " + s);
     }
 
+    /**
+     * Creates a new subscription payment.
+     */
+    public void createSubscriptionPayment(SubscriptionPayment s) {
+        String sql = "insert into subscription_payment (" + SUBSCRIPTION_PAYMENT_COLUMNS + ") values (" +
+                questionMarks(SUBSCRIPTION_PAYMENT_COLUMNS) + ")";
+        update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(),
+                StringUtils.lowerCase(s.getEmail()), s.getAmount(), s.getCurrency(),
+                s.getValidFrom(), s.getValidTo(), s.getCreated());
+        LOG.info("Created " + s);
+    }
+
+    /**
+     * Creates a new subscription notification.
+     */
+    public void createSubscriptionNotification(SubscriptionNotification s) {
+        String sql = "insert into subscription_notification (" + SUBSCRIPTION_NOTIFICATION_COLUMNS + ") values (" +
+                questionMarks(SUBSCRIPTION_NOTIFICATION_COLUMNS) + ")";
+        update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(), s.getTxnType(),
+                StringUtils.lowerCase(s.getEmail()), s.getCreated());
+        LOG.info("Created " + s);
+    }
+
     private static class SubscriptionRowMapper implements ParameterizedRowMapper<Subscription> {
         public Subscription mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Subscription(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
@@ -81,4 +113,5 @@ public class SubscriptionDao extends AbstractDao {
                                rs.getTimestamp(14), rs.getTimestamp(15));
         }
     }
+
 }

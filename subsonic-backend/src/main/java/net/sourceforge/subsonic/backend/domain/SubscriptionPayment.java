@@ -33,10 +33,12 @@ public class SubscriptionPayment {
     private String email;
     private Double amount;
     private String currency;
+    private Date validFrom;
+    private Date validTo;
     private Date created;
 
     public SubscriptionPayment(String id, String subscrId, String payerId, String btnId, String ipnTrackId,
-            String email, Double amount, String currency, Date created) {
+                               String email, Double amount, String currency, Date validFrom, Date validTo, Date created) {
         this.id = id;
         this.subscrId = subscrId;
         this.payerId = payerId;
@@ -45,6 +47,8 @@ public class SubscriptionPayment {
         this.email = email;
         this.amount = amount;
         this.currency = currency;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
         this.created = created;
     }
 
@@ -52,84 +56,60 @@ public class SubscriptionPayment {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getSubscrId() {
         return subscrId;
-    }
-
-    public void setSubscrId(String subscrId) {
-        this.subscrId = subscrId;
     }
 
     public String getPayerId() {
         return payerId;
     }
 
-    public void setPayerId(String payerId) {
-        this.payerId = payerId;
-    }
-
     public String getBtnId() {
         return btnId;
-    }
-
-    public void setBtnId(String btnId) {
-        this.btnId = btnId;
     }
 
     public String getIpnTrackId() {
         return ipnTrackId;
     }
 
-    public void setIpnTrackId(String ipnTrackId) {
-        this.ipnTrackId = ipnTrackId;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
     public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public Date getValidFrom() {
+        return validFrom;
+    }
+
+    public Date getValidTo() {
+        return validTo;
     }
 
     public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
     @Override
     public String toString() {
         return "SubscriptionPayment{" +
-                "subscrId='" + subscrId + '\'' +
+                "id='" + id + '\'' +
+                ", subscrId='" + subscrId + '\'' +
                 ", payerId='" + payerId + '\'' +
                 ", btnId='" + btnId + '\'' +
                 ", ipnTrackId='" + ipnTrackId + '\'' +
                 ", email='" + email + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
+                ", validFrom=" + validFrom +
+                ", validTo=" + validTo +
+                ", created=" + created +
                 '}';
     }
 }
