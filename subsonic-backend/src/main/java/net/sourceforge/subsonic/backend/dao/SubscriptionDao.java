@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
-import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,6 +11,8 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 import net.sourceforge.subsonic.backend.domain.Subscription;
+import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
+import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 
 /**
  * Provides database services for PayPal subscriptions.
@@ -27,7 +27,7 @@ public class SubscriptionDao extends AbstractDao {
             "last_name, country, amount, currency, valid_from, valid_to, processing_status, created, updated";
 
     private static final String SUBSCRIPTION_PAYMENT_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
-            "email, amount, currency, valid_from, valid_to, created";
+            "email, amount, fee, currency, created";
 
     private static final String SUBSCRIPTION_NOTIFICATION_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
             "txn_type, email, created";
@@ -89,8 +89,7 @@ public class SubscriptionDao extends AbstractDao {
         String sql = "insert into subscription_payment (" + SUBSCRIPTION_PAYMENT_COLUMNS + ") values (" +
                 questionMarks(SUBSCRIPTION_PAYMENT_COLUMNS) + ")";
         update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(),
-                StringUtils.lowerCase(s.getEmail()), s.getAmount(), s.getCurrency(),
-                s.getValidFrom(), s.getValidTo(), s.getCreated());
+                StringUtils.lowerCase(s.getEmail()), s.getAmount(), s.getFee(), s.getCurrency(), s.getCreated());
         LOG.info("Created " + s);
     }
 

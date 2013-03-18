@@ -33,6 +33,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -41,6 +43,7 @@ import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
+import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 
 /**
  * Processes IPNs (Instant Payment Notifications) from PayPal.
@@ -76,11 +79,19 @@ public class IPNController implements Controller {
         }
     }
 
-    private void processIpnRequest(HttpServletRequest request) {
+    private void processIpnRequest(HttpServletRequest request) throws ServletRequestBindingException {
         if (isSubscriptionRequest(request)) {
             processSubscriptionRequest(request);
         } else {
             processPaymentRequest(request);
+        }
+    }
+
+    private void processSubscriptionRequest(HttpServletRequest request) throws ServletRequestBindingException {
+        createSubscriptionNotification(request);
+        if (isSubscriptionPayment(request)) {
+            createSubscriptionPayment(request);
+            // TODO: Create or update subscription. Calculate end of subscription.
         }
     }
 
@@ -89,9 +100,24 @@ public class IPNController implements Controller {
         return txnType.startsWith("subscr_");
     }
 
-    private void processSubscriptionRequest(HttpServletRequest request) {
-        createSubscriptionNotification(request);
-        // TODO
+    private boolean isSubscriptionPayment(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_payment");
+    }
+
+    private void createSubscriptionPayment(HttpServletRequest request) throws ServletRequestBindingException {
+        String subscrId = request.getParameter("subscr_id");
+        String payerId = request.getParameter("payer_id");
+        String btnId = request.getParameter("btn_id");
+        String ipnTrackId = request.getParameter("ipn_track_id");
+        String currency = request.getParameter("mc_currency");
+        String email = request.getParameter("payer_email");
+        Double amount = ServletRequestUtils.getDoubleParameter(request, "mc_gross");
+        Double fee = ServletRequestUtils.getDoubleParameter(request, "mc_fee");
+        Date created = new Date();
+
+        subscriptionDao.createSubscriptionPayment(new SubscriptionPayment(null, subscrId, payerId, btnId,
+                ipnTrackId, email, amount, fee, currency, created));
     }
 
     private void createSubscriptionNotification(HttpServletRequest request) {
@@ -185,7 +211,8 @@ public class IPNController implements Controller {
         this.paymentDao = paymentDao;
     }
 
-    public SubscriptionDao getSubscriptionDao() {
-        return subscriptionDao;
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
     }
 }
+

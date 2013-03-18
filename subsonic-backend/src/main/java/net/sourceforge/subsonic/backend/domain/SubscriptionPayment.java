@@ -32,13 +32,12 @@ public class SubscriptionPayment {
     private String ipnTrackId;
     private String email;
     private Double amount;
+    private Double fee;
     private String currency;
-    private Date validFrom;
-    private Date validTo;
     private Date created;
 
-    public SubscriptionPayment(String id, String subscrId, String payerId, String btnId, String ipnTrackId,
-                               String email, Double amount, String currency, Date validFrom, Date validTo, Date created) {
+    public SubscriptionPayment(String id, String subscrId, String payerId, String btnId, String ipnTrackId, String email,
+            Double amount, Double fee, String currency, Date created) {
         this.id = id;
         this.subscrId = subscrId;
         this.payerId = payerId;
@@ -46,9 +45,8 @@ public class SubscriptionPayment {
         this.ipnTrackId = ipnTrackId;
         this.email = email;
         this.amount = amount;
+        this.fee = fee;
         this.currency = currency;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
         this.created = created;
     }
 
@@ -80,16 +78,12 @@ public class SubscriptionPayment {
         return amount;
     }
 
+    public Double getFee() {
+        return fee;
+    }
+
     public String getCurrency() {
         return currency;
-    }
-
-    public Date getValidFrom() {
-        return validFrom;
-    }
-
-    public Date getValidTo() {
-        return validTo;
     }
 
     public Date getCreated() {
@@ -106,9 +100,8 @@ public class SubscriptionPayment {
                 ", ipnTrackId='" + ipnTrackId + '\'' +
                 ", email='" + email + '\'' +
                 ", amount=" + amount +
+                ", fee=" + fee +
                 ", currency='" + currency + '\'' +
-                ", validFrom=" + validFrom +
-                ", validTo=" + validTo +
                 ", created=" + created +
                 '}';
     }

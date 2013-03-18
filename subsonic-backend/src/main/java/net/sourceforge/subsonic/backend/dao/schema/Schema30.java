@@ -70,9 +70,8 @@ public class Schema30 extends Schema {
                     "ipn_track_id varchar," +  // PayPal IPN track ID
                     "email varchar_ignorecase," +
                     "amount double," +
+                    "fee double," +
                     "currency varchar," +
-                    "valid_from datetime," +
-                    "valid_to datetime," +
                     "created datetime not null)");
             template.execute("create index idx_subscription_payment_email on subscription_payment(email)");
 
