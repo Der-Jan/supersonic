@@ -91,7 +91,10 @@ public class IPNController implements Controller {
         createSubscriptionNotification(request);
         if (isSubscriptionPayment(request)) {
             createSubscriptionPayment(request);
-            // TODO: Create or update subscription. Calculate end of subscription.
+        } else if (isSubscriptionStart(request)) {
+TODO:
+        } else if (isSubscriptionEnd(request)) {
+TODO:
         }
     }
 
@@ -103,6 +106,16 @@ public class IPNController implements Controller {
     private boolean isSubscriptionPayment(HttpServletRequest request) {
         String txnType = request.getParameter("txn_type");
         return txnType.equals("subscr_payment");
+    }
+
+    private boolean isSubscriptionStart(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_signup");
+    }
+
+    private boolean isSubscriptionEnd(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_cancel") || txnType.equals("subscr_eot");
     }
 
     private void createSubscriptionPayment(HttpServletRequest request) throws ServletRequestBindingException {
