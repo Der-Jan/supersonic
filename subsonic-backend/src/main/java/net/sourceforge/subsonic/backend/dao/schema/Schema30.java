@@ -43,8 +43,6 @@ public class Schema30 extends Schema {
                     "first_name varchar," +
                     "last_name varchar," +
                     "country varchar," +
-                    "amount double," +  // Total amount
-                    "currency varchar," +
                     "valid_from datetime," +
                     "valid_to datetime," +
                     "processing_status varchar not null," +

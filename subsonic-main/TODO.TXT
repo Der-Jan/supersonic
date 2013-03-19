@@ -46,6 +46,8 @@ Handle subscr_cancel, subscr_eot, subscr_failed etc
 subscr_date: Start date or cancellation date depending on whether transaction is
              subscr_signup or subscr_cancel.
 
+Change isValid
+Create whitelist_subscription
 
 transaction_subject=Subsonic Premium monthly subscription&
 payment_date=13:19:40 Feb 18, 2013 PST&
@@ -116,6 +118,7 @@ site
   Update images in getting-started.
   Use new email address
   search "donate"
+  change premium.jsp
 
 backend
   Only create yearly recurring to start with.

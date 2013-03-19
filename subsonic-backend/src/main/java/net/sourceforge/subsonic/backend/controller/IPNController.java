@@ -26,6 +26,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sourceforge.subsonic.backend.domain.Subscription;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -92,10 +93,54 @@ public class IPNController implements Controller {
         if (isSubscriptionPayment(request)) {
             createSubscriptionPayment(request);
         } else if (isSubscriptionStart(request)) {
-TODO:
+            startSubscription(request);
         } else if (isSubscriptionEnd(request)) {
-TODO:
+            stopSubscription(request);
         }
+    }
+
+    private void startSubscription(HttpServletRequest request) {
+        Subscription subscription = getOrCreateSubscription(request);
+        Date now = new Date();
+        subscription.setValidFrom(now);
+        subscription.setValidTo(null);
+        subscription.setUpdated(now);
+        subscriptionDao.updateSubscription(subscription);
+        LOG.info("Start subscription for " + subscription.getEmail());
+    }
+
+    private void stopSubscription(HttpServletRequest request) {
+        Subscription subscription = getOrCreateSubscription(request);
+        Date now = new Date();
+        subscription.setValidTo(now);
+        subscription.setUpdated(now);
+        subscriptionDao.updateSubscription(subscription);
+        LOG.info("Stop subscription for " + subscription.getEmail());
+    }
+
+    private Subscription getOrCreateSubscription(HttpServletRequest request) {
+        String email = request.getParameter("payer_email");
+        Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
+        if (subscription != null) {
+            return subscription;
+        }
+
+        Date now = new Date();
+        subscription = new Subscription(null,
+                request.getParameter("subscr_id"),
+                request.getParameter("payer_id"),
+                request.getParameter("btn_id"),
+                email,
+                request.getParameter("first_name"),
+                request.getParameter("last_name"),
+                request.getParameter("address_country"),
+                now,
+                null,
+                ProcessingStatus.NEW,
+                now,
+                now);
+        subscriptionDao.createSubscription(subscription);
+        return subscriptionDao.getSubscriptionByEmail(email);
     }
 
     private boolean isSubscriptionRequest(HttpServletRequest request) {
@@ -129,6 +174,8 @@ TODO:
         Double fee = ServletRequestUtils.getDoubleParameter(request, "mc_fee");
         Date created = new Date();
 
+        LOG.info("Received subscription payment of " + amount + " " + currency + " from " + email);
+
         subscriptionDao.createSubscriptionPayment(new SubscriptionPayment(null, subscrId, payerId, btnId,
                 ipnTrackId, email, amount, fee, currency, created));
     }
@@ -141,6 +188,8 @@ TODO:
         String txnType = request.getParameter("txn_type");
         String email = request.getParameter("payer_email");
         Date created = new Date();
+
+        LOG.info("Received subscription notification " + txnType + " from " + email);
 
         subscriptionDao.createSubscriptionNotification(new SubscriptionNotification(null, subscrId, payerId, btnId,
                 ipnTrackId, txnType, email, created));

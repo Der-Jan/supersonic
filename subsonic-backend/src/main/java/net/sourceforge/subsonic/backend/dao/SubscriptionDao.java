@@ -24,7 +24,7 @@ public class SubscriptionDao extends AbstractDao {
     private static final Logger LOG = Logger.getLogger(SubscriptionDao.class);
 
     private static final String SUBSCRIPTION_COLUMNS = "id, subscr_id, payer_id, btn_id, email, first_name, " +
-            "last_name, country, amount, currency, valid_from, valid_to, processing_status, created, updated";
+            "last_name, country, valid_from, valid_to, processing_status, created, updated";
 
     private static final String SUBSCRIPTION_PAYMENT_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
             "email, amount, fee, currency, created";
@@ -64,8 +64,8 @@ public class SubscriptionDao extends AbstractDao {
     public void createSubscription(Subscription s) {
         String sql = "insert into subscription (" + SUBSCRIPTION_COLUMNS + ") values (" + questionMarks(SUBSCRIPTION_COLUMNS) + ")";
         update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), StringUtils.lowerCase(s.getEmail()),
-                s.getFirstName(), s.getLastName(), s.getCountry(), s.getAmount(), s.getCurrency(),
-                s.getValidFrom(), s.getValidTo(), s.getProcessingStatus().name(), s.getCreated(), s.getUpdated());
+                s.getFirstName(), s.getLastName(), s.getCountry(), s.getValidFrom(), s.getValidTo(),
+                s.getProcessingStatus().name(), s.getCreated(), s.getUpdated());
         LOG.info("Created " + s);
     }
 
@@ -74,10 +74,10 @@ public class SubscriptionDao extends AbstractDao {
      */
     public void updateSubscription(Subscription s) {
         String sql = "update subscription set subscr_id=?, payer_id=?, btn_id=?, email=?, " +
-                     "first_name=?, last_name=?, country=?, amount=?, currency=?, valid_from=?, " +
+                     "first_name=?, last_name=?, country=?, valid_from=?, " +
                      "valid_to=?, processing_status=?, created=?, updated=? where id=?";
         update(sql, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getEmail(), s.getFirstName(), s.getLastName(),
-                s.getCountry(), s.getAmount(), s.getCurrency(), s.getValidFrom(), s.getValidTo(),
+                s.getCountry(), s.getValidFrom(), s.getValidTo(),
                 s.getProcessingStatus().name(), s.getCreated(), s.getUpdated(), s.getId());
         LOG.info("Updated " + s);
     }
@@ -107,10 +107,8 @@ public class SubscriptionDao extends AbstractDao {
     private static class SubscriptionRowMapper implements ParameterizedRowMapper<Subscription> {
         public Subscription mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Subscription(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-                               rs.getString(6), rs.getString(7), rs.getString(8), rs.getDouble(9), rs.getString(10),
-                               rs.getTimestamp(11), rs.getTimestamp(12), ProcessingStatus.valueOf(rs.getString(13)),
-                               rs.getTimestamp(14), rs.getTimestamp(15));
+                    rs.getString(6), rs.getString(7), rs.getString(8), rs.getTimestamp(9), rs.getTimestamp(10),
+                    ProcessingStatus.valueOf(rs.getString(11)), rs.getTimestamp(12), rs.getTimestamp(13));
         }
     }
-
 }

@@ -33,8 +33,6 @@ public class Subscription {
     private String firstName;
     private String lastName;
     private String country;
-    private Double amount;
-    private String currency;
     private Date validFrom;
     private Date validTo;
     private ProcessingStatus processingStatus;
@@ -42,8 +40,8 @@ public class Subscription {
     private Date updated;
 
     public Subscription(String id, String subscrId, String payerId, String btnId, String email, String firstName,
-                        String lastName, String country, Double amount, String currency, Date validFrom, Date validTo,
-                        ProcessingStatus processingStatus, Date created, Date updated) {
+                        String lastName, String country, Date validFrom, Date validTo, ProcessingStatus processingStatus,
+                        Date created, Date updated) {
         this.id = id;
         this.subscrId = subscrId;
         this.payerId = payerId;
@@ -52,8 +50,6 @@ public class Subscription {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
-        this.amount = amount;
-        this.currency = currency;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.processingStatus = processingStatus;
@@ -123,22 +119,6 @@ public class Subscription {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public Date getValidFrom() {
