@@ -40,6 +40,17 @@ Update Subclient description
 TODO IN 4.8
 --------------
 
+PayPal sandbox
+https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
+https://www.sandbox.paypal.com/no/cgi-bin/webscr?cmd=_display-ipns-history
+Send emails.
+
+Signup
+mc_gross=12.00&protection_eligibility=Eligible&address_status=confirmed&payer_id=9RPL6BKSWPK3N&address_street=1 Main St&payment_date=12:26:19 Mar 19, 2013 PDT&payment_status=Completed&charset=windows-1252&address_zip=95131&first_name=PayPal Sandbox&mc_fee=0.65&address_country_code=US&address_name=PayPal Sandbox Buyer&notify_version=3.7&subscr_id=I-MMXL9CC9VLFU&payer_status=unverified&business=paypal-sandbox-merchant@activeobjects.no&address_country=United States&address_city=San Jose&verify_sign=A9Oy2BKiKJKbR9G6hlRtmvqzrLt3Ae87GA3xg3SgchmDPM5Asz7Wfu44&payer_email=paypal-sandbox-buyer@activeobjects.no&txn_id=0F89178994227551A&payment_type=instant&last_name=Buyer&address_state=CA&receiver_email=paypal-sandbox-merchant@activeobjects.no&payment_fee=0.65&receiver_id=FLYTCCZEB7WYS&txn_type=subscr_payment&item_name=Subsonic Premium 1-Year Subscription&mc_currency=USD&residence_country=US&test_ipn=1&transaction_subject=Subsonic Premium 1-Year Subscription&payment_gross=12.00&ipn_track_id=8f303f5f83f26
+txn_type=subscr_signup&subscr_id=I-MMXL9CC9VLFU&last_name=Buyer&residence_country=US&mc_currency=USD&item_name=Subsonic Premium 1-Year Subscription&business=paypal-sandbox-merchant@activeobjects.no&amount3=12.00&recurring=1&address_street=1 Main St&verify_sign=ASBpfXh4Lt8.bv0Fdo8XInY1dAeaA7Hp3Sf.Z89SqkfRSPt3X4s4DIKJ&payer_status=unverified&test_ipn=1&payer_email=paypal-sandbox-buyer@activeobjects.no&address_status=confirmed&first_name=PayPal Sandbox&receiver_email=paypal-sandbox-merchant@activeobjects.no&address_country_code=US&payer_id=9RPL6BKSWPK3N&address_city=San Jose&reattempt=1&address_state=CA&subscr_date=12:26:13 Mar 19, 2013 PDT&btn_id=2730676&address_zip=95131&charset=windows-1252&notify_version=3.7&period3=1 Y&address_country=United States&mc_amount3=12.00&address_name=PayPal Sandbox Buyer&ipn_track_id=8f303f5f83f26
+Cancel
+txn_type=subscr_cancel&subscr_id=I-MMXL9CC9VLFU&last_name=Buyer&residence_country=US&mc_currency=USD&item_name=Subsonic Premium 1-Year Subscription&business=paypal-sandbox-merchant@activeobjects.no&amount3=12.00&recurring=1&address_street=1 Main St&verify_sign=ALm0BVVc-4NStwf9qEXdMQUFabEsA8H1czjIU3jlFPipjF8L7SQjV9Lq&payer_status=unverified&test_ipn=1&payer_email=paypal-sandbox-buyer@activeobjects.no&address_status=confirmed&first_name=PayPal Sandbox&receiver_email=paypal-sandbox-merchant@activeobjects.no&address_country_code=US&payer_id=9RPL6BKSWPK3N&address_city=San Jose&reattempt=1&address_state=CA&subscr_date=13:42:40 Mar 19, 2013 PDT&btn_id=2730676&address_zip=95131&charset=windows-1252&notify_version=3.7&period3=1 Y&address_country=United States&mc_amount3=12.00&address_name=PayPal Sandbox Buyer&ipn_track_id=90360a9d6b2a0
+
 https://www.x.com/sites/default/files/ipnguide.pdf
 Handle subscr_cancel, subscr_eot, subscr_failed etc
 

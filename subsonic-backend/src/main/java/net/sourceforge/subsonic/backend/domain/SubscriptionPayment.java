@@ -30,19 +30,21 @@ public class SubscriptionPayment {
     private String payerId;
     private String btnId;
     private String ipnTrackId;
+    private String txnId;
     private String email;
     private Double amount;
     private Double fee;
     private String currency;
     private Date created;
 
-    public SubscriptionPayment(String id, String subscrId, String payerId, String btnId, String ipnTrackId, String email,
-            Double amount, Double fee, String currency, Date created) {
+    public SubscriptionPayment(String id, String subscrId, String payerId, String btnId, String ipnTrackId,
+                               String txnId, String email, Double amount, Double fee, String currency, Date created) {
         this.id = id;
         this.subscrId = subscrId;
         this.payerId = payerId;
         this.btnId = btnId;
         this.ipnTrackId = ipnTrackId;
+        this.txnId = txnId;
         this.email = email;
         this.amount = amount;
         this.fee = fee;
@@ -68,6 +70,10 @@ public class SubscriptionPayment {
 
     public String getIpnTrackId() {
         return ipnTrackId;
+    }
+
+    public String getTxnId() {
+        return txnId;
     }
 
     public String getEmail() {
@@ -98,6 +104,7 @@ public class SubscriptionPayment {
                 ", payerId='" + payerId + '\'' +
                 ", btnId='" + btnId + '\'' +
                 ", ipnTrackId='" + ipnTrackId + '\'' +
+                ", txnId='" + txnId + '\'' +
                 ", email='" + email + '\'' +
                 ", amount=" + amount +
                 ", fee=" + fee +

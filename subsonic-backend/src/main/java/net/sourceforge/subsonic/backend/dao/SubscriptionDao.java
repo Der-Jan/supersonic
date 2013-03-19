@@ -27,7 +27,7 @@ public class SubscriptionDao extends AbstractDao {
             "last_name, country, valid_from, valid_to, processing_status, created, updated";
 
     private static final String SUBSCRIPTION_PAYMENT_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
-            "email, amount, fee, currency, created";
+            "txn_id, email, amount, fee, currency, created";
 
     private static final String SUBSCRIPTION_NOTIFICATION_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
             "txn_type, email, created";
@@ -88,7 +88,7 @@ public class SubscriptionDao extends AbstractDao {
     public void createSubscriptionPayment(SubscriptionPayment s) {
         String sql = "insert into subscription_payment (" + SUBSCRIPTION_PAYMENT_COLUMNS + ") values (" +
                 questionMarks(SUBSCRIPTION_PAYMENT_COLUMNS) + ")";
-        update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(),
+        update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(), s.getTxnId(),
                 StringUtils.lowerCase(s.getEmail()), s.getAmount(), s.getFee(), s.getCurrency(), s.getCreated());
         LOG.info("Created " + s);
     }

@@ -66,6 +66,7 @@ public class Schema30 extends Schema {
                     "payer_id varchar," +  // PayPal payer ID
                     "btn_id varchar," +  // PayPal button ID
                     "ipn_track_id varchar," +  // PayPal IPN track ID
+                    "txn_id varchar," +  // PayPal IPN track ID
                     "email varchar_ignorecase," +
                     "amount double," +
                     "fee double," +

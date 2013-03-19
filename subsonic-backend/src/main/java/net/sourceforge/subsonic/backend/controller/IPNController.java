@@ -168,6 +168,7 @@ public class IPNController implements Controller {
         String payerId = request.getParameter("payer_id");
         String btnId = request.getParameter("btn_id");
         String ipnTrackId = request.getParameter("ipn_track_id");
+        String txnId = request.getParameter("txn_id");
         String currency = request.getParameter("mc_currency");
         String email = request.getParameter("payer_email");
         Double amount = ServletRequestUtils.getDoubleParameter(request, "mc_gross");
@@ -177,7 +178,7 @@ public class IPNController implements Controller {
         LOG.info("Received subscription payment of " + amount + " " + currency + " from " + email);
 
         subscriptionDao.createSubscriptionPayment(new SubscriptionPayment(null, subscrId, payerId, btnId,
-                ipnTrackId, email, amount, fee, currency, created));
+                ipnTrackId, txnId, email, amount, fee, currency, created));
     }
 
     private void createSubscriptionNotification(HttpServletRequest request) {
