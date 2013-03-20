@@ -39,83 +39,33 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
+Update premium.jsp with new PayPal buttons.
+Add payment.valid_to
 
 PayPal sandbox
-https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
+(recurring) https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
 https://www.sandbox.paypal.com/no/cgi-bin/webscr?cmd=_display-ipns-history
-Send emails.
 
 Signup
 mc_gross=12.00&protection_eligibility=Eligible&address_status=confirmed&payer_id=9RPL6BKSWPK3N&address_street=1 Main St&payment_date=12:26:19 Mar 19, 2013 PDT&payment_status=Completed&charset=windows-1252&address_zip=95131&first_name=PayPal Sandbox&mc_fee=0.65&address_country_code=US&address_name=PayPal Sandbox Buyer&notify_version=3.7&subscr_id=I-MMXL9CC9VLFU&payer_status=unverified&business=paypal-sandbox-merchant@activeobjects.no&address_country=United States&address_city=San Jose&verify_sign=A9Oy2BKiKJKbR9G6hlRtmvqzrLt3Ae87GA3xg3SgchmDPM5Asz7Wfu44&payer_email=paypal-sandbox-buyer@activeobjects.no&txn_id=0F89178994227551A&payment_type=instant&last_name=Buyer&address_state=CA&receiver_email=paypal-sandbox-merchant@activeobjects.no&payment_fee=0.65&receiver_id=FLYTCCZEB7WYS&txn_type=subscr_payment&item_name=Subsonic Premium 1-Year Subscription&mc_currency=USD&residence_country=US&test_ipn=1&transaction_subject=Subsonic Premium 1-Year Subscription&payment_gross=12.00&ipn_track_id=8f303f5f83f26
 txn_type=subscr_signup&subscr_id=I-MMXL9CC9VLFU&last_name=Buyer&residence_country=US&mc_currency=USD&item_name=Subsonic Premium 1-Year Subscription&business=paypal-sandbox-merchant@activeobjects.no&amount3=12.00&recurring=1&address_street=1 Main St&verify_sign=ASBpfXh4Lt8.bv0Fdo8XInY1dAeaA7Hp3Sf.Z89SqkfRSPt3X4s4DIKJ&payer_status=unverified&test_ipn=1&payer_email=paypal-sandbox-buyer@activeobjects.no&address_status=confirmed&first_name=PayPal Sandbox&receiver_email=paypal-sandbox-merchant@activeobjects.no&address_country_code=US&payer_id=9RPL6BKSWPK3N&address_city=San Jose&reattempt=1&address_state=CA&subscr_date=12:26:13 Mar 19, 2013 PDT&btn_id=2730676&address_zip=95131&charset=windows-1252&notify_version=3.7&period3=1 Y&address_country=United States&mc_amount3=12.00&address_name=PayPal Sandbox Buyer&ipn_track_id=8f303f5f83f26
+
 Cancel
 txn_type=subscr_cancel&subscr_id=I-MMXL9CC9VLFU&last_name=Buyer&residence_country=US&mc_currency=USD&item_name=Subsonic Premium 1-Year Subscription&business=paypal-sandbox-merchant@activeobjects.no&amount3=12.00&recurring=1&address_street=1 Main St&verify_sign=ALm0BVVc-4NStwf9qEXdMQUFabEsA8H1czjIU3jlFPipjF8L7SQjV9Lq&payer_status=unverified&test_ipn=1&payer_email=paypal-sandbox-buyer@activeobjects.no&address_status=confirmed&first_name=PayPal Sandbox&receiver_email=paypal-sandbox-merchant@activeobjects.no&address_country_code=US&payer_id=9RPL6BKSWPK3N&address_city=San Jose&reattempt=1&address_state=CA&subscr_date=13:42:40 Mar 19, 2013 PDT&btn_id=2730676&address_zip=95131&charset=windows-1252&notify_version=3.7&period3=1 Y&address_country=United States&mc_amount3=12.00&address_name=PayPal Sandbox Buyer&ipn_track_id=90360a9d6b2a0
+
+1-year subscription
+mc_gross=12.00&protection_eligibility=Ineligible&payer_id=9RPL6BKSWPK3N&tax=0.00&payment_date=15:19:33 Mar 20, 2013 PDT&payment_status=Completed&charset=windows-1252&first_name=PayPal Sandbox&mc_fee=0.65&notify_version=3.7&custom=&payer_status=unverified&business=paypal-sandbox-merchant@activeobjects.no&quantity=1&verify_sign=AQU0e5vuZCvSg-XJploSa.sGUDlpA1JsRcsMA8wr55tFEsvCZE4Ly5nV&payer_email=paypal-sandbox-buyer@activeobjects.no&txn_id=1Y981832W1241080U&payment_type=instant&btn_id=2731244&last_name=Buyer&receiver_email=paypal-sandbox-merchant@activeobjects.no&payment_fee=0.65&shipping_discount=0.00&insurance_amount=0.00&receiver_id=FLYTCCZEB7WYS&txn_type=web_accept&item_name=trall&discount=0.00&mc_currency=USD&item_number=&residence_country=US&test_ipn=1&handling_amount=0.00&shipping_method=Default&transaction_subject=trall&payment_gross=12.00&shipping=0.00&ipn_track_id=9fd6393b78060
+
+2-year subscription with option
+mc_gross=36.00&protection_eligibility=Ineligible&payer_id=9RPL6BKSWPK3N&tax=0.00&payment_date=15:41:19 Mar 20, 2013 PDT&payment_status=Completed&charset=windows-1252&first_name=PayPal Sandbox&option_selection1=3 years&mc_fee=1.34&notify_version=3.7&custom=&payer_status=unverified&business=paypal-sandbox-merchant@activeobjects.no&quantity=1&verify_sign=AIvHx-8Q8QoUIzVTb4V8-B3kWTynAHXHpB4pcRg1RHxPZMkW4mPuVcET&payer_email=paypal-sandbox-buyer@activeobjects.no&option_name1=Select number of years&txn_id=0J7678665X8765712&payment_type=instant&btn_id=2731244&last_name=Buyer&receiver_email=paypal-sandbox-merchant@activeobjects.no&payment_fee=1.34&shipping_discount=0.00&insurance_amount=0.00&receiver_id=FLYTCCZEB7WYS&txn_type=web_accept&item_name=1 year non-recurring&discount=0.00&mc_currency=USD&item_number=&residence_country=US&test_ipn=1&handling_amount=0.00&shipping_method=Default&transaction_subject=1 year non-recurring&payment_gross=36.00&shipping=0.00&ipn_track_id=8107cee1480d
+*** option_selection1=3 years ***
 
 https://www.x.com/sites/default/files/ipnguide.pdf
 Handle subscr_cancel, subscr_eot, subscr_failed etc
 
 subscr_date: Start date or cancellation date depending on whether transaction is
              subscr_signup or subscr_cancel.
-
-Change isValid
-Create whitelist_subscription
-
-transaction_subject=Subsonic Premium monthly subscription&
-payment_date=13:19:40 Feb 18, 2013 PST&
-txn_type=subscr_payment&
-subscr_id=I-MTPUPXXXB04R&
-last_name=sdfsd&
-residence_country=NO&
-item_name=Subsonic Premium monthly subscription&
-payment_gross=2.00&
-mc_currency=USD&
-business=sindre@activeobjects.no&
-payment_type=instant&
-protection_eligibility=Ineligible&
-verify_sign=XXX
-payer_status=unverified&
-payer_email=xxx@bar.com
-txn_id=DBA12835L850964D&
-receiver_email=sindre@activeobjects.no&
-first_name=Be&
-payer_id=E5M69CJFC9CKC&
-receiver_id=N7F9CD4A95CQ&
-item_number=subsonic-premium-subscription-month&
-payment_status=Completed&
-payment_fee=0.35&
-mc_fee=0.35&
-btn_id=57671524&
-mc_gross=2.00&
-charset=windows-1252&
-notify_version=3.7&
-ipn_track_id=797f5cad6acb6
-
-txn_type=subscr_signup&
-subscr_id=I-MTPUPXXXB04R&
-last_name=dsdsd&
-residence_country=NO&
-mc_currency=USD&
-item_name=Subsonic Premium monthly subscription&
-business=sindre@activeobjects.no&
-amount3=2.00&
-recurring=1&
-verify_sign=AshGYGClYIw1tbZ.asdfwdf7R1jRxTgpGY2AU83p18CKEbhYXCxsNOkjh7-ovxY&
-payer_status=unverified&
-payer_email=xxx@bar.com
-first_name=Bente&
-receiver_email=sindre@activeobjects.no&
-payer_id=E5M69CJFC9CKC&
-reattempt=1&
-item_number=subsonic-premium-subscription-month&
-subscr_date=13:19:37 Feb 18, 2013 PST&
-btn_id=57671524&
-charset=windows-1252&
-notify_version=3.7&
-period3=1 M&
-mc_amount3=2.00&
-ipn_track_id=797f5d0c6acb6
-
-java.lang.NullPointerException
+ java.lang.NullPointerException
         at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:991)
         at java.lang.Float.valueOf(Float.java:388)
         at java.lang.Float.<init>(Float.java:489)
