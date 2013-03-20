@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.mail.MessagingException;
 
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
+import net.sourceforge.subsonic.backend.domain.Subscription;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 
@@ -30,6 +32,7 @@ public class LicenseGenerator {
     private static final long DELAY = 60; // One minute.
 
     private PaymentDao paymentDao;
+    private SubscriptionDao subscriptionDao;
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public void init() {
@@ -38,6 +41,7 @@ public class LicenseGenerator {
                 try {
                     LOG.info("Starting license generator.");
                     processPayments();
+                    processSubscriptions();
                     LOG.info("Completed license generator.");
                 } catch (Throwable x) {
                     LOG.error("Failed to process license emails.", x);
@@ -57,7 +61,28 @@ public class LicenseGenerator {
 
         EmailSession emailSession = new EmailSession();
         for (Payment payment : payments) {
-            processPayment(payment, emailSession);
+            try {
+                processPayment(payment, emailSession);
+            } catch (Throwable x) {
+                LOG.error("Failed to process " + payment, x);
+            }
+        }
+    }
+
+    private void processSubscriptions() throws Exception {
+        List<Subscription> subscriptions = subscriptionDao.getSubscriptionsByProcessingStatus(ProcessingStatus.NEW);
+        LOG.info(subscriptions.size() + " new subscription(s).");
+        if (subscriptions.isEmpty()) {
+            return;
+        }
+
+        EmailSession emailSession = new EmailSession();
+        for (Subscription subscription : subscriptions) {
+            try {
+                processSubscription(subscription, emailSession);
+            } catch (Throwable x) {
+                LOG.error("Failed to process " + subscription, x);
+            }
         }
     }
 
@@ -86,6 +111,26 @@ public class LicenseGenerator {
 
         } catch (Throwable x) {
             LOG.error("Failed to process " + payment, x);
+        }
+    }
+
+    private void processSubscription(Subscription subscription, EmailSession emailSession) {
+        try {
+            LOG.info("Processing " + subscription);
+            String email = subscription.getEmail();
+            if (email == null) {
+                throw new Exception("Missing email address.");
+            }
+
+            sendLicenseTo(email, emailSession);
+            LOG.info("Sent license key for " + subscription);
+
+            subscription.setProcessingStatus(ProcessingStatus.COMPLETED);
+            subscription.setUpdated(new Date());
+            subscriptionDao.updateSubscription(subscription);
+
+        } catch (Throwable x) {
+            LOG.error("Failed to process " + subscription, x);
         }
     }
 
@@ -169,5 +214,9 @@ public class LicenseGenerator {
 
         LicenseGenerator generator = new LicenseGenerator();
         generator.sendLicenseTo(address, new EmailSession());       
+    }
+
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
     }
 }

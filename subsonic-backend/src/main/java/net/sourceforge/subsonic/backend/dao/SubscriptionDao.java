@@ -2,6 +2,7 @@ package net.sourceforge.subsonic.backend.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -102,6 +103,11 @@ public class SubscriptionDao extends AbstractDao {
         update(sql, null, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getIpnTrackId(), s.getTxnType(),
                 StringUtils.lowerCase(s.getEmail()), s.getCreated());
         LOG.info("Created " + s);
+    }
+
+    public int getSubscriptionPaymentAmount(Date from, Date to) {
+        String sql = "select sum(amount) from subscription_payment where created between ? and ?";
+        return queryForInt(sql, 0, from, to);
     }
 
     private static class SubscriptionRowMapper implements ParameterizedRowMapper<Subscription> {

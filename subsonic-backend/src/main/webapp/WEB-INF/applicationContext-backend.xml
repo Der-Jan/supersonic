@@ -20,6 +20,7 @@
 
     <bean id="licenseGenerator" class="net.sourceforge.subsonic.backend.service.LicenseGenerator" init-method="init">
         <property name="paymentDao" ref="paymentDao"/>
+        <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>
 
     <bean id="whitelistGenerator" class="net.sourceforge.subsonic.backend.service.WhitelistGenerator">

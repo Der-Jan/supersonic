@@ -7,6 +7,7 @@
     <bean id="multiController" class="net.sourceforge.subsonic.backend.controller.MultiController">
         <property name="daoHelper" ref="daoHelper"/>
         <property name="paymentDao" ref="paymentDao"/>
+        <property name="subscriptionDao" ref="subscriptionDao"/>
         <property name="whitelistGenerator" ref="whitelistGenerator"/>
         <property name="licenseGenerator" ref="licenseGenerator"/>
     </bean>
