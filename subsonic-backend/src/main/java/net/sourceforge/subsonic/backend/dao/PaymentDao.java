@@ -107,8 +107,9 @@ public class PaymentDao extends AbstractDao {
     }
 
     public boolean isWhitelisted(String email) {
-        String sql = "select 1 from whitelist where email=?";
-        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email)) != null;
+        Date now = new Date();
+        String sql = "select 1 from whitelist where email=? and (valid_to is null or valid_to > ?)";
+        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email), now) != null;
     }
 
     public void whitelist(String email) {

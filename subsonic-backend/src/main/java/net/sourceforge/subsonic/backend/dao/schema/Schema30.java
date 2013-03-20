@@ -93,5 +93,11 @@ public class Schema30 extends Schema {
             LOG.info("Database table 'subscription_notification' was created successfully.");
         }
 
+        if (!columnExists(template, "valid_to", "whitelist")) {
+            LOG.info("Database column 'whitelist.valid_to' not found.  Creating them.");
+            template.execute("alter table whitelist add valid_to datetime null");
+            LOG.info("Database column 'whitelist.valid_to' was added successfully.");
+        }
+
     }
 }
