@@ -898,7 +898,6 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/demo.war
   rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/pages
 
-
   Checkpoint database (db.view)
   ssh root@subsonic.org
   cd /usr/local/jakarta/tomcat
@@ -910,14 +909,19 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   rm -rf work logs/*
   /usr/sbin/starttomcat
 
+Update backup server
 
 rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
 
-godaddy ip: 97.74.125.134
-cancaca ip: 66.49.215.227
-- test https
-- add test videos (and ffmpeg, lame)
-- update transcodings
+
+subsonic.org backup
+-------------------
+BudgetVM 192.157.221.124
+% service tomcat6 stop
+% service tomcat6 start
+/etc/tomcat6
+/var/lib/tomcat6
+
 
 HOW TO RELEASE TO ANDROID MARKET
 ================================

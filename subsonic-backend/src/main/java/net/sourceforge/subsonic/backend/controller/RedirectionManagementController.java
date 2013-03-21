@@ -62,6 +62,7 @@ public class RedirectionManagementController extends MultiActionController {
         RESERVED_REDIRECTS.put("web", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("ftp", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("mail", "http://www.subsonic.org/pages/index.jsp");
+        RESERVED_REDIRECTS.put("backup", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("s", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("subsonic", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("gosubsonic", "http://www.subsonic.org/pages/index.jsp");

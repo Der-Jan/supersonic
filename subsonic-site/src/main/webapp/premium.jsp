@@ -14,7 +14,7 @@
 
     <div id="content">
         <div id="main-col">
-            <h1>Subsonic Premium</h1>
+            <h1>Subsonic Premium &ndash; Only $1 / month</h1>
 
             <h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
 
@@ -62,46 +62,56 @@
 
             </table>
 
-            <table style="padding-left:3em; padding-bottom: 2em">
+            <table style="padding-bottom: 2em">
                 <tr>
-                    <th style="padding-bottom: 0.6em;padding-right: 3em">$2 per month</th>
-                    <th style="padding-bottom: 0.6em;padding-right: 3em">$9 per year</th>
-                    <th style="padding-bottom: 0.6em">$39 for lifetime</th>
+                    <th style="padding-bottom: 0.3em;padding-right: 3em">$1 per month</th>
+                    <th style="padding-bottom: 0.3em">$1 per month</th>
                 </tr>
                 <tr>
-                    <td style="padding-right: 3em">
+                    <td style="padding-bottom: 0.6em;padding-right: 3em">Select this option to automatically renew your Subsonic Premium subscription every year.</td>
+                    <td style="padding-bottom: 0.6em">Select this option to buy a Subsonic Premium subscription for 1 - 10 years.</td>
+                </tr>
+                <tr>
+                    <th style="padding-right: 3em;vertical-align: bottom">
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
                             <input type="hidden" name="cmd" value="_s-xclick">
                             <input type="hidden" name="hosted_button_id" value="FZS3NADTYABNC">
-                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                             <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                         </form>
-                    </td>
+                    </th>
                     <td style="padding-right: 3em">
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                             <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="SDHSJ5T5E2DC4">
-                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <input type="hidden" name="hosted_button_id" value="TNL7NC2HVY5E6">
+                            <input type="hidden" name="on0" value="Duration">
+                            <input type="hidden" name="currency_code" value="USD">
+                            <table>
+                                <tr><td><select name="os0">
+                                    <option value="1 year"> 1 year of Subsonic Premium &ndash; $12</option>
+                                    <option value="2 years">2 years of Subsonic Premium &ndash; $24</option>
+                                    <option value="3 years">3 years of Subsonic Premium &ndash; $36</option>
+                                    <option value="4 years">4 years of Subsonic Premium &ndash; $48</option>
+                                    <option value="5 years">5 years of Subsonic Premium &ndash; $60</option>
+                                    <option value="6 years">6 years of Subsonic Premium &ndash; $72</option>
+                                    <option value="7 years">7 years of Subsonic Premium &ndash; $84</option>
+                                    <option value="8 years">8 years of Subsonic Premium &ndash; $96</option>
+                                    <option value="9 years">9 years of Subsonic Premium &ndash; $108</option>
+                                    <option value="10 years">10 years of Subsonic Premium &ndash; $120</option>
+                                </select></td></tr>
+                                <tr><th>
+                                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" style="padding-top:0.5em" alt="PayPal - The safer, easier way to pay online!">
+                                </th></tr>
+                            </table>
                             <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                         </form>
-                    </td>
-                    <td>
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                            <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="PQRZ7FEEXDAKA">
-                            <input type="image" src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                        </form>
-
                     </td>
                 </tr>
             </table>
 
             <p>
-                All payment options include free upgrades to new Subsonic versions.
-            </p>
-            <p>
-                Note: The Subsonic Premium license is valid for personal, non-commercial use. For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options.
+                Both options include free upgrades to new Subsonic versions. Note: The Subsonic Premium license is valid for personal, non-commercial use.
+                For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options.
             </p>
 
             <p>
