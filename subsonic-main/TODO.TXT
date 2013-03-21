@@ -39,8 +39,6 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
-Update premium.jsp with new PayPal buttons.
-Add payment.valid_to
 
 PayPal sandbox
 (recurring) https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU

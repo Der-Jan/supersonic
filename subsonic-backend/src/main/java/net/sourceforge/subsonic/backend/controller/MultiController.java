@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
 import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.Subscription;
 import net.sourceforge.subsonic.backend.service.LicenseGenerator;
 import net.sourceforge.subsonic.backend.service.WhitelistGenerator;
@@ -244,7 +245,16 @@ public class MultiController extends MultiActionController {
             return true;
         }
 
-        return hasValidSubscription(email) || paymentDao.getPaymentByEmail(email) != null || paymentDao.isWhitelisted(email);
+        return hasValidSubscription(email) || hasValidPayment(email) || paymentDao.isWhitelisted(email);
+    }
+
+    private boolean hasValidPayment(String email) {
+        Payment payment = paymentDao.getPaymentByEmail(email);
+        if (payment == null) {
+            return false;
+        }
+        Date now = new Date();
+        return payment.getValidTo() == null || payment.getValidTo().after(now);
     }
 
     private boolean hasValidSubscription(String email) {

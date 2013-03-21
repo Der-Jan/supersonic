@@ -20,8 +20,11 @@ package net.sourceforge.subsonic.backend.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,6 +59,7 @@ public class IPNController implements Controller {
     private static final Logger LOG = Logger.getLogger(IPNController.class);
 
     private static final String PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr";
+    private static final Pattern SUBSCRIPTION_DURATION_PATTERN = Pattern.compile("(\\d+) year(s)?");
 
     private PaymentDao paymentDao;
     private SubscriptionDao subscriptionDao;
@@ -211,12 +215,13 @@ public class IPNController implements Controller {
         String payerFirstName = request.getParameter("first_name");
         String payerLastName = request.getParameter("last_name");
         String payerCountry = request.getParameter("address_country");
+        Date validTo = computeValidTo(request);
 
         Payment payment = paymentDao.getPaymentByTransactionId(txnId);
         if (payment == null) {
             payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
-                    payerCountry, ProcessingStatus.NEW, new Date(), new Date());
+                    payerCountry, ProcessingStatus.NEW, validTo, new Date(), new Date());
             paymentDao.createPayment(payment);
         } else {
             payment.setTransactionType(txnType);
@@ -229,11 +234,29 @@ public class IPNController implements Controller {
             payment.setPayerFirstName(payerFirstName);
             payment.setPayerLastName(payerLastName);
             payment.setPayerCountry(payerCountry);
+            payment.setValidTo(validTo);
             payment.setLastUpdated(new Date());
             paymentDao.updatePayment(payment);
         }
 
         LOG.info("Received " + payment);
+    }
+
+    private Date computeValidTo(HttpServletRequest request) {
+        String duration = request.getParameter("option_selection1");
+        if (duration == null) {
+            return null;
+        }
+        Matcher matcher = SUBSCRIPTION_DURATION_PATTERN.matcher(duration);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid subscription duration: " + duration);
+        }
+
+        int years = Integer.parseInt(matcher.group(1));
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, years);
+
+        return calendar.getTime();
     }
 
     private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {

@@ -94,9 +94,15 @@ public class Schema30 extends Schema {
         }
 
         if (!columnExists(template, "valid_to", "whitelist")) {
-            LOG.info("Database column 'whitelist.valid_to' not found.  Creating them.");
+            LOG.info("Database column 'whitelist.valid_to' not found.  Creating it.");
             template.execute("alter table whitelist add valid_to datetime null");
             LOG.info("Database column 'whitelist.valid_to' was added successfully.");
+        }
+
+        if (!columnExists(template, "valid_to", "payment")) {
+            LOG.info("Database column 'payment.valid_to' not found.  Creating it.");
+            template.execute("alter table payment add valid_to datetime null");
+            LOG.info("Database column 'payment.valid_to' was added successfully.");
         }
 
     }

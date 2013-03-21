@@ -38,13 +38,14 @@ public class Payment {
     private String payerLastName;
     private String payerCountry;
     private ProcessingStatus processingStatus;
+    private Date validTo;
     private Date created;
     private Date lastUpdated;
 
     public Payment(String id, String transactionId, String transactionType, String item, String paymentType,
                    String paymentStatus, int paymentAmount, String paymentCurrency, String payerEmail,
                    String payerFirstName, String payerLastName, String payerCountry, ProcessingStatus processingStatus,
-                   Date created, Date lastUpdated) {
+                   Date validTo, Date created, Date lastUpdated) {
         this.id = id;
         this.transactionId = transactionId;
         this.transactionType = transactionType;
@@ -58,6 +59,7 @@ public class Payment {
         this.payerLastName = payerLastName;
         this.payerCountry = payerCountry;
         this.processingStatus = processingStatus;
+        this.validTo = validTo;
         this.created = created;
         this.lastUpdated = lastUpdated;
     }
@@ -166,6 +168,14 @@ public class Payment {
         this.processingStatus = processingStatus;
     }
 
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
     public Date getCreated() {
         return created;
     }
@@ -190,6 +200,7 @@ public class Payment {
                 ", status='" + paymentStatus + '\'' +
                 ", amount=" + paymentAmount +
                 ", email='" + payerEmail + '\'' +
+                ", validTo='" + validTo + '\'' +
                 '}';
     }
 }
