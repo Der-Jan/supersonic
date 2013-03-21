@@ -39,6 +39,7 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
+Return expiration date in validateLicense.
 
 PayPal sandbox
 (recurring) https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
@@ -63,32 +64,20 @@ Handle subscr_cancel, subscr_eot, subscr_failed etc
 
 subscr_date: Start date or cancellation date depending on whether transaction is
              subscr_signup or subscr_cancel.
- java.lang.NullPointerException
-        at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:991)
-        at java.lang.Float.valueOf(Float.java:388)
-        at java.lang.Float.<init>(Float.java:489)
-        at net.sourceforge.subsonic.backend.controller.IPNController.createOrUpdatePayment(IPNController.java:98)
 
-webapp
-  about: show license status
+ webapp
+  about: show license status (including expiration date)
   what is communicated if license is invalid or expired?
 
 site
   Update images in getting-started.
   Use new email address
   search "donate"
-  change premium.jsp
 
 backend
-  Only create yearly recurring to start with.
   Missing index payment(processing_status)?
-  support subscriptions
-  possible to change subscr amount
   Change message "Trial period expired. Please donate to activate web address."
   License key email
-  Add custom parameter to buttons (# months)
-  Make possible to purchase for many years
-    https://lastpass.com/features_joinpremium.php
 
 other
   reconsider sourceforge
@@ -96,10 +85,6 @@ other
 
 android
 
-paypal
-  Use USD (0.30 USD fee rather than 0.35 EUR)
-  micropayment?
-  Create new account
 
 UPnP/DLNA
   Conflict with existing UPnP classes.
