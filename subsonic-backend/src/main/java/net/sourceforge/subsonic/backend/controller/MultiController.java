@@ -98,10 +98,15 @@ public class MultiController extends MultiActionController {
         Long date = ServletRequestUtils.getLongParameter(request, "date");
 
         boolean valid = isLicenseValid(email, date);
-        LOG.info(request.getRemoteAddr() + " asked to validate license for " + email + ". Result: " + valid);
+        Date expirationDate = getLicenseExpirationDate(email);
+        LOG.info(request.getRemoteAddr() + " asked to validate license for " + email + ". Result: " +
+                valid + ", expires: " + expirationDate);
 
         PrintWriter writer = response.getWriter();
         writer.println(valid);
+        if (expirationDate != null) {
+            writer.println(expirationDate.getTime());
+        }
 
         return null;
     }
@@ -246,6 +251,24 @@ public class MultiController extends MultiActionController {
         }
 
         return hasValidSubscription(email) || hasValidPayment(email) || paymentDao.isWhitelisted(email);
+    }
+
+    private Date getLicenseExpirationDate(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        if (paymentDao.isBlacklisted(email) || paymentDao.isWhitelisted(email)) {
+            return null;
+        }
+
+        Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
+        Payment payment = paymentDao.getPaymentByEmail(email);
+
+        Date subscriptionExpirationDate = subscription == null ? null : subscription.getValidTo();
+        Date paymentExpirationDate = payment == null ? null : payment.getValidTo();
+
+        return Util.latest(subscriptionExpirationDate, paymentExpirationDate);
     }
 
     private boolean hasValidPayment(String email) {

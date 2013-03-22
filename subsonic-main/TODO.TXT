@@ -39,7 +39,6 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
-Return expiration date in validateLicense.
 
 PayPal sandbox
 (recurring) https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
