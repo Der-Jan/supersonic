@@ -39,9 +39,6 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
-
-PayPal sandbox
-(recurring) https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2CJLLFCLJTZUU
 https://www.sandbox.paypal.com/no/cgi-bin/webscr?cmd=_display-ipns-history
 
 Signup
@@ -64,7 +61,7 @@ Handle subscr_cancel, subscr_eot, subscr_failed etc
 subscr_date: Start date or cancellation date depending on whether transaction is
              subscr_signup or subscr_cancel.
 
- webapp
+webapp
   about: show license status (including expiration date)
   what is communicated if license is invalid or expired?
 

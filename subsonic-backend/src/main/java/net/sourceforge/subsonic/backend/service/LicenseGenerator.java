@@ -20,7 +20,7 @@ import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
 
 /**
- * Runs a task at regular intervals, checking for incoming donations and sending
+ * Runs a task at regular intervals, checking for incoming payments and sending
  * out license keys by email.
  *
  * @author Sindre Mehus
@@ -150,11 +150,11 @@ public class LicenseGenerator {
     }
 
     public void sendLicenseTo(String to, EmailSession emailSession) throws MessagingException {
-        emailSession.sendMessage("subsonic_donation@activeobjects.no",
+        emailSession.sendMessage("license@subsonic.org",
                                  Arrays.asList(to),
                                  null,
-                                 Arrays.asList("subsonic_donation@activeobjects.no", "sindre@activeobjects.no"),
-                                 Arrays.asList("subsonic_donation@activeobjects.no"),
+                                 Arrays.asList("license@subsonic.org", "sindre@activeobjects.no"),
+                                 Arrays.asList("license@subsonic.org"),
                                  "Subsonic License",
                                  createLicenseContent(to));
         LOG.info("Sent license to " + to);
@@ -163,15 +163,15 @@ public class LicenseGenerator {
     private String createLicenseContent(String to) {
         String license = md5Hex(to.toLowerCase());
 
-        return "Dear Subsonic donor,\n" +
+        return "Dear Subsonic user,\n" +
                 "\n" +
-                "Many thanks for your kind donation to Subsonic!\n" +
+                "Many thanks for upgrading to Subsonic Premium!\n" +
                 "Please find your license key below.\n" +
                 "\n" +
                 "Email: " + to + "\n" +
                 "License: " + license + " \n" +
                 "\n" +
-                "To install the license key, click the \"Donate\" link in the top right corner of the Subsonic web interface.\n" +
+                "To install the license key, click the \"Get Subsonic Premium\" link in the top right corner of the Subsonic web interface.\n" +
                 "\n" +
                 "More info here: http://subsonic.org/pages/getting-started.jsp#3\n" +
                 "\n" +

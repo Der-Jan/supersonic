@@ -198,7 +198,7 @@ public class RedirectionManagementController extends MultiActionController {
         }
 
         if (redirection.getTrialExpires() != null && redirection.getTrialExpires().before(new Date())) {
-            writer.print("Trial period expired. Please donate to activate web address.");
+            writer.print("Trial period expired. Please upgrade to Subsonic Premium to activate web address.");
             return;
         }
 
