@@ -774,11 +774,18 @@ public final class Util {
      */
     public static void broadcastNewTrackInfo(Context context, MusicDirectory.Entry song) {
         Intent intent = new Intent(EVENT_META_CHANGED);
+        Intent avrcpIntent = new Intent("com.android.music.metachanged");
 
         if (song != null) {
             intent.putExtra("title", song.getTitle());
             intent.putExtra("artist", song.getArtist());
             intent.putExtra("album", song.getAlbum());
+
+            //avrcp intent
+            avrcpIntent.putExtra("id", song.getId());
+            avrcpIntent.putExtra("track", song.getTitle());
+            avrcpIntent.putExtra("artist", song.getArtist());
+            avrcpIntent.putExtra("album", song.getAlbum());
 
             File albumArtFile = FileUtil.getAlbumArtFile(context, song);
             intent.putExtra("coverart", albumArtFile.getAbsolutePath());
@@ -787,9 +794,15 @@ public final class Util {
             intent.putExtra("artist", "");
             intent.putExtra("album", "");
             intent.putExtra("coverart", "");
+
+            avrcpIntent.putExtra("id", "");
+            avrcpIntent.putExtra("track", "");
+            avrcpIntent.putExtra("artist", "");
+            avrcpIntent.putExtra("album", "");
         }
 
         context.sendBroadcast(intent);
+        context.sendBroadcast(avrcpIntent);
     }
 
     /**

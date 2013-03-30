@@ -39,6 +39,30 @@ Update Subclient description
 
 TODO IN 4.8
 --------------
+
+Publish blackberry app.
+
+webapp
+  about: show license status (including expiration date)
+  what is communicated if license is invalid or expired?
+
+site
+  Update images in getting-started.
+  Use new email address
+  search "donate"
+
+backend
+  Missing index payment(processing_status)?
+  Change message "Trial period expired. Please donate to activate web address."
+  License key email
+
+other
+  reconsider sourceforge
+  new email instead of subsonic_donation@activeobjects.no
+
+android
+
+
 https://www.sandbox.paypal.com/no/cgi-bin/webscr?cmd=_display-ipns-history
 
 Signup
@@ -60,26 +84,6 @@ Handle subscr_cancel, subscr_eot, subscr_failed etc
 
 subscr_date: Start date or cancellation date depending on whether transaction is
              subscr_signup or subscr_cancel.
-
-webapp
-  about: show license status (including expiration date)
-  what is communicated if license is invalid or expired?
-
-site
-  Update images in getting-started.
-  Use new email address
-  search "donate"
-
-backend
-  Missing index payment(processing_status)?
-  Change message "Trial period expired. Please donate to activate web address."
-  License key email
-
-other
-  reconsider sourceforge
-  new email instead of subsonic_donation@activeobjects.no
-
-android
 
 
 UPnP/DLNA
@@ -208,6 +212,7 @@ Linux locale issue
 DONE IN ANDROID 3.8
 --------------------
 Fixed illegal xml in french locale.
+Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
