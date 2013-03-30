@@ -45,6 +45,8 @@ Publish blackberry app.
 webapp
   about: show license status (including expiration date)
   what is communicated if license is invalid or expired?
+  Replace "playbook" with "BlackBerry"
+  Replace "WP7" with "Windows Phone"
 
 site
   Update images in getting-started.

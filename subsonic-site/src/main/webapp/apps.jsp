@@ -18,7 +18,7 @@
             <h1 class="bottomspace">Subsonic Apps</h1>
 
             <p>Check out the steadily growing list of Subsonic apps. These provide fun and alternative ways to
-                enjoy your media collection - no matter where you are.</p>
+                enjoy your media collection &ndash; no matter where you are.</p>
 
             <h2>On your phone</h2>
 
@@ -64,6 +64,7 @@
                     <li><a href="#subgadget">SubGadget</a> for Windows</li>
                     <li><a href="#periscope">Periscope</a> for Windows</li>
                     <li><a href="#subwiji">SubWiji</a> for Windows</li>
+                    <li><a href="#supersonic">Supersonic</a> for Windows 8</li>
                 </ul>
             </div>
 
@@ -108,6 +109,7 @@
             <%@ include file="apps-subgadget.jsp" %>
             <%@ include file="apps-periscope.jsp" %>
             <%@ include file="apps-subwiji.jsp" %>
+            <%@ include file="apps-supersonic.jsp" %>
             <%@ include file="apps-subclient.jsp" %>
             <%@ include file="apps-perisonic.jsp" %>
             <%@ include file="apps-minisub.jsp" %>
