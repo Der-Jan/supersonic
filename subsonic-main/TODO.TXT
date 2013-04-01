@@ -3,6 +3,7 @@ DONE IN 4.8
 Added Norwegion Nynorsk translation, courtesy of Kevin Brubeck Unhammer.
 Updated Dutch translation, courtesy of W. van der Heijden.
 Updated German translation, courtesy of deejay2302.
+Updated French translation, courtesy of Yoann Spicher.
 Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
 Settings > Network doesn't show error if a subsonic.org address is in use.
 Links to minisub and apps icons doesn't honor context path.
@@ -47,6 +48,7 @@ webapp
   what is communicated if license is invalid or expired?
   Replace "playbook" with "BlackBerry"
   Replace "WP7" with "Windows Phone"
+  Mention that ad-free version doesn's auto-update.
 
 site
   Update images in getting-started.
