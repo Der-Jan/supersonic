@@ -75,15 +75,21 @@
             <td style="padding-left:15pt;text-align:center;">
                 <p class="detail" style="line-height:1.5">
                     <a href="j_acegi_logout" target="_top"><fmt:message key="top.logout"><fmt:param value="${model.user.username}"/></fmt:message></a>
-                    <c:if test="${not model.licensed}">
-                        <br>
-                        <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt=""></a>
-                        <a href="premium.view" target="main"><fmt:message key="top.premium"/></a>
-                    </c:if>
-                    <c:if test="${model.trialValid}">
-                        <br>
-                    <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.trialDaysLeft}"/></fmt:message></a>
-                    </c:if>
+
+                    <br>
+                    <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt=""></a>
+                    <c:choose>
+                        <c:when test="${model.licenseInfo.licenseValid}">
+                            <a href="premium.view" target="main"><fmt:message key="top.gotpremium"/></a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="premium.view" target="main"><fmt:message key="top.getpremium"/></a>
+                            <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
+                                <br>
+                                <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </p>
             </td>
 

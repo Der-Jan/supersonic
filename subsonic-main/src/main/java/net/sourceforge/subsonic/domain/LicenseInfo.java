@@ -29,11 +29,13 @@ public class LicenseInfo {
 
     private final boolean licenseValid;
     private final Date trialExpires;
+    private long trialDaysLeft;
     private final Date licenseExpires;
 
-    public LicenseInfo(boolean licenseValid, Date trialExpires, Date licenseExpires) {
+    public LicenseInfo(boolean licenseValid, Date trialExpires, long trialDaysLeft, Date licenseExpires) {
         this.licenseValid = licenseValid;
         this.trialExpires = trialExpires;
+        this.trialDaysLeft = trialDaysLeft;
         this.licenseExpires = licenseExpires;
     }
 
@@ -51,6 +53,10 @@ public class LicenseInfo {
 
     public Date getTrialExpires() {
         return trialExpires;
+    }
+
+    public long getTrialDaysLeft() {
+        return trialDaysLeft;
     }
 
     public Date getLicenseExpires() {

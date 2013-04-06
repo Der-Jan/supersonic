@@ -647,7 +647,12 @@ public class SettingsService {
     }
 
     public LicenseInfo getLicenseInfo() {
-        return new LicenseInfo(isLicenseValid(), getTrialExpires(), licenseExpires);
+        Date trialExpires = getTrialExpires();
+        Date now = new Date();
+        boolean trialValid = trialExpires.after(now);
+        long trialDaysLeft = trialValid ? (trialExpires.getTime() - now.getTime()) / (24L * 3600L * 1000L) : 0L;
+
+        return new LicenseInfo(isLicenseValid(), trialExpires, trialDaysLeft, licenseExpires);
     }
 
     public String getDownsamplingCommand() {

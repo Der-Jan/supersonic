@@ -47,6 +47,8 @@ webapp
   Make it possible to change license key.
   what is communicated if license is invalid or expired?
   Always show Subsonic Premium link in top.
+  Change wording: "This copy of Subsonic was licensed ..."
+  Test full license lifecycle.
 
 site
   Update images in getting-started.
