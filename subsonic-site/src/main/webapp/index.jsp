@@ -22,7 +22,7 @@
             <li>Enjoy your music and movies no matter where you are. Share with family and friends.</li>
             <li>Browse and manage your media collection with the user-friendly web interface.</li>
             <li>Stream music to <a href="apps.jsp">Android</a>, <a href="apps.jsp">iPhone</a> and <a href="apps.jsp">Windows Phone</a>.</li>
-            <li>Subsonic <a href="apps.jsp">apps</a> available for Roku, BlackBerry Playbook and many more.</li>
+            <li>Subsonic <a href="apps.jsp">apps</a> available for Roku, BlackBerry and many more.</li>
         </ul>
         <ul class="stars column-right">
             <li>Convert and stream lossless music on the fly.</li>

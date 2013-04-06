@@ -4,7 +4,7 @@
         Upgrade to Subsonic Premium to enjoy these extra features:
     </p>
     <ul>
-        <li><a href="apps.jsp">Apps</a> for Android, iPhone, WP&nbsp;7, PlayBook, Roku and more*.</li>
+        <li><a href="apps.jsp">Apps</a> for Android, iPhone, WP&nbsp;7, BlackBerry, Roku and more*.</li>
         <li>Video streaming.</li>
         <li>Podcast receiver.</li>
         <li>Share your media on Facebook, Twitter, Google+.</li>

@@ -46,23 +46,23 @@ Publish blackberry app.
 webapp
   about: show license status (including expiration date)
   what is communicated if license is invalid or expired?
-  Replace "playbook" with "BlackBerry"
+  Replace "Playbook" with "BlackBerry"
   Replace "WP7" with "Windows Phone"
-  Mention that ad-free version doesn's auto-update.
 
 site
   Update images in getting-started.
   Use new email address
   search "donate"
+  Mention that ad-free version doesn's auto-update.
+  Replace "playbook" with "BlackBerry"
+  Replace "WP7" with "Windows Phone"
 
 backend
   Missing index payment(processing_status)?
   Change message "Trial period expired. Please donate to activate web address."
-  License key email
 
 other
   reconsider sourceforge
-  new email instead of subsonic_donation@activeobjects.no
 
 android
 
@@ -220,6 +220,8 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
+Support dynamic number of servers.
+Reconsider donation
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
 RC volume
@@ -935,6 +937,18 @@ Create new directory in FRS
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
   rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.6/subsonic-3.6.apk
   rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.6/subsonic-3.6-adfree.apk
+
+HOW TO RELEASE BLACKBERRY
+===============================
+Comment out <uses-permission android:name="android.permission.BLUETOOTH"/>
+Build release APK.
+Comment in <uses-permission android:name="android.permission.BLUETOOTH"/>
+
+cd c:/progs/blackberry.tools.SDK/bin
+apk2bar.bat subsonic-release.apk "c:\Program Files (x86)\Android\android-sdk" -a "Subsonic AS"
+batchbar-signer.bat subsonic-release.bar client-certificate-1980825.p12 <password> <password>
+
+Your applications must target BlackBerry PlayBook OS 2.0 (or later) or BlackBerry 10 OS for them to be considered for approval.
 
 
 HOW TO RELEASE TRANSCODING PACK

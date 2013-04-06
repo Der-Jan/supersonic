@@ -24,7 +24,7 @@
 <p>Upgrade to Subsonic Premium to enjoy these extra features:</p>
 
 <ul>
-    <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, PlayBook, Roku, Mac, Chrome and more*.</li>
+    <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, BlackBerry, Roku, Mac, Chrome and more*.</li>
     <li>Video streaming.</li>
     <li>Podcast receiver.</li>
     <li>No ads in the web interface.</li>
