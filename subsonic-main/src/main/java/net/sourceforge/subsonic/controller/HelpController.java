@@ -18,13 +18,18 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.*;
-import net.sourceforge.subsonic.service.*;
-import org.springframework.web.servlet.*;
-import org.springframework.web.servlet.mvc.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.VersionService;
 
 /**
  * Controller for the help page.
@@ -55,6 +60,7 @@ public class HelpController extends ParameterizableViewController {
                             ", java " + System.getProperty("java.version") +
                             ", " + System.getProperty("os.name");
 
+        map.put("licenseInfo", settingsService.getLicenseInfo());
         map.put("brand", settingsService.getBrand());
         map.put("localVersion", versionService.getLocalVersion());
         map.put("buildDate", versionService.getLocalBuildDate());

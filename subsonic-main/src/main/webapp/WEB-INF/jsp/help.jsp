@@ -35,6 +35,28 @@
 </c:if>
 
 <table width="75%" class="ruleTable indent">
+
+    <tr><td class="ruleTableHeader"><fmt:message key="help.premium.title"/></td>
+        <td class="ruleTableCell">
+            <c:choose>
+                <c:when test="${model.licenseInfo.licenseValid}">
+                    <a href="premium.view">Subsonic Premium</a>
+                    <c:if test="${not empty model.licenseInfo.licenseExpires}">
+                        <fmt:message key="help.premium.expires">
+                            <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.licenseInfo.licenseExpires}"/></fmt:param>
+                        </fmt:message>
+                    </c:if>
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="help.premium.upgrade"/>
+                    <c:if test="${not empty model.licenseInfo.licenseExpires}">
+                        <fmt:message key="help.premium.expired">
+                            <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.licenseInfo.licenseExpires}"/></fmt:param>
+                        </fmt:message>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.version.title"/></td><td class="ruleTableCell">${versionString} &ndash; ${buildDateString}</td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.server.title"/></td><td class="ruleTableCell">${model.serverInfo} (<sub:formatBytes bytes="${model.usedMemory}"/> / <sub:formatBytes bytes="${model.totalMemory}"/>)</td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.license.title"/></td><td class="ruleTableCell">
@@ -46,11 +68,6 @@
 </table>
 
 <p></p>
-
-<table width="60%"><tr>
-    <td><a href="<c:url value="/premium.view"/>"><img src="<spring:theme code="paypalImage"/>" alt=""></a></td>
-    <td><fmt:message key="help.premium"/></td>
-</tr></table>
 
 <h2><img src="<spring:theme code="logImage"/>" alt="">&nbsp;<fmt:message key="help.log"/></h2>
 

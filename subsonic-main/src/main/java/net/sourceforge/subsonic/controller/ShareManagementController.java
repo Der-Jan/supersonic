@@ -32,7 +32,6 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
@@ -73,7 +72,7 @@ public class ShareManagementController extends MultiActionController {
         map.put("user", securityService.getCurrentUser(request));
         Share share = shareService.createShare(request, files);
         map.put("playUrl", shareService.getShareUrl(share));
-        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         return new ModelAndView("createShare", "model", map);
     }

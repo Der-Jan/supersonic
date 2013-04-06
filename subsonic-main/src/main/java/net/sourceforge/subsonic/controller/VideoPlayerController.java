@@ -29,7 +29,6 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -73,7 +72,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("duration", duration);
         map.put("timeOffset", timeOffset);
         map.put("bitRates", BIT_RATES);
-        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.NetworkSettingsCommand;
-import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.service.NetworkService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -46,7 +45,7 @@ public class NetworkSettingsController extends SimpleFormController {
         command.setUrlRedirectionEnabled(settingsService.isUrlRedirectionEnabled());
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
         command.setPort(settingsService.getPort());
-        command.setLicenseInfo(new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
+        command.setLicenseInfo(settingsService.getLicenseInfo());
 
         return command;
     }

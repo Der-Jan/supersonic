@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.User;
@@ -68,7 +67,7 @@ public class ShareSettingsController extends ParameterizableViewController {
         map.put("shareBaseUrl", shareService.getShareBaseUrl());
         map.put("shareInfos", getShareInfos(request));
         map.put("user", securityService.getCurrentUser(request));
-        map.put("licenseInfo", new LicenseInfo(settingsService.isLicenseValid(), settingsService.getTrialExpires()));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         result.addObject("model", map);
         return result;

@@ -49,6 +49,7 @@ import net.sourceforge.subsonic.dao.MusicFolderDao;
 import net.sourceforge.subsonic.dao.UserDao;
 import net.sourceforge.subsonic.domain.Avatar;
 import net.sourceforge.subsonic.domain.InternetRadio;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Theme;
@@ -645,6 +646,10 @@ public class SettingsService {
         return licenseExpires;
     }
 
+    public LicenseInfo getLicenseInfo() {
+        return new LicenseInfo(isLicenseValid(), getTrialExpires(), licenseExpires);
+    }
+
     public String getDownsamplingCommand() {
         return properties.getProperty(KEY_DOWNSAMPLING_COMMAND, DEFAULT_DOWNSAMPLING_COMMAND);
     }
@@ -1236,6 +1241,7 @@ public class SettingsService {
         try {
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             String content = client.execute(method, responseHandler);
+//            String content = "false\n423412341234";
             licenseValidated = content != null && content.contains("true");
             if (!licenseValidated) {
                 LOG.warn("License key is not valid.");

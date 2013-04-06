@@ -27,12 +27,18 @@ import java.util.Date;
  */
 public class LicenseInfo {
 
+    private final boolean licenseValid;
     private final Date trialExpires;
-    private boolean licenseValid;
+    private final Date licenseExpires;
 
-    public LicenseInfo(boolean licenseValid, Date trialExpires) {
+    public LicenseInfo(boolean licenseValid, Date trialExpires, Date licenseExpires) {
         this.licenseValid = licenseValid;
         this.trialExpires = trialExpires;
+        this.licenseExpires = licenseExpires;
+    }
+
+    public boolean isLicenseValid() {
+        return licenseValid;
     }
 
     public boolean isTrial() {
@@ -45,5 +51,9 @@ public class LicenseInfo {
 
     public Date getTrialExpires() {
         return trialExpires;
+    }
+
+    public Date getLicenseExpires() {
+        return licenseExpires;
     }
 }

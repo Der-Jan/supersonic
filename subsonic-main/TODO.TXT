@@ -44,8 +44,9 @@ TODO IN 4.8
 Publish blackberry app.
 
 webapp
-  about: show license status (including expiration date)
+  Make it possible to change license key.
   what is communicated if license is invalid or expired?
+  Always show Subsonic Premium link in top.
 
 site
   Update images in getting-started.
