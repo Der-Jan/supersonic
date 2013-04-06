@@ -46,20 +46,13 @@ Publish blackberry app.
 webapp
   about: show license status (including expiration date)
   what is communicated if license is invalid or expired?
-  Replace "Playbook" with "BlackBerry"
-  Replace "WP7" with "Windows Phone"
 
 site
   Update images in getting-started.
-  Use new email address
-  search "donate"
   Mention that ad-free version doesn's auto-update.
-  Replace "playbook" with "BlackBerry"
-  Replace "WP7" with "Windows Phone"
 
 backend
   Missing index payment(processing_status)?
-  Change message "Trial period expired. Please donate to activate web address."
 
 other
   reconsider sourceforge
@@ -220,6 +213,7 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
+Rename references to donation.
 Support dynamic number of servers.
 Reconsider donation
 Problem with shuffle + offline

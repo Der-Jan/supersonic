@@ -214,6 +214,7 @@ public class SettingsService {
     private static File subsonicHome;
 
     private boolean licenseValidated = true;
+    private Date licenseExpires;
 
     public SettingsService() {
         File propertyFile = getPropertyFile();
@@ -638,6 +639,10 @@ public class SettingsService {
             return false;
         }
         return license.equalsIgnoreCase(StringUtil.md5Hex(email.toLowerCase()));
+    }
+
+    public Date getLicenseExpires() {
+        return licenseExpires;
     }
 
     public String getDownsamplingCommand() {
@@ -1235,6 +1240,11 @@ public class SettingsService {
             if (!licenseValidated) {
                 LOG.warn("License key is not valid.");
             }
+            String[] lines = StringUtils.split(content);
+            if (lines.length > 1) {
+                licenseExpires = new Date(Long.parseLong(lines[1]));
+            }
+
         } catch (Throwable x) {
             LOG.warn("Failed to validate license.", x);
         } finally {
