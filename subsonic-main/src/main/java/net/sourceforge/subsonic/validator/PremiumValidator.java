@@ -18,8 +18,8 @@
  */
 package net.sourceforge.subsonic.validator;
 
-import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import net.sourceforge.subsonic.command.PremiumCommand;
 import net.sourceforge.subsonic.controller.PremiumController;
@@ -40,8 +40,9 @@ public class PremiumValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         PremiumCommand command = (PremiumCommand) obj;
 
-        if (!settingsService.isLicenseValid(command.getEmailAddress(), command.getLicense())) {
-            errors.rejectValue("license", "premium.invalidlicense");
+        if (!settingsService.isLicenseValid(command.getLicenseInfo().getLicenseEmail(), command.getLicenseInfo().getLicenseCode())) {
+            command.setSubmissionError(true);
+            errors.rejectValue("licenseInfo.licenseCode", "premium.invalidlicense");
         }
     }
 

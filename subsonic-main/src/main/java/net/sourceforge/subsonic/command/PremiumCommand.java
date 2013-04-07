@@ -19,10 +19,7 @@
 package net.sourceforge.subsonic.command;
 
 import net.sourceforge.subsonic.controller.PremiumController;
-
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 
 /**
  * Command used in {@link PremiumController}.
@@ -32,11 +29,10 @@ import org.apache.commons.lang.StringUtils;
 public class PremiumCommand {
 
     private String path;
-    private String emailAddress;
-    private String license;
-    private Date licenseDate;
-    private boolean licenseValid;
     private String brand;
+    private LicenseInfo licenseInfo;
+    private boolean forceChange;
+    private boolean submissionError;
 
     public String getPath() {
         return path;
@@ -46,43 +42,35 @@ public class PremiumCommand {
         this.path = path;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = StringUtils.trim(emailAddress);
-    }
-
-    public String getLicense() {
-        return license;
-    }
-
-    public void setLicense(String license) {
-        this.license = StringUtils.trim(license);
-    }
-
-    public Date getLicenseDate() {
-        return licenseDate;
-    }
-
-    public void setLicenseDate(Date licenseDate) {
-        this.licenseDate = licenseDate;
-    }
-
-    public boolean isLicenseValid() {
-        return licenseValid;
-    }
-
-    public void setLicenseValid(boolean licenseValid) {
-        this.licenseValid = licenseValid;
-    }
-
     public String getBrand() {
         return brand;
     }
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public LicenseInfo getLicenseInfo() {
+        return licenseInfo;
+    }
+
+    public void setLicenseInfo(LicenseInfo licenseInfo) {
+        this.licenseInfo = licenseInfo;
+    }
+
+    public boolean isForceChange() {
+        return forceChange;
+    }
+
+    public void setForceChange(boolean forceChange) {
+        this.forceChange = forceChange;
+    }
+
+    public boolean isSubmissionError() {
+        return submissionError;
+    }
+
+    public void setSubmissionError(boolean submissionError) {
+        this.submissionError = submissionError;
     }
 }

@@ -18,15 +18,17 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.command.PremiumCommand;
-import net.sourceforge.subsonic.service.SettingsService;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import net.sourceforge.subsonic.command.PremiumCommand;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Controller for the Subsonic Premium page.
@@ -40,11 +42,8 @@ public class PremiumController extends SimpleFormController {
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         PremiumCommand command = new PremiumCommand();
         command.setPath(request.getParameter("path"));
-
-        command.setEmailAddress(settingsService.getLicenseEmail());
-        command.setLicenseDate(settingsService.getLicenseDate());
-        command.setLicenseValid(settingsService.isLicenseValid());
-        command.setLicense(settingsService.getLicenseCode());
+        command.setForceChange(request.getParameter("change") != null);
+        command.setLicenseInfo(settingsService.getLicenseInfo());
         command.setBrand(settingsService.getBrand());
 
         return command;
@@ -55,15 +54,14 @@ public class PremiumController extends SimpleFormController {
         PremiumCommand command = (PremiumCommand) com;
         Date now = new Date();
 
-        settingsService.setLicenseCode(command.getLicense());
-        settingsService.setLicenseEmail(command.getEmailAddress());
+        settingsService.setLicenseCode(command.getLicenseInfo().getLicenseCode());
+        settingsService.setLicenseEmail(command.getLicenseInfo().getLicenseEmail());
         settingsService.setLicenseDate(now);
         settingsService.save();
         settingsService.validateLicenseAsync();
 
         // Reflect changes in view. The validator has already validated the license.
-        command.setLicenseValid(true);
-        command.setLicenseDate(now);
+        command.getLicenseInfo().setLicenseValid(true);
 
         return new ModelAndView(getSuccessView(), errors.getModel());
     }
