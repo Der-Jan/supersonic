@@ -20,6 +20,8 @@ package net.sourceforge.subsonic.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Controller for the "Podcast receiver" page.
  *
@@ -49,7 +51,7 @@ public class LicenseInfo {
     }
 
     public void setLicenseCode(String licenseCode) {
-        this.licenseCode = licenseCode;
+        this.licenseCode = StringUtils.trimToNull(licenseCode);
     }
 
     public String getLicenseEmail() {
@@ -57,7 +59,7 @@ public class LicenseInfo {
     }
 
     public void setLicenseEmail(String licenseEmail) {
-        this.licenseEmail = licenseEmail;
+        this.licenseEmail = StringUtils.trimToNull(licenseEmail);
     }
 
     public boolean isLicenseValid() {
