@@ -1,54 +1,17 @@
 DONE IN 4.8
 -------------
-Added Norwegion Nynorsk translation, courtesy of Kevin Brubeck Unhammer.
-Updated Dutch translation, courtesy of W. van der Heijden.
-Updated German translation, courtesy of deejay2302.
-Updated French translation, courtesy of Yoann Spicher.
-Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.
-Settings > Network doesn't show error if a subsonic.org address is in use.
-Links to minisub and apps icons doesn't honor context path.
-  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b8f11f3ecb2b98
-Fix init exception in podcast bean
-  https://mail.google.com/mail/u/0/?shva=1#inbox/13a142c12583a0ae
-REST: Added getGenres
-REST: Added getSongsByGenre
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13b49bc3fe289fe6
-Improved speed of tag editing.
-REST: Support CORS
-  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13b075495d2803f8
-Ogg dates not always parsed properly
-  https://mail.google.com/mail/ca/u/0/#inbox/13b6ac56977f9809
-Sort songs by filename if track number is missing.
-Update imported playlists if file timestamp has changed.
-Make playlist folder setting visible again.
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10264&p=47035#p47035
-Less aggressive removal of track number from title.
-REST: Support "parent" attribute in getMusicDirectory
-Change bitrate to resolution mapping.
-   http://developer.apple.com/library/ios/#technotes/tn2224/_index.html
-   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/139bc17f62dff9ce
-Bugfix: HLS broken with context path
-  https://mail.google.com/mail/ca/u/0/#inbox/13b68f188a1981f8
-REST: Podcast methods.
-REST: Added getInternetRadioStations
-Update exe4j. Install Java 7 when needed.
-Video player Auth bypass
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13c53ea3a05771ab
-Download cover to replace in-metadata image results in renaming music file (".old")
-  http://sourceforge.net/p/subsonic/bugs/76/
-Update Subclient description
 
 TODO IN 4.8
 --------------
+Communicate on forum and mailing list.
 Show number of trial days left?
 Publish blackberry app.
 Bookmark support
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13df0453c58b752e
 
 site
-  Mention that ad-free version doesn's auto-update. Reconsider.
+  Mention that Android ad-free version doesn's auto-update. Reconsider.
   Update rest of pages
-  Update changelog
   Add screenshot to demo.jsp
 
 backend
