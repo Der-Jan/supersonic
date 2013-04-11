@@ -17,7 +17,8 @@
             <h1 class="bottomspace">Frequently Asked Questions</h1>
 
             <h3>Are there other payment options than PayPal?</h3>
-            <p>Yes, but only for the "lifetime" license. You can make a payment to mail@subsonic.org on <a href="http://www.moneybookers.com/" target="_blank">Moneybookers</a>.</p>
+            <p>Yes, you can make a payment to mail@subsonic.org on <a href="http://www.moneybookers.com/" target="_blank">Moneybookers</a>.
+            The price is the same, $1 per month, so if you pay for instance $12 your license will be valid for 12 months.</p>
 
             <h3>How long does it take to get the license after I have made the payment?</h3>
             <p>Normally no more than ten minutes.  If it should take longer, please <a href="mailto:mail@subsonic.org">take contact</a>,

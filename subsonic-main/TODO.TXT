@@ -46,9 +46,10 @@ Bookmark support
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13df0453c58b752e
 
 site
-  Update images in getting-started.
   Mention that ad-free version doesn's auto-update. Reconsider.
   Update rest of pages
+  Update changelog
+  Add screenshot to demo.jsp
 
 backend
   Missing index payment(processing_status)?
