@@ -25,15 +25,15 @@
                 on your installation options, but is typically <a href="http://localhost:4040" target="_blank">http://localhost:4040</a>.
             </p>
 
-            <a name="1"><h2>1 Setting up music folders</h2></a>
+            <a name="1"><h2>1 Setting up media folders</h2></a>
 
-            <p>You must tell Subsonic where you keep your music. Select <b>Settings &gt; Music folders</b> to add one or
+            <p>You must tell Subsonic where you keep your music and videos. Select <b>Settings &gt; Media folders</b> to add one or
                 more folders.</p>
 
-            <p>Note that if you add more than one music folder, a list will appear on the left side of the screen where you can
+            <p>Note that if you add more than one media folder, a list will appear on the left side of the screen where you can
                 select the active folder.</p>
 
-            <a href="inc/img/gettingstarted/musicfolders.png"><img src="inc/img/gettingstarted/musicfolders_thumb.png" alt=""/></a>
+            <a href="inc/img/gettingstarted/mediafolders.png"><img src="inc/img/gettingstarted/mediafolders_thumb.png" alt=""/></a>
 
             <p>Also note that Subsonic will organize your music according to how they are organized on your disk.
                 Unlike many other music applications, Subsonic does not organize the music according to the tag information
