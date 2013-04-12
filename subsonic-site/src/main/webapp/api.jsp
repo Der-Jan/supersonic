@@ -363,6 +363,14 @@
             <code><a href="#changePassword">changePassword</a></code>
         </td>
     </tr>
+    <tr>
+        <td>Bookmarks</td>
+        <td>
+            <code><a href="#getBookmarks">getBookmarks</a></code>,
+            <code><a href="#createBookmark">createBookmark</a></code>,
+            <code><a href="#deleteBookmark">deleteBookmark</a></code>,
+        </td>
+    </tr>
 </table>
 
 <%@ include file="api-ping.jsp" %>
@@ -432,6 +440,10 @@
 <%@ include file="api-createUser.jsp" %>
 <%@ include file="api-deleteUser.jsp" %>
 <%@ include file="api-changePassword.jsp" %>
+
+<%@ include file="api-getBookmarks.jsp" %>
+<%@ include file="api-createBookmark.jsp" %>
+<%@ include file="api-deleteBookmark.jsp" %>
 
 </div>
 

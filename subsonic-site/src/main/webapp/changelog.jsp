@@ -38,6 +38,7 @@
     <li><span class="bugid">Bugfix: </span>Video player didn't require authentication.</li>
     <li><span class="bugid">Bugfix: </span>Download cover to replace in-metadata image results in renaming music file (".old").</li>
     <li><span class="bugid">REST: </span>Added Podcast methods.</li>
+    <li><span class="bugid">REST: </span>Added bookmark methods.</li>
     <li><span class="bugid">REST: </span>Added getInternetRadioStations.</li>
     <li><span class="bugid">REST: </span>Added getGenres.</li>
     <li><span class="bugid">REST: </span>Added getSongsByGenre.</li>

@@ -58,7 +58,7 @@ public class BookmarkDao extends AbstractDao {
             update("insert into bookmark (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")", null,
                     bookmark.getMediaFileId(), bookmark.getPositionMillis(), bookmark.getUsername(), bookmark.getComment(),
                     bookmark.getCreated(), bookmark.getChanged());
-            int id = queryForInt("select id from bookmark where media_file_id=? and username=?", bookmark.getMediaFileId(), bookmark.getUsername());
+            int id = queryForInt("select id from bookmark where media_file_id=? and username=?", 0, bookmark.getMediaFileId(), bookmark.getUsername());
             bookmark.setId(id);
         }
     }

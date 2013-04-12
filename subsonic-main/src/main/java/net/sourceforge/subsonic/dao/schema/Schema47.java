@@ -244,7 +244,7 @@ public class Schema47 extends Schema {
                     "media_file_id int not null," +
                     "position_millis bigint not null," +
                     "username varchar not null," +
-                    "comment varchar not null," +
+                    "comment varchar," +
                     "created datetime not null," +
                     "changed datetime not null," +
                     "foreign key (media_file_id) references media_file(id) on delete cascade,"+
