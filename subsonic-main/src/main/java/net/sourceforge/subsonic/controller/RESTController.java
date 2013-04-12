@@ -48,9 +48,11 @@ import net.sourceforge.subsonic.ajax.PlayQueueService;
 import net.sourceforge.subsonic.command.UserSettingsCommand;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
+import net.sourceforge.subsonic.dao.BookmarkDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.Bookmark;
 import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -131,6 +133,7 @@ public class RESTController extends MultiActionController {
     private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
+    private BookmarkDao bookmarkDao;
 
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
@@ -1407,6 +1410,51 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    public void getBookmarks(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        Player player = playerService.getPlayer(request, response);
+        String username = securityService.getCurrentUsername(request);
+
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("bookmarks", false);
+        for (Bookmark bookmark : bookmarkDao.getBookmarks(username)) {
+            builder.add("bookmark", createAttributesForBookmark(bookmark), false);
+            MediaFile mediaFile = mediaFileService.getMediaFile(bookmark.getMediaFileId());
+            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
+            builder.add("entry", attributes, true);
+            builder.end();
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void createBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+        int mediaFileId = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        long position = ServletRequestUtils.getRequiredLongParameter(request, "position");
+        String comment = request.getParameter("comment");
+        Date now = new Date();
+
+        Bookmark bookmark = new Bookmark(0, mediaFileId, position, username, comment, now, now);
+        bookmarkDao.createOrUpdateBookmark(bookmark);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deleteBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        String username = securityService.getCurrentUsername(request);
+        int mediaFileId = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        bookmarkDao.deleteBookmark(username, mediaFileId);
+
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
     public void getShares(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1533,6 +1581,16 @@ public class RESTController extends MultiActionController {
         attributes.add(new Attribute("expires", StringUtil.toISO8601(share.getExpires())));
         attributes.add(new Attribute("lastVisited", StringUtil.toISO8601(share.getLastVisited())));
 
+        return attributes;
+    }
+
+    private List<Attribute> createAttributesForBookmark(Bookmark bookmark) {
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(new Attribute("position", bookmark.getPositionMillis()));
+        attributes.add(new Attribute("username", bookmark.getUsername()));
+        attributes.add(new Attribute("comment", bookmark.getComment()));
+        attributes.add(new Attribute("created", StringUtil.toISO8601(bookmark.getCreated())));
+        attributes.add(new Attribute("changed", StringUtil.toISO8601(bookmark.getChanged())));
         return attributes;
     }
 
@@ -1984,6 +2042,10 @@ public class RESTController extends MultiActionController {
 
     public void setMusicIndexService(MusicIndexService musicIndexService) {
         this.musicIndexService = musicIndexService;
+    }
+
+    public void setBookmarkDao(BookmarkDao bookmarkDao) {
+        this.bookmarkDao = bookmarkDao;
     }
 
     public static enum ErrorCode {

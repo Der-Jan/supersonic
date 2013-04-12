@@ -1,5 +1,6 @@
 DONE IN 4.8
 -------------
+Bookmark support
 
 TODO IN 4.8
 --------------
@@ -7,6 +8,8 @@ Communicate on forum and mailing list.
 Show number of trial days left?
 Publish blackberry app.
 Bookmark support
+  document
+  test
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13df0453c58b752e
 
 site

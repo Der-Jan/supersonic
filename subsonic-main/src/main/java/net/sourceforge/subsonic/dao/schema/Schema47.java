@@ -236,5 +236,25 @@ public class Schema47 extends Schema {
 
             LOG.info("Database table 'playlist_user' was created successfully.");
         }
+
+        if (!tableExists(template, "bookmark")) {
+            LOG.info("Database table 'bookmark' not found.  Creating it.");
+            template.execute("create table bookmark (" +
+                    "id identity," +
+                    "media_file_id int not null," +
+                    "position_millis bigint not null," +
+                    "username varchar not null," +
+                    "comment varchar not null," +
+                    "created datetime not null," +
+                    "changed datetime not null," +
+                    "foreign key (media_file_id) references media_file(id) on delete cascade,"+
+                    "foreign key (username) references user(username) on delete cascade," +
+                    "unique (media_file_id, username))");
+
+            template.execute("create index idx_bookmark_media_file_id on bookmark(media_file_id)");
+            template.execute("create index idx_bookmark_username on bookmark(username)");
+
+            LOG.info("Database table 'bookmark' was created successfully.");
+        }
     }
 }
