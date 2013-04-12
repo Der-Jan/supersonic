@@ -22,10 +22,7 @@
 
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="featuretable bottomspace">
                 <tr class="table-heading">
-                    <th></th>
-                    <th class="featurename">Latest stable release &ndash; Subsonic <%=stable%></th>
-                    <th><a href="changelog.jsp#<%=stable%>">What's new?</a></th>
-                    <th></th>
+                    <th colspan="4" class="featurename">Latest stable release &ndash; Subsonic <%=stable%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="changelog.jsp#<%=stable%>">What's new?</a></th>
                 </tr>
                 <tr class="table-altrow">
                     <td><img src="inc/img/download-windows.png" alt="" height="16" width="16"/></td>
@@ -74,10 +71,7 @@
             <% if (beta != null) { %>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="featuretable bottomspace">
                 <tr class="table-heading">
-                    <th></th>
-                    <th class="featurename">Latest beta release &ndash; Subsonic <%=beta%></th>
-                    <th><a href="changelog.jsp#<%=beta%>">What's new?</a></th>
-                    <th></th>
+                    <th colspan="4" class="featurename">Latest beta release &ndash; Subsonic <%=beta%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="changelog.jsp#<%=beta%>">What's new?</a></th>
                 </tr>
                 <tr class="table-altrow">
                     <td><img src="inc/img/download-windows.png" alt="" height="16" width="16"/></td>

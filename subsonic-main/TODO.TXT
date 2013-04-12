@@ -3,6 +3,7 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
+Update to 4.8
 Communicate on forum and mailing list.
 Show number of trial days left?
 Publish blackberry app.

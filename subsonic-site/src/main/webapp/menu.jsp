@@ -23,7 +23,6 @@
         <li><a href="features.jsp" class="<%=current.equals("features") ? "open" : ""%>"><span>Features</span></a></li>
         <li><a href="screenshots.jsp" class="<%=current.equals("screenshots") ? "open" : ""%>"><span>Screenshots</span></a></li>
         <li><a href="demo.jsp" class="<%=current.equals("demo") ? "open" : ""%>"><span>Demo</span></a></li>
-        <li><a href="changelog.jsp" class="<%=current.equals("changelog") ? "open" : ""%>"><span>Change Log</span></a></li>
         <li><a href="forum.jsp" class="<%=current.equals("forum") ? "open" : ""%>"><span>Forum</span></a></li>
         <li><a href="api.jsp" class="<%=current.equals("api") ? "open" : ""%>"><span>API</span></a></li>
     </ul>

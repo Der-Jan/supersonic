@@ -26,6 +26,9 @@
                 <li><b><a href="faq.jsp">FAQ</a></b><br>
                     Frequently asked questions.
                 </li>
+                <li><b><a href="changelog.jsp">Change log</a></b><br>
+                    See what's new in the latest version.
+                </li>
                 <li><b><a href="http://monroeworld.com/android/subsonic/">A practical guide to installing and configuring Subsonic</a></b><br>
                 By Shane R. Monroe, Monroeworld.com.
                 </li>
