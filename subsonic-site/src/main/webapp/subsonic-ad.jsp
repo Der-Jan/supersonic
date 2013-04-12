@@ -24,7 +24,7 @@
             Support us by upgrading to Subsonic Premium and enjoy features like:
         </p>
         <div style="font-size:12px;">
-            <div style="color:#00008b;padding-top:6px"><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, WP&nbsp;7, BlackBerry, Roku ++.</div>
+            <div style="color:#00008b;padding-top:6px"><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone, BlackBerry, Roku ++.</div>
             <div style="color:green;padding-top:12px">Video streaming.</div>
             <div style="color:#00008b;padding-top:12px">Share on Facebook, Twitter, Google+</div>
             <div style="color:green;padding-top:12px">Your personal server address: <em>you</em>.subsonic.org</div>

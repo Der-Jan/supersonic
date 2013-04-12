@@ -57,7 +57,7 @@
 
                 <div class="title">
                     <div class="large">Don't leave home without it</div>
-                    <div class="small"><a href="apps.jsp">Apps</a> available for Android, iPhone and Windows&nbsp;Phone&nbsp;7.</div>
+                    <div class="small"><a href="apps.jsp">Apps</a> available for Android, iPhone, Windows&nbsp;Phone, BlackBerry and many more.</div>
                 </div>
             </div>
         </div>
