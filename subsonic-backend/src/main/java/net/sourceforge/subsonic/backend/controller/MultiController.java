@@ -20,33 +20,34 @@ package net.sourceforge.subsonic.backend.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import net.sourceforge.subsonic.backend.Util;
+import net.sourceforge.subsonic.backend.dao.DaoHelper;
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
 import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.Subscription;
+import net.sourceforge.subsonic.backend.service.EmailSession;
 import net.sourceforge.subsonic.backend.service.LicenseGenerator;
 import net.sourceforge.subsonic.backend.service.WhitelistGenerator;
-import org.apache.log4j.Logger;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
-import org.springframework.dao.DataAccessException;
-import net.sourceforge.subsonic.backend.dao.DaoHelper;
-import net.sourceforge.subsonic.backend.Util;
-import net.sourceforge.subsonic.backend.service.EmailSession;
 
 /**
  * Multi-controller used for simple pages.
@@ -57,7 +58,7 @@ public class MultiController extends MultiActionController {
 
     private static final Logger LOG = Logger.getLogger(RedirectionController.class);
 
-    private static final String SUBSONIC_VERSION = "4.7";
+    private static final String SUBSONIC_VERSION = "4.8";
     private static final String SUBSONIC_BETA_VERSION = "4.7.beta3";
 
     private static final Date LICENSE_DATE_THRESHOLD;
