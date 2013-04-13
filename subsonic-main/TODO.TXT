@@ -3,14 +3,12 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-Update to 4.8
 Show number of trial days left?
 Publish blackberry app.
 
 site
   Mention that Android ad-free version doesn's auto-update. Reconsider.
   Update rest of pages
-  Add screenshot to demo.jsp
 
 backend
   Missing index payment(processing_status)?
