@@ -110,9 +110,9 @@ public class MainActivity extends SubsonicTabActivity {
         adapter.addView(offlineButton, true);
         if (!Util.isOffline(this)) {
             adapter.addView(serverButton, true);
-            if (Util.getAdRemovalPurchaseMode(this).shouldPurchaseButtonBeVisible()) {
-                adapter.addView(purchaseButton, true);
-            }
+//            if (Util.getAdRemovalPurchaseMode(this).shouldPurchaseButtonBeVisible()) {
+//                adapter.addView(purchaseButton, true);
+//            }
             adapter.addView(albumsTitle, false);
             adapter.addViews(Arrays.asList(albumsNewestButton, albumsRandomButton, albumsHighestButton, albumsRecentButton, albumsFrequentButton), true);
         }
@@ -142,14 +142,14 @@ public class MainActivity extends SubsonicTabActivity {
             }
         });
 
-        purchaseObserver = new SubsonicPurchaseObserver(new Handler());
-        ResponseHandler.register(purchaseObserver);
+//        purchaseObserver = new SubsonicPurchaseObserver(new Handler());
+//        ResponseHandler.register(purchaseObserver);
 
-        billingService = new BillingService();
-        billingService.setContext(this);
+//        billingService = new BillingService();
+//        billingService.setContext(this);
 
         // Check if billing is supported.
-        billingService.checkBillingSupported(BillingConstants.ITEM_TYPE_SUBSCRIPTION);
+//        billingService.checkBillingSupported(BillingConstants.ITEM_TYPE_SUBSCRIPTION);
 
         // Title: Subsonic
         setTitle(R.string.common_appname);
