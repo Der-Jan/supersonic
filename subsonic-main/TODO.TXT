@@ -3,13 +3,15 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-Show number of trial days left?
+Show number of trial days left?  Make trial more understandably
+Test trial with android
 Change android-donation.jsp.  Redirect to premium.jsp?
-Publish blackberry app.
 "Top rated" (with android on demo.subsonic.org) returns both songs and albums.
+Publish blackberry app.
+Get rid of .jpg in demo
+Clean up podcasts in demo
 
 site
-  Mention that Android ad-free version doesn's auto-update. Reconsider.
   Update rest of pages
 
 backend
