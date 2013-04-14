@@ -43,7 +43,12 @@
         <c:if test="${not empty command.licenseInfo.licenseExpires}">
             <p><b><fmt:message key="premium.licensedexpired"><fmt:param value="${expirationDate}"/></fmt:message></b></p>
         </c:if>
-        <p class="forward" style="font-size:1.2em;margin-left: 1em"><b><a href="http://subsonic.org/pages/premium.jsp" target="_blank"><fmt:message key="premium.getpremium"/></a></b></p>
+        <p class="forward" style="font-size:1.2em;margin-left: 1em"><b><a href="http://subsonic.org/pages/premium.jsp" target="_blank">
+            <fmt:message key="premium.getpremium"/>
+            <c:if test="${command.licenseInfo.trialDaysLeft gt 0}">
+                &ndash; <fmt:message key="top.trialdaysleft"><fmt:param value="${command.licenseInfo.trialDaysLeft}"/></fmt:message>
+            </c:if>
+        </a></b></p>
 
         <p><fmt:message key="premium.register"/></p>
     </c:if>

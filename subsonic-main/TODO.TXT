@@ -3,9 +3,7 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-Show number of trial days left?  Make trial more understandably
 "Top rated" (with android on demo.subsonic.org) returns both songs and albums.
-Improve styling of premium.jsp
 Publish blackberry app.
 Get rid of .jpg in demo
 Clean up podcasts in demo
@@ -18,9 +16,6 @@ backend
 
 other
   reconsider sourceforge
-
-android
-
 
 UPnP/DLNA
   Conflict with existing UPnP classes.
