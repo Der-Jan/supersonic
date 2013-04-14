@@ -3,7 +3,6 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-"Top rated" (with android on demo.subsonic.org) returns both songs and albums.
 Publish blackberry app.
 Get rid of .jpg in demo
 Clean up podcasts in demo

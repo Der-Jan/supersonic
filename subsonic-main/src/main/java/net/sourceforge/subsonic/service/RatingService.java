@@ -18,12 +18,13 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.dao.*;
-import net.sourceforge.subsonic.domain.*;
-import net.sourceforge.subsonic.util.FileUtil;
-
-import java.util.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.sourceforge.subsonic.dao.RatingDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.util.FileUtil;
 
 /**
  * Provides services for user ratings.
@@ -37,14 +38,14 @@ public class RatingService {
     private MediaFileService mediaFileService;
 
     /**
-     * Returns the highest rated music files.
+     * Returns the highest rated albums.
      *
-     * @param offset Number of files to skip.
-     * @param count  Maximum number of files to return.
-     * @return The highest rated music files.
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @return The highest rated albums.
      */
-    public List<MediaFile> getHighestRated(int offset, int count) {
-        List<String> highestRated = ratingDao.getHighestRated(offset, count);
+    public List<MediaFile> getHighestRatedAlbums(int offset, int count) {
+        List<String> highestRated = ratingDao.getHighestRatedAlbums(offset, count);
         List<MediaFile> result = new ArrayList<MediaFile>();
         for (String path : highestRated) {
             File file = new File(path);
