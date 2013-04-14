@@ -281,6 +281,13 @@ th.param-heading {
 	padding: 6px 10px 6px 10px;
 	position: relative;
 }
+.featureitem .noheading {
+    border-top: 1px solid #CBCEDC;
+    border-left: 1px solid #CBCEDC;
+    border-right: 1px solid #CBCEDC;
+	padding: 6px 10px 6px 10px;
+	position: relative;
+}
 .featureitem .content {
 	overflow: hidden;
 	width: 100%;
