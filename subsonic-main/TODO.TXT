@@ -4,7 +4,9 @@ DONE IN 4.8
 TODO IN 4.8
 --------------
 Show number of trial days left?
+Change android-donation.jsp.  Redirect to premium.jsp?
 Publish blackberry app.
+"Top rated" (with android on demo.subsonic.org) returns both songs and albums.
 
 site
   Mention that Android ad-free version doesn's auto-update. Reconsider.
@@ -172,6 +174,7 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
+Add video alternatives: Flash, HLS, native
 Rename references to donation.
 Support dynamic number of servers.
 Reconsider donation

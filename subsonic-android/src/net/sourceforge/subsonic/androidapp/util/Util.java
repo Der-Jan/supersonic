@@ -262,23 +262,6 @@ public final class Util {
         return entity.getContentType().getValue();
     }
 
-    public static int getRemainingTrialDays(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        long installTime = prefs.getLong(Constants.PREFERENCES_KEY_INSTALL_TIME, 0L);
-
-        if (installTime == 0L) {
-            installTime = System.currentTimeMillis();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putLong(Constants.PREFERENCES_KEY_INSTALL_TIME, installTime);
-            editor.commit();
-        }
-
-        long now = System.currentTimeMillis();
-        long millisPerDay = 24L * 60L * 60L * 1000L;
-        int daysSinceInstall = (int) ((now - installTime) / millisPerDay);
-        return Math.max(0, Constants.FREE_TRIAL_DAYS - daysSinceInstall);
-    }
-
     /**
      * Get the contents of an <code>InputStream</code> as a <code>byte[]</code>.
      * <p/>

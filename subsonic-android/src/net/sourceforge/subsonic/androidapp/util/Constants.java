@@ -62,7 +62,6 @@ public final class Constants {
     public static final String PREFERENCES_KEY_MUSIC_FOLDER_ID = "musicFolderId";
     public static final String PREFERENCES_KEY_USERNAME = "username";
     public static final String PREFERENCES_KEY_PASSWORD = "password";
-    public static final String PREFERENCES_KEY_INSTALL_TIME = "installTime";
     public static final String PREFERENCES_KEY_MAX_BITRATE_WIFI = "maxBitrateWifi";
     public static final String PREFERENCES_KEY_MAX_BITRATE_MOBILE = "maxBitrateMobile";
     public static final String PREFERENCES_KEY_CACHE_SIZE = "cacheSize";
@@ -79,12 +78,6 @@ public final class Constants {
 
     // Name of the preferences file.
     public static final String PREFERENCES_FILE_NAME = "net.sourceforge.subsonic.androidapp_preferences";
-
-    // Number of free trial days for non-licensed servers.
-    public static final int FREE_TRIAL_DAYS = 30;
-
-    // URL for project donations.
-    public static final String DONATION_URL = "http://subsonic.org/pages/android-donation.jsp";
 
     public static final String ALBUM_ART_FILE = "folder.jpeg";
 

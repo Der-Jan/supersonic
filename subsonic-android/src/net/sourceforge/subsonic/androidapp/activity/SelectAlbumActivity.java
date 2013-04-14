@@ -18,18 +18,9 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -47,16 +38,19 @@ import net.sourceforge.subsonic.androidapp.service.DownloadFile;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
-import net.sourceforge.subsonic.androidapp.util.Pair;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static net.sourceforge.subsonic.androidapp.util.Constants.*;
 
 public class SelectAlbumActivity extends SubsonicTabActivity {
-
-    private static final String TAG = SelectAlbumActivity.class.getSimpleName();
 
     private ListView entryList;
     private ViewGroup footer;
@@ -68,7 +62,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private Button unpinButton;
     private Button deleteButton;
     private Button moreButton;
-    private boolean licenseValid;
     private ImageButton playAllButton;
 
     /**
@@ -114,7 +107,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         enableButtons();
                     }
                 }
-                }
+            }
         });
 
         selectButton = (Button) findViewById(R.id.select_album_select);
@@ -304,16 +297,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(final Pair<MusicDirectory, Boolean> result) {
+            protected void done(final MusicDirectory result) {
                 super.done(result);
-                setTitle(result.getFirst().getName());
+                setTitle(result.getName());
                 setBackAction(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent;
-                        if (result.getFirst().getParentId() != null) {
+                        if (result.getParentId() != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                            intent.putExtra(INTENT_EXTRA_NAME_ID, result.getFirst().getParentId());
+                            intent.putExtra(INTENT_EXTRA_NAME_ID, result.getParentId());
                         } else if (parentId != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
                             intent.putExtra(INTENT_EXTRA_NAME_ID, parentId);
@@ -373,8 +366,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(Pair<MusicDirectory, Boolean> result) {
-                if (!result.getFirst().getChildren().isEmpty()) {
+            protected void done(MusicDirectory result) {
+                if (!result.getChildren().isEmpty()) {
                     pinButton.setVisibility(View.GONE);
                     unpinButton.setVisibility(View.GONE);
                     deleteButton.setVisibility(View.GONE);
@@ -486,33 +479,26 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             return;
         }
 
-        final List<MusicDirectory.Entry> songs = getSelectedSongs();
-        Runnable onValid = new Runnable() {
-            @Override
-            public void run() {
-                if (!append) {
-                    getDownloadService().clear();
-                }
+        List<MusicDirectory.Entry> songs = getSelectedSongs();
+        if (!append) {
+            getDownloadService().clear();
+        }
 
-                warnIfNetworkOrStorageUnavailable();
-                getDownloadService().download(songs, save, autoplay, playNext);
-                String playlistName = getIntent().getStringExtra(INTENT_EXTRA_NAME_PLAYLIST_NAME);
-                if (playlistName != null) {
-                    getDownloadService().setSuggestedPlaylistName(playlistName);
-                }
-                if (autoplay) {
-                    Util.startActivityWithoutTransition(SelectAlbumActivity.this, DownloadActivity.class);
-                } else if (save) {
-                    Util.toast(SelectAlbumActivity.this,
-                            getResources().getQuantityString(R.plurals.select_album_n_songs_downloading, songs.size(), songs.size()));
-                } else if (append) {
-                    Util.toast(SelectAlbumActivity.this,
-                            getResources().getQuantityString(R.plurals.select_album_n_songs_added, songs.size(), songs.size()));
-                }
-            }
-        };
-
-        checkLicenseAndTrialPeriod(onValid);
+        warnIfNetworkOrStorageUnavailable();
+        getDownloadService().download(songs, save, autoplay, playNext);
+        String playlistName = getIntent().getStringExtra(INTENT_EXTRA_NAME_PLAYLIST_NAME);
+        if (playlistName != null) {
+            getDownloadService().setSuggestedPlaylistName(playlistName);
+        }
+        if (autoplay) {
+            Util.startActivityWithoutTransition(SelectAlbumActivity.this, DownloadActivity.class);
+        } else if (save) {
+            Util.toast(SelectAlbumActivity.this,
+                    getResources().getQuantityString(R.plurals.select_album_n_songs_downloading, songs.size(), songs.size()));
+        } else if (append) {
+            Util.toast(SelectAlbumActivity.this,
+                    getResources().getQuantityString(R.plurals.select_album_n_songs_added, songs.size(), songs.size()));
+        }
     }
 
     private void delete() {
@@ -534,61 +520,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         startActivity(intent);
     }
 
-    private void checkLicenseAndTrialPeriod(Runnable onValid) {
-        if (licenseValid) {
-            onValid.run();
-            return;
-        }
-
-        int trialDaysLeft = Util.getRemainingTrialDays(this);
-        Log.i(TAG, trialDaysLeft + " trial days left.");
-
-        if (trialDaysLeft == 0) {
-            showDonationDialog(trialDaysLeft, null);
-        } else if (trialDaysLeft < FREE_TRIAL_DAYS / 2) {
-            showDonationDialog(trialDaysLeft, onValid);
-        } else {
-            Util.toast(this, getResources().getString(R.string.select_album_not_licensed, trialDaysLeft));
-            onValid.run();
-        }
-    }
-
-    private void showDonationDialog(int trialDaysLeft, final Runnable onValid) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_info);
-
-        if (trialDaysLeft == 0) {
-            builder.setTitle(R.string.select_album_donate_dialog_0_trial_days_left);
-        } else {
-            builder.setTitle(getResources().getQuantityString(R.plurals.select_album_donate_dialog_n_trial_days_left,
-                    trialDaysLeft, trialDaysLeft));
-        }
-
-        builder.setMessage(R.string.select_album_donate_dialog_message);
-
-        builder.setPositiveButton(R.string.select_album_donate_dialog_now,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DONATION_URL)));
-                    }
-                });
-
-        builder.setNegativeButton(R.string.select_album_donate_dialog_later,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        if (onValid != null) {
-                            onValid.run();
-                        }
-                    }
-                });
-
-        builder.create().show();
-    }
-
-    private abstract class LoadTask extends TabActivityBackgroundTask<Pair<MusicDirectory, Boolean>> {
+    private abstract class LoadTask extends TabActivityBackgroundTask<MusicDirectory> {
 
         public LoadTask() {
             super(SelectAlbumActivity.this);
@@ -597,16 +529,14 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         protected abstract MusicDirectory load(MusicService service) throws Exception;
 
         @Override
-        protected Pair<MusicDirectory, Boolean> doInBackground() throws Throwable {
+        protected MusicDirectory doInBackground() throws Throwable {
             MusicService musicService = MusicServiceFactory.getMusicService(SelectAlbumActivity.this);
-            MusicDirectory dir = load(musicService);
-            boolean valid = musicService.isLicenseValid(SelectAlbumActivity.this, this);
-            return new Pair<MusicDirectory, Boolean>(dir, valid);
+            return load(musicService);
         }
 
         @Override
-        protected void done(Pair<MusicDirectory, Boolean> result) {
-            List<MusicDirectory.Entry> entries = result.getFirst().getChildren();
+        protected void done(MusicDirectory result) {
+            List<MusicDirectory.Entry> entries = result.getChildren();
 
             boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {
@@ -629,7 +559,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             emptyView.setVisibility(entries.isEmpty() ? View.VISIBLE : View.GONE);
             playAllButton.setVisibility(isAlbumList || entries.isEmpty() ? View.GONE : View.VISIBLE);
             entryList.setAdapter(new EntryAdapter(SelectAlbumActivity.this, getImageLoader(), entries, true));
-            licenseValid = result.getSecond();
 
             boolean playAll = getIntent().getBooleanExtra(INTENT_EXTRA_NAME_AUTOPLAY, false);
             if (playAll && hasSongs) {

@@ -73,11 +73,6 @@
     <string name="select_album.searching">Recherche en cours…</string>
     <string name="select_album.no_sdcard">Erreur: Aucune carte SD disponible.</string>
     <string name="select_album.no_network">Avis: Aucun réseau disponible.</string>
-    <string name="select_album.not_licensed">Serveur sans licence. %d jours d\'essai restant.</string>
-    <string name="select_album.donate_dialog_message">Obtenez des téléchargements illimités en donnant à Subsonic.</string>
-    <string name="select_album.donate_dialog_now">Maintenant</string>
-    <string name="select_album.donate_dialog_later">Plus tard</string>
-    <string name="select_album.donate_dialog_0_trial_days_left">La période d\'essai est terminée</string>
 
     <string name="select_playlist.empty">Aucune playlist sur le serveur</string>
 
@@ -236,10 +231,6 @@
     <plurals name="select_album_n_songs_added">
         <item quantity="one">Une pièce ajoutée à la file de lecture.</item>
         <item quantity="other">%d pièces ajoutées à la file de lecture.</item>
-    </plurals>
-    <plurals name="select_album_donate_dialog_n_trial_days_left">
-        <item quantity="one">Un jour restant à la période d\'essai</item>
-        <item quantity="other">%d jours restant à la période d\'essai</item>
     </plurals>
 
 </resources>

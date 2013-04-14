@@ -73,11 +73,6 @@
     <string name="select_album.searching">Searching…</string>
     <string name="select_album.no_sdcard">Error: No SD card available.</string>
     <string name="select_album.no_network">Warning: No network available.</string>
-    <string name="select_album.not_licensed">Server not licensed. %d trial days left.</string>
-    <string name="select_album.donate_dialog_message">Get unlimited downloads by donating to Subsonic.</string>
-    <string name="select_album.donate_dialog_now">Now</string>
-    <string name="select_album.donate_dialog_later">Later</string>
-    <string name="select_album.donate_dialog_0_trial_days_left">Trial period is over</string>
 
     <string name="select_playlist.empty">No saved playlists on server</string>
 
@@ -236,10 +231,6 @@
     <plurals name="select_album_n_songs_added">
         <item quantity="one">One song added to play queue.</item>
         <item quantity="other">%d songs added to play queue.</item>
-    </plurals>
-    <plurals name="select_album_donate_dialog_n_trial_days_left">
-        <item quantity="one">One day left of trial period</item>
-        <item quantity="other">%d days left of trial period</item>
     </plurals>
 
 </resources>
