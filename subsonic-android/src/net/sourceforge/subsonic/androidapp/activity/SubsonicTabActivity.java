@@ -121,11 +121,6 @@ public class SubsonicTabActivity extends Activity {
         }
 
         updateButtonVisibility();
-
-//        View adView = findViewById(R.id.ad);
-//        if (adView != null) {
-//            Util.createAd(this, (ViewGroup) adView);
-//        }
     }
 
     @Override

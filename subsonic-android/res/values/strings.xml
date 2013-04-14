@@ -27,8 +27,6 @@
     <string name="main.use_offline">Use offline</string>
     <string name="main.use_connected">Use connected</string>
     <string name="main.settings">Settings</string>
-    <string name="main.purchase">Remove ads</string>
-    <string name="main.purchase_confirm">Click Continue to purchase permanent ad removal in Google Play.</string>
     <string name="main.albums_title">ALBUMS</string>
     <string name="main.albums_newest">Recently added</string>
     <string name="main.albums_recent">Recently played</string>

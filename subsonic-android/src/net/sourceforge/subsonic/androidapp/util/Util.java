@@ -18,31 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.http.HttpEntity;
-
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
-import com.inneractive.api.ads.InneractiveAd;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -72,7 +47,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.activity.DownloadActivity;
-import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
@@ -80,6 +54,24 @@ import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider;
 import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
+import org.apache.http.HttpEntity;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sindre Mehus
@@ -115,19 +107,6 @@ public final class Util {
     public static boolean isScreenLitOnDownload(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCREEN_LIT_ON_DOWNLOAD, false);
-    }
-
-    public static PurchaseMode getAdRemovalPurchaseMode(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        return PurchaseMode.valueOf(prefs.getString(Constants.PREFERENCES_KEY_AD_REMOVAL_PURCHASE_MODE, PurchaseMode.UNKNOWN.name()));
-    }
-
-    public static void setAdRemovalPurchaseMode(Context context, PurchaseMode purchaseMode) {
-        Log.d(TAG, "setAdRemovalPurchaseMode(" + purchaseMode + ")");
-        SharedPreferences prefs = getPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.PREFERENCES_KEY_AD_REMOVAL_PURCHASE_MODE, purchaseMode.name());
-        editor.commit();
     }
 
     public static RepeatMode getRepeatMode(Context context) {
@@ -575,7 +554,7 @@ public final class Util {
         // Use the same text for the ticker and the expanded notification
         String title = song.getTitle();
         String text = song.getArtist();
-        
+
         // Set the icon, scrolling text and timestamp
         final Notification notification = new Notification(R.drawable.stat_notify_playing, title, System.currentTimeMillis());
         notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
@@ -583,21 +562,21 @@ public final class Util {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
 
         // Set the album art.
-		try {
-			int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
+        try {
+            int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
             Bitmap bitmap = FileUtil.getAlbumArtBitmap(context, song, size);
-			if (bitmap == null) {
-				// set default album art
-				contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
-			} else {
-				contentView.setImageViewBitmap(R.id.notification_image, bitmap);
-			}
-		} catch (Exception x) {
-			Log.w(TAG, "Failed to get notification cover art", x);
-			contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
-		}
+            if (bitmap == null) {
+                // set default album art
+                contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
+            } else {
+                contentView.setImageViewBitmap(R.id.notification_image, bitmap);
+            }
+        } catch (Exception x) {
+            Log.w(TAG, "Failed to get notification cover art", x);
+            contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
+        }
 
-		// set the text for the notifications
+        // set the text for the notifications
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_artist, text);
 
@@ -610,7 +589,7 @@ public final class Util {
         }
 
         notification.contentView = contentView;
-        
+
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
         notification.contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -714,44 +693,6 @@ public final class Util {
         }
     }
 
-    private static long timeOfLastAd = System.currentTimeMillis();
-    private final static long AD_INTERVAL_MILLIS = 60000;
-
-    public static void createAd(Activity activity, ViewGroup parent) {
-
-        if (!getAdRemovalPurchaseMode(activity).shouldDisplayAd()) {
-            return;
-        }
-        long now = System.currentTimeMillis();
-        if (now - timeOfLastAd < AD_INTERVAL_MILLIS) {
-            return;
-        }
-
-        timeOfLastAd = now;
-//        double random = Math.random();
-//        if (random < 0.25) {
-//            createGoogleAd(activity, parent, AdSize.BANNER);
-//        } else if (random < 0.50) {
-//            createGoogleAd(activity, parent, AdSize.SMART_BANNER);
-//        } else {
-            createInnerActiveAd(activity, parent);
-//        }
-    }
-
-    private static void createInnerActiveAd(Activity activity, ViewGroup parent) {
-        Hashtable<InneractiveAd.IaOptionalParams, String> metaData = new Hashtable<InneractiveAd.IaOptionalParams, String>();
-        metaData.put(InneractiveAd.IaOptionalParams.Key_Alignment, InneractiveAd.IaAdAlignment.CENTER.toString());
-        InneractiveAd banner = new InneractiveAd(activity, "Subsonic_Subsonic_Android", InneractiveAd.IaAdType.Banner, 90, metaData);
-        parent.addView(banner);
-    }
-
-    private static void createGoogleAd(Activity activity, ViewGroup parent, AdSize adSize) {
-        AdView adView = new AdView(activity, adSize, "a150756282623f0");
-        parent.addView(adView);
-        AdRequest adRequest = new AdRequest();
-        adView.loadAd(adRequest);
-    }
-
     /**
      * <p>Broadcasts the given song info as the new song being played.</p>
      */
@@ -816,7 +757,7 @@ public final class Util {
 
     /**
      * Resolves the default text color for notifications.
-     *
+     * <p/>
      * Based on http://stackoverflow.com/questions/4867338/custom-notification-layouts-and-text-colors/7320604#7320604
      */
     private static Pair<Integer, Integer> getNotificationTextColors(Context context) {
@@ -844,12 +785,10 @@ public final class Util {
                 String text = textView.getText().toString();
                 if (title.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setFirst(textView.getTextColors().getDefaultColor());
-                }
-                else if (content.equals(text)) {
+                } else if (content.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setSecond(textView.getTextColors().getDefaultColor());
                 }
-            }
-            else if (group.getChildAt(i) instanceof ViewGroup)
+            } else if (group.getChildAt(i) instanceof ViewGroup)
                 findNotificationTextColors((ViewGroup) group.getChildAt(i), title, content);
         }
     }

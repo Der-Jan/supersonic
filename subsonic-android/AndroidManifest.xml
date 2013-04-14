@@ -94,8 +94,6 @@
         <service android:name="net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl"
                  android:label="Subsonic Download Service"/>
 
-        <service android:name="net.sourceforge.subsonic.androidapp.billing.BillingService"/>
-
         <receiver android:name="net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver">
             <intent-filter android:priority="999">
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
@@ -115,14 +113,6 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info"/>
-        </receiver>
-
-        <receiver android:name="net.sourceforge.subsonic.androidapp.billing.BillingReceiver">
-            <intent-filter>
-                <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
-                <action android:name="com.android.vending.billing.RESPONSE_CODE"/>
-                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
-            </intent-filter>
         </receiver>
 
         <provider android:name="net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider"

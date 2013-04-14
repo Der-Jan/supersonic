@@ -19,16 +19,12 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.Arrays;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -38,11 +34,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.billing.BillingConstants;
-import net.sourceforge.subsonic.androidapp.billing.BillingService;
-import net.sourceforge.subsonic.androidapp.billing.PurchaseMode;
-import net.sourceforge.subsonic.androidapp.billing.PurchaseObserver;
-import net.sourceforge.subsonic.androidapp.billing.ResponseHandler;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.Constants;
@@ -51,9 +42,9 @@ import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
-public class MainActivity extends SubsonicTabActivity {
+import java.util.Arrays;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends SubsonicTabActivity {
 
     private static final int MENU_GROUP_SERVER = 10;
     private static final int MENU_ITEM_SERVER_1 = 101;
@@ -61,10 +52,6 @@ public class MainActivity extends SubsonicTabActivity {
     private static final int MENU_ITEM_SERVER_3 = 103;
 
     private static boolean infoDialogDisplayed;
-
-    private SubsonicPurchaseObserver purchaseObserver;
-    private BillingService billingService;
-    private TextView purchaseButton;
 
     /**
      * Called when the activity is first created.
@@ -87,9 +74,6 @@ public class MainActivity extends SubsonicTabActivity {
         final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
         offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
 
-        purchaseButton = (TextView) buttons.findViewById(R.id.main_purchase);
-        updatePurchaseButtonVisibility();
-
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
         final View albumsRandomButton = buttons.findViewById(R.id.main_albums_random);
@@ -110,9 +94,6 @@ public class MainActivity extends SubsonicTabActivity {
         adapter.addView(offlineButton, true);
         if (!Util.isOffline(this)) {
             adapter.addView(serverButton, true);
-//            if (Util.getAdRemovalPurchaseMode(this).shouldPurchaseButtonBeVisible()) {
-//                adapter.addView(purchaseButton, true);
-//            }
             adapter.addView(albumsTitle, false);
             adapter.addViews(Arrays.asList(albumsNewestButton, albumsRandomButton, albumsHighestButton, albumsRecentButton, albumsFrequentButton), true);
         }
@@ -126,8 +107,6 @@ public class MainActivity extends SubsonicTabActivity {
                     toggleOffline();
                 } else if (view == serverButton) {
                     dummyView.showContextMenu();
-                } else if (view == purchaseButton) {
-                    purchaseAdRemoval();
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
                 } else if (view == albumsRandomButton) {
@@ -142,20 +121,11 @@ public class MainActivity extends SubsonicTabActivity {
             }
         });
 
-//        purchaseObserver = new SubsonicPurchaseObserver(new Handler());
-//        ResponseHandler.register(purchaseObserver);
-
-//        billingService = new BillingService();
-//        billingService.setContext(this);
-
-        // Check if billing is supported.
-//        billingService.checkBillingSupported(BillingConstants.ITEM_TYPE_SUBSCRIPTION);
-
         // Title: Subsonic
         setTitle(R.string.common_appname);
 
         // Button 1: gone
-        ImageButton actionShuffleButton = (ImageButton)findViewById(R.id.action_button_1);
+        ImageButton actionShuffleButton = (ImageButton) findViewById(R.id.action_button_1);
         actionShuffleButton.setImageResource(R.drawable.action_shuffle);
         actionShuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +135,7 @@ public class MainActivity extends SubsonicTabActivity {
         });
 
         // Button 2: search
-        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        ImageButton actionSearchButton = (ImageButton) findViewById(R.id.action_button_2);
         actionSearchButton.setImageResource(R.drawable.action_search);
         actionSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,24 +154,6 @@ public class MainActivity extends SubsonicTabActivity {
         });
 
         showInfoDialog();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ResponseHandler.register(purchaseObserver);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ResponseHandler.unregister(purchaseObserver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        billingService.unbind();
     }
 
     private void startShufflePlay() {
@@ -223,31 +175,6 @@ public class MainActivity extends SubsonicTabActivity {
                     }
                 })
                 .show();
-    }
-
-    private void purchaseAdRemoval() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.main_purchase)
-                .setMessage(R.string.main_purchase_confirm)
-                .setPositiveButton(R.string.common_continue, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        billingService.requestPurchase(Constants.PRODUCT_ID_AD_REMOVAL, BillingConstants.ITEM_TYPE_INAPP, null);
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
-    private void updatePurchaseButtonVisibility() {
-        boolean purchaseEnabled = Util.getAdRemovalPurchaseMode(MainActivity.this).shouldPurchaseButtonBeVisible();
-        purchaseButton.setVisibility(purchaseEnabled ? View.VISIBLE : View.GONE);
     }
 
     private void loadSettings() {
@@ -351,60 +278,6 @@ public class MainActivity extends SubsonicTabActivity {
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE, type);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 20);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
-		Util.startActivityWithoutTransition(this, intent);
-	}
-
-    /**
-     * A {@link PurchaseObserver} is used to get callbacks when Android Market sends
-     * messages to this application so that we can update the UI.
-     */
-    private class SubsonicPurchaseObserver extends PurchaseObserver {
-
-        public SubsonicPurchaseObserver(Handler handler) {
-            super(MainActivity.this, handler);
-        }
-
-        @Override
-        public void onBillingSupported(boolean supported, String type) {
-            if (!supported) {
-                Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_SUPPORTED);
-            } else if (Util.getAdRemovalPurchaseMode(MainActivity.this) == PurchaseMode.NOT_SUPPORTED) {
-                Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.UNKNOWN);
-            }
-
-            // Request restore if this is the first time the app is run.
-            if (supported && Util.getAdRemovalPurchaseMode(MainActivity.this).shouldRestoreTransactions()) {
-                billingService.restoreTransactions();
-            }
-        }
-
-        @Override
-        public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String productId, long purchaseTime, String developerPayload) {
-
-            // Note: Util.setAdRemovalPurchaseMode() is done in ResponseHandler.purchaseResponse(), since this activity may be
-            // gone when the response comes in.
-            Log.i(TAG, "onPurchaseStateChange: " + productId + ": " + purchaseState);
-            if (Constants.PRODUCT_ID_AD_REMOVAL.equals(productId) && BillingConstants.PurchaseState.PURCHASED.equals(purchaseState)) {
-                updatePurchaseButtonVisibility();
-            }
-        }
-
-        @Override
-        public void onRequestPurchaseResponse(BillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
-            Log.i(TAG, "onRequestPurchaseResponse: " + request.productId + ": " + responseCode);
-        }
-
-        @Override
-        public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
-            Log.i(TAG, "onRestoreTransactionsResponse: " + responseCode);
-            if (responseCode == BillingConstants.ResponseCode.RESULT_OK) {
-
-                // Update the shared preferences so that we don't perform a RestoreTransactions again.
-                if (Util.getAdRemovalPurchaseMode(MainActivity.this).shouldRestoreTransactions()) {
-                    Util.setAdRemovalPurchaseMode(MainActivity.this, PurchaseMode.NOT_PURCHASED);
-                }
-            }
-            updatePurchaseButtonVisibility();
-        }
+        Util.startActivityWithoutTransition(this, intent);
     }
 }

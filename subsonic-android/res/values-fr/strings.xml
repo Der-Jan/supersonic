@@ -27,8 +27,6 @@
     <string name="main.use_offline">Utilisation hors-ligne</string>
     <string name="main.use_connected">Utilisation connectée</string>
     <string name="main.settings">Paramètres</string>
-    <string name="main.purchase">Retirer les publicités</string>
-    <string name="main.purchase_confirm">Cliquer sur Continuer pour acheter le retrait permanent des publicités via Google Play.</string>
     <string name="main.albums_title">ALBUMS</string>
     <string name="main.albums_newest">Plus récents</string>
     <string name="main.albums_recent">Récemment joués</string>
