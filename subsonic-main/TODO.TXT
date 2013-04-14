@@ -3,9 +3,19 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-Publish blackberry app.
+Rollout plan
+---
+Release to SourceForge
+Deploy to subsonic.org
+Test payment
+Update android description
+Release android app
+Update amazon
 Get rid of .jpg in demo
 Clean up podcasts in demo
+Update backup server (after a couple of days)
+
+Publish blackberry app.
 
 site
   Update rest of pages
@@ -146,6 +156,8 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
+Video: Test MX Player
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13e003d33cbf4626
 Add video alternatives: Flash, HLS, native
 Rename references to donation.
 Support dynamic number of servers.
