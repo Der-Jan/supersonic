@@ -42,6 +42,7 @@
     <li><span class="bugid">REST: </span>Added getInternetRadioStations.</li>
     <li><span class="bugid">REST: </span>Added getGenres.</li>
     <li><span class="bugid">REST: </span>Added getSongsByGenre.</li>
+    <li><span class="bugid">REST: </span>Added option to disable transcoding when streaming.</li>
     <li><span class="bugid">REST: </span>Fixed a bug in getAlbumList which caused it to return non-albums in some cases.</li>
     <li><span class="bugid">REST: </span>Support CORS.</li>
     <li><span class="bugid">REST: </span>Support "parent" attribute in getMusicDirectory.</li>

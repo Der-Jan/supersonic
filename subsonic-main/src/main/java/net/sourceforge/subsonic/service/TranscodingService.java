@@ -18,6 +18,19 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.PrefixFileFilter;
+import org.apache.commons.lang.StringUtils;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.controller.VideoPlayerController;
 import net.sourceforge.subsonic.dao.TranscodingDao;
@@ -30,18 +43,6 @@ import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.io.TranscodeInputStream;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.PrefixFileFilter;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Provides services for transcoding media. Transcoding is the process of
@@ -54,6 +55,7 @@ import java.util.List;
 public class TranscodingService {
 
     private static final Logger LOG = Logger.getLogger(TranscodingService.class);
+    private static final String FORMAT_RAW = "raw";
 
     private TranscodingDao transcodingDao;
     private SettingsService settingsService;
@@ -386,6 +388,10 @@ public class TranscodingService {
 
         if (hls) {
             return new Transcoding(null, "hls", mediaFile.getFormat(), "ts", settingsService.getHlsCommand(), null, null, true);
+        }
+
+        if (FORMAT_RAW.equals(preferredTargetFormat)) {
+            return null;
         }
 
         List<Transcoding> applicableTranscodings = new LinkedList<Transcoding>();
