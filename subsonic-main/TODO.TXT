@@ -3,6 +3,9 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
+Don't show license key in demo.
+sf download link down
+
 Rollout plan
 ---
 Prepare deployment for subsonic.org
@@ -818,7 +821,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2012-06-09.tar db
+    tar cvf db-backup-2013-04-16.tar db
   cd subsonic-backend
   mvn clean install
 
@@ -834,7 +837,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2012-09-14 webapps
+  ln -s webapps-2013-04-16 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
