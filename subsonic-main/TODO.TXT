@@ -5,6 +5,8 @@ TODO IN 4.8
 --------------
 Rollout plan
 ---
+Prepare deployment for subsonic.org
+Prepare build for Windows, Mac, Linux, Android
 Release to SourceForge
 Deploy to subsonic.org
 Test payment
