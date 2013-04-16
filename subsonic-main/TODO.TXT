@@ -3,23 +3,15 @@ DONE IN 4.8
 
 TODO IN 4.8
 --------------
-Don't show license key in demo.
+Don't show license key in demo, and update subsonic.org
 sf download link down
-
-Rollout plan
----
-Prepare deployment for subsonic.org
-Prepare build for Windows, Mac, Linux, Android
-Release to SourceForge
-Deploy to subsonic.org
-Test payment
+verify that 4.8 is default in sf.net
 Update android description
 Release android app
 Update amazon
 Get rid of .jpg in demo
 Clean up podcasts in demo
 Update backup server (after a couple of days)
-Upload new apk to sf.net
 Publish blackberry app.
 
 site
