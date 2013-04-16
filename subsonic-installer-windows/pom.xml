@@ -10,11 +10,11 @@
     <parent>
         <groupId>net.sourceforge.subsonic</groupId>
         <artifactId>subsonic</artifactId>
-        <version>4.7</version>
+        <version>4.8</version>
     </parent>
 
     <properties>
-        <exe4j.home>c:/Program Files (x86)/exe4j</exe4j.home>
+        <exe4j.home>c:/Program Files/exe4j</exe4j.home>
         <nsis.home>c:/Program Files (x86)/NSIS</nsis.home>
     </properties>
 
