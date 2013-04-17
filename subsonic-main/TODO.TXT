@@ -1,10 +1,13 @@
-DONE IN 4.8
+DONE IN 4.9
 -------------
+Don't show license key if not logged in with admin privileges.
 
-TODO IN 4.8
+TODO IN 4.9
 --------------
-Don't show license key in demo, and update subsonic.org
+premium.jsp -> add link to subsonic.org/premium for more info
 sf download link down
+make menu text more visible
+Send reminder email when license is about to expire.
 verify that 4.8 is default in sf.net
 Update android description
 Release android app
