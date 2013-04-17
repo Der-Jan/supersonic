@@ -40,9 +40,9 @@ public class PremiumValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         PremiumCommand command = (PremiumCommand) obj;
 
-        if (!settingsService.isLicenseValid(command.getLicenseInfo().getLicenseEmail(), command.getLicenseInfo().getLicenseCode())) {
+        if (!settingsService.isLicenseValid(command.getLicenseInfo().getLicenseEmail(), command.getLicenseCode())) {
             command.setSubmissionError(true);
-            errors.rejectValue("licenseInfo.licenseCode", "premium.invalidlicense");
+            errors.rejectValue("licenseCode", "premium.invalidlicense");
         }
     }
 

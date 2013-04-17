@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.PremiumCommand;
+import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
 /**
@@ -38,6 +39,7 @@ import net.sourceforge.subsonic.service.SettingsService;
 public class PremiumController extends SimpleFormController {
 
     private SettingsService settingsService;
+    private SecurityService securityService;
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         PremiumCommand command = new PremiumCommand();
@@ -45,7 +47,7 @@ public class PremiumController extends SimpleFormController {
         command.setForceChange(request.getParameter("change") != null);
         command.setLicenseInfo(settingsService.getLicenseInfo());
         command.setBrand(settingsService.getBrand());
-
+        command.setUser(securityService.getCurrentUser(request));
         return command;
     }
 
@@ -54,7 +56,7 @@ public class PremiumController extends SimpleFormController {
         PremiumCommand command = (PremiumCommand) com;
         Date now = new Date();
 
-        settingsService.setLicenseCode(command.getLicenseInfo().getLicenseCode());
+        settingsService.setLicenseCode(command.getLicenseCode());
         settingsService.setLicenseEmail(command.getLicenseInfo().getLicenseEmail());
         settingsService.setLicenseDate(now);
         settingsService.save();
@@ -68,5 +70,9 @@ public class PremiumController extends SimpleFormController {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

@@ -324,6 +324,7 @@
         <property name="formView" value="premium"/>
         <property name="validator" ref="premiumValidator"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="multiController" class="net.sourceforge.subsonic.controller.MultiController">
         <property name="securityService" ref="securityService"/>

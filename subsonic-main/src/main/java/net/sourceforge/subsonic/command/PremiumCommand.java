@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.command;
 
 import net.sourceforge.subsonic.controller.PremiumController;
 import net.sourceforge.subsonic.domain.LicenseInfo;
+import net.sourceforge.subsonic.domain.User;
 
 /**
  * Command used in {@link PremiumController}.
@@ -31,8 +32,10 @@ public class PremiumCommand {
     private String path;
     private String brand;
     private LicenseInfo licenseInfo;
+    private String licenseCode;
     private boolean forceChange;
     private boolean submissionError;
+    private User user;
 
     public String getPath() {
         return path;
@@ -54,6 +57,14 @@ public class PremiumCommand {
         return licenseInfo;
     }
 
+    public String getLicenseCode() {
+        return licenseCode;
+    }
+
+    public void setLicenseCode(String licenseCode) {
+        this.licenseCode = licenseCode;
+    }
+
     public void setLicenseInfo(LicenseInfo licenseInfo) {
         this.licenseInfo = licenseInfo;
     }
@@ -72,5 +83,13 @@ public class PremiumCommand {
 
     public void setSubmissionError(boolean submissionError) {
         this.submissionError = submissionError;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

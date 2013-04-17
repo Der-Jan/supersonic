@@ -1,22 +1,17 @@
-DONE IN 4.8
+DONE IN 4.9
 -------------
 
-TODO IN 4.8
+TODO IN 4.9
 --------------
-Rollout plan
----
-Prepare deployment for subsonic.org
-Prepare build for Windows, Mac, Linux, Android
-Release to SourceForge
-Deploy to subsonic.org
-Test payment
-Update android description
-Release android app
-Update amazon
-Get rid of .jpg in demo
+Verify that update notice is displayed in 4.7 and 4.8
+Mention in release notes that existing licenses will still work.
+
+premium.jsp -> add link to subsonic.org/premium for more info
+make menu text more visible
+Send reminder email when license is about to expire.
+verify that 4.8 is default in sf.net
 Clean up podcasts in demo
 Update backup server (after a couple of days)
-
 Publish blackberry app.
 
 site
@@ -818,17 +813,15 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2012-06-09.tar db
+    tar cvf db-backup-2013-04-16.tar db
   cd subsonic-backend
   mvn clean install
 
-  mkdir /usr/local/jakarta/tomcat/webapps-2012-08-03/
+  mkdir /usr/local/jakarta/tomcat/webapps-2013-04-16/
 
-  scp subsonic-site/src/main/webapp/apps.jsp root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
-
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-09-14/pages
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org
@@ -836,7 +829,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2012-09-14 webapps
+  ln -s webapps-2013-04-16 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
@@ -866,19 +859,19 @@ ant release
 ### jarsigner -verbose -keystore subsonic.keystore -signedjar bin/subsonic.apk bin/SubsonicActivity-unsigned.apk subsonic
 Upload to market
 http://market.android.com/publish/Home
-Update amazon
+https://developer.amazon.com/welcome.html
 Update
     http://appoke.com
     http://appslib.com/developers/index.html
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.6 -m "Tagging Android 3.6"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.7 -m "Tagging Android 3.7"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.6/subsonic-3.6.apk
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.6/subsonic-3.6-adfree.apk
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7.apk
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7-adfree.apk
 
 HOW TO RELEASE BLACKBERRY
 ===============================
