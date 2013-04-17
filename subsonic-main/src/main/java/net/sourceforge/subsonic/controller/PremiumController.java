@@ -56,7 +56,7 @@ public class PremiumController extends SimpleFormController {
         PremiumCommand command = (PremiumCommand) com;
         Date now = new Date();
 
-        settingsService.setLicenseCode(command.getLicenseInfo().getLicenseCode());
+        settingsService.setLicenseCode(command.getLicenseCode());
         settingsService.setLicenseEmail(command.getLicenseInfo().getLicenseEmail());
         settingsService.setLicenseDate(now);
         settingsService.save();

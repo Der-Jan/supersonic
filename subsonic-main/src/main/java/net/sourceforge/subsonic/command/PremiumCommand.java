@@ -32,6 +32,7 @@ public class PremiumCommand {
     private String path;
     private String brand;
     private LicenseInfo licenseInfo;
+    private String licenseCode;
     private boolean forceChange;
     private boolean submissionError;
     private User user;
@@ -54,6 +55,14 @@ public class PremiumCommand {
 
     public LicenseInfo getLicenseInfo() {
         return licenseInfo;
+    }
+
+    public String getLicenseCode() {
+        return licenseCode;
+    }
+
+    public void setLicenseCode(String licenseCode) {
+        this.licenseCode = licenseCode;
     }
 
     public void setLicenseInfo(LicenseInfo licenseInfo) {

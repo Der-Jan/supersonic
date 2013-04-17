@@ -652,7 +652,7 @@ public class SettingsService {
         boolean trialValid = trialExpires.after(now);
         long trialDaysLeft = trialValid ? (trialExpires.getTime() - now.getTime()) / (24L * 3600L * 1000L) : 0L;
 
-        return new LicenseInfo(getLicenseCode(), getLicenseEmail(), isLicenseValid(), trialExpires, trialDaysLeft, licenseExpires);
+        return new LicenseInfo(getLicenseEmail(), isLicenseValid(), trialExpires, trialDaysLeft, licenseExpires);
     }
 
     public String getDownsamplingCommand() {

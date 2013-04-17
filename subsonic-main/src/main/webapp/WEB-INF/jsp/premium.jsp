@@ -71,13 +71,13 @@
                 <tr>
                     <td><fmt:message key="premium.register.license"/></td>
                     <td>
-                        <form:input path="licenseInfo.licenseCode" size="40"/>
+                        <form:input path="licenseCode" size="40"/>
                     </td>
                     <td><input type="submit" value="<fmt:message key="common.ok"/>"/></td>
                 </tr>
                 <tr>
                     <td/>
-                    <td class="warning"><form:errors path="licenseInfo.licenseCode"/></td>
+                    <td class="warning"><form:errors path="licenseCode"/></td>
                 </tr>
             </table>
         </form:form>

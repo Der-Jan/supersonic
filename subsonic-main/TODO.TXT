@@ -1,9 +1,11 @@
 DONE IN 4.9
 -------------
-Don't show license key if not logged in with admin privileges.
 
 TODO IN 4.9
 --------------
+Verify that update notice is displayed in 4.7 and 4.8
+Mention in release notes that existing licenses will still work.
+
 premium.jsp -> add link to subsonic.org/premium for more info
 make menu text more visible
 Send reminder email when license is about to expire.

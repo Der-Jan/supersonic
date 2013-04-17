@@ -29,29 +29,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public class LicenseInfo {
 
-    private String licenseCode;
     private String licenseEmail;
     private boolean licenseValid;
     private final Date trialExpires;
     private long trialDaysLeft;
     private final Date licenseExpires;
 
-    public LicenseInfo(String licenseCode, String licenseEmail, boolean licenseValid,
-            Date trialExpires, long trialDaysLeft, Date licenseExpires) {
-        this.licenseCode = licenseCode;
+    public LicenseInfo(String licenseEmail, boolean licenseValid, Date trialExpires,
+            long trialDaysLeft, Date licenseExpires) {
         this.licenseEmail = licenseEmail;
         this.licenseValid = licenseValid;
         this.trialExpires = trialExpires;
         this.trialDaysLeft = trialDaysLeft;
         this.licenseExpires = licenseExpires;
-    }
-
-    public String getLicenseCode() {
-        return licenseCode;
-    }
-
-    public void setLicenseCode(String licenseCode) {
-        this.licenseCode = StringUtils.trimToNull(licenseCode);
     }
 
     public String getLicenseEmail() {
