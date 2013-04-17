@@ -5,14 +5,9 @@ Don't show license key if not logged in with admin privileges.
 TODO IN 4.9
 --------------
 premium.jsp -> add link to subsonic.org/premium for more info
-sf download link down
 make menu text more visible
 Send reminder email when license is about to expire.
 verify that 4.8 is default in sf.net
-Update android description
-Release android app
-Update amazon
-Get rid of .jpg in demo
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
@@ -862,7 +857,7 @@ ant release
 ### jarsigner -verbose -keystore subsonic.keystore -signedjar bin/subsonic.apk bin/SubsonicActivity-unsigned.apk subsonic
 Upload to market
 http://market.android.com/publish/Home
-Update amazon
+https://developer.amazon.com/welcome.html
 Update
     http://appoke.com
     http://appslib.com/developers/index.html
