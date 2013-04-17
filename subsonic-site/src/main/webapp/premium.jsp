@@ -120,7 +120,11 @@
             </p>
 
             <p>
-                If you have any questions, please send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a>
+               If you purchased a license prior to Subsonic 4.8 it will remain valid forever.
+            </p>
+
+            <p>
+                If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a>
             </p>
 
         </div>

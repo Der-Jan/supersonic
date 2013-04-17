@@ -18,7 +18,7 @@
 
 <a name="4.8"><h2 class="div">Subsonic 4.8 - Apr 20, 2013</h2></a>
 <ul>
-    <li><span class="bugid">New: </span>Introduced <a href="premium.jsp">Subsonic Premium</a>.</li>
+    <li><span class="bugid">New: </span>Introduced <a href="premium.jsp">Subsonic Premium</a>. (Note: Existing licenses will remain valid)</li>
     <li><span class="bugid">New: </span>Re-import playlists if file timestamp has changed.</li>
     <li><span class="bugid">New: </span>Make playlist folder setting visible again.</li>
     <li><span class="bugid">New: </span>Changed bitrate to video resolution mapping.</li>

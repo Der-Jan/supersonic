@@ -4,7 +4,6 @@ DONE IN 4.9
 TODO IN 4.9
 --------------
 Verify that update notice is displayed in 4.7 and 4.8
-Mention in release notes that existing licenses will still work.
 
 premium.jsp -> add link to subsonic.org/premium for more info
 make menu text more visible
@@ -822,6 +821,8 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/ROOT.war
   scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/demo.war
   rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
+
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/changelog.jsp  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org
