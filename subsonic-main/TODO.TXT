@@ -1,22 +1,27 @@
 DONE IN 4.9
 -------------
+REST: Escape ampersand in XML for getGenres
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 
 TODO IN 4.9
 --------------
-Verify that update notice is displayed in 4.7 and 4.8
-
-premium.jsp -> add link to subsonic.org/premium for more info
+Change wording "Change this" -> "Register a different license key"
+REST: Add ignoredArticles
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
+REST: Add getSongs
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
+UPnP
 make menu text more visible
-Send reminder email when license is about to expire.
-verify that 4.8 is default in sf.net
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
-
-site
-  Update rest of pages
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
+Improve video support
+  http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
+  https://sourceforge.net/p/subsonic/feature-requests/15/
 
 backend
+Send reminder email when license is about to expire.
   Missing index payment(processing_status)?
 
 other
