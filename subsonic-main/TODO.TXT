@@ -2,10 +2,10 @@ DONE IN 4.9
 -------------
 REST: Escape ampersand in XML for getGenres
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
+Change wording "Change this" -> "Register a different license key"
 
 TODO IN 4.9
 --------------
-Change wording "Change this" -> "Register a different license key"
 REST: Add ignoredArticles
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
 REST: Add getSongs

@@ -37,10 +37,10 @@
         <c:if test="${not command.forceChange and not command.submissionError}">
             <p>
                 <fmt:message key="premium.licensedto"><fmt:param value="${command.licenseInfo.licenseEmail}"/></fmt:message>
-                <c:if test="${command.user.adminRole}">
-                (<a href="premium.view?change"><fmt:message key="premium.forcechange"/>)
-                </c:if>
             </p>
+            <c:if test="${command.user.adminRole}">
+                <div class="forward"><a href="premium.view?change"><fmt:message key="premium.forcechange"/></a></div>
+            </c:if>
         </c:if>
     </c:if>
 
