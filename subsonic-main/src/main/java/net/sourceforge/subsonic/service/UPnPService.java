@@ -18,15 +18,23 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang.StringUtils;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
+import org.fourthline.cling.model.action.ActionInvocation;
+import org.fourthline.cling.model.message.UpnpResponse;
+import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.Icon;
@@ -34,6 +42,7 @@ import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.LocalService;
 import org.fourthline.cling.model.meta.ManufacturerDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
+import org.fourthline.cling.model.meta.Service;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
@@ -43,10 +52,14 @@ import org.fourthline.cling.support.contentdirectory.AbstractContentDirectorySer
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
+import org.fourthline.cling.support.igd.PortMappingListener;
+import org.fourthline.cling.support.igd.callback.PortMappingAdd;
+import org.fourthline.cling.support.igd.callback.PortMappingDelete;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.PersonWithRole;
+import org.fourthline.cling.support.model.PortMapping;
 import org.fourthline.cling.support.model.Protocol;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfos;
@@ -130,6 +143,10 @@ public class UPnPService {
     private synchronized void createService() throws Exception {
         upnpService = new UpnpServiceImpl();
 
+        // Asynch search for other devices (most importantly UPnP-enabled routers)
+        upnpService.getControlPoint().search();
+
+        // Put my own device in the registry.
         upnpService.getRegistry().addDevice(createDevice());
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -190,8 +207,98 @@ public class UPnPService {
         receiverService.setManager(new DefaultServiceManager<MSMediaReceiverRegistrarService>(receiverService, MSMediaReceiverRegistrarService.class));
         System.err.println(receiverService); // TODO
 //
-        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService, receiverService});
+        return new LocalDevice(identity, type, details, new Icon[]{icon}, new LocalService[]{contentDirectoryservice, connetionManagerService, receiverService});
 //        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
+    }
+
+    public void addPortMapping(int port) throws Exception {
+        Service connectionService = findConnectionService();
+        if (connectionService == null) {
+            throw new Exception("No UPnP-enabled router found.");
+        }
+
+        final Semaphore gotReply = new Semaphore(0);
+        final AtomicReference<String> error = new AtomicReference<String>();
+        upnpService.getControlPoint().execute(
+                new PortMappingAdd(connectionService, createPortMapping(port)) {
+
+                    @Override
+                    public void success(ActionInvocation invocation) {
+                        gotReply.release();
+                    }
+
+                    @Override
+                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                        error.set(String.valueOf(response) + ": " + defaultMsg);
+                        gotReply.release();
+                    }
+                }
+        );
+        gotReply.acquire();
+        if (error.get() != null) {
+            throw new Exception(error.get());
+        }
+    }
+
+    public void deletePortMapping(int port) throws Exception {
+        Service connectionService = findConnectionService();
+        if (connectionService == null) {
+            throw new Exception("No UPnP-enabled router found.");
+        }
+
+        final Semaphore gotReply = new Semaphore(0);
+        final AtomicReference<String> error = new AtomicReference<String>();
+        upnpService.getControlPoint().execute(
+                new PortMappingDelete(connectionService, createPortMapping(port)) {
+
+                    @Override
+                    public void success(ActionInvocation invocation) {
+                        gotReply.release();
+                    }
+
+                    @Override
+                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                        error.set(String.valueOf(response) + ": " + defaultMsg);
+                        gotReply.release();
+                    }
+                }
+        );
+        gotReply.acquire();
+        if (error.get() != null) {
+            throw new Exception(error.get());
+        }
+    }
+
+    private PortMapping createPortMapping(int port) throws UnknownHostException {
+        String localIp = InetAddress.getLocalHost().getHostAddress();
+        return new PortMapping(port, localIp, PortMapping.Protocol.TCP, "Subsonic");
+    }
+
+    /**
+     * Returns the UPnP service used for port mapping.
+     */
+    private Service findConnectionService() {
+
+        class ConnectionServiceDiscoverer extends PortMappingListener {
+            ConnectionServiceDiscoverer() {
+                super(new PortMapping[0]);
+            }
+
+            @Override
+            public Service discoverConnectionService(Device device) {
+                return super.discoverConnectionService(device);
+            }
+        }
+
+        ConnectionServiceDiscoverer discoverer = new ConnectionServiceDiscoverer();
+        Collection<Device> devices = upnpService.getRegistry().getDevices();
+        for (Device device : devices) {
+            Service service = discoverer.discoverConnectionService(device);
+            if (service != null) {
+                return service;
+            }
+        }
+        return null;
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -229,7 +336,7 @@ public class UPnPService {
 
         @Override
         public BrowseResult browse(String objectId, BrowseFlag browseFlag, String filter, long firstResult,
-                                   long maxResults, SortCriterion[] orderby) throws ContentDirectoryException {
+                long maxResults, SortCriterion[] orderby) throws ContentDirectoryException {
 
             // TODO
             System.out.println("objectId    : " + objectId);
@@ -363,7 +470,7 @@ public class UPnPService {
             container.setTitle(album.getName());
 
             String albumArtUrl = getBaseUrl() + "coverArt.view?id=" + container.getId() + "&size=" + CoverArtScheme.LARGE.getSize();
-            container.setAlbumArtURIs(new URI[] {new URI(albumArtUrl)});
+            container.setAlbumArtURIs(new URI[]{new URI(albumArtUrl)});
             container.setArtists(new PersonWithRole[]{new PersonWithRole(artist.getName())});
             container.setDescription(album.getComment());
             container.setChildCount(album.getSongCount());
@@ -376,7 +483,7 @@ public class UPnPService {
             item.setParentID(ALBUM_COVERART_PREFIX + album.getId());
             item.setTitle(song.getTitle());
             item.setAlbum(song.getAlbumName());
-            if (song.getArtist() != null ) {
+            if (song.getArtist() != null) {
                 item.setArtists(new PersonWithRole[]{new PersonWithRole(song.getArtist())});
             }
             Integer year = song.getYear();
