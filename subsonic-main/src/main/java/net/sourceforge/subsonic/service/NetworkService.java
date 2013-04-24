@@ -89,7 +89,7 @@ public class NetworkService {
         if (portForwardingFuture != null) {
             portForwardingFuture.cancel(true);
         }
-        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, 0L, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
+        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, 10L, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
     }
 
     /**

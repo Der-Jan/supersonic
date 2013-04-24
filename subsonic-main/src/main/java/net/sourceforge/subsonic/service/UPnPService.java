@@ -86,6 +86,7 @@ import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Version;
 import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
+import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -211,12 +212,23 @@ public class UPnPService {
 //        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
     }
 
-    public void addPortMapping(int port) throws Exception {
-        Service connectionService = findConnectionService();
+    public Router createRouter() {
+        final Service connectionService = findConnectionService();
         if (connectionService == null) {
-            throw new Exception("No UPnP-enabled router found.");
+            return null;
         }
 
+        return new Router() {
+            public void addPortMapping(int externalPort, int internalPort, int leaseDuration) throws Exception {
+                addPortMappingImpl(connectionService, internalPort);
+            }
+            public void deletePortMapping(int externalPort, int internalPort) throws Exception {
+                deletePortMappingImpl(connectionService, internalPort);
+            }
+        };
+    }
+
+    private void addPortMappingImpl(Service connectionService, int port) throws Exception {
         final Semaphore gotReply = new Semaphore(0);
         final AtomicReference<String> error = new AtomicReference<String>();
         upnpService.getControlPoint().execute(
@@ -240,12 +252,7 @@ public class UPnPService {
         }
     }
 
-    public void deletePortMapping(int port) throws Exception {
-        Service connectionService = findConnectionService();
-        if (connectionService == null) {
-            throw new Exception("No UPnP-enabled router found.");
-        }
-
+    private void deletePortMappingImpl(Service connectionService, int port) throws Exception {
         final Semaphore gotReply = new Semaphore(0);
         final AtomicReference<String> error = new AtomicReference<String>();
         upnpService.getControlPoint().execute(
