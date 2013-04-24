@@ -42,10 +42,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.NATPMPRouter;
-import net.sourceforge.subsonic.domain.Router;
-import net.sourceforge.subsonic.domain.SBBIRouter;
-import net.sourceforge.subsonic.domain.WeUPnPRouter;
+import net.sourceforge.subsonic.service.upnp.NATPMPRouter;
+import net.sourceforge.subsonic.service.upnp.Router;
+import net.sourceforge.subsonic.service.upnp.SBBIRouter;
+import net.sourceforge.subsonic.service.upnp.WeUPnPRouter;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 

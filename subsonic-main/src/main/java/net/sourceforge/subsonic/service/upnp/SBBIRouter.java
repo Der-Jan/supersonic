@@ -16,12 +16,12 @@
 
  Copyright 2009 (C) Sindre Mehus
  */
-package net.sourceforge.subsonic.domain;
-
-import net.sbbi.upnp.impls.InternetGatewayDevice;
+package net.sourceforge.subsonic.service.upnp;
 
 import java.io.IOException;
 import java.net.InetAddress;
+
+import net.sbbi.upnp.impls.InternetGatewayDevice;
 
 /**
  * @author Sindre Mehus

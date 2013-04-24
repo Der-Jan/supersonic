@@ -1,4 +1,4 @@
-package net.sourceforge.subsonic.service;
+package net.sourceforge.subsonic.service.upnp;
 
 import org.fourthline.cling.support.xmicrosoft.AbstractMediaReceiverRegistrarService;
 

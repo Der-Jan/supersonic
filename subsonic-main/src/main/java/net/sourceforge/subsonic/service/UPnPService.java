@@ -72,6 +72,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 

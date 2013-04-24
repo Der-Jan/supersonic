@@ -16,12 +16,12 @@
 
  Copyright 2009 (C) Sindre Mehus
  */
-package net.sourceforge.subsonic.domain;
+package net.sourceforge.subsonic.service.upnp;
+
+import java.net.InetAddress;
 
 import org.wetorrent.upnp.GatewayDevice;
 import org.wetorrent.upnp.GatewayDiscover;
-
-import java.net.InetAddress;
 
 /**
  * @author Sindre Mehus
