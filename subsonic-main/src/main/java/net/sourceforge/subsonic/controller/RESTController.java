@@ -190,8 +190,8 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        builder.add("indexes", "lastModified", lastModified, false);
-
+        builder.add("indexes", false, new Attribute("lastModified", lastModified),
+                new Attribute("ignoredArticles", settingsService.getIgnoredArticles()));
         List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
         Integer musicFolderId = ServletRequestUtils.getIntParameter(request, "musicFolderId");
         if (musicFolderId != null) {
@@ -280,7 +280,7 @@ public class RESTController extends MultiActionController {
         XMLBuilder builder = createXMLBuilder(request, response, true);
         String username = securityService.getCurrentUsername(request);
 
-        builder.add("artists", false);
+        builder.add("artists", "ignoredArticles", settingsService.getIgnoredArticles(), false);
 
         List<Artist> artists = artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE);
         SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithArtist>> indexedArtists = musicIndexService.getIndexedArtists(artists);
