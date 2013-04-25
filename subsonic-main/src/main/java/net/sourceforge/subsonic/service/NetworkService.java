@@ -44,8 +44,6 @@ import org.apache.http.util.EntityUtils;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.service.upnp.NATPMPRouter;
 import net.sourceforge.subsonic.service.upnp.Router;
-import net.sourceforge.subsonic.service.upnp.SBBIRouter;
-import net.sourceforge.subsonic.service.upnp.WeUPnPRouter;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -66,6 +64,7 @@ public class NetworkService {
     private static final String URL_REDIRECTION_TEST_URL = getBackendUrl() + "/backend/redirect/test.view";
 
     private SettingsService settingsService;
+    private UPnPService upnpService;
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     private final PortForwardingTask portForwardingTask = new PortForwardingTask();
     private final URLRedirectionTask urlRedirectionTask = new URLRedirectionTask();
@@ -120,6 +119,10 @@ public class NetworkService {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setUpnpService(UPnPService upnpService) {
+        this.upnpService = upnpService;
     }
 
     private class PortForwardingTask extends Task {
@@ -184,22 +187,14 @@ public class NetworkService {
         }
 
         private Router findRouter() {
-            try {
-                Router router = SBBIRouter.findRouter();
-                if (router != null) {
-                    return router;
-                }
-            } catch (Throwable x) {
-                LOG.warn("Failed to find UPnP router using SBBI library.", x);
-            }
 
             try {
-                Router router = WeUPnPRouter.findRouter();
+                Router router = upnpService.createRouter();
                 if (router != null) {
                     return router;
                 }
             } catch (Throwable x) {
-                LOG.warn("Failed to find UPnP router using WeUPnP library.", x);
+                LOG.warn("Failed to find UPnP router using Cling library.", x);
             }
 
             try {

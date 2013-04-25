@@ -109,6 +109,7 @@
 
     <bean id="networkService" class="net.sourceforge.subsonic.service.NetworkService" init-method="init">
         <property name="settingsService" ref="settingsService"/>
+        <property name="upnpService" ref="upnpService"/>
     </bean>
 
     <bean id="playerService" class="net.sourceforge.subsonic.service.PlayerService" init-method="init">

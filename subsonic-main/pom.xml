@@ -251,18 +251,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sbbi</groupId>
-            <artifactId>sbbi-upnplib</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.wetorrent</groupId>
-            <artifactId>weupnp</artifactId>
-            <version>2009-10-16</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.hoodcomputing</groupId>
             <artifactId>natpmp</artifactId>
             <version>0.1</version>
