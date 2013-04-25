@@ -11,6 +11,8 @@ TODO IN 4.9
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
+  DLNA
+    http://4thline.org/projects/mailinglists.html#nabble-td2165790
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
@@ -32,8 +34,12 @@ other
 
 UPnP/DLNA
 
-Skifta - music
-Windows Media Player - no
+Skifta (3450) - Can browse and play music.
+Windows Media Player (3450) - Visible, but can't browse
+Samsung tv, new (3450) - Can browse and play music, haven't tested video
+Samsung tv, old (3450) - Can browse, but can't play music.
+PS3 (3450) - Can browse albums
+
 
   AbstractMediaReceiverRegistrarService
   MiniDLNA
