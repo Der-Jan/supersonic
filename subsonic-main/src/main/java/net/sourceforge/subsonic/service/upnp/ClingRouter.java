@@ -119,7 +119,6 @@ public class ClingRouter implements Router {
 
     private void deletePortMappingImpl(Service connectionService, int port) throws Exception {
         final Semaphore gotReply = new Semaphore(0);
-        final AtomicReference<String> error = new AtomicReference<String>();
         upnpService.getControlPoint().execute(
                 new PortMappingDelete(connectionService, createPortMapping(port)) {
 
@@ -130,15 +129,11 @@ public class ClingRouter implements Router {
 
                     @Override
                     public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                        error.set(String.valueOf(response) + ": " + defaultMsg);
                         gotReply.release();
                     }
                 }
         );
         gotReply.acquire();
-        if (error.get() != null) {
-            throw new Exception(error.get());
-        }
     }
 
     private PortMapping createPortMapping(int port) throws UnknownHostException {

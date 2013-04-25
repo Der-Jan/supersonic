@@ -77,19 +77,19 @@ public class NetworkService {
     private boolean testUrlRedirection;
 
     public void init() {
-        initPortForwarding();
+        initPortForwarding(10);
         initUrlRedirection(false);
     }
 
     /**
      * Configures UPnP port forwarding.
      */
-    public synchronized void initPortForwarding() {
+    public synchronized void initPortForwarding(int initialDelaySeconds) {
         portForwardingStatus.setText("Idle");
         if (portForwardingFuture != null) {
             portForwardingFuture.cancel(true);
         }
-        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, 10L, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
+        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, initialDelaySeconds, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
     }
 
     /**
