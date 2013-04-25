@@ -121,6 +121,9 @@ public class UPnPService {
         // Asynch search for other devices (most importantly UPnP-enabled routers for port-mapping)
         upnpService.getControlPoint().search();
 
+        // Start media server.
+        setMediaServerEnabled(true);
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -132,7 +135,7 @@ public class UPnPService {
     }
 
     public void setMediaServerEnabled(boolean enabled) throws Exception {
-        if (enabled) {
+        if (enabled && settingsService.getLicenseInfo().isLicenseOrTrialValid()) {
             upnpService.getRegistry().addDevice(createMediaServerDevice());
             LOG.info("Enabling UPnP/DLNA media server");
         } else {

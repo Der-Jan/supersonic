@@ -68,6 +68,10 @@ public class LicenseInfo {
         return trialExpires != null && trialExpires.before(new Date());
     }
 
+    public boolean isLicenseOrTrialValid() {
+        return isLicenseValid() || !isTrialExpired();
+    }
+
     public Date getTrialExpires() {
         return trialExpires;
     }
