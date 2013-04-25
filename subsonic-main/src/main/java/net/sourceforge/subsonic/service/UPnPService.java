@@ -20,7 +20,6 @@ package net.sourceforge.subsonic.service;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +27,6 @@ import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
-import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.Icon;
@@ -36,7 +34,6 @@ import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.LocalService;
 import org.fourthline.cling.model.meta.ManufacturerDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
-import org.fourthline.cling.model.meta.Service;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
@@ -46,12 +43,10 @@ import org.fourthline.cling.support.contentdirectory.AbstractContentDirectorySer
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
-import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.PersonWithRole;
-import org.fourthline.cling.support.model.PortMapping;
 import org.fourthline.cling.support.model.Protocol;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfos;
@@ -77,9 +72,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Version;
-import net.sourceforge.subsonic.service.upnp.ClingRouter;
 import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
-import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -122,26 +115,11 @@ public class UPnPService {
         new Thread(runnable).start();
     }
 
-    public synchronized void stopService() {
-        if (upnpService == null) {
-            return;
-        }
-        try {
-            upnpService.shutdown();
-            upnpService = null;
-        } catch (Throwable x) {
-            LOG.error("Failed to shutdown UPnP service: " + x, x);
-        }
-    }
-
     private synchronized void createService() throws Exception {
         upnpService = new UpnpServiceImpl();
 
-        // Asynch search for other devices (most importantly UPnP-enabled routers)
+        // Asynch search for other devices (most importantly UPnP-enabled routers for port-mapping)
         upnpService.getControlPoint().search();
-
-        // Put my own device in the registry.
-        upnpService.getRegistry().addDevice(createDevice());
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -153,7 +131,17 @@ public class UPnPService {
         });
     }
 
-    private LocalDevice createDevice() throws Exception {
+    public void setMediaServerEnabled(boolean enabled) throws Exception {
+        if (enabled) {
+            upnpService.getRegistry().addDevice(createMediaServerDevice());
+            LOG.info("Enabling UPnP/DLNA media server");
+        } else {
+            upnpService.getRegistry().removeAllLocalDevices();
+            LOG.info("Disabling UPnP/DLNA media server");
+        }
+    }
+
+    private LocalDevice createMediaServerDevice() throws Exception {
 
         DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Subsonic"));
         DeviceType type = new UDADeviceType("MediaServer", 1);
