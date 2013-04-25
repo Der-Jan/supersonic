@@ -11,7 +11,6 @@ TODO IN 4.9
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
-  Test with Tomcat
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
