@@ -42,6 +42,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.upnp.ClingRouter;
 import net.sourceforge.subsonic.service.upnp.NATPMPRouter;
 import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -189,7 +190,7 @@ public class NetworkService {
         private Router findRouter() {
 
             try {
-                Router router = upnpService.createRouter();
+                Router router = ClingRouter.findRouter(upnpService);
                 if (router != null) {
                     return router;
                 }

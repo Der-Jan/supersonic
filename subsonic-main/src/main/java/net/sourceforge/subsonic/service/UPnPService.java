@@ -18,22 +18,16 @@
  */
 package net.sourceforge.subsonic.service;
 
-import java.net.InetAddress;
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang.StringUtils;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
-import org.fourthline.cling.model.action.ActionInvocation;
-import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.DeviceIdentity;
@@ -53,8 +47,6 @@ import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.igd.PortMappingListener;
-import org.fourthline.cling.support.igd.callback.PortMappingAdd;
-import org.fourthline.cling.support.igd.callback.PortMappingDelete;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
@@ -85,6 +77,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.upnp.ClingRouter;
 import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
 import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -212,100 +205,9 @@ public class UPnPService {
 //        return new LocalDevice(identity, type, details, new Icon[] {icon}, new LocalService[] {contentDirectoryservice, connetionManagerService});
     }
 
-    public Router createRouter() {
-        final Service connectionService = findConnectionService();
-        if (connectionService == null) {
-            return null;
-        }
 
-        return new Router() {
-            public void addPortMapping(int externalPort, int internalPort, int leaseDuration) throws Exception {
-                addPortMappingImpl(connectionService, internalPort);
-            }
-            public void deletePortMapping(int externalPort, int internalPort) throws Exception {
-                deletePortMappingImpl(connectionService, internalPort);
-            }
-        };
-    }
-
-    private void addPortMappingImpl(Service connectionService, int port) throws Exception {
-        final Semaphore gotReply = new Semaphore(0);
-        final AtomicReference<String> error = new AtomicReference<String>();
-        upnpService.getControlPoint().execute(
-                new PortMappingAdd(connectionService, createPortMapping(port)) {
-
-                    @Override
-                    public void success(ActionInvocation invocation) {
-                        gotReply.release();
-                    }
-
-                    @Override
-                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                        error.set(String.valueOf(response) + ": " + defaultMsg);
-                        gotReply.release();
-                    }
-                }
-        );
-        gotReply.acquire();
-        if (error.get() != null) {
-            throw new Exception(error.get());
-        }
-    }
-
-    private void deletePortMappingImpl(Service connectionService, int port) throws Exception {
-        final Semaphore gotReply = new Semaphore(0);
-        final AtomicReference<String> error = new AtomicReference<String>();
-        upnpService.getControlPoint().execute(
-                new PortMappingDelete(connectionService, createPortMapping(port)) {
-
-                    @Override
-                    public void success(ActionInvocation invocation) {
-                        gotReply.release();
-                    }
-
-                    @Override
-                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                        error.set(String.valueOf(response) + ": " + defaultMsg);
-                        gotReply.release();
-                    }
-                }
-        );
-        gotReply.acquire();
-        if (error.get() != null) {
-            throw new Exception(error.get());
-        }
-    }
-
-    private PortMapping createPortMapping(int port) throws UnknownHostException {
-        String localIp = InetAddress.getLocalHost().getHostAddress();
-        return new PortMapping(port, localIp, PortMapping.Protocol.TCP, "Subsonic");
-    }
-
-    /**
-     * Returns the UPnP service used for port mapping.
-     */
-    private Service findConnectionService() {
-
-        class ConnectionServiceDiscoverer extends PortMappingListener {
-            ConnectionServiceDiscoverer() {
-                super(new PortMapping[0]);
-            }
-
-            @Override
-            public Service discoverConnectionService(Device device) {
-                return super.discoverConnectionService(device);
-            }
-        }
-
-        ConnectionServiceDiscoverer discoverer = new ConnectionServiceDiscoverer();
-        Collection<Device> devices = upnpService.getRegistry().getDevices();
-        for (Device device : devices) {
-            Service service = discoverer.discoverConnectionService(device);
-            if (service != null) {
-                return service;
-            }
-        }
-        return null;
+    public UpnpService getUpnpService() {
+        return upnpService;
     }
 
     public void setSettingsService(SettingsService settingsService) {

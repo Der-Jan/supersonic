@@ -11,7 +11,9 @@ TODO IN 4.9
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
+Add controls for config
 make menu text more visible
+Move xsd and xml examples to site
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
@@ -28,7 +30,6 @@ other
   reconsider sourceforge
 
 UPnP/DLNA
-  Conflict with existing UPnP classes.
   AbstractMediaReceiverRegistrarService
   MiniDLNA
     http://minidlna.sourceforge.net/
