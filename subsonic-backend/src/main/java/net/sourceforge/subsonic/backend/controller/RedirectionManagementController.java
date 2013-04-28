@@ -23,24 +23,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
 import org.apache.http.params.HttpConnectionParams;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -57,7 +57,8 @@ public class RedirectionManagementController extends MultiActionController {
     public static final Map<String,String> RESERVED_REDIRECTS = new HashMap<String, String>();
 
     static {
-        RESERVED_REDIRECTS.put("forum", "http://www.activeobjects.no/subsonic/forum/index.php");
+        RESERVED_REDIRECTS.put("forum", "http://www.subsonic.org/pages/forum.jsp");
+        RESERVED_REDIRECTS.put("premium", "http://www.subsonic.org/pages/premium.jsp");
         RESERVED_REDIRECTS.put("www", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("web", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("ftp", "http://www.subsonic.org/pages/index.jsp");
