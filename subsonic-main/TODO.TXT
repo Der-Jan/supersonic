@@ -1,32 +1,13 @@
-ipn.log:[2013-04-27 14:27:31,766] INFO  net.sourceforge.subsonic.backend.controller.IPNController -
-Verified payment. https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&last_name=Hendley&subscr_id=I-9WUVPEXK0AB2&
-txn_type=subscr_payment&receiver_email=sindre%40activeobjects.no&residence_country=GB&payment_gross=12.00&
-payment_date=11%3A27%3A20+Apr+27%2C+2013+PDT&payment_status=Completed&first_name=David&payer_email=dave%40the-computer-geek.co.uk&protection_eligibility=Ineligible&
-payer_id=3AGZLQ2NLED8G&verify_sign=AN1CYw0ujXCQOHTJNTv5Kmp.7K7tA-YmCIU37A0I3PRZ.vG5Mtg-sgjE&payment_type=instant&business=sindre%40activeobjects.no&
-mc_fee=0.68&transaction_subject=Subsonic+Premium&notify_version=3.7&mc_currency=USD&payment_fee=0.68&payer_status=verified&
-item_name=Subsonic+Premium&btn_id=57282850&charset=windows-1252&item_number=sub-pre-recurring&ipn_track_id=47e2ba04bed86&mc_gross=12.00&receiver_id=N7FD5SX4A95CQ&txn_id=3WL772641N4896043
+USD  12
+USD 144
 
-https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&
-subscr_date=11%3A27%3A18+Apr+27%2C+2013+PDT&btn_id=57282850&residence_country=GB&first_name=David&item_number=sub-pre-recurring&charset=windows-1252&
-subscr_id=I-9WUVPEXK0AB2&business=sindre%40activeobjects.no&amount3=12.00&mc_currency=USD&reattempt=1&item_name=Subsonic+Premium&
-period3=1+Y&
-txn_type=subscr_signup&verify_sign=AKdoIxUP1-2jNdAygbtjt03x-VL0A4f4l9C4G2j5Dnjrkbd9cCOWJ2LO&payer_id=3AGZLQ2NLED8G&payer_status=verified&notify_version=3.7&receiver_email=sindre%40activeobjects.no&payer_email=dave%40the-computer-geek.co.uk&ipn_track_id=47e2ba04bed86&last_name=Hendley&mc_amount3=12.00&recurring=1
+USD 156
+EUR 115
 
+EUR 120.12
+EUR 115
 
-
-
-
-
-ipn.log.1:[2013-04-17 10:03:55,695] INFO  net.sourceforge.subsonic.backend.controller.IPNController - Verified payment.
-
-https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&amount3=12.00&last_name=Lynch&subscr_id=I-85SY2L99WRLG&
-txn_type=subscr_cancel&receiver_email=sindre%40activeobjects.no&residence_country=GB&
-subscr_date=07%3A03%3A37+Apr+17%2C+2013+PDT&mc_amount3=12.00&first_name=John&period3=1+Y&payer_email=Jhnmlynch%40aol.com&
-payer_id=833S89P7S2WAU&verify_sign=ApRvOtryzo2mxGDnTrgXz89nPFZHAGnCMu3P4PRV4gVnhks1vCgRti4U&business=sindre%40activeobjects.no&
-notify_version=3.7&mc_currency=USD&recurring=1&payer_status=unverified&item_name=Subsonic+Premium&btn_id=57282850&
-charset=windows-1252&item_number=sub-pre-recurring&ipn_track_id=a0542327654c3&reattempt=1
-
-
+EUR 235.12
 
 DONE IN 4.9
 -------------

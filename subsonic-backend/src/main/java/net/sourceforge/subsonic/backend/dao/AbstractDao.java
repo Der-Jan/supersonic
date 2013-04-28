@@ -62,8 +62,8 @@ public class AbstractDao {
 
     protected static class MoneyRowMapper implements ParameterizedRowMapper<Money> {
         public Money mapRow(ResultSet rs, int rowNum) throws SQLException {
-            CurrencyUnit currency = CurrencyUnit.of(rs.getString(1));
-            return Money.of(currency, rs.getDouble(2));
+            CurrencyUnit currency = CurrencyUnit.of(rs.getString(2));
+            return Money.of(currency, rs.getDouble(1));
         }
     }
 }

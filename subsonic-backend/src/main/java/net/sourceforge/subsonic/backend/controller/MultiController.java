@@ -212,11 +212,15 @@ public class MultiController extends MultiActionController {
 
         Money sum = Money.zero(currency);
         for (Money payment : payments) {
-            BigDecimal conversionRate = currencyConversions.get(payment.getCurrencyUnit());
-            if (conversionRate == null) {
-                LOG.warn("No conversion rate found for " + currency + " to " + payment.getCurrencyUnit() + ". Skipping it.");
+            if (currency.equals(payment.getCurrencyUnit())) {
+                sum = sum.plus(payment);
             } else {
-                sum = sum.plus(payment.convertedTo(currency, conversionRate, RoundingMode.HALF_UP));
+                BigDecimal conversionRate = currencyConversions.get(payment.getCurrencyUnit());
+                if (conversionRate == null) {
+                    LOG.warn("No conversion rate found for " + currency + " to " + payment.getCurrencyUnit() + ". Skipping it.");
+                } else {
+                    sum = sum.plus(payment.convertedTo(currency, conversionRate, RoundingMode.HALF_UP));
+                }
             }
         }
         return sum;
