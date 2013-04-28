@@ -189,9 +189,10 @@ public class IPNController implements Controller {
         String payerFirstName = request.getParameter("first_name");
         String payerLastName = request.getParameter("last_name");
         String payerCountry = request.getParameter("address_country");
-        Date validTo = computeValidTo(request);
 
         Payment payment = paymentDao.getPaymentByTransactionId(txnId);
+        Date validTo = computeValidTo(payment, request);
+
         if (payment == null) {
             payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
@@ -216,10 +217,10 @@ public class IPNController implements Controller {
         LOG.info("Received " + payment);
     }
 
-    private Date computeValidTo(HttpServletRequest request) {
+    private Date computeValidTo(Payment existingPayment, HttpServletRequest request) {
         String duration = request.getParameter("option_selection1");
         if (duration == null) {
-            return null;
+            return null; // Old-school donation. Use no end date.
         }
         Matcher matcher = SUBSCRIPTION_DURATION_PATTERN.matcher(duration);
         if (!matcher.matches()) {
@@ -227,10 +228,15 @@ public class IPNController implements Controller {
         }
 
         int years = Integer.parseInt(matcher.group(1));
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, years);
+        Calendar validTo = Calendar.getInstance();
 
-        return calendar.getTime();
+        // If an existing payment exists, add to the existing end date.
+        if (existingPayment != null && existingPayment.getValidTo() != null) {
+            validTo.setTime(existingPayment.getValidTo());
+        }
+
+        validTo.add(Calendar.YEAR, years);
+        return validTo.getTime();
     }
 
     private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {
