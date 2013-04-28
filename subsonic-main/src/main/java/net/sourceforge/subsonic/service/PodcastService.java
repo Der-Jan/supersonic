@@ -18,26 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.PodcastDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.PodcastChannel;
-import net.sourceforge.subsonic.domain.PodcastEpisode;
-import net.sourceforge.subsonic.domain.PodcastStatus;
-import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -57,6 +37,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.PodcastDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.PodcastChannel;
+import net.sourceforge.subsonic.domain.PodcastEpisode;
+import net.sourceforge.subsonic.domain.PodcastStatus;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Provides services for Podcast reception.
@@ -95,17 +96,20 @@ public class PodcastService {
     }
 
     public synchronized void init() {
-        // Clean up partial downloads.
-        for (PodcastChannel channel : getAllChannels()) {
-            for (PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
-                if (episode.getStatus() == PodcastStatus.DOWNLOADING) {
-                    deleteEpisode(episode.getId(), false);
-                    LOG.info("Deleted Podcast episode '" + episode.getTitle() + "' since download was interrupted.");
+        try {
+            // Clean up partial downloads.
+            for (PodcastChannel channel : getAllChannels()) {
+                for (PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
+                    if (episode.getStatus() == PodcastStatus.DOWNLOADING) {
+                        deleteEpisode(episode.getId(), false);
+                        LOG.info("Deleted Podcast episode '" + episode.getTitle() + "' since download was interrupted.");
+                    }
                 }
             }
+            schedule();
+        } catch (Throwable x) {
+            LOG.error("Failed to initialize PodcastService: " + x, x);
         }
-
-        schedule();
     }
 
     public synchronized void schedule() {
@@ -180,7 +184,8 @@ public class PodcastService {
      *         reverse chronological order (newest episode first).
      */
     public List<PodcastEpisode> getEpisodes(int channelId, boolean includeDeleted) {
-        List<PodcastEpisode> all = podcastDao.getEpisodes(channelId);
+        List<PodcastEpisode> all = filterAllowed(podcastDao.getEpisodes(channelId));
+
         addMediaFileIdToEpisodes(all);
         if (includeDeleted) {
             return all;
@@ -193,6 +198,16 @@ public class PodcastService {
             }
         }
         return filtered;
+    }
+
+    private List<PodcastEpisode> filterAllowed(List<PodcastEpisode> episodes) {
+        List<PodcastEpisode> result = new ArrayList<PodcastEpisode>(episodes.size());
+        for (PodcastEpisode episode : episodes) {
+            if (episode.getPath() == null || securityService.isReadAllowed(new File(episode.getPath()))) {
+                result.add(episode);
+            }
+        }
+        return result;
     }
 
     public PodcastEpisode getEpisode(int episodeId, boolean includeDeleted) {
@@ -277,7 +292,7 @@ public class PodcastService {
         } catch (Exception x) {
             LOG.warn("Failed to get/parse RSS file for Podcast channel " + channel.getUrl(), x);
             channel.setStatus(PodcastStatus.ERROR);
-            channel.setErrorMessage(x.toString());
+            channel.setErrorMessage(getErrorMessage(x));
             podcastDao.updateChannel(channel);
         } finally {
             IOUtils.closeQuietly(in);
@@ -291,6 +306,10 @@ public class PodcastService {
                 }
             }
         }
+    }
+
+    private String getErrorMessage(Exception x) {
+        return x.getMessage() != null ? x.getMessage() : x.toString();
     }
 
     public void downloadEpisode(final PodcastEpisode episode) {
@@ -410,6 +429,11 @@ public class PodcastService {
 
         HttpClient client = new DefaultHttpClient();
         try {
+
+            if (!isLicensedOrTrial()) {
+                throw new Exception("Sorry, the trial period is expired.");
+            }
+
             PodcastChannel channel = getChannel(episode.getChannelId());
 
             HttpConnectionParams.setConnectionTimeout(client.getParams(), 2 * 60 * 1000); // 2 minutes
@@ -464,13 +488,21 @@ public class PodcastService {
         } catch (Exception x) {
             LOG.warn("Failed to download Podcast from " + episode.getUrl(), x);
             episode.setStatus(PodcastStatus.ERROR);
-            episode.setErrorMessage(x.toString());
+            episode.setErrorMessage(getErrorMessage(x));
             podcastDao.updateEpisode(episode);
         } finally {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
             client.getConnectionManager().shutdown();
         }
+    }
+
+    private boolean isLicensedOrTrial() {
+        boolean licensed = settingsService.isLicenseValid();
+        Date trialExpires = settingsService.getTrialExpires();
+        boolean trialValid = trialExpires.after(new Date());
+
+        return licensed || trialValid;
     }
 
     private synchronized void deleteObsoleteEpisodes(PodcastChannel channel) {

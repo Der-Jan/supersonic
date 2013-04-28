@@ -33,6 +33,12 @@
         <td></td>
         <td>The playlist comment.</td>
     </tr>
+    <tr>
+        <td><code>public</code></td>
+        <td>No</td>
+        <td></td>
+        <td><code>true</code> if the playlist should be visible to all users, <code>false</code> otherwise.</td>
+    </tr>
     <%--TODO: Add later--%>
     <%--<tr>--%>
         <%--<td><code>usernameToAdd</code></td>--%>
@@ -46,13 +52,13 @@
         <%--<td></td>--%>
         <%--<td>Disallow this user to listen to this playlist. Multiple parameters allowed.</td>--%>
     <%--</tr>--%>
-    <tr>
+    <tr class="table-altrow">
         <td><code>songIdToAdd</code></td>
         <td>No</td>
         <td></td>
         <td>Add this song with this ID to the playlist. Multiple parameters allowed.</td>
     </tr>
-    <tr class="table-altrow">
+    <tr>
         <td><code>songIndexToRemove</code></td>
         <td>No</td>
         <td></td>

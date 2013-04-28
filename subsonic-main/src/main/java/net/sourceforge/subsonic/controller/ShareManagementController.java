@@ -28,15 +28,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.service.*;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.ShareService;
 
 /**
  * Controller for sharing music on Twitter, Facebook etc.
@@ -68,6 +72,7 @@ public class ShareManagementController extends MultiActionController {
         map.put("user", securityService.getCurrentUser(request));
         Share share = shareService.createShare(request, files);
         map.put("playUrl", shareService.getShareUrl(share));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         return new ModelAndView("createShare", "model", map);
     }

@@ -18,20 +18,24 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.domain.*;
-import net.sourceforge.subsonic.service.*;
-import net.sourceforge.subsonic.service.metadata.MetaData;
-import net.sourceforge.subsonic.service.metadata.MetaDataParser;
-import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
-import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.*;
-import org.springframework.web.servlet.mvc.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import javax.servlet.http.*;
-import java.util.*;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
+import net.sourceforge.subsonic.service.metadata.MetaDataParser;
+import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
 
 /**
  * Controller for the page used to edit MP3 tags.
@@ -47,7 +51,7 @@ public class EditTagsController extends ParameterizableViewController {
 
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile dir = mediaFileService.getMediaFile(id);
-        List<MediaFile> files = mediaFileService.getChildrenOf(dir, true, false, true);
+        List<MediaFile> files = mediaFileService.getChildrenOf(dir, true, false, true, false);
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (!files.isEmpty()) {
@@ -72,19 +76,18 @@ public class EditTagsController extends ParameterizableViewController {
 
     private Song createSong(MediaFile file, int index) {
         MetaDataParser parser = metaDataParserFactory.getParser(file.getFile());
-        MetaData metaData = parser.getRawMetaData(file.getFile());
 
         Song song = new Song();
         song.setId(file.getId());
         song.setFileName(FilenameUtils.getBaseName(file.getPath()));
-        song.setTrack(metaData.getTrackNumber());
+        song.setTrack(file.getTrackNumber());
         song.setSuggestedTrack(index + 1);
-        song.setTitle(metaData.getTitle());
+        song.setTitle(file.getTitle());
         song.setSuggestedTitle(parser.guessTitle(file.getFile()));
-        song.setArtist(metaData.getArtist());
-        song.setAlbum(metaData.getAlbumName());
-        song.setYear(metaData.getYear());
-        song.setGenre(metaData.getGenre());
+        song.setArtist(file.getArtist());
+        song.setAlbum(file.getAlbumName());
+        song.setYear(file.getYear());
+        song.setGenre(file.getGenre());
         return song;
     }
 

@@ -14,7 +14,7 @@
    height="50.308388"
    id="svg9553"
    sodipodi:version="0.32"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.2 r9819"
    version="1.0"
    sodipodi:docname="media-buttons.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
@@ -3097,7 +3097,7 @@
        fy="126.67593"
        r="72.831993"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.1359613,-4.2769733e-7,3.5438615e-7,0.96113667,-308.19658,-36.549412)" />
+       gradientTransform="matrix(1.1359613,-4.2769733e-7,3.5438615e-7,0.96113667,-1051.6175,24.38673)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4773"
@@ -3266,6 +3266,64 @@
        x2="567.50696"
        y2="-343.19653"
        gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5004"
+       id="radialGradient4371"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.8705582,0,0,0.8705582,68.73839,-5.1011988)"
+       cx="531.03717"
+       cy="-27.63166"
+       fx="531.03717"
+       fy="-27.63166"
+       r="37.708893" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient10611"
+       id="linearGradient4373"
+       gradientUnits="userSpaceOnUse"
+       x1="531.00635"
+       y1="-1.2397567"
+       x2="531.00635"
+       y2="-76.400444" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5037"
+       id="linearGradient4375"
+       gradientUnits="userSpaceOnUse"
+       x1="557.55371"
+       y1="-39.055664"
+       x2="557.55371"
+       y2="-3.3467712" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5037"
+       id="linearGradient4377"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.8536894,-0.3336691,0.3336691,0.8536894,-61.771803,30.600315)"
+       x1="629.32501"
+       y1="53.939373"
+       x2="632.47821"
+       y2="25.596931" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5037"
+       id="linearGradient4380"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.57841708,-0.22569395,0.22607743,0.57743594,96.784857,190.19834)"
+       x1="629.32501"
+       y1="53.939373"
+       x2="632.47821"
+       y2="25.596931" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5037"
+       id="linearGradient4387"
+       gradientUnits="userSpaceOnUse"
+       x1="557.55371"
+       y1="-39.055664"
+       x2="557.55371"
+       y2="-3.3467712" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3277,17 +3335,17 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="364.26016"
-     inkscape:cy="-32.795796"
+     inkscape:zoom="1.8051684"
+     inkscape:cx="-16.579945"
+     inkscape:cy="-1.4588072"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:window-width="1440"
-     inkscape:window-height="852"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      showgrid="false"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata9558">
     <rdf:RDF>
@@ -3487,11 +3545,14 @@
     </g>
     <g
        id="Pause"
-       transform="matrix(1.1267673,0,0,1.1286805,-617.38416,233.13169)"
-       inkscape:label="Pause">
+       transform="matrix(1.1267673,0,0,1.1286805,-618.78217,234.40862)"
+       inkscape:label="Pause"
+       inkscape:export-filename="C:\projects\subsonic\subsonic-android\res\drawable-hdpi\Pause.png"
+       inkscape:export-xdpi="45.779999"
+       inkscape:export-ydpi="45.779999">
       <path
          sodipodi:type="arc"
-         style="fill:url(#radialGradient30507);fill-opacity:1;fill-rule:nonzero;stroke:url(#linearGradient30509);stroke-width:2.95674324;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:url(#radialGradient30507);fill-opacity:1;fill-rule:nonzero;stroke:url(#linearGradient30509);stroke-width:2.95674324;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
          id="path30495"
          sodipodi:cx="531.03717"
          sodipodi:cy="-39.409218"
@@ -3503,18 +3564,20 @@
          sodipodi:end="6.2625697"
          sodipodi:open="true" />
       <path
-         style="opacity:0.5;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.63936031;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter31539)"
-         d="M 534.22565,-198.21413 C 532.31154,-198.21413 530.77816,-196.7304 530.77816,-194.88235 L 530.77816,-179.28492 C 530.77816,-177.43687 532.31153,-175.95315 534.22565,-175.95315 C 536.13978,-175.95315 537.67312,-177.43688 537.67316,-179.28492 L 537.67316,-194.88235 C 537.67316,-196.7304 536.13976,-198.21413 534.22565,-198.21413 z M 546.48639,-198.21413 C 544.57225,-198.21413 543.03889,-196.7304 543.03889,-194.88235 L 543.03889,-179.28492 C 543.03889,-177.43687 544.57225,-175.95315 546.48639,-175.95315 C 548.40051,-175.95315 549.93386,-177.43688 549.93387,-179.28492 L 549.93387,-194.88235 C 549.93387,-196.7304 548.40051,-198.21413 546.48639,-198.21413 z "
+         style="opacity:0.5;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.63936031;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter31539)"
+         d="m 534.22565,-198.21413 c -1.91411,0 -3.44749,1.48373 -3.44749,3.33178 l 0,15.59743 c 0,1.84805 1.53337,3.33177 3.44749,3.33177 1.91413,0 3.44747,-1.48373 3.44751,-3.33177 l 0,-15.59743 c 0,-1.84805 -1.5334,-3.33178 -3.44751,-3.33178 z m 12.26074,0 c -1.91414,0 -3.4475,1.48373 -3.4475,3.33178 l 0,15.59743 c 0,1.84805 1.53336,3.33177 3.4475,3.33177 1.91412,0 3.44747,-1.48373 3.44748,-3.33177 l 0,-15.59743 c 0,-1.84805 -1.53336,-3.33178 -3.44748,-3.33178 z"
          id="path31509"
-         sodipodi:nodetypes="cccsccccccsccc" />
+         sodipodi:nodetypes="cccsccccccsccc"
+         inkscape:connector-curvature="0" />
       <path
          sodipodi:nodetypes="cccsccccccsccc"
          id="path30519"
-         d="M 533.34177,-199.45157 C 531.42766,-199.45157 529.89428,-197.96784 529.89428,-196.11979 L 529.89428,-180.52236 C 529.89428,-178.67431 531.42765,-177.19059 533.34177,-177.19059 C 535.2559,-177.19059 536.78924,-178.67432 536.78928,-180.52236 L 536.78928,-196.11979 C 536.78928,-197.96784 535.25588,-199.45157 533.34177,-199.45157 z M 545.60251,-199.45157 C 543.68837,-199.45157 542.15501,-197.96784 542.15501,-196.11979 L 542.15501,-180.52236 C 542.15501,-178.67431 543.68837,-177.19059 545.60251,-177.19059 C 547.51663,-177.19059 549.04998,-178.67432 549.04999,-180.52236 L 549.04999,-196.11979 C 549.04999,-197.96784 547.51663,-199.45157 545.60251,-199.45157 z "
-         style="fill:#fffae0;fill-opacity:1;fill-rule:nonzero;stroke:#88732a;stroke-width:1.63936031;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+         d="m 533.34177,-199.45157 c -1.91411,0 -3.44749,1.48373 -3.44749,3.33178 l 0,15.59743 c 0,1.84805 1.53337,3.33177 3.44749,3.33177 1.91413,0 3.44747,-1.48373 3.44751,-3.33177 l 0,-15.59743 c 0,-1.84805 -1.5334,-3.33178 -3.44751,-3.33178 z m 12.26074,0 c -1.91414,0 -3.4475,1.48373 -3.4475,3.33178 l 0,15.59743 c 0,1.84805 1.53336,3.33177 3.4475,3.33177 1.91412,0 3.44747,-1.48373 3.44748,-3.33177 l 0,-15.59743 c 0,-1.84805 -1.53336,-3.33178 -3.44748,-3.33178 z"
+         style="fill:#fffae0;fill-opacity:1;fill-rule:nonzero;stroke:#88732a;stroke-width:1.63936031;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         inkscape:connector-curvature="0" />
       <path
          sodipodi:type="arc"
-         style="fill:url(#linearGradient30511);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:url(#linearGradient30511);fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="path30503"
          sodipodi:cx="557.55371"
          sodipodi:cy="-21.201218"
@@ -3523,9 +3586,10 @@
          d="m 581.24179,-21.201218 c 0,9.860739 -10.60551,17.8544468 -23.68808,17.8544468 -13.08256,0 -23.68808,-7.9937078 -23.68808,-17.8544468 0,-9.860738 10.60552,-17.854446 23.68808,-17.854446 13.08257,0 23.68808,7.993708 23.68808,17.854446 z"
          transform="matrix(0.6092794,0,0,0.6230359,199.76614,-183.79924)" />
       <path
-         style="fill:url(#linearGradient30526);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         d="M 521.62335,-179.68355 C 525.88634,-170.21588 536.89696,-165.6461 546.68839,-169.46664 C 556.47449,-173.2851 561.46343,-184.0879 558.1763,-193.92779 C 555.52046,-187.27203 550.20784,-181.69546 543.00147,-178.88359 C 535.78809,-176.06898 528.10025,-176.58172 521.62335,-179.68355 z "
-         id="path30505" />
+         style="fill:url(#linearGradient30526);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         d="m 521.62335,-179.68355 c 4.26299,9.46767 15.27361,14.03745 25.06504,10.21691 9.7861,-3.81846 14.77504,-14.62126 11.48791,-24.46115 -2.65584,6.65576 -7.96846,12.23233 -15.17483,15.0442 -7.21338,2.81461 -14.90122,2.30187 -21.37812,-0.79996 z"
+         id="path30505"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        id="g7411"
@@ -3635,17 +3699,6 @@
          id="rect4836"
          style="fill:url(#linearGradient4849);fill-opacity:1;stroke:none" />
     </g>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1.04934024999999997;stroke-opacity:1"
-       id="rect4865"
-       width="80.950653"
-       height="80.950661"
-       x="24.216793"
-       y="-137.45193"
-       ry="0"
-       inkscape:export-filename="i:/Projects/subsonic/subsonic-android/res/drawable-hdpi-v4/media_shuffle_normal.png"
-       inkscape:export-xdpi="59.27"
-       inkscape:export-ydpi="59.27" />
     <rect
        inkscape:export-ydpi="59.268303"
        inkscape:export-xdpi="59.268303"
@@ -4364,7 +4417,7 @@
        xml:space="preserve"
        id="flowRoot4492"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       transform="translate(-479.37881,-316.53225)"><flowRegion
+       transform="translate(-483.81053,-311.54657)"><flowRegion
          id="flowRegion4494"><rect
            id="rect4496"
            width="369.8168"
@@ -4991,8 +5044,8 @@
        id="rect3548"
        width="145.66399"
        height="145.66399"
-       x="419.80762"
-       y="24.391977"
+       x="-323.61331"
+       y="85.328125"
        ry="0"
        inkscape:export-filename="/Users/sindre/Projects/subsonic/subsonic-android/res/drawable/album_art_background.png"
        inkscape:export-xdpi="158.17"
@@ -5125,5 +5178,43 @@
          x="301.47205"
          y="-341.0293"
          style="font-size:26.63646507px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;font-family:Sans;-inkscape-font-specification:Sans">1</tspan></text>
-  </g>
+    <g
+       id="g5225"
+       transform="translate(-11.633264,38.223583)"
+       inkscape:export-filename="C:\projects\subsonic\subsonic-android\res\drawable-mdpi\stat_notify_playing.png"
+       inkscape:export-xdpi="25.809999"
+       inkscape:export-ydpi="25.809999">
+      <rect
+         inkscape:export-ydpi="59.27"
+         inkscape:export-xdpi="59.27"
+         inkscape:export-filename="i:/Projects/subsonic/subsonic-android/res/drawable-hdpi-v4/media_shuffle_normal.png"
+         ry="0"
+         y="78.058151"
+         x="-277.12241"
+         height="83.685043"
+         width="83.685036"
+         id="rect4865"
+         style="fill:none;stroke:none" />
+      <path
+         inkscape:export-ydpi="61.02"
+         inkscape:export-xdpi="61.02"
+         inkscape:export-filename="C:\projects\subsonic\subsonic-android\res\drawable-xhdpi\stat_notify_playing2.png"
+         inkscape:connector-curvature="0"
+         id="path4365"
+         d="m -264.07448,87.316655 0,65.168045 57.58919,-32.33515 -57.58919,-32.832895 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:5.30547714;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4492-5"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       transform="translate(-444.31901,-27.625506)"><flowRegion
+         id="flowRegion4494-6"><rect
+           id="rect4496-4"
+           width="203.62732"
+           height="45.131508"
+           x="120.91526"
+           y="93.441902"
+           style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara4556-7">stat_notify_playing.png</flowPara></flowRoot>  </g>
 </svg>

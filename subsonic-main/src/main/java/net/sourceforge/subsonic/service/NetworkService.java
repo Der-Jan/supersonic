@@ -225,7 +225,7 @@ public class NetworkService {
 
             int port = settingsService.getPort();
             boolean trial = !settingsService.isLicenseValid();
-            Date trialExpires = settingsService.getUrlRedirectTrialExpires();
+            Date trialExpires = settingsService.getTrialExpires();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("serverId", settingsService.getServerId()));
@@ -253,11 +253,13 @@ public class NetworkService {
                 switch (status.getStatusCode()) {
                     case HttpStatus.SC_BAD_REQUEST:
                         urlRedirectionStatus.setText(EntityUtils.toString(response.getEntity()));
+                        testUrlRedirection = false;
                         break;
                     case HttpStatus.SC_OK:
                         urlRedirectionStatus.setText(enable ? "Successfully registered web address." : "Web address disabled.");
                         break;
                     default:
+                        testUrlRedirection = false;
                         throw new IOException(status.getStatusCode() + " " + status.getReasonPhrase());
                 }
 

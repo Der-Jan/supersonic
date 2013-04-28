@@ -76,9 +76,9 @@ public class DaoHelper {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                System.err.println("Shutting down database.");
+                System.err.println("Shutting down database...");
                 getJdbcTemplate().execute("shutdown");
-                System.err.println("Done.");
+                System.err.println("Shutting down database - Done!");
             }
         });
     }

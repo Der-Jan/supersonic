@@ -25,7 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.CheckedTextView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
@@ -41,7 +44,7 @@ import java.util.WeakHashMap;
  *
  * @author Sindre Mehus
  */
-public class SongView extends LinearLayout implements Checkable {
+public class SongView extends RelativeLayout implements Checkable {
 
     private static final String TAG = SongView.class.getSimpleName();
     private static final WeakHashMap<SongView, ?> INSTANCES = new WeakHashMap<SongView, Object>();
@@ -50,8 +53,8 @@ public class SongView extends LinearLayout implements Checkable {
     private CheckedTextView checkedTextView;
     private TextView titleTextView;
     private TextView artistTextView;
-    private TextView durationTextView;
     private TextView statusTextView;
+    private ImageView downloadButton;
     private MusicDirectory.Entry song;
 
     public SongView(Context context) {
@@ -61,9 +64,15 @@ public class SongView extends LinearLayout implements Checkable {
         checkedTextView = (CheckedTextView) findViewById(R.id.song_check);
         titleTextView = (TextView) findViewById(R.id.song_title);
         artistTextView = (TextView) findViewById(R.id.song_artist);
-        durationTextView = (TextView) findViewById(R.id.song_duration);
         statusTextView = (TextView) findViewById(R.id.song_status);
+        downloadButton = (ImageView) findViewById(R.id.song_download_button);
 
+        downloadButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SongView.this.showContextMenu();
+            }
+        });
         INSTANCES.put(this, null);
         int instanceCount = INSTANCES.size();
         if (instanceCount > 50) {
@@ -81,7 +90,7 @@ public class SongView extends LinearLayout implements Checkable {
         	bitRate = String.format(getContext().getString(R.string.song_details_kbps), song.getBitRate());
         }
         
-        String fileFormat = null;
+        String fileFormat;
         if (song.getTranscodedSuffix() != null && !song.getTranscodedSuffix().equals(song.getSuffix())) {
         	fileFormat = String.format("%s > %s", song.getSuffix(), song.getTranscodedSuffix());
     	} else {
@@ -94,7 +103,7 @@ public class SongView extends LinearLayout implements Checkable {
 
         titleTextView.setText(song.getTitle());
         artistTextView.setText(artist);
-        durationTextView.setText(Util.formatDuration(song.getDuration()));
+        statusTextView.setText(Util.formatDuration(song.getDuration()));
         checkedTextView.setVisibility(checkable && !song.isVideo() ? View.VISIBLE : View.GONE);
 
         update();
@@ -110,24 +119,21 @@ public class SongView extends LinearLayout implements Checkable {
         File completeFile = downloadFile.getCompleteFile();
         File partialFile = downloadFile.getPartialFile();
 
-        int leftImage = 0;
-        int rightImage = 0;
-
         if (completeFile.exists()) {
-            leftImage = downloadFile.isSaved() ? R.drawable.saved : R.drawable.downloaded;
+            statusTextView.setText(Util.formatDuration(song.getDuration()));
+            downloadButton.setImageResource(downloadFile.isSaved() ? R.drawable.download_pinned : R.drawable.download_cached);
         }
-
-        if (downloadFile.isDownloading() && !downloadFile.isDownloadCancelled() && partialFile.exists()) {
+        else if (downloadFile.isDownloading() && !downloadFile.isDownloadCancelled() && partialFile.exists()) {
             statusTextView.setText(Util.formatLocalizedBytes(partialFile.length(), getContext()));
-            rightImage = R.drawable.downloading;
+            downloadButton.setImageResource(R.drawable.download_streaming);
         } else {
-            statusTextView.setText(null);
+            statusTextView.setText(Util.formatDuration(song.getDuration()));
+            downloadButton.setImageDrawable(null);
         }
-        statusTextView.setCompoundDrawablesWithIntrinsicBounds(leftImage, 0, rightImage, 0);
 
         boolean playing = downloadService.getCurrentPlaying() == downloadFile;
         if (playing) {
-            titleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.stat_notify_playing, 0, 0, 0);
+            titleTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.now_playing, 0);
         } else {
             titleTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }

@@ -162,7 +162,7 @@ ol {
 #nav li a span {
 	display: block;
 	float: left;
-	padding: 12px 11px 12px 11px; /* Change for narrower menu items. */
+	padding: 12px 13px 12px 13px; /* Change for narrower menu items. */
 	background: url('../img/topnav-div.gif') right 1px no-repeat;
 }
 #nav li a:hover, #nav li a.active {
@@ -177,6 +177,9 @@ ol {
 #nav li a.open {
 	background: url('../img/topnav-hover.gif') 0px -49px repeat-x !important;
 	color: #ffffff !important;
+}
+#nav li#menu-premium a{
+    color: #FFDA23 !important;
 }
 #nav li#menu-home a.open {
 	background: url('../img/home-rollover.gif') 1px -49px no-repeat !important;
@@ -275,6 +278,13 @@ th.param-heading {
 	background: url('../img/header.gif') 0px 0px no-repeat;
 	color: #fff;
 	font-weight: bold;
+	padding: 6px 10px 6px 10px;
+	position: relative;
+}
+.featureitem .noheading {
+    border-top: 1px solid #CBCEDC;
+    border-left: 1px solid #CBCEDC;
+    border-right: 1px solid #CBCEDC;
 	padding: 6px 10px 6px 10px;
 	position: relative;
 }

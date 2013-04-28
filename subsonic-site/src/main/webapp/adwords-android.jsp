@@ -39,7 +39,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt=""/></a>
 <a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt=""/></a>
 <a href="inc/img/screenshots/screen14.png"><img src="inc/img/screenshots/thumb14.png" alt=""/></a>
-<a href="inc/img/screenshots/screen15.png"><img src="inc/img/screenshots/thumb15.png" alt=""/></a>
 
 </body>
 </html>

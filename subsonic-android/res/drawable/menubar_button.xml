@@ -7,7 +7,7 @@
     <item android:state_enabled="true"
           android:drawable="@drawable/menubar_button_normal"/>
 
-    <item android:drawable="@drawable/menubar_button_disabled"/>
+    <item android:drawable="@drawable/menubar_button_selected"/>
 
 </selector>
         

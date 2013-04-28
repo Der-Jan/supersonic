@@ -10,14 +10,14 @@
             <a href="inc/img/screenshots/screen42.png"><img src="inc/img/screenshots/thumb42.png" alt="" class="img-center"/></a>
 
             <ul class="list">
-                <li>MPlayer-based media playback.</li>
+                <li>VLC-based audio and video playback.</li>
                 <li>Tray icon and media keys supported.</li>
                 <li>Multiple Subsonic servers can be used.</li>
                 <li>The playlist is saved between sessions.</li>
                 <li>Indexes, Podcasts and Playlists fetched from Subsonic server.</li>
                 <li>Cover arts stored locally to improve performance.</li>
             </ul>
-            <p>Subclient is made by Alejandro Celaya Alastru&eacute; and is free of charge.</p>
+            <p>Subclient is made by Alejandro Celaya Alastru&eacute; and is free of charge (but accepts donations).</p>
         </div>
     </div>
 </div>

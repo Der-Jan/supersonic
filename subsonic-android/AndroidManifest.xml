@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.sourceforge.subsonic.androidapp"
           android:installLocation="auto"
-          android:versionCode="46"
-          android:versionName="3.3">
+          android:versionCode="50"
+          android:versionName="3.7">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -12,12 +12,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
-    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10"/>
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16"/>
 
     <supports-screens android:anyDensity="true" android:xlargeScreens="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
 
-    <application android:label="@string/common.appname" android:icon="@drawable/launch" android:theme="@style/Wheat">
+    <application android:label="@string/common.appname" android:icon="@drawable/launch" android:theme="@style/SubsonicTheme">
 
         <activity android:name="net.sourceforge.subsonic.androidapp.activity.MainActivity"
                   android:label="Subsonic"
@@ -51,7 +52,7 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name="net.sourceforge.subsonic.androidapp.activity.SettingsActivity"
-                  android:theme="@android:style/Theme"
+                  android:theme="@style/SubsonicTheme.NoBackground"
                   android:configChanges="orientation|keyboardHidden"
                   android:launchMode="singleTask"/>
 
@@ -71,8 +72,8 @@
         <activity android:name="net.sourceforge.subsonic.androidapp.activity.VoiceQueryReceiverActivity"
                   android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -84,22 +85,29 @@
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
 
+        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView"/>
+
+        <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
         <service android:name="net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl"
                  android:label="Subsonic Download Service"/>
 
         <receiver android:name="net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver">
             <intent-filter android:priority="999">
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
         </receiver>
 
         <receiver android:name="net.sourceforge.subsonic.androidapp.receiver.BluetoothIntentReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.a2dp.action.SINK_STATE_CHANGED"/>
+                <action android:name="android.bluetooth.headset.profile.action.CONNECTION_STATE_CHANGED"/>
+                <!-- API Level 11 -->
             </intent-filter>
         </receiver>
 
-        <receiver android:name="net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider" >
+        <receiver android:name="net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

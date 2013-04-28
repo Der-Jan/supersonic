@@ -18,25 +18,36 @@
  */
 package net.sourceforge.subsonic.backend.controller;
 
-import org.apache.log4j.Logger;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.params.HttpConnectionParams;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.Date;
-import java.io.UnsupportedEncodingException;
 
-import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.Subscription;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
+import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
+import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 
 /**
  * Processes IPNs (Instant Payment Notifications) from PayPal.
@@ -48,8 +59,10 @@ public class IPNController implements Controller {
     private static final Logger LOG = Logger.getLogger(IPNController.class);
 
     private static final String PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr";
+    private static final Pattern SUBSCRIPTION_DURATION_PATTERN = Pattern.compile("(\\d+) year(s)?");
 
     private PaymentDao paymentDao;
+    private SubscriptionDao subscriptionDao;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
@@ -62,13 +75,188 @@ public class IPNController implements Controller {
             } else {
                 LOG.warn("Failed to verify payment. " + url);
             }
-            createOrUpdatePayment(request);
+            processIpnRequest(request);
 
             return null;
         } catch (Exception x) {
             LOG.error("Failed to process IPN.", x);
             throw x;
         }
+    }
+
+    private void processIpnRequest(HttpServletRequest request) throws ServletRequestBindingException {
+        if (isSubscriptionRequest(request)) {
+            processSubscriptionRequest(request);
+        } else {
+            processPaymentRequest(request);
+        }
+    }
+
+    private void processSubscriptionRequest(HttpServletRequest request) throws ServletRequestBindingException {
+        createSubscriptionNotification(request);
+        if (isSubscriptionPayment(request)) {
+            createSubscriptionPayment(request);
+        } else if (isSubscriptionStart(request)) {
+            startSubscription(request);
+        } else if (isSubscriptionEnd(request)) {
+            stopSubscription(request);
+        }
+    }
+
+    private void startSubscription(HttpServletRequest request) {
+        Subscription subscription = getOrCreateSubscription(request);
+        Date now = new Date();
+        subscription.setValidFrom(now);
+        subscription.setValidTo(null);
+        subscription.setUpdated(now);
+        subscriptionDao.updateSubscription(subscription);
+        LOG.info("Start subscription for " + subscription.getEmail());
+    }
+
+    private void stopSubscription(HttpServletRequest request) {
+        Subscription subscription = getOrCreateSubscription(request);
+        Date now = new Date();
+        subscription.setValidTo(now);
+        subscription.setUpdated(now);
+        subscriptionDao.updateSubscription(subscription);
+        LOG.info("Stop subscription for " + subscription.getEmail());
+    }
+
+    private Subscription getOrCreateSubscription(HttpServletRequest request) {
+        String email = request.getParameter("payer_email");
+        Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
+        if (subscription != null) {
+            return subscription;
+        }
+
+        Date now = new Date();
+        subscription = new Subscription(null,
+                request.getParameter("subscr_id"),
+                request.getParameter("payer_id"),
+                request.getParameter("btn_id"),
+                email,
+                request.getParameter("first_name"),
+                request.getParameter("last_name"),
+                request.getParameter("address_country"),
+                now,
+                null,
+                ProcessingStatus.NEW,
+                now,
+                now);
+        subscriptionDao.createSubscription(subscription);
+        return subscriptionDao.getSubscriptionByEmail(email);
+    }
+
+    private boolean isSubscriptionRequest(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.startsWith("subscr_");
+    }
+
+    private boolean isSubscriptionPayment(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_payment");
+    }
+
+    private boolean isSubscriptionStart(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_signup");
+    }
+
+    private boolean isSubscriptionEnd(HttpServletRequest request) {
+        String txnType = request.getParameter("txn_type");
+        return txnType.equals("subscr_cancel") || txnType.equals("subscr_eot");
+    }
+
+    private void createSubscriptionPayment(HttpServletRequest request) throws ServletRequestBindingException {
+        String subscrId = request.getParameter("subscr_id");
+        String payerId = request.getParameter("payer_id");
+        String btnId = request.getParameter("btn_id");
+        String ipnTrackId = request.getParameter("ipn_track_id");
+        String txnId = request.getParameter("txn_id");
+        String currency = request.getParameter("mc_currency");
+        String email = request.getParameter("payer_email");
+        Double amount = ServletRequestUtils.getDoubleParameter(request, "mc_gross");
+        Double fee = ServletRequestUtils.getDoubleParameter(request, "mc_fee");
+        Date created = new Date();
+
+        LOG.info("Received subscription payment of " + amount + " " + currency + " from " + email);
+
+        subscriptionDao.createSubscriptionPayment(new SubscriptionPayment(null, subscrId, payerId, btnId,
+                ipnTrackId, txnId, email, amount, fee, currency, created));
+    }
+
+    private void createSubscriptionNotification(HttpServletRequest request) {
+        String subscrId = request.getParameter("subscr_id");
+        String payerId = request.getParameter("payer_id");
+        String btnId = request.getParameter("btn_id");
+        String ipnTrackId = request.getParameter("ipn_track_id");
+        String txnType = request.getParameter("txn_type");
+        String email = request.getParameter("payer_email");
+        Date created = new Date();
+
+        LOG.info("Received subscription notification " + txnType + " from " + email);
+
+        subscriptionDao.createSubscriptionNotification(new SubscriptionNotification(null, subscrId, payerId, btnId,
+                ipnTrackId, txnType, email, created));
+    }
+
+    private void processPaymentRequest(HttpServletRequest request) {
+        String item = request.getParameter("item_number");
+        if (item == null) {
+            item = request.getParameter("item_number1");
+        }
+        String paymentStatus = request.getParameter("payment_status");
+        String paymentType = request.getParameter("payment_type");
+        int paymentAmount = Math.round(new Float(request.getParameter("mc_gross")));
+        String paymentCurrency = request.getParameter("mc_currency");
+        String txnId = request.getParameter("txn_id");
+        String txnType = request.getParameter("txn_type");
+        String payerEmail = request.getParameter("payer_email");
+        String payerFirstName = request.getParameter("first_name");
+        String payerLastName = request.getParameter("last_name");
+        String payerCountry = request.getParameter("address_country");
+        Date validTo = computeValidTo(request);
+
+        Payment payment = paymentDao.getPaymentByTransactionId(txnId);
+        if (payment == null) {
+            payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
+                    paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
+                    payerCountry, ProcessingStatus.NEW, validTo, new Date(), new Date());
+            paymentDao.createPayment(payment);
+        } else {
+            payment.setTransactionType(txnType);
+            payment.setItem(item);
+            payment.setPaymentType(paymentType);
+            payment.setPaymentStatus(paymentStatus);
+            payment.setPaymentAmount(paymentAmount);
+            payment.setPaymentCurrency(paymentCurrency);
+            payment.setPayerEmail(payerEmail);
+            payment.setPayerFirstName(payerFirstName);
+            payment.setPayerLastName(payerLastName);
+            payment.setPayerCountry(payerCountry);
+            payment.setValidTo(validTo);
+            payment.setLastUpdated(new Date());
+            paymentDao.updatePayment(payment);
+        }
+
+        LOG.info("Received " + payment);
+    }
+
+    private Date computeValidTo(HttpServletRequest request) {
+        String duration = request.getParameter("option_selection1");
+        if (duration == null) {
+            return null;
+        }
+        Matcher matcher = SUBSCRIPTION_DURATION_PATTERN.matcher(duration);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid subscription duration: " + duration);
+        }
+
+        int years = Integer.parseInt(matcher.group(1));
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, years);
+
+        return calendar.getTime();
     }
 
     private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {
@@ -86,46 +274,6 @@ public class IPNController implements Controller {
         }
 
         return url.toString();
-    }
-
-    private void createOrUpdatePayment(HttpServletRequest request) {
-        String item = request.getParameter("item_number");
-        if (item == null) {
-            item = request.getParameter("item_number1");
-        }
-        String paymentStatus = request.getParameter("payment_status");
-        String paymentType = request.getParameter("payment_type");
-        int paymentAmount = Math.round(new Float(request.getParameter("mc_gross")));
-        String paymentCurrency = request.getParameter("mc_currency");
-        String txnId = request.getParameter("txn_id");
-        String txnType = request.getParameter("txn_type");
-        String payerEmail = request.getParameter("payer_email");
-        String payerFirstName = request.getParameter("first_name");
-        String payerLastName = request.getParameter("last_name");
-        String payerCountry = request.getParameter("address_country");
-
-        Payment payment = paymentDao.getPaymentByTransactionId(txnId);
-        if (payment == null) {
-            payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
-                                  paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
-                                  payerCountry, Payment.ProcessingStatus.NEW, new Date(), new Date());
-            paymentDao.createPayment(payment);
-        } else {
-            payment.setTransactionType(txnType);
-            payment.setItem(item);
-            payment.setPaymentType(paymentType);
-            payment.setPaymentStatus(paymentStatus);
-            payment.setPaymentAmount(paymentAmount);
-            payment.setPaymentCurrency(paymentCurrency);
-            payment.setPayerEmail(payerEmail);
-            payment.setPayerFirstName(payerFirstName);
-            payment.setPayerLastName(payerLastName);
-            payment.setPayerCountry(payerCountry);
-            payment.setLastUpdated(new Date());
-            paymentDao.updatePayment(payment);
-        }
-
-        LOG.info("Received " + payment);
     }
 
     private boolean validate(String url) throws Exception {
@@ -149,4 +297,8 @@ public class IPNController implements Controller {
         this.paymentDao = paymentDao;
     }
 
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
+    }
 }
+

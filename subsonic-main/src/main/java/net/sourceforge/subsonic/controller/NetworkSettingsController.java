@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.Date;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,8 +36,6 @@ import net.sourceforge.subsonic.service.SettingsService;
  */
 public class NetworkSettingsController extends SimpleFormController {
 
-    private static final long TRIAL_DAYS = 30L;
-
     private SettingsService settingsService;
     private NetworkService networkService;
 
@@ -48,11 +45,7 @@ public class NetworkSettingsController extends SimpleFormController {
         command.setUrlRedirectionEnabled(settingsService.isUrlRedirectionEnabled());
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
         command.setPort(settingsService.getPort());
-
-        Date trialExpires = settingsService.getUrlRedirectTrialExpires();
-        command.setTrialExpires(trialExpires);
-        command.setTrialExpired(trialExpires != null && trialExpires.before(new Date()));
-        command.setTrial(trialExpires != null && !settingsService.isLicenseValid());
+        command.setLicenseInfo(settingsService.getLicenseInfo());
 
         return command;
     }
@@ -64,11 +57,6 @@ public class NetworkSettingsController extends SimpleFormController {
         settingsService.setPortForwardingEnabled(command.isPortForwardingEnabled());
         settingsService.setUrlRedirectionEnabled(command.isUrlRedirectionEnabled());
         settingsService.setUrlRedirectFrom(StringUtils.lowerCase(command.getUrlRedirectFrom()));
-
-        if (!settingsService.isLicenseValid() && settingsService.getUrlRedirectTrialExpires() == null) {
-            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
-            settingsService.setUrlRedirectTrialExpires(expiryDate);
-        }
 
         if (settingsService.getServerId() == null) {
             Random rand = new Random(System.currentTimeMillis());

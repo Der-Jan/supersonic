@@ -158,7 +158,7 @@
     </tr>
     <tr class="table-altrow">
         <td><code>60</code></td>
-        <td>The trial period for the Subsonic server is over. Please donate to get a license key. Visit subsonic.org for details.</td>
+        <td>The trial period for the Subsonic server is over. Please upgrade to Subsonic Premium. Visit subsonic.org for details.</td>
     </tr>
     <tr>
         <td><code>70</code></td>
@@ -175,6 +175,10 @@
     <tr>
         <th class="param-heading">Subsonic version</th>
         <th class="param-heading">REST API version</th>
+    </tr>
+    <tr>
+        <td>4.8</td>
+        <td>1.9.0</td>
     </tr>
     <tr class="table-altrow">
         <td>4.7</td>
@@ -252,6 +256,7 @@
             <code><a href="#getMusicFolders">getMusicFolders</a></code>,
             <code><a href="#getIndexes">getIndexes</a></code>,
             <code><a href="#getMusicDirectory">getMusicDirectory</a></code>,
+            <code><a href="#getGenres">getGenres</a></code>,
             <code><a href="#getArtists">getArtists</a></code>,
             <code><a href="#getArtist">getArtist</a></code>,
             <code><a href="#getAlbum">getAlbum</a></code>,
@@ -265,6 +270,7 @@
             <code><a href="#getAlbumList">getAlbumList</a></code>,
             <code><a href="#getAlbumList2">getAlbumList2</a></code>,
             <code><a href="#getRandomSongs">getRandomSongs</a></code>,
+            <code><a href="#getSongsByGenre">getSongsByGenre</a></code>,
             <code><a href="#getNowPlaying">getNowPlaying</a></code>,
             <code><a href="#getStarred">getStarred</a></code>,
             <code><a href="#getStarred2">getStarred2</a></code>
@@ -321,6 +327,11 @@
         <td>Podcast</td>
         <td>
             <code><a href="#getPodcasts">getPodcasts</a></code>
+            <code><a href="#refreshPodcasts">refreshPodcasts</a></code>
+            <code><a href="#createPodcastChannel">createPodcastChannel</a></code>
+            <code><a href="#deletePodcastChannel">deletePodcastChannel</a></code>
+            <code><a href="#deletePodcastEpisode">deletePodcastEpisode</a></code>
+            <code><a href="#downloadPodcastEpisode">downloadPodcastEpisode</a></code>
         </td>
     </tr>
     <tr>
@@ -330,13 +341,19 @@
         </td>
     </tr>
     <tr class="table-altrow">
+        <td>Internet radio</td>
+        <td>
+            <code><a href="#getInternetRadioStations">getInternetRadioStations</a></code>
+        </td>
+    </tr>
+    <tr>
         <td>Chat</td>
         <td>
             <code><a href="#getChatMessages">getChatMessages</a></code>,
             <code><a href="#addChatMessage">addChatMessage</a></code>
         </td>
     </tr>
-    <tr>
+    <tr class="table-altrow">
         <td style="white-space: nowrap; padding-right: 0.6em">User management</td>
         <td>
             <code><a href="#getUser">getUser</a></code>,
@@ -344,6 +361,14 @@
             <code><a href="#createUser">createUser</a></code>,
             <code><a href="#deleteUser">deleteUser</a></code>,
             <code><a href="#changePassword">changePassword</a></code>
+        </td>
+    </tr>
+    <tr>
+        <td>Bookmarks</td>
+        <td>
+            <code><a href="#getBookmarks">getBookmarks</a></code>,
+            <code><a href="#createBookmark">createBookmark</a></code>,
+            <code><a href="#deleteBookmark">deleteBookmark</a></code>,
         </td>
     </tr>
 </table>
@@ -354,6 +379,7 @@
 <%@ include file="api-getMusicFolders.jsp" %>
 <%@ include file="api-getIndexes.jsp" %>
 <%@ include file="api-getMusicDirectory.jsp" %>
+<%@ include file="api-getGenres.jsp" %>
 <%@ include file="api-getArtists.jsp" %>
 <%@ include file="api-getArtist.jsp" %>
 <%@ include file="api-getAlbum.jsp" %>
@@ -363,6 +389,7 @@
 <%@ include file="api-getAlbumList.jsp" %>
 <%@ include file="api-getAlbumList2.jsp" %>
 <%@ include file="api-getRandomSongs.jsp" %>
+<%@ include file="api-getSongsByGenre.jsp" %>
 <%@ include file="api-getNowPlaying.jsp" %>
 <%@ include file="api-getStarred.jsp" %>
 <%@ include file="api-getStarred2.jsp" %>
@@ -395,8 +422,15 @@
 <%@ include file="api-deleteShare.jsp" %>
 
 <%@ include file="api-getPodcasts.jsp" %>
+<%@ include file="api-refreshPodcasts.jsp" %>
+<%@ include file="api-createPodcastChannel.jsp" %>
+<%@ include file="api-deletePodcastChannel.jsp" %>
+<%@ include file="api-deletePodcastEpisode.jsp" %>
+<%@ include file="api-downloadPodcastEpisode.jsp" %>
 
 <%@ include file="api-jukeboxControl.jsp" %>
+
+<%@ include file="api-getInternetRadioStations.jsp" %>
 
 <%@ include file="api-getChatMessages.jsp" %>
 <%@ include file="api-addChatMessage.jsp" %>
@@ -407,13 +441,16 @@
 <%@ include file="api-deleteUser.jsp" %>
 <%@ include file="api-changePassword.jsp" %>
 
+<%@ include file="api-getBookmarks.jsp" %>
+<%@ include file="api-createBookmark.jsp" %>
+<%@ include file="api-deleteBookmark.jsp" %>
+
 </div>
 
 <div id="side-col">
 
     <%@ include file="google-translate.jsp" %>
-    <%@ include file="donate.jsp" %>
-    <%@ include file="merchandise.jsp" %>
+    <%@ include file="premium-column.jsp" %>
 
 </div>
 

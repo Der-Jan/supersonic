@@ -32,7 +32,9 @@
         <td><code>format</code></td>
         <td>No</td>
         <td></td>
-        <td>(Since <a href="#versions">1.6.0</a>) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings.</td>
+        <td>(Since <a href="#versions">1.6.0</a>) Specifies the preferred target format (e.g., "mp3" or "flv") in case there
+            are multiple applicable transcodings. Starting with <a href="#versions">1.9.0</a> you can use the special
+            value "raw" to disable transcoding.</td>
     </tr>
     <tr>
         <td><code>timeOffset</code></td>

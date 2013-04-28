@@ -26,6 +26,7 @@ import java.io.IOException;/*
 
  Copyright 2010 (C) Sindre Mehus
  */
+import java.util.Date;
 
 /**
  * @author Sindre Mehus
@@ -58,5 +59,15 @@ public class Util {
         } finally {
             IOUtils.closeQuietly(reader);
         }
+    }
+
+    public static Date latest(Date... dates) {
+        Date result = null;
+        for (Date date : dates) {
+            if (date != null && (result == null || result.before(date))) {
+                result = date;
+            }
+        }
+        return result;
     }
 }

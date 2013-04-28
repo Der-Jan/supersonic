@@ -5,12 +5,6 @@
               android:layout_height="fill_parent">
 
     <include layout="@layout/action_bar"/>
-
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/dividerColor"/>
-
     <include layout="@layout/tab_progress"/>
 
     <TextView
@@ -21,17 +15,15 @@
             android:layout_height="wrap_content"
             android:padding="10dip"/>
 
-    <ListView android:id="@+id/select_album_entries"
+    <ListView style="@style/ListView"
+              android:id="@+id/select_album_entries"
               android:textFilterEnabled="true"
               android:layout_width="fill_parent"
               android:layout_height="0dip"
               android:layout_weight="1.0"
-              android:fastScrollEnabled="true"
-            />
+              android:fastScrollEnabled="true"/>
 
     <LinearLayout android:orientation="horizontal"
-                  android:layout_marginTop="6dp"
-                  android:layout_marginBottom="3dp"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content">
 
@@ -67,6 +59,7 @@
 
     </LinearLayout>
 
+    <include layout="@layout/ad"/>
     <include layout="@layout/button_bar"/>
 
 </LinearLayout>

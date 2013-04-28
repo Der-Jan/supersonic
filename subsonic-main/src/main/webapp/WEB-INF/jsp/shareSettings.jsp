@@ -61,14 +61,16 @@
             </tr>
         </c:forEach>
 
-        <tr>
-            <td colspan="4" style="padding-top:1.5em">
-                <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
-                <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
-            </td>
-        </tr>
-
     </table>
+
+    <c:set var="licenseInfo" value="${model.licenseInfo}"/>
+    <%@ include file="licenseNotice.jsp" %>
+
+    <p style="padding-top:1em">
+        <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
+        <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
+    </p>
+
 </form>
 
 </body></html>

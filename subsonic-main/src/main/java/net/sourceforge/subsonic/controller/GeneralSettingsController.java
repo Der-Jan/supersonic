@@ -18,13 +18,15 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
 import net.sourceforge.subsonic.command.GeneralSettingsCommand;
 import net.sourceforge.subsonic.domain.Theme;
 import net.sourceforge.subsonic.service.SettingsService;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 /**
  * Controller for the page used to administrate general settings.
@@ -41,6 +43,7 @@ public class GeneralSettingsController extends SimpleFormController {
         command.setIgnoredArticles(settingsService.getIgnoredArticles());
         command.setShortcuts(settingsService.getShortcuts());
         command.setIndex(settingsService.getIndexString());
+        command.setPlaylistFolder(settingsService.getPlaylistFolder());
         command.setMusicFileTypes(settingsService.getMusicFileTypes());
         command.setVideoFileTypes(settingsService.getVideoFileTypes());
         command.setSortAlbumsByYear(settingsService.isSortAlbumsByYear());
@@ -95,6 +98,7 @@ public class GeneralSettingsController extends SimpleFormController {
         settingsService.setIndexString(command.getIndex());
         settingsService.setIgnoredArticles(command.getIgnoredArticles());
         settingsService.setShortcuts(command.getShortcuts());
+        settingsService.setPlaylistFolder(command.getPlaylistFolder());
         settingsService.setMusicFileTypes(command.getMusicFileTypes());
         settingsService.setVideoFileTypes(command.getVideoFileTypes());
         settingsService.setCoverArtFileTypes(command.getCoverArtFileTypes());

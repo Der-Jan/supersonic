@@ -18,6 +18,12 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -37,12 +43,6 @@ import net.sourceforge.subsonic.androidapp.util.LRUCache;
 import net.sourceforge.subsonic.androidapp.util.ShufflePlayBuffer;
 import net.sourceforge.subsonic.androidapp.util.SimpleServiceBinder;
 import net.sourceforge.subsonic.androidapp.util.Util;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
 
@@ -109,6 +109,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
     @Override
     public void onCreate() {
+        Util.setUncaughtExceptionHandler(this);
         super.onCreate();
 
         mediaPlayer = new MediaPlayer();
@@ -177,6 +178,11 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     }
 
     @Override
+    public synchronized void pin(List<MusicDirectory.Entry> songs) {
+        download(songs, true, false, false);
+    }
+
+    @Override
     public synchronized void download(List<MusicDirectory.Entry> songs, boolean save, boolean autoplay, boolean playNext) {
         shufflePlay = false;
         int offset = 1;
@@ -184,23 +190,35 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         if (songs.isEmpty()) {
             return;
         }
-        if (playNext) {
+
+        if (save) {
+            for (MusicDirectory.Entry song : songs) {
+                DownloadFile downloadFile = forSong(song);
+                downloadFile.pin();
+                if (!downloadFile.isWorkDone() && !downloadList.contains(downloadFile)) {
+                    downloadList.add(downloadFile);
+                }
+            }
+        }
+
+        else if (playNext) {
             if (autoplay && getCurrentPlayingIndex() >= 0) {
                 offset = 0;
             }
             for (MusicDirectory.Entry song : songs) {
-                DownloadFile downloadFile = new DownloadFile(this, song, save);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(getCurrentPlayingIndex() + offset, downloadFile);
                 offset++;
             }
-            revision++;
+
         } else {
             for (MusicDirectory.Entry song : songs) {
-                DownloadFile downloadFile = new DownloadFile(this, song, save);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(downloadFile);
             }
-            revision++;
         }
+
+        revision++;
         updateJukeboxPlaylist();
 
         if (autoplay) {
@@ -300,7 +318,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
         DownloadFile downloadFile = downloadFileCache.get(song);
         if (downloadFile == null) {
-            downloadFile = new DownloadFile(this, song, false);
+            downloadFile = new DownloadFile(this, song);
             downloadFileCache.put(song, downloadFile);
         }
         return downloadFile;
@@ -835,7 +853,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         int size = size();
         if (size < listSize) {
             for (MusicDirectory.Entry song : shufflePlayBuffer.get(listSize - size)) {
-                DownloadFile downloadFile = new DownloadFile(this, song, false);
+                DownloadFile downloadFile = new DownloadFile(this, song);
                 downloadList.add(downloadFile);
                 revision++;
             }
@@ -847,7 +865,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         if (currIndex > 4) {
             int songsToShift = currIndex - 2;
             for (MusicDirectory.Entry song : shufflePlayBuffer.get(songsToShift)) {
-                downloadList.add(new DownloadFile(this, song, false));
+                downloadList.add(new DownloadFile(this, song));
                 downloadList.get(0).cancelDownload();
                 downloadList.remove(0);
                 revision++;

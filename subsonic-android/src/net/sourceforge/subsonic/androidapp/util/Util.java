@@ -21,9 +21,7 @@ package net.sourceforge.subsonic.androidapp.util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +34,8 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -104,10 +104,6 @@ public final class Util {
     private Util() {
     }
 
-    public static boolean isOffline(Context context) {
-        return getActiveServer(context) == 0;
-    }
-
     public static boolean isScreenLitOnDownload(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCREEN_LIT_ON_DOWNLOAD, false);
@@ -140,15 +136,24 @@ public final class Util {
         editor.commit();
     }
 
+    public static boolean isOffline(Context context) {
+        SharedPreferences prefs = getPreferences(context);
+        return prefs.getBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
+    }
+
+    public static void setOffline(Context context, boolean offline) {
+        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, offline);
+        editor.commit();
+    }
+
     public static int getActiveServer(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
     }
 
     public static String getServerName(Context context, int instance) {
-        if (instance == 0) {
-            return context.getResources().getString(R.string.main_offline);
-        }
         SharedPreferences prefs = getPreferences(context);
         return prefs.getString(Constants.PREFERENCES_KEY_SERVER_NAME + instance, null);
     }
@@ -173,11 +178,6 @@ public final class Util {
         SharedPreferences prefs = getPreferences(context);
         int instance = getActiveServer(context);
         return prefs.getString(Constants.PREFERENCES_KEY_MUSIC_FOLDER_ID + instance, null);
-    }
-
-    public static String getTheme(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        return prefs.getString(Constants.PREFERENCES_KEY_THEME, null);
     }
 
     public static int getMaxBitrate(Context context) {
@@ -239,23 +239,6 @@ public final class Util {
             return null;
         }
         return entity.getContentType().getValue();
-    }
-
-    public static int getRemainingTrialDays(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        long installTime = prefs.getLong(Constants.PREFERENCES_KEY_INSTALL_TIME, 0L);
-
-        if (installTime == 0L) {
-            installTime = System.currentTimeMillis();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putLong(Constants.PREFERENCES_KEY_INSTALL_TIME, installTime);
-            editor.commit();
-        }
-
-        long now = System.currentTimeMillis();
-        long millisPerDay = 24L * 60L * 60L * 1000L;
-        int daysSinceInstall = (int) ((now - installTime) / millisPerDay);
-        return Math.max(0, Constants.FREE_TRIAL_DAYS - daysSinceInstall);
     }
 
     /**
@@ -571,7 +554,7 @@ public final class Util {
         // Use the same text for the ticker and the expanded notification
         String title = song.getTitle();
         String text = song.getArtist();
-        
+
         // Set the icon, scrolling text and timestamp
         final Notification notification = new Notification(R.drawable.stat_notify_playing, title, System.currentTimeMillis());
         notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
@@ -579,21 +562,21 @@ public final class Util {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
 
         // Set the album art.
-		try {
-			int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
+        try {
+            int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
             Bitmap bitmap = FileUtil.getAlbumArtBitmap(context, song, size);
-			if (bitmap == null) {
-				// set default album art
-				contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
-			} else {
-				contentView.setImageViewBitmap(R.id.notification_image, bitmap);
-			}
-		} catch (Exception x) {
-			Log.w(TAG, "Failed to get notification cover art", x);
-			contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
-		}
+            if (bitmap == null) {
+                // set default album art
+                contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
+            } else {
+                contentView.setImageViewBitmap(R.id.notification_image, bitmap);
+            }
+        } catch (Exception x) {
+            Log.w(TAG, "Failed to get notification cover art", x);
+            contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
+        }
 
-		// set the text for the notifications
+        // set the text for the notifications
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_artist, text);
 
@@ -606,7 +589,7 @@ public final class Util {
         }
 
         notification.contentView = contentView;
-        
+
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
         notification.contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -614,7 +597,7 @@ public final class Util {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                startForeground(downloadService, Constants.NOTIFICATION_ID_PLAYING, notification);
+                downloadService.startForeground(Constants.NOTIFICATION_ID_PLAYING, notification);
             }
         });
 
@@ -628,7 +611,7 @@ public final class Util {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                stopForeground(downloadService, true);
+                downloadService.stopForeground(true);
             }
         });
 
@@ -710,44 +693,23 @@ public final class Util {
         }
     }
 
-    private static void startForeground(Service service, int notificationId, Notification notification) {
-        // Service.startForeground() was introduced in Android 2.0.
-        // Use reflection to maintain compatibility with 1.5.
-        try {
-            Method method = Service.class.getMethod("startForeground", int.class, Notification.class);
-            method.invoke(service, notificationId, notification);
-            Log.i(TAG, "Successfully invoked Service.startForeground()");
-        } catch (Throwable x) {
-            NotificationManager notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(Constants.NOTIFICATION_ID_PLAYING, notification);
-            Log.i(TAG, "Service.startForeground() not available. Using work-around.");
-        }
-    }
-
-    private static void stopForeground(Service service, boolean removeNotification) {
-        // Service.stopForeground() was introduced in Android 2.0.
-        // Use reflection to maintain compatibility with 1.5.
-        try {
-            Method method = Service.class.getMethod("stopForeground", boolean.class);
-            method.invoke(service, removeNotification);
-            Log.i(TAG, "Successfully invoked Service.stopForeground()");
-        } catch (Throwable x) {
-            NotificationManager notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(Constants.NOTIFICATION_ID_PLAYING);
-            Log.i(TAG, "Service.stopForeground() not available. Using work-around.");
-        }
-    }
-
     /**
      * <p>Broadcasts the given song info as the new song being played.</p>
      */
     public static void broadcastNewTrackInfo(Context context, MusicDirectory.Entry song) {
         Intent intent = new Intent(EVENT_META_CHANGED);
+        Intent avrcpIntent = new Intent("com.android.music.metachanged");
 
         if (song != null) {
             intent.putExtra("title", song.getTitle());
             intent.putExtra("artist", song.getArtist());
             intent.putExtra("album", song.getAlbum());
+
+            //avrcp intent
+            avrcpIntent.putExtra("id", song.getId());
+            avrcpIntent.putExtra("track", song.getTitle());
+            avrcpIntent.putExtra("artist", song.getArtist());
+            avrcpIntent.putExtra("album", song.getAlbum());
 
             File albumArtFile = FileUtil.getAlbumArtFile(context, song);
             intent.putExtra("coverart", albumArtFile.getAbsolutePath());
@@ -756,9 +718,15 @@ public final class Util {
             intent.putExtra("artist", "");
             intent.putExtra("album", "");
             intent.putExtra("coverart", "");
+
+            avrcpIntent.putExtra("id", "");
+            avrcpIntent.putExtra("track", "");
+            avrcpIntent.putExtra("artist", "");
+            avrcpIntent.putExtra("album", "");
         }
 
         context.sendBroadcast(intent);
+        context.sendBroadcast(avrcpIntent);
     }
 
     /**
@@ -789,7 +757,7 @@ public final class Util {
 
     /**
      * Resolves the default text color for notifications.
-     *
+     * <p/>
      * Based on http://stackoverflow.com/questions/4867338/custom-notification-layouts-and-text-colors/7320604#7320604
      */
     private static Pair<Integer, Integer> getNotificationTextColors(Context context) {
@@ -817,13 +785,31 @@ public final class Util {
                 String text = textView.getText().toString();
                 if (title.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setFirst(textView.getTextColors().getDefaultColor());
-                }
-                else if (content.equals(text)) {
+                } else if (content.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setSecond(textView.getTextColors().getDefaultColor());
                 }
-            }
-            else if (group.getChildAt(i) instanceof ViewGroup)
+            } else if (group.getChildAt(i) instanceof ViewGroup)
                 findNotificationTextColors((ViewGroup) group.getChildAt(i), title, content);
+        }
+    }
+
+    public static WifiManager.WifiLock createWifiLock(Context context, String tag) {
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
+        int lockType = WifiManager.WIFI_MODE_FULL;
+
+        // Use WIFI_MODE_FULL_HIGH_PERF if API level 12 or higher.
+        if (Build.VERSION.SDK_INT >= 12) {
+            lockType = 3; // WifiManager.WIFI_MODE_FULL_HIGH_PERF
+        }
+
+        return wm.createWifiLock(lockType, tag);
+    }
+
+    public static void setUncaughtExceptionHandler(Context context) {
+        Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+        if (!(handler instanceof SubsonicUncaughtExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new SubsonicUncaughtExceptionHandler(context));
         }
     }
 }

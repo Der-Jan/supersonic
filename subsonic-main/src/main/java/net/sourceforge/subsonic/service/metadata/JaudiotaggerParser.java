@@ -18,8 +18,12 @@
  */
 package net.sourceforge.subsonic.service.metadata;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
+import java.io.File;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.logging.LogManager;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,12 +35,8 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.GenreTypes;
 
-import java.io.File;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.logging.LogManager;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
 
 /**
  * Parses meta data from audio files using the Jaudiotagger library
@@ -49,6 +49,7 @@ public class JaudiotaggerParser extends MetaDataParser {
     private static final Logger LOG = Logger.getLogger(JaudiotaggerParser.class);
     private static final Pattern GENRE_PATTERN = Pattern.compile("\\((\\d+)\\).*");
     private static final Pattern TRACK_NUMBER_PATTERN = Pattern.compile("(\\d+)/\\d+");
+    private static final Pattern YEAR_NUMBER_PATTERN = Pattern.compile("(\\d{4}).*");
 
     static {
         try {
@@ -76,7 +77,7 @@ public class JaudiotaggerParser extends MetaDataParser {
             if (tag != null) {
                 metaData.setAlbumName(getTagField(tag, FieldKey.ALBUM));
                 metaData.setTitle(getTagField(tag, FieldKey.TITLE));
-                metaData.setYear(parseInteger(getTagField(tag, FieldKey.YEAR)));
+                metaData.setYear(parseYear(getTagField(tag, FieldKey.YEAR)));
                 metaData.setGenre(mapGenre(getTagField(tag, FieldKey.GENRE)));
                 metaData.setDiscNumber(parseInteger(getTagField(tag, FieldKey.DISC_NO)));
                 metaData.setTrackNumber(parseTrackNumber(getTagField(tag, FieldKey.TRACK)));
@@ -150,6 +151,32 @@ public class JaudiotaggerParser extends MetaDataParser {
             result = new Integer(trackNumber);
         } catch (NumberFormatException x) {
             Matcher matcher = TRACK_NUMBER_PATTERN.matcher(trackNumber);
+            if (matcher.matches()) {
+                try {
+                    result = Integer.valueOf(matcher.group(1));
+                } catch (NumberFormatException e) {
+                    return null;
+                }
+            }
+        }
+
+        if (Integer.valueOf(0).equals(result)) {
+            return null;
+        }
+        return result;
+    }
+
+    private Integer parseYear(String year) {
+        if (year == null) {
+            return null;
+        }
+
+        Integer result = null;
+
+        try {
+            result = new Integer(year);
+        } catch (NumberFormatException x) {
+            Matcher matcher = YEAR_NUMBER_PATTERN.matcher(year);
             if (matcher.matches()) {
                 try {
                     result = Integer.valueOf(matcher.group(1));

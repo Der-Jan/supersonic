@@ -18,11 +18,14 @@
  */
 package net.sourceforge.subsonic.dao;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-import org.springframework.dao.EmptyResultDataAccessException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.dao.EmptyResultDataAccessException;
+
+import net.sourceforge.subsonic.domain.MediaFile;
+
+import static net.sourceforge.subsonic.domain.MediaFile.MediaType.ALBUM;
 
 /**
  * Provides database services for ratings.
@@ -32,22 +35,22 @@ import java.util.List;
 public class RatingDao extends AbstractDao {
 
     /**
-     * Returns paths for the highest rated music files.
+     * Returns paths for the highest rated albums.
      *
-     * @param offset Number of files to skip.
-     * @param count  Maximum number of files to return.
-     * @return Paths for the highest rated music files.
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @return Paths for the highest rated albums.
      */
-    public List<String> getHighestRated(int offset, int count) {
+    public List<String> getHighestRatedAlbums(int offset, int count) {
         if (count < 1) {
             return new ArrayList<String>();
         }
 
         String sql = "select user_rating.path from user_rating, media_file " +
-                "where user_rating.path=media_file.path and media_file.present " +
+                "where user_rating.path=media_file.path and media_file.present and media_file.type=?" +
                 "group by path " +
-                "order by avg(rating) desc limit " + count + " offset " + offset;
-        return queryForStrings(sql);
+                "order by avg(rating) desc limit ? offset ?";
+        return queryForStrings(sql, ALBUM.name(), count, offset);
     }
 
     /**

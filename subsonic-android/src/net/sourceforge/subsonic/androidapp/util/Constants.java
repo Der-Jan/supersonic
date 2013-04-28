@@ -35,6 +35,8 @@ public final class Constants {
     // Names for intent extras.
     public static final String INTENT_EXTRA_NAME_ID = "subsonic.id";
     public static final String INTENT_EXTRA_NAME_NAME = "subsonic.name";
+    public static final String INTENT_EXTRA_NAME_PARENT_ID = "subsonic.parent.id";
+    public static final String INTENT_EXTRA_NAME_PARENT_NAME = "subsonic.parent.name";
     public static final String INTENT_EXTRA_NAME_ARTIST = "subsonic.artist";
     public static final String INTENT_EXTRA_NAME_TITLE = "subsonic.title";
     public static final String INTENT_EXTRA_NAME_AUTOPLAY = "subsonic.playall";
@@ -47,7 +49,6 @@ public final class Constants {
     public static final String INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET = "subsonic.albumlistoffset";
     public static final String INTENT_EXTRA_NAME_SHUFFLE = "subsonic.shuffle";
     public static final String INTENT_EXTRA_NAME_REFRESH = "subsonic.refresh";
-    public static final String INTENT_EXTRA_REQUEST_SEARCH = "subsonic.requestsearch";
     public static final String INTENT_EXTRA_NAME_EXIT = "subsonic.exit" ;
 
     // Notification IDs.
@@ -61,8 +62,6 @@ public final class Constants {
     public static final String PREFERENCES_KEY_MUSIC_FOLDER_ID = "musicFolderId";
     public static final String PREFERENCES_KEY_USERNAME = "username";
     public static final String PREFERENCES_KEY_PASSWORD = "password";
-    public static final String PREFERENCES_KEY_INSTALL_TIME = "installTime";
-    public static final String PREFERENCES_KEY_THEME = "theme";
     public static final String PREFERENCES_KEY_MAX_BITRATE_WIFI = "maxBitrateWifi";
     public static final String PREFERENCES_KEY_MAX_BITRATE_MOBILE = "maxBitrateMobile";
     public static final String PREFERENCES_KEY_CACHE_SIZE = "cacheSize";
@@ -74,15 +73,10 @@ public final class Constants {
     public static final String PREFERENCES_KEY_SCROBBLE = "scrobble";
     public static final String PREFERENCES_KEY_REPEAT_MODE = "repeatMode";
     public static final String PREFERENCES_KEY_WIFI_REQUIRED_FOR_DOWNLOAD = "wifiRequiredForDownload";
+    public static final String PREFERENCES_KEY_OFFLINE = "offline";
 
     // Name of the preferences file.
     public static final String PREFERENCES_FILE_NAME = "net.sourceforge.subsonic.androidapp_preferences";
-
-    // Number of free trial days for non-licensed servers.
-    public static final int FREE_TRIAL_DAYS = 30;
-
-    // URL for project donations.
-    public static final String DONATION_URL = "http://subsonic.org/pages/android-donation.jsp";
 
     public static final String ALBUM_ART_FILE = "folder.jpeg";
 

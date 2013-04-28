@@ -104,18 +104,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/settings.appearance_title">
-
-        <ListPreference
-                android:title="@string/settings.theme_title"
-                android:key="theme"
-                android:defaultValue="wheat"
-                android:entryValues="@array/themeValues"
-                android:entries="@array/themeNames"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
             android:title="@string/settings.network_title">
 
         <ListPreference

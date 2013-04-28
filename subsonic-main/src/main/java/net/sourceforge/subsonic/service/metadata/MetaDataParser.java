@@ -27,6 +27,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.service.ServiceLocator;
 import net.sourceforge.subsonic.service.SettingsService;
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -127,7 +128,7 @@ public abstract class MetaDataParser {
      * Guesses the title for the given file.
      */
     public String guessTitle(File file) {
-        return removeTrackNumberFromTitle(FilenameUtils.getBaseName(file.getPath()), null);
+        return StringUtils.trim(FilenameUtils.getBaseName(file.getPath()));
     }
 
     private boolean isRoot(File file) {
@@ -151,8 +152,8 @@ public abstract class MetaDataParser {
     protected String removeTrackNumberFromTitle(String title, Integer trackNumber) {
         title = title.trim();
 
-        // Don't remove numbers if true track number is given, and title does not start with it.
-        if (trackNumber != null && !title.matches("0?" + trackNumber + "[\\.\\- ].*")) {
+        // Don't remove numbers if true track number is missing, or if title does not start with it.
+        if (trackNumber == null || !title.matches("0?" + trackNumber + "[\\.\\- ].*")) {
             return title;
         }
 

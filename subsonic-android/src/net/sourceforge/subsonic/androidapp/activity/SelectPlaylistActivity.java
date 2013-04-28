@@ -35,6 +35,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.PlaylistAdapter;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -60,12 +61,8 @@ public class SelectPlaylistActivity extends SubsonicTabActivity implements Adapt
         // Title: Playlists
         setTitle(R.string.playlist_label);
 
-        // Button 1: gone
-        ImageButton searchButton = (ImageButton)findViewById(R.id.action_button_1);
-        searchButton.setVisibility(View.GONE);
-
-		// Button 2: refresh
-        ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_2);
+		// Button 1: refresh
+        ImageButton refreshButton = (ImageButton) findViewById(R.id.action_button_1);
 		refreshButton.setImageResource(R.drawable.action_refresh);
 		refreshButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -73,6 +70,25 @@ public class SelectPlaylistActivity extends SubsonicTabActivity implements Adapt
 				refresh();
 			}
 		});
+
+        // Button 2: search
+        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        actionSearchButton.setImageResource(R.drawable.action_search);
+        actionSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSearchRequested();
+            }
+        });
+
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(SelectPlaylistActivity.this, overflowButton, R.menu.main);
+            }
+        });
 
         load();
     }

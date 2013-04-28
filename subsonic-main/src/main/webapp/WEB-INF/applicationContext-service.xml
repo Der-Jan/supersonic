@@ -58,6 +58,10 @@
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
 
+    <bean id="bookmarkDao" class="net.sourceforge.subsonic.dao.BookmarkDao">
+        <property name="daoHelper" ref="daoHelper"/>
+    </bean>
+
     <bean id="daoHelper" class="net.sourceforge.subsonic.dao.DaoHelper"/>
 
 
@@ -173,6 +177,16 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
+
+    <!--<bean id="upnpService" class="net.sourceforge.subsonic.service.UPnPService" init-method="init">-->
+        <!--<property name="settingsService" ref="settingsService"/>-->
+        <!--<property name="playerService" ref="playerService"/>-->
+        <!--<property name="transcodingService" ref="transcodingService"/>-->
+        <!--<property name="versionService" ref="versionService"/>-->
+        <!--<property name="mediaFileDao" ref="mediaFileDao"/>-->
+        <!--<property name="artistDao" ref="artistDao"/>-->
+        <!--<property name="albumDao" ref="albumDao"/>-->
+    <!--</bean>-->
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">

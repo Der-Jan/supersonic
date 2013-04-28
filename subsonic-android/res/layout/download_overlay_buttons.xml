@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/download_overlay_buttons"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/overlayColor">
+
+    <ToggleButton
+            style="@style/OverlayToggleButton"
+            android:id="@+id/download_jukebox"
+            android:textOn="RC"
+            android:textOff="RC"/>
+
+    <ToggleButton
+            style="@style/OverlayToggleButton"
+            android:id="@+id/download_equalizer"
+            android:textOn="EQ"
+            android:textOff="EQ"/>
+
+    <ToggleButton
+            style="@style/OverlayToggleButton"
+            android:id="@+id/download_visualizer"
+            android:textOn="VIS"
+            android:textOff="VIS"/>
+
+</LinearLayout>

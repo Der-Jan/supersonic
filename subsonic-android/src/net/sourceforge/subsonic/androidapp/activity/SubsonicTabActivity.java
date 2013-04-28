@@ -18,26 +18,20 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -62,14 +56,12 @@ public class SubsonicTabActivity extends Activity {
     private boolean destroyed;
     private View homeButton;
     private View musicButton;
-    private View searchButton;
     private View playlistButton;
     private View nowPlayingButton;
 
     @Override
     protected void onCreate(Bundle bundle) {
-        setUncaughtExceptionHandler();
-        applyTheme();
+        Util.setUncaughtExceptionHandler(this);
         super.onCreate(bundle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         startService(new Intent(this, DownloadServiceImpl.class));
@@ -100,16 +92,6 @@ public class SubsonicTabActivity extends Activity {
             }
         });
 
-        searchButton = findViewById(R.id.button_bar_search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SubsonicTabActivity.this, SearchActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
-                Util.startActivityWithoutTransition(SubsonicTabActivity.this, intent);
-            }
-        });
-
         playlistButton = findViewById(R.id.button_bar_playlists);
         playlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +114,6 @@ public class SubsonicTabActivity extends Activity {
             homeButton.setEnabled(false);
         } else if (this instanceof SelectAlbumActivity || this instanceof SelectArtistActivity) {
             musicButton.setEnabled(false);
-        } else if (this instanceof SearchActivity) {
-            searchButton.setEnabled(false);
         } else if (this instanceof SelectPlaylistActivity) {
             playlistButton.setEnabled(false);
         } else if (this instanceof DownloadActivity || this instanceof LyricsActivity) {
@@ -186,7 +166,6 @@ public class SubsonicTabActivity extends Activity {
         getImageLoader().clear();
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean isVolumeDown = keyCode == KeyEvent.KEYCODE_VOLUME_DOWN;
@@ -201,6 +180,7 @@ public class SubsonicTabActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
+
     @Override
     public void finish() {
         super.finish();
@@ -213,9 +193,6 @@ public class SubsonicTabActivity extends Activity {
 
         // Set the font of title in the action bar.
         TextView text = (TextView) findViewById(R.id.actionbar_title_text);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
-        text.setTypeface(typeface);
-
         text.setText(title);
     }
 
@@ -224,22 +201,12 @@ public class SubsonicTabActivity extends Activity {
         setTitle(getString(titleId));
     }
 
-    private void applyTheme() {
-        String theme = Util.getTheme(this);
-        if ("dark".equals(theme)) {
-            setTheme(android.R.style.Theme);
-        } else if ("light".equals(theme)) {
-            setTheme(android.R.style.Theme_Light);
-        }
-    }
-
     public boolean isDestroyed() {
         return destroyed;
     }
 
     private void updateButtonVisibility() {
         int visibility = Util.isOffline(this) ? View.GONE : View.VISIBLE;
-        searchButton.setVisibility(visibility);
         playlistButton.setVisibility(visibility);
     }
 
@@ -284,6 +251,21 @@ public class SubsonicTabActivity extends Activity {
             IMAGE_LOADER = new ImageLoader(this);
         }
         return IMAGE_LOADER;
+    }
+
+
+    protected void setBackAction(final Runnable runnable) {
+
+        View backLayout = findViewById(R.id.actionbar_back_layout);
+        backLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                runnable.run();
+            }
+        });
+        backLayout.setBackgroundResource(R.drawable.actionbar_button);
+
+        findViewById(R.id.actionbar_back).setVisibility(View.VISIBLE);
     }
 
     protected void downloadRecursively(final String id, final boolean save, final boolean append, final boolean autoplay) {
@@ -331,53 +313,6 @@ public class SubsonicTabActivity extends Activity {
         };
 
         task.execute();
-    }
-
-    private void setUncaughtExceptionHandler() {
-        Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
-        if (!(handler instanceof SubsonicUncaughtExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new SubsonicUncaughtExceptionHandler(this));
-        }
-    }
-
-    /**
-     * Logs the stack trace of uncaught exceptions to a file on the SD card.
-     */
-    private static class SubsonicUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-
-        private final Thread.UncaughtExceptionHandler defaultHandler;
-        private final Context context;
-
-        private SubsonicUncaughtExceptionHandler(Context context) {
-            this.context = context;
-            defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        }
-
-        @Override
-        public void uncaughtException(Thread thread, Throwable throwable) {
-            File file = null;
-            PrintWriter printWriter = null;
-            try {
-
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo("net.sourceforge.subsonic.androidapp", 0);
-                file = new File(Environment.getExternalStorageDirectory(), "subsonic-stacktrace.txt");
-                printWriter = new PrintWriter(file);
-                printWriter.println("Android API level: " + Build.VERSION.SDK);
-                printWriter.println("Subsonic version name: " + packageInfo.versionName);
-                printWriter.println("Subsonic version code: " + packageInfo.versionCode);
-                printWriter.println();
-                throwable.printStackTrace(printWriter);
-                Log.i(TAG, "Stack trace written to " + file);
-            } catch (Throwable x) {
-                Log.e(TAG, "Failed to write stack trace to " + file, x);
-            } finally {
-                Util.close(printWriter);
-                if (defaultHandler != null) {
-                    defaultHandler.uncaughtException(thread, throwable);
-                }
-
-            }
-        }
     }
 }
 

@@ -7,11 +7,11 @@
 
 <p>
     Get details about the software license. Takes no extra parameters. Please note that access to the
-    REST API requires that the server has a valid license (after a 30-day trial period). To get a license key you can
-    give a donation to the Subsonic project.
+    REST API requires that the server has a valid license (after a 30-day trial period). To get a license key you must
+    upgrade to <a href="premium.jsp">Subsonic Premium</a>.
 </p>
 
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;license&gt;</code>
-    element on success. <a href="http://subsonic.svn.sourceforge.net/viewvc/subsonic/trunk/subsonic-main/src/main/webapp/xsd/license_example_1.xml?view=markup">Example</a>.
+    element on success. <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/license_example_1.xml">Example</a>.
 </p>

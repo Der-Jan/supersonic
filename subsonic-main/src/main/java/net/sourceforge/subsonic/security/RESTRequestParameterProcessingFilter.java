@@ -59,7 +59,6 @@ import java.util.List;
 public class RESTRequestParameterProcessingFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(RESTRequestParameterProcessingFilter.class);
-    private static final long TRIAL_DAYS = 35L;
 
     private ProviderManager authenticationManager;
     private SettingsService settingsService;
@@ -157,12 +156,7 @@ public class RESTRequestParameterProcessingFilter implements Filter {
             return null;
         }
 
-        if (settingsService.getRESTTrialExpires(client) == null) {
-            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
-            settingsService.setRESTTrialExpires(client, expiryDate);
-            settingsService.save();
-            LOG.info("REST access for client '" + client + "' will expire " + expiryDate);
-        } else if (settingsService.getRESTTrialExpires(client).before(new Date())) {
+        if (settingsService.getTrialExpires().before(new Date())) {
 
             // Exception: iPhone clients are allowed to call any method except stream.view and download.view.
             List<String> iPhoneClients = Arrays.asList("iSub", "zsubsonic");

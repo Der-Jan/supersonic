@@ -18,15 +18,16 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.metadata.MetaData;
 import net.sourceforge.subsonic.service.metadata.MetaDataParser;
 import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Provides AJAX-enabled services for editing tags in music files.
@@ -90,14 +91,12 @@ public class TagService {
                 return "Tag editing of " + FilenameUtils.getExtension(file.getPath()) + " files is not supported.";
             }
 
-            MetaData existingMetaData = parser.getRawMetaData(file.getFile());
-
-            if (StringUtils.equals(artist, existingMetaData.getArtist()) &&
-                    StringUtils.equals(album, existingMetaData.getAlbumName()) &&
-                    StringUtils.equals(title, existingMetaData.getTitle()) &&
-                    ObjectUtils.equals(yearNumber, existingMetaData.getYear()) &&
-                    StringUtils.equals(genre, existingMetaData.getGenre()) &&
-                    ObjectUtils.equals(trackNumber, existingMetaData.getTrackNumber())) {
+            if (StringUtils.equals(artist, file.getArtist()) &&
+                    StringUtils.equals(album, file.getAlbumName()) &&
+                    StringUtils.equals(title, file.getTitle()) &&
+                    ObjectUtils.equals(yearNumber, file.getYear()) &&
+                    StringUtils.equals(genre, file.getGenre()) &&
+                    ObjectUtils.equals(trackNumber, file.getTrackNumber())) {
                 return "SKIPPED";
             }
 

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sourceforge.subsonic</groupId>
     <artifactId>subsonic</artifactId>
-    <version>4.7</version>
+    <version>4.8</version>
     <name>Subsonic</name>
     <packaging>pom</packaging>
     <organization>
@@ -33,6 +33,11 @@
             <id>java_net</id>
             <name>download.java.net</name>
             <url>http://download.java.net/maven/2/</url>
+        </repository>
+        <repository>
+            <id>teleal</id>
+            <name>teleal</name>
+            <url>http://teleal.org/m2</url>
         </repository>
     </repositories>
 

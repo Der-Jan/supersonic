@@ -18,21 +18,22 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Controller for the page used to play videos.
@@ -43,7 +44,6 @@ public class VideoPlayerController extends ParameterizableViewController {
 
     public static final int DEFAULT_BIT_RATE = 1000;
     public static final int[] BIT_RATES = {200, 300, 400, 500, 700, 1000, 1200, 1500, 2000, 3000, 5000};
-    private static final long TRIAL_DAYS = 30L;
 
     private MediaFileService mediaFileService;
     private SettingsService settingsService;
@@ -72,16 +72,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("duration", duration);
         map.put("timeOffset", timeOffset);
         map.put("bitRates", BIT_RATES);
-
-        if (!settingsService.isLicenseValid() && settingsService.getVideoTrialExpires() == null) {
-            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
-            settingsService.setVideoTrialExpires(expiryDate);
-            settingsService.save();
-        }
-        Date trialExpires = settingsService.getVideoTrialExpires();
-        map.put("trialExpires", trialExpires);
-        map.put("trialExpired", trialExpires != null && trialExpires.before(new Date()));
-        map.put("trial", trialExpires != null && !settingsService.isLicenseValid());
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

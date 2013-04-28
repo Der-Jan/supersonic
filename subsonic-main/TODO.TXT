@@ -1,8 +1,56 @@
-DONE IN 4.7
+DONE IN 4.9
 -------------
 
-TODO IN 4.7
------------------
+TODO IN 4.9
+--------------
+Verify that update notice is displayed in 4.7 and 4.8
+Mention in release notes that existing licenses will still work.
+
+premium.jsp -> add link to subsonic.org/premium for more info
+make menu text more visible
+Send reminder email when license is about to expire.
+verify that 4.8 is default in sf.net
+Clean up podcasts in demo
+Update backup server (after a couple of days)
+Publish blackberry app.
+
+site
+  Update rest of pages
+
+backend
+  Missing index payment(processing_status)?
+
+other
+  reconsider sourceforge
+
+UPnP/DLNA
+  Conflict with existing UPnP classes.
+  AbstractMediaReceiverRegistrarService
+  MiniDLNA
+    http://minidlna.sourceforge.net/
+  http://4thline.org/projects/cling/
+  Use 2.0?
+  Fails to play nrk podcast.
+  Test with Tomcat
+  Make it work in Skifta
+  Premium
+  https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
+  https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
+  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
+  Intel UPnP Spy
+    http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
+  SkatteFUNN
+  DAAP support.
+    https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
+    http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
+
+Update ffmpeg?
+Go through forum feedback for 4.7
+Try to reproduce playlist import problem
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
+Something wrong with matching players/users in Now Playing.
+  https://mail.google.com/mail/?tab=cm#inbox/137dcaaddeba0936
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
 Reconsider album artist.
@@ -11,10 +59,6 @@ Prefill minisub
 FLAC crashes Flash in Firefox (with server on Linux).
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10027&p=44673#p44673
 
-Something wrong with matching players/users in Now Playing.
-  https://mail.google.com/mail/?tab=cm#inbox/137dcaaddeba0936
-SourceForge, hosted apps retirement
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/1386c503c5c2c564
 
 Postponed:
   - ConcurrentModificationException
@@ -70,7 +114,7 @@ Stream from devices
 Go through tracker.
 Does canaca allow outgoing port 4040?
 Recursive getFolders API method?
-  https://mail.google.com/mail/?shva=1#inbox/13090cd32a9922bd
+  https://Smail.google.com/mail/?shva=1#inbox/13090cd32a9922bd
 Checkbox, combobox bg color
 REST: scrobble should increment the internal playcounters too.
 Show lyrics in tags.
@@ -102,37 +146,57 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.4
+DONE IN ANDROID 3.8
 --------------------
-Ensure readable text in notification when background is dark.
-Fix crash when using fast scrolling.
-Enable fast scrolling of playlists, search results and songs.
-Improve caching of artist list.
+Fixed illegal xml in french locale.
+Send com.android.music.metachanged intent.
 
-TODO IN ANDROID 3.4
+TODO IN ANDROID 3.8
 --------------------
-Patch "Host name cannot be null"
-  https://mail.google.com/mail/?ui=2&shva=1#inbox/137195c3dc8510ad
-  https://mail.google.com/mail/u/0/?shva=1#inbox/138ec0b544998d8b
-Support Bluetooth play/pause buttons in ICS.
+Video: Test MX Player
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13e003d33cbf4626
+Add video alternatives: Flash, HLS, native
+Rename references to donation.
+Support dynamic number of servers.
+Reconsider donation
+Problem with shuffle + offline
+  https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
+RC volume
+  https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
+Lock screen controls
+Notification controls
+Add option to restore transactions.
+Update help page in app.
+Notification
+  progress
+  compat lib
+Run CacheCleaner in bg, see dsub
+Starring support
+Podcast support
+Update help page.
+Audio focus
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
+Create new screenshots.
+Update app description on subsonic.org
+Add option to delete file. (Rename to "Remove from playlist").
+Add to playlist
+Test on Android 2 and 3.
+  Notification icon too big and bright.
+Poor quality of album art in album header?
+
+Review patches for AVRCP and lockscreen controls
+  https://sourceforge.net/p/subsonic/patches/9/
+
+Widget
+Use GridView to show albums.
+
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
-Wifi lock.
+New minimum Android version: 2.1
 HLS video.
-Problem if underscore/dash in server name.
-  https://mail.google.com/mail/?shva=1#inbox/1365ef6ddc03e31a
 Music controls in notification.
   https://mail.google.com/mail/?ui=2&shva=1#inbox/136242ab25baddad
-Holo theme
-  http://android-developers.blogspot.com/2012/01/holo-everywhere.html
 Update artist list in background.
-ICS theme
-  http://developer.android.com/design/index.html
-  http://forum.subsonic.org/forum/viewtopic.php?f=5&t=8497
-  https://mail.google.com/mail/?tab=cm#inbox/1344527f4abc11af
-  http://android-developers.blogspot.com/2012/01/say-goodbye-to-menu-button.html
-https://mail.google.com/mail/?tab=cm#inbox/135bb6c0d53edd42
-Browser / web page widget for Android
 
 Sleep timer.
 Maintain track order for offline files.
@@ -581,7 +645,6 @@ Make background image repeat in x-direction?
 Use YUI menus: http://developer.yahoo.com/yui/menu/
 Spacing in home.jsp
 Use em instead of pt when padding.
-DAAP support. http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
 Random radio mode (http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=964)
 Option for unlimited download/upload if on LAN.  Remember to support proxies.
 Integrate with Amazon mp3.
@@ -727,9 +790,9 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.7/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.7/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.7/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -740,7 +803,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy https://subsonic.svn.sourceforge.net/svnroot/subsonic/trunk https://subsonic.svn.sourceforge.net/svnroot/subsonic/tags/release-4.7 -m "Tagging 4.7"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.8 -m "Tagging 4.8"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.
@@ -750,17 +813,15 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2012-06-09.tar db
+    tar cvf db-backup-2013-04-16.tar db
   cd subsonic-backend
   mvn clean install
 
-  mkdir /usr/local/jakarta/tomcat/webapps-2012-08-03/
+  mkdir /usr/local/jakarta/tomcat/webapps-2013-04-16/
 
-  scp subsonic-site/src/main/webapp/apps.jsp root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2012-08-03/pages
-
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org
@@ -768,23 +829,27 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2012-08-03 webapps
+  ln -s webapps-2013-04-16 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
 
+Update backup server
 
 rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
 
-godaddy ip: 97.74.125.134
-cancaca ip: 66.49.215.227
-- test https
-- add test videos (and ffmpeg, lame)
-- update transcodings
+
+subsonic.org backup
+-------------------
+BudgetVM 192.157.221.124
+% service tomcat6 stop
+% service tomcat6 start
+/etc/tomcat6
+/var/lib/tomcat6
+
 
 HOW TO RELEASE TO ANDROID MARKET
 ================================
-Build against Android 1.5 (default.properties, set API level to 3)
 Update versionCode and versionName in AndroidManifest.xml
 Commit
 cd subsonic-android
@@ -794,18 +859,31 @@ ant release
 ### jarsigner -verbose -keystore subsonic.keystore -signedjar bin/subsonic.apk bin/SubsonicActivity-unsigned.apk subsonic
 Upload to market
 http://market.android.com/publish/Home
-Update amazon
+https://developer.amazon.com/welcome.html
 Update
     http://appoke.com
     http://appslib.com/developers/index.html
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy https://subsonic.svn.sourceforge.net/svnroot/subsonic/trunk/subsonic-android https://subsonic.svn.sourceforge.net/svnroot/subsonic/tags/android-release-3.3 -m "Tagging Android 3.3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.7 -m "Tagging Android 3.7"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
-Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.3/subsonic-3.3.apk
+Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7.apk
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7-adfree.apk
+
+HOW TO RELEASE BLACKBERRY
+===============================
+Comment out <uses-permission android:name="android.permission.BLUETOOTH"/>
+Build release APK.
+Comment in <uses-permission android:name="android.permission.BLUETOOTH"/>
+
+cd c:/progs/blackberry.tools.SDK/bin
+apk2bar.bat subsonic-release.apk "c:\Program Files (x86)\Android\android-sdk" -a "Subsonic AS"
+batchbar-signer.bat subsonic-release.bar client-certificate-1980825.p12 <password> <password>
+
+Your applications must target BlackBerry PlayBook OS 2.0 (or later) or BlackBerry 10 OS for them to be considered for approval.
 
 
 HOW TO RELEASE TRANSCODING PACK

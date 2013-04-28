@@ -1,11 +1,5 @@
 package net.sourceforge.subsonic.backend.service;
 
-import net.sourceforge.subsonic.backend.dao.PaymentDao;
-import net.sourceforge.subsonic.backend.domain.Payment;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
-
-import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Date;
@@ -14,8 +8,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.mail.MessagingException;
+
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
+import net.sourceforge.subsonic.backend.domain.Subscription;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.log4j.Logger;
+
+import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
+
 /**
- * Runs a task at regular intervals, checking for incoming donations and sending
+ * Runs a task at regular intervals, checking for incoming payments and sending
  * out license keys by email.
  *
  * @author Sindre Mehus
@@ -27,6 +32,7 @@ public class LicenseGenerator {
     private static final long DELAY = 60; // One minute.
 
     private PaymentDao paymentDao;
+    private SubscriptionDao subscriptionDao;
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public void init() {
@@ -35,6 +41,7 @@ public class LicenseGenerator {
                 try {
                     LOG.info("Starting license generator.");
                     processPayments();
+                    processSubscriptions();
                     LOG.info("Completed license generator.");
                 } catch (Throwable x) {
                     LOG.error("Failed to process license emails.", x);
@@ -46,7 +53,7 @@ public class LicenseGenerator {
     }
 
     private void processPayments() throws Exception {
-        List<Payment> payments = paymentDao.getPaymentsByProcessingStatus(Payment.ProcessingStatus.NEW);
+        List<Payment> payments = paymentDao.getPaymentsByProcessingStatus(ProcessingStatus.NEW);
         LOG.info(payments.size() + " new payment(s).");
         if (payments.isEmpty()) {
             return;
@@ -54,7 +61,28 @@ public class LicenseGenerator {
 
         EmailSession emailSession = new EmailSession();
         for (Payment payment : payments) {
-            processPayment(payment, emailSession);
+            try {
+                processPayment(payment, emailSession);
+            } catch (Throwable x) {
+                LOG.error("Failed to process " + payment, x);
+            }
+        }
+    }
+
+    private void processSubscriptions() throws Exception {
+        List<Subscription> subscriptions = subscriptionDao.getSubscriptionsByProcessingStatus(ProcessingStatus.NEW);
+        LOG.info(subscriptions.size() + " new subscription(s).");
+        if (subscriptions.isEmpty()) {
+            return;
+        }
+
+        EmailSession emailSession = new EmailSession();
+        for (Subscription subscription : subscriptions) {
+            try {
+                processSubscription(subscription, emailSession);
+            } catch (Throwable x) {
+                LOG.error("Failed to process " + subscription, x);
+            }
         }
     }
 
@@ -76,13 +104,33 @@ public class LicenseGenerator {
             }
 
             if (eligible || ignorable) {
-                payment.setProcessingStatus(Payment.ProcessingStatus.COMPLETED);
+                payment.setProcessingStatus(ProcessingStatus.COMPLETED);
                 payment.setLastUpdated(new Date());
                 paymentDao.updatePayment(payment);
             }
 
         } catch (Throwable x) {
             LOG.error("Failed to process " + payment, x);
+        }
+    }
+
+    private void processSubscription(Subscription subscription, EmailSession emailSession) {
+        try {
+            LOG.info("Processing " + subscription);
+            String email = subscription.getEmail();
+            if (email == null) {
+                throw new Exception("Missing email address.");
+            }
+
+            sendLicenseTo(email, emailSession);
+            LOG.info("Sent license key for " + subscription);
+
+            subscription.setProcessingStatus(ProcessingStatus.COMPLETED);
+            subscription.setUpdated(new Date());
+            subscriptionDao.updateSubscription(subscription);
+
+        } catch (Throwable x) {
+            LOG.error("Failed to process " + subscription, x);
         }
     }
 
@@ -102,11 +150,11 @@ public class LicenseGenerator {
     }
 
     public void sendLicenseTo(String to, EmailSession emailSession) throws MessagingException {
-        emailSession.sendMessage("subsonic_donation@activeobjects.no",
+        emailSession.sendMessage("license@subsonic.org",
                                  Arrays.asList(to),
                                  null,
-                                 Arrays.asList("subsonic_donation@activeobjects.no", "sindre@activeobjects.no"),
-                                 Arrays.asList("subsonic_donation@activeobjects.no"),
+                                 Arrays.asList("license@subsonic.org", "sindre@activeobjects.no"),
+                                 Arrays.asList("license@subsonic.org"),
                                  "Subsonic License",
                                  createLicenseContent(to));
         LOG.info("Sent license to " + to);
@@ -115,15 +163,15 @@ public class LicenseGenerator {
     private String createLicenseContent(String to) {
         String license = md5Hex(to.toLowerCase());
 
-        return "Dear Subsonic donor,\n" +
+        return "Dear Subsonic user,\n" +
                 "\n" +
-                "Many thanks for your kind donation to Subsonic!\n" +
+                "Many thanks for upgrading to Subsonic Premium!\n" +
                 "Please find your license key below.\n" +
                 "\n" +
                 "Email: " + to + "\n" +
                 "License: " + license + " \n" +
                 "\n" +
-                "To install the license key, click the \"Donate\" link in the top right corner of the Subsonic web interface.\n" +
+                "To install the license key, click the \"Get Subsonic Premium\" link in the top right corner of the Subsonic web interface.\n" +
                 "\n" +
                 "More info here: http://subsonic.org/pages/getting-started.jsp#3\n" +
                 "\n" +
@@ -166,5 +214,9 @@ public class LicenseGenerator {
 
         LicenseGenerator generator = new LicenseGenerator();
         generator.sendLicenseTo(address, new EmailSession());       
+    }
+
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
     }
 }

@@ -20,30 +20,34 @@ package net.sourceforge.subsonic.backend.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.subsonic.backend.dao.PaymentDao;
-import net.sourceforge.subsonic.backend.service.LicenseGenerator;
-import net.sourceforge.subsonic.backend.service.WhitelistGenerator;
-import org.apache.log4j.Logger;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
-import org.springframework.dao.DataAccessException;
-import net.sourceforge.subsonic.backend.dao.DaoHelper;
+
 import net.sourceforge.subsonic.backend.Util;
+import net.sourceforge.subsonic.backend.dao.DaoHelper;
+import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
+import net.sourceforge.subsonic.backend.domain.Payment;
+import net.sourceforge.subsonic.backend.domain.Subscription;
 import net.sourceforge.subsonic.backend.service.EmailSession;
+import net.sourceforge.subsonic.backend.service.LicenseGenerator;
+import net.sourceforge.subsonic.backend.service.WhitelistGenerator;
 
 /**
  * Multi-controller used for simple pages.
@@ -54,7 +58,7 @@ public class MultiController extends MultiActionController {
 
     private static final Logger LOG = Logger.getLogger(RedirectionController.class);
 
-    private static final String SUBSONIC_VERSION = "4.7";
+    private static final String SUBSONIC_VERSION = "4.8";
     private static final String SUBSONIC_BETA_VERSION = "4.7.beta3";
 
     private static final Date LICENSE_DATE_THRESHOLD;
@@ -62,6 +66,7 @@ public class MultiController extends MultiActionController {
     private DaoHelper daoHelper;
 
     private PaymentDao paymentDao;
+    private SubscriptionDao subscriptionDao;
     private WhitelistGenerator whitelistGenerator;
     private LicenseGenerator licenseGenerator;
 
@@ -94,10 +99,15 @@ public class MultiController extends MultiActionController {
         Long date = ServletRequestUtils.getLongParameter(request, "date");
 
         boolean valid = isLicenseValid(email, date);
-        LOG.info(request.getRemoteAddr() + " asked to validate license for " + email + ". Result: " + valid);
+        Date expirationDate = getLicenseExpirationDate(email);
+        LOG.info(request.getRemoteAddr() + " asked to validate license for " + email + ". Result: " +
+                valid + ", expires: " + expirationDate);
 
         PrintWriter writer = response.getWriter();
         writer.println(valid);
+        if (expirationDate != null) {
+            writer.println(expirationDate.getTime());
+        }
 
         return null;
     }
@@ -166,9 +176,15 @@ public class MultiController extends MultiActionController {
         startOfMonth.setTime(startOfToday.getTime());
         startOfMonth.set(Calendar.DATE, 1);
 
-        int sumToday = paymentDao.getPaymentAmount(startOfToday.getTime(), endOfToday.getTime());
-        int sumYesterday = paymentDao.getPaymentAmount(startOfYesterday.getTime(), startOfToday.getTime());
-        int sumMonth = paymentDao.getPaymentAmount(startOfMonth.getTime(), startOfToday.getTime());
+        int sumToday = paymentDao.getPaymentAmount(startOfToday.getTime(), endOfToday.getTime()) +
+                subscriptionDao.getSubscriptionPaymentAmount(startOfToday.getTime(), endOfToday.getTime());
+
+        int sumYesterday = paymentDao.getPaymentAmount(startOfYesterday.getTime(), startOfToday.getTime()) +
+                subscriptionDao.getSubscriptionPaymentAmount(startOfYesterday.getTime(), startOfToday.getTime());
+
+        int sumMonth = paymentDao.getPaymentAmount(startOfMonth.getTime(), startOfToday.getTime()) +
+                subscriptionDao.getSubscriptionPaymentAmount(startOfMonth.getTime(), startOfToday.getTime());
+
         int dayAverageThisMonth = sumMonth / startOfYesterday.get(Calendar.DATE);
 
         map.put("sumToday", sumToday);
@@ -235,7 +251,43 @@ public class MultiController extends MultiActionController {
             return true;
         }
 
-        return paymentDao.getPaymentByEmail(email) != null || paymentDao.isWhitelisted(email);
+        return hasValidSubscription(email) || hasValidPayment(email) || paymentDao.isWhitelisted(email);
+    }
+
+    private Date getLicenseExpirationDate(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        if (paymentDao.isBlacklisted(email) || paymentDao.isWhitelisted(email)) {
+            return null;
+        }
+
+        Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
+        Payment payment = paymentDao.getPaymentByEmail(email);
+
+        Date subscriptionExpirationDate = subscription == null ? null : subscription.getValidTo();
+        Date paymentExpirationDate = payment == null ? null : payment.getValidTo();
+
+        return Util.latest(subscriptionExpirationDate, paymentExpirationDate);
+    }
+
+    private boolean hasValidPayment(String email) {
+        Payment payment = paymentDao.getPaymentByEmail(email);
+        if (payment == null) {
+            return false;
+        }
+        Date now = new Date();
+        return payment.getValidTo() == null || payment.getValidTo().after(now);
+    }
+
+    private boolean hasValidSubscription(String email) {
+        Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
+        if (subscription == null) {
+            return false;
+        }
+        Date now = new Date();
+        return subscription.getValidTo() == null || subscription.getValidTo().after(now);
     }
 
     public void setDaoHelper(DaoHelper daoHelper) {
@@ -252,5 +304,9 @@ public class MultiController extends MultiActionController {
 
     public void setLicenseGenerator(LicenseGenerator licenseGenerator) {
         this.licenseGenerator = licenseGenerator;
+    }
+
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
     }
 }

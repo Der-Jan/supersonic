@@ -19,15 +19,8 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.Arrays;
-
-import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.service.DownloadService;
-import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
-import net.sourceforge.subsonic.androidapp.util.Util;
-import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -40,6 +33,16 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.service.DownloadService;
+import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
+import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.util.Arrays;
 
 public class MainActivity extends SubsonicTabActivity {
 
@@ -47,9 +50,6 @@ public class MainActivity extends SubsonicTabActivity {
     private static final int MENU_ITEM_SERVER_1 = 101;
     private static final int MENU_ITEM_SERVER_2 = 102;
     private static final int MENU_ITEM_SERVER_3 = 103;
-    private static final int MENU_ITEM_OFFLINE = 104;
-
-    private String theme;
 
     private static boolean infoDialogDisplayed;
 
@@ -71,6 +71,9 @@ public class MainActivity extends SubsonicTabActivity {
         final View serverButton = buttons.findViewById(R.id.main_select_server);
         final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
+        final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
+        offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
+
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
         final View albumsRandomButton = buttons.findViewById(R.id.main_albums_random);
@@ -87,8 +90,10 @@ public class MainActivity extends SubsonicTabActivity {
         ListView list = (ListView) findViewById(R.id.main_list);
 
         MergeAdapter adapter = new MergeAdapter();
-        adapter.addViews(Arrays.asList(serverButton), true);
+
+        adapter.addView(offlineButton, true);
         if (!Util.isOffline(this)) {
+            adapter.addView(serverButton, true);
             adapter.addView(albumsTitle, false);
             adapter.addViews(Arrays.asList(albumsNewestButton, albumsRandomButton, albumsHighestButton, albumsRecentButton, albumsFrequentButton), true);
         }
@@ -98,7 +103,9 @@ public class MainActivity extends SubsonicTabActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (view == serverButton) {
+                if (view == offlineButton) {
+                    toggleOffline();
+                } else if (view == serverButton) {
                     dummyView.showContextMenu();
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
@@ -117,34 +124,57 @@ public class MainActivity extends SubsonicTabActivity {
         // Title: Subsonic
         setTitle(R.string.common_appname);
 
-        // Button 1: shuffle
-        ImageButton actionShuffleButton = (ImageButton)findViewById(R.id.action_button_1);
+        // Button 1: gone
+        ImageButton actionShuffleButton = (ImageButton) findViewById(R.id.action_button_1);
         actionShuffleButton.setImageResource(R.drawable.action_shuffle);
         actionShuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
-                intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
-                Util.startActivityWithoutTransition(MainActivity.this, intent);
+                startShufflePlay();
             }
         });
 
         // Button 2: search
-        ImageButton actionSearchButton = (ImageButton)findViewById(R.id.action_button_2);
+        ImageButton actionSearchButton = (ImageButton) findViewById(R.id.action_button_2);
         actionSearchButton.setImageResource(R.drawable.action_search);
         actionSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            	Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            	intent.putExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, true);
-                Util.startActivityWithoutTransition(MainActivity.this, intent);
+                onSearchRequested();
             }
         });
 
-        // Remember the current theme.
-        theme = Util.getTheme(this);
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(MainActivity.this, overflowButton, R.menu.main);
+            }
+        });
 
         showInfoDialog();
+    }
+
+    private void startShufflePlay() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.main_shuffle_confirm)
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
+                        intent.putExtra(Constants.INTENT_EXTRA_NAME_SHUFFLE, true);
+                        Util.startActivityWithoutTransition(MainActivity.this, intent);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void loadSettings() {
@@ -155,15 +185,12 @@ public class MainActivity extends SubsonicTabActivity {
             editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, FileUtil.getDefaultMusicDirectory().getPath());
             editor.commit();
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Restart activity if theme has changed.
-        if (theme != null && !theme.equals(Util.getTheme(this))) {
-            restart();
+        if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
+            editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
+            editor.commit();
         }
     }
 
@@ -174,14 +201,10 @@ public class MainActivity extends SubsonicTabActivity {
         MenuItem menuItem1 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_1, MENU_ITEM_SERVER_1, Util.getServerName(this, 1));
         MenuItem menuItem2 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_2, MENU_ITEM_SERVER_2, Util.getServerName(this, 2));
         MenuItem menuItem3 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_3, MENU_ITEM_SERVER_3, Util.getServerName(this, 3));
-        MenuItem menuItem4 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_OFFLINE, MENU_ITEM_OFFLINE, Util.getServerName(this, 0));
         menu.setGroupCheckable(MENU_GROUP_SERVER, true, true);
         menu.setHeaderTitle(R.string.main_select_server);
 
         switch (Util.getActiveServer(this)) {
-            case 0:
-                menuItem4.setChecked(true);
-                break;
             case 1:
                 menuItem1.setChecked(true);
                 break;
@@ -197,9 +220,6 @@ public class MainActivity extends SubsonicTabActivity {
     @Override
     public boolean onContextItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case MENU_ITEM_OFFLINE:
-                setActiveServer(0);
-                break;
             case MENU_ITEM_SERVER_1:
                 setActiveServer(1);
                 break;
@@ -216,6 +236,11 @@ public class MainActivity extends SubsonicTabActivity {
         // Restart activity
         restart();
         return true;
+    }
+
+    private void toggleOffline() {
+        Util.setOffline(this, !Util.isOffline(this));
+        restart();
     }
 
     private void setActiveServer(int instance) {
@@ -253,6 +278,6 @@ public class MainActivity extends SubsonicTabActivity {
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE, type);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 20);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
-		Util.startActivityWithoutTransition(this, intent);
-	}
+        Util.startActivityWithoutTransition(this, intent);
+    }
 }

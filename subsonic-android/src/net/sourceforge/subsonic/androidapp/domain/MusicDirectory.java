@@ -28,6 +28,7 @@ import java.io.Serializable;
 public class MusicDirectory {
 
     private String name;
+    private String parentId;
     private final List<Entry> children = new ArrayList<Entry>();
 
     public String getName() {
@@ -36,6 +37,14 @@ public class MusicDirectory {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public void addChild(Entry child) {

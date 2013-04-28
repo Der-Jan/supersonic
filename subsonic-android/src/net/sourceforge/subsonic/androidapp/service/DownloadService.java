@@ -90,6 +90,8 @@ public interface DownloadService {
 
     void delete(List<MusicDirectory.Entry> songs);
 
+    void pin(List<MusicDirectory.Entry> songs);
+
     void unpin(List<MusicDirectory.Entry> songs);
 
     DownloadFile forSong(MusicDirectory.Entry song);

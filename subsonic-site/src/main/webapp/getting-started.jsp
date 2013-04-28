@@ -25,15 +25,15 @@
                 on your installation options, but is typically <a href="http://localhost:4040" target="_blank">http://localhost:4040</a>.
             </p>
 
-            <a name="1"><h2>1 Setting up music folders</h2></a>
+            <a name="1"><h2>1 Setting up media folders</h2></a>
 
-            <p>You must tell Subsonic where you keep your music. Select <b>Settings &gt; Music folders</b> to add one or
+            <p>You must tell Subsonic where you keep your music and videos. Select <b>Settings &gt; Media folders</b> to add one or
                 more folders.</p>
 
-            <p>Note that if you add more than one music folder, a list will appear on the left side of the screen where you can
+            <p>Note that if you add more than one media folder, a list will appear on the left side of the screen where you can
                 select the active folder.</p>
 
-            <a href="inc/img/gettingstarted/musicfolders.png"><img src="inc/img/gettingstarted/musicfolders_thumb.png" alt=""/></a>
+            <a href="inc/img/gettingstarted/mediafolders.png"><img src="inc/img/gettingstarted/mediafolders_thumb.png" alt=""/></a>
 
             <p>Also note that Subsonic will organize your music according to how they are organized on your disk.
                 Unlike many other music applications, Subsonic does not organize the music according to the tag information
@@ -113,12 +113,12 @@
             </ul>
 
             <a name="3"><h2>3 Registering your license key</h2></a>
-            <p>Most features in Subsonic are free, but some (like mobile phone streaming) require a license after the 30-day
-                free trial. You get the license key by donating &euro;10 or more to the Subsonic project. After you receive the license key
+            <p>Most features in Subsonic are free, but some (like mobile phone streaming) require that you upgrade to
+                <a href="premium.jsp">Subsonic Premium</a> after the 30-day free trial. After you receive the license key
                 by email, you must register it on your server as follows:</p>
 
             <ul class="list">
-                <li>Click the "Donate" link in the top right corner of the Subsonic web interface.</li>
+                <li>Click the "Get Subsonic Premium" link in the top right corner of the Subsonic web interface.</li>
                 <li>Enter the email address and license key you received by email.</li>
             </ul>
 
@@ -153,7 +153,7 @@
                         <li><a href="#2.1">2.1 Automatic port forwarding</a></li>
                         <li><a href="#2.2">2.2 Manual port forwarding</a></li>
                         <li><a href="#2.3">2.3 Setting up your personal subsonic.org address</a></li>
-                        <li><a href="#2.3">2.4 Troubleshooting</a></li>
+                        <li><a href="#2.4">2.4 Troubleshooting</a></li>
                     </ul>
                     <li><a href="#3">3 Registering your license key</a></li>
                     <li><a href="#4">4 Using https</a></li>

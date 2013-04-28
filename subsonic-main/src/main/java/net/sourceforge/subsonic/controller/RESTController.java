@@ -48,9 +48,12 @@ import net.sourceforge.subsonic.ajax.PlayQueueService;
 import net.sourceforge.subsonic.command.UserSettingsCommand;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
+import net.sourceforge.subsonic.dao.BookmarkDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.Bookmark;
+import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicIndex;
@@ -130,6 +133,7 @@ public class RESTController extends MultiActionController {
     private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
+    private BookmarkDao bookmarkDao;
 
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
@@ -233,6 +237,40 @@ public class RESTController extends MultiActionController {
             builder.add("child", createAttributesForMediaFile(player, singleSong, username), true);
         }
 
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void getGenres(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("genres", false);
+
+        for (String genre : mediaFileDao.getGenres()) {
+            builder.add("genre", (Iterable<Attribute>) null, genre, true);
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void getSongsByGenre(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        Player player = playerService.getPlayer(request, response);
+        String username = securityService.getCurrentUsername(request);
+
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+        builder.add("songsByGenre", false);
+
+        String genre = ServletRequestUtils.getRequiredStringParameter(request, "genre");
+        int offset = ServletRequestUtils.getIntParameter(request, "offset", 0);
+        int count = ServletRequestUtils.getIntParameter(request, "count", 10);
+        count = Math.max(0, Math.min(count, 500));
+
+        for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count)) {
+            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
+            builder.add("song", attributes, true);
+        }
         builder.endAll();
         response.getWriter().print(builder);
     }
@@ -381,13 +419,23 @@ public class RESTController extends MultiActionController {
             return;
         }
 
+        MediaFile parent = mediaFileService.getParentOf(dir);
+        AttributeSet attributes = new AttributeSet();
+        attributes.add("id", id);
+        try {
+            if (!mediaFileService.isRoot(parent)) {
+                attributes.add("parent", parent.getId());
+            }
+        } catch (SecurityException x) {
+            // Ignored.
+        }
+        attributes.add("name", dir.getName());
+
         XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("directory", false,
-                new Attribute("id", dir.getId()),
-                new Attribute("name", dir.getName()));
+        builder.add("directory", attributes, false);
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
-            AttributeSet attributes = createAttributesForMediaFile(player, child, username);
+            attributes = createAttributesForMediaFile(player, child, username);
             builder.add("child", attributes, true);
         }
         builder.endAll();
@@ -1226,42 +1274,183 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
+        boolean includeEpisodes = ServletRequestUtils.getBooleanParameter(request, "includeEpisodes", true);
+        Integer channelId = ServletRequestUtils.getIntParameter(request, "id");
 
         XMLBuilder builder = createXMLBuilder(request, response, true);
         builder.add("podcasts", false);
 
         for (PodcastChannel channel : podcastService.getAllChannels()) {
-            AttributeSet channelAttrs = new AttributeSet();
-            channelAttrs.add("id", channel.getId());
-            channelAttrs.add("url", channel.getUrl());
-            channelAttrs.add("status", channel.getStatus().toString().toLowerCase());
-            channelAttrs.add("title", channel.getTitle());
-            channelAttrs.add("description", channel.getDescription());
-            channelAttrs.add("errorMessage", channel.getErrorMessage());
-            builder.add("channel", channelAttrs, false);
+            if (channelId == null || channelId.equals(channel.getId())) {
+                AttributeSet channelAttrs = new AttributeSet();
+                channelAttrs.add("id", channel.getId());
+                channelAttrs.add("url", channel.getUrl());
+                channelAttrs.add("status", channel.getStatus().toString().toLowerCase());
+                channelAttrs.add("title", channel.getTitle());
+                channelAttrs.add("description", channel.getDescription());
+                channelAttrs.add("errorMessage", channel.getErrorMessage());
+                builder.add("channel", channelAttrs, false);
 
-            List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
-            for (PodcastEpisode episode : episodes) {
-                AttributeSet episodeAttrs = new AttributeSet();
+                if (includeEpisodes) {
+                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
+                    for (PodcastEpisode episode : episodes) {
+                        AttributeSet episodeAttrs = new AttributeSet();
 
-                String path = episode.getPath();
-                if (path != null) {
-                    MediaFile mediaFile = mediaFileService.getMediaFile(path);
-                    episodeAttrs.addAll(createAttributesForMediaFile(player, mediaFile, username));
-                    episodeAttrs.add("streamId", mediaFile.getId());
+                        String path = episode.getPath();
+                        if (path != null) {
+                            MediaFile mediaFile = mediaFileService.getMediaFile(path);
+                            episodeAttrs.addAll(createAttributesForMediaFile(player, mediaFile, username));
+                            episodeAttrs.add("streamId", mediaFile.getId());
+                        }
+
+                        episodeAttrs.add("id", episode.getId());  // Overwrites the previous "id" attribute.
+                        episodeAttrs.add("status", episode.getStatus().toString().toLowerCase());
+                        episodeAttrs.add("title", episode.getTitle());
+                        episodeAttrs.add("description", episode.getDescription());
+                        episodeAttrs.add("publishDate", episode.getPublishDate());
+
+                        builder.add("episode", episodeAttrs, true);
+                    }
                 }
-
-                episodeAttrs.add("id", episode.getId());  // Overwrites the previous "id" attribute.
-                episodeAttrs.add("status", episode.getStatus().toString().toLowerCase());
-                episodeAttrs.add("title", episode.getTitle());
-                episodeAttrs.add("description", episode.getDescription());
-                episodeAttrs.add("publishDate", episode.getPublishDate());
-
-                builder.add("episode", episodeAttrs, true);
+                builder.end(); // <channel>
             }
-
-            builder.end(); // <channel>
         }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void refreshPodcasts(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+        podcastService.refreshAllChannels(true);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void createPodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        String url = ServletRequestUtils.getRequiredStringParameter(request, "url");
+        podcastService.createChannel(url);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deletePodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        podcastService.deleteChannel(id);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deletePodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        podcastService.deleteEpisode(id, true);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void downloadPodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isPodcastRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to administrate podcasts.");
+            return;
+        }
+
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        PodcastEpisode episode = podcastService.getEpisode(id, true);
+        if (episode == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Podcast episode " + id + " not found.");
+            return;
+        }
+
+        podcastService.downloadEpisode(episode);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void getInternetRadioStations(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("internetRadioStations", false);
+        for (InternetRadio radio : settingsService.getAllInternetRadios()) {
+            AttributeSet attrs = new AttributeSet();
+            attrs.add("id", radio.getId());
+            attrs.add("name", radio.getName());
+            attrs.add("streamUrl", radio.getStreamUrl());
+            attrs.add("homePageUrl", radio.getHomepageUrl());
+            builder.add("internetRadioStation", attrs, true);
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void getBookmarks(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        Player player = playerService.getPlayer(request, response);
+        String username = securityService.getCurrentUsername(request);
+
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        builder.add("bookmarks", false);
+        for (Bookmark bookmark : bookmarkDao.getBookmarks(username)) {
+            builder.add("bookmark", createAttributesForBookmark(bookmark), false);
+            MediaFile mediaFile = mediaFileService.getMediaFile(bookmark.getMediaFileId());
+            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
+            builder.add("entry", attributes, true);
+            builder.end();
+        }
+        builder.endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void createBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+        int mediaFileId = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        long position = ServletRequestUtils.getRequiredLongParameter(request, "position");
+        String comment = request.getParameter("comment");
+        Date now = new Date();
+
+        Bookmark bookmark = new Bookmark(0, mediaFileId, position, username, comment, now, now);
+        bookmarkDao.createOrUpdateBookmark(bookmark);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    public void deleteBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        XMLBuilder builder = createXMLBuilder(request, response, true);
+
+        String username = securityService.getCurrentUsername(request);
+        int mediaFileId = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        bookmarkDao.deleteBookmark(username, mediaFileId);
+
         builder.endAll();
         response.getWriter().print(builder);
     }
@@ -1392,6 +1581,16 @@ public class RESTController extends MultiActionController {
         attributes.add(new Attribute("expires", StringUtil.toISO8601(share.getExpires())));
         attributes.add(new Attribute("lastVisited", StringUtil.toISO8601(share.getLastVisited())));
 
+        return attributes;
+    }
+
+    private List<Attribute> createAttributesForBookmark(Bookmark bookmark) {
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(new Attribute("position", bookmark.getPositionMillis()));
+        attributes.add(new Attribute("username", bookmark.getUsername()));
+        attributes.add(new Attribute("comment", bookmark.getComment()));
+        attributes.add(new Attribute("created", StringUtil.toISO8601(bookmark.getCreated())));
+        attributes.add(new Attribute("changed", StringUtil.toISO8601(bookmark.getChanged())));
         return attributes;
     }
 
@@ -1845,6 +2044,10 @@ public class RESTController extends MultiActionController {
         this.musicIndexService = musicIndexService;
     }
 
+    public void setBookmarkDao(BookmarkDao bookmarkDao) {
+        this.bookmarkDao = bookmarkDao;
+    }
+
     public static enum ErrorCode {
 
         GENERIC(0, "A generic error."),
@@ -1853,7 +2056,7 @@ public class RESTController extends MultiActionController {
         PROTOCOL_MISMATCH_SERVER_TOO_OLD(30, "Incompatible Subsonic REST protocol version. Server must upgrade."),
         NOT_AUTHENTICATED(40, "Wrong username or password."),
         NOT_AUTHORIZED(50, "User is not authorized for the given operation."),
-        NOT_LICENSED(60, "The trial period for the Subsonic server is over. Please donate to get a license key. Visit subsonic.org for details."),
+        NOT_LICENSED(60, "The trial period for the Subsonic server is over. Please upgrade to Subsonic Premium. Visit subsonic.org for details."),
         NOT_FOUND(70, "Requested data was not found.");
 
         private final int code;

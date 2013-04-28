@@ -5,21 +5,14 @@
               android:layout_height="fill_parent">
 
     <include layout="@layout/action_bar"/>
-
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/dividerColor"/>
-
     <include layout="@layout/tab_progress"/>
 
-    <ListView
-            android:id="@+id/search_list"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1.0"
-            android:fastScrollEnabled="true"
-            />
+    <ListView style="@style/ListView"
+              android:id="@+id/search_list"
+              android:layout_width="fill_parent"
+              android:layout_height="0dip"
+              android:layout_weight="1.0"
+              android:fastScrollEnabled="true"/>
 
     <include layout="@layout/button_bar"/>
 

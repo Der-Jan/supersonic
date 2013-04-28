@@ -37,6 +37,8 @@
     </c:otherwise>
 </c:choose>
 
+<c:set var="licenseInfo" value="${model.licenseInfo}"/>
+<%@ include file="licenseNotice.jsp" %>
 
 <div style="padding-top:1em">
     <c:if test="${not empty model.dir}">

@@ -68,6 +68,7 @@ public class PodcastReceiverController extends ParameterizableViewController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("channels", channels);
         map.put("expandedChannels", StringUtil.parseInts(request.getParameter("expandedChannels")));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
         return result;
     }
 

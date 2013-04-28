@@ -20,35 +20,37 @@
 package net.sourceforge.subsonic.androidapp.activity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.net.Uri;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.SearchCritera;
 import net.sourceforge.subsonic.androidapp.domain.SearchResult;
+import net.sourceforge.subsonic.androidapp.service.DownloadFile;
+import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
-import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.util.ArtistAdapter;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -71,7 +73,7 @@ public class SearchActivity extends SubsonicTabActivity {
     private View artistsHeading;
     private View albumsHeading;
     private View songsHeading;
-    private TextView searchButton;
+    private TextView noMatchTextView;
     private View moreArtistsButton;
     private View moreAlbumsButton;
     private View moreSongsButton;
@@ -97,7 +99,7 @@ public class SearchActivity extends SubsonicTabActivity {
         albumsHeading = buttons.findViewById(R.id.search_albums);
         songsHeading = buttons.findViewById(R.id.search_songs);
 
-        searchButton = (TextView) buttons.findViewById(R.id.search_search);
+        noMatchTextView = (TextView) buttons.findViewById(R.id.search_no_match);
         moreArtistsButton = buttons.findViewById(R.id.search_more_artists);
         moreAlbumsButton = buttons.findViewById(R.id.search_more_albums);
         moreSongsButton = buttons.findViewById(R.id.search_more_songs);
@@ -107,9 +109,7 @@ public class SearchActivity extends SubsonicTabActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (view == searchButton) {
-                    onSearchRequested();
-                } else if (view == moreArtistsButton) {
+                if (view == moreArtistsButton) {
                     expandArtists();
                 } else if (view == moreAlbumsButton) {
                     expandAlbums();
@@ -148,6 +148,15 @@ public class SearchActivity extends SubsonicTabActivity {
             }
         });
 
+        // Button 3: overflow
+        final View overflowButton = findViewById(R.id.action_button_3);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(SearchActivity.this, overflowButton, R.menu.main);
+            }
+        });
+
         onNewIntent(getIntent());
     }
 
@@ -156,7 +165,6 @@ public class SearchActivity extends SubsonicTabActivity {
         super.onNewIntent(intent);
         String query = intent.getStringExtra(Constants.INTENT_EXTRA_NAME_QUERY);
         boolean autoplay = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
-        boolean requestsearch = intent.getBooleanExtra(Constants.INTENT_EXTRA_REQUEST_SEARCH, false);
 
         if (query != null) {
             mergeAdapter = new MergeAdapter();
@@ -164,8 +172,6 @@ public class SearchActivity extends SubsonicTabActivity {
             search(query, autoplay);
         } else {
             populateList();
-            if (requestsearch)
-                onSearchRequested();
         }
     }
 
@@ -185,8 +191,13 @@ public class SearchActivity extends SubsonicTabActivity {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
         } else if (isSong) {
+            MusicDirectory.Entry entry = (MusicDirectory.Entry) list.getItemAtPosition(info.position);
+            DownloadFile downloadFile = getDownloadService().forSong(entry);
+
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
+            menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
         }
     }
 
@@ -217,6 +228,12 @@ public class SearchActivity extends SubsonicTabActivity {
                 break;
             case R.id.song_menu_play_last:
                 onSongSelected(entry, false, true, false, false);
+                break;
+            case R.id.song_menu_pin:
+                getDownloadService().pin(Arrays.asList(entry));
+                break;
+            case R.id.song_menu_unpin:
+                getDownloadService().unpin(Arrays.asList(entry));
                 break;
             default:
                 return super.onContextItemSelected(menuItem);
@@ -249,10 +266,17 @@ public class SearchActivity extends SubsonicTabActivity {
 
     private void populateList() {
         mergeAdapter = new MergeAdapter();
-        mergeAdapter.addView(searchButton, true);
 
         if (searchResult != null) {
             List<Artist> artists = searchResult.getArtists();
+            List<MusicDirectory.Entry> albums = searchResult.getAlbums();
+            List<MusicDirectory.Entry> songs = searchResult.getSongs();
+
+            boolean empty = artists.isEmpty() && albums.isEmpty() && songs.isEmpty();
+            if (empty) {
+                mergeAdapter.addView(noMatchTextView, true);
+            }
+
             if (!artists.isEmpty()) {
                 mergeAdapter.addView(artistsHeading);
                 List<Artist> displayedArtists = new ArrayList<Artist>(artists.subList(0, Math.min(DEFAULT_ARTISTS, artists.size())));
@@ -263,7 +287,6 @@ public class SearchActivity extends SubsonicTabActivity {
                 }
             }
 
-            List<MusicDirectory.Entry> albums = searchResult.getAlbums();
             if (!albums.isEmpty()) {
                 mergeAdapter.addView(albumsHeading);
                 List<MusicDirectory.Entry> displayedAlbums = new ArrayList<MusicDirectory.Entry>(albums.subList(0, Math.min(DEFAULT_ALBUMS, albums.size())));
@@ -274,7 +297,6 @@ public class SearchActivity extends SubsonicTabActivity {
                 }
             }
 
-            List<MusicDirectory.Entry> songs = searchResult.getSongs();
             if (!songs.isEmpty()) {
                 mergeAdapter.addView(songsHeading);
                 List<MusicDirectory.Entry> displayedSongs = new ArrayList<MusicDirectory.Entry>(songs.subList(0, Math.min(DEFAULT_SONGS, songs.size())));
@@ -284,9 +306,6 @@ public class SearchActivity extends SubsonicTabActivity {
                     moreSongsAdapter = mergeAdapter.addView(moreSongsButton, true);
                 }
             }
-
-            boolean empty = searchResult.getArtists().isEmpty() && searchResult.getAlbums().isEmpty() && searchResult.getSongs().isEmpty();
-            searchButton.setText(empty ? R.string.search_no_match : R.string.search_search);
         }
 
         list.setAdapter(mergeAdapter);

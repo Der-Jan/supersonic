@@ -22,7 +22,9 @@ import net.sourceforge.subsonic.dao.PlayerDao;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Transcoding;
 import net.sourceforge.subsonic.domain.TransferStatus;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.util.StringUtil;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -43,6 +45,7 @@ public class PlayerService {
 
     private static final String COOKIE_NAME = "player";
     private static final int COOKIE_EXPIRY = 365 * 24 * 3600; // One year
+    private static final String GUEST_USERNAME = "guest";
 
     private PlayerDao playerDao;
     private StatusService statusService;
@@ -297,6 +300,36 @@ public class PlayerService {
         }
 
         transcodingService.setTranscodingsForPlayer(player, defaultActiveTranscodings);
+    }
+
+    /**
+     * Returns a player associated to the special "guest" user, creating it if necessary.
+     */
+    public Player getGuestPlayer(HttpServletRequest request) {
+
+        // Create guest user if necessary.
+        User user = securityService.getUserByName(GUEST_USERNAME);
+        if (user == null) {
+            user = new User(GUEST_USERNAME, RandomStringUtils.randomAlphanumeric(30), null);
+            user.setStreamRole(true);
+            securityService.createUser(user);
+        }
+
+        // Look for existing player.
+        List<Player> players = getPlayersForUserAndClientId(GUEST_USERNAME, null);
+        if (!players.isEmpty()) {
+            return players.get(0);
+        }
+
+        // Create player if necessary.
+        Player player = new Player();
+        if (request != null ) {
+            player.setIpAddress(request.getRemoteAddr());
+        }
+        player.setUsername(GUEST_USERNAME);
+        createPlayer(player);
+
+        return player;
     }
 
     public void setStatusService(StatusService statusService) {

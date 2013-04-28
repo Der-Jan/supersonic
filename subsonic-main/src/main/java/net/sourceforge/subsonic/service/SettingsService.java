@@ -33,7 +33,6 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
@@ -50,6 +49,8 @@ import net.sourceforge.subsonic.dao.MusicFolderDao;
 import net.sourceforge.subsonic.dao.UserDao;
 import net.sourceforge.subsonic.domain.Avatar;
 import net.sourceforge.subsonic.domain.InternetRadio;
+import net.sourceforge.subsonic.domain.LicenseInfo;
+import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Theme;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -67,6 +68,9 @@ public class SettingsService {
     // Subsonic home directory.
     private static final File SUBSONIC_HOME_WINDOWS = new File("c:/subsonic");
     private static final File SUBSONIC_HOME_OTHER = new File("/var/subsonic");
+
+    // Number of free trial days.
+    private static final long TRIAL_DAYS = 30L;
 
     // Global settings.
     private static final String KEY_INDEX_STRING = "IndexString";
@@ -114,16 +118,14 @@ public class SettingsService {
     private static final String KEY_HTTPS_PORT = "HttpsPort";
     private static final String KEY_URL_REDIRECTION_ENABLED = "UrlRedirectionEnabled";
     private static final String KEY_URL_REDIRECT_FROM = "UrlRedirectFrom";
-    private static final String KEY_URL_REDIRECT_TRIAL_EXPIRES = "UrlRedirectTrialExpires";
     private static final String KEY_URL_REDIRECT_CONTEXT_PATH = "UrlRedirectContextPath";
-    private static final String KEY_REST_TRIAL_EXPIRES = "RestTrialExpires-";
-    private static final String KEY_VIDEO_TRIAL_EXPIRES = "VideoTrialExpires";
     private static final String KEY_SERVER_ID = "ServerId";
     private static final String KEY_SETTINGS_CHANGED = "SettingsChanged";
     private static final String KEY_LAST_SCANNED = "LastScanned";
     private static final String KEY_ORGANIZE_BY_FOLDER_STRUCTURE = "OrganizeByFolderStructure";
     private static final String KEY_SORT_ALBUMS_BY_YEAR = "SortAlbumsByYear";
     private static final String KEY_MEDIA_LIBRARY_STATISTICS = "MediaLibraryStatistics";
+    private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -178,19 +180,18 @@ public class SettingsService {
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
-    private static final String DEFAULT_URL_REDIRECT_TRIAL_EXPIRES = null;
     private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = null;
-    private static final String DEFAULT_REST_TRIAL_EXPIRES = null;
-    private static final String DEFAULT_VIDEO_TRIAL_EXPIRES = null;
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
     private static final boolean DEFAULT_SORT_ALBUMS_BY_YEAR = true;
     private static final String DEFAULT_MEDIA_LIBRARY_STATISTICS = "0 0 0 0 0";
+    private static final String DEFAULT_TRIAL_EXPIRES = null;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
-            "DownsamplingCommand", "DownsamplingCommand2", "AutoCoverBatch", "MusicMask", "VideoMask", "CoverArtMask, HlsCommand");
+            "DownsamplingCommand", "DownsamplingCommand2", "AutoCoverBatch", "MusicMask", "VideoMask", "CoverArtMask, HlsCommand",
+            "UrlRedirectTrialExpires", "VideoTrialExpires");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -214,6 +215,7 @@ public class SettingsService {
     private static File subsonicHome;
 
     private boolean licenseValidated = true;
+    private Date licenseExpires;
 
     public SettingsService() {
         File propertyFile = getPropertyFile();
@@ -237,6 +239,12 @@ public class SettingsService {
                     iterator.remove();
                 }
             }
+        }
+
+        // Start trial.
+        if (getTrialExpires() == null) {
+            Date expiryDate = new Date(System.currentTimeMillis() + TRIAL_DAYS * 24L * 3600L * 1000L);
+            setTrialExpires(expiryDate);
         }
 
         save(false);
@@ -365,6 +373,10 @@ public class SettingsService {
 
     public String getPlaylistFolder() {
         return properties.getProperty(KEY_PLAYLIST_FOLDER, DEFAULT_PLAYLIST_FOLDER);
+    }
+
+    public void setPlaylistFolder(String playlistFolder) {
+        setProperty(KEY_PLAYLIST_FOLDER, playlistFolder);
     }
 
     public String getMusicFileTypes() {
@@ -630,6 +642,19 @@ public class SettingsService {
         return license.equalsIgnoreCase(StringUtil.md5Hex(email.toLowerCase()));
     }
 
+    public Date getLicenseExpires() {
+        return licenseExpires;
+    }
+
+    public LicenseInfo getLicenseInfo() {
+        Date trialExpires = getTrialExpires();
+        Date now = new Date();
+        boolean trialValid = trialExpires.after(now);
+        long trialDaysLeft = trialValid ? (trialExpires.getTime() - now.getTime()) / (24L * 3600L * 1000L) : 0L;
+
+        return new LicenseInfo(getLicenseEmail(), isLicenseValid(), trialExpires, trialDaysLeft, licenseExpires);
+    }
+
     public String getDownsamplingCommand() {
         return properties.getProperty(KEY_DOWNSAMPLING_COMMAND, DEFAULT_DOWNSAMPLING_COMMAND);
     }
@@ -765,24 +790,14 @@ public class SettingsService {
         properties.setProperty(KEY_URL_REDIRECT_FROM, urlRedirectFrom);
     }
 
-    public Date getUrlRedirectTrialExpires() {
-        String value = properties.getProperty(KEY_URL_REDIRECT_TRIAL_EXPIRES, DEFAULT_URL_REDIRECT_TRIAL_EXPIRES);
+    public Date getTrialExpires() {
+        String value = properties.getProperty(KEY_TRIAL_EXPIRES, DEFAULT_TRIAL_EXPIRES);
         return value == null ? null : new Date(Long.parseLong(value));
     }
 
-    public void setUrlRedirectTrialExpires(Date date) {
+    private void setTrialExpires(Date date) {
         String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_URL_REDIRECT_TRIAL_EXPIRES, value);
-    }
-
-    public Date getVideoTrialExpires() {
-        String value = properties.getProperty(KEY_VIDEO_TRIAL_EXPIRES, DEFAULT_VIDEO_TRIAL_EXPIRES);
-        return value == null ? null : new Date(Long.parseLong(value));
-    }
-
-    public void setVideoTrialExpires(Date date) {
-        String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_VIDEO_TRIAL_EXPIRES, value);
+        setProperty(KEY_TRIAL_EXPIRES, value);
     }
 
     public String getUrlRedirectContextPath() {
@@ -791,16 +806,6 @@ public class SettingsService {
 
     public void setUrlRedirectContextPath(String contextPath) {
         properties.setProperty(KEY_URL_REDIRECT_CONTEXT_PATH, contextPath);
-    }
-
-    public Date getRESTTrialExpires(String client) {
-        String value = properties.getProperty(KEY_REST_TRIAL_EXPIRES + client, DEFAULT_REST_TRIAL_EXPIRES);
-        return value == null ? null : new Date(Long.parseLong(value));
-    }
-
-    public void setRESTTrialExpires(String client, Date date) {
-        String value = (date == null ? null : String.valueOf(date.getTime()));
-        setProperty(KEY_REST_TRIAL_EXPIRES + client, value);
     }
 
     public String getServerId() {
@@ -1245,6 +1250,11 @@ public class SettingsService {
             if (!licenseValidated) {
                 LOG.warn("License key is not valid.");
             }
+            String[] lines = StringUtils.split(content);
+            if (lines.length > 1) {
+                licenseExpires = new Date(Long.parseLong(lines[1]));
+            }
+
         } catch (Throwable x) {
             LOG.warn("Failed to validate license.", x);
         } finally {

@@ -98,7 +98,6 @@
                 /login.view=IS_AUTHENTICATED_ANONYMOUSLY
                 /recover.view=IS_AUTHENTICATED_ANONYMOUSLY
                 /accessDenied.view=IS_AUTHENTICATED_ANONYMOUSLY
-                /videoPlayer.view=IS_AUTHENTICATED_ANONYMOUSLY
                 /coverArt.view=IS_AUTHENTICATED_ANONYMOUSLY
                 /hls/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /stream/**=IS_AUTHENTICATED_ANONYMOUSLY

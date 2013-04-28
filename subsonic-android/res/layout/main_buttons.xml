@@ -15,7 +15,7 @@
             android:minHeight="?android:attr/listPreferredItemHeight">
 
         <ImageView
-                android:src="@drawable/main_select_server"
+                android:src="@drawable/navigate_down"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -30,8 +30,8 @@
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dip"
-                      android:layout_marginTop="6dip"
-                      android:textAppearance="?android:attr/textAppearanceLarge"/>
+                      android:layout_marginTop="8dip"
+                      android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView android:id="@+id/main.select_server_2"
                       android:layout_width="fill_parent"
@@ -42,78 +42,18 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/main_albums"
-            android:text="@string/main.albums_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#EFEFEF"
-            android:textStyle="bold"
-            android:background="#A5A5A5"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"/>
+    <TextView style="@style/MainMenuTextView"
+              android:id="@+id/main_offline"
+              android:text="@string/main.use_offline"
+              android:drawablePadding="12dip"
+              android:drawableLeft="@drawable/collections_cloud"/>
 
-    <TextView
-            android:id="@+id/main_albums_newest"
-            android:text="@string/main.albums_newest"
-            android:drawableRight="@drawable/list_item_artist"
-            android:drawablePadding="6dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:minHeight="50dip"/>
-    <TextView
-            android:id="@+id/main_albums_recent"
-            android:text="@string/main.albums_recent"
-            android:drawableRight="@drawable/list_item_artist"
-            android:drawablePadding="6dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:minHeight="50dip"/>
-    <TextView
-            android:id="@+id/main_albums_frequent"
-            android:text="@string/main.albums_frequent"
-            android:drawableRight="@drawable/list_item_artist"
-            android:drawablePadding="6dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:minHeight="50dip"/>
-    <TextView
-            android:id="@+id/main_albums_highest"
-            android:text="@string/main.albums_highest"
-            android:drawableRight="@drawable/list_item_artist"
-            android:drawablePadding="6dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:minHeight="50dip"/>
-    <TextView
-            android:id="@+id/main_albums_random"
-            android:text="@string/main.albums_random"
-            android:drawableRight="@drawable/list_item_artist"
-            android:drawablePadding="6dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:minHeight="50dip"/>
+    <TextView style="@style/HeaderTextView" android:id="@+id/main_albums" android:text="@string/main.albums_title"/>
+    <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_newest" android:text="@string/main.albums_newest"/>
+    <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_recent" android:text="@string/main.albums_recent"/>
+    <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_frequent" android:text="@string/main.albums_frequent"/>
+    <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_highest" android:text="@string/main.albums_highest"/>
+    <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_random" android:text="@string/main.albums_random"/>
 
 </LinearLayout>
 

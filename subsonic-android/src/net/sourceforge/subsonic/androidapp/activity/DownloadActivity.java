@@ -20,11 +20,13 @@ package net.sourceforge.subsonic.androidapp.activity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.app.AlertDialog;
@@ -32,7 +34,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -56,6 +57,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import net.sourceforge.subsonic.androidapp.R;
@@ -67,7 +69,8 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.HorizontalSlider;
+import net.sourceforge.subsonic.androidapp.util.FadeOutAnimation;
+import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
 import net.sourceforge.subsonic.androidapp.util.Util;
@@ -79,21 +82,19 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
     private static final int DIALOG_SAVE_PLAYLIST = 100;
     private static final int PERCENTAGE_OF_SCREEN_FOR_SWIPE = 5;
-    private static final int COLOR_BUTTON_ENABLED = Color.rgb(129, 201, 54);
-    private static final int COLOR_BUTTON_DISABLED = Color.rgb(164, 166, 158);
+    private static final int COLOR_BUTTON_ENABLED = Color.rgb(51, 181, 229);
+    private static final int COLOR_BUTTON_DISABLED = Color.rgb(206, 213, 211);
 
     private ViewFlipper playlistFlipper;
-    private ViewFlipper buttonBarFlipper;
     private TextView emptyTextView;
     private TextView songTitleTextView;
-    private TextView albumTextView;
     private TextView artistTextView;
     private ImageView albumArtImageView;
     private ListView playlistView;
     private TextView positionTextView;
     private TextView durationTextView;
     private TextView statusTextView;
-    private HorizontalSlider progressBar;
+    private SeekBar progressBar;
     private View previousButton;
     private View nextButton;
     private View pauseButton;
@@ -104,7 +105,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private Button equalizerButton;
     private Button visualizerButton;
     private Button jukeboxButton;
-    private View toggleListButton;
+    private ImageButton toggleListButton;
     private ScheduledExecutorService executorService;
     private DownloadFile currentPlaying;
     private long currentRevision;
@@ -113,6 +114,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private int swipeDistance;
     private int swipeVelocity;
     private VisualizerView visualizerView;
+    private boolean seekInProgress = false;
+    private ScheduledFuture<?> hideControlsFuture;
 
     /**
      * Called when the activity is first created.
@@ -129,16 +132,14 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         gestureScanner = new GestureDetector(this);
 
         playlistFlipper = (ViewFlipper) findViewById(R.id.download_playlist_flipper);
-        buttonBarFlipper = (ViewFlipper) findViewById(R.id.download_button_bar_flipper);
         emptyTextView = (TextView) findViewById(R.id.download_empty);
         songTitleTextView = (TextView) findViewById(R.id.download_song_title);
-        albumTextView = (TextView) findViewById(R.id.download_album);
         artistTextView = (TextView) findViewById(R.id.download_artist);
         albumArtImageView = (ImageView) findViewById(R.id.download_album_art_image);
         positionTextView = (TextView) findViewById(R.id.download_position);
         durationTextView = (TextView) findViewById(R.id.download_duration);
         statusTextView = (TextView) findViewById(R.id.download_status);
-        progressBar = (HorizontalSlider) findViewById(R.id.download_progress_bar);
+        progressBar = (SeekBar) findViewById(R.id.download_progress_bar);
         playlistView = (ListView) findViewById(R.id.download_list);
         previousButton = findViewById(R.id.download_previous);
         nextButton = findViewById(R.id.download_next);
@@ -151,8 +152,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         visualizerButton = (Button) findViewById(R.id.download_visualizer);
         jukeboxButton = (Button) findViewById(R.id.download_jukebox);
         LinearLayout visualizerViewLayout = (LinearLayout) findViewById(R.id.download_visualizer_view_layout);
-
-        toggleListButton = findViewById(R.id.download_toggle_list);
+        toggleListButton = (ImageButton) findViewById(R.id.download_toggle_list);
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
@@ -168,16 +168,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         equalizerButton.setOnTouchListener(touchListener);
         visualizerButton.setOnTouchListener(touchListener);
         jukeboxButton.setOnTouchListener(touchListener);
-        buttonBarFlipper.setOnTouchListener(touchListener);
         emptyTextView.setOnTouchListener(touchListener);
         albumArtImageView.setOnTouchListener(touchListener);
-
-        albumArtImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFullscreenAlbumArt();
-            }
-        });
 
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +226,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             public void onClick(View view) {
                 getDownloadService().shuffle();
                 Util.toast(DownloadActivity.this, R.string.download_menu_shuffle_notification);
+                setControlsVisible(true);
             }
         });
 
@@ -256,6 +249,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                     default:
                         break;
                 }
+                setControlsVisible(true);
             }
         });
 
@@ -263,6 +257,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DownloadActivity.this, EqualizerActivity.class));
+                setControlsVisible(true);
             }
         });
 
@@ -274,6 +269,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 getDownloadService().setShowVisualization(visualizerView.isActive());
                 updateButtons();
                 Util.toast(DownloadActivity.this, active ? R.string.download_visualizer_on : R.string.download_visualizer_off);
+                setControlsVisible(true);
             }
         });
 
@@ -284,6 +280,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 getDownloadService().setJukeboxEnabled(jukeboxEnabled);
                 updateButtons();
                 Util.toast(DownloadActivity.this, jukeboxEnabled ? R.string.download_jukebox_on : R.string.download_jukebox_off, false);
+                setControlsVisible(true);
             }
         });
 
@@ -294,16 +291,32 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             }
         });
 
-        progressBar.setOnSliderChangeListener(new HorizontalSlider.OnSliderChangeListener() {
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
-            public void onSliderChanged(View view, int position, boolean inProgress) {
-                Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
-                if (!inProgress) {
-                    getDownloadService().seekTo(position);
-                    onProgressChanged();
+            public void onProgressChanged(SeekBar seekBar, int position, boolean fromUser) {
+                if (fromUser) {
+                    Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
+                    setControlsVisible(true);
                 }
             }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Notification that the user has started a touch gesture. Clients may want to use this to disable advancing the seekbar.
+                seekInProgress = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Notification that the user has finished a touch gesture. Clients may want to use this to re-enable advancing the seekbar.
+                seekInProgress = false;
+                int position = seekBar.getProgress();
+                Util.toast(DownloadActivity.this, Util.formatDuration(position / 1000), true);
+                getDownloadService().seekTo(position);
+            }
         });
+
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -333,28 +346,22 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         } else {
             visualizerView = new VisualizerView(this);
             visualizerViewLayout.addView(visualizerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-
-            visualizerView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    visualizerView.setActive(!visualizerView.isActive());
-                    getDownloadService().setShowVisualization(visualizerView.isActive());
-                    updateButtons();
-                    return true;
-                }
-            });
         }
 
-        // TODO: Extract to utility method and cache.
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Storopia.ttf");
-        equalizerButton.setTypeface(typeface);
-        visualizerButton.setTypeface(typeface);
-        jukeboxButton.setTypeface(typeface);
+        final View overflowButton = findViewById(R.id.download_overflow);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PopupMenuHelper().showMenu(DownloadActivity.this, overflowButton, R.menu.nowplaying);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        executorService = Executors.newSingleThreadScheduledExecutor();
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -368,14 +375,13 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 });
             }
         };
-
-        executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleWithFixedDelay(runnable, 0L, 1000L, TimeUnit.MILLISECONDS);
+
+        setControlsVisible(true);
 
         DownloadService downloadService = getDownloadService();
         if (downloadService == null || downloadService.getCurrentPlaying() == null) {
             playlistFlipper.setDisplayedChild(1);
-            buttonBarFlipper.setDisplayedChild(1);
         }
 
         onDownloadListChanged();
@@ -395,17 +401,53 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         updateButtons();
     }
 
+    private void scheduleHideControls() {
+        if (hideControlsFuture != null) {
+            hideControlsFuture.cancel(false);
+        }
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setControlsVisible(false);
+                    }
+                });
+            }
+        };
+        hideControlsFuture = executorService.schedule(runnable, 3000L, TimeUnit.MILLISECONDS);
+    }
+
+    private void setControlsVisible(boolean visible) {
+        long duration = 1700L;
+
+        FadeOutAnimation.createAndStart(shuffleButton, !visible, duration);
+        FadeOutAnimation.createAndStart(repeatButton, !visible, duration);
+        FadeOutAnimation.createAndStart(durationTextView, !visible, duration);
+        FadeOutAnimation.createAndStart(positionTextView, !visible, duration);
+        FadeOutAnimation.createAndStart(findViewById(R.id.download_overlay_buttons), !visible, duration);
+
+        if (visible) {
+            scheduleHideControls();
+        }
+    }
+
     private void updateButtons() {
         boolean eqEnabled = getDownloadService() != null && getDownloadService().getEqualizerController() != null &&
                 getDownloadService().getEqualizerController().isEnabled();
-        equalizerButton.setTextColor(eqEnabled ? COLOR_BUTTON_ENABLED : COLOR_BUTTON_DISABLED);
+        updateButton(equalizerButton, eqEnabled);
 
-        if (visualizerView != null) {
-            visualizerButton.setTextColor(visualizerView.isActive() ? COLOR_BUTTON_ENABLED : COLOR_BUTTON_DISABLED);
-        }
+        updateButton(visualizerButton, visualizerView != null && visualizerView.isActive());
 
         boolean jukeboxEnabled = getDownloadService() != null && getDownloadService().isJukeboxEnabled();
-        jukeboxButton.setTextColor(jukeboxEnabled ? COLOR_BUTTON_ENABLED : COLOR_BUTTON_DISABLED);
+        updateButton(jukeboxButton, jukeboxEnabled);
+    }
+
+    private void updateButton(Button button, boolean enabled) {
+        button.setTextColor(enabled ? COLOR_BUTTON_ENABLED : COLOR_BUTTON_DISABLED);
     }
 
     // Scroll to current playing/downloading.
@@ -514,15 +556,13 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             DownloadFile downloadFile = (DownloadFile) playlistView.getItemAtPosition(info.position);
 
             MenuInflater inflater = getMenuInflater();
-    		inflater.inflate(R.menu.nowplaying_context, menu);
+            inflater.inflate(R.menu.nowplaying_context, menu);
 
-            if (downloadFile.getSong().getParent() == null) {
-            	menu.findItem(R.id.menu_show_album).setVisible(false);
-            }
-            if (Util.isOffline(this)) {
-                menu.findItem(R.id.menu_lyrics).setVisible(false);
-                menu.findItem(R.id.menu_save_playlist).setVisible(false);
-            }
+            menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
+            menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.menu_remove).setVisible(true);
+            menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
+            menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
         }
     }
 
@@ -540,6 +580,16 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
     private boolean menuItemSelected(int menuItemId, DownloadFile song) {
         switch (menuItemId) {
+            case R.id.menu_pin:
+                getDownloadService().pin(Arrays.asList(song.getSong()));
+                return true;
+            case R.id.menu_unpin:
+                getDownloadService().unpin(Arrays.asList(song.getSong()));
+                return true;
+            case R.id.menu_remove:
+                getDownloadService().remove(song);
+                onDownloadListChanged();
+                return true;
             case R.id.menu_show_album:
                 Intent intent = new Intent(this, SelectAlbumActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, song.getSong().getParent());
@@ -551,10 +601,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ARTIST, song.getSong().getArtist());
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_TITLE, song.getSong().getTitle());
                 Util.startActivityWithoutTransition(this, intent);
-                return true;
-            case R.id.menu_remove:
-                getDownloadService().remove(song);
-                onDownloadListChanged();
                 return true;
             case R.id.menu_remove_all:
                 getDownloadService().setShufflePlayEnabled(false);
@@ -568,7 +614,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             	} else {
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             		getDownloadService().setKeepScreenOn(true);
-            	}
+                    Util.toast(this, R.string.download_screen_on);
+                }
                 return true;
             case R.id.menu_shuffle:
                 getDownloadService().shuffle();
@@ -576,6 +623,12 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 return true;
             case R.id.menu_save_playlist:
                 showDialog(DIALOG_SAVE_PLAYLIST);
+                return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.menu_search:
+                onSearchRequested();
                 return true;
             default:
                 return false;
@@ -632,19 +685,17 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_out));
             playlistFlipper.setDisplayedChild(0);
-            buttonBarFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_in));
-            buttonBarFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_down_out));
-            buttonBarFlipper.setDisplayedChild(0);
-
-
+            toggleListButton.setImageResource(R.drawable.media_toggle_list);
         } else {
             playlistFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
             playlistFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
             playlistFlipper.setDisplayedChild(1);
-            buttonBarFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
-            buttonBarFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_out));
-            buttonBarFlipper.setDisplayedChild(1);
+            DownloadService downloadService = getDownloadService();
+            if (downloadService != null && downloadService.getCurrentPlaying() != null) {
+                getImageLoader().loadImage(toggleListButton, downloadService.getCurrentPlaying().getSong(), false, true);
+            }
         }
+        setControlsVisible(true);
     }
 
     private void start() {
@@ -697,17 +748,12 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         }
 
         currentPlaying = getDownloadService().getCurrentPlaying();
-        if (currentPlaying != null) {
-            MusicDirectory.Entry song = currentPlaying.getSong();
-            songTitleTextView.setText(song.getTitle());
-            albumTextView.setText(song.getAlbum());
-            artistTextView.setText(song.getArtist());
-            getImageLoader().loadImage(albumArtImageView, song, true, true);
-        } else {
-            songTitleTextView.setText(null);
-            albumTextView.setText(null);
-            artistTextView.setText(null);
-            getImageLoader().loadImage(albumArtImageView, null, true, false);
+        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
+        songTitleTextView.setText(song == null ? null : song.getTitle());
+        artistTextView.setText(song == null ? null : song.getArtist());
+        getImageLoader().loadImage(albumArtImageView, song, true, true);
+        if (playlistFlipper.getDisplayedChild() == 1) {
+            getImageLoader().loadImage(toggleListButton, song, false, true);
         }
     }
 
@@ -725,13 +771,15 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             positionTextView.setText(Util.formatDuration(millisPlayed / 1000));
             durationTextView.setText(Util.formatDuration(millisTotal / 1000));
             progressBar.setMax(millisTotal == 0 ? 100 : millisTotal); // Work-around for apparent bug.
-            progressBar.setProgress(millisPlayed);
-            progressBar.setSlidingEnabled(currentPlaying.isCompleteFileAvailable() || getDownloadService().isJukeboxEnabled());
+            if (!seekInProgress) {
+                progressBar.setProgress(millisPlayed);
+            }
+            progressBar.setEnabled(currentPlaying.isCompleteFileAvailable() || getDownloadService().isJukeboxEnabled());
         } else {
             positionTextView.setText("0:00");
             durationTextView.setText("-:--");
             progressBar.setProgress(0);
-            progressBar.setSlidingEnabled(false);
+            progressBar.setEnabled(false);
         }
 
         PlayerState playerState = getDownloadService().getPlayerState();
@@ -745,7 +793,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 statusTextView.setText(R.string.download_playerstate_buffering);
                 break;
             case STARTED:
-                if (getDownloadService().isShufflePlayEnabled()) {
+                if (getDownloadService().isJukeboxEnabled()) {
+                    statusTextView.setText(R.string.download_playerstate_playing_remote);
+                } else if (getDownloadService().isShufflePlayEnabled()) {
                     statusTextView.setText(R.string.download_playerstate_playing_shuffle);
                 } else {
                     statusTextView.setText(null);
@@ -759,18 +809,18 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         switch (playerState) {
             case STARTED:
                 pauseButton.setVisibility(View.VISIBLE);
-                stopButton.setVisibility(View.GONE);
-                startButton.setVisibility(View.GONE);
+                stopButton.setVisibility(View.INVISIBLE);
+                startButton.setVisibility(View.INVISIBLE);
                 break;
             case DOWNLOADING:
             case PREPARING:
-                pauseButton.setVisibility(View.GONE);
+                pauseButton.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.VISIBLE);
-                startButton.setVisibility(View.GONE);
+                startButton.setVisibility(View.INVISIBLE);
                 break;
             default:
-                pauseButton.setVisibility(View.GONE);
-                stopButton.setVisibility(View.GONE);
+                pauseButton.setVisibility(View.INVISIBLE);
+                stopButton.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
                 break;
         }
@@ -804,6 +854,7 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
 	@Override
 	public boolean onDown(MotionEvent me) {
+        setControlsVisible(true);
 		return false;
 	}
 

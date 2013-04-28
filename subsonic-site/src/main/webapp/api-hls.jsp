@@ -30,7 +30,11 @@
         <td></td>
         <td>If specified, the server will attempt to limit the bitrate to this value, in kilobits per second.
             If this parameter is specified more than once, the server will create a <strong>variant playlist</strong>,
-            suitable for adaptive bitrate streaming. The playlist will support streaming at all the specified bitrates.</td>
+            suitable for adaptive bitrate streaming. The playlist will support streaming at all the specified bitrates.
+            The server will automatically choose video dimensions that are suitable for the given bitrates. Since
+            <a href="#versions">1.9.0</a> you may explicitly request a certain width (480) and height (360) like so:
+            <code>bitRate=1000@480x360</code>
+        </td>
     </tr>
 
 </table>
