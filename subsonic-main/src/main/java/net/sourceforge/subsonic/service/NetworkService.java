@@ -42,10 +42,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.NATPMPRouter;
-import net.sourceforge.subsonic.domain.Router;
-import net.sourceforge.subsonic.domain.SBBIRouter;
-import net.sourceforge.subsonic.domain.WeUPnPRouter;
+import net.sourceforge.subsonic.service.upnp.ClingRouter;
+import net.sourceforge.subsonic.service.upnp.NATPMPRouter;
+import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -66,6 +65,7 @@ public class NetworkService {
     private static final String URL_REDIRECTION_TEST_URL = getBackendUrl() + "/backend/redirect/test.view";
 
     private SettingsService settingsService;
+    private UPnPService upnpService;
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     private final PortForwardingTask portForwardingTask = new PortForwardingTask();
     private final URLRedirectionTask urlRedirectionTask = new URLRedirectionTask();
@@ -77,19 +77,19 @@ public class NetworkService {
     private boolean testUrlRedirection;
 
     public void init() {
-        initPortForwarding();
+        initPortForwarding(10);
         initUrlRedirection(false);
     }
 
     /**
      * Configures UPnP port forwarding.
      */
-    public synchronized void initPortForwarding() {
+    public synchronized void initPortForwarding(int initialDelaySeconds) {
         portForwardingStatus.setText("Idle");
         if (portForwardingFuture != null) {
             portForwardingFuture.cancel(true);
         }
-        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, 0L, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
+        portForwardingFuture = executor.scheduleWithFixedDelay(portForwardingTask, initialDelaySeconds, PORT_FORWARDING_DELAY, TimeUnit.SECONDS);
     }
 
     /**
@@ -120,6 +120,10 @@ public class NetworkService {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setUpnpService(UPnPService upnpService) {
+        this.upnpService = upnpService;
     }
 
     private class PortForwardingTask extends Task {
@@ -184,22 +188,14 @@ public class NetworkService {
         }
 
         private Router findRouter() {
-            try {
-                Router router = SBBIRouter.findRouter();
-                if (router != null) {
-                    return router;
-                }
-            } catch (Throwable x) {
-                LOG.warn("Failed to find UPnP router using SBBI library.", x);
-            }
 
             try {
-                Router router = WeUPnPRouter.findRouter();
+                Router router = ClingRouter.findRouter(upnpService);
                 if (router != null) {
                     return router;
                 }
             } catch (Throwable x) {
-                LOG.warn("Failed to find UPnP router using WeUPnP library.", x);
+                LOG.warn("Failed to find UPnP router using Cling library.", x);
             }
 
             try {

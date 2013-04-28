@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.9.0">
+           version="1.10.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -79,6 +79,7 @@
             <xs:element name="child" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/> <!-- Added in 1.7.0 -->
         </xs:sequence>
         <xs:attribute name="lastModified" type="xs:long" use="required"/>
+        <xs:attribute name="ignoredArticles" type="xs:string" use="required"/> <!-- Added in 1.10.0 -->
     </xs:complexType>
 
     <xs:complexType name="Index">
@@ -103,6 +104,7 @@
         <xs:sequence>
             <xs:element name="index" type="sub:IndexID3" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
+        <xs:attribute name="ignoredArticles" type="xs:string" use="required"/> <!-- Added in 1.10.0 -->
     </xs:complexType>
 
     <xs:complexType name="IndexID3">

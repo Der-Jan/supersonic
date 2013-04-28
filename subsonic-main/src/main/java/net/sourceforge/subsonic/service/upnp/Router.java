@@ -16,7 +16,7 @@
 
  Copyright 2009 (C) Sindre Mehus
  */
-package net.sourceforge.subsonic.domain;
+package net.sourceforge.subsonic.service.upnp;
 
 /**
  * @author Sindre Mehus

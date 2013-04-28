@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <subsonic-response xmlns="http://subsonic.org/restapi"
-                   status="ok" version="1.8.0">
-    <artists>
+                   status="ok" version="1.10.0">
+    <artists ignoredArticles="The El La Los Las Le Les">
         <index name="A">
             <artist id="5449" name="A-Ha" coverArt="ar-5449" albumCount="4"/>
             <artist id="5421" name="ABBA" coverArt="ar-5421" albumCount="6"/>

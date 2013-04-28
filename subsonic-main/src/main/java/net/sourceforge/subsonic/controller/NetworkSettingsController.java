@@ -64,7 +64,7 @@ public class NetworkSettingsController extends SimpleFormController {
         }
 
         settingsService.save();
-        networkService.initPortForwarding();
+        networkService.initPortForwarding(0);
         networkService.initUrlRedirection(true);
     }
 

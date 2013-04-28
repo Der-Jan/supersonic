@@ -1,38 +1,52 @@
 DONE IN 4.9
 -------------
+REST: Escape ampersand in XML for getGenres
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
+Change wording "Change this" -> "Register a different license key"
+REST: Added ignoredArticles
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
 
 TODO IN 4.9
 --------------
-Verify that update notice is displayed in 4.7 and 4.8
-Mention in release notes that existing licenses will still work.
-
-premium.jsp -> add link to subsonic.org/premium for more info
+REST: Add getSongs
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
+UPnP
+  DLNA
+    http://4thline.org/projects/mailinglists.html#nabble-td2165790
+  Test on Linux (alternative JDK)
+  Add controls for config
 make menu text more visible
-Send reminder email when license is about to expire.
-verify that 4.8 is default in sf.net
+Move xsd and xml examples to site
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
-
-site
-  Update rest of pages
+  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
+Improve video support
+  http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
+  https://sourceforge.net/p/subsonic/feature-requests/15/
 
 backend
+Send reminder email when license is about to expire.
   Missing index payment(processing_status)?
 
 other
   reconsider sourceforge
 
 UPnP/DLNA
-  Conflict with existing UPnP classes.
+
+Skifta (3450) - Can browse and play music.
+Windows Media Player (3450) - Visible, but can't browse
+Samsung tv, new (3450) - Can browse and play music, haven't tested video
+Samsung tv, old (3450) - Can browse, but can't play music.
+PS3 (3450) - Can browse albums
+
+
   AbstractMediaReceiverRegistrarService
   MiniDLNA
     http://minidlna.sourceforge.net/
   http://4thline.org/projects/cling/
   Use 2.0?
   Fails to play nrk podcast.
-  Test with Tomcat
-  Make it work in Skifta
   Premium
   https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
   https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
@@ -822,6 +836,8 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/ROOT.war
   scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/demo.war
   rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
+
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/changelog.jsp  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org

@@ -176,6 +176,10 @@
         <th class="param-heading">Subsonic version</th>
         <th class="param-heading">REST API version</th>
     </tr>
+    <tr class="table-altrow">
+        <td>4.9</td>
+        <td>1.10.0</td>
+    </tr>
     <tr>
         <td>4.8</td>
         <td>1.9.0</td>
