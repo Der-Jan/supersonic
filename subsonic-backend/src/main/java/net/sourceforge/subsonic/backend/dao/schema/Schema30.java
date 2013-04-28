@@ -105,5 +105,20 @@ public class Schema30 extends Schema {
             LOG.info("Database column 'payment.valid_to' was added successfully.");
         }
 
+        if (!tableExists(template, "currency_conversion")) {
+            LOG.info("Database table 'currency_conversion' not found.  Creating it.");
+            template.execute("create table currency_conversion (" +
+                    "id identity," +
+                    "source varchar not null," +
+                    "target varchar not null," +
+                    "rate double not null)");
+
+            template.execute("insert into currency_conversion values(null, 'EUR', 'EUR', 1.0)");
+            template.execute("insert into currency_conversion values(null, 'EUR', 'USD', 0.77)");
+            template.execute("insert into currency_conversion values(null, 'EUR', 'NOK', 0.13)");
+            template.execute("insert into currency_conversion values(null, 'EUR', 'SEK', 0.12)");
+
+            LOG.info("Database table 'currency_conversion' was created successfully.");
+        }
     }
 }

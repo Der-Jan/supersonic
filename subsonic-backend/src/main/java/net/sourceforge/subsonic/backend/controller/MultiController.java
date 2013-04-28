@@ -20,18 +20,26 @@ package net.sourceforge.subsonic.backend.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -156,43 +164,62 @@ public class MultiController extends MultiActionController {
             return null;
         }
 
+        int days = ServletRequestUtils.getIntParameter(request, "days", 30);
+
+        SortedMap<Date, Money> payments = new TreeMap<Date, Money>();
+
+        Calendar startOfDay = Calendar.getInstance();
+        startOfDay.set(Calendar.HOUR_OF_DAY, 0);
+        startOfDay.set(Calendar.MINUTE, 0);
+        startOfDay.set(Calendar.SECOND, 0);
+        startOfDay.set(Calendar.MILLISECOND, 0);
+
+        Calendar endOfDay = Calendar.getInstance();
+        endOfDay.setTime(startOfDay.getTime());
+        endOfDay.add(Calendar.DATE, 1);
+
+        for (int i = 0; i < days; i++) {
+            payments.put(startOfDay.getTime(), getAmountForPeriod(CurrencyUnit.EUR, startOfDay.getTime(), endOfDay.getTime()));
+            startOfDay.add(Calendar.DATE, -1);
+            endOfDay.add(Calendar.DATE, -1);
+        }
+
+        Money sum = computeSum(payments.values());
+        Money average = sum.dividedBy(days, RoundingMode.HALF_UP);
+
         Map<String, Object> map = new HashMap<String, Object>();
-
-        Calendar startOfToday = Calendar.getInstance();
-        startOfToday.set(Calendar.HOUR_OF_DAY, 0);
-        startOfToday.set(Calendar.MINUTE, 0);
-        startOfToday.set(Calendar.SECOND, 0);
-        startOfToday.set(Calendar.MILLISECOND, 0);
-
-        Calendar endOfToday = Calendar.getInstance();
-        endOfToday.setTime(startOfToday.getTime());
-        endOfToday.add(Calendar.DATE, 1);
-
-        Calendar startOfYesterday = Calendar.getInstance();
-        startOfYesterday.setTime(startOfToday.getTime());
-        startOfYesterday.add(Calendar.DATE, -1);
-
-        Calendar startOfMonth = Calendar.getInstance();
-        startOfMonth.setTime(startOfToday.getTime());
-        startOfMonth.set(Calendar.DATE, 1);
-
-        int sumToday = paymentDao.getPaymentAmount(startOfToday.getTime(), endOfToday.getTime()) +
-                subscriptionDao.getSubscriptionPaymentAmount(startOfToday.getTime(), endOfToday.getTime());
-
-        int sumYesterday = paymentDao.getPaymentAmount(startOfYesterday.getTime(), startOfToday.getTime()) +
-                subscriptionDao.getSubscriptionPaymentAmount(startOfYesterday.getTime(), startOfToday.getTime());
-
-        int sumMonth = paymentDao.getPaymentAmount(startOfMonth.getTime(), startOfToday.getTime()) +
-                subscriptionDao.getSubscriptionPaymentAmount(startOfMonth.getTime(), startOfToday.getTime());
-
-        int dayAverageThisMonth = sumMonth / startOfYesterday.get(Calendar.DATE);
-
-        map.put("sumToday", sumToday);
-        map.put("sumYesterday", sumYesterday);
-        map.put("sumMonth", sumMonth);
-        map.put("dayAverageThisMonth", dayAverageThisMonth);
+        map.put("payments", payments);
+        map.put("sum", sum);
+        map.put("average", average);
 
         return new ModelAndView("backend/payment", "model", map);
+    }
+
+    private Money computeSum(Collection<Money> moneys) {
+        Money sum = Money.zero(CurrencyUnit.EUR);
+        for (Money money : moneys) {
+            sum = sum.plus(money);
+        }
+        return sum;
+    }
+
+    private Money getAmountForPeriod(CurrencyUnit currency, Date from, Date to) {
+        List<Money> payments = new ArrayList<Money>();
+        payments.addAll(paymentDao.getMoneyForPeriod(from, to));
+        payments.addAll(subscriptionDao.getMoneyForPeriod(from, to));
+
+        Map<CurrencyUnit, BigDecimal> currencyConversions = paymentDao.getCurrencyConversionsFor(currency);
+
+        Money sum = Money.zero(currency);
+        for (Money payment : payments) {
+            BigDecimal conversionRate = currencyConversions.get(payment.getCurrencyUnit());
+            if (conversionRate == null) {
+                LOG.warn("No conversion rate found for " + currency + " to " + payment.getCurrencyUnit() + ". Skipping it.");
+            } else {
+                sum = sum.plus(payment.convertedTo(currency, conversionRate, RoundingMode.HALF_UP));
+            }
+        }
+        return sum;
     }
 
     public ModelAndView requestLicense(HttpServletRequest request, HttpServletResponse response) throws Exception {

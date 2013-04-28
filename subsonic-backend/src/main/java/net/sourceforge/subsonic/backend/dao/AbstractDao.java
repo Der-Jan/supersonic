@@ -1,9 +1,14 @@
 package net.sourceforge.subsonic.backend.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
-import java.util.List;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
  * Abstract superclass for all DAO's.
@@ -53,5 +58,12 @@ public class AbstractDao {
 
     public void setDaoHelper(DaoHelper daoHelper) {
         this.daoHelper = daoHelper;
+    }
+
+    protected static class MoneyRowMapper implements ParameterizedRowMapper<Money> {
+        public Money mapRow(ResultSet rs, int rowNum) throws SQLException {
+            CurrencyUnit currency = CurrencyUnit.of(rs.getString(1));
+            return Money.of(currency, rs.getDouble(2));
+        }
     }
 }
