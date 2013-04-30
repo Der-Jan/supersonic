@@ -50,7 +50,7 @@ public class Schema30 extends Schema {
                     "updated datetime not null)");
             template.execute("create index idx_subscription_subscr_id on subscription(subscr_id)");
             template.execute("create index idx_subscription_payer_id on subscription(payer_id)");
-            template.execute("create index idx_subscription_created on subscription(created)");  // TODO: Needed?
+            template.execute("create index idx_subscription_created on subscription(created)");
             template.execute("create index idx_subscription_processing_status on subscription(processing_status)");
             template.execute("create index idx_subscription_email on subscription(email)");
 
@@ -119,6 +119,24 @@ public class Schema30 extends Schema {
             template.execute("insert into currency_conversion values(null, 'EUR', 'SEK', 0.12)");
 
             LOG.info("Database table 'currency_conversion' was created successfully.");
+        }
+
+        if (!rowExists(template, "table_name='SUBSCRIPTION' and column_name='VALID_TO' and ordinal_position=1",
+                "information_schema.system_indexinfo")) {
+            template.execute("create index idx_subscription_valid_to on subscription(valid_to)");
+            LOG.info("Database index idx_subscription_valid_to created successfully.");
+        }
+
+        if (!rowExists(template, "table_name='PAYMENT' and column_name='VALID_TO' and ordinal_position=1",
+                "information_schema.system_indexinfo")) {
+            template.execute("create index idx_payment_valid_to on payment(valid_to)");
+            LOG.info("Database index idx_payment_valid_to created successfully.");
+        }
+
+        if (!rowExists(template, "table_name='PAYMENT' and column_name='PROCESSING_STATUS' and ordinal_position=1",
+                "information_schema.system_indexinfo")) {
+            template.execute("create index idx_payment_processing_status on payment(processing_status)");
+            LOG.info("Database index idx_payment_processing_status created successfully.");
         }
     }
 }

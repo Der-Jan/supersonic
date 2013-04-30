@@ -1,14 +1,3 @@
-USD  12
-USD 144
-
-USD 156
-EUR 115
-
-EUR 120.12
-EUR 115
-
-EUR 235.12
-
 DONE IN 4.9
 -------------
 REST: Escape ampersand in XML for getGenres
@@ -41,7 +30,6 @@ If someone cancels a subscription, the end date should not be set to "now".
   Always set valid_to date.
 Support multi-currencies.
 Send reminder email when license is about to expire.
-Missing index payment(processing_status)?
 
 other
   reconsider sourceforge
