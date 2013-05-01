@@ -61,6 +61,10 @@ public class SubscriptionDao extends AbstractDao {
         return query("select " + SUBSCRIPTION_COLUMNS + " from subscription where processing_status=?", subscriptionRowMapper, status.name());
     }
 
+    public List<Subscription> getSubscriptionsByExpirationDate(Date from, Date to) {
+        return query("select " + SUBSCRIPTION_COLUMNS + " from subscription where valid_to between ? and ?", subscriptionRowMapper, from, to);
+    }
+
     /**
      * Creates a new subscription.
      */
@@ -110,7 +114,6 @@ public class SubscriptionDao extends AbstractDao {
     public List<Money> getMoneyForPeriod(Date from, Date to) {
         return query("select amount, currency from subscription_payment where created between ? and ?", moneyRowMapper, from, to);
     }
-
 
     private static class SubscriptionRowMapper implements ParameterizedRowMapper<Subscription> {
         public Subscription mapRow(ResultSet rs, int rowNum) throws SQLException {

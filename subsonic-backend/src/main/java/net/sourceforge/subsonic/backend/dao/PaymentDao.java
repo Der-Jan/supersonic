@@ -72,6 +72,10 @@ public class PaymentDao extends AbstractDao {
         return query("select " + COLUMNS + " from payment where processing_status=?", paymentRowMapper, status.name());
     }
 
+    public List<Payment> getPaymentsByExpirationDate(Date from, Date to) {
+        return query("select " + COLUMNS + " from payment where valid_to between ? and ?", paymentRowMapper, from, to);
+    }
+
     /**
      * Creates a new payment.
      *
