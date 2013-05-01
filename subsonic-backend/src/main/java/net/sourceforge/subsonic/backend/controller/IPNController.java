@@ -188,33 +188,24 @@ public class IPNController implements Controller {
         String payerEmail = request.getParameter("payer_email");
         String payerFirstName = request.getParameter("first_name");
         String payerLastName = request.getParameter("last_name");
-        String payerCountry = request.getParameter("address_country");
+        String payerCountry = request.getParameter("residence_country");
 
-        Payment payment = paymentDao.getPaymentByTransactionId(txnId);
-        Date validTo = computeValidTo(payment, request);
+        // Update of an existing transaction?
+        Payment paymentForTx = paymentDao.getPaymentByTransactionId(txnId);
+        if (paymentForTx != null) {
+            paymentForTx.setPaymentStatus(paymentStatus);
+            paymentForTx.setLastUpdated(new Date());
+            paymentDao.updatePayment(paymentForTx);
+        }
+        else {
+            Payment paymentForEmail = paymentDao.getPaymentByEmail(payerEmail);
+            Date validTo = computeValidTo(paymentForEmail, request);
 
-        if (payment == null) {
-            payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
+            Payment newPayment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
                     payerCountry, ProcessingStatus.NEW, validTo, new Date(), new Date());
-            paymentDao.createPayment(payment);
-        } else {
-            payment.setTransactionType(txnType);
-            payment.setItem(item);
-            payment.setPaymentType(paymentType);
-            payment.setPaymentStatus(paymentStatus);
-            payment.setPaymentAmount(paymentAmount);
-            payment.setPaymentCurrency(paymentCurrency);
-            payment.setPayerEmail(payerEmail);
-            payment.setPayerFirstName(payerFirstName);
-            payment.setPayerLastName(payerLastName);
-            payment.setPayerCountry(payerCountry);
-            payment.setValidTo(validTo);
-            payment.setLastUpdated(new Date());
-            paymentDao.updatePayment(payment);
+            paymentDao.createPayment(newPayment);
         }
-
-        LOG.info("Received " + payment);
     }
 
     private Date computeValidTo(Payment existingPayment, HttpServletRequest request) {
@@ -231,7 +222,7 @@ public class IPNController implements Controller {
         Calendar validTo = Calendar.getInstance();
 
         // If an existing payment exists, add to the existing end date.
-        if (existingPayment != null && existingPayment.getValidTo() != null) {
+        if (existingPayment != null && existingPayment.getValidTo() != null && existingPayment.getValidTo().after(new Date())) {
             validTo.setTime(existingPayment.getValidTo());
         }
 

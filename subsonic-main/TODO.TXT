@@ -13,11 +13,13 @@ REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
   DLNA
+    PS3: http://4thline.org/projects/mailinglists.html#nabble-td2188762
     http://4thline.org/projects/mailinglists.html#nabble-td2165790
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
-Move xsd and xml examples to site
+Move xsd and xml examples to site.
+  Create links to each version
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
@@ -25,12 +27,6 @@ Publish blackberry app.
 Improve video support
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
   https://sourceforge.net/p/subsonic/feature-requests/15/
-
-backend
-If someone cancels a subscription, the end date should not be set to "now".
-  Always set valid_to date.
-Support multi-currencies.
-Send reminder email when license is about to expire.
 
 other
   reconsider sourceforge
