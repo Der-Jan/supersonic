@@ -8,6 +8,7 @@ REST: Added ignoredArticles
 
 TODO IN 4.9
 --------------
+Trim license key when registering
 Should revalidate license at regular intervals.
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
