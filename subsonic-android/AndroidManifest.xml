@@ -85,11 +85,6 @@
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
 
-        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView"/>
-
-        <activity android:name="com.google.ads.AdActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-
         <service android:name="net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl"
                  android:label="Subsonic Download Service"/>
 

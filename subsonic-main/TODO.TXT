@@ -8,6 +8,9 @@ REST: Added ignoredArticles
 
 TODO IN 4.9
 --------------
+Recently added broken
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
+
 Trim license key when registering
 Should revalidate license at regular intervals.
 REST: Add getSongs
@@ -845,7 +848,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2013-04-16 webapps
+  ln -s webapps-2013-05-01 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
