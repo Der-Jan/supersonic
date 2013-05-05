@@ -59,7 +59,6 @@
 
     </LinearLayout>
 
-    <include layout="@layout/ad"/>
     <include layout="@layout/button_bar"/>
 
 </LinearLayout>
