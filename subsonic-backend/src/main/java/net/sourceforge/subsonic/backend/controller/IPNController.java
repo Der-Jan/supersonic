@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.subsonic.backend.domain.Subscription;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -46,6 +45,7 @@ import net.sourceforge.subsonic.backend.dao.PaymentDao;
 import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
+import net.sourceforge.subsonic.backend.domain.Subscription;
 import net.sourceforge.subsonic.backend.domain.SubscriptionNotification;
 import net.sourceforge.subsonic.backend.domain.SubscriptionPayment;
 
@@ -95,31 +95,8 @@ public class IPNController implements Controller {
     private void processSubscriptionRequest(HttpServletRequest request) throws ServletRequestBindingException {
         createSubscriptionNotification(request);
         if (isSubscriptionPayment(request)) {
-            createSubscriptionPayment(request);
-        } else if (isSubscriptionStart(request)) {
-            startSubscription(request);
-        } else if (isSubscriptionEnd(request)) {
-            stopSubscription(request);
+            processSubscriptionPayment(request);
         }
-    }
-
-    private void startSubscription(HttpServletRequest request) {
-        Subscription subscription = getOrCreateSubscription(request);
-        Date now = new Date();
-        subscription.setValidFrom(now);
-        subscription.setValidTo(null);
-        subscription.setUpdated(now);
-        subscriptionDao.updateSubscription(subscription);
-        LOG.info("Start subscription for " + subscription.getEmail());
-    }
-
-    private void stopSubscription(HttpServletRequest request) {
-        Subscription subscription = getOrCreateSubscription(request);
-        Date now = new Date();
-        subscription.setValidTo(now);
-        subscription.setUpdated(now);
-        subscriptionDao.updateSubscription(subscription);
-        LOG.info("Stop subscription for " + subscription.getEmail());
     }
 
     private Subscription getOrCreateSubscription(HttpServletRequest request) {
@@ -137,7 +114,7 @@ public class IPNController implements Controller {
                 email,
                 request.getParameter("first_name"),
                 request.getParameter("last_name"),
-                request.getParameter("address_country"),
+                request.getParameter("residence_country"),
                 now,
                 null,
                 ProcessingStatus.NEW,
@@ -157,17 +134,7 @@ public class IPNController implements Controller {
         return txnType.equals("subscr_payment");
     }
 
-    private boolean isSubscriptionStart(HttpServletRequest request) {
-        String txnType = request.getParameter("txn_type");
-        return txnType.equals("subscr_signup");
-    }
-
-    private boolean isSubscriptionEnd(HttpServletRequest request) {
-        String txnType = request.getParameter("txn_type");
-        return txnType.equals("subscr_cancel") || txnType.equals("subscr_eot");
-    }
-
-    private void createSubscriptionPayment(HttpServletRequest request) throws ServletRequestBindingException {
+    private void processSubscriptionPayment(HttpServletRequest request) throws ServletRequestBindingException {
         String subscrId = request.getParameter("subscr_id");
         String payerId = request.getParameter("payer_id");
         String btnId = request.getParameter("btn_id");
@@ -183,6 +150,13 @@ public class IPNController implements Controller {
 
         subscriptionDao.createSubscriptionPayment(new SubscriptionPayment(null, subscrId, payerId, btnId,
                 ipnTrackId, txnId, email, amount, fee, currency, created));
+
+        // Extend subscription validity with one year.
+        Subscription subscription = getOrCreateSubscription(request);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1);
+        subscription.setValidTo(cal.getTime());
+        subscriptionDao.updateSubscription(subscription);
     }
 
     private void createSubscriptionNotification(HttpServletRequest request) {
@@ -214,38 +188,30 @@ public class IPNController implements Controller {
         String payerEmail = request.getParameter("payer_email");
         String payerFirstName = request.getParameter("first_name");
         String payerLastName = request.getParameter("last_name");
-        String payerCountry = request.getParameter("address_country");
-        Date validTo = computeValidTo(request);
+        String payerCountry = request.getParameter("residence_country");
 
-        Payment payment = paymentDao.getPaymentByTransactionId(txnId);
-        if (payment == null) {
-            payment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
+        // Update of an existing transaction?
+        Payment paymentForTx = paymentDao.getPaymentByTransactionId(txnId);
+        if (paymentForTx != null) {
+            paymentForTx.setPaymentStatus(paymentStatus);
+            paymentForTx.setLastUpdated(new Date());
+            paymentDao.updatePayment(paymentForTx);
+        }
+        else {
+            Payment paymentForEmail = paymentDao.getPaymentByEmail(payerEmail);
+            Date validTo = computeValidTo(paymentForEmail, request);
+
+            Payment newPayment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
                     payerCountry, ProcessingStatus.NEW, validTo, new Date(), new Date());
-            paymentDao.createPayment(payment);
-        } else {
-            payment.setTransactionType(txnType);
-            payment.setItem(item);
-            payment.setPaymentType(paymentType);
-            payment.setPaymentStatus(paymentStatus);
-            payment.setPaymentAmount(paymentAmount);
-            payment.setPaymentCurrency(paymentCurrency);
-            payment.setPayerEmail(payerEmail);
-            payment.setPayerFirstName(payerFirstName);
-            payment.setPayerLastName(payerLastName);
-            payment.setPayerCountry(payerCountry);
-            payment.setValidTo(validTo);
-            payment.setLastUpdated(new Date());
-            paymentDao.updatePayment(payment);
+            paymentDao.createPayment(newPayment);
         }
-
-        LOG.info("Received " + payment);
     }
 
-    private Date computeValidTo(HttpServletRequest request) {
+    private Date computeValidTo(Payment existingPayment, HttpServletRequest request) {
         String duration = request.getParameter("option_selection1");
         if (duration == null) {
-            return null;
+            return null; // Old-school donation. Use no end date.
         }
         Matcher matcher = SUBSCRIPTION_DURATION_PATTERN.matcher(duration);
         if (!matcher.matches()) {
@@ -253,10 +219,15 @@ public class IPNController implements Controller {
         }
 
         int years = Integer.parseInt(matcher.group(1));
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, years);
+        Calendar validTo = Calendar.getInstance();
 
-        return calendar.getTime();
+        // If an existing payment exists, add to the existing end date.
+        if (existingPayment != null && existingPayment.getValidTo() != null && existingPayment.getValidTo().after(new Date())) {
+            validTo.setTime(existingPayment.getValidTo());
+        }
+
+        validTo.add(Calendar.YEAR, years);
+        return validTo.getTime();
     }
 
     private String createValidationURL(HttpServletRequest request) throws UnsupportedEncodingException {

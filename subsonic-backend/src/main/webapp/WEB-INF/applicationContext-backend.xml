@@ -23,6 +23,11 @@
         <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>
 
+    <bean class="net.sourceforge.subsonic.backend.service.EmailReminderGenerator" init-method="init">
+        <property name="paymentDao" ref="paymentDao"/>
+        <property name="subscriptionDao" ref="subscriptionDao"/>
+    </bean>
+
     <bean id="whitelistGenerator" class="net.sourceforge.subsonic.backend.service.WhitelistGenerator">
         <property name="paymentDao" ref="paymentDao"/>
     </bean>

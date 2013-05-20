@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.money.Money;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
@@ -33,7 +34,8 @@ public class SubscriptionDao extends AbstractDao {
     private static final String SUBSCRIPTION_NOTIFICATION_COLUMNS = "id, subscr_id, payer_id, btn_id, ipn_track_id, " +
             "txn_type, email, created";
 
-     private RowMapper subscriptionRowMapper = new SubscriptionRowMapper();
+    private RowMapper subscriptionRowMapper = new SubscriptionRowMapper();
+    private RowMapper moneyRowMapper = new MoneyRowMapper();
 
     /**
      * Returns the subscription with the given email.
@@ -59,6 +61,10 @@ public class SubscriptionDao extends AbstractDao {
         return query("select " + SUBSCRIPTION_COLUMNS + " from subscription where processing_status=?", subscriptionRowMapper, status.name());
     }
 
+    public List<Subscription> getSubscriptionsByExpirationDate(Date from, Date to) {
+        return query("select " + SUBSCRIPTION_COLUMNS + " from subscription where valid_to between ? and ?", subscriptionRowMapper, from, to);
+    }
+
     /**
      * Creates a new subscription.
      */
@@ -75,8 +81,8 @@ public class SubscriptionDao extends AbstractDao {
      */
     public void updateSubscription(Subscription s) {
         String sql = "update subscription set subscr_id=?, payer_id=?, btn_id=?, email=?, " +
-                     "first_name=?, last_name=?, country=?, valid_from=?, " +
-                     "valid_to=?, processing_status=?, created=?, updated=? where id=?";
+                "first_name=?, last_name=?, country=?, valid_from=?, " +
+                "valid_to=?, processing_status=?, created=?, updated=? where id=?";
         update(sql, s.getSubscrId(), s.getPayerId(), s.getBtnId(), s.getEmail(), s.getFirstName(), s.getLastName(),
                 s.getCountry(), s.getValidFrom(), s.getValidTo(),
                 s.getProcessingStatus().name(), s.getCreated(), s.getUpdated(), s.getId());
@@ -105,9 +111,8 @@ public class SubscriptionDao extends AbstractDao {
         LOG.info("Created " + s);
     }
 
-    public int getSubscriptionPaymentAmount(Date from, Date to) {
-        String sql = "select sum(amount) from subscription_payment where created between ? and ?";
-        return queryForInt(sql, 0, from, to);
+    public List<Money> getMoneyForPeriod(Date from, Date to) {
+        return query("select amount, currency from subscription_payment where created between ? and ?", moneyRowMapper, from, to);
     }
 
     private static class SubscriptionRowMapper implements ParameterizedRowMapper<Subscription> {

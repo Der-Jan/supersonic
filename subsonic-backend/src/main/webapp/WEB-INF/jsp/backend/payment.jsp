@@ -11,13 +11,18 @@
 </head>
 <body>
 
-<div style="margin-left: auto; margin-right: auto;width:10em">
-    <h1 style="text-align: center;">&euro;${model.sumToday}</h1>
+<div style="margin-left: auto; margin-right: auto;">
 
-    <div style="white-space: nowrap; text-align:center;">
-        <span title="Sum yesterday">Y <b>&euro;${model.sumYesterday}</b></span> &nbsp;&nbsp;
-        <span title="Daily average this month">M <b>&euro;${model.dayAverageThisMonth}</b></span>
-    </div>
+    <table>
+        <c:forEach items="${model.payments}" var="payment">
+            <tr>
+                <td><fmt:formatDate type="date" dateStyle="long" value="${payment.key}"/></td>
+                <td>${payment.value}</td>
+            </tr>
+        </c:forEach>
+        <tr><td><b>Average</b></td><td><b>${model.average}</b></td></tr>
+    </table>
+
 </div>
 </body>
 </html>
