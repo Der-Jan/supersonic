@@ -18,6 +18,8 @@
  */
 package net.sourceforge.subsonic.command;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.sourceforge.subsonic.controller.PremiumController;
 import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.User;
@@ -62,7 +64,7 @@ public class PremiumCommand {
     }
 
     public void setLicenseCode(String licenseCode) {
-        this.licenseCode = licenseCode;
+        this.licenseCode = StringUtils.trimToNull(licenseCode);
     }
 
     public void setLicenseInfo(LicenseInfo licenseInfo) {

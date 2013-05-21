@@ -60,7 +60,7 @@ public class PremiumController extends SimpleFormController {
         settingsService.setLicenseEmail(command.getLicenseInfo().getLicenseEmail());
         settingsService.setLicenseDate(now);
         settingsService.save();
-        settingsService.validateLicenseAsync();
+        settingsService.scheduleLicenseValidation();
 
         // Reflect changes in view. The validator has already validated the license.
         command.getLicenseInfo().setLicenseValid(true);
