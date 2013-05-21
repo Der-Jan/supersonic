@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -216,6 +220,9 @@ public class SettingsService {
 
     private boolean licenseValidated = true;
     private Date licenseExpires;
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> licenseValidationFuture;
+    private static final long LICENSE_VALIDATION_DELAY_HOURS = 12;
 
     public SettingsService() {
         File propertyFile = getPropertyFile();
@@ -256,7 +263,7 @@ public class SettingsService {
      */
     public void init() {
         ServiceLocator.setSettingsService(this);
-        validateLicenseAsync();
+        scheduleLicenseValidation();
     }
 
     public void save() {
@@ -1262,13 +1269,16 @@ public class SettingsService {
         }
     }
 
-    public void validateLicenseAsync() {
-        new Thread() {
-            @Override
+    public synchronized void scheduleLicenseValidation() {
+        if (licenseValidationFuture != null) {
+            licenseValidationFuture.cancel(true);
+        }
+        Runnable task = new Runnable() {
             public void run() {
                 validateLicense();
             }
-        }.start();
+        };
+        licenseValidationFuture = executor.scheduleWithFixedDelay(task, 0L, LICENSE_VALIDATION_DELAY_HOURS, TimeUnit.HOURS);
     }
 
     public void setInternetRadioDao(InternetRadioDao internetRadioDao) {
