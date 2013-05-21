@@ -104,8 +104,7 @@
 
 <p>
     All methods (except those that return binary data) returns XML documents conforming to the
-    <code>subsonic-rest-api.xsd</code> schema. This schema (as well as example XML documents) can be found
-    at <code>http://your-server/xsd/</code>
+    <code><a href="inc/api/subsonic-rest-api.xsd">subsonic-rest-api.xsd</a></code> schema.
 </p>
 
 <h2 class="div">Error handling</h2>

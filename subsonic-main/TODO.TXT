@@ -8,11 +8,15 @@ REST: Added ignoredArticles
 
 TODO IN 4.9
 --------------
-Recently added broken
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
-
 Trim license key when registering
 Should revalidate license at regular intervals.
+Move xsd and xml examples to site.
+  Create links to each version
+
+Recently added broken
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
+Update default files on sf.net
+https port 8080 redirect to 8443 (jetty?)
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
@@ -22,8 +26,6 @@ UPnP
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
-Move xsd and xml examples to site.
-  Create links to each version
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.

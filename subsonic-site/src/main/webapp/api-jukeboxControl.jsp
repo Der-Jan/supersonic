@@ -55,6 +55,6 @@
 <p>
     Returns a <code>&lt;jukeboxStatus&gt;</code> element on success, unless the <code>get</code>
     action is used, in which case a nested <code>&lt;jukeboxPlaylist&gt;</code> element is returned.
-    <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/jukeboxStatus_example_1.xml">Example 1</a>.
-    <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/jukeboxPlaylist_example_1.xml">Example 2</a>.
+    <a href="inc/api/examples/jukeboxStatus_example_1.xml">Example 1</a>.
+    <a href="inc/api/examples/jukeboxPlaylist_example_1.xml">Example 2</a>.
 </p>

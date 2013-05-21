@@ -10,5 +10,5 @@
 </p>
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;starred2&gt;</code>
-    element on success. <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/starred2_example_1.xml">Example</a>.
+    element on success. <a href="inc/api/examples/starred2_example_1.xml">Example</a>.
 </p>

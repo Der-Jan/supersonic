@@ -10,5 +10,5 @@
 </p>
 
 <p>
-    Returns an empty <code>&lt;subsonic-response&gt;</code> element on success. <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/ping_example_1.xml">Example</a>.
+    Returns an empty <code>&lt;subsonic-response&gt;</code> element on success. <a href="inc/api/examples/ping_example_1.xml">Example</a>.
 </p>
