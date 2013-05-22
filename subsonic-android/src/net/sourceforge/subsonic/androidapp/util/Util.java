@@ -18,6 +18,25 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpEntity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -54,24 +73,6 @@ import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider;
 import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import org.apache.http.HttpEntity;
-
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sindre Mehus
@@ -196,6 +197,11 @@ public final class Util {
         SharedPreferences prefs = getPreferences(context);
         int preloadCount = Integer.parseInt(prefs.getString(Constants.PREFERENCES_KEY_PRELOAD_COUNT, "-1"));
         return preloadCount == -1 ? Integer.MAX_VALUE : preloadCount;
+    }
+
+    public static boolean useFlashVideoPlayer(Context context) {
+        SharedPreferences prefs = getPreferences(context);
+        return "flash".equals(prefs.getString(Constants.PREFERENCES_KEY_VIDEO_PLAYER, "native"));
     }
 
     public static int getCacheSizeMB(Context context) {

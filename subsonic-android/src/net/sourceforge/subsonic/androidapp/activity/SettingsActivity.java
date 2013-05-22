@@ -49,6 +49,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private static final String TAG = SettingsActivity.class.getSimpleName();
     private final Map<String, ServerSettings> serverSettings = new LinkedHashMap<String, ServerSettings>();
     private boolean testingConnection;
+    private ListPreference videoPlayer;
     private ListPreference maxBitrateWifi;
     private ListPreference maxBitrateMobile;
     private ListPreference cacheSize;
@@ -60,6 +61,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        videoPlayer = (ListPreference) findPreference(Constants.PREFERENCES_KEY_VIDEO_PLAYER);
         maxBitrateWifi = (ListPreference) findPreference(Constants.PREFERENCES_KEY_MAX_BITRATE_WIFI);
         maxBitrateMobile = (ListPreference) findPreference(Constants.PREFERENCES_KEY_MAX_BITRATE_MOBILE);
         cacheSize = (ListPreference) findPreference(Constants.PREFERENCES_KEY_CACHE_SIZE);
@@ -140,6 +142,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             return;
         }
 
+        videoPlayer.setSummary(videoPlayer.getEntry());
         maxBitrateWifi.setSummary(maxBitrateWifi.getEntry());
         maxBitrateMobile.setSummary(maxBitrateMobile.getEntry());
         cacheSize.setSummary(cacheSize.getEntry());

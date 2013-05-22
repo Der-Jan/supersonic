@@ -317,10 +317,12 @@ public class SubsonicTabActivity extends Activity {
 
     protected void playVideo(MusicDirectory.Entry entry) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        // TODO: Use settings
-//        intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), true)));
-        intent.setDataAndType(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), false)), "video/*");
-
+        boolean useFlash = Util.useFlashVideoPlayer(this);
+        if (useFlash) {
+            intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), true)));
+        } else {
+            intent.setDataAndType(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), false)), "video/*");
+        }
         startActivity(intent);
     }
 }

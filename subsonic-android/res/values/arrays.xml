@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="videoPlayerValues">
+        <item>native</item>
+        <item>flash</item>
+    </string-array>
+
+    <string-array name="videoPlayerNames">
+        <item>Native (MX Player, VLC, …)</item>
+        <item>Flash</item>
+    </string-array>
+
     <string-array name="preloadCountValues">
         <item>1</item>
         <item>2</item>

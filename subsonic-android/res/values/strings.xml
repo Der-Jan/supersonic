@@ -152,6 +152,8 @@
     <string name="settings.max_bitrate_unlimited">Unlimited</string>
     <string name="settings.wifi_required_title">Wi-Fi streaming only</string>
     <string name="settings.wifi_required_summary">Only stream media if connected to Wi-Fi</string>
+    <string name="settings.video_title">Video</string>
+    <string name="settings.video_player">Video player</string>
     <string name="settings.preload_1">1 song</string>
     <string name="settings.preload_2">2 songs</string>
     <string name="settings.preload_3">3 songs</string>

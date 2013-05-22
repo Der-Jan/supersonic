@@ -62,6 +62,7 @@ public final class Constants {
     public static final String PREFERENCES_KEY_MUSIC_FOLDER_ID = "musicFolderId";
     public static final String PREFERENCES_KEY_USERNAME = "username";
     public static final String PREFERENCES_KEY_PASSWORD = "password";
+    public static final String PREFERENCES_KEY_VIDEO_PLAYER = "videoPlayer";
     public static final String PREFERENCES_KEY_MAX_BITRATE_WIFI = "maxBitrateWifi";
     public static final String PREFERENCES_KEY_MAX_BITRATE_MOBILE = "maxBitrateMobile";
     public static final String PREFERENCES_KEY_CACHE_SIZE = "cacheSize";
