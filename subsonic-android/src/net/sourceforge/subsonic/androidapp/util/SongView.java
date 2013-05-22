@@ -18,6 +18,9 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import java.io.File;
+import java.util.WeakHashMap;
+
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -25,19 +28,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.CheckedTextView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
+import net.sourceforge.subsonic.androidapp.service.DownloadFile;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import net.sourceforge.subsonic.androidapp.service.DownloadFile;
-
-import java.io.File;
-import java.util.WeakHashMap;
 
 /**
  * Used to display songs in a {@code ListView}.
@@ -87,19 +85,22 @@ public class SongView extends RelativeLayout implements Checkable {
 
         String bitRate = null;
         if (song.getBitRate() != null) {
-        	bitRate = String.format(getContext().getString(R.string.song_details_kbps), song.getBitRate());
+            bitRate = String.format(getContext().getString(R.string.song_details_kbps), song.getBitRate());
         }
-        
+
         String fileFormat;
         if (song.getTranscodedSuffix() != null && !song.getTranscodedSuffix().equals(song.getSuffix())) {
-        	fileFormat = String.format("%s > %s", song.getSuffix(), song.getTranscodedSuffix());
-    	} else {
+            fileFormat = String.format("%s > %s", song.getSuffix(), song.getTranscodedSuffix());
+        } else {
             fileFormat = song.getSuffix();
         }
 
-        artist.append(song.getArtist()).append(" (")
-              .append(String.format(getContext().getString(R.string.song_details_all), bitRate == null ? "" : bitRate, fileFormat))
-              .append(")");
+        if (song.getArtist() != null) {
+            artist.append(song.getArtist()).append(" ");
+        }
+        artist.append("(")
+                .append(String.format(getContext().getString(R.string.song_details_all), bitRate == null ? "" : bitRate, fileFormat))
+                .append(")");
 
         titleTextView.setText(song.getTitle());
         artistTextView.setText(artist);
@@ -122,8 +123,7 @@ public class SongView extends RelativeLayout implements Checkable {
         if (completeFile.exists()) {
             statusTextView.setText(Util.formatDuration(song.getDuration()));
             downloadButton.setImageResource(downloadFile.isSaved() ? R.drawable.download_pinned : R.drawable.download_cached);
-        }
-        else if (downloadFile.isDownloading() && !downloadFile.isDownloadCancelled() && partialFile.exists()) {
+        } else if (downloadFile.isDownloading() && !downloadFile.isDownloadCancelled() && partialFile.exists()) {
             statusTextView.setText(Util.formatLocalizedBytes(partialFile.length(), getContext()));
             downloadButton.setImageResource(R.drawable.download_streaming);
         } else {
