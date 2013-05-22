@@ -189,8 +189,8 @@ public class CachedMusicService implements MusicService {
     }
 
     @Override
-    public String getVideoUrl(Context context, String id) {
-        return musicService.getVideoUrl(context, id);
+    public String getVideoUrl(Context context, String id, boolean useFlash) {
+        return musicService.getVideoUrl(context, id, useFlash);
     }
 
     @Override

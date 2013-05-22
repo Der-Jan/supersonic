@@ -24,6 +24,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -313,6 +313,15 @@ public class SubsonicTabActivity extends Activity {
         };
 
         task.execute();
+    }
+
+    protected void playVideo(MusicDirectory.Entry entry) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        // TODO: Use settings
+//        intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), true)));
+        intent.setDataAndType(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), false)), "video/*");
+
+        startActivity(intent);
     }
 }
 

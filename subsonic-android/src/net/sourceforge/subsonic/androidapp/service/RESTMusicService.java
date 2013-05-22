@@ -520,11 +520,18 @@ public class RESTMusicService implements MusicService {
     }
 
     @Override
-    public String getVideoUrl(Context context, String id) {
-        StringBuilder builder = new StringBuilder(Util.getRestUrl(context, "videoPlayer"));
-        builder.append("&id=").append(id);
-        builder.append("&maxBitRate=500");
-        builder.append("&autoplay=true");
+    public String getVideoUrl(Context context, String id, boolean useFlash) {
+        StringBuilder builder = new StringBuilder();
+        if (useFlash) {
+            builder.append(Util.getRestUrl(context, "videoPlayer"));
+            builder.append("&id=").append(id);
+            builder.append("&maxBitRate=500");
+            builder.append("&autoplay=true");
+        } else {
+            builder.append(Util.getRestUrl(context, "stream"));
+            builder.append("&id=").append(id);
+            builder.append("&format=raw");
+        }
 
         String url = rewriteUrlWithRedirect(context, builder.toString());
         Log.i(TAG, "Using video URL: " + url);

@@ -18,8 +18,13 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -41,12 +46,6 @@ import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static net.sourceforge.subsonic.androidapp.util.Constants.*;
 
@@ -511,13 +510,6 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         if (getDownloadService() != null) {
             getDownloadService().unpin(getSelectedSongs());
         }
-    }
-
-    private void playVideo(MusicDirectory.Entry entry) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId())));
-
-        startActivity(intent);
     }
 
     private abstract class LoadTask extends TabActivityBackgroundTask<MusicDirectory> {
