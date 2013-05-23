@@ -88,11 +88,13 @@ public class SongView extends RelativeLayout implements Checkable {
             bitRate = String.format(getContext().getString(R.string.song_details_kbps), song.getBitRate());
         }
 
+        VideoPlayerType videoPlayer = Util.getVideoPlayerType(getContext());
         String fileFormat;
-        if (song.getTranscodedSuffix() != null && !song.getTranscodedSuffix().equals(song.getSuffix())) {
-            fileFormat = String.format("%s > %s", song.getSuffix(), song.getTranscodedSuffix());
-        } else {
+        if (song.getTranscodedSuffix() == null || song.getTranscodedSuffix().equals(song.getSuffix())
+                || (song.isVideo() && videoPlayer != VideoPlayerType.FLASH)) {
             fileFormat = song.getSuffix();
+        } else {
+            fileFormat = String.format("%s > %s", song.getSuffix(), song.getTranscodedSuffix());
         }
 
         if (song.getArtist() != null) {
