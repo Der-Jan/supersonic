@@ -176,11 +176,7 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
-Video: Test MX Player, VLC
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13e003d33cbf4626
-Honor "only stream on wifi"
 Support dynamic number of servers.
-Reconsider donation
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
 RC volume

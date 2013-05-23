@@ -316,6 +316,11 @@ public class SubsonicTabActivity extends Activity {
     }
 
     protected void playVideo(MusicDirectory.Entry entry)  {
+        if (!Util.isNetworkConnected(this)) {
+            Util.toast(this, R.string.select_album_no_network);
+            return;
+        }
+
         VideoPlayerType player = Util.getVideoPlayerType(this);
         try {
             player.playVideo(this, entry);
