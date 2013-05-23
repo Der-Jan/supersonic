@@ -320,7 +320,7 @@ public class SubsonicTabActivity extends Activity {
         try {
             player.playVideo(this, entry);
         } catch (Exception e) {
-            Util.toast(this, e.getMessage());
+            Util.toast(this, e.getMessage(), false);
         }
     }
 }

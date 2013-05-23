@@ -432,7 +432,7 @@ public class RESTMusicService implements MusicService {
         boolean ok = serverVersion == null || serverVersion.compareTo(requiredVersion) >= 0;
 
         if (!ok) {
-            throw new ServerTooOldException(text, serverVersion, requiredVersion);
+            throw new ServerTooOldException(text);
         }
     }
 
