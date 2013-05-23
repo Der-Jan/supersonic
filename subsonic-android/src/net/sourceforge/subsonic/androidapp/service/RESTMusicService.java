@@ -520,7 +520,7 @@ public class RESTMusicService implements MusicService {
     }
 
     @Override
-    public String getVideoUrl(Context context, String id, boolean useFlash) {
+    public String getVideoUrl(Context context, String id, boolean useFlash) throws Exception {
         StringBuilder builder = new StringBuilder();
         if (useFlash) {
             builder.append(Util.getRestUrl(context, "videoPlayer"));
@@ -528,6 +528,7 @@ public class RESTMusicService implements MusicService {
             builder.append("&maxBitRate=500");
             builder.append("&autoplay=true");
         } else {
+            checkServerVersion(context, "1.9", "Video streaming not supported.");
             builder.append(Util.getRestUrl(context, "stream"));
             builder.append("&id=").append(id);
             builder.append("&format=raw");

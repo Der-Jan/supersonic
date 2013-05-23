@@ -24,7 +24,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -316,9 +315,13 @@ public class SubsonicTabActivity extends Activity {
         task.execute();
     }
 
-    protected void playVideo(MusicDirectory.Entry entry) {
+    protected void playVideo(MusicDirectory.Entry entry)  {
         VideoPlayerType player = Util.getVideoPlayerType(this);
-        player.playVideo(this, entry);
+        try {
+            player.playVideo(this, entry);
+        } catch (Exception e) {
+            Util.toast(this, e.getMessage());
+        }
     }
 }
 

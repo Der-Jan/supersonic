@@ -75,7 +75,7 @@ public interface MusicService {
 
     Version getLatestVersion(Context context, ProgressListener progressListener) throws Exception;
 
-    String getVideoUrl(Context context, String id, boolean useFlash);
+    String getVideoUrl(Context context, String id, boolean useFlash) throws Exception;
 
     JukeboxStatus updateJukeboxPlaylist(List<String> ids, Context context, ProgressListener progressListener) throws Exception;
 

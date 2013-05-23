@@ -189,7 +189,7 @@ public class CachedMusicService implements MusicService {
     }
 
     @Override
-    public String getVideoUrl(Context context, String id, boolean useFlash) {
+    public String getVideoUrl(Context context, String id, boolean useFlash) throws Exception {
         return musicService.getVideoUrl(context, id, useFlash);
     }
 

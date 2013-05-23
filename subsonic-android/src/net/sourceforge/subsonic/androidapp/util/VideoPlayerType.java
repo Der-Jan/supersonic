@@ -35,7 +35,7 @@ public enum VideoPlayerType {
 
     MX("mx") {
         @Override
-        public void playVideo(final Activity activity, MusicDirectory.Entry entry) {
+        public void playVideo(final Activity activity, MusicDirectory.Entry entry) throws Exception {
 
             // Check if MX Player is installed.
             boolean installedAd = Util.isPackageInstalled(activity, PACKAGE_NAME_MX_AD);
@@ -76,7 +76,7 @@ public enum VideoPlayerType {
 
     FLASH("flash") {
         @Override
-        public void playVideo(Activity activity, MusicDirectory.Entry entry) {
+        public void playVideo(Activity activity, MusicDirectory.Entry entry) throws Exception {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(MusicServiceFactory.getMusicService(activity).getVideoUrl(activity, entry.getId(), true)));
             activity.startActivity(intent);
@@ -85,7 +85,7 @@ public enum VideoPlayerType {
 
     DEFAULT("default") {
         @Override
-        public void playVideo(Activity activity, MusicDirectory.Entry entry) {
+        public void playVideo(Activity activity, MusicDirectory.Entry entry) throws Exception {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.parse(MusicServiceFactory.getMusicService(activity).getVideoUrl(activity, entry.getId(), false)), "video/*");
             activity.startActivity(intent);
@@ -111,7 +111,7 @@ public enum VideoPlayerType {
         return null;
     }
 
-    public abstract void playVideo(Activity activity, MusicDirectory.Entry entry);
+    public abstract void playVideo(Activity activity, MusicDirectory.Entry entry) throws Exception;
 
     private static final String PACKAGE_NAME_MX_AD = "com.mxtech.videoplayer.ad";
     private static final String PACKAGE_NAME_MX_PRO = "com.mxtech.videoplayer.pro";

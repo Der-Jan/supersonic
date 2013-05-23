@@ -44,8 +44,7 @@ public class ServerTooOldException extends Exception {
         if (text != null) {
             builder.append(text).append(" ");
         }
-        builder.append("Server API version too old. ");
-        builder.append("Requires ").append(requiredVersion).append(" but is ").append(serverVersion).append(".");
+        builder.append("Subsonic server version is too old. Please upgrade.");
         return builder.toString();
     }
 }

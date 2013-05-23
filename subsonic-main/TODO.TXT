@@ -176,7 +176,6 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
-Notify user if server is < 4.8
 Video: Test MX Player, VLC
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13e003d33cbf4626
 Support dynamic number of servers.
