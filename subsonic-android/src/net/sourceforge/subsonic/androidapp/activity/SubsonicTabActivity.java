@@ -44,6 +44,7 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+import net.sourceforge.subsonic.androidapp.util.VideoPlayerType;
 
 /**
  * @author Sindre Mehus
@@ -316,14 +317,8 @@ public class SubsonicTabActivity extends Activity {
     }
 
     protected void playVideo(MusicDirectory.Entry entry) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        boolean useFlash = Util.useFlashVideoPlayer(this);
-        if (useFlash) {
-            intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), true)));
-        } else {
-            intent.setDataAndType(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId(), false)), "video/*");
-        }
-        startActivity(intent);
+        VideoPlayerType player = Util.getVideoPlayerType(this);
+        player.playVideo(this, entry);
     }
 }
 

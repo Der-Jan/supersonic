@@ -134,7 +134,7 @@
         <ListPreference
                 android:title="@string/settings.video_player"
                 android:key="videoPlayer"
-                android:defaultValue="native"
+                android:defaultValue="mx"
                 android:entryValues="@array/videoPlayerValues"
                 android:entries="@array/videoPlayerNames"/>
 

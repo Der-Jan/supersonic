@@ -2,13 +2,15 @@
 <resources>
 
     <string-array name="videoPlayerValues">
-        <item>native</item>
+        <item>mx</item>
         <item>flash</item>
+        <item>default</item>
     </string-array>
 
     <string-array name="videoPlayerNames">
-        <item>Native (MX Player, VLC, …)</item>
+        <item>MX Player</item>
         <item>Flash</item>
+        <item>Default</item>
     </string-array>
 
     <string-array name="preloadCountValues">

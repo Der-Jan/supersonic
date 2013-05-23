@@ -8,6 +8,8 @@ REST: Added ignoredArticles
 
 TODO IN 4.9
 --------------
+REST video subtitle support
+  https://sites.google.com/site/mxvpen/api
 Trim license key when registering
 Should revalidate license at regular intervals.
 Move xsd and xml examples to site.
@@ -27,6 +29,8 @@ UPnP
   Add controls for config
 make menu text more visible
 Clean up podcasts in demo
+Retain service when upgrading.
+  https://mail.google.com/mail/u/0/#inbox/13e419b5ff8ecb59
 Update backup server (after a couple of days)
 Publish blackberry app.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c

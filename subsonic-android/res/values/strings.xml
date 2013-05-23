@@ -47,8 +47,8 @@
     <string name="help.url">file:///android_asset/html/en/index.html</string>
     <string name="help.loading">Loading…</string>
 
-    <string name="play_video.loading">Loading video…</string>
-    <string name="play_video.noplugin">Please install Adobe Flash Player from Android Market.</string>
+    <string name="video.get_mx_player_text">MX Player is not installed. Get it for free on Play Store, or change video settings.</string>
+    <string name="video.get_mx_player_button">Get MX Player</string>
 
     <string name="search.label">Search</string>
     <string name="search.title">Search</string>

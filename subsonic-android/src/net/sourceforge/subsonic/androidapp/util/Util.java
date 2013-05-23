@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,6 +47,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -199,9 +202,9 @@ public final class Util {
         return preloadCount == -1 ? Integer.MAX_VALUE : preloadCount;
     }
 
-    public static boolean useFlashVideoPlayer(Context context) {
+    public static VideoPlayerType getVideoPlayerType(Context context) {
         SharedPreferences prefs = getPreferences(context);
-        return "flash".equals(prefs.getString(Constants.PREFERENCES_KEY_VIDEO_PLAYER, "native"));
+        return VideoPlayerType.forKey(prefs.getString(Constants.PREFERENCES_KEY_VIDEO_PLAYER, VideoPlayerType.MX.getKey()));
     }
 
     public static int getCacheSizeMB(Context context) {
@@ -625,6 +628,17 @@ public final class Util {
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, false);
     }
 
+    public static boolean isPackageInstalled(Context context, String packageName) {
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(0);
+        for (ApplicationInfo packageInfo : packages) {
+            if (packageInfo.packageName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void sleepQuietly(long millis) {
         try {
             Thread.sleep(millis);
@@ -794,8 +808,9 @@ public final class Util {
                 } else if (content.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setSecond(textView.getTextColors().getDefaultColor());
                 }
-            } else if (group.getChildAt(i) instanceof ViewGroup)
+            } else if (group.getChildAt(i) instanceof ViewGroup) {
                 findNotificationTextColors((ViewGroup) group.getChildAt(i), title, content);
+            }
         }
     }
 
