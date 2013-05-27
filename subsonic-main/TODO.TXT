@@ -5,6 +5,7 @@ REST: Escape ampersand in XML for getGenres
 Change wording "Change this" -> "Register a different license key"
 REST: Added ignoredArticles
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
+Make Subsonic work on Tomcat 7
 
 TODO IN 4.9
 --------------
