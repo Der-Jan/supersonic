@@ -56,12 +56,12 @@ public final class Constants {
     public static final int NOTIFICATION_ID_ERROR = 101;
 
     // Preferences keys.
-    public static final String PREFERENCES_KEY_SERVER_INSTANCE = "serverInstanceId";
-    public static final String PREFERENCES_KEY_SERVER_NAME = "serverName";
-    public static final String PREFERENCES_KEY_SERVER_URL = "serverUrl";
+    @Deprecated public static final String PREFERENCES_KEY_SERVER_INSTANCE = "serverInstanceId";
+    @Deprecated public static final String PREFERENCES_KEY_SERVER_NAME = "serverName";
+    @Deprecated public static final String PREFERENCES_KEY_SERVER_URL = "serverUrl";
+    @Deprecated public static final String PREFERENCES_KEY_USERNAME = "username";
+    @Deprecated public static final String PREFERENCES_KEY_PASSWORD = "password";
     public static final String PREFERENCES_KEY_MUSIC_FOLDER_ID = "musicFolderId";
-    public static final String PREFERENCES_KEY_USERNAME = "username";
-    public static final String PREFERENCES_KEY_PASSWORD = "password";
     public static final String PREFERENCES_KEY_VIDEO_PLAYER = "videoPlayer";
     public static final String PREFERENCES_KEY_MAX_BITRATE_WIFI = "maxBitrateWifi";
     public static final String PREFERENCES_KEY_MAX_BITRATE_MOBILE = "maxBitrateMobile";

@@ -152,12 +152,12 @@ public final class Util {
         editor.commit();
     }
 
-    public static int getActiveServer(Context context) {
+    @Deprecated public static int getActiveServer(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
     }
 
-    public static String getServerName(Context context, int instance) {
+    @Deprecated public static String getServerName(Context context, int instance) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getString(Constants.PREFERENCES_KEY_SERVER_NAME + instance, null);
     }
