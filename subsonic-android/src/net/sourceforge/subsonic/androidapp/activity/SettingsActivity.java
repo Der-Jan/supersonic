@@ -96,19 +96,19 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             screen.setTitle(server.getName());
             screen.setSummary(server.getUrl());
 
-            EditTextPreference name = new EditTextPreference(this);
+            final EditTextPreference name = new EditTextPreference(this);
             name.setKey(server.getNameKey());
             name.setTitle(R.string.settings_server_name);
             name.setText(server.getName());
             name.setSummary(server.getName());
 
-            EditTextPreference url = new EditTextPreference(this);
+            final EditTextPreference url = new EditTextPreference(this);
             url.setKey(server.getUrlKey());
             url.setTitle(R.string.settings_server_address);
             url.setText(server.getUrl());
             url.setSummary(server.getUrl());
 
-            EditTextPreference username = new EditTextPreference(this);
+            final EditTextPreference username = new EditTextPreference(this);
             username.setKey(server.getUsernameKey());
             username.setTitle(R.string.settings_server_username);
             username.setText(server.getUsername());
@@ -139,19 +139,29 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             screen.addPreference(testConnection);
             serverCategory.addPreference(screen);
 
+            name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    name.setSummary((String) value);
+                    return true;
+                }
+            });
+
             url.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object value) {
+                    String urlString;
                     try {
-                        String url = (String) value;
-                        new URL(url);
-                        if (!url.equals(url.trim()) || url.contains("@") || url.contains("_")) {
+                        urlString = (String) value;
+                        new URL(urlString);
+                        if (!urlString.equals(urlString.trim()) || urlString.contains("@") || urlString.contains("_")) {
                             throw new Exception();
                         }
                     } catch (Exception x) {
                         new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_url, false);
                         return false;
                     }
+                    url.setSummary(urlString);
                     return true;
                 }
             });
@@ -159,11 +169,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             username.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object value) {
-                    String username = (String) value;
-                    if (username == null || !username.equals(username.trim())) {
+                    String user = (String) value;
+                    if (user == null || !user.equals(user.trim())) {
                         new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_username, false);
                         return false;
                     }
+                    username.setSummary(user);
                     return true;
                 }
             });
@@ -183,6 +194,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+     // TODO: Can this be done more fine-grained?
+
         Log.d(TAG, "Preference changed: " + key);
         update();
 

@@ -216,12 +216,11 @@ public final class Util {
     public static String getRestUrl(Context context, String method) {
         StringBuilder builder = new StringBuilder();
 
-        SharedPreferences prefs = getPreferences(context);
-
-        int instance = prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
-        String serverUrl = prefs.getString(Constants.PREFERENCES_KEY_SERVER_URL + instance, null);
-        String username = prefs.getString(Constants.PREFERENCES_KEY_USERNAME + instance, null);
-        String password = prefs.getString(Constants.PREFERENCES_KEY_PASSWORD + instance, null);
+        ServerSettingsManager serverMgr = new ServerSettingsManager(context);
+        ServerSettingsManager.ServerSettings server = serverMgr.getActiveServer();
+        String serverUrl = server.getUrl();
+        String username = server.getUsername();
+        String password = server.getPassword();
 
         // Slightly obfuscate password
         password = "enc:" + Util.utf8HexEncode(password);
