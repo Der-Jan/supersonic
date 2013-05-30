@@ -21,6 +21,8 @@ package net.sourceforge.subsonic.androidapp.activity;
 import java.io.File;
 import java.net.URL;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -92,7 +94,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         serverCategory.removeAll();
 
         for (final ServerSettingsManager.ServerSettings server : serverSettingsManager.getAllServers()) {
-            PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
             screen.setTitle(server.getName());
             screen.setSummary(server.getUrl());
 
@@ -132,11 +134,24 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 }
             });
 
+            Preference deleteServer = new Preference(this);
+            deleteServer.setPersistent(false);
+            deleteServer.setTitle(R.string.settings_delete_server);
+
+            deleteServer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    deleteServer(server, screen);
+                    return false;
+                }
+            });
+
             screen.addPreference(name);
             screen.addPreference(url);
             screen.addPreference(username);
             screen.addPreference(password);
             screen.addPreference(testConnection);
+            screen.addPreference(deleteServer);
             serverCategory.addPreference(screen);
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -182,6 +197,19 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // TODO: Add "Delete"
             // TODO: Add "Add server"
         }
+
+        Preference addServer = new Preference(this);
+        addServer.setPersistent(false);
+        addServer.setTitle(R.string.settings_add_server);
+
+        addServer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                addServer();
+                return false;
+            }
+        });
+        serverCategory.addPreference(addServer);
     }
 
     @Override
@@ -314,5 +342,30 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             }
         };
         task.execute();
+    }
+
+    private void addServer() {
+        // TODO
+        serverSettingsManager.addServer("NEW", "http://foo.com", "foo", "bar");
+    }
+
+    private void deleteServer(final ServerSettingsManager.ServerSettings server, final PreferenceScreen screen) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.settings_delete_server_confirm)
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        serverSettingsManager.removeServer(server.getId());
+                        screen.getDialog().dismiss();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }

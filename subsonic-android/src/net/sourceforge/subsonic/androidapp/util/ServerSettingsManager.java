@@ -84,7 +84,7 @@ public class ServerSettingsManager {
 
     public List<ServerSettings> getAllServers() {
         List<ServerSettings> result = new ArrayList<ServerSettings>();
-        for (Integer serverId : getServerIds(context)) {
+        for (Integer serverId : getServerIds()) {
             result.add(getServer(serverId));
         }
         return result;
@@ -108,7 +108,7 @@ public class ServerSettingsManager {
     }
 
     public int addServer(String name, String url, String username, String password) {
-        SortedSet<Integer> serverIds = getServerIds(context);
+        SortedSet<Integer> serverIds = getServerIds();
         int serverId = serverIds.isEmpty() ? 0 : serverIds.last() + 1;
         new ServerSettings(serverId, name, url, username, password).save(context);
         serverIds.add(serverId);
@@ -132,7 +132,7 @@ public class ServerSettingsManager {
         editor.commit();
     }
 
-    private SortedSet<Integer> getServerIds(Context context) {
+    private SortedSet<Integer> getServerIds() {
         SharedPreferences prefs = Util.getPreferences(context);
         SortedSet<Integer> result = new TreeSet<Integer>();
         String serverString = prefs.getString(KEY_SERVERS, null);
@@ -145,12 +145,10 @@ public class ServerSettingsManager {
         return result;
     }
 
-    public void updateServer(int id, String name, String url, String username, String password) {
-        // TODO
-    }
-
     public void removeServer(int id) {
-        // TODO
+        SortedSet<Integer> serverIds = getServerIds();
+        serverIds.remove(id);
+        saveServerIds(serverIds);
     }
 
     public static class ServerSettings {
