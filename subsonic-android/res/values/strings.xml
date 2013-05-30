@@ -121,8 +121,7 @@
     <string name="settings_delete_server">Forget this server</string>
     <string name="settings_delete_server_confirm">Really forget this server?</string>
     <string name="settings.servers_title">Servers</string>
-    <string name="settings.server_unused1">Unused 1</string>
-    <string name="settings.server_unused2">Unused 2</string>
+    <string name="settings.server_unnamed">Unnamed</string>
     <string name="settings.server_name">Name</string>
     <string name="settings.server_address">Server address</string>
     <string name="settings.server_username">Username</string>

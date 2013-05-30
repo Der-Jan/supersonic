@@ -48,11 +48,9 @@ import java.util.Arrays;
 public class MainActivity extends SubsonicTabActivity {
 
     private static final int MENU_GROUP_SERVER = 10;
-    private static final int MENU_ITEM_SERVER_1 = 101;
-    private static final int MENU_ITEM_SERVER_2 = 102;
-    private static final int MENU_ITEM_SERVER_3 = 103;
 
     private static boolean infoDialogDisplayed;
+    private TextView serverTextView;
 
     /**
      * Called when the activity is first created.
@@ -70,7 +68,7 @@ public class MainActivity extends SubsonicTabActivity {
         View buttons = LayoutInflater.from(this).inflate(R.layout.main_buttons, null);
 
         final View serverButton = buttons.findViewById(R.id.main_select_server);
-        final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
+        serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
         final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
         offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
@@ -83,9 +81,6 @@ public class MainActivity extends SubsonicTabActivity {
         final View albumsFrequentButton = buttons.findViewById(R.id.main_albums_frequent);
 
         final View dummyView = findViewById(R.id.main_dummy);
-
-        ServerSettingsManager.ServerSettings server = Util.getActiveServer(this);
-        serverTextView.setText(server.getName());
 
         ListView list = (ListView) findViewById(R.id.main_list);
 
@@ -154,6 +149,12 @@ public class MainActivity extends SubsonicTabActivity {
         });
 
         showInfoDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        serverTextView.setText(Util.getActiveServer(this).getName());
     }
 
     private void startShufflePlay() {

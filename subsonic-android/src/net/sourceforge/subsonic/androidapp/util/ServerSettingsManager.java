@@ -145,10 +145,14 @@ public class ServerSettingsManager {
         return result;
     }
 
-    public void removeServer(int id) {
+    public void deleteServer(int id) {
         SortedSet<Integer> serverIds = getServerIds();
         serverIds.remove(id);
         saveServerIds(serverIds);
+
+        if (getActiveServer().getId() == id) {
+            setActiveServerId(getServerIds().first());
+        }
     }
 
     public static class ServerSettings {

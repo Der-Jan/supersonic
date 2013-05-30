@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.androidapp.activity;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -93,7 +94,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         PreferenceCategory serverCategory = (PreferenceCategory)findPreference("servers");
         serverCategory.removeAll();
 
-        for (final ServerSettingsManager.ServerSettings server : serverSettingsManager.getAllServers()) {
+        List<ServerSettingsManager.ServerSettings> servers = serverSettingsManager.getAllServers();
+        for (final ServerSettingsManager.ServerSettings server : servers) {
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
             screen.setTitle(server.getName());
             screen.setSummary(server.getUrl());
@@ -118,7 +120,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
             EditTextPreference password = new EditTextPreference(this);
             password.setKey(server.getPasswordKey());
-            password.setTitle(R.string.settings_server_username);
+            password.setTitle(R.string.settings_server_password);
             password.setText(server.getPassword());
             password.setSummary("****");
 
@@ -151,13 +153,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             screen.addPreference(username);
             screen.addPreference(password);
             screen.addPreference(testConnection);
-            screen.addPreference(deleteServer);
+            if (servers.size() > 1) {
+                screen.addPreference(deleteServer);
+            }
+
             serverCategory.addPreference(screen);
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object value) {
                     name.setSummary((String) value);
+                    screen.setTitle((String) value);
                     return true;
                 }
             });
@@ -193,9 +199,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     return true;
                 }
             });
-
-            // TODO: Add "Delete"
-            // TODO: Add "Add server"
         }
 
         Preference addServer = new Preference(this);
@@ -222,8 +225,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-     // TODO: Can this be done more fine-grained?
 
         Log.d(TAG, "Preference changed: " + key);
         update();
@@ -345,8 +346,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void addServer() {
-        // TODO
-        serverSettingsManager.addServer("NEW", "http://foo.com", "foo", "bar");
+        serverSettingsManager.addServer(getResources().getString(R.string.settings_server_unnamed), "http://yourserver", null, null);
     }
 
     private void deleteServer(final ServerSettingsManager.ServerSettings server, final PreferenceScreen screen) {
@@ -355,7 +355,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        serverSettingsManager.removeServer(server.getId());
+                        serverSettingsManager.deleteServer(server.getId());
                         screen.getDialog().dismiss();
                         dialog.dismiss();
                     }
