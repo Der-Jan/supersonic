@@ -189,7 +189,6 @@ public class MainActivity extends SubsonicTabActivity {
         if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
-            editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
             editor.commit();
         }
     }
