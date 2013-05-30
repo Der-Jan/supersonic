@@ -133,13 +133,6 @@ public final class Util {
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCROBBLE, false);
     }
 
-    public static void setActiveServer(Context context, int instance) {
-        SharedPreferences prefs = getPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, instance);
-        editor.commit();
-    }
-
     public static boolean isOffline(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
@@ -152,26 +145,20 @@ public final class Util {
         editor.commit();
     }
 
-    @Deprecated public static int getActiveServer(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        return prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
-    }
-
-    @Deprecated public static String getServerName(Context context, int instance) {
-        SharedPreferences prefs = getPreferences(context);
-        return prefs.getString(Constants.PREFERENCES_KEY_SERVER_NAME + instance, null);
+    public static ServerSettingsManager.ServerSettings getActiveServer(Context context) {
+        return new ServerSettingsManager(context).getActiveServer();
     }
 
     public static void setServerRestVersion(Context context, Version version) {
-        SERVER_REST_VERSIONS.put(getActiveServer(context), version);
+        SERVER_REST_VERSIONS.put(getActiveServer(context).getId(), version);
     }
 
     public static Version getServerRestVersion(Context context) {
-        return SERVER_REST_VERSIONS.get(getActiveServer(context));
+        return SERVER_REST_VERSIONS.get(getActiveServer(context).getId());
     }
 
     public static void setSelectedMusicFolderId(Context context, String musicFolderId) {
-        int instance = getActiveServer(context);
+        int instance = getActiveServer(context).getId();
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.PREFERENCES_KEY_MUSIC_FOLDER_ID + instance, musicFolderId);
@@ -180,7 +167,7 @@ public final class Util {
 
     public static String getSelectedMusicFolderId(Context context) {
         SharedPreferences prefs = getPreferences(context);
-        int instance = getActiveServer(context);
+        int instance = getActiveServer(context).getId();
         return prefs.getString(Constants.PREFERENCES_KEY_MUSIC_FOLDER_ID + instance, null);
     }
 

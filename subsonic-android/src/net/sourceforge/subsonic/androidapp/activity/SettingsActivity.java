@@ -303,7 +303,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             @Override
             protected void cancel() {
                 super.cancel();
-                Util.setActiveServer(SettingsActivity.this, previousActive);
+                serverSettingsManager.setActiveServerId(previousActive);
             }
 
             @Override

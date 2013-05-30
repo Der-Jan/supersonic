@@ -58,7 +58,7 @@ public class ShufflePlayBuffer {
     }
 
     public List<MusicDirectory.Entry> get(int size) {
-        clearBufferIfnecessary();
+        clearBufferIfNecessary();
 
         List<MusicDirectory.Entry> result = new ArrayList<MusicDirectory.Entry>(size);
         synchronized (buffer) {
@@ -77,7 +77,7 @@ public class ShufflePlayBuffer {
     private void refill() {
 
         // Check if active server has changed.
-        clearBufferIfnecessary();
+        clearBufferIfNecessary();
 
         if (buffer.size() > REFILL_THRESHOLD || (!Util.isNetworkConnected(context) && !Util.isOffline(context))) {
             return;
@@ -97,10 +97,11 @@ public class ShufflePlayBuffer {
         }
     }
 
-    private void clearBufferIfnecessary() {
+    private void clearBufferIfNecessary() {
         synchronized (buffer) {
-            if (currentServer != Util.getActiveServer(context)) {
-                currentServer = Util.getActiveServer(context);
+            int activeServer = Util.getActiveServer(context).getId();
+            if (currentServer != activeServer) {
+                currentServer = activeServer;
                 buffer.clear();
             }
         }
