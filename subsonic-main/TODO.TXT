@@ -9,6 +9,8 @@ Make Subsonic work on Tomcat 7
 
 TODO IN 4.9
 --------------
+RedirectionManagementController should treat email address case insensitive.
+cover.view should set mime type.
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
 Trim license key when registering
@@ -180,6 +182,7 @@ TODO IN ANDROID 3.8
 Support dynamic number of servers.
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f324a7ec6654c8
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls
