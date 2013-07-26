@@ -82,7 +82,7 @@ public class HomeController extends ParameterizableViewController {
 
         String listType = request.getParameter("listType");
         if (listType == null) {
-            listType = "recent";
+            listType = "newest";
         }
 
         List<Album> albums;
