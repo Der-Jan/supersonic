@@ -80,6 +80,7 @@
                                     <input type="hidden" name="cmd" value="_s-xclick">
                                     <input type="hidden" name="hosted_button_id" value="SDHSJ5T5E2DC4">
                                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                    <input type="hidden" name="lc" value="US">
                                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                                 </form>
                             </th>
@@ -89,6 +90,7 @@
                                     <input type="hidden" name="hosted_button_id" value="TNL7NC2HVY5E6">
                                     <input type="hidden" name="on0" value="Duration">
                                     <input type="hidden" name="currency_code" value="USD">
+                                    <input type="hidden" name="lc" value="US">
                                     <table>
                                         <tr><td><select name="os0">
                                             <option value="1 year"> 1 year of Subsonic Premium &ndash; $12</option>
