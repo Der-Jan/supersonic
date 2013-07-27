@@ -18,14 +18,14 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.service.PlaylistService;
-import net.sourceforge.subsonic.service.SecurityService;
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.util.StringUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,19 +36,22 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.tanesha.recaptcha.ReCaptcha;
+import net.tanesha.recaptcha.ReCaptchaFactory;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 
 /**
  * Multi-controller used for simple pages.
@@ -93,10 +96,21 @@ public class MultiController extends MultiActionController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         String usernameOrEmail = StringUtils.trimToNull(request.getParameter("usernameOrEmail"));
+        ReCaptcha captcha = ReCaptchaFactory.newReCaptcha("6LcZ3OMSAAAAANkKMdFdaNopWu9iS03V-nLOuoiH",
+                "6LcZ3OMSAAAAAPaFg89mEzs-Ft0fIu7wxfKtkwmQ", false);
+        boolean showCaptcha = true;
 
         if (usernameOrEmail != null) {
+
+            map.put("usernameOrEmail", usernameOrEmail);
             User user = getUserByUsernameOrEmail(usernameOrEmail);
-            if (user == null) {
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse captchaResponse = captcha.checkAnswer(request.getRemoteAddr(), challenge, uresponse);
+
+            if (!captchaResponse.isValid()) {
+                map.put("error", "recover.error.invalidcaptcha");
+            } else if (user == null) {
                 map.put("error", "recover.error.usernotfound");
             } else if (user.getEmail() == null) {
                 map.put("error", "recover.error.noemail");
@@ -107,10 +121,15 @@ public class MultiController extends MultiActionController {
                     user.setLdapAuthenticated(false);
                     user.setPassword(password);
                     securityService.updateUser(user);
+                    showCaptcha = false;
                 } else {
                     map.put("error", "recover.error.sendfailed");
                 }
             }
+        }
+
+        if (showCaptcha) {
+            map.put("captcha", captcha.createRecaptchaHtml(null, null));
         }
 
         return new ModelAndView("recover", "model", map);

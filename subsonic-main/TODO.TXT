@@ -6,34 +6,49 @@ Change wording "Change this" -> "Register a different license key"
 REST: Added ignoredArticles
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
 Make Subsonic work on Tomcat 7
+Trim license key when registering
+Should revalidate license at regular intervals.
+cover.view should set mime type.
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13efcc5f18ad6149
+Add CAPTCHA to password recover.
 
 TODO IN 4.9
 --------------
+Test captcha
+Add SubHub
+  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13f1696a961038d0
+Upgrade wipes settings on Ubuntu 12.04
+  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13fc338d71000ac5
+Evaluate DLNA implementation in Madsonic
 RedirectionManagementController should treat email address case insensitive.
-cover.view should set mime type.
+Add SubHub
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f1696a961038d0
+Retain service when upgrading.
+  https://mail.google.com/mail/u/0/#inbox/13e419b5ff8ecb59
+  Document how to modify Windows service to see network drives
+Uninstaller: Optionally delete all settings.
+Fedora 19 problem
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13f875e94e77b3c4
+
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
-Trim license key when registering
-Should revalidate license at regular intervals.
 Move xsd and xml examples to site.
   Create links to each version
 
 Recently added broken
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
-Update default files on sf.net
 https port 8080 redirect to 8443 (jetty?)
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
   DLNA
-    PS3: http://4thline.org/projects/mailinglists.html#nabble-td2188762
+    https://github.com/longkerdandy/chii2;cid=1358200757747-963
+    http://4thline.org/projects/mailinglists.html#nabble-td2188762
     http://4thline.org/projects/mailinglists.html#nabble-td2165790
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
 Clean up podcasts in demo
-Retain service when upgrading.
-  https://mail.google.com/mail/u/0/#inbox/13e419b5ff8ecb59
 Update backup server (after a couple of days)
 Publish blackberry app.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
@@ -187,19 +202,15 @@ RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls
 Notification controls
-Add option to restore transactions.
-Update help page in app.
 Notification
   progress
   compat lib
 Run CacheCleaner in bg, see dsub
 Starring support
 Podcast support
-Update help page.
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
 Create new screenshots.
-Update app description on subsonic.org
 Add option to delete file. (Rename to "Remove from playlist").
 Add to playlist
 Test on Android 2 and 3.
