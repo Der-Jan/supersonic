@@ -18,8 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import net.sourceforge.subsonic.androidapp.domain.Version;
-
 /**
  * Thrown if the REST API version implemented by the server is too old.
  *
@@ -28,24 +26,16 @@ import net.sourceforge.subsonic.androidapp.domain.Version;
  */
 public class ServerTooOldException extends Exception {
 
-    private final String text;
-    private final Version serverVersion;
-    private final Version requiredVersion;
-
-    public ServerTooOldException(String text, Version serverVersion, Version requiredVersion) {
-        this.text = text;
-        this.serverVersion = serverVersion;
-        this.requiredVersion = requiredVersion;
+    public ServerTooOldException(String text) {
+        super(createMessage(text));
     }
 
-    @Override
-    public String toString() {
+    private static String createMessage(String text) {
         StringBuilder builder = new StringBuilder();
         if (text != null) {
             builder.append(text).append(" ");
         }
-        builder.append("Server API version too old. ");
-        builder.append("Requires ").append(requiredVersion).append(" but is ").append(serverVersion).append(".");
+        builder.append("Subsonic server version is too old. Please upgrade.");
         return builder.toString();
     }
 }

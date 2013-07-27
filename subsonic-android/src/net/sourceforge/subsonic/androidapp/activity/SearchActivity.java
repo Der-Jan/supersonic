@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -372,9 +371,7 @@ public class SearchActivity extends SubsonicTabActivity {
     }
 
     private void onVideoSelected(MusicDirectory.Entry entry) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(MusicServiceFactory.getMusicService(this).getVideoUrl(this, entry.getId())));
-        startActivity(intent);
+        playVideo(entry);
     }
 
     private void autoplay() {

@@ -5,14 +5,23 @@ REST: Escape ampersand in XML for getGenres
 Change wording "Change this" -> "Register a different license key"
 REST: Added ignoredArticles
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
+Make Subsonic work on Tomcat 7
 
 TODO IN 4.9
 --------------
-Recently added broken
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
-
+RedirectionManagementController should treat email address case insensitive.
+cover.view should set mime type.
+REST video subtitle support
+  https://sites.google.com/site/mxvpen/api
 Trim license key when registering
 Should revalidate license at regular intervals.
+Move xsd and xml examples to site.
+  Create links to each version
+
+Recently added broken
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
+Update default files on sf.net
+https port 8080 redirect to 8443 (jetty?)
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 UPnP
@@ -22,9 +31,9 @@ UPnP
   Test on Linux (alternative JDK)
   Add controls for config
 make menu text more visible
-Move xsd and xml examples to site.
-  Create links to each version
 Clean up podcasts in demo
+Retain service when upgrading.
+  https://mail.google.com/mail/u/0/#inbox/13e419b5ff8ecb59
 Update backup server (after a couple of days)
 Publish blackberry app.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
@@ -170,14 +179,10 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
-Video: Test MX Player
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13e003d33cbf4626
-Add video alternatives: Flash, HLS, native
-Rename references to donation.
 Support dynamic number of servers.
-Reconsider donation
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f324a7ec6654c8
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls

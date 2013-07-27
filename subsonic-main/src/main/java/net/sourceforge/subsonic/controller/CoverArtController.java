@@ -18,6 +18,30 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.LastModified;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
@@ -29,26 +53,7 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
 import net.sourceforge.subsonic.util.FileUtil;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.mvc.LastModified;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller which produces cover art images.
@@ -153,6 +158,7 @@ public class CoverArtController implements Controller, LastModified {
     }
 
     private void sendImage(File file, HttpServletResponse response) throws IOException {
+        response.setContentType(StringUtil.getMimeType(FilenameUtils.getExtension(file.getName())));
         InputStream in = new FileInputStream(file);
         try {
             IOUtils.copy(in, response.getOutputStream());
@@ -162,6 +168,7 @@ public class CoverArtController implements Controller, LastModified {
     }
 
     private void sendDefault(Integer size, HttpServletResponse response) throws IOException {
+        response.setContentType(StringUtil.getMimeType("jpeg"));
         InputStream in = null;
         try {
             in = getClass().getResourceAsStream("default_cover.jpg");
@@ -176,6 +183,10 @@ public class CoverArtController implements Controller, LastModified {
     }
 
     private void sendUnscaled(File file, HttpServletResponse response) throws IOException {
+        JaudiotaggerParser parser = new JaudiotaggerParser();
+        if (!parser.isApplicable(file)) {
+            response.setContentType(StringUtil.getMimeType(FilenameUtils.getExtension(file.getName())));
+        }
         InputStream in = null;
         try {
             in = getImageInputStream(file);

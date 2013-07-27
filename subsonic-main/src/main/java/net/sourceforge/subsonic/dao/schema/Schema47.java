@@ -88,6 +88,19 @@ public class Schema47 extends Schema {
 
             LOG.info("Database table 'media_file' was created successfully.");
         }
+        if (!columnExists(template, "album_artist", "media_file")) {
+            LOG.info("Database column 'media_file.album_artist' not found.  Creating it.");
+            template.execute("alter table media_file add album_artist varchar");
+            LOG.info("Database column 'album_artist' was added successfully.");
+        }
+        if (!columnExists(template, "changed", "media_file")) {
+            LOG.info("Database column 'media_file.changed' not found.  Creating it.");
+            template.execute("alter table media_file add changed datetime");
+            template.execute("update media_file set changed=created");
+            LOG.info("Database column 'changed' was added successfully.");
+        }
+
+
 
         if (!tableExists(template, "artist")) {
             LOG.info("Database table 'artist' not found.  Creating it.");
@@ -131,6 +144,12 @@ public class Schema47 extends Schema {
 
             LOG.info("Database table 'album' was created successfully.");
         }
+        if (!columnExists(template, "path", "album")) {
+            LOG.info("Database column 'album.path' not found.  Creating it.");
+            template.execute("alter table album add path varchar");
+            LOG.info("Database column 'album.path' was added successfully.");
+        }
+
 
         // Added in 4.7.beta3
         if (!rowExists(template, "table_name='ALBUM' and column_name='NAME' and ordinal_position=1",

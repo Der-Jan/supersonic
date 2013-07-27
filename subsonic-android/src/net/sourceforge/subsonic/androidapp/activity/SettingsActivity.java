@@ -20,15 +20,17 @@ package net.sourceforge.subsonic.androidapp.activity;
 
 import java.io.File;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
@@ -42,53 +44,35 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ErrorDialog;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
+import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
-    private final Map<String, ServerSettings> serverSettings = new LinkedHashMap<String, ServerSettings>();
     private boolean testingConnection;
+    private ListPreference videoPlayer;
     private ListPreference maxBitrateWifi;
     private ListPreference maxBitrateMobile;
     private ListPreference cacheSize;
     private EditTextPreference cacheLocation;
     private ListPreference preloadCount;
+    private ServerSettingsManager serverSettingsManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        serverSettingsManager = new ServerSettingsManager(this);
+        videoPlayer = (ListPreference) findPreference(Constants.PREFERENCES_KEY_VIDEO_PLAYER);
         maxBitrateWifi = (ListPreference) findPreference(Constants.PREFERENCES_KEY_MAX_BITRATE_WIFI);
         maxBitrateMobile = (ListPreference) findPreference(Constants.PREFERENCES_KEY_MAX_BITRATE_MOBILE);
         cacheSize = (ListPreference) findPreference(Constants.PREFERENCES_KEY_CACHE_SIZE);
         cacheLocation = (EditTextPreference) findPreference(Constants.PREFERENCES_KEY_CACHE_LOCATION);
         preloadCount = (ListPreference) findPreference(Constants.PREFERENCES_KEY_PRELOAD_COUNT);
 
-        findPreference("testConnection1").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                testConnection(1);
-                return false;
-            }
-        });
-
-        findPreference("testConnection2").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                testConnection(2);
-                return false;
-            }
-        });
-
-        findPreference("testConnection3").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                testConnection(3);
-                return false;
-            }
-        });
+        createServerSettings();
 
         findPreference("clearSearchHistory").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -100,15 +84,135 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             }
         });
 
-        for (int i = 1; i <= 3; i++) {
-            String instance = String.valueOf(i);
-            serverSettings.put(instance, new ServerSettings(instance));
-        }
-
         SharedPreferences prefs = Util.getPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         update();
+    }
+
+    private void createServerSettings() {
+        PreferenceCategory serverCategory = (PreferenceCategory)findPreference("servers");
+        serverCategory.removeAll();
+
+        List<ServerSettingsManager.ServerSettings> servers = serverSettingsManager.getAllServers();
+        for (final ServerSettingsManager.ServerSettings server : servers) {
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
+            screen.setTitle(server.getName());
+            screen.setSummary(server.getUrl());
+
+            final EditTextPreference name = new EditTextPreference(this);
+            name.setKey(server.getNameKey());
+            name.setTitle(R.string.settings_server_name);
+            name.setText(server.getName());
+            name.setSummary(server.getName());
+
+            final EditTextPreference url = new EditTextPreference(this);
+            url.setKey(server.getUrlKey());
+            url.setTitle(R.string.settings_server_address);
+            url.setText(server.getUrl());
+            url.setSummary(server.getUrl());
+
+            final EditTextPreference username = new EditTextPreference(this);
+            username.setKey(server.getUsernameKey());
+            username.setTitle(R.string.settings_server_username);
+            username.setText(server.getUsername());
+            username.setSummary(server.getUsername());
+
+            EditTextPreference password = new EditTextPreference(this);
+            password.setKey(server.getPasswordKey());
+            password.setTitle(R.string.settings_server_password);
+            password.setText(server.getPassword());
+            password.setSummary("****");
+
+            Preference testConnection = new Preference(this);
+            testConnection.setPersistent(false);
+            testConnection.setTitle(R.string.settings_test_connection_title);
+
+            testConnection.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    testConnection(server);
+                    return false;
+                }
+            });
+
+            Preference deleteServer = new Preference(this);
+            deleteServer.setPersistent(false);
+            deleteServer.setTitle(R.string.settings_delete_server);
+
+            deleteServer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    deleteServer(server, screen);
+                    return false;
+                }
+            });
+
+            screen.addPreference(name);
+            screen.addPreference(url);
+            screen.addPreference(username);
+            screen.addPreference(password);
+            screen.addPreference(testConnection);
+            if (servers.size() > 1) {
+                screen.addPreference(deleteServer);
+            }
+
+            serverCategory.addPreference(screen);
+
+            name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    name.setSummary((String) value);
+                    screen.setTitle((String) value);
+                    return true;
+                }
+            });
+
+            url.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    String urlString;
+                    try {
+                        urlString = (String) value;
+                        new URL(urlString);
+                        if (!urlString.equals(urlString.trim()) || urlString.contains("@") || urlString.contains("_")) {
+                            throw new Exception();
+                        }
+                    } catch (Exception x) {
+                        new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_url, false);
+                        return false;
+                    }
+                    url.setSummary(urlString);
+                    return true;
+                }
+            });
+
+            username.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    String user = (String) value;
+                    if (user == null || !user.equals(user.trim())) {
+                        new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_username, false);
+                        return false;
+                    }
+                    username.setSummary(user);
+                    return true;
+                }
+            });
+        }
+
+        Preference addServer = new Preference(this);
+        addServer.setPersistent(false);
+        addServer.setTitle(R.string.settings_add_server);
+
+        addServer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                addServer();
+                return false;
+            }
+        });
+        serverCategory.addPreference(addServer);
     }
 
     @Override
@@ -121,6 +225,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
         Log.d(TAG, "Preference changed: " + key);
         update();
 
@@ -140,14 +245,14 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             return;
         }
 
+        videoPlayer.setSummary(videoPlayer.getEntry());
         maxBitrateWifi.setSummary(maxBitrateWifi.getEntry());
         maxBitrateMobile.setSummary(maxBitrateMobile.getEntry());
         cacheSize.setSummary(cacheSize.getEntry());
         cacheLocation.setSummary(cacheLocation.getText());
         preloadCount.setSummary(preloadCount.getEntry());
-        for (ServerSettings ss : serverSettings.values()) {
-            ss.update();
-        }
+
+        createServerSettings();
     }
 
     private void setHideMedia(boolean hide) {
@@ -194,23 +299,23 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
     }
 
-    private void testConnection(final int instance) {
+    private void testConnection(final ServerSettingsManager.ServerSettings server) {
         ModalBackgroundTask<Boolean> task = new ModalBackgroundTask<Boolean>(this, false) {
-            private int previousInstance;
+            private int previousActive;
 
             @Override
             protected Boolean doInBackground() throws Throwable {
                 updateProgress(R.string.settings_testing_connection);
 
-                previousInstance = Util.getActiveServer(SettingsActivity.this);
+                previousActive = serverSettingsManager.getActiveServer().getId();
                 testingConnection = true;
-                Util.setActiveServer(SettingsActivity.this, instance);
+                serverSettingsManager.setActiveServerId(server.getId());
                 try {
                     MusicService musicService = MusicServiceFactory.getMusicService(SettingsActivity.this);
                     musicService.ping(SettingsActivity.this, this);
                     return musicService.isLicenseValid(SettingsActivity.this, null);
                 } finally {
-                    Util.setActiveServer(SettingsActivity.this, previousInstance);
+                    serverSettingsManager.setActiveServerId(previousActive);
                     testingConnection = false;
                 }
             }
@@ -227,7 +332,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             @Override
             protected void cancel() {
                 super.cancel();
-                Util.setActiveServer(SettingsActivity.this, previousInstance);
+                serverSettingsManager.setActiveServerId(previousActive);
             }
 
             @Override
@@ -240,55 +345,27 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         task.execute();
     }
 
-    private class ServerSettings {
-        private EditTextPreference serverName;
-        private EditTextPreference serverUrl;
-        private EditTextPreference username;
-        private PreferenceScreen screen;
+    private void addServer() {
+        serverSettingsManager.addServer(getResources().getString(R.string.settings_server_unnamed), "http://yourserver", null, null);
+    }
 
-        private ServerSettings(String instance) {
-
-            screen = (PreferenceScreen) findPreference("server" + instance);
-            serverName = (EditTextPreference) findPreference(Constants.PREFERENCES_KEY_SERVER_NAME + instance);
-            serverUrl = (EditTextPreference) findPreference(Constants.PREFERENCES_KEY_SERVER_URL + instance);
-            username = (EditTextPreference) findPreference(Constants.PREFERENCES_KEY_USERNAME + instance);
-
-            serverUrl.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object value) {
-                    try {
-                        String url = (String) value;
-                        new URL(url);
-                        if (!url.equals(url.trim()) || url.contains("@") || url.contains("_")) {
-                            throw new Exception();
-                        }
-                    } catch (Exception x) {
-                        new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_url, false);
-                        return false;
+    private void deleteServer(final ServerSettingsManager.ServerSettings server, final PreferenceScreen screen) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.settings_delete_server_confirm)
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        serverSettingsManager.deleteServer(server.getId());
+                        screen.getDialog().dismiss();
+                        dialog.dismiss();
                     }
-                    return true;
-                }
-            });
-
-            username.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object value) {
-                    String username = (String) value;
-                    if (username == null || !username.equals(username.trim())) {
-                        new ErrorDialog(SettingsActivity.this, R.string.settings_invalid_username, false);
-                        return false;
+                })
+                .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
                     }
-                    return true;
-                }
-            });
-        }
-
-        public void update() {
-            serverName.setSummary(serverName.getText());
-            serverUrl.setSummary(serverUrl.getText());
-            username.setSummary(username.getText());
-            screen.setSummary(serverUrl.getText());
-            screen.setTitle(serverName.getText());
-        }
+                })
+                .show();
     }
 }

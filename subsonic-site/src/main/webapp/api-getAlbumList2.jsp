@@ -38,5 +38,5 @@
 </table>
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;albumList2&gt;</code>
-    element on success. <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/albumList2_example_1.xml">Example</a>.
+    element on success. <a href="inc/api/examples/albumList2_example_1.xml">Example</a>.
 </p>

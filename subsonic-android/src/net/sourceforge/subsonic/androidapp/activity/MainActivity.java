@@ -40,6 +40,7 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 import java.util.Arrays;
@@ -47,11 +48,9 @@ import java.util.Arrays;
 public class MainActivity extends SubsonicTabActivity {
 
     private static final int MENU_GROUP_SERVER = 10;
-    private static final int MENU_ITEM_SERVER_1 = 101;
-    private static final int MENU_ITEM_SERVER_2 = 102;
-    private static final int MENU_ITEM_SERVER_3 = 103;
 
     private static boolean infoDialogDisplayed;
+    private TextView serverTextView;
 
     /**
      * Called when the activity is first created.
@@ -69,7 +68,7 @@ public class MainActivity extends SubsonicTabActivity {
         View buttons = LayoutInflater.from(this).inflate(R.layout.main_buttons, null);
 
         final View serverButton = buttons.findViewById(R.id.main_select_server);
-        final TextView serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
+        serverTextView = (TextView) serverButton.findViewById(R.id.main_select_server_2);
 
         final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
         offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
@@ -82,10 +81,6 @@ public class MainActivity extends SubsonicTabActivity {
         final View albumsFrequentButton = buttons.findViewById(R.id.main_albums_frequent);
 
         final View dummyView = findViewById(R.id.main_dummy);
-
-        int instance = Util.getActiveServer(this);
-        String name = Util.getServerName(this, instance);
-        serverTextView.setText(name);
 
         ListView list = (ListView) findViewById(R.id.main_list);
 
@@ -156,6 +151,12 @@ public class MainActivity extends SubsonicTabActivity {
         showInfoDialog();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        serverTextView.setText(Util.getActiveServer(this).getName());
+    }
+
     private void startShufflePlay() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.main_shuffle_confirm)
@@ -189,7 +190,6 @@ public class MainActivity extends SubsonicTabActivity {
         if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
-            editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
             editor.commit();
         }
     }
@@ -198,39 +198,31 @@ public class MainActivity extends SubsonicTabActivity {
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
 
-        MenuItem menuItem1 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_1, MENU_ITEM_SERVER_1, Util.getServerName(this, 1));
-        MenuItem menuItem2 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_2, MENU_ITEM_SERVER_2, Util.getServerName(this, 2));
-        MenuItem menuItem3 = menu.add(MENU_GROUP_SERVER, MENU_ITEM_SERVER_3, MENU_ITEM_SERVER_3, Util.getServerName(this, 3));
+        ServerSettingsManager serverSettingsManager = new ServerSettingsManager(this);
+        ServerSettingsManager.ServerSettings activeServer = serverSettingsManager.getActiveServer();
+
+        for (ServerSettingsManager.ServerSettings server : serverSettingsManager.getAllServers()) {
+            MenuItem menuItem = menu.add(MENU_GROUP_SERVER, server.getId(), server.getId(), server.getName());
+            if (activeServer.getId() == server.getId()) {
+                menuItem.setChecked(true);
+            }
+        }
+
         menu.setGroupCheckable(MENU_GROUP_SERVER, true, true);
         menu.setHeaderTitle(R.string.main_select_server);
-
-        switch (Util.getActiveServer(this)) {
-            case 1:
-                menuItem1.setChecked(true);
-                break;
-            case 2:
-                menuItem2.setChecked(true);
-                break;
-            case 3:
-                menuItem3.setChecked(true);
-                break;
-        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case MENU_ITEM_SERVER_1:
-                setActiveServer(1);
-                break;
-            case MENU_ITEM_SERVER_2:
-                setActiveServer(2);
-                break;
-            case MENU_ITEM_SERVER_3:
-                setActiveServer(3);
-                break;
-            default:
-                return super.onContextItemSelected(menuItem);
+        ServerSettingsManager serverSettingsManager = new ServerSettingsManager(this);
+        if (menuItem.getItemId() == serverSettingsManager.getActiveServer().getId()) {
+            return true;
+        }
+
+        serverSettingsManager.setActiveServerId(menuItem.getItemId());
+        DownloadService service = getDownloadService();
+        if (service != null) {
+            service.clearIncomplete();
         }
 
         // Restart activity
@@ -241,16 +233,6 @@ public class MainActivity extends SubsonicTabActivity {
     private void toggleOffline() {
         Util.setOffline(this, !Util.isOffline(this));
         restart();
-    }
-
-    private void setActiveServer(int instance) {
-        if (Util.getActiveServer(this) != instance) {
-            DownloadService service = getDownloadService();
-            if (service != null) {
-                service.clearIncomplete();
-            }
-            Util.setActiveServer(this, instance);
-        }
     }
 
     private void restart() {

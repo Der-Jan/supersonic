@@ -47,8 +47,8 @@
     <string name="help.url">file:///android_asset/html/en/index.html</string>
     <string name="help.loading">Loading…</string>
 
-    <string name="play_video.loading">Loading video…</string>
-    <string name="play_video.noplugin">Please install Adobe Flash Player from Android Market.</string>
+    <string name="video.get_mx_player_text">MX Player is not installed. Get it for free on Play Store, or change video settings.</string>
+    <string name="video.get_mx_player_button">Get MX Player</string>
 
     <string name="search.label">Search</string>
     <string name="search.title">Search</string>
@@ -117,9 +117,11 @@
 
     <string name="settings.title">Subsonic settings</string>
     <string name="settings.test_connection_title">Test connection</string>
+    <string name="settings_add_server">Add server</string>
+    <string name="settings_delete_server">Forget this server</string>
+    <string name="settings_delete_server_confirm">Really forget this server?</string>
     <string name="settings.servers_title">Servers</string>
-    <string name="settings.server_unused1">Unused 1</string>
-    <string name="settings.server_unused2">Unused 2</string>
+    <string name="settings.server_unnamed">Unnamed</string>
     <string name="settings.server_name">Name</string>
     <string name="settings.server_address">Server address</string>
     <string name="settings.server_username">Username</string>
@@ -152,6 +154,8 @@
     <string name="settings.max_bitrate_unlimited">Unlimited</string>
     <string name="settings.wifi_required_title">Wi-Fi streaming only</string>
     <string name="settings.wifi_required_summary">Only stream media if connected to Wi-Fi</string>
+    <string name="settings.video_title">Video</string>
+    <string name="settings.video_player">Video player</string>
     <string name="settings.preload_1">1 song</string>
     <string name="settings.preload_2">2 songs</string>
     <string name="settings.preload_3">3 songs</string>

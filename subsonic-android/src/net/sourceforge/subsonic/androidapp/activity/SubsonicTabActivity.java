@@ -31,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -44,6 +43,7 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ImageLoader;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+import net.sourceforge.subsonic.androidapp.util.VideoPlayerType;
 
 /**
  * @author Sindre Mehus
@@ -313,6 +313,20 @@ public class SubsonicTabActivity extends Activity {
         };
 
         task.execute();
+    }
+
+    protected void playVideo(MusicDirectory.Entry entry)  {
+        if (!Util.isNetworkConnected(this)) {
+            Util.toast(this, R.string.select_album_no_network);
+            return;
+        }
+
+        VideoPlayerType player = Util.getVideoPlayerType(this);
+        try {
+            player.playVideo(this, entry);
+        } catch (Exception e) {
+            Util.toast(this, e.getMessage(), false);
+        }
     }
 }
 

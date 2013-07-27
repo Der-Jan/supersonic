@@ -18,6 +18,26 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpEntity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -27,6 +47,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,24 +76,6 @@ import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.provider.SubsonicAppWidgetProvider;
 import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
-import org.apache.http.HttpEntity;
-
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sindre Mehus
@@ -129,13 +133,6 @@ public final class Util {
         return prefs.getBoolean(Constants.PREFERENCES_KEY_SCROBBLE, false);
     }
 
-    public static void setActiveServer(Context context, int instance) {
-        SharedPreferences prefs = getPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, instance);
-        editor.commit();
-    }
-
     public static boolean isOffline(Context context) {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
@@ -148,26 +145,20 @@ public final class Util {
         editor.commit();
     }
 
-    public static int getActiveServer(Context context) {
-        SharedPreferences prefs = getPreferences(context);
-        return prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
-    }
-
-    public static String getServerName(Context context, int instance) {
-        SharedPreferences prefs = getPreferences(context);
-        return prefs.getString(Constants.PREFERENCES_KEY_SERVER_NAME + instance, null);
+    public static ServerSettingsManager.ServerSettings getActiveServer(Context context) {
+        return new ServerSettingsManager(context).getActiveServer();
     }
 
     public static void setServerRestVersion(Context context, Version version) {
-        SERVER_REST_VERSIONS.put(getActiveServer(context), version);
+        SERVER_REST_VERSIONS.put(getActiveServer(context).getId(), version);
     }
 
     public static Version getServerRestVersion(Context context) {
-        return SERVER_REST_VERSIONS.get(getActiveServer(context));
+        return SERVER_REST_VERSIONS.get(getActiveServer(context).getId());
     }
 
     public static void setSelectedMusicFolderId(Context context, String musicFolderId) {
-        int instance = getActiveServer(context);
+        int instance = getActiveServer(context).getId();
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.PREFERENCES_KEY_MUSIC_FOLDER_ID + instance, musicFolderId);
@@ -176,7 +167,7 @@ public final class Util {
 
     public static String getSelectedMusicFolderId(Context context) {
         SharedPreferences prefs = getPreferences(context);
-        int instance = getActiveServer(context);
+        int instance = getActiveServer(context).getId();
         return prefs.getString(Constants.PREFERENCES_KEY_MUSIC_FOLDER_ID + instance, null);
     }
 
@@ -198,6 +189,11 @@ public final class Util {
         return preloadCount == -1 ? Integer.MAX_VALUE : preloadCount;
     }
 
+    public static VideoPlayerType getVideoPlayerType(Context context) {
+        SharedPreferences prefs = getPreferences(context);
+        return VideoPlayerType.forKey(prefs.getString(Constants.PREFERENCES_KEY_VIDEO_PLAYER, VideoPlayerType.MX.getKey()));
+    }
+
     public static int getCacheSizeMB(Context context) {
         SharedPreferences prefs = getPreferences(context);
         int cacheSize = Integer.parseInt(prefs.getString(Constants.PREFERENCES_KEY_CACHE_SIZE, "-1"));
@@ -207,12 +203,11 @@ public final class Util {
     public static String getRestUrl(Context context, String method) {
         StringBuilder builder = new StringBuilder();
 
-        SharedPreferences prefs = getPreferences(context);
-
-        int instance = prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
-        String serverUrl = prefs.getString(Constants.PREFERENCES_KEY_SERVER_URL + instance, null);
-        String username = prefs.getString(Constants.PREFERENCES_KEY_USERNAME + instance, null);
-        String password = prefs.getString(Constants.PREFERENCES_KEY_PASSWORD + instance, null);
+        ServerSettingsManager serverMgr = new ServerSettingsManager(context);
+        ServerSettingsManager.ServerSettings server = serverMgr.getActiveServer();
+        String serverUrl = server.getUrl();
+        String username = server.getUsername();
+        String password = server.getPassword();
 
         // Slightly obfuscate password
         password = "enc:" + Util.utf8HexEncode(password);
@@ -619,6 +614,17 @@ public final class Util {
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, false);
     }
 
+    public static boolean isPackageInstalled(Context context, String packageName) {
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(0);
+        for (ApplicationInfo packageInfo : packages) {
+            if (packageInfo.packageName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void sleepQuietly(long millis) {
         try {
             Thread.sleep(millis);
@@ -788,8 +794,9 @@ public final class Util {
                 } else if (content.equals(text)) {
                     NOTIFICATION_TEXT_COLORS.setSecond(textView.getTextColors().getDefaultColor());
                 }
-            } else if (group.getChildAt(i) instanceof ViewGroup)
+            } else if (group.getChildAt(i) instanceof ViewGroup) {
                 findNotificationTextColors((ViewGroup) group.getChildAt(i), title, content);
+            }
         }
     }
 

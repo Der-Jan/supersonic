@@ -98,6 +98,7 @@ import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
+import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -432,7 +433,7 @@ public class RESTMusicService implements MusicService {
         boolean ok = serverVersion == null || serverVersion.compareTo(requiredVersion) >= 0;
 
         if (!ok) {
-            throw new ServerTooOldException(text, serverVersion, requiredVersion);
+            throw new ServerTooOldException(text);
         }
     }
 
@@ -520,11 +521,19 @@ public class RESTMusicService implements MusicService {
     }
 
     @Override
-    public String getVideoUrl(Context context, String id) {
-        StringBuilder builder = new StringBuilder(Util.getRestUrl(context, "videoPlayer"));
-        builder.append("&id=").append(id);
-        builder.append("&maxBitRate=500");
-        builder.append("&autoplay=true");
+    public String getVideoUrl(Context context, String id, boolean useFlash) throws Exception {
+        StringBuilder builder = new StringBuilder();
+        if (useFlash) {
+            builder.append(Util.getRestUrl(context, "videoPlayer"));
+            builder.append("&id=").append(id);
+            builder.append("&maxBitRate=500");
+            builder.append("&autoplay=true");
+        } else {
+            checkServerVersion(context, "1.9", "Video streaming not supported.");
+            builder.append(Util.getRestUrl(context, "stream"));
+            builder.append("&id=").append(id);
+            builder.append("&format=raw");
+        }
 
         String url = rewriteUrlWithRedirect(context, builder.toString());
         Log.i(TAG, "Using video URL: " + url);
@@ -688,12 +697,9 @@ public class RESTMusicService implements MusicService {
             }
 
             // Set credentials to get through apache proxies that require authentication.
-            SharedPreferences prefs = Util.getPreferences(context);
-            int instance = prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
-            String username = prefs.getString(Constants.PREFERENCES_KEY_USERNAME + instance, null);
-            String password = prefs.getString(Constants.PREFERENCES_KEY_PASSWORD + instance, null);
+            ServerSettingsManager.ServerSettings server = Util.getActiveServer(context);
             httpClient.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-                    new UsernamePasswordCredentials(username, password));
+                    new UsernamePasswordCredentials(server.getUsername(), server.getPassword()));
 
             try {
                 HttpResponse response = httpClient.execute(request, httpContext);

@@ -60,6 +60,6 @@
 </table>
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;searchResult3&gt;</code>
-    element on success.  <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/searchResult3_example_1.xml">Example</a>.
+    element on success.  <a href="inc/api/examples/searchResult3_example_1.xml">Example</a>.
 </p>
 

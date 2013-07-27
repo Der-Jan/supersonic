@@ -24,5 +24,5 @@
 </table>
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;playlist&gt;</code>
-    element on success. <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/trunk/subsonic-main/src/main/webapp/xsd/playlist_example_1.xml">Example</a>.
+    element on success. <a href="inc/api/examples/playlist_example_1.xml">Example</a>.
 </p>

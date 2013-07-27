@@ -10,14 +10,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.mail.MessagingException;
 
-import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
-import net.sourceforge.subsonic.backend.domain.Subscription;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
+import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
 import net.sourceforge.subsonic.backend.domain.ProcessingStatus;
+import net.sourceforge.subsonic.backend.domain.Subscription;
 
 /**
  * Runs a task at regular intervals, checking for incoming payments and sending
@@ -208,12 +208,12 @@ public class LicenseGenerator {
 
     public static void main(String[] args) throws Exception {
         String address = args[0];
-//        String license = md5Hex(address.toLowerCase());
-//        System.out.println("Email: " + address);
-//        System.out.println("License: " + license);
+        String license = new LicenseGenerator().md5Hex(address.toLowerCase());
+        System.out.println("Email: " + address);
+        System.out.println("License: " + license);
 
-        LicenseGenerator generator = new LicenseGenerator();
-        generator.sendLicenseTo(address, new EmailSession());       
+//        LicenseGenerator generator = new LicenseGenerator();
+//        generator.sendLicenseTo(address, new EmailSession());
     }
 
     public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
