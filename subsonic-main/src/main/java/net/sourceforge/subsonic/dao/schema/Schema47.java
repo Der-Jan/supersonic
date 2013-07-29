@@ -95,8 +95,12 @@ public class Schema47 extends Schema {
         }
         if (!columnExists(template, "changed", "media_file")) {
             LOG.info("Database column 'media_file.changed' not found.  Creating it.");
-            template.execute("alter table media_file add changed datetime");
-            template.execute("update media_file set changed=created");
+            if (columnExists(template, "last_modified", "media_file")) 
+                template.execute("alter table media_file alter column last_modified rename to changed");
+            else { 
+                template.execute("alter table media_file add changed datetime");
+                template.execute("update media_file set changed=created");
+            }
             LOG.info("Database column 'changed' was added successfully.");
         }
 
