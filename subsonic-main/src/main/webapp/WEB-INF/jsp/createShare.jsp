@@ -10,7 +10,7 @@
 <h1><fmt:message key="share.title"/></h1>
 
 <c:choose>
-    <c:when test="${model.urlRedirectionEnabled}">
+    <c:when test="${model.urlRedirectionEnabled or not empty model.subsonicUrl}">
         <fmt:message key="share.warning"/>
         <p>
             <a href="http://www.facebook.com/sharer.php?u=${model.playUrl}" target="_blank"><img src="<spring:theme code="shareFacebookImage"/>" alt=""></a>&nbsp;

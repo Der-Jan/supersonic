@@ -68,6 +68,8 @@ public class ShareManagementController extends MultiActionController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("urlRedirectionEnabled", settingsService.isUrlRedirectionEnabled());
+        map.put("subsonicUrl", settingsService.getSubsonicUrl());
+        map.put("", settingsService.isUrlRedirectionEnabled());
         map.put("dir", dir);
         map.put("user", securityService.getCurrentUser(request));
         Share share = shareService.createShare(request, files);
