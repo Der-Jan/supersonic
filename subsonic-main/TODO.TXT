@@ -1,8 +1,6 @@
 DONE IN 4.9
 -------------
 Updated Estonian translation, courtesy of Olav M&auml;gi.
-Fix download file names with special characters
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/140245f31a247739
 REST: Escape ampersand in XML for getGenres
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 Change wording "Change this" -> "Register a different license key"
@@ -17,12 +15,14 @@ Add CAPTCHA to password recover.
 
 TODO IN 4.9
 --------------
-Video playback works after trial expires.
+Refuse trial if expiration date is too far into the future.
+Fix download file names with special characters
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/140245f31a247739
+UPnP
 Document %o, %d, %w, %h in transcoding page
 Rename to Skrill
 Update bank transfer info.
 Add alternative payment option to premium page.
-Test captcha
 Make jukebox premium?
 Add "Play next" to "More actions"
 Add SubHub
