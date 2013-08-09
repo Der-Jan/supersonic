@@ -1,5 +1,6 @@
 DONE IN 4.9
 -------------
+Updated Estonian translation, courtesy of Olav M&auml;gi.
 Fix download file names with special characters
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/140245f31a247739
 REST: Escape ampersand in XML for getGenres
@@ -16,10 +17,14 @@ Add CAPTCHA to password recover.
 
 TODO IN 4.9
 --------------
+Video playback works after trial expires.
+Document %o, %d, %w, %h in transcoding page
 Rename to Skrill
 Update bank transfer info.
 Add alternative payment option to premium page.
 Test captcha
+Make jukebox premium?
+Add "Play next" to "More actions"
 Add SubHub
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13f1696a961038d0
 Upgrade wipes settings on Ubuntu 12.04
