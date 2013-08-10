@@ -26,6 +26,7 @@
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
+                    <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                 </ul>
                 <ul class="stars column-right">
                     <li><a href="#isub">iSub</a> for iPhone/iPad</li>
@@ -97,6 +98,7 @@
             <%@ include file="apps-hypersonic.jsp" %>
             <%@ include file="apps-winphone.jsp" %>
             <%@ include file="apps-silversonic.jsp" %>
+            <%@ include file="apps-subhub.jsp" %>
             <%@ include file="apps-subair.jsp" %>
             <%@ include file="apps-sonicair.jsp" %>
             <%@ include file="apps-mmtm.jsp" %>

@@ -12,6 +12,7 @@ Should revalidate license at regular intervals.
 cover.view should set mime type.
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13efcc5f18ad6149
 Add CAPTCHA to password recover.
+Add SubHub
 
 TODO IN 4.9
 --------------
@@ -25,8 +26,6 @@ Update bank transfer info.
 Add alternative payment option to premium page.
 Make jukebox premium?
 Add "Play next" to "More actions"
-Add SubHub
-  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13f1696a961038d0
 Upgrade wipes settings on Ubuntu 12.04
   https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13fc338d71000ac5
 Evaluate DLNA implementation in Madsonic
