@@ -13,11 +13,10 @@ cover.view should set mime type.
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13efcc5f18ad6149
 Add CAPTCHA to password recover.
 Add SubHub
+Fix download file names with special characters
 
 TODO IN 4.9
 --------------
-Fix download file names with special characters
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/140245f31a247739
 UPnP
 Document %o, %d, %w, %h in transcoding page
 Rename to Skrill
