@@ -14,7 +14,7 @@
 
     <div id="content">
         <div id="main-col">
-            <h1>Subsonic Premium &ndash; Only $1 / month</h1>
+            <h1>Subsonic Premium &ndash; Only $1 per month</h1>
 
             <h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
 
@@ -117,8 +117,12 @@
             </div>
 
             <p>
-                Both options include free upgrades to new Subsonic versions. Note: The Subsonic Premium license is valid for personal, non-commercial use.
+                Includes free upgrades to future Subsonic releases. Note: The Subsonic Premium license is valid for personal, non-commercial use.
                 For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options.
+            </p>
+
+            <p>
+                <a href="faq.jsp">Other payment alternatives</a> are also available.
             </p>
 
             <p>
