@@ -14,6 +14,7 @@ cover.view should set mime type.
 Add CAPTCHA to password recover.
 Add SubHub
 Fix download file names with special characters
+Bugfix: Creates new player for each download.
 
 TODO IN 4.9
 --------------

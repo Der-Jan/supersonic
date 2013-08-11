@@ -18,22 +18,23 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+
 import net.sourceforge.subsonic.dao.PlayerDao;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Transcoding;
 import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Provides services for maintaining the set of players.
@@ -100,12 +101,7 @@ public class PlayerService {
 
         // Look for player with same IP address and user name.
         if (player == null) {
-            player = getPlayerByIpAddressAndUsername(request.getRemoteAddr(), username);
-
-            // Don't use this player if it's used by REST API.
-            if (player != null && player.getClientId() != null) {
-                player = null;
-            }
+            player = getNonRestPlayerByIpAddressAndUsername(request.getRemoteAddr(), username);
         }
 
         // If no player was found, create it.
@@ -195,21 +191,22 @@ public class PlayerService {
     }
 
     /**
-     * Returns the player with the given IP address and username. If no username is given, only IP address is
+     * Returns the (non-REST) player with the given IP address and username. If no username is given, only IP address is
      * used as search criteria.
      *
      * @param ipAddress The IP address.
      * @param username  The remote user.
      * @return The player with the given IP address, or <code>null</code> if no such player exists.
      */
-    private Player getPlayerByIpAddressAndUsername(final String ipAddress, final String username) {
+    private Player getNonRestPlayerByIpAddressAndUsername(final String ipAddress, final String username) {
         if (ipAddress == null) {
             return null;
         }
         for (Player player : getAllPlayers()) {
+            boolean isRest = player.getClientId() != null;
             boolean ipMatches = ipAddress.equals(player.getIpAddress());
             boolean userMatches = username == null || username.equals(player.getUsername());
-            if (ipMatches && userMatches) {
+            if (!isRest && ipMatches && userMatches) {
                 return player;
             }
         }
