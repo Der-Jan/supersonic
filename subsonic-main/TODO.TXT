@@ -16,7 +16,6 @@ Add SubHub
 
 TODO IN 4.9
 --------------
-Refuse trial if expiration date is too far into the future.
 Fix download file names with special characters
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/140245f31a247739
 UPnP

@@ -18,19 +18,7 @@
  */
 package net.sourceforge.subsonic.security;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.domain.Version;
-import net.sourceforge.subsonic.controller.RESTController;
-import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.XMLBuilder;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.ProviderManager;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
+import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,10 +28,22 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+
+import org.acegisecurity.Authentication;
+import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.ProviderManager;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.controller.RESTController;
+import net.sourceforge.subsonic.domain.LicenseInfo;
+import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.XMLBuilder;
 
 /**
  * Performs authentication based on credentials being present in the HTTP request parameters. Also checks
@@ -101,8 +101,7 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         }
 
         if (errorCode == null) {
-            String restMethod = StringUtils.substringAfterLast(httpRequest.getRequestURI(), "/");
-            errorCode = checkLicense(client, restMethod);
+            errorCode = checkLicense(client);
         }
 
         if (errorCode == null) {
@@ -151,25 +150,13 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         return null;
     }
 
-    private RESTController.ErrorCode checkLicense(String client, String restMethod) {
-        if (settingsService.isLicenseValid()) {
+    private RESTController.ErrorCode checkLicense(String client) {
+        LicenseInfo licenseInfo = settingsService.getLicenseInfo();
+        if (licenseInfo.isLicenseOrTrialValid()) {
             return null;
         }
-
-        if (settingsService.getTrialExpires().before(new Date())) {
-
-            // Exception: iPhone clients are allowed to call any method except stream.view and download.view.
-            List<String> iPhoneClients = Arrays.asList("iSub", "zsubsonic");
-            List<String> restrictedMethods = Arrays.asList("stream.view", "download.view");
-            if (iPhoneClients.contains(client) && !restrictedMethods.contains(restMethod)) {
-                return null;
-            }
-
-            LOG.info("REST access for client '" + client + "' has expired.");
-            return RESTController.ErrorCode.NOT_LICENSED;
-        }
-
-        return null;
+        LOG.info("REST access for client '" + client + "' has expired.");
+        return RESTController.ErrorCode.NOT_LICENSED;
     }
 
     public static String decrypt(String s) {

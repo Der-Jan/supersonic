@@ -22,6 +22,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
+import net.sourceforge.subsonic.service.SettingsService;
+
 /**
  * Controller for the "Podcast receiver" page.
  *
@@ -65,7 +67,7 @@ public class LicenseInfo {
     }
 
     public boolean isTrialExpired() {
-        return trialExpires != null && trialExpires.before(new Date());
+        return trialExpires != null && (trialExpires.before(new Date()) || trialDaysLeft > SettingsService.TRIAL_DAYS + 1);
     }
 
     public boolean isLicenseOrTrialValid() {
