@@ -130,6 +130,7 @@ public class SettingsService {
     private static final String KEY_SORT_ALBUMS_BY_YEAR = "SortAlbumsByYear";
     private static final String KEY_MEDIA_LIBRARY_STATISTICS = "MediaLibraryStatistics";
     private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
+    private static final String KEY_DLNA_ENABLED = "DlnaEnabled";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -191,6 +192,7 @@ public class SettingsService {
     private static final boolean DEFAULT_SORT_ALBUMS_BY_YEAR = true;
     private static final String DEFAULT_MEDIA_LIBRARY_STATISTICS = "0 0 0 0 0";
     private static final String DEFAULT_TRIAL_EXPIRES = null;
+    private static final boolean DEFAULT_DLNA_ENABLED = true;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
@@ -1210,6 +1212,14 @@ public class SettingsService {
      */
     public void setCustomAvatar(Avatar avatar, String username) {
         avatarDao.setCustomAvatar(avatar, username);
+    }
+
+    public boolean isDlnaEnabled() {
+        return getBoolean(KEY_DLNA_ENABLED, DEFAULT_DLNA_ENABLED);
+    }
+
+    public void setDlnaEnabled(boolean dlnaEnabled) {
+        setBoolean(KEY_DLNA_ENABLED, dlnaEnabled);
     }
 
     private void setProperty(String key, String value) {

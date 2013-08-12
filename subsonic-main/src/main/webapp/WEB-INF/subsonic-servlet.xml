@@ -158,6 +158,11 @@
         <property name="securityService" ref="securityService"/>
         <property name="transcodingService" ref="transcodingService"/>
     </bean>
+    <bean id="dlnaSettingsController" class="net.sourceforge.subsonic.controller.DLNASettingsController">
+        <property name="viewName" value="dlnaSettings"/>
+        <property name="upnpService" ref="upnpService"/>
+        <property name="settingsService" ref="settingsService"/>
+    </bean>
     <bean id="shareSettingsController" class="net.sourceforge.subsonic.controller.ShareSettingsController">
         <property name="viewName" value="shareSettings"/>
         <property name="shareService" ref="shareService"/>
@@ -417,6 +422,7 @@
                 <prop key="/search.view">searchController</prop>
                 <prop key="/settings.view">settingsController</prop>
                 <prop key="/playerSettings.view">playerSettingsController</prop>
+                <prop key="/dlnaSettings.view">dlnaSettingsController</prop>
                 <prop key="/shareSettings.view">shareSettingsController</prop>
                 <prop key="/musicFolderSettings.view">musicFolderSettingsController</prop>
                 <prop key="/networkSettings.view">networkSettingsController</prop>
