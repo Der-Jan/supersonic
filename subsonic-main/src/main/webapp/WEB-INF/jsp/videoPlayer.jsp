@@ -128,49 +128,53 @@
 <c:set var="licenseInfo" value="${model.licenseInfo}"/>
 <%@ include file="licenseNotice.jsp" %>
 
-<div id="wrapper" style="padding-top:1em">
-    <div id="placeholder1"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
-</div>
+<c:if test="${licenseInfo.licenseOrTrialValid}">
 
-<div style="padding-top:0.7em;padding-bottom:0.7em">
+    <div id="wrapper" style="padding-top:1em">
+        <div id="placeholder1"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+    </div>
 
-    <span id="position" style="padding-right:0.5em">0:00</span>
-    <select id="timeOffset" onchange="changeTimeOffset();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
-        <c:forEach items="${model.skipOffsets}" var="skipOffset">
-            <c:choose>
-                <c:when test="${skipOffset.value - skipOffset.value mod 60 eq model.timeOffset - model.timeOffset mod 60}">
-                    <option selected="selected" value="${skipOffset.value}">${skipOffset.key}</option>
-                </c:when>
-                <c:otherwise>
-                    <option value="${skipOffset.value}">${skipOffset.key}</option>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </select>
+    <div style="padding-top:0.7em;padding-bottom:0.7em">
 
-    <select id="maxBitRate" onchange="changeBitRate();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
-        <c:forEach items="${model.bitRates}" var="bitRate">
-            <c:choose>
-                <c:when test="${bitRate eq model.maxBitRate}">
-                    <option selected="selected" value="${bitRate}">${bitRate} Kbps</option>
-                </c:when>
-                <c:otherwise>
-                    <option value="${bitRate}">${bitRate} Kbps</option>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </select>
-</div>
+        <span id="position" style="padding-right:0.5em">0:00</span>
+        <select id="timeOffset" onchange="changeTimeOffset();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
+            <c:forEach items="${model.skipOffsets}" var="skipOffset">
+                <c:choose>
+                    <c:when test="${skipOffset.value - skipOffset.value mod 60 eq model.timeOffset - model.timeOffset mod 60}">
+                        <option selected="selected" value="${skipOffset.value}">${skipOffset.key}</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="${skipOffset.value}">${skipOffset.key}</option>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </select>
 
-<c:choose>
-    <c:when test="${model.popout}">
-        <div class="back"><a href="javascript:popin();"><fmt:message key="common.back"/></a></div>
-    </c:when>
-    <c:otherwise>
-        <div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
-        <div class="forward" style="float:left;"><a href="javascript:popout();"><fmt:message key="videoPlayer.popout"/></a></div>
-    </c:otherwise>
-</c:choose>
+        <select id="maxBitRate" onchange="changeBitRate();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
+            <c:forEach items="${model.bitRates}" var="bitRate">
+                <c:choose>
+                    <c:when test="${bitRate eq model.maxBitRate}">
+                        <option selected="selected" value="${bitRate}">${bitRate} Kbps</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="${bitRate}">${bitRate} Kbps</option>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </select>
+    </div>
+
+    <c:choose>
+        <c:when test="${model.popout}">
+            <div class="back"><a href="javascript:popin();"><fmt:message key="common.back"/></a></div>
+        </c:when>
+        <c:otherwise>
+            <div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
+            <div class="forward" style="float:left;"><a href="javascript:popout();"><fmt:message key="videoPlayer.popout"/></a></div>
+        </c:otherwise>
+    </c:choose>
+
+</c:if>
 
 </body>
 </html>

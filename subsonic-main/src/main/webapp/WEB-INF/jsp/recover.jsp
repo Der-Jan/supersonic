@@ -14,8 +14,17 @@
 
             <h1><fmt:message key="recover.title"/></h1>
             <p style="padding-top: 1em; padding-bottom: 0.5em"><fmt:message key="recover.text"/></p>
-            <input type="text" id="usernameOrEmail" name="usernameOrEmail" style="width:18em;margin-right: 1em">
-            <input name="submit" type="submit" value="<fmt:message key="recover.send"/>">
+
+            <c:if test="${empty model.sentTo}">
+                <input type="text" id="usernameOrEmail" name="usernameOrEmail" style="width:18em;margin-right: 1em">
+                <input name="submit" type="submit" value="<fmt:message key="recover.send"/>">
+            </c:if>
+
+            <c:if test="${not empty model.captcha}">
+                <p style="padding-top: 1em">
+                    <c:out value="${model.captcha}" escapeXml="false"/>
+                </p>
+            </c:if>
 
             <c:if test="${not empty model.sentTo}">
                 <p style="padding-top: 1em"><fmt:message key="recover.success"><fmt:param value="${model.sentTo}"/></fmt:message></p>

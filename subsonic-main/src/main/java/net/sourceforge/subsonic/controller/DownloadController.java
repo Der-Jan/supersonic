@@ -18,6 +18,31 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.CRC32;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.math.LongRange;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.LastModified;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -34,27 +59,6 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.util.FileUtil;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.math.LongRange;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipOutputStream;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.mvc.LastModified;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.CRC32;
 
 /**
  * A controller used for downloading files to a remote client. If the requested path refers to a file, the
@@ -179,13 +183,30 @@ public class DownloadController implements Controller, LastModified {
         status.setFile(file);
 
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + '\"');
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''"+ encodeAsRFC5987(file.getName()));
         if (range == null) {
             Util.setContentLength(response, file.length());
         }
 
         copyFileToStream(file, RangeOutputStream.wrap(response.getOutputStream(), range), status, range);
         LOG.info("Downloaded '" + FileUtil.getShortPath(file) + "' to " + status.getPlayer());
+    }
+
+    private String encodeAsRFC5987(String string) throws UnsupportedEncodingException {
+        byte[] stringAsByteArray = string.getBytes("UTF-8");
+        char[] digits = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        byte[] attrChar = {'!','#','$','&','+','-','.','^','_','`','|', '~','0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+        StringBuilder sb = new StringBuilder();
+        for (byte b : stringAsByteArray) {
+            if (Arrays.binarySearch(attrChar, b) >= 0) {
+                sb.append((char) b);
+            } else {
+                sb.append('%');
+                sb.append(digits[0x0f & (b >>> 4)]);
+                sb.append(digits[b & 0x0f]);
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -203,7 +224,7 @@ public class DownloadController implements Controller, LastModified {
         status.setFile(dir);
 
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''"+ encodeAsRFC5987(zipFileName));
 
         ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
         out.setMethod(ZipOutputStream.STORED);  // No compression.
@@ -237,7 +258,7 @@ public class DownloadController implements Controller, LastModified {
         String zipFileName = file.getName() + ".zip";
         LOG.info("Starting to download '" + zipFileName + "' to " + status.getPlayer());
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + zipFileName + '"');
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''"+ encodeAsRFC5987(zipFileName));
 
         ZipOutputStream out = new ZipOutputStream(RangeOutputStream.wrap(response.getOutputStream(), range));
         out.setMethod(ZipOutputStream.STORED);  // No compression.
@@ -267,7 +288,7 @@ public class DownloadController implements Controller, LastModified {
         String zipFileName = "download.zip";
         LOG.info("Starting to download '" + zipFileName + "' to " + status.getPlayer());
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + zipFileName + '"');
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''"+ encodeAsRFC5987(zipFileName));
 
         ZipOutputStream out = new ZipOutputStream(RangeOutputStream.wrap(response.getOutputStream(), range));
         out.setMethod(ZipOutputStream.STORED);  // No compression.

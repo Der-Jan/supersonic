@@ -281,6 +281,12 @@
             <version>1.0-alpha2</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.tanesha.recaptcha4j</groupId>
+            <artifactId>recaptcha4j</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>

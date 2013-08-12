@@ -74,7 +74,7 @@ public class SettingsService {
     private static final File SUBSONIC_HOME_OTHER = new File("/var/subsonic");
 
     // Number of free trial days.
-    private static final long TRIAL_DAYS = 30L;
+    public static final long TRIAL_DAYS = 30L;
 
     // Global settings.
     private static final String KEY_INDEX_STRING = "IndexString";
@@ -648,10 +648,6 @@ public class SettingsService {
             return false;
         }
         return license.equalsIgnoreCase(StringUtil.md5Hex(email.toLowerCase()));
-    }
-
-    public Date getLicenseExpires() {
-        return licenseExpires;
     }
 
     public LicenseInfo getLicenseInfo() {
