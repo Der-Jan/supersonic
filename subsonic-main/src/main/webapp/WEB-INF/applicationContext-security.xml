@@ -118,6 +118,7 @@
                 /userSettings.view=ROLE_ADMIN
                 /musicFolderSettings.view=ROLE_ADMIN
                 /networkSettings.view=ROLE_ADMIN
+                /dlnaSettings.view=ROLE_ADMIN
                 /transcodingSettings.view=ROLE_ADMIN
                 /internetRadioSettings.view=ROLE_ADMIN
                 /podcastSettings.view=ROLE_ADMIN

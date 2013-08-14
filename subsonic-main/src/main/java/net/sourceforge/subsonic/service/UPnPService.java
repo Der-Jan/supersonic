@@ -122,8 +122,8 @@ public class UPnPService {
         // Asynch search for other devices (most importantly UPnP-enabled routers for port-mapping)
         upnpService.getControlPoint().search();
 
-        // Start media server.
-        setMediaServerEnabled(true);
+        // Start DLNA media server?
+        setMediaServerEnabled(settingsService.isDlnaEnabled());
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -135,10 +135,14 @@ public class UPnPService {
         });
     }
 
-    public void setMediaServerEnabled(boolean enabled) throws Exception {
-        if (enabled && settingsService.getLicenseInfo().isLicenseOrTrialValid()) {
-            upnpService.getRegistry().addDevice(createMediaServerDevice());
-            LOG.info("Enabling UPnP/DLNA media server");
+    public void setMediaServerEnabled(boolean enabled) {
+        if (enabled) {
+            try {
+                upnpService.getRegistry().addDevice(createMediaServerDevice());
+                LOG.info("Enabling UPnP/DLNA media server");
+            } catch (Exception x) {
+                LOG.error("Failed to start UPnP/DLNA media server: " + x, x);
+            }
         } else {
             upnpService.getRegistry().removeAllLocalDevices();
             LOG.info("Disabling UPnP/DLNA media server");
