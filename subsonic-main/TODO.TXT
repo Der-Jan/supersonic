@@ -18,6 +18,7 @@ Bugfix: Creates new player for each download.
 
 TODO IN 4.9
 --------------
+Test UPnP enable/disable
 Update site
 UPnP
 Add "Play next" to "More actions"

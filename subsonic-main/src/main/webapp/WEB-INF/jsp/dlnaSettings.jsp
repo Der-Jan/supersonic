@@ -38,6 +38,11 @@
     <input type="checkbox" name="dlnaEnabled" id="dlnaEnabled" class="checkbox"
            <c:if test="${model.dlnaEnabled}">checked="checked"</c:if>/>
     <label for="dlnaEnabled"><fmt:message key="dlnasettings.enabled"/></label>
+
+    <p class="detail" style="width:60%;white-space:normal">
+        <fmt:message key="dlnasettings.description"/>
+    </p>
+
     <p>
         <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
         <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
