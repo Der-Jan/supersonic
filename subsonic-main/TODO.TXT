@@ -18,6 +18,8 @@ Bugfix: Creates new player for each download.
 
 TODO IN 4.9
 --------------
+Use input placeholder for search field etc
+Reimplement upload files.
 Test UPnP enable/disable
 Update site
 UPnP
@@ -198,6 +200,8 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
+Fix media button and audio focus handing
+  http://sourceforge.net/p/subsonic/patches/17/
 Support dynamic number of servers.
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
