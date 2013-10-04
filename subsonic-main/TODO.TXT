@@ -15,15 +15,17 @@ Add CAPTCHA to password recover.
 Add SubHub
 Fix download file names with special characters
 Bugfix: Creates new player for each download.
+Use input placeholder for search field etc
+Add "Play next" to "More actions"
+  http://medialize.github.io/jQuery-contextMenu/demo/trigger-left-click.html
 
 TODO IN 4.9
 --------------
-Use input placeholder for search field etc
+When playing a single song, also queue rest of album.
 Reimplement upload files.
 Test UPnP enable/disable
 Update site
 UPnP
-Add "Play next" to "More actions"
 Document %o, %d, %w, %h in transcoding page
 Make jukebox premium?
 Upgrade wipes settings on Ubuntu 12.04
@@ -200,8 +202,6 @@ Send com.android.music.metachanged intent.
 
 TODO IN ANDROID 3.8
 --------------------
-Fix media button and audio focus handing
-  http://sourceforge.net/p/subsonic/patches/17/
 Support dynamic number of servers.
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d

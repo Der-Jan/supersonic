@@ -18,15 +18,14 @@
  */
 package net.sourceforge.subsonic.domain;
 
-import net.sourceforge.subsonic.util.FileUtil;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A playlist is a list of music files that are associated to a remote player.
@@ -161,6 +160,22 @@ public class PlayQueue {
     public synchronized void setIndex(int index) {
         makeBackup();
         this.index = Math.max(0, Math.min(index, size() - 1));
+        setStatus(Status.PLAYING);
+    }
+
+    /**
+     * Adds one or more music file to the playlist.
+     *
+     * @param mediaFiles The music files to add.
+     * @param index Where to add them.
+     * @throws IOException If an I/O error occurs.
+     */
+    public synchronized void addFilesAt(Iterable<MediaFile> mediaFiles, int index) throws IOException {
+        makeBackup();
+        for (MediaFile mediaFile : mediaFiles) {
+            files.add(index, mediaFile);
+            index++;
+        }
         setStatus(Status.PLAYING);
     }
 
