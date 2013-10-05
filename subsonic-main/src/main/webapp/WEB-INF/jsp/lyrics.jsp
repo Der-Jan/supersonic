@@ -19,6 +19,7 @@
             $("wait").style.display = "inline";
             $("lyrics").style.display = "none";
             $("noLyricsFound").style.display = "none";
+            $("tryLater").style.display = "none";
             lyricsService.getLyrics(artist, song, getLyricsCallback);
         }
 
@@ -30,7 +31,9 @@
             }
             dwr.util.setValue("lyricsText", lyrics, { escapeHtml:false });
             $("wait").style.display = "none";
-            if (lyrics != null) {
+            if (lyricsInfo.tryLater) {
+                $("tryLater").style.display = "inline";
+            } else if (lyrics != null) {
                 $("lyrics").style.display = "inline";
             } else {
                 $("noLyricsFound").style.display = "inline";
@@ -59,6 +62,7 @@
 <hr/>
 <h2 id="wait"><fmt:message key="lyrics.wait"/></h2>
 <h2 id="noLyricsFound" style="display:none"><fmt:message key="lyrics.nolyricsfound"/></h2>
+<p id="tryLater" style="display:none"><b><fmt:message key="lyrics.trylater"/></b></p>
 
 <div id="lyrics" style="display:none;">
     <h2 id="lyricsHeader" style="text-align:center;margin-bottom:1em"></h2>

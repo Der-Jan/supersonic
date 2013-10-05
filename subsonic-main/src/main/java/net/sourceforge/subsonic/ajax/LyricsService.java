@@ -18,22 +18,24 @@
  */
 package net.sourceforge.subsonic.ajax;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.util.StringUtil;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.SocketException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
-import java.io.IOException;
-import java.io.StringReader;
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Provides AJAX-enabled services for retrieving song lyrics from chartlyrics.com.
@@ -64,15 +66,15 @@ public class LyricsService {
 
             String url = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=" + artist + "&song=" + song;
             String xml = executeGetRequest(url);
-            
             lyrics = parseSearchResult(xml);
 
+        } catch (SocketException x) {
+            lyrics.setTryLater(true);
         } catch (Exception x) {
             LOG.warn("Failed to get lyrics for song '" + song + "'.", x);
         }
         return lyrics;
     }
-
 
     private LyricsInfo parseSearchResult(String xml) throws Exception {
         SAXBuilder builder = new SAXBuilder();
@@ -81,7 +83,7 @@ public class LyricsService {
         Element root = document.getRootElement();
         Namespace ns = root.getNamespace();
 
-        String lyric = root.getChildText("Lyric", ns);
+        String lyric = StringUtils.trimToNull(root.getChildText("Lyric", ns));
         String song =  root.getChildText("LyricSong", ns);
         String artist =  root.getChildText("LyricArtist", ns);
 
