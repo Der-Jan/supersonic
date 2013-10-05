@@ -22,6 +22,7 @@ Set hsqldb.cache_file_scale=8 for new databases.
 
 TODO IN 4.9
 --------------
+update changelog
 When playing a single song, also queue rest of album.
 Reimplement upload files.
 Test UPnP enable/disable
