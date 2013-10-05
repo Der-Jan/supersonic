@@ -18,6 +18,7 @@ Bugfix: Creates new player for each download.
 Use input placeholder for search field etc
 Add "Play next" to "More actions"
   http://medialize.github.io/jQuery-contextMenu/demo/trigger-left-click.html
+Set hsqldb.cache_file_scale=8 for new databases.
 
 TODO IN 4.9
 --------------
