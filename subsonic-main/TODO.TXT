@@ -20,11 +20,11 @@ Add "Play next" to "More actions"
   http://medialize.github.io/jQuery-contextMenu/demo/trigger-left-click.html
 Set hsqldb.cache_file_scale=8 for new databases.
 Show throttle warning in lyrics popup.
+Make Enter work when searching lyrics.
 
 TODO IN 4.9
 --------------
 update changelog
-Make Enter work when searching lyrics.
 When playing a single song, also queue rest of album.
 Reimplement upload files.
 Test UPnP enable/disable
