@@ -1,33 +1,24 @@
 DONE IN 4.9
 -------------
-Updated Estonian translation, courtesy of Olav M&auml;gi.
-REST: Escape ampersand in XML for getGenres
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
-Change wording "Change this" -> "Register a different license key"
-REST: Added ignoredArticles
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
-Make Subsonic work on Tomcat 7
-Trim license key when registering
-Should revalidate license at regular intervals.
-cover.view should set mime type.
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13efcc5f18ad6149
-Add CAPTCHA to password recover.
-Add SubHub
-Fix download file names with special characters
-Bugfix: Creates new player for each download.
-Use input placeholder for search field etc
-Add "Play next" to "More actions"
-  http://medialize.github.io/jQuery-contextMenu/demo/trigger-left-click.html
-Set hsqldb.cache_file_scale=8 for new databases.
-Show throttle warning in lyrics popup.
-Make Enter work when searching lyrics.
+New: UPnP
+New: Added "Play next" option.
+New: Updated Estonian translation, courtesy of Olav M&auml;gi.
+REST: Escape special characters in XML for getGenres.
+REST: Added ignoredArticles to getIndexes.
+Bugfix: Improved lyrics search.
+Bugfix: Trim license key when registering.
+Bugfix: Fix download file names with special characters.
+Bugfix: Don't create a new player for each download.
+Tech: Make Subsonic work on Tomcat 7.
+Tech: Increased limit of internal database from 2 to 8 GB (fresh installs only).
+Tech: Set MIME type for cover arts.
+Security: Added CAPTCHA to password recovery page.
 
 TODO IN 4.9
 --------------
 update changelog
 When playing a single song, also queue rest of album.
 Reimplement upload files.
-Test UPnP enable/disable
 Update site
 UPnP
 Document %o, %d, %w, %h in transcoding page
