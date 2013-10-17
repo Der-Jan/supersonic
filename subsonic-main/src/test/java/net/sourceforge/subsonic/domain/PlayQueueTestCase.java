@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.domain;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sourceforge.subsonic.domain.PlayQueue.SortOrder;
@@ -150,7 +151,7 @@ public class PlayQueueTestCase extends TestCase {
         assertEquals("A", playQueue.getCurrentFile().getName());
     }
 
-    public void testAppend() throws Exception {
+    public void testPlayLast() throws Exception {
         PlayQueue playQueue = createPlaylist(1, "A", "B", "C");
 
         playQueue.addFiles(true, new TestMediaFile("D"));
@@ -158,6 +159,20 @@ public class PlayQueueTestCase extends TestCase {
 
         playQueue.addFiles(false, new TestMediaFile("E"));
         assertPlaylistEquals(playQueue, 0, "E");
+    }
+
+    public void testAddFilesAt() throws Exception {
+        PlayQueue playQueue = createPlaylist(0);
+
+        playQueue.addFilesAt(Arrays.<MediaFile>asList(new TestMediaFile("A"), new TestMediaFile("B"), new TestMediaFile("C")), 0);
+        assertPlaylistEquals(playQueue, 0, "A", "B", "C");
+
+        playQueue.addFilesAt(Arrays.<MediaFile>asList(new TestMediaFile("D"), new TestMediaFile("E")), 1);
+        assertPlaylistEquals(playQueue, 0, "A", "D", "E", "B", "C");
+
+        playQueue.addFilesAt(Arrays.<MediaFile>asList(new TestMediaFile("F")), 0);
+        assertPlaylistEquals(playQueue, 0, "F", "A", "D", "E", "B", "C");
+
     }
 
     public void testUndo() throws Exception {

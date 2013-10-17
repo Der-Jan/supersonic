@@ -18,8 +18,9 @@
  */
 package net.sourceforge.subsonic.dao.schema;
 
-import org.springframework.jdbc.core.*;
-import net.sourceforge.subsonic.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import net.sourceforge.subsonic.Logger;
 
 /**
  * Used for creating and evolving the database schema.
@@ -32,6 +33,10 @@ public class Schema25 extends Schema{
 
     public void execute(JdbcTemplate template) {
         if (!tableExists(template, "version")) {
+
+            // Increase data file limit. See http://www.hsqldb.org/doc/guide/ch04.html
+            template.execute("set property \"hsqldb.cache_file_scale\" 8");
+
             LOG.info("Database table 'version' not found.  Creating it.");
             template.execute("create table version (version int not null)");
             template.execute("insert into version values (1)");

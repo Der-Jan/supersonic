@@ -49,18 +49,6 @@
     <li><span class="bugid">Tech: </span>Install Java 7 rather than Java 6.</li>
 </ul>
 
-<a name="4.7"><h2 class="div">Subsonic 4.7 - Sep 13, 2012</h2></a>
-<ul>
-    <li><span class="bugid">New: </span>Auto-import playlists and update playlist statistics after scan.</li>
-    <li><span class="bugid">New: </span>Upgraded to JW Player 5.10.</li>
-    <li><span class="bugid">Bugfix: </span>Rescan looses comments and play statistics.</li>
-    <li><span class="bugid">Bugfix: </span>Play queue scrolls to the top when clicking on links.</li>
-    <li><span class="bugid">Bugfix: </span>MiniSub link uses wrong context path.</li>
-    <li><span class="bugid">Bugfix: </span>Not possible to create random playlist with a "-" in the genre.</li>
-    <li><span class="bugid">Bugfix: </span>Fails to import playlist if case is wrong.</li>
-    <li><span class="bugid">REST: </span>Add timestamp to scrobble method, and support multiple entries.</li>
-</ul>
-
 <%@ include file="changelog-older.jsp" %>
 
 

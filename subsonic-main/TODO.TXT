@@ -1,27 +1,28 @@
 DONE IN 4.9
 -------------
-Updated Estonian translation, courtesy of Olav M&auml;gi.
-REST: Escape ampersand in XML for getGenres
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
-Change wording "Change this" -> "Register a different license key"
-REST: Added ignoredArticles
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e1e24d732ce9fa
-Make Subsonic work on Tomcat 7
-Trim license key when registering
-Should revalidate license at regular intervals.
-cover.view should set mime type.
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13efcc5f18ad6149
-Add CAPTCHA to password recover.
-Add SubHub
-Fix download file names with special characters
-Bugfix: Creates new player for each download.
+New: UPnP
+New: Added "Play next" option.
+New: Updated Estonian translation, courtesy of Olav M&auml;gi.
+REST: Escape special characters in XML for getGenres.
+REST: Added ignoredArticles to getIndexes.
+Bugfix: Improved lyrics search.
+Bugfix: Trim license key when registering.
+Bugfix: Fix download file names with special characters.
+Bugfix: Don't create a new player for each download.
+Tech: Make Subsonic work on Tomcat 7.
+Tech: Increased limit of internal database from 2 to 8 GB (fresh installs only).
+Tech: Set MIME type for cover arts.
+Security: Added CAPTCHA to password recovery page.
 
 TODO IN 4.9
 --------------
-Test UPnP enable/disable
+minisub doesn't exist any more. -> jamstash
+  Also update apps.jsp
+update changelog
+When playing a single song, also queue rest of album.
+Reimplement upload files.
 Update site
 UPnP
-Add "Play next" to "More actions"
 Document %o, %d, %w, %h in transcoding page
 Make jukebox premium?
 Upgrade wipes settings on Ubuntu 12.04
@@ -650,7 +651,6 @@ Avoid logging of DWR stuff. Add logging from Subsonic service.
 Create tutorial of how to build from source.
 Set multiple icons when using Java 6(?)
 Show who played a track last. http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=1404
-Permalink support?
 Support "play more random songs" if web player.
 After logon, go to originally requested page.
 Fix broken SSL, http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=1301
@@ -685,7 +685,6 @@ Use em instead of pt when padding.
 Random radio mode (http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=964)
 Option for unlimited download/upload if on LAN.  Remember to support proxies.
 Integrate with Amazon mp3.
-Make some features available to donors only.
 Caching bug, selected music folder.  At least in IE and FF.
 RejectedExecutionHandler handling in ThreadPoolExecutor constructor.
 Precompile JSPs for Dekoh. Separate modules "subsonic-precompiled-jetty" and "subsonic-precompiled-dekoh".
@@ -943,53 +942,6 @@ wget 'http://localhost:4040/rest/jukeboxControl.view?u=admin&p=admin&v=1.6&c=and
 
 wget 'http://localhost:4040/rest/jukeboxControl.view?u=admin&p=admin&v=1.6&c=android&action=add&id=683a5c6d757369632e6576656e5c4169725c54616c6b69652057616c6b6965202d20323030345c3032202d2043686572727920426c6f73736f6d204769726c2e6d7033&id=683a5c6d757369632e6576656e5c4169725c54616c6b69652057616c6b6965202d20323030345c3039202d2042696f6c6f676963616c2e6d7033' -O -
 wget 'http://localhost:8080/rest/jukeboxControl.view?u=admin&p=admin&v=1.6&c=android&action=add&id=2f55736572732f73696e6472652f4d757369632f44696d6d7520426f726769722f41627261686164616272612f3035202d2044696d6d7520426f726769722e6d7033' -O -
-
-SEARCH
-------
-Calculate artist/album count from cachedArtists/cachedAlbums.
-Replace isFile, isAlbum, isDirectory with one char.
-Test paging.
-Fuzzy search?
-Create development branch
-Create schemas for artist/album/song tables (tmp and master)
-Populate with some dummy data.
-Extract SearchService interface.
-Populate master tables from music_file_info.
-Remove music_file_info table.
-Make ID columns count 1, 2, 3,...
-Implement algorithm for updating tmp-tables on scan.
-
-_artist_
-id
-path
-name
-created
-last_modified
-comment
-
-_album_
-id
-path
-name
-artist
-created
-last_modified
-comment
-play_count
-last_played
-
-_song_
-id
-path
-title
-album
-artist
-year
-genre
-created
-last_modified
-play_count
-last_played
 
 MISCELLANEOUS
 =============

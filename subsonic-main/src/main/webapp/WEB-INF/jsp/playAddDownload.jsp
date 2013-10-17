@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
 <%@ include file="include.jsp" %>
 
 <%--
@@ -39,11 +39,13 @@ PARAMETERS
                 <sub:param name="id" value="${param.id}"/>
             </sub:url>
             <a href="${videoUrl}" target="main">
-                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"></a>
+                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
+                     title="<fmt:message key="common.play"/>"></a>
         </c:when>
         <c:otherwise>
             <a href="javascript:noop()" onclick="top.playQueue.onPlay(${param.id});">
-                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"></a>
+                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
+                     title="<fmt:message key="common.play"/>"></a>
         </c:otherwise>
     </c:choose>
 </c:if>
@@ -51,14 +53,35 @@ PARAMETERS
 
 <c:if test="${param.asTable}"><td></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
-    <a href="javascript:noop()" onclick="top.playQueue.onAdd(${param.id});">
-        <img src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"></a>
+    <a href="javascript:noop()"><img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>"
+         title="<fmt:message key="common.add"/>"></a>
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
 <c:if test="${param.asTable}"><td></c:if>
 <c:if test="${param.downloadEnabled}">
     <a href="${downloadUrl}">
-        <img src="<spring:theme code="downloadImage"/>" alt="<fmt:message key="common.download"/>" title="<fmt:message key="common.download"/>"></a>
+        <img src="<spring:theme code="downloadImage"/>" alt="<fmt:message key="common.download"/>"
+             title="<fmt:message key="common.download"/>"></a>
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
+
+<script type="text/javascript">
+    $(function () {
+        $.contextMenu({
+            selector:'#add${param.id}',
+            trigger:'left',
+            callback:function (key, options) {
+                if (key == "addnext") {
+                    top.playQueue.onAddNext(${param.id});
+                } else {
+                    top.playQueue.onAdd(${param.id});
+                }
+            },
+            items:{
+                "addnext":{name:"<fmt:message key="main.addnext"/>"},
+                "addlast":{name:"<fmt:message key="main.addlast"/>"}
+            }
+        });
+    });
+</script>

@@ -155,6 +155,10 @@
         startPlayer = false;
         playQueueService.add(id, playQueueCallback);
     }
+    function onAddNext(id) {
+        startPlayer = false;
+        playQueueService.addAt(id, getCurrentSongIndex() + 1, playQueueCallback);
+    }
     function onShuffle() {
         playQueueService.shuffle(playQueueCallback);
     }

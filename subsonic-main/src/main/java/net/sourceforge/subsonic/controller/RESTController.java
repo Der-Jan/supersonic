@@ -646,7 +646,7 @@ public class RESTController extends MultiActionController {
             playQueueService.doSkip(request, response, index, offset);
         } else if ("add".equals(action)) {
             int[] ids = ServletRequestUtils.getIntParameters(request, "id");
-            playQueueService.doAdd(request, response, ids);
+            playQueueService.doAdd(request, response, ids, null);
         } else if ("set".equals(action)) {
             int[] ids = ServletRequestUtils.getIntParameters(request, "id");
             playQueueService.doSet(request, response, ids);

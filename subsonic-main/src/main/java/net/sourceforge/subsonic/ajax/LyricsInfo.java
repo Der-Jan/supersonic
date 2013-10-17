@@ -28,6 +28,7 @@ public class LyricsInfo {
     private final String lyrics;
     private final String artist;
     private final String title;
+    private boolean tryLater;
 
     public LyricsInfo() {
         this(null, null, null);
@@ -49,5 +50,13 @@ public class LyricsInfo {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTryLater(boolean tryLater) {
+        this.tryLater = tryLater;
+    }
+
+    public boolean isTryLater() {
+        return tryLater;
     }
 }

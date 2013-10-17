@@ -30,16 +30,21 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.service.*;
-import net.sourceforge.subsonic.service.PlaylistService;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.service.JukeboxService;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
 
 /**
@@ -151,10 +156,16 @@ public class PlayQueueService {
     public PlayQueueInfo add(int id) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
-        return doAdd(request, response, new int[]{id});
+        return doAdd(request, response, new int[]{id}, null);
     }
 
-    public PlayQueueInfo doAdd(HttpServletRequest request, HttpServletResponse response, int[] ids) throws Exception {
+    public PlayQueueInfo addAt(int id, int index) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        return doAdd(request, response, new int[]{id}, index);
+    }
+
+    public PlayQueueInfo doAdd(HttpServletRequest request, HttpServletResponse response, int[] ids, Integer index) throws Exception {
         Player player = getCurrentPlayer(request, response);
         List<MediaFile> files = new ArrayList<MediaFile>(ids.length);
         for (int id : ids) {
@@ -164,7 +175,11 @@ public class PlayQueueService {
         if (player.isWeb()) {
             removeVideoFiles(files);
         }
-        player.getPlayQueue().addFiles(true, files);
+        if (index != null) {
+            player.getPlayQueue().addFilesAt(files, index);
+        } else {
+            player.getPlayQueue().addFiles(true, files);
+        }
         player.getPlayQueue().setRandomSearchCriteria(null);
         return convert(request, player, false);
     }
@@ -176,7 +191,7 @@ public class PlayQueueService {
         PlayQueue.Status status = playQueue.getStatus();
 
         playQueue.clear();
-        PlayQueueInfo result = doAdd(request, response, ids);
+        PlayQueueInfo result = doAdd(request, response, ids, null);
 
         int index = currentFile == null ? -1 : playQueue.getFiles().indexOf(currentFile);
         playQueue.setIndex(index);
