@@ -4,7 +4,6 @@ DONE IN 4.9
 TODO IN 4.9
 --------------
 minisub doesn't exist any more. -> jamstash
-  Also update apps.jsp
 When playing a single song, also queue rest of album.
 Reimplement upload files.
 Update site
