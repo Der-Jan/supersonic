@@ -1,24 +1,9 @@
 DONE IN 4.9
 -------------
-New: UPnP
-New: Added "Play next" option.
-New: Updated Estonian translation, courtesy of Olav M&auml;gi.
-REST: Escape special characters in XML for getGenres.
-REST: Added ignoredArticles to getIndexes.
-Bugfix: Improved lyrics search.
-Bugfix: Trim license key when registering.
-Bugfix: Fix download file names with special characters.
-Bugfix: Don't create a new player for each download.
-Tech: Make Subsonic work on Tomcat 7.
-Tech: Increased limit of internal database from 2 to 8 GB (fresh installs only).
-Tech: Set MIME type for cover arts.
-Security: Added CAPTCHA to password recovery page.
 
 TODO IN 4.9
 --------------
 minisub doesn't exist any more. -> jamstash
-  Also update apps.jsp
-update changelog
 When playing a single song, also queue rest of album.
 Reimplement upload files.
 Update site
