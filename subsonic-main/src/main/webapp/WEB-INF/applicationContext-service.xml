@@ -164,6 +164,7 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="metaDataParserFactory" ref="metaDataParserFactory"/>
     </bean>
 
     <bean id="adService" class="net.sourceforge.subsonic.service.AdService">
