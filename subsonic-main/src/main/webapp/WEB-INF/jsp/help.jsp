@@ -69,7 +69,10 @@
 
 <p></p>
 
-<h2><img src="<spring:theme code="logImage"/>" alt="">&nbsp;<fmt:message key="help.log"/></h2>
+<h2>
+    <img src="<spring:theme code="logImage"/>" alt="">
+    <span style="vertical-align: middle"><fmt:message key="help.log"/></span>
+</h2>
 
 <table cellpadding="2" class="log indent">
     <c:forEach items="${model.logEntries}" var="entry">
