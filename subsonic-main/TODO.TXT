@@ -3,6 +3,7 @@ DONE IN 4.9
 Set ID3 title tag based on Podcast episode name.
 Better icon/text alignment in <h1> tags.
 Use Lato font
+Larger text in top.jsp
 
 TODO IN 4.9
 --------------
