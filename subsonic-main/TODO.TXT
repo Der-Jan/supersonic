@@ -2,15 +2,14 @@ DONE IN 4.9
 -------------
 Set ID3 title tag based on Podcast episode name.
 Better icon/text alignment in <h1> tags.
-Use Lato font
+Use Lato, Ubuntu web fonts
 Larger text in top.jsp
+Left-align in left.jsp
 
 TODO IN 4.9
 --------------
-Nicer <h1> headers, incl better icon alignment.
 Shuffle play
 Dont use <div/>
-Left-align in left.jsp
 
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
