@@ -4,11 +4,11 @@ Set ID3 title tag based on Podcast episode name.
 Better icon/text alignment in <h1> tags.
 Use Lato, Ubuntu web fonts
 Larger text in top.jsp
+nicer logo
 Left-align in left.jsp
 
 TODO IN 4.9
 --------------
-nicer logo
 Shuffle play
 Dont use <div/>
 

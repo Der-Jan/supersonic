@@ -223,7 +223,7 @@
             <a href="${shareUrl}"><img src="<spring:theme code="shareFacebookImage"/>" alt=""></a>
             <a href="${shareUrl}"><img src="<spring:theme code="shareTwitterImage"/>" alt=""></a>
             <a href="${shareUrl}"><img src="<spring:theme code="shareGooglePlusImage"/>" alt=""></a>
-            <a href="${shareUrl}"><span class="detail"><fmt:message key="main.sharealbum"/></span></a> |
+            <span class="detail" style="vertical-align: middle"><a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> |</span>
         </c:if>
 
         <c:if test="${not empty model.artist and not empty model.album}">
@@ -241,10 +241,12 @@
                 <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
                 <sub:param name="type" value="album"/>
             </sub:url>
-            <fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a> |
-            <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
-            <a target="_blank" href="${allmusicUrl}">allmusic</a> |
-            <a target="_blank" href="${lastFmUrl}">Last.fm</a>
+            <span style="vertical-align: middle">
+                 <fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a> |
+                        <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
+                        <a target="_blank" href="${allmusicUrl}">allmusic</a> |
+                        <a target="_blank" href="${lastFmUrl}">Last.fm</a>
+            </span>
         </c:if>
     </div>
     <div class="detail" style="padding-top:0.2em">
