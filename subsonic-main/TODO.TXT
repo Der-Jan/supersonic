@@ -1,15 +1,19 @@
 DONE IN 4.9
 -------------
 Set ID3 title tag based on Podcast episode name.
+Better icon/text alignment in <h1> tags.
 
 TODO IN 4.9
 --------------
+Nicer <h1> headers, incl better icon alignment.
+Shuffle play
+Dont use <div/>
+Settings header order
 
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
 Move xsd and xml examples to site.
   Create links to each version
-
 Recently added broken
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
 https port 8080 redirect to 8443 (jetty?)

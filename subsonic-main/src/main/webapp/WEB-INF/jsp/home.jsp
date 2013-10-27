@@ -21,7 +21,7 @@
 <body class="mainframe bgcolor1" onload="init();">
 <h1>
     <img src="<spring:theme code="homeImage"/>" alt="">
-    ${model.welcomeTitle}
+    <span style="vertical-align: middle">${model.welcomeTitle}</span>
 </h1>
 
 <c:if test="${not empty model.welcomeSubtitle}">

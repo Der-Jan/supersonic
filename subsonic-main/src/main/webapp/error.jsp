@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" isErrorPage="true" %>
-<%@ page import="java.io.*"%>
+<%@ page import="java.io.PrintWriter, java.io.StringWriter"%>
 
 <html><head>
     <!--[if lt IE 7.]>
@@ -10,7 +10,10 @@
 </head>
 
 <body>
-<h1><img src="icons/error.png" alt=""/> Error</h1>
+<h1>
+    <img src="icons/error.png" alt=""/>
+    <span style="vertical-align: middle">Error</span>
+</h1>
 
 <p>
     Subsonic encountered an internal error. You can report this error in the

@@ -43,7 +43,7 @@
 
 <h1>
     <img src="<spring:theme code="moreImage"/>" alt=""/>
-    <fmt:message key="more.title"/>
+    <span style="vertical-align: middle"><fmt:message key="more.title"/></span>
 </h1>
 
 <c:if test="${model.user.streamRole}">

@@ -27,7 +27,7 @@
 
 <h1>
     <img src="<spring:theme code="helpImage"/>" alt="">
-    <fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message>
+    <span style="vertical-align: middle"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></span>
 </h1>
 
 <c:if test="${model.newVersionAvailable}">

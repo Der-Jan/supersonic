@@ -9,7 +9,7 @@
 
 <h1>
     <img src="<spring:theme code="errorImage"/>" alt=""/>
-    <fmt:message key="notFound.title"/>
+    <span style="vertical-align: middle"><fmt:message key="notFound.title"/></span>
 </h1>
 
 <fmt:message key="notFound.text"/>

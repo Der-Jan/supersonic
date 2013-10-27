@@ -10,7 +10,7 @@
 
 <h1>
     <img src="<spring:theme code="statusImage"/>" alt="">
-    <fmt:message key="status.title"/>
+    <span style="vertical-align: middle"><fmt:message key="status.title"/></span>
 </h1>
 
 <table width="100%" class="ruleTable indent">

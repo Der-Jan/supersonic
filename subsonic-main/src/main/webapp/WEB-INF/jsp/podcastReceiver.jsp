@@ -93,7 +93,7 @@
 
 <h1>
     <img src="<spring:theme code="podcastLargeImage"/>" alt=""/>
-    <fmt:message key="podcastreceiver.title"/>
+    <span style="vertical-align: middle"><fmt:message key="podcastreceiver.title"/></span>
 </h1>
 
 <table><tr>

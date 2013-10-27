@@ -141,13 +141,15 @@
         </c:choose>
     </a>
 
-    <c:forEach items="${model.ancestors}" var="ancestor">
+    <span style="vertical-align: middle">
+        <c:forEach items="${model.ancestors}" var="ancestor">
         <sub:url value="main.view" var="ancestorUrl">
-            <sub:param name="id" value="${ancestor.id}"/>
-        </sub:url>
-        <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
-    </c:forEach>
-    ${model.dir.name}
+                <sub:param name="id" value="${ancestor.id}"/>
+            </sub:url>
+            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+            </c:forEach>
+            ${model.dir.name}
+    </span>
 
     <c:if test="${model.dir.album and model.averageRating gt 0}">
         &nbsp;&nbsp;
