@@ -18,7 +18,7 @@
 <fmt:message key="top.search" var="search"/>
 
 <table style="margin:0"><tr valign="middle">
-    <td class="logo" style="padding-right:2em"><a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a></td>
+    <td style="padding-right:2em"><a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a></td>
 
     <c:if test="${not model.musicFoldersExist}">
         <td style="padding-right:2em">

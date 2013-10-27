@@ -104,12 +104,12 @@ body {
 }
 
 /* Font 1 */
-body, h2, form, label, table, a {
-    font-family: verdana, arial, sans-serif;
+body, form, label, table, a {
+    font-family: 'Lato', verdana, arial, sans-serif;
 }
 
 /* Font 2 */
-h1, h1 a, .logo {
+h1, h1 a, h2, h2 a {
     font-family: 'Lato', arial, sans-serif;
 }
 
@@ -121,7 +121,7 @@ body {
     padding:0;
     border:0;
     margin:0.75em;
-    font-size: 9pt;
+    font-size: 10pt;
     line-height: 1.5em;
 }
 
@@ -160,7 +160,7 @@ form {
 }
 
 input, select, textarea {
-    font-size: 9pt;
+    font-size: 90%;
 }
 
 label {
@@ -200,17 +200,12 @@ img {
 
 .detail {
     white-space: nowrap;
-    font-size: 8pt;
+    font-size: 90%;
     line-height: 1.25em;
 }
 
 .warning {
     white-space: nowrap;
-}
-
-.logo {
-    white-space: nowrap;
-    font-size: 16pt;
 }
 
 .back, .forward {
@@ -237,7 +232,7 @@ img {
 
 .log {
     white-space: nowrap;
-    font-size: 8pt;
+    font-size: 90%;
     line-height: 1em;
 }
 
