@@ -8,7 +8,6 @@ TODO IN 4.9
 Nicer <h1> headers, incl better icon alignment.
 Shuffle play
 Dont use <div/>
-Settings header order
 
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
