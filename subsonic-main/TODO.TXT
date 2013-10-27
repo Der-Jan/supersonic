@@ -8,6 +8,7 @@ Left-align in left.jsp
 
 TODO IN 4.9
 --------------
+nicer logo
 Shuffle play
 Dont use <div/>
 

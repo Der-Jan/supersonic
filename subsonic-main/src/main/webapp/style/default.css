@@ -117,13 +117,11 @@ body {
   src: local('Ubuntu Medium'), local('Ubuntu-Medium'), url(fonts/ubuntu-500.woff) format('woff');
 }
 
-/* Font 1 */
 body, form, label, table, a {
     font-family: 'Lato', verdana, arial, sans-serif;
 }
 
-/* Font 2 */
-h1, h1 a, h2, h2 a {
+h1, h1 a, h2, h2 a, .topHeader a {
     font-family: 'Ubuntu', arial, sans-serif;
 }
 
@@ -224,6 +222,14 @@ img {
 
 .warning {
     white-space: nowrap;
+}
+
+.topHeader, .topHeader a {
+    font-size: 100%;
+    padding: 0.15em 0 0 0;
+    margin: 0;
+    border: 0;
+    font-weight: bold;
 }
 
 .back, .forward {
