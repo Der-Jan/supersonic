@@ -57,6 +57,9 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.PodcastStatus;
+import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.MetaDataParser;
+import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
 import net.sourceforge.subsonic.util.StringUtil;
 
 /**
@@ -81,6 +84,7 @@ public class PodcastService {
     private SettingsService settingsService;
     private SecurityService securityService;
     private MediaFileService mediaFileService;
+    private MetaDataParserFactory metaDataParserFactory;
 
     public PodcastService() {
         ThreadFactory threadFactory = new ThreadFactory() {
@@ -480,6 +484,7 @@ public class PodcastService {
                 podcastDao.updateEpisode(episode);
                 LOG.info("Downloaded " + bytesDownloaded + " bytes from Podcast " + episode.getUrl());
                 IOUtils.closeQuietly(out);
+                updateTags(file, episode);
                 episode.setStatus(PodcastStatus.COMPLETED);
                 podcastDao.updateEpisode(episode);
                 deleteObsoleteEpisodes(channel);
@@ -494,6 +499,20 @@ public class PodcastService {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
             client.getConnectionManager().shutdown();
+        }
+    }
+
+    private void updateTags(File file, PodcastEpisode episode) {
+        MediaFile mediaFile = mediaFileService.getMediaFile(file, false);
+        if (StringUtils.isNotBlank(episode.getTitle())) {
+            MetaDataParser parser = metaDataParserFactory.getParser(file);
+            if (!parser.isEditingSupported()) {
+                return;
+            }
+            MetaData metaData = parser.getRawMetaData(file);
+            metaData.setTitle(episode.getTitle());
+            parser.setMetaData(mediaFile, metaData);
+            mediaFileService.refreshMediaFile(mediaFile);
         }
     }
 
@@ -619,5 +638,9 @@ public class PodcastService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setMetaDataParserFactory(MetaDataParserFactory metaDataParserFactory) {
+        this.metaDataParserFactory = metaDataParserFactory;
     }
 }

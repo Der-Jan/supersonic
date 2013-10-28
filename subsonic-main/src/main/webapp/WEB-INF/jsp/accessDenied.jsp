@@ -9,7 +9,7 @@
 
 <h1>
     <img src="<spring:theme code="errorImage"/>" alt=""/>
-    <fmt:message key="accessDenied.title"/>
+    <span style="vertical-align: middle"><fmt:message key="accessDenied.title"/></span>
 </h1>
 
 <p>

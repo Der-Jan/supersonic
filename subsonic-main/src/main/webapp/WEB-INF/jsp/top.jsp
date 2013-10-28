@@ -18,7 +18,7 @@
 <fmt:message key="top.search" var="search"/>
 
 <table style="margin:0"><tr valign="middle">
-    <td class="logo" style="padding-right:2em"><a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a></td>
+    <td style="padding-right:2em"><a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a></td>
 
     <c:if test="${not model.musicFoldersExist}">
         <td style="padding-right:2em">
@@ -29,38 +29,38 @@
     <td>
         <table><tr align="center">
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="home.view?" target="main"><img src="<spring:theme code="homeImage"/>" title="${home}" alt="${home}"></a><br>
-                <a href="home.view?" target="main">${home}</a>
+                <a href="home.view?" target="main"><img src="<spring:theme code="homeImage"/>" title="${home}" alt="${home}"></a>
+                <div class="topHeader"><a href="home.view?" target="main">${home}</a></div>
             </td>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="nowPlaying.view?" target="main"><img src="<spring:theme code="nowPlayingImage"/>" title="${nowPlaying}" alt="${nowPlaying}"></a><br>
-                <a href="nowPlaying.view?" target="main">${nowPlaying}</a>
+                <a href="nowPlaying.view?" target="main"><img src="<spring:theme code="nowPlayingImage"/>" title="${nowPlaying}" alt="${nowPlaying}"></a>
+                <div class="topHeader"><a href="nowPlaying.view?" target="main">${nowPlaying}</a></div>
             </td>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="starred.view?" target="main"><img src="<spring:theme code="starredImage"/>" title="${starred}" alt="${starred}"></a><br>
-                <a href="starred.view?" target="main">${starred}</a>
+                <a href="starred.view?" target="main"><img src="<spring:theme code="starredImage"/>" title="${starred}" alt="${starred}"></a>
+                <div class="topHeader"><a href="starred.view?" target="main">${starred}</a></div>
             </td>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="podcastReceiver.view?" target="main"><img src="<spring:theme code="podcastLargeImage"/>" title="${podcast}" alt="${podcast}"></a><br>
-                <a href="podcastReceiver.view?" target="main">${podcast}</a>
+                <a href="podcastReceiver.view?" target="main"><img src="<spring:theme code="podcastLargeImage"/>" title="${podcast}" alt="${podcast}"></a>
+                <div class="topHeader"><a href="podcastReceiver.view?" target="main">${podcast}</a></div>
             </td>
             <c:if test="${model.user.settingsRole}">
                 <td style="min-width:4em;padding-right:1.5em">
-                    <a href="settings.view?" target="main"><img src="<spring:theme code="settingsImage"/>" title="${settings}" alt="${settings}"></a><br>
-                    <a href="settings.view?" target="main">${settings}</a>
+                    <a href="settings.view?" target="main"><img src="<spring:theme code="settingsImage"/>" title="${settings}" alt="${settings}"></a>
+                    <div class="topHeader"><a href="settings.view?" target="main">${settings}</a></div>
                 </td>
             </c:if>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="status.view?" target="main"><img src="<spring:theme code="statusImage"/>" title="${status}" alt="${status}"></a><br>
-                <a href="status.view?" target="main">${status}</a>
+                <a href="status.view?" target="main"><img src="<spring:theme code="statusImage"/>" title="${status}" alt="${status}"></a>
+                <div class="topHeader"><a href="status.view?" target="main">${status}</a></div>
             </td>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="more.view?" target="main"><img src="<spring:theme code="moreImage"/>" title="${more}" alt="${more}"></a><br>
-                <a href="more.view?" target="main">${more}</a>
+                <a href="more.view?" target="main"><img src="<spring:theme code="moreImage"/>" title="${more}" alt="${more}"></a>
+                <div class="topHeader"><a href="more.view?" target="main">${more}</a></div>
             </td>
             <td style="min-width:4em;padding-right:1.5em">
-                <a href="help.view?" target="main"><img src="<spring:theme code="helpImage"/>" title="${help}" alt="${help}"></a><br>
-                <a href="help.view?" target="main">${help}</a>
+                <a href="help.view?" target="main"><img src="<spring:theme code="helpImage"/>" title="${help}" alt="${help}"></a>
+                <div class="topHeader"><a href="help.view?" target="main">${help}</a></div>
             </td>
 
             <td style="padding-left:1em">

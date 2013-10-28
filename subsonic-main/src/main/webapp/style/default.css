@@ -89,13 +89,16 @@ body {
     scrollbar-darkshadow-color: #98AAB1;
 }
 
-/* Font 1 */
-body, h2, form, label, table, a {
+body, form, label, table, a {
     font-family: verdana, arial, sans-serif;
 }
 
-/* Font 2 */
-h1, h1 a, .logo {
+h1, h1 a {
+    font-family: 'Ubuntu', arial, sans-serif;
+    font-weight: normal;
+}
+
+h2, h2 a, .topHeader a {
     font-family: arial, sans-serif;
 }
 
@@ -107,7 +110,7 @@ body {
     padding:0;
     border:0;
     margin:0.75em;
-    font-size: 9pt;
+    font-size: 10pt;
     line-height: 1.5em;
 }
 
@@ -125,7 +128,7 @@ p {
 
 h1 {
     white-space: nowrap;
-    font-size: 140%;
+    font-size: 150%;
     padding: 0 0 0.2em 0;
     border: 0;
     margin: 0;
@@ -146,7 +149,7 @@ form {
 }
 
 input, select, textarea {
-    font-size: 9pt;
+    font-size: 90%;
 }
 
 label {
@@ -186,7 +189,7 @@ img {
 
 .detail {
     white-space: nowrap;
-    font-size: 8pt;
+    font-size: 90%;
     line-height: 1.25em;
 }
 
@@ -194,9 +197,12 @@ img {
     white-space: nowrap;
 }
 
-.logo {
-    white-space: nowrap;
-    font-size: 16pt;
+.topHeader, .topHeader a {
+    font-size: 100%;
+    padding: 0.15em 0 0 0;
+    margin: 0;
+    border: 0;
+    font-weight: bold;
 }
 
 .back, .forward {
@@ -216,14 +222,14 @@ img {
 
 .albumComment {
     width: 50em;
-    font-size: 8pt;
+    font-size: 90%;
     line-height: 1.4em;
     padding-top: 0.25em;
 }
 
 .log {
     white-space: nowrap;
-    font-size: 8pt;
+    font-size: 90%;
     line-height: 1em;
 }
 

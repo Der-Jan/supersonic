@@ -141,13 +141,15 @@
         </c:choose>
     </a>
 
-    <c:forEach items="${model.ancestors}" var="ancestor">
+    <span style="vertical-align: middle">
+        <c:forEach items="${model.ancestors}" var="ancestor">
         <sub:url value="main.view" var="ancestorUrl">
-            <sub:param name="id" value="${ancestor.id}"/>
-        </sub:url>
-        <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
-    </c:forEach>
-    ${model.dir.name}
+                <sub:param name="id" value="${ancestor.id}"/>
+            </sub:url>
+            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+            </c:forEach>
+            ${model.dir.name}
+    </span>
 
     <c:if test="${model.dir.album and model.averageRating gt 0}">
         &nbsp;&nbsp;
@@ -221,7 +223,7 @@
             <a href="${shareUrl}"><img src="<spring:theme code="shareFacebookImage"/>" alt=""></a>
             <a href="${shareUrl}"><img src="<spring:theme code="shareTwitterImage"/>" alt=""></a>
             <a href="${shareUrl}"><img src="<spring:theme code="shareGooglePlusImage"/>" alt=""></a>
-            <a href="${shareUrl}"><span class="detail"><fmt:message key="main.sharealbum"/></span></a> |
+            <span class="detail" style="vertical-align: middle"><a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> |</span>
         </c:if>
 
         <c:if test="${not empty model.artist and not empty model.album}">
@@ -239,10 +241,12 @@
                 <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
                 <sub:param name="type" value="album"/>
             </sub:url>
-            <fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a> |
-            <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
-            <a target="_blank" href="${allmusicUrl}">allmusic</a> |
-            <a target="_blank" href="${lastFmUrl}">Last.fm</a>
+            <span style="vertical-align: middle">
+                 <fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a> |
+                        <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
+                        <a target="_blank" href="${allmusicUrl}">allmusic</a> |
+                        <a target="_blank" href="${lastFmUrl}">Last.fm</a>
+            </span>
         </c:if>
     </div>
     <div class="detail" style="padding-top:0.2em">

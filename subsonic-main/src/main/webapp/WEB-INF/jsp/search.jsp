@@ -9,7 +9,7 @@
 
 <h1>
     <img src="<spring:theme code="searchImage"/>" alt=""/>
-    <fmt:message key="search.title"/>
+    <span style="vertical-align: middle"><fmt:message key="search.title"/></span>
 </h1>
 
 <form:form commandName="command" method="post" action="search.view" name="searchForm">

@@ -43,11 +43,14 @@
 
 <h1>
     <img src="<spring:theme code="moreImage"/>" alt=""/>
-    <fmt:message key="more.title"/>
+    <span style="vertical-align: middle"><fmt:message key="more.title"/></span>
 </h1>
 
 <c:if test="${model.user.streamRole}">
-    <h2><img src="<spring:theme code="randomImage"/>" alt=""/>&nbsp;<fmt:message key="more.random.title"/></h2>
+    <h2>
+        <img src="<spring:theme code="randomImage"/>" alt=""/>
+        <span style="vertical-align: middle"><fmt:message key="more.random.title"/></span>
+    </h2>
 
     <form method="post" action="randomPlayQueue.view?">
         <table>
@@ -116,18 +119,29 @@
 </c:if>
 
 <a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="<c:url value="/icons/apps.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
-<h2><img src="<spring:theme code="androidImage"/>" alt=""/>&nbsp;<fmt:message key="more.apps.title"/></h2>
-<fmt:message key="more.apps.text"/> 
+
+<h2>
+    <img src="<spring:theme code="androidImage"/>" alt=""/>
+    <span style="vertical-align: middle"><fmt:message key="more.apps.title"/></span>
+</h2>
+<fmt:message key="more.apps.text"/>
 <a href="<c:url value="/mini/index.html"/>" target="_blank"><img alt="MiniSub" src="<c:url value="/icons/minisub.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+
 <h2><fmt:message key="more.minisub.title"/></h2>
 <fmt:message key="more.minisub.text"/>
 
-<h2><img src="<spring:theme code="podcastImage"/>" alt=""/>&nbsp;<fmt:message key="more.podcast.title"/></h2>
+<h2>
+    <img src="<spring:theme code="podcastImage"/>" alt=""/>
+    <span style="vertical-align: middle"><fmt:message key="more.podcast.title"/></span>
+</h2>
 <fmt:message key="more.podcast.text"/>
 
 <c:if test="${model.user.uploadRole}">
 
-    <h2><img src="<spring:theme code="uploadImage"/>" alt=""/>&nbsp;<fmt:message key="more.upload.title"/></h2>
+    <h2>
+        <img src="<spring:theme code="uploadImage"/>" alt=""/>
+        <span style="vertical-align: middle"><fmt:message key="more.upload.title"/></span>
+    </h2>
 
     <form method="post" enctype="multipart/form-data" action="upload.view">
         <table>

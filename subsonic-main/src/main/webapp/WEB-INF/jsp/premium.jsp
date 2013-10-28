@@ -8,7 +8,7 @@
 
 <h1>
     <img src="<spring:theme code="donateImage"/>" alt=""/>
-    <fmt:message key="premium.title"/>
+    <span style="vertical-align: middle"><fmt:message key="premium.title"/></span>
 </h1>
 <c:if test="${not empty command.path}">
     <sub:url value="main.view" var="backUrl">

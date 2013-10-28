@@ -8,7 +8,7 @@
 
 <h1>
     <img src="<spring:theme code="settingsImage"/>" alt=""/>
-    <fmt:message key="avataruploadresult.title"/>
+    <span style="vertical-align: middle"><fmt:message key="avataruploadresult.title"/></span>
 </h1>
 
 <c:choose>

@@ -1,30 +1,21 @@
 DONE IN 4.9
 -------------
+Set ID3 title tag based on Podcast episode name.
+Better icon/text alignment in <h1> tags.
+Use Lato, Ubuntu web fonts
+Larger text in top.jsp
+nicer logo
+Left-align in left.jsp
 
 TODO IN 4.9
 --------------
-minisub doesn't exist any more. -> jamstash
-When playing a single song, also queue rest of album.
-Reimplement upload files.
-Update site
-UPnP
-Document %o, %d, %w, %h in transcoding page
-Make jukebox premium?
-Upgrade wipes settings on Ubuntu 12.04
-  https://mail.google.com/mail/ca/u/0/?shva=1#inbox/13fc338d71000ac5
-Fedora 19 problem
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/13f875e94e77b3c4
-RedirectionManagementController should treat email address case insensitive.
-Retain service when upgrading.
-  https://mail.google.com/mail/u/0/#inbox/13e419b5ff8ecb59
-  Document how to modify Windows service to see network drives
-Uninstaller: Optionally delete all settings.
+Shuffle play
+Dont use <div/>
 
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
 Move xsd and xml examples to site.
   Create links to each version
-
 Recently added broken
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
 https port 8080 redirect to 8443 (jetty?)
@@ -811,9 +802,9 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.8/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta1/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta1/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta1/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -824,7 +815,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.8 -m "Tagging 4.8"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta1 -m "Tagging 4.9.beta1"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.
