@@ -168,14 +168,20 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.8
+DONE IN ANDROID 3.9
 --------------------
 Fixed illegal xml in french locale.
 Send com.android.music.metachanged intent.
-
-TODO IN ANDROID 3.8
---------------------
 Support dynamic number of servers.
+
+TODO IN ANDROID 3.9
+--------------------
+Notification controls:
+  Don't hide programmatically (Util.hidePlayingNotification)
+  Add explicit hide/close button. When to re-add it? Check Sonos/WIMP.
+  http://developer.android.com/guide/topics/ui/notifiers/notifications.html#NotificationUI
+  https://code.google.com/p/enroscar/source/browse/trunk/eclipse-project/src/com/stanfy/utils/notifications/?r=157
+
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f324a7ec6654c8
