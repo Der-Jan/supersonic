@@ -119,7 +119,7 @@ public class JukeboxService {
         // Track change?
         Integer index = jukeboxStatus.getCurrentPlayingIndex();
         if (index != null && index != -1 && index != downloadService.getCurrentPlayingIndex()) {
-            downloadService.setCurrentPlaying(index, true);
+            downloadService.setCurrentPlaying(index);
         }
     }
 

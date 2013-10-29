@@ -45,47 +45,69 @@ public final class NotificationUtil {
 
     private static final String TAG = NotificationUtil.class.getSimpleName();
 
-    public static void showPlayingNotification(final Context context, final DownloadServiceImpl downloadService, Handler handler, MusicDirectory.Entry song) {
-        String title = song.getTitle();
-        String text = song.getArtist();
-        Bitmap albumArt;
+    public static void updateNotification(final Context context, final DownloadServiceImpl downloadService, Handler handler,
+            MusicDirectory.Entry song, boolean playing) {
 
-        // Get the album art.
-        try {
-            int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
-            albumArt = FileUtil.getAlbumArtBitmap(context, song, size);
-            if (albumArt == null) {
+        if (song == null) {
+            hideNotification(downloadService, handler);
+
+        } else {
+            String title = song.getTitle();
+            String text = song.getArtist();
+            Bitmap albumArt;
+
+            // Get the album art.
+            try {
+                int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
+                albumArt = FileUtil.getAlbumArtBitmap(context, song, size);
+                if (albumArt == null) {
+                    albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+                }
+            } catch (Exception x) {
+                Log.w(TAG, "Failed to get notification cover art", x);
                 albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
             }
-        } catch (Exception x) {
-            Log.w(TAG, "Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+
+            Intent notificationIntent = new Intent(context, DownloadActivity.class);
+
+
+            // TODO: Hide notification if not playing old platforms.
+
+            // On older platforms, show a notification without buttons.
+            final Notification notification = useSimpleNotification() ?
+                    createSimpleNotification(context, title, text, albumArt, notificationIntent) :
+                    createCustomNotification(context, title, text, albumArt, notificationIntent, playing);
+
+            // Send the notification and put the service in the foreground.
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    downloadService.startForeground(Constants.NOTIFICATION_ID_PLAYING, notification);
+                }
+            });
         }
 
-        Intent notificationIntent = new Intent(context, DownloadActivity.class);
+        // Update widget
+        SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
+    }
 
-        // On older platforms, show a notification without buttons.
-        final Notification notification = useSimpleNotification() ?
-                createSimpleNotification(context, title, text, albumArt, notificationIntent) :
-                createCustomNotification(context, title, text, albumArt, notificationIntent);
+    private static void hideNotification(final DownloadServiceImpl downloadService, Handler handler) {
 
-        // Send the notification and put the service in the foreground.
+        // Remove notification and remove the service from the foreground
         handler.post(new Runnable() {
             @Override
             public void run() {
-                downloadService.startForeground(Constants.NOTIFICATION_ID_PLAYING, notification);
+                downloadService.stopForeground(true);
             }
         });
-
-        // Update widget
-        SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, true);
     }
 
-    private static Notification createCustomNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent) {
+    private static Notification createCustomNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent, boolean playing) {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_artist, text);
         contentView.setImageViewBitmap(R.id.notification_image, albumArt);
+        contentView.setImageViewResource(R.id.notification_playpause, playing ? R.drawable.media_pause : R.drawable.media_start);
 
         Intent intent = new Intent("1");
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
@@ -113,22 +135,6 @@ public final class NotificationUtil {
                 .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
                 .setLargeIcon(albumArt)
                 .build();
-    }
-
-    public static void hidePlayingNotification(final Context context, final DownloadServiceImpl downloadService, Handler handler) {
-
-        // Remove notification and remove the service from the foreground
-        if (useSimpleNotification()) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    downloadService.stopForeground(true);
-                }
-            });
-        }
-
-        // Update widget
-        SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, false);
     }
 
     private static boolean useSimpleNotification() {

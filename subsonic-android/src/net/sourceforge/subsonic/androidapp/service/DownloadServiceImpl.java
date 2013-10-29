@@ -357,7 +357,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
             currentDownloading.cancelDownload();
             currentDownloading = null;
         }
-        setCurrentPlaying(null, false);
+        setCurrentPlaying(null);
 
         if (serialize) {
             lifecycleSupport.serializeDownloadQueue();
@@ -373,7 +373,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         }
         if (downloadFile == currentPlaying) {
             reset();
-            setCurrentPlaying(null, false);
+            setCurrentPlaying(null);
         }
         downloadList.remove(downloadFile);
         revision++;
@@ -395,28 +395,20 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         }
     }
 
-    synchronized void setCurrentPlaying(int currentPlayingIndex, boolean showNotification) {
+    synchronized void setCurrentPlaying(int currentPlayingIndex) {
         try {
-            setCurrentPlaying(downloadList.get(currentPlayingIndex), showNotification);
+            setCurrentPlaying(downloadList.get(currentPlayingIndex));
         } catch (IndexOutOfBoundsException x) {
             // Ignored
         }
     }
 
-    synchronized void setCurrentPlaying(DownloadFile currentPlaying, boolean showNotification) {
+    synchronized void setCurrentPlaying(DownloadFile currentPlaying) {
         this.currentPlaying = currentPlaying;
 
-        if (currentPlaying != null) {
-        	Util.broadcastNewTrackInfo(this, currentPlaying.getSong());
-        } else {
-            Util.broadcastNewTrackInfo(this, null);
-        }
-
-        if (currentPlaying != null && showNotification) {
-            NotificationUtil.showPlayingNotification(this, this, handler, currentPlaying.getSong());
-        } else {
-            NotificationUtil.hidePlayingNotification(this, this, handler);
-        }
+        MusicDirectory.Entry song = currentPlaying != null ? currentPlaying.getSong() : null;
+        Util.broadcastNewTrackInfo(this, song);
+        NotificationUtil.updateNotification(this, this, handler, song, song != null);
     }
 
     @Override
@@ -458,9 +450,9 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     private synchronized void play(int index, boolean start) {
         if (index < 0 || index >= size()) {
             reset();
-            setCurrentPlaying(null, false);
+            setCurrentPlaying(null);
         } else {
-            setCurrentPlaying(index, start);
+            setCurrentPlaying(index);
             checkDownloads();
             if (start) {
                 if (jukeboxEnabled) {
@@ -630,16 +622,11 @@ public class DownloadServiceImpl extends Service implements DownloadService {
             lifecycleSupport.serializeDownloadQueue();
         }
 
-        boolean show = this.playerState == PAUSED && playerState == PlayerState.STARTED;
-        boolean hide = this.playerState == STARTED && playerState == PlayerState.PAUSED;
         Util.broadcastPlaybackStatusChange(this, playerState);
 
         this.playerState = playerState;
-        if (show) {
-            NotificationUtil.showPlayingNotification(this, this, handler, currentPlaying.getSong());
-        } else if (hide) {
-            NotificationUtil.hidePlayingNotification(this, this, handler);
-        }
+        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
+        NotificationUtil.updateNotification(this, this, handler, song, this.playerState == STARTED);
 
         if (playerState == STARTED) {
             scrobbler.scrobble(this, currentPlaying, false);
