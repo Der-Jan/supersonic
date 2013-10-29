@@ -60,6 +60,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -546,13 +547,8 @@ public final class Util {
 
     public static void showPlayingNotification(final Context context, final DownloadServiceImpl downloadService, Handler handler, MusicDirectory.Entry song) {
 
-        // Use the same text for the ticker and the expanded notification
         String title = song.getTitle();
         String text = song.getArtist();
-
-        // Set the icon, scrolling text and timestamp
-        final Notification notification = new Notification(R.drawable.stat_notify_playing, title, System.currentTimeMillis());
-        notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
 
@@ -571,7 +567,6 @@ public final class Util {
             contentView.setImageViewResource(R.id.notification_image, R.drawable.unknown_album);
         }
 
-        // set the text for the notifications
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_artist, text);
 
@@ -583,10 +578,15 @@ public final class Util {
             contentView.setTextColor(R.id.notification_artist, colors.getSecond());
         }
 
-        notification.contentView = contentView;
-
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
-        notification.contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+        final Notification notification = new NotificationCompat.Builder(context)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.stat_notify_playing)
+                .setContentTitle(title)
+                .setContent(contentView)
+                .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
+                .build();
 
         // Send the notification and put the service in the foreground.
         handler.post(new Runnable() {
