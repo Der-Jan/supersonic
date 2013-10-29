@@ -40,6 +40,7 @@ import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
 import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.LRUCache;
+import net.sourceforge.subsonic.androidapp.util.NotificationUtil;
 import net.sourceforge.subsonic.androidapp.util.ShufflePlayBuffer;
 import net.sourceforge.subsonic.androidapp.util.SimpleServiceBinder;
 import net.sourceforge.subsonic.androidapp.util.Util;
@@ -412,9 +413,9 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         }
 
         if (currentPlaying != null && showNotification) {
-            Util.showPlayingNotification(this, this, handler, currentPlaying.getSong());
+            NotificationUtil.showPlayingNotification(this, this, handler, currentPlaying.getSong());
         } else {
-            Util.hidePlayingNotification(this, this, handler);
+            NotificationUtil.hidePlayingNotification(this, this, handler);
         }
     }
 
@@ -635,9 +636,9 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
         this.playerState = playerState;
         if (show) {
-            Util.showPlayingNotification(this, this, handler, currentPlaying.getSong());
+            NotificationUtil.showPlayingNotification(this, this, handler, currentPlaying.getSong());
         } else if (hide) {
-            Util.hidePlayingNotification(this, this, handler);
+            NotificationUtil.hidePlayingNotification(this, this, handler);
         }
 
         if (playerState == STARTED) {
