@@ -57,7 +57,9 @@ public final class NotificationUtil {
 
         // Update widget
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
-        // TODO: Wrong image size for simple notification.
+
+        // TODO: Test missing album art
+        // TODO: Test with widget
     }
 
     private static void updateSimpleNotification(Context context, final DownloadServiceImpl downloadService, Handler handler,
@@ -111,13 +113,13 @@ public final class NotificationUtil {
     private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song) {
         Bitmap albumArt;
         try {
-            albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
+            albumArt = FileUtil.getAlbumArtBitmap(context, song, (int) Util.convertDpToPixel(64.0F, context));
             if (albumArt == null) {
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
             }
         } catch (Exception x) {
             Log.w(TAG, "Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
         }
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
         return new NotificationCompat.Builder(context).setOngoing(true)
@@ -211,6 +213,5 @@ public final class NotificationUtil {
 
     private static boolean useSimpleNotification() {
         return Build.VERSION.SDK_INT < 11;
-//        return true;
     }
 }
