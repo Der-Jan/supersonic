@@ -47,9 +47,6 @@
     <string name="help.url">file:///android_asset/html/fr/index.html</string>
     <string name="help.loading">Chargement…</string>
 
-    <string name="play_video.loading">Chargement de la vidéo…</string>
-    <string name="play_video.noplugin">Veuillez installer Adobe Flash Player à partir du marché Android.</string>
-
     <string name="search.label">Recherche</string>
     <string name="search.title">Recherche</string>
     <string name="search.search">Cliquer pour rechercher</string>
@@ -118,8 +115,6 @@
     <string name="settings.title">Paramètres de Subsonic</string>
     <string name="settings.test_connection_title">Tester la connexion</string>
     <string name="settings.servers_title">Serveurs</string>
-    <string name="settings.server_unused1">Inutilisé 1</string>
-    <string name="settings.server_unused2">Inutilisé 2</string>
     <string name="settings.server_name">Nom</string>
     <string name="settings.server_address">Adresse du serveur</string>
     <string name="settings.server_username">Nom d\'usager</string>
