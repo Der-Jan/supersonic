@@ -174,10 +174,10 @@ Fixed illegal xml in french locale.
 Send com.android.music.metachanged intent.
 Support dynamic number of servers.
 Notification controls (API level >= 11)
+Faster startup: Run CacheCleaner in bg
 
 TODO IN ANDROID 3.9
 --------------------
-Run CacheCleaner in bg, see dsub
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d

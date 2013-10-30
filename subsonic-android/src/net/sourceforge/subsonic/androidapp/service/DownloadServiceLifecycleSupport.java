@@ -102,6 +102,14 @@ public class DownloadServiceLifecycleSupport {
         executorService = Executors.newScheduledThreadPool(2);
         executorService.scheduleWithFixedDelay(downloadChecker, 5, 5, TimeUnit.SECONDS);
 
+        Runnable cleaner = new Runnable() {
+            @Override
+            public void run() {
+                new CacheCleaner(downloadService, downloadService).clean();
+            }
+        };
+        executorService.schedule(cleaner, 0L, TimeUnit.SECONDS);
+
         // Pause when headset is unplugged.
         headsetEventReceiver = new BroadcastReceiver() {
             @Override
@@ -151,8 +159,6 @@ public class DownloadServiceLifecycleSupport {
         downloadService.registerReceiver(intentReceiver, commandFilter);
 
         deserializeDownloadQueue();
-
-        new CacheCleaner(downloadService, downloadService).clean();
     }
 
     public void onStart(Intent intent) {
