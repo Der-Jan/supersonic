@@ -45,35 +45,28 @@ public final class NotificationUtil {
 
     private static final String TAG = NotificationUtil.class.getSimpleName();
 
-    public static void updateNotification(final Context context, final DownloadServiceImpl downloadService, Handler handler,
+    public static void updateNotification(final Context context, final DownloadServiceImpl downloadService,
+            Handler handler, MusicDirectory.Entry song, boolean playing) {
+
+        // On older platforms, show a notification without buttons.
+        if (useSimpleNotification()) {
+            updateSimpleNotification(context, downloadService, handler, song, playing);
+        } else {
+            updateCustomNotification(context, downloadService, handler, song, playing);
+        }
+
+        // Update widget
+        SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
+        // TODO: Wrong image size for simple notification.
+    }
+
+    private static void updateSimpleNotification(Context context, final DownloadServiceImpl downloadService, Handler handler,
             MusicDirectory.Entry song, boolean playing) {
 
-        if (song == null) {
+        if (song == null || !playing) {
             hideNotification(downloadService, handler);
-
         } else {
-            Bitmap albumArt;
-
-            // Get the album art.
-            try {
-                albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
-                if (albumArt == null) {
-                    albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
-                }
-            } catch (Exception x) {
-                Log.w(TAG, "Failed to get notification cover art", x);
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
-            }
-
-            Intent notificationIntent = new Intent(context, DownloadActivity.class);
-
-
-            // TODO: Hide notification if not playing old platforms.
-
-            // On older platforms, show a notification without buttons.
-            final Notification notification = useSimpleNotification() ?
-                    createSimpleNotification(context, song, albumArt, notificationIntent) :
-                    createCustomNotification(context, song, albumArt, notificationIntent, playing);
+            final Notification notification = createSimpleNotification(context, song);
 
             // Send the notification and put the service in the foreground.
             handler.post(new Runnable() {
@@ -83,9 +76,25 @@ public final class NotificationUtil {
                 }
             });
         }
+    }
 
-        // Update widget
-        SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
+    private static void updateCustomNotification(Context context, final DownloadServiceImpl downloadService,
+            Handler handler, MusicDirectory.Entry song, boolean playing) {
+
+        if (song == null) {
+            hideNotification(downloadService, handler);
+
+        } else {
+            final Notification notification = createCustomNotification(context, song, playing);
+
+            // Send the notification and put the service in the foreground.
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    downloadService.startForeground(Constants.NOTIFICATION_ID_PLAYING, notification);
+                }
+            });
+        }
     }
 
     public static void hideNotification(final DownloadServiceImpl downloadService, Handler handler) {
@@ -99,7 +108,18 @@ public final class NotificationUtil {
         });
     }
 
-    private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song, Bitmap albumArt, Intent notificationIntent) {
+    private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song) {
+        Bitmap albumArt;
+        try {
+            albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
+            if (albumArt == null) {
+                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+            }
+        } catch (Exception x) {
+            Log.w(TAG, "Failed to get notification cover art", x);
+            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+        }
+        Intent notificationIntent = new Intent(context, DownloadActivity.class);
         return new NotificationCompat.Builder(context).setOngoing(true)
                 .setSmallIcon(R.drawable.stat_notify_playing)
                 .setContentTitle(song.getTitle())
@@ -109,7 +129,19 @@ public final class NotificationUtil {
                 .build();
     }
 
-    private static Notification createCustomNotification(Context context, MusicDirectory.Entry song, Bitmap albumArt, Intent notificationIntent, boolean playing) {
+    private static Notification createCustomNotification(Context context, MusicDirectory.Entry song, boolean playing) {
+
+        Bitmap albumArt;
+        try {
+            albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
+            if (albumArt == null) {
+                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+            }
+        } catch (Exception x) {
+            Log.w(TAG, "Failed to get notification cover art", x);
+            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+        }
+
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
         contentView.setTextViewText(R.id.notification_title, song.getTitle());
         contentView.setTextViewText(R.id.notification_artist, song.getArtist());
@@ -130,6 +162,8 @@ public final class NotificationUtil {
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Constants.INTENT_EXTRA_NAME_HIDE_NOTIFICATION, true);
         contentView.setOnClickPendingIntent(R.id.notification_close, PendingIntent.getService(context, 0, intent, 0));
+
+        Intent notificationIntent = new Intent(context, DownloadActivity.class);
 
         Notification notification = new NotificationCompat.Builder(context)
                 .setOngoing(true)
@@ -177,5 +211,6 @@ public final class NotificationUtil {
 
     private static boolean useSimpleNotification() {
         return Build.VERSION.SDK_INT < 11;
+//        return true;
     }
 }
