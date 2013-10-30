@@ -88,7 +88,7 @@ public final class NotificationUtil {
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
     }
 
-    private static void hideNotification(final DownloadServiceImpl downloadService, Handler handler) {
+    public static void hideNotification(final DownloadServiceImpl downloadService, Handler handler) {
 
         // Remove notification and remove the service from the foreground
         handler.post(new Runnable() {
@@ -126,6 +126,11 @@ public final class NotificationUtil {
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
         contentView.setOnClickPendingIntent(R.id.notification_next, PendingIntent.getService(context, 0, intent, 0));
 
+        intent = new Intent("4");
+        intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
+        intent.putExtra(Constants.INTENT_EXTRA_NAME_HIDE_NOTIFICATION, true);
+        contentView.setOnClickPendingIntent(R.id.notification_close, PendingIntent.getService(context, 0, intent, 0));
+
         Notification notification = new NotificationCompat.Builder(context)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.stat_notify_playing)
@@ -161,6 +166,11 @@ public final class NotificationUtil {
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PREVIOUS));
         contentView.setOnClickPendingIntent(R.id.notification_prev, PendingIntent.getService(context, 0, intent, 0));
+
+        intent = new Intent("4");
+        intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
+        intent.putExtra(Constants.INTENT_EXTRA_NAME_HIDE_NOTIFICATION, true);
+        contentView.setOnClickPendingIntent(R.id.notification_close, PendingIntent.getService(context, 0, intent, 0));
 
         return contentView;
     }

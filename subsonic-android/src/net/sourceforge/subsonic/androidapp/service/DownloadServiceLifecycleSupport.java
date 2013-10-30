@@ -29,6 +29,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -36,7 +37,9 @@ import android.view.KeyEvent;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.util.CacheCleaner;
+import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import net.sourceforge.subsonic.androidapp.util.NotificationUtil;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -153,10 +156,17 @@ public class DownloadServiceLifecycleSupport {
     }
 
     public void onStart(Intent intent) {
-        if (intent != null && intent.getExtras() != null) {
+        if (intent == null) {
+            return;
+        }
+
+        if (intent.getExtras() != null) {
             KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
             if (event != null) {
                 handleKeyEvent(event);
+            }
+            if (intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_HIDE_NOTIFICATION, false)) {
+                NotificationUtil.hideNotification(downloadService, new Handler());
             }
         }
     }
