@@ -52,8 +52,6 @@ public final class NotificationUtil {
             hideNotification(downloadService, handler);
 
         } else {
-            String title = song.getTitle();
-            String text = song.getArtist();
             Bitmap albumArt;
 
             // Get the album art.
@@ -74,8 +72,8 @@ public final class NotificationUtil {
 
             // On older platforms, show a notification without buttons.
             final Notification notification = useSimpleNotification() ?
-                    createSimpleNotification(context, title, text, albumArt, notificationIntent) :
-                    createCustomNotification(context, title, text, albumArt, notificationIntent, playing);
+                    createSimpleNotification(context, song, albumArt, notificationIntent) :
+                    createCustomNotification(context, song, albumArt, notificationIntent, playing);
 
             // Send the notification and put the service in the foreground.
             handler.post(new Runnable() {
@@ -101,20 +99,20 @@ public final class NotificationUtil {
         });
     }
 
-    private static Notification createSimpleNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent) {
+    private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song, Bitmap albumArt, Intent notificationIntent) {
         return new NotificationCompat.Builder(context).setOngoing(true)
                 .setSmallIcon(R.drawable.stat_notify_playing)
-                .setContentTitle(title)
-                .setContentText(text)
+                .setContentTitle(song.getTitle())
+                .setContentText(song.getArtist())
                 .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
                 .setLargeIcon(albumArt)
                 .build();
     }
 
-    private static Notification createCustomNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent, boolean playing) {
+    private static Notification createCustomNotification(Context context, MusicDirectory.Entry song, Bitmap albumArt, Intent notificationIntent, boolean playing) {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
-        contentView.setTextViewText(R.id.notification_title, title);
-        contentView.setTextViewText(R.id.notification_artist, text);
+        contentView.setTextViewText(R.id.notification_title, song.getTitle());
+        contentView.setTextViewText(R.id.notification_artist, song.getArtist());
         contentView.setImageViewBitmap(R.id.notification_image, albumArt);
         contentView.setImageViewResource(R.id.notification_playpause, playing ? R.drawable.media_pause : R.drawable.media_start);
 
@@ -135,19 +133,17 @@ public final class NotificationUtil {
                 .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
                 .build();
         if (Build.VERSION.SDK_INT >= 16) {
-            notification.bigContentView = createBigContentView(context, title, text, albumArt, playing);
+            notification.bigContentView = createBigContentView(context, song, albumArt, playing);
         }
         return notification;
     }
 
-    private static RemoteViews createBigContentView(Context context, String title, String text, Bitmap albumArt, boolean playing) {
-
-
-        // TODO: Set album
+    private static RemoteViews createBigContentView(Context context, MusicDirectory.Entry song, Bitmap albumArt, boolean playing) {
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_expanded);
-        contentView.setTextViewText(R.id.notification_title, title);
-        contentView.setTextViewText(R.id.notification_artist, text);
+        contentView.setTextViewText(R.id.notification_title, song.getTitle());
+        contentView.setTextViewText(R.id.notification_artist, song.getArtist());
+        contentView.setTextViewText(R.id.notification_album, song.getAlbum());
         contentView.setImageViewBitmap(R.id.notification_image, albumArt);
         contentView.setImageViewResource(R.id.notification_playpause, playing ? R.drawable.media_pause : R.drawable.media_start);
 
