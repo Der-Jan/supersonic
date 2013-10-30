@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import android.util.Log;
 import android.os.StatFs;
 import net.sourceforge.subsonic.androidapp.service.DownloadFile;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
@@ -20,7 +19,7 @@ import net.sourceforge.subsonic.androidapp.service.DownloadService;
  */
 public class CacheCleaner {
 
-    private static final String TAG = CacheCleaner.class.getSimpleName();
+    private static final Logger LOG = new Logger(CacheCleaner.class);
     private static final double MAX_FILE_SYSTEM_USAGE = 0.95;
 
     private final Context context;
@@ -33,10 +32,10 @@ public class CacheCleaner {
 
     public void clean() {
 
-        Log.i(TAG, "Starting cache cleaning.");
+        LOG.info("Starting cache cleaning.");
 
         if (downloadService == null) {
-            Log.e(TAG, "DownloadService not set. Aborting cache cleaning.");
+            LOG.error("DownloadService not set. Aborting cache cleaning.");
             return;
         }
 
@@ -52,10 +51,10 @@ public class CacheCleaner {
 
             deleteFiles(files, undeletable);
             deleteEmptyDirs(dirs, undeletable);
-            Log.i(TAG, "Completed cache cleaning.");
+            LOG.info("Completed cache cleaning.");
 
         } catch (RuntimeException x) {
-            Log.e(TAG, "Error in cache cleaning.", x);
+            LOG.error("Error in cache cleaning.", x);
         }
     }
 
@@ -99,10 +98,10 @@ public class CacheCleaner {
         long bytesToDeleteFsLimit = Math.max(bytesUsedFs - minFsAvailability, 0L);
         long bytesToDelete = Math.max(bytesToDeleteCacheLimit, bytesToDeleteFsLimit);
 
-        Log.i(TAG, "File system       : " + Util.formatBytes(bytesAvailableFs) + " of " + Util.formatBytes(bytesTotalFs) + " available");
-        Log.i(TAG, "Cache limit       : " + Util.formatBytes(cacheSizeBytes));
-        Log.i(TAG, "Cache size before : " + Util.formatBytes(bytesUsedBySubsonic));
-        Log.i(TAG, "Minimum to delete : " + Util.formatBytes(bytesToDelete));
+        LOG.info("File system       : " + Util.formatBytes(bytesAvailableFs) + " of " + Util.formatBytes(bytesTotalFs) + " available");
+        LOG.info("Cache limit       : " + Util.formatBytes(cacheSizeBytes));
+        LOG.info("Cache size before : " + Util.formatBytes(bytesUsedBySubsonic));
+        LOG.info("Minimum to delete : " + Util.formatBytes(bytesToDelete));
 
         long bytesDeleted = 0L;
         for (File file : files) {
@@ -121,8 +120,8 @@ public class CacheCleaner {
             }
         }
 
-        Log.i(TAG, "Deleted           : " + Util.formatBytes(bytesDeleted));
-        Log.i(TAG, "Cache size after  : " + Util.formatBytes(bytesUsedBySubsonic - bytesDeleted));
+        LOG.info("Deleted           : " + Util.formatBytes(bytesDeleted));
+        LOG.info("Cache size after  : " + Util.formatBytes(bytesUsedBySubsonic - bytesDeleted));
     }
 
     private void findCandidatesForDeletion(File file, List<File> files, List<File> dirs) {

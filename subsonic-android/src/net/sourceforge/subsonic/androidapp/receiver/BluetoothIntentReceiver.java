@@ -21,8 +21,8 @@ package net.sourceforge.subsonic.androidapp.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -32,7 +32,7 @@ import net.sourceforge.subsonic.androidapp.util.Util;
  */
 public class BluetoothIntentReceiver extends BroadcastReceiver {
 
-    private static final String TAG = BluetoothIntentReceiver.class.getSimpleName();
+    private static final Logger LOG = new Logger(BluetoothIntentReceiver.class);
 
     // Same as constants in android.bluetooth.BluetoothProfile, which is API level 11.
     private static final int STATE_DISCONNECTED = 0;
@@ -40,13 +40,13 @@ public class BluetoothIntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "GOT INTENT " + intent);
+        LOG.info("GOT INTENT " + intent);
 
         if (isConnected(intent)) {
-            Log.i(TAG, "Connected to Bluetooth A2DP, requesting media button focus.");
+            LOG.info("Connected to Bluetooth A2DP, requesting media button focus.");
             Util.registerMediaButtonEventReceiver(context);
         } else if (isDisconnected(intent)) {
-            Log.i(TAG, "Disconnected from Bluetooth A2DP, requesting pause.");
+            LOG.info("Disconnected from Bluetooth A2DP, requesting pause.");
             context.sendBroadcast(new Intent(DownloadServiceImpl.CMD_PAUSE));
         }
     }

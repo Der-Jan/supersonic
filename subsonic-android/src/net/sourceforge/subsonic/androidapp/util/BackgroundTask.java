@@ -25,7 +25,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.R;
 
 /**
@@ -33,7 +32,7 @@ import net.sourceforge.subsonic.androidapp.R;
  */
 public abstract class BackgroundTask<T> implements ProgressListener {
 
-    private static final String TAG = BackgroundTask.class.getSimpleName();
+    private static final Logger LOG = new Logger(BackgroundTask.class);
     private final Activity activity;
     private final Handler handler;
 
@@ -57,7 +56,7 @@ public abstract class BackgroundTask<T> implements ProgressListener {
     protected abstract void done(T result);
 
     protected void error(Throwable error) {
-        Log.w(TAG, "Got exception: " + error, error);
+        LOG.warn("Got exception: " + error, error);
         new ErrorDialog(activity, getErrorMessage(error), true);
     }
 

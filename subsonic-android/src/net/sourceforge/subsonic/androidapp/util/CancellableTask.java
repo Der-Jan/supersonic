@@ -21,15 +21,13 @@ package net.sourceforge.subsonic.androidapp.util;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import android.util.Log;
-
 /**
  * @author Sindre Mehus
  * @version $Id$
  */
 public abstract class CancellableTask {
 
-    private static final String TAG = CancellableTask.class.getSimpleName();
+    private static final Logger LOG = new Logger(CancellableTask.class);
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final AtomicBoolean cancelled = new AtomicBoolean(false);
@@ -37,7 +35,7 @@ public abstract class CancellableTask {
     private final AtomicReference<OnCancelListener> cancelListener = new AtomicReference<OnCancelListener>();
 
     public void cancel() {
-        Log.d(TAG, "Cancelling " + CancellableTask.this);
+        LOG.debug("Cancelling " + CancellableTask.this);
         cancelled.set(true);
 
         OnCancelListener listener = cancelListener.get();
@@ -45,7 +43,7 @@ public abstract class CancellableTask {
             try {
                 listener.onCancel();
             } catch (Throwable x) {
-                Log.w(TAG, "Error when invoking OnCancelListener.", x);
+                LOG.warn("Error when invoking OnCancelListener.", x);
             }
         }
     }
@@ -69,12 +67,12 @@ public abstract class CancellableTask {
             @Override
             public void run() {
                 running.set(true);
-                Log.d(TAG, "Starting thread for " + CancellableTask.this);
+                LOG.debug("Starting thread for " + CancellableTask.this);
                 try {
                     execute();
                 } finally {
                     running.set(false);
-                    Log.d(TAG, "Stopping thread for " + CancellableTask.this);
+                    LOG.debug("Stopping thread for " + CancellableTask.this);
                 }
             }
         });

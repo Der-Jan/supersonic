@@ -25,15 +25,13 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
-import net.sourceforge.subsonic.androidapp.activity.SubsonicTabActivity;
 
 /**
  * Logs the stack trace of uncaught exceptions to a file on the SD card.
  */
 public class SubsonicUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private static final String TAG = SubsonicTabActivity.class.getSimpleName();
+    private static final Logger LOG = new Logger(SubsonicUncaughtExceptionHandler.class);
 
     private final Thread.UncaughtExceptionHandler defaultHandler;
     private final Context context;
@@ -57,9 +55,9 @@ public class SubsonicUncaughtExceptionHandler implements Thread.UncaughtExceptio
             printWriter.println("Subsonic version code: " + packageInfo.versionCode);
             printWriter.println();
             throwable.printStackTrace(printWriter);
-            Log.i(TAG, "Stack trace written to " + file);
+            LOG.info("Stack trace written to " + file);
         } catch (Throwable x) {
-            Log.e(TAG, "Failed to write stack trace to " + file, x);
+            LOG.error("Failed to write stack trace to " + file, x);
         } finally {
             Util.close(printWriter);
             if (defaultHandler != null) {

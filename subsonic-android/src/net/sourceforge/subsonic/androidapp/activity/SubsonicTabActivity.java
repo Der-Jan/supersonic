@@ -25,7 +25,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +40,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.ImageLoader;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import net.sourceforge.subsonic.androidapp.util.VideoPlayerType;
@@ -50,7 +50,7 @@ import net.sourceforge.subsonic.androidapp.util.VideoPlayerType;
  */
 public class SubsonicTabActivity extends Activity {
 
-    private static final String TAG = SubsonicTabActivity.class.getSimpleName();
+    private static final Logger LOG = new Logger(SubsonicTabActivity.class);
     private static ImageLoader IMAGE_LOADER;
 
     private boolean destroyed;
@@ -231,7 +231,7 @@ public class SubsonicTabActivity extends Activity {
             if (downloadService != null) {
                 return downloadService;
             }
-            Log.w(TAG, "DownloadService not running. Attempting to start it.");
+            LOG.warn("DownloadService not running. Attempting to start it.");
             startService(new Intent(this, DownloadServiceImpl.class));
             Util.sleepQuietly(50L);
         }

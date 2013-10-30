@@ -21,7 +21,6 @@ package net.sourceforge.subsonic.androidapp.util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.R;
 
 /**
@@ -29,7 +28,7 @@ import net.sourceforge.subsonic.androidapp.R;
  */
 public abstract class ModalBackgroundTask<T> extends BackgroundTask<T> {
 
-    private static final String TAG = ModalBackgroundTask.class.getSimpleName();
+    private static final Logger LOG = new Logger(ModalBackgroundTask.class);
 
     private final AlertDialog progressDialog;
     private Thread thread;
@@ -123,7 +122,7 @@ public abstract class ModalBackgroundTask<T> extends BackgroundTask<T> {
     }
 
     protected void error(Throwable error) {
-        Log.w(TAG, "Got exception: " + error, error);
+        LOG.warn("Got exception: " + error, error);
         new ErrorDialog(getActivity(), getErrorMessage(error), finishActivityOnCancel);
     }
 

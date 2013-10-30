@@ -28,7 +28,6 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RemoteViews;
 import net.sourceforge.subsonic.androidapp.R;
@@ -43,7 +42,7 @@ import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
  */
 public final class NotificationUtil {
 
-    private static final String TAG = NotificationUtil.class.getSimpleName();
+    private static final Logger LOG = new Logger(NotificationUtil.class);
 
     public static void updateNotification(final Context context, final DownloadServiceImpl downloadService,
             Handler handler, MusicDirectory.Entry song, boolean playing) {
@@ -118,7 +117,7 @@ public final class NotificationUtil {
                 albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
             }
         } catch (Exception x) {
-            Log.w(TAG, "Failed to get notification cover art", x);
+            LOG.warn("Failed to get notification cover art", x);
             albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
         }
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
@@ -140,7 +139,7 @@ public final class NotificationUtil {
                 albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
             }
         } catch (Exception x) {
-            Log.w(TAG, "Failed to get notification cover art", x);
+            LOG.warn("Failed to get notification cover art", x);
             albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
         }
 

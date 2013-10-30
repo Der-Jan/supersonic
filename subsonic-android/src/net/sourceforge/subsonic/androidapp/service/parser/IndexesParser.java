@@ -19,8 +19,8 @@
 package net.sourceforge.subsonic.androidapp.service.parser;
 
 import java.io.Reader;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -28,14 +28,15 @@ import android.content.Context;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.Indexes;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
-import android.util.Log;
 
 /**
  * @author Sindre Mehus
  */
 public class IndexesParser extends AbstractParser {
-    private static final String TAG = IndexesParser.class.getSimpleName();
+
+    private static final Logger LOG = new Logger(IndexesParser.class);
 
     public IndexesParser(Context context) {
         super(context);
@@ -94,7 +95,7 @@ public class IndexesParser extends AbstractParser {
         }
 
         long t1 = System.currentTimeMillis();
-        Log.d(TAG, "Got " + artists.size() + " artist(s) in " + (t1 - t0) + "ms.");
+        LOG.debug("Got " + artists.size() + " artist(s) in " + (t1 - t0) + "ms.");
 
         String msg = getContext().getResources().getString(R.string.parser_artist_count, artists.size());
         updateProgress(progressListener, msg);

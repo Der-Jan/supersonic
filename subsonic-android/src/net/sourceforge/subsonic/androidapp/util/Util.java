@@ -58,7 +58,6 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
@@ -74,7 +73,7 @@ import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
  */
 public final class Util {
 
-    private static final String TAG = Util.class.getSimpleName();
+    private static final Logger LOG = new Logger(Util.class);
 
     private static final DecimalFormat GIGA_BYTE_FORMAT = new DecimalFormat("0.00 GB");
     private static final DecimalFormat MEGA_BYTE_FORMAT = new DecimalFormat("0.00 MB");
@@ -268,7 +267,7 @@ public final class Util {
             if (!tmp.renameTo(to)) {
                 throw new IOException("Failed to rename " + tmp + " to " + to);
             }
-            Log.i(TAG, "Copied " + from + " to " + to);
+            LOG.info("Copied " + from + " to " + to);
         } catch (IOException x) {
             close(out);
             delete(to);
@@ -293,10 +292,10 @@ public final class Util {
     public static boolean delete(File file) {
         if (file != null && file.exists()) {
             if (!file.delete()) {
-                Log.w(TAG, "Failed to delete file " + file);
+                LOG.warn("Failed to delete file " + file);
                 return false;
             }
-            Log.i(TAG, "Deleted file " + file);
+            LOG.info("Deleted file " + file);
         }
         return true;
     }
@@ -549,7 +548,7 @@ public final class Util {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException x) {
-            Log.w(TAG, "Interrupted from sleep.", x);
+            LOG.warn("Interrupted from sleep.", x);
         }
     }
 

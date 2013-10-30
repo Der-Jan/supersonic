@@ -25,16 +25,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 
 /**
@@ -42,7 +41,7 @@ import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
  */
 public class FileUtil {
 
-    private static final String TAG = FileUtil.class.getSimpleName();
+    private static final Logger LOG = new Logger(FileUtil.class);
     private static final String[] FILE_SYSTEM_UNSAFE = {"/", "\\", "..", ":", "\"", "?", "*", "<", ">"};
     private static final String[] FILE_SYSTEM_UNSAFE_DIR = {"\\", "..", ":", "\"", "?", "*", "<", ">"};
     private static final List<String> MUSIC_FILE_EXTENSIONS = Arrays.asList("mp3", "ogg", "aac", "flac", "m4a", "wav", "wma");
@@ -118,7 +117,7 @@ public class FileUtil {
         File dir = file.getParentFile();
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                Log.e(TAG, "Failed to create directory " + dir);
+                LOG.error("Failed to create directory " + dir);
             }
         }
     }
@@ -126,7 +125,7 @@ public class FileUtil {
     private static File createDirectory(String name) {
         File dir = new File(getSubsonicDirectory(), name);
         if (!dir.exists() && !dir.mkdirs()) {
-            Log.e(TAG, "Failed to create " + name);
+            LOG.error("Failed to create " + name);
         }
         return dir;
     }
@@ -152,25 +151,25 @@ public class FileUtil {
 
         if (dir.exists()) {
             if (!dir.isDirectory()) {
-                Log.w(TAG, dir + " exists but is not a directory.");
+                LOG.warn(dir + " exists but is not a directory.");
                 return false;
             }
         } else {
             if (dir.mkdirs()) {
-                Log.i(TAG, "Created directory " + dir);
+                LOG.info("Created directory " + dir);
             } else {
-                Log.w(TAG, "Failed to create directory " + dir);
+                LOG.warn("Failed to create directory " + dir);
                 return false;
             }
         }
 
         if (!dir.canRead()) {
-            Log.w(TAG, "No read permission for directory " + dir);
+            LOG.warn("No read permission for directory " + dir);
             return false;
         }
 
         if (!dir.canWrite()) {
-            Log.w(TAG, "No write permission for directory " + dir);
+            LOG.warn("No write permission for directory " + dir);
             return false;
         }
         return true;
@@ -219,7 +218,7 @@ public class FileUtil {
     public static SortedSet<File> listFiles(File dir) {
         File[] files = dir.listFiles();
         if (files == null) {
-            Log.w(TAG, "Failed to list children for " + dir.getPath());
+            LOG.warn("Failed to list children for " + dir.getPath());
             return new TreeSet<File>();
         }
 
@@ -273,10 +272,10 @@ public class FileUtil {
         try {
             out = new ObjectOutputStream(new FileOutputStream(file));
             out.writeObject(obj);
-            Log.i(TAG, "Serialized object to " + file);
+            LOG.info("Serialized object to " + file);
             return true;
         } catch (Throwable x) {
-            Log.w(TAG, "Failed to serialize object to " + file);
+            LOG.warn("Failed to serialize object to " + file);
             return false;
         } finally {
             Util.close(out);
@@ -293,10 +292,10 @@ public class FileUtil {
         try {
             in = new ObjectInputStream(new FileInputStream(file));
             T result = (T) in.readObject();
-            Log.i(TAG, "Deserialized object from " + file);
+            LOG.info("Deserialized object from " + file);
             return result;
         } catch (Throwable x) {
-            Log.w(TAG, "Failed to deserialize object from " + file, x);
+            LOG.warn("Failed to deserialize object from " + file, x);
             return null;
         } finally {
             Util.close(in);
