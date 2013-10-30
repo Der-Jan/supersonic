@@ -82,10 +82,14 @@ public class FileUtil {
     }
 
     public static Bitmap getAlbumArtBitmap(Context context, MusicDirectory.Entry entry, int size) {
+        Bitmap bitmap = getUnscaledAlbumArtBitmap(context, entry);
+        return bitmap == null ? null : Bitmap.createScaledBitmap(bitmap, size, size, true);
+    }
+
+    public static Bitmap getUnscaledAlbumArtBitmap(Context context, MusicDirectory.Entry entry) {
         File albumArtFile = getAlbumArtFile(context, entry);
         if (albumArtFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(albumArtFile.getPath());
-            return bitmap == null ? null : Bitmap.createScaledBitmap(bitmap, size, size, true);
+            return BitmapFactory.decodeFile(albumArtFile.getPath());
         }
         return null;
     }

@@ -58,14 +58,13 @@ public final class NotificationUtil {
 
             // Get the album art.
             try {
-                int size = context.getResources().getDrawable(R.drawable.unknown_album).getIntrinsicHeight();
-                albumArt = FileUtil.getAlbumArtBitmap(context, song, size);
+                albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
                 if (albumArt == null) {
-                    albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+                    albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
                 }
             } catch (Exception x) {
                 Log.w(TAG, "Failed to get notification cover art", x);
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
             }
 
             Intent notificationIntent = new Intent(context, DownloadActivity.class);
@@ -124,7 +123,7 @@ public final class NotificationUtil {
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
         contentView.setOnClickPendingIntent(R.id.notification_playpause, PendingIntent.getService(context, 0, intent, 0));
 
-        intent = new Intent("2");  // Use a unique action name to ensure a different PendingIntent to be created.
+        intent = new Intent("2");
         intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
         contentView.setOnClickPendingIntent(R.id.notification_next, PendingIntent.getService(context, 0, intent, 0));
@@ -136,17 +135,37 @@ public final class NotificationUtil {
                 .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
                 .build();
         if (Build.VERSION.SDK_INT >= 16) {
-            notification.bigContentView = createBigContentView(context, title, text, albumArt, notificationIntent, playing);
+            notification.bigContentView = createBigContentView(context, title, text, albumArt, playing);
         }
         return notification;
     }
 
-    private static RemoteViews createBigContentView(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent, boolean playing) {
+    private static RemoteViews createBigContentView(Context context, String title, String text, Bitmap albumArt, boolean playing) {
+
+
+        // TODO: Set album
+
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_expanded);
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_artist, text);
         contentView.setImageViewBitmap(R.id.notification_image, albumArt);
         contentView.setImageViewResource(R.id.notification_playpause, playing ? R.drawable.media_pause : R.drawable.media_start);
+
+        Intent intent = new Intent("1");
+        intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
+        intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+        contentView.setOnClickPendingIntent(R.id.notification_playpause, PendingIntent.getService(context, 0, intent, 0));
+
+        intent = new Intent("2");
+        intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
+        intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
+        contentView.setOnClickPendingIntent(R.id.notification_next, PendingIntent.getService(context, 0, intent, 0));
+
+        intent = new Intent("3");
+        intent.setComponent(new ComponentName(context, DownloadServiceImpl.class));
+        intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PREVIOUS));
+        contentView.setOnClickPendingIntent(R.id.notification_prev, PendingIntent.getService(context, 0, intent, 0));
+
         return contentView;
     }
 

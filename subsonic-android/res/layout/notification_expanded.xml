@@ -8,7 +8,7 @@
             android:id="@+id/notification_image"
             android:layout_width="128.0dip"
             android:layout_height="128.0dip"
-            android:scaleType="matrix"
+            android:scaleType="fitCenter"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"/>
 
