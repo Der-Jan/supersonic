@@ -102,6 +102,16 @@ public final class NotificationUtil {
         });
     }
 
+    private static Notification createSimpleNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent) {
+        return new NotificationCompat.Builder(context).setOngoing(true)
+                .setSmallIcon(R.drawable.stat_notify_playing)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
+                .setLargeIcon(albumArt)
+                .build();
+    }
+
     private static Notification createCustomNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent, boolean playing) {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
         contentView.setTextViewText(R.id.notification_title, title);
@@ -119,22 +129,25 @@ public final class NotificationUtil {
         intent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
         contentView.setOnClickPendingIntent(R.id.notification_next, PendingIntent.getService(context, 0, intent, 0));
 
-        return new NotificationCompat.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.stat_notify_playing)
                 .setContent(contentView)
                 .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
                 .build();
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification.bigContentView = createBigContentView(context, title, text, albumArt, notificationIntent, playing);
+        }
+        return notification;
     }
 
-    private static Notification createSimpleNotification(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent) {
-        return new NotificationCompat.Builder(context).setOngoing(true)
-                .setSmallIcon(R.drawable.stat_notify_playing)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setContentIntent(PendingIntent.getActivity(context, 0, notificationIntent, 0))
-                .setLargeIcon(albumArt)
-                .build();
+    private static RemoteViews createBigContentView(Context context, String title, String text, Bitmap albumArt, Intent notificationIntent, boolean playing) {
+        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_expanded);
+        contentView.setTextViewText(R.id.notification_title, title);
+        contentView.setTextViewText(R.id.notification_artist, text);
+        contentView.setImageViewBitmap(R.id.notification_image, albumArt);
+        contentView.setImageViewResource(R.id.notification_playpause, playing ? R.drawable.media_pause : R.drawable.media_start);
+        return contentView;
     }
 
     private static boolean useSimpleNotification() {
