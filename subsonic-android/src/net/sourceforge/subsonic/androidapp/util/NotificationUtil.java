@@ -56,9 +56,6 @@ public final class NotificationUtil {
 
         // Update widget
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
-
-        // TODO: Test missing album art
-        // TODO: Test with widget
     }
 
     private static void updateSimpleNotification(Context context, final DownloadServiceImpl downloadService, Handler handler,

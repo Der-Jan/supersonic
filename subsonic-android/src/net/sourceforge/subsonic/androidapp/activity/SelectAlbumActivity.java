@@ -563,7 +563,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         View header = LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
 
         View coverArtView = header.findViewById(R.id.select_album_art);
-        getImageLoader().loadImage(coverArtView, entries.get(0), false, true);
+        getImageLoader().loadImage(coverArtView, entries.get(0), true, true);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());

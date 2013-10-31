@@ -175,9 +175,12 @@ Send com.android.music.metachanged intent.
 Support dynamic number of servers.
 Notification controls (API level >= 11)
 Faster startup: Run CacheCleaner in bg
+Problem with album art (zoomed when going back).
+Nicer album art in album view.
 
 TODO IN ANDROID 3.9
 --------------------
+Test notification with missing album art.
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d

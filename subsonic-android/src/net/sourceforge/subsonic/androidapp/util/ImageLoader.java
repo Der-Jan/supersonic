@@ -84,7 +84,9 @@ public class ImageLoader implements Runnable {
         int size = large ? imageSizeLarge : imageSizeDefault;
         Drawable drawable = cache.get(getKey(entry.getCoverArt(), size));
         if (drawable != null) {
-            setImage(view, drawable, crossfade);
+            // Create a clone since the images can be modified by the caller.
+            Drawable clone = drawable.getConstantState().newDrawable();
+            setImage(view, clone, crossfade);
             return;
         }
 
