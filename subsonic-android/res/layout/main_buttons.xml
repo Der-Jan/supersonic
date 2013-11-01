@@ -52,7 +52,7 @@
               android:id="@+id/main_starred"
               android:text="@string/main.starred"
               android:drawablePadding="12dip"
-              android:drawableLeft="@drawable/collections_cloud"/>
+              android:drawableLeft="@drawable/ic_action_important"/>
 
     <TextView style="@style/HeaderTextView" android:id="@+id/main_albums" android:text="@string/main.albums_title"/>
     <TextView style="@style/MainMenuTextView.AlbumList" android:id="@+id/main_albums_newest" android:text="@string/main.albums_newest"/>

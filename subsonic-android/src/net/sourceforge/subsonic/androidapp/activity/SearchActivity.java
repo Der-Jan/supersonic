@@ -90,8 +90,6 @@ public class SearchActivity extends SubsonicTabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
-        setTitle(R.string.search_title);
-
         View buttons = LayoutInflater.from(this).inflate(R.layout.search_buttons, null);
 
         artistsHeading = buttons.findViewById(R.id.search_artists);
@@ -165,6 +163,8 @@ public class SearchActivity extends SubsonicTabActivity {
         String query = intent.getStringExtra(Constants.INTENT_EXTRA_NAME_QUERY);
         boolean starred = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_QUERY_STARRED, false);
         boolean autoplay = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
+
+        setTitle(starred ? R.string.search_title_starred : R.string.search_title);
 
         if (query == null && !starred) {
             populateList();

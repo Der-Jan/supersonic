@@ -53,6 +53,7 @@
 
     <string name="search.label">Search</string>
     <string name="search.title">Search</string>
+    <string name="search.title_starred">Starred music</string>
     <string name="search.search">Click to search</string>
     <string name="search.no_match">No matches, please try again</string>
     <string name="search.artists">ARTISTS</string>
