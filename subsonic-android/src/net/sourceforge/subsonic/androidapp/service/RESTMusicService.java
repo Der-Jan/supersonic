@@ -317,6 +317,18 @@ public class RESTMusicService implements MusicService {
     }
 
     @Override
+    public SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception {
+        checkServerVersion(context, "1.8", "Starring not supported.");
+
+        Reader reader = getReader(context, progressListener, "getStarred", null);
+        try {
+            return new SearchResult2Parser(context).parse(reader, progressListener);
+        } finally {
+            Util.close(reader);
+        }
+    }
+
+    @Override
     public MusicDirectory getPlaylist(String id, Context context, ProgressListener progressListener) throws Exception {
         HttpParams params = new BasicHttpParams();
         HttpConnectionParams.setSoTimeout(params, SOCKET_READ_TIMEOUT_GET_PLAYLIST);

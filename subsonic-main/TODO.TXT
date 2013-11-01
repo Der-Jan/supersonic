@@ -174,6 +174,14 @@ DONE IN ANDROID 4.0
 TODO IN ANDROID 4.0
 --------------------
 Starring support
+  New main screen option
+  Treat it as a search, and reuse SearchActivity.
+  Also add option to star/unstar
+  Display
+  Check WiMP
+Google Cast
+  https://developers.google.com/cast/
+  https://developers.google.com/cast/cast_2nd-screen_app_tutorial
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
@@ -189,7 +197,6 @@ Add option to delete file. (Rename to "Remove from playlist").
 Add to playlist
 Test on Android 2 and 3.
   Notification icon too big and bright.
-Poor quality of album art in album header?
 
 Review patches for AVRCP and lockscreen controls
   https://sourceforge.net/p/subsonic/patches/9/

@@ -149,6 +149,11 @@ public class OfflineMusicService extends RESTMusicService {
     }
 
     @Override
+    public SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception {
+        throw new OfflineException("Starring not available in offline mode");
+    }
+
+    @Override
     public List<Playlist> getPlaylists(boolean refresh, Context context, ProgressListener progressListener) throws Exception {
         throw new OfflineException("Playlists not available in offline mode");
     }
