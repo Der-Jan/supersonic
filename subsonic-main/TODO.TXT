@@ -168,17 +168,10 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.9
+DONE IN ANDROID 4.0
 --------------------
-Fixed illegal xml in french locale.
-Send com.android.music.metachanged intent.
-Support dynamic number of servers.
-Notification controls (API level >= 11)
-Faster startup: Run CacheCleaner in bg
-Problem with album art (zoomed when going back).
-Nicer album art in album view.
 
-TODO IN ANDROID 3.9
+TODO IN ANDROID 4.0
 --------------------
 Starring support
 
@@ -875,7 +868,7 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.7 -m "Tagging Android 3.7"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.9 -m "Tagging Android 3.9"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
