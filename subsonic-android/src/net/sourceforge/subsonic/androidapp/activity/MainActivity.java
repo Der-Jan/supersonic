@@ -73,6 +73,8 @@ public class MainActivity extends SubsonicTabActivity {
         final TextView offlineButton = (TextView) buttons.findViewById(R.id.main_offline);
         offlineButton.setText(Util.isOffline(this) ? R.string.main_use_connected : R.string.main_use_offline);
 
+        final TextView starredButton = (TextView) buttons.findViewById(R.id.main_starred);
+
         final View albumsTitle = buttons.findViewById(R.id.main_albums);
         final View albumsNewestButton = buttons.findViewById(R.id.main_albums_newest);
         final View albumsRandomButton = buttons.findViewById(R.id.main_albums_random);
@@ -89,6 +91,7 @@ public class MainActivity extends SubsonicTabActivity {
         adapter.addView(offlineButton, true);
         if (!Util.isOffline(this)) {
             adapter.addView(serverButton, true);
+            adapter.addView(starredButton, true);
             adapter.addView(albumsTitle, false);
             adapter.addViews(Arrays.asList(albumsNewestButton, albumsRandomButton, albumsHighestButton, albumsRecentButton, albumsFrequentButton), true);
         }
@@ -102,6 +105,8 @@ public class MainActivity extends SubsonicTabActivity {
                     toggleOffline();
                 } else if (view == serverButton) {
                     dummyView.showContextMenu();
+                } else if (view == starredButton) {
+                    showStarredMusic();
                 } else if (view == albumsNewestButton) {
                     showAlbumList("newest");
                 } else if (view == albumsRandomButton) {
@@ -260,6 +265,12 @@ public class MainActivity extends SubsonicTabActivity {
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_TYPE, type);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_SIZE, 20);
         intent.putExtra(Constants.INTENT_EXTRA_NAME_ALBUM_LIST_OFFSET, 0);
+        Util.startActivityWithoutTransition(this, intent);
+    }
+
+    private void showStarredMusic() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_NAME_QUERY_STARRED, true);
         Util.startActivityWithoutTransition(this, intent);
     }
 }

@@ -166,12 +166,16 @@ public class SearchActivity extends SubsonicTabActivity {
         boolean starred = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_QUERY_STARRED, false);
         boolean autoplay = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
 
-        if (query != null) {
+        if (query == null && !starred) {
+            populateList();
+        } else {
             mergeAdapter = new MergeAdapter();
             list.setAdapter(mergeAdapter);
-            search(query, autoplay);
-        } else {
-            populateList();
+            if (starred) {
+                getStarred();
+            } else {
+                search(query, autoplay);
+            }
         }
     }
 
@@ -259,6 +263,23 @@ public class SearchActivity extends SubsonicTabActivity {
                     autoplay();
                 }
 
+            }
+        };
+        task.execute();
+    }
+
+    private void getStarred() {
+        BackgroundTask<SearchResult> task = new TabActivityBackgroundTask<SearchResult>(this) {
+            @Override
+            protected SearchResult doInBackground() throws Throwable {
+                MusicService service = MusicServiceFactory.getMusicService(SearchActivity.this);
+                return service.getStarred(SearchActivity.this, this);
+            }
+
+            @Override
+            protected void done(SearchResult result) {
+                searchResult = result;
+                populateList();
             }
         };
         task.execute();

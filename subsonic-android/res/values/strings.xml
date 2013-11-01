@@ -25,6 +25,7 @@
     <string name="main.shuffle">Shuffle play</string>
     <string name="main.shuffle_confirm">Do you want to start shuffle play?</string>
     <string name="main.use_offline">Use offline</string>
+    <string name="main.starred">My starred music</string>
     <string name="main.use_connected">Use connected</string>
     <string name="main.settings">Settings</string>
     <string name="main.albums_title">ALBUMS</string>
