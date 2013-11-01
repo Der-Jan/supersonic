@@ -49,6 +49,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -724,5 +725,9 @@ public final class Util {
         if (!(handler instanceof SubsonicUncaughtExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new SubsonicUncaughtExceptionHandler(context));
         }
+    }
+
+    public static Bitmap decodeBitmap(Context context, int resourceId) {
+        return BitmapFactory.decodeResource(context.getResources(), resourceId);
     }
 }

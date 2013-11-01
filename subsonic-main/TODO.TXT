@@ -180,7 +180,7 @@ Nicer album art in album view.
 
 TODO IN ANDROID 3.9
 --------------------
-Test notification with missing album art.
+Starring support
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
@@ -188,7 +188,6 @@ Problem with shuffle + offline
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls
-Starring support
 Podcast support
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581

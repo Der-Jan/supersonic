@@ -111,11 +111,11 @@ public final class NotificationUtil {
         try {
             albumArt = FileUtil.getAlbumArtBitmap(context, song, (int) Util.convertDpToPixel(64.0F, context));
             if (albumArt == null) {
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+                albumArt = Util.decodeBitmap(context, R.drawable.unknown_album);
             }
         } catch (Exception x) {
             LOG.warn("Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+            albumArt = Util.decodeBitmap(context, R.drawable.unknown_album);
         }
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
         return new NotificationCompat.Builder(context).setOngoing(true)
@@ -133,11 +133,11 @@ public final class NotificationUtil {
         try {
             albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
             if (albumArt == null) {
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+                albumArt = Util.decodeBitmap(context, R.drawable.unknown_album_large);
             }
         } catch (Exception x) {
             LOG.warn("Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+            albumArt = Util.decodeBitmap(context, R.drawable.unknown_album_large);
         }
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
