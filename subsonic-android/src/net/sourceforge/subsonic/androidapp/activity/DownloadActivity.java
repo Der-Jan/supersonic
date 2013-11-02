@@ -73,6 +73,7 @@ import net.sourceforge.subsonic.androidapp.util.FadeOutAnimation;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import net.sourceforge.subsonic.androidapp.view.VisualizerView;
 
@@ -560,6 +561,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
             menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.menu_star).setVisible(!downloadFile.getSong().isStarred());
+            menu.findItem(R.id.menu_unstar).setVisible(downloadFile.getSong().isStarred());
             menu.findItem(R.id.menu_remove).setVisible(true);
             menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
             menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
@@ -585,6 +588,12 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 return true;
             case R.id.menu_unpin:
                 getDownloadService().unpin(Arrays.asList(song.getSong()));
+                return true;
+            case R.id.menu_star:
+                StarUtil.starInBackground(this, song.getSong(), true);
+                return true;
+            case R.id.menu_unstar:
+                StarUtil.starInBackground(this, song.getSong(), false);
                 return true;
             case R.id.menu_remove:
                 getDownloadService().remove(song);
@@ -706,7 +715,6 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         } else if (state == STOPPED || state == IDLE) {
             warnIfNetworkOrStorageUnavailable();
             int current = service.getCurrentPlayingIndex();
-            // TODO: Use play() method.
             if (current == -1) {
                 service.play(0);
             } else {

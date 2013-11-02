@@ -177,6 +177,7 @@ TODO IN ANDROID 4.0
 Starring support
   Proper message if no starred music exists.
   Add starrring of artists and songs.
+  Add toast when starring succeeds. "Starred 'Back in Black'".
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.
   Add "starred" to artist in REST xsd.

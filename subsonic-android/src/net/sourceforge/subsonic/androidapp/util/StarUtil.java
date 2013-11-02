@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.androidapp.util;
 
 import android.app.Activity;
 import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 
@@ -32,25 +33,35 @@ public final class StarUtil {
     private StarUtil() {
     }
 
-    public static void starInBackground(final Activity context, final String id, final boolean star) {
-        new SilentBackgroundTask<Void>(context) {
+    public static void starInBackground(Activity activity, MusicDirectory.Entry song, boolean star) {
+        starInBackground(activity, song.getId(), song.getTitle(), star);
+        song.setStarred(star);
+    }
+
+    public static void starInBackground(Activity activity, MusicDirectory directory, boolean star) {
+        starInBackground(activity, directory.getId(), directory.getName(), star);
+        directory.setStarred(star);
+    }
+
+    private static void starInBackground(final Activity activity, final String id, final String name, final boolean star) {
+        new SilentBackgroundTask<Void>(activity) {
             @Override
             protected Void doInBackground() throws Throwable {
-                MusicService musicService = MusicServiceFactory.getMusicService(context);
-                musicService.star(id, star, context, null);
+                MusicService musicService = MusicServiceFactory.getMusicService(activity);
+                musicService.star(id, star, activity, null);
                 return null;
             }
 
             @Override
             protected void done(Void result) {
+                Util.toast(activity, star ? R.string.star_star_succesful : R.string.star_unstar_succesful, true, name);
             }
 
             @Override
             protected void error(Throwable error) {
-                String msg = context.getResources().getString(R.string.common_star_failed) + " " + getErrorMessage(error);
-                Util.toast(context, msg);
+                Util.toast(activity, star ? R.string.star_star_failed : R.string.star_unstar_failed,
+                        true, name, getErrorMessage(error));
             }
         }.execute();
     }
-
 }

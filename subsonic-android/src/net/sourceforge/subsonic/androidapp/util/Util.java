@@ -305,8 +305,8 @@ public final class Util {
         toast(context, messageId, true);
     }
 
-    public static void toast(Context context, int messageId, boolean shortDuration) {
-        toast(context, context.getString(messageId), shortDuration);
+    public static void toast(Context context, int messageId, boolean shortDuration, Object... formatArgs) {
+        toast(context, context.getString(messageId, formatArgs), shortDuration);
     }
 
     public static void toast(Context context, String message) {

@@ -572,8 +572,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         starView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                directory.setStarred(!directory.isStarred());
-                StarUtil.starInBackground(SelectAlbumActivity.this, directory.getId(), directory.isStarred());
+                StarUtil.starInBackground(SelectAlbumActivity.this, directory, !directory.isStarred());
                 starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
             }
         });

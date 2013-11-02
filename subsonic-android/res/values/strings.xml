@@ -12,7 +12,6 @@
     <string name="common.pin">Pin</string>
     <string name="common.unpin">Unpin</string>
     <string name="common.delete">Delete</string>
-    <string name="common_star_failed">Failed to star/unstar</string>
 
     <string name="button_bar.home">HOME</string>
     <string name="button_bar.browse">LIBRARY</string>
@@ -218,6 +217,13 @@
     <string name="widget.initial_text">Touch to select music</string>
     <string name="widget.sdcard_busy">SD card unavailable</string>
     <string name="widget.sdcard_missing">No SD card</string>
+
+    <string name="star.menu_star">Star</string>
+    <string name="star.menu_unstar">Unstar</string>
+    <string name="star.star_succesful">Starred \"%s\"</string>
+    <string name="star.unstar_succesful">Unstarred \"%s\"</string>
+    <string name="star.star_failed">Failed to star \"%s\"</string>
+    <string name="star.unstar_failed">Failed to unstar \"%s\"</string>
 
     <string name="util.bytes_format.gigabyte">0.00 GB</string>
     <string name="util.bytes_format.megabyte">0.00 MB</string>

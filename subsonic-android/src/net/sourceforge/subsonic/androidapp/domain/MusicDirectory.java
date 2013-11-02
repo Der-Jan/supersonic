@@ -107,6 +107,7 @@ public class MusicDirectory {
         private Integer bitRate;
         private String path;
         private boolean video;
+        private boolean starred;
 
         public String getId() {
             return id;
@@ -258,6 +259,14 @@ public class MusicDirectory {
 
         public void setVideo(boolean video) {
             this.video = video;
+        }
+
+        public boolean isStarred() {
+            return starred;
+        }
+
+        public void setStarred(boolean starred) {
+            this.starred = starred;
         }
 
         @Override
