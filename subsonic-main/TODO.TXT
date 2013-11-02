@@ -176,7 +176,6 @@ TODO IN ANDROID 4.0
 --------------------
 Starring support
   Remove item when unstarring from "My starred music"
-  Populate Artist.starred (in CachedMusicService.getIndexes?)
   Proper message if no starred music exists.
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.

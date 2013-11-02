@@ -18,9 +18,12 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import net.sourceforge.subsonic.androidapp.domain.Artist;
 import org.apache.http.HttpResponse;
 
 import android.content.Context;
@@ -101,12 +104,13 @@ public class CachedMusicService implements MusicService {
             cachedMusicFolders.clear();
             cachedMusicDirectories.clear();
         }
-        Indexes result = cachedIndexes.get();
-        if (result == null) {
-            result = musicService.getIndexes(musicFolderId, refresh, context, progressListener);
-            cachedIndexes.set(result);
+        Indexes indexes = cachedIndexes.get();
+        if (indexes == null) {
+            indexes = musicService.getIndexes(musicFolderId, refresh, context, progressListener);
+            populateStarred(indexes.getArtists(), context, progressListener);
+            cachedIndexes.set(indexes);
         }
-        return result;
+        return indexes;
     }
 
     @Override
@@ -135,6 +139,19 @@ public class CachedMusicService implements MusicService {
         }
     }
 
+    private void populateStarred(List<Artist> artists, Context context, ProgressListener progressListener) throws Exception {
+        // Artist.starred was added to the REST API in 1.10, so for backward compatibility
+        // we have to emulate it.
+        List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
+        Set<String> starredArtistIds = new HashSet<String>();
+        for (Artist starredArtist : starredArtists) {
+            starredArtistIds.add(starredArtist.getId());
+        }
+        for (Artist artist : artists) {
+            artist.setStarred(starredArtistIds.contains(artist.getId()));
+        }
+    }
+
     @Override
     public SearchResult search(SearchCritera criteria, Context context, ProgressListener progressListener) throws Exception {
         return musicService.search(criteria, context, progressListener);
@@ -147,6 +164,7 @@ public class CachedMusicService implements MusicService {
         if (result == null) {
             result = musicService.getStarred(context, progressListener);
             cachedStarred.set(result);
+            populateStarred(result.getArtists(), context, progressListener);
         }
         return result;
     }
