@@ -175,9 +175,10 @@ DONE IN ANDROID 4.0
 TODO IN ANDROID 4.0
 --------------------
 Starring support
-  Populate Artist.starred
+  Allow unstarring from "My starred music"
+  Populate Artist.starred (in CachedMusicService.getIndexes?)
   Proper message if no starred music exists.
-  Add starrring of artists and songs.
+  Add starrring of songs.
   Add toast when starring succeeds. "Starred 'Back in Black'".
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.

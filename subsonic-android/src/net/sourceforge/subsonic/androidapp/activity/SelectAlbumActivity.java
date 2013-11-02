@@ -238,12 +238,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         if (entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
+            menu.findItem(R.id.album_menu_star).setVisible(!entry.isStarred());
+            menu.findItem(R.id.album_menu_unstar).setVisible(entry.isStarred());
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
             DownloadFile downloadFile = getDownloadService().forSong(entry);
             menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_star).setVisible(!entry.isStarred());
+            menu.findItem(R.id.song_menu_unstar).setVisible(entry.isStarred());
         }
     }
 
@@ -266,6 +270,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             case R.id.album_menu_pin:
                 downloadRecursively(entry.getId(), true, true, false);
                 break;
+            case R.id.album_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.album_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                return true;
             case R.id.song_menu_play_now:
                 getDownloadService().download(songs, false, true, true);
                 break;
@@ -281,6 +291,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             case R.id.song_menu_unpin:
                 getDownloadService().unpin(songs);
                 break;
+            case R.id.song_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.song_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                return true;
             default:
                 return super.onContextItemSelected(menuItem);
         }
