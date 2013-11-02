@@ -237,6 +237,7 @@ public class SearchActivity extends SubsonicTabActivity {
                 return true;
             case R.id.artist_menu_unstar:
                 StarUtil.starInBackground(this, artist, false);
+                artistAdapter.remove(artist);
                 return true;
             case R.id.album_menu_play_now:
                 downloadRecursively(id, false, false, true);
@@ -252,6 +253,7 @@ public class SearchActivity extends SubsonicTabActivity {
                 return true;
             case R.id.album_menu_unstar:
                 StarUtil.starInBackground(this, entry, false);
+                albumAdapter.remove(entry);
                 return true;
             case R.id.song_menu_play_now:
                 onSongSelected(entry, false, false, true, false);
@@ -273,6 +275,7 @@ public class SearchActivity extends SubsonicTabActivity {
                 return true;
             case R.id.song_menu_unstar:
                 StarUtil.starInBackground(this, entry, false);
+                songAdapter.remove(entry);
                 return true;
             default:
                 return super.onContextItemSelected(menuItem);

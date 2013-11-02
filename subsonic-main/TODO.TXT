@@ -176,7 +176,6 @@ TODO IN ANDROID 4.0
 --------------------
 Starring support
   Make starring work for video also. Change wording.
-  Remove item when unstarring from "My starred music"
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.
   Add "starred" to Artist in REST xsd.
