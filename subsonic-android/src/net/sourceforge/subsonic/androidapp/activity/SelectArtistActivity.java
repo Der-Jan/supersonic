@@ -43,6 +43,7 @@ import net.sourceforge.subsonic.androidapp.util.ArtistAdapter;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -179,9 +180,13 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        if (artistList.getItemAtPosition(info.position) instanceof Artist) {
+        Object item = artistList.getItemAtPosition(info.position);
+        if (item instanceof Artist) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_artist_context, menu);
+            Artist artist = (Artist) item;
+            menu.findItem(R.id.artist_menu_star).setVisible(!artist.isStarred());
+            menu.findItem(R.id.artist_menu_unstar).setVisible(artist.isStarred());
         } else if (info.position == 0) {
             String musicFolderId = Util.getSelectedMusicFolderId(this);
             MenuItem menuItem = menu.add(MENU_GROUP_MUSIC_FOLDER, -1, 0, R.string.select_artist_all_folders);
@@ -218,6 +223,12 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
                 case R.id.artist_menu_pin:
                     downloadRecursively(artist.getId(), true, true, false);
                     break;
+                case R.id.artist_menu_star:
+                    StarUtil.starInBackground(this, artist, true);
+                    return true;
+                case R.id.artist_menu_unstar:
+                    StarUtil.starInBackground(this, artist, false);
+                    return true;
                 default:
                     return super.onContextItemSelected(menuItem);
             }

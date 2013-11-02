@@ -561,8 +561,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
 
             menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
-            menu.findItem(R.id.menu_star).setVisible(!downloadFile.getSong().isStarred());
-            menu.findItem(R.id.menu_unstar).setVisible(downloadFile.getSong().isStarred());
+            menu.findItem(R.id.download_menu_star).setVisible(!downloadFile.getSong().isStarred());
+            menu.findItem(R.id.download_menu_unstar).setVisible(downloadFile.getSong().isStarred());
             menu.findItem(R.id.menu_remove).setVisible(true);
             menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
             menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
@@ -589,10 +589,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             case R.id.menu_unpin:
                 getDownloadService().unpin(Arrays.asList(song.getSong()));
                 return true;
-            case R.id.menu_star:
+            case R.id.download_menu_star:
                 StarUtil.starInBackground(this, song.getSong(), true);
                 return true;
-            case R.id.menu_unstar:
+            case R.id.download_menu_unstar:
                 StarUtil.starInBackground(this, song.getSong(), false);
                 return true;
             case R.id.menu_remove:

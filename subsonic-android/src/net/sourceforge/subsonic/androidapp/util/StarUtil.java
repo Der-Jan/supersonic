@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.androidapp.util;
 
 import android.app.Activity;
 import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
@@ -41,6 +42,11 @@ public final class StarUtil {
     public static void starInBackground(Activity activity, MusicDirectory directory, boolean star) {
         starInBackground(activity, directory.getId(), directory.getName(), star);
         directory.setStarred(star);
+    }
+
+    public static void starInBackground(Activity activity, Artist artist, boolean star) {
+        starInBackground(activity, artist.getId(), artist.getName(), star);
+        artist.setStarred(star);
     }
 
     private static void starInBackground(final Activity activity, final String id, final String name, final boolean star) {

@@ -9,11 +9,11 @@
           android:title="@string/download.menu_unpin"
           android:visible="false"/>
 
-    <item android:id="@+id/menu_star"
+    <item android:id="@+id/download.menu_star"
           android:title="@string/star.menu_star"
           android:visible="false"/>
 
-    <item android:id="@+id/menu_unstar"
+    <item android:id="@+id/download.menu_unstar"
           android:title="@string/star.menu_unstar"
           android:visible="false"/>
 
