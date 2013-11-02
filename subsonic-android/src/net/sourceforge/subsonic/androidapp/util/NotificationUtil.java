@@ -43,6 +43,9 @@ public final class NotificationUtil {
 
     private static final Logger LOG = new Logger(NotificationUtil.class);
 
+    private NotificationUtil() {
+    }
+
     public static void updateNotification(final Context context, final DownloadServiceImpl downloadService,
             Handler handler, MusicDirectory.Entry song, boolean playing) {
 

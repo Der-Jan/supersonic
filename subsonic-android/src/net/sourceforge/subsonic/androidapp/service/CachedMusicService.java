@@ -52,6 +52,7 @@ public class CachedMusicService implements MusicService {
     private final LRUCache<String, TimeLimitedCache<MusicDirectory>> cachedMusicDirectories;
     private final TimeLimitedCache<Boolean> cachedLicenseValid = new TimeLimitedCache<Boolean>(120, TimeUnit.SECONDS);
     private final TimeLimitedCache<Indexes> cachedIndexes = new TimeLimitedCache<Indexes>(60 * 60, TimeUnit.SECONDS);
+    private final TimeLimitedCache<SearchResult> cachedStarred = new TimeLimitedCache<SearchResult>(60 * 60, TimeUnit.SECONDS);
     private final TimeLimitedCache<List<Playlist>> cachedPlaylists = new TimeLimitedCache<List<Playlist>>(60, TimeUnit.SECONDS);
     private final TimeLimitedCache<List<MusicFolder>> cachedMusicFolders = new TimeLimitedCache<List<MusicFolder>>(10 * 3600, TimeUnit.SECONDS);
     private String restUrl;
@@ -119,7 +120,19 @@ public class CachedMusicService implements MusicService {
             cache.set(dir);
             cachedMusicDirectories.put(id, cache);
         }
+        populateStarred(dir, context, progressListener);
         return dir;
+    }
+
+    private void populateStarred(MusicDirectory dir, Context context, ProgressListener progressListener) throws Exception {
+        // MusicDirectory.starred was added to the REST API in 1.10, so for backward compatibility
+        // we have to emulate it.
+        for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
+            if (dir.getId().equals(starredDir.getId())) {
+                dir.setStarred(true);
+                return;
+            }
+        }
     }
 
     @Override
@@ -129,7 +142,19 @@ public class CachedMusicService implements MusicService {
 
     @Override
     public SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception {
-        return musicService.getStarred(context, progressListener);
+        checkSettingsChanged(context);
+        SearchResult result = cachedStarred.get();
+        if (result == null) {
+            result = musicService.getStarred(context, progressListener);
+            cachedStarred.set(result);
+        }
+        return result;
+    }
+
+    @Override
+    public void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception {
+        cachedStarred.clear();
+        musicService.star(id, star, context, progressListener);
     }
 
     @Override
@@ -235,6 +260,7 @@ public class CachedMusicService implements MusicService {
             cachedMusicDirectories.clear();
             cachedLicenseValid.clear();
             cachedIndexes.clear();
+            cachedStarred.clear();
             cachedPlaylists.clear();
             restUrl = newUrl;
         }

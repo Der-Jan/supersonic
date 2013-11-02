@@ -55,6 +55,8 @@ public interface MusicService {
 
     SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception;
 
+    void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception;
+
     MusicDirectory getPlaylist(String id, Context context, ProgressListener progressListener) throws Exception;
 
     List<Playlist> getPlaylists(boolean refresh, Context context, ProgressListener progressListener) throws Exception;

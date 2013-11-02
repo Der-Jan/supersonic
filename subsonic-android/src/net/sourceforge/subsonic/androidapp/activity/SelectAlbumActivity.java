@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -44,6 +45,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -296,16 +298,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(final MusicDirectory result) {
-                super.done(result);
-                setTitle(result.getName());
+            protected void done(final MusicDirectory directory) {
+                super.done(directory);
+                setTitle(directory.getName());
                 setBackAction(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent;
-                        if (result.getParentId() != null) {
+                        if (directory.getParentId() != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                            intent.putExtra(INTENT_EXTRA_NAME_ID, result.getParentId());
+                            intent.putExtra(INTENT_EXTRA_NAME_ID, directory.getParentId());
                         } else if (parentId != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
                             intent.putExtra(INTENT_EXTRA_NAME_ID, parentId);
@@ -365,8 +367,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(MusicDirectory result) {
-                if (!result.getChildren().isEmpty()) {
+            protected void done(MusicDirectory directory) {
+                if (!directory.getChildren().isEmpty()) {
                     pinButton.setVisibility(View.GONE);
                     unpinButton.setVisibility(View.GONE);
                     deleteButton.setVisibility(View.GONE);
@@ -388,7 +390,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         }
                     });
                 }
-                super.done(result);
+                super.done(directory);
             }
         }.execute();
     }
@@ -527,8 +529,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         }
 
         @Override
-        protected void done(MusicDirectory result) {
-            List<MusicDirectory.Entry> entries = result.getChildren();
+        protected void done(MusicDirectory directory) {
+            List<MusicDirectory.Entry> entries = directory.getChildren();
 
             boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {
@@ -539,7 +541,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             if (hasSongs) {
-                entryList.addHeaderView(createHeader(entries));
+                entryList.addHeaderView(createHeader(directory));
                 entryList.addFooterView(footer);
                 selectButton.setVisibility(View.VISIBLE);
                 playNowButton.setVisibility(View.VISIBLE);
@@ -559,11 +561,23 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         }
     }
 
-    private View createHeader(List<MusicDirectory.Entry> entries) {
+    private View createHeader(final MusicDirectory directory) {
+        List<MusicDirectory.Entry> entries = directory.getChildren();
         View header = LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
 
         View coverArtView = header.findViewById(R.id.select_album_art);
         getImageLoader().loadImage(coverArtView, entries.get(0), true, true);
+
+        final ImageView starView = (ImageView) header.findViewById(R.id.select_album_star);
+        starView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                directory.setStarred(!directory.isStarred());
+                StarUtil.starInBackground(SelectAlbumActivity.this, directory.getId(), directory.isStarred());
+                starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
+            }
+        });
+        starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());

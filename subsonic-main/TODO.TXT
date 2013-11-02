@@ -9,6 +9,7 @@ Left-align in left.jsp
 
 TODO IN 4.9
 --------------
+Update icons in top.jsp.  Use latest Android icons.
 Shuffle play
 Dont use <div/>
 
@@ -174,11 +175,11 @@ DONE IN ANDROID 4.0
 TODO IN ANDROID 4.0
 --------------------
 Starring support
-  New main screen option
-  Treat it as a search, and reuse SearchActivity.
-  Also add option to star/unstar
-  Display
-  Check WiMP
+  Proper message if no starred music exists.
+  Add starrring of artists and songs.
+  Disable starring if offline.
+  Add "starred" to "Directory" in REST xsd.
+  Add "starred" to artist in REST xsd.
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial

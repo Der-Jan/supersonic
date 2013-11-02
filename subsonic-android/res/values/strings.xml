@@ -12,6 +12,7 @@
     <string name="common.pin">Pin</string>
     <string name="common.unpin">Unpin</string>
     <string name="common.delete">Delete</string>
+    <string name="common_star_failed">Failed to star/unstar</string>
 
     <string name="button_bar.home">HOME</string>
     <string name="button_bar.browse">LIBRARY</string>
