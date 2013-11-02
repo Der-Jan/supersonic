@@ -180,7 +180,6 @@ Starring support
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.
   Add "starred" to Artist in REST xsd.
-  Don't show star icon when displaying playlist
 Add button to bring up context menu?
 Google Cast
   https://developers.google.com/cast/

@@ -64,6 +64,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private Button deleteButton;
     private Button moreButton;
     private ImageButton playAllButton;
+    private boolean isPlaylist;
 
     /**
      * Called when the activity is first created.
@@ -166,8 +167,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         registerForContextMenu(entryList);
 
         enableButtons();
+        isPlaylist = playlistId != null;
 
-        if (playlistId != null) {
+        if (isPlaylist) {
             getPlaylist(playlistId, playlistName);
         } else if (albumListType != null) {
             getAlbumList(albumListType, albumListSize, albumListOffset);
@@ -593,6 +595,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
         });
         starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
+        starView.setVisibility(isPlaylist ? View.GONE : View.VISIBLE);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());
