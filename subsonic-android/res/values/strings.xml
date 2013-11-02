@@ -56,6 +56,7 @@
     <string name="search.title_starred">Starred music</string>
     <string name="search.search">Click to search</string>
     <string name="search.no_match">No matches, please try again</string>
+    <string name="search.no_starred">No starred music found</string>
     <string name="search.artists">ARTISTS</string>
     <string name="search.albums">ALBUMS</string>
     <string name="search.songs">SONGS</string>

@@ -168,7 +168,7 @@ public class SearchActivity extends SubsonicTabActivity {
         setTitle(starred ? R.string.search_title_starred : R.string.search_title);
 
         if (query == null && !starred) {
-            populateList();
+            populateList(false);
         } else {
             mergeAdapter = new MergeAdapter();
             list.setAdapter(mergeAdapter);
@@ -293,7 +293,7 @@ public class SearchActivity extends SubsonicTabActivity {
             @Override
             protected void done(SearchResult result) {
                 searchResult = result;
-                populateList();
+                populateList(false);
                 if (autoplay) {
                     autoplay();
                 }
@@ -314,13 +314,13 @@ public class SearchActivity extends SubsonicTabActivity {
             @Override
             protected void done(SearchResult result) {
                 searchResult = result;
-                populateList();
+                populateList(true);
             }
         };
         task.execute();
     }
 
-    private void populateList() {
+    private void populateList(boolean star) {
         mergeAdapter = new MergeAdapter();
 
         if (searchResult != null) {
@@ -331,6 +331,7 @@ public class SearchActivity extends SubsonicTabActivity {
             boolean empty = artists.isEmpty() && albums.isEmpty() && songs.isEmpty();
             if (empty) {
                 mergeAdapter.addView(noMatchTextView, true);
+                noMatchTextView.setText(star ? R.string.search_no_starred : R.string.search_no_match);
             }
 
             if (!artists.isEmpty()) {
