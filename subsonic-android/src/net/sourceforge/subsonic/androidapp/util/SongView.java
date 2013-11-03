@@ -129,7 +129,7 @@ public class SongView extends RelativeLayout implements Checkable {
             downloadButton.setImageResource(R.drawable.download_streaming);
         } else {
             statusTextView.setText(Util.formatDuration(song.getDuration()));
-            downloadButton.setImageDrawable(null);
+            downloadButton.setImageResource(R.drawable.action_overflow);
         }
 
         boolean playing = downloadService.getCurrentPlaying() == downloadFile;
