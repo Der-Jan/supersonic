@@ -18,28 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.ajax.ChatService;
 import net.sourceforge.subsonic.ajax.LyricsInfo;
@@ -87,6 +65,26 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.XMLBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
 import static net.sourceforge.subsonic.util.XMLBuilder.Attribute;
@@ -180,6 +178,7 @@ public class RESTController extends MultiActionController {
     public void getIndexes(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         XMLBuilder builder = createXMLBuilder(request, response, true);
+        String username = securityService.getCurrentUser(request).getUsername();
 
         long ifModifiedSince = ServletRequestUtils.getLongParameter(request, "ifModifiedSince", 0L);
         long lastModified = leftController.getLastModified(request);
@@ -205,9 +204,7 @@ public class RESTController extends MultiActionController {
 
         List<MediaFile> shortcuts = leftController.getShortcuts(musicFolders, settingsService.getShortcutsAsArray());
         for (MediaFile shortcut : shortcuts) {
-            builder.add("shortcut", true,
-                    new Attribute("name", shortcut.getName()),
-                    new Attribute("id", shortcut.getId()));
+            builder.add("shortcut", createAttributesForArtist(shortcut, username), true);
         }
 
         SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists =
@@ -219,9 +216,11 @@ public class RESTController extends MultiActionController {
             for (MusicIndex.SortableArtistWithMediaFiles artist : entry.getValue()) {
                 for (MediaFile mediaFile : artist.getMediaFiles()) {
                     if (mediaFile.isDirectory()) {
+                        Date starredDate = mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username);
                         builder.add("artist", true,
                                 new Attribute("name", artist.getName()),
-                                new Attribute("id", mediaFile.getId()));
+                                new Attribute("id", mediaFile.getId()),
+                                new Attribute("starred", StringUtil.toISO8601(starredDate)));
                     }
                 }
             }
@@ -230,7 +229,6 @@ public class RESTController extends MultiActionController {
 
         // Add children
         Player player = playerService.getPlayer(request, response);
-        String username = securityService.getCurrentUsername(request);
         List<MediaFile> singleSongs = leftController.getSingleSongs(musicFolders, false);
 
         for (MediaFile singleSong : singleSongs) {
@@ -306,6 +304,14 @@ public class RESTController extends MultiActionController {
         }
         attributes.add("albumCount", artist.getAlbumCount());
         attributes.add("starred", StringUtil.toISO8601(artistDao.getArtistStarredDate(artist.getId(), username)));
+        return attributes;
+    }
+
+    private AttributeSet createAttributesForArtist(MediaFile artist, String username) {
+        AttributeSet attributes = new AttributeSet();
+        attributes.add("id", artist.getId());
+        attributes.add("name", artist.getName());
+        attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(artist.getId(), username)));
         return attributes;
     }
 
@@ -430,6 +436,7 @@ public class RESTController extends MultiActionController {
             // Ignored.
         }
         attributes.add("name", dir.getName());
+        attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(id, username)));
 
         XMLBuilder builder = createXMLBuilder(request, response, true);
         builder.add("directory", attributes, false);
@@ -501,9 +508,7 @@ public class RESTController extends MultiActionController {
         criteria.setOffset(ServletRequestUtils.getIntParameter(request, "artistOffset", 0));
         SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
         for (MediaFile mediaFile : artists.getMediaFiles()) {
-            builder.add("artist", true,
-                    new Attribute("name", mediaFile.getName()),
-                    new Attribute("id", mediaFile.getId()));
+            builder.add("artist", createAttributesForArtist(mediaFile, username), true);
         }
 
         criteria.setCount(ServletRequestUtils.getIntParameter(request, "albumCount", 20));
@@ -1236,9 +1241,7 @@ public class RESTController extends MultiActionController {
         XMLBuilder builder = createXMLBuilder(request, response, true);
         builder.add("starred", false);
         for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
-            builder.add("artist", true,
-                    new Attribute("name", artist.getName()),
-                    new Attribute("id", artist.getId()));
+            builder.add("artist", createAttributesForArtist(artist, username), true);
         }
         for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
             builder.add("album", createAttributesForMediaFile(player, album, username), true);

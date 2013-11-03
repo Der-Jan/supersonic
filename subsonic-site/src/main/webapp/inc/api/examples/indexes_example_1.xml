@@ -9,7 +9,7 @@
         <index name="A">
             <artist id="1" name="ABBA"/>
             <artist id="2" name="Alanis Morisette"/>
-            <artist id="3" name="Alphaville"/>
+            <artist id="3" name="Alphaville" starred="2013-11-02T12:30:00"/>
         </index>
         <index name="B">
             <artist name="Bob Dylan" id="4"/>

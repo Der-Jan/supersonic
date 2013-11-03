@@ -1,11 +1,6 @@
 DONE IN 4.9
 -------------
-Set ID3 title tag based on Podcast episode name.
-Better icon/text alignment in <h1> tags.
-Use Lato, Ubuntu web fonts
-Larger text in top.jsp
-nicer logo
-Left-align in left.jsp
+Add "starred" to "Directory" and "Artist" in REST xsd.
 
 TODO IN 4.9
 --------------
@@ -147,7 +142,6 @@ ffmpeg processes not stopped in opera.
 Sharing (facebook, twitter++)
   Test video sharing
   Add some space towards bottom of main.jsp
-  todos in externalplayer.jsp
   Make it work if no songs are selected
   https://mail.google.com/a/activeobjects.no/#inbox/12ded75e94256283
 Add "append" parameter to createPlaylist REST method. (or create appendPlaylist method)
@@ -177,10 +171,8 @@ TODO IN ANDROID 4.0
 Starring support
   Make starring work for video also. Change wording.
   Disable starring if offline.
-  Add "starred" to "Directory" in REST xsd.
-  Add "starred" to Artist in REST xsd.
-  Add "starred" to shortcuts, searchresult in REST xsd.
   Test with REST 1.10 and older.
+Add artist cover art?
 Add button to bring up context menu?
 Google Cast
   https://developers.google.com/cast/

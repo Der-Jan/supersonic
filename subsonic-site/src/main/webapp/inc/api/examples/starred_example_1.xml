@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<subsonic-response xmlns="http://subsonic.org/restapi" status="ok" version="1.8.0">
+<subsonic-response xmlns="http://subsonic.org/restapi" status="ok" version="1.10.0">
     <starred>
-        <artist name="Kvelertak" id="143408"/>
-        <artist name="Dimmu Borgir" id="143402"/>
-        <artist name="Iron Maiden" id="143403"/>
+        <artist name="Kvelertak" id="143408" starred="2012-04-05T18:40:08"/>
+        <artist name="Dimmu Borgir" id="143402" starred="2012-04-05T18:40:08"/>
+        <artist name="Iron Maiden" id="143403" starred="2012-04-05T18:40:08"/>
         <album id="143862" parent="143410" title="Postcards From A Young Man" album="Postcards From A Young Man"
                artist="Manic Street Preachers" isDir="true" coverArt="143862" created="2011-02-26T10:45:30"
                starred="2012-04-05T18:40:08"/>
