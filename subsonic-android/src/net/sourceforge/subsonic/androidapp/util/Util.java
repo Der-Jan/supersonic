@@ -18,26 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.http.HttpEntity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -67,6 +47,25 @@ import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
 import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
+import org.apache.http.HttpEntity;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sindre Mehus
@@ -729,5 +728,11 @@ public final class Util {
 
     public static Bitmap decodeBitmap(Context context, int resourceId) {
         return BitmapFactory.decodeResource(context.getResources(), resourceId);
+    }
+
+    public static boolean isServerCompatibleTo(Context context, String version) {
+        Version serverVersion = getServerRestVersion(context);
+        Version requiredVersion = new Version(version);
+        return serverVersion == null || serverVersion.compareTo(requiredVersion) >= 0;
     }
 }

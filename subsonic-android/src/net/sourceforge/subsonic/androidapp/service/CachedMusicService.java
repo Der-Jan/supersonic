@@ -18,16 +18,9 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import net.sourceforge.subsonic.androidapp.domain.Artist;
-import org.apache.http.HttpResponse;
-
 import android.content.Context;
 import android.graphics.Bitmap;
+import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.Indexes;
 import net.sourceforge.subsonic.androidapp.domain.JukeboxStatus;
 import net.sourceforge.subsonic.androidapp.domain.Lyrics;
@@ -42,6 +35,12 @@ import net.sourceforge.subsonic.androidapp.util.LRUCache;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
 import net.sourceforge.subsonic.androidapp.util.TimeLimitedCache;
 import net.sourceforge.subsonic.androidapp.util.Util;
+import org.apache.http.HttpResponse;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Sindre Mehus
@@ -131,6 +130,9 @@ public class CachedMusicService implements MusicService {
     private void populateStarred(MusicDirectory dir, Context context, ProgressListener progressListener) throws Exception {
         // MusicDirectory.starred was added to the REST API in 1.10, so for backward compatibility
         // we have to emulate it.
+        if (Util.isServerCompatibleTo(context, "1.10")) {
+            return;
+        }
         for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
             if (dir.getId().equals(starredDir.getId())) {
                 dir.setStarred(true);
@@ -142,6 +144,9 @@ public class CachedMusicService implements MusicService {
     private void populateStarred(List<Artist> artists, Context context, ProgressListener progressListener) throws Exception {
         // Artist.starred was added to the REST API in 1.10, so for backward compatibility
         // we have to emulate it.
+        if (Util.isServerCompatibleTo(context, "1.10")) {
+            return;
+        }
         List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
         Set<String> starredArtistIds = new HashSet<String>();
         for (Artist starredArtist : starredArtists) {

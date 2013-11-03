@@ -179,6 +179,8 @@ Starring support
   Disable starring if offline.
   Add "starred" to "Directory" in REST xsd.
   Add "starred" to Artist in REST xsd.
+  Add "starred" to shortcuts, searchresult in REST xsd.
+  Test with REST 1.10 and older.
 Add button to bring up context menu?
 Google Cast
   https://developers.google.com/cast/
