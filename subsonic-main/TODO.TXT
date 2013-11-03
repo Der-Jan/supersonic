@@ -167,6 +167,7 @@ DONE IN ANDROID 4.0
 --------------------
 Starring support
 Added context menu buttons.
+Use Roboto Thin font (API 16+)
 
 TODO IN ANDROID 4.0
 --------------------
@@ -174,8 +175,6 @@ Starring support
   Make starring work for video also. Change wording.
   Disable starring if offline.
   Test with REST 1.10 and older.
-Narrower font
-Add artist cover art?
 Add button to bring up context menu
   Find smaller icon
 
