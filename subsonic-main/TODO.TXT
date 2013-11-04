@@ -177,6 +177,8 @@ Starring support
   Test with REST 1.10 and older.
 Add button to bring up context menu
   Find smaller icon
+Artist in notification too short. Related to font?
+Hide search button and pin/unpin option when offline
 
 Google Cast
   https://developers.google.com/cast/

@@ -233,6 +233,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        boolean offline = Util.isOffline(this);
         MusicDirectory.Entry entry = getEntryAtPosition(info.position);
         if (entry == null) {
             return;
@@ -240,16 +241,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         if (entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
-            menu.findItem(R.id.album_menu_star).setVisible(!entry.isStarred());
-            menu.findItem(R.id.album_menu_unstar).setVisible(entry.isStarred());
+            menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
             DownloadFile downloadFile = getDownloadService().forSong(entry);
             menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
-            menu.findItem(R.id.song_menu_star).setVisible(!entry.isStarred());
-            menu.findItem(R.id.song_menu_unstar).setVisible(entry.isStarred());
+            menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
         }
     }
 
@@ -594,8 +595,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
             }
         });
+        boolean offline = Util.isOffline(this);
         starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
-        starView.setVisibility(isPlaylist ? View.GONE : View.VISIBLE);
+        starView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());

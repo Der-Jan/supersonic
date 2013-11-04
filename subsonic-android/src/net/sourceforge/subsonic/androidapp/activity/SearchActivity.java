@@ -189,18 +189,19 @@ public class SearchActivity extends SubsonicTabActivity {
 
         Artist artist = selectedItem instanceof Artist ? (Artist) selectedItem : null;
         MusicDirectory.Entry entry = selectedItem instanceof MusicDirectory.Entry ? (MusicDirectory.Entry) selectedItem : null;
+        boolean offline = Util.isOffline(this);
 
         if (artist != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_artist_context, menu);
-            menu.findItem(R.id.artist_menu_star).setVisible(!artist.isStarred());
-            menu.findItem(R.id.artist_menu_unstar).setVisible(artist.isStarred());
+            menu.findItem(R.id.artist_menu_star).setVisible(!offline && !artist.isStarred());
+            menu.findItem(R.id.artist_menu_unstar).setVisible(!offline && artist.isStarred());
         }
         else if (entry != null && entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
-            menu.findItem(R.id.album_menu_star).setVisible(!entry.isStarred());
-            menu.findItem(R.id.album_menu_unstar).setVisible(entry.isStarred());
+            menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
         }
         else if (entry != null && !entry.isDirectory() && !entry.isVideo()) {
             DownloadFile downloadFile = getDownloadService().forSong(entry);
@@ -208,8 +209,8 @@ public class SearchActivity extends SubsonicTabActivity {
             inflater.inflate(R.menu.select_song_context, menu);
             menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
-            menu.findItem(R.id.song_menu_star).setVisible(!entry.isStarred());
-            menu.findItem(R.id.song_menu_unstar).setVisible(entry.isStarred());
+            menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
         }
     }
 

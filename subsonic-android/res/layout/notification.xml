@@ -8,6 +8,7 @@
 
     <ImageView
             android:gravity="center"
+            android:src="@drawable/unknown_album"
             android:id="@+id/notification_image"
             android:layout_width="64.0dip"
             android:layout_height="64.0dip"
@@ -22,7 +23,8 @@
             android:layout_weight="1.0">
 
         <TextView
-                android:ellipsize="marquee"
+                android:text="Song title placeholder"
+                android:ellipsize="end"
                 android:layout_gravity="left"
                 android:id="@+id/notification_title"
                 android:focusable="true"
@@ -34,7 +36,8 @@
                 style="@android:style/TextAppearance.StatusBar.EventContent.Title"/>
 
         <TextView
-                android:ellipsize="marquee"
+                android:text="Artist name placeholder"
+                android:ellipsize="end"
                 android:layout_gravity="left"
                 android:id="@+id/notification_artist"
                 android:fadingEdge="horizontal"

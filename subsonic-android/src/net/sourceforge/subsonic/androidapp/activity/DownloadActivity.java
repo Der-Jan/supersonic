@@ -555,14 +555,15 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         if (view == playlistView) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             DownloadFile downloadFile = (DownloadFile) playlistView.getItemAtPosition(info.position);
+            boolean offline = Util.isOffline(this);
 
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.nowplaying_context, menu);
 
             menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
-            menu.findItem(R.id.download_menu_star).setVisible(!downloadFile.getSong().isStarred());
-            menu.findItem(R.id.download_menu_unstar).setVisible(downloadFile.getSong().isStarred());
+            menu.findItem(R.id.download_menu_star).setVisible(!offline && !downloadFile.getSong().isStarred());
+            menu.findItem(R.id.download_menu_unstar).setVisible(!offline && downloadFile.getSong().isStarred());
             menu.findItem(R.id.menu_remove).setVisible(true);
             menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
             menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));

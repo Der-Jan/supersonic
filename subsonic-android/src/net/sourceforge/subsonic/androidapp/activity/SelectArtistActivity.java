@@ -180,13 +180,14 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        boolean offline = Util.isOffline(this);
         Object item = artistList.getItemAtPosition(info.position);
         if (item instanceof Artist) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_artist_context, menu);
             Artist artist = (Artist) item;
-            menu.findItem(R.id.artist_menu_star).setVisible(!artist.isStarred());
-            menu.findItem(R.id.artist_menu_unstar).setVisible(artist.isStarred());
+            menu.findItem(R.id.artist_menu_star).setVisible(!offline && !artist.isStarred());
+            menu.findItem(R.id.artist_menu_unstar).setVisible(!offline && artist.isStarred());
         } else if (info.position == 0) {
             String musicFolderId = Util.getSelectedMusicFolderId(this);
             MenuItem menuItem = menu.add(MENU_GROUP_MUSIC_FOLDER, -1, 0, R.string.select_artist_all_folders);
