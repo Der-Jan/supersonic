@@ -173,14 +173,11 @@ DONE IN ANDROID 3.9
 Fixed illegal xml in french locale.
 Send com.android.music.metachanged intent.
 Support dynamic number of servers.
+Notification controls (API level >= 11)
 
 TODO IN ANDROID 3.9
 --------------------
-Notification controls:
-  Don't hide programmatically (Util.hidePlayingNotification)
-  Add explicit hide/close button. When to re-add it? Check Sonos/WIMP.
-  http://developer.android.com/guide/topics/ui/notifiers/notifications.html#NotificationUI
-  https://code.google.com/p/enroscar/source/browse/trunk/eclipse-project/src/com/stanfy/utils/notifications/?r=157
+Run CacheCleaner in bg, see dsub
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
@@ -188,11 +185,6 @@ Problem with shuffle + offline
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls
-Notification controls
-Notification
-  progress
-  compat lib
-Run CacheCleaner in bg, see dsub
 Starring support
 Podcast support
 Audio focus
@@ -212,10 +204,7 @@ Use GridView to show albums.
 
 Subphonic
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=9864
-New minimum Android version: 2.1
 HLS video.
-Music controls in notification.
-  https://mail.google.com/mail/?ui=2&shva=1#inbox/136242ab25baddad
 Update artist list in background.
 
 Sleep timer.
@@ -223,8 +212,6 @@ Maintain track order for offline files.
 Check for lingering .partial files.
   https://mail.google.com/mail/?ui=2&shva=1#inbox/134082ca4244da22
 Don't pause on incoming call if RC.
-PayPal integration
-  https://www.x.com/developers/paypal/products/mobile-payment-libraries
 Change generic album art.
 In ICS, doesn't pause when disconnected from Bluetooth.
 Bug if switching to RC and back for a song that is currently downloading.
