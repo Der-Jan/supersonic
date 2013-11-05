@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
@@ -106,6 +107,18 @@ public final class NotificationUtil {
                 downloadService.stopForeground(true);
             }
         });
+    }
+
+    private static void setNotificationHiddenByUser(Context context) {
+        SharedPreferences preferences = Util.getPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, true);
+        editor.commit();
+    }
+
+    private static boolean isNotificationHiddenByUser(Context context) {
+        SharedPreferences preferences = Util.getPreferences(context);
+        return preferences.getBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, false);
     }
 
     private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song) {

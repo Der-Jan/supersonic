@@ -77,6 +77,7 @@ public final class Constants {
     public static final String PREFERENCES_KEY_REPEAT_MODE = "repeatMode";
     public static final String PREFERENCES_KEY_WIFI_REQUIRED_FOR_DOWNLOAD = "wifiRequiredForDownload";
     public static final String PREFERENCES_KEY_OFFLINE = "offline";
+    public static final String PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER = "hideNotificationByUser";
 
     // Name of the preferences file.
     public static final String PREFERENCES_FILE_NAME = "net.sourceforge.subsonic.androidapp_preferences";
