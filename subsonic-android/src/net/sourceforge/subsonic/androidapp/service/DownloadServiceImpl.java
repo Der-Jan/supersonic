@@ -18,12 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +38,12 @@ import net.sourceforge.subsonic.androidapp.util.NotificationUtil;
 import net.sourceforge.subsonic.androidapp.util.ShufflePlayBuffer;
 import net.sourceforge.subsonic.androidapp.util.SimpleServiceBinder;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
 
@@ -630,6 +630,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
 
         if (playerState == STARTED) {
             scrobbler.scrobble(this, currentPlaying, false);
+            NotificationUtil.setNotificationHiddenByUser(this, false);
         } else if (playerState == COMPLETED) {
             scrobbler.scrobble(this, currentPlaying, true);
         }

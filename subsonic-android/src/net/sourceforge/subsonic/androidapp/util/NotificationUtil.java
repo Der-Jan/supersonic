@@ -85,7 +85,7 @@ public final class NotificationUtil {
         if (song == null) {
             hideNotification(downloadService, handler);
 
-        } else {
+        } else if (!isNotificationHiddenByUser(context)) {
             final Notification notification = createCustomNotification(context, song, playing);
 
             // Send the notification and put the service in the foreground.
