@@ -19,9 +19,6 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -46,6 +43,9 @@ import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectArtistActivity extends SubsonicTabActivity implements AdapterView.OnItemClickListener {
 
@@ -97,6 +97,7 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
                 onSearchRequested();
             }
         });
+        actionSearchButton.setVisibility(Util.isOffline(this) ? View.GONE : View.VISIBLE);
 
         // Button 3: overflow
         final View overflowButton = findViewById(R.id.action_button_3);

@@ -143,6 +143,7 @@ public class MainActivity extends SubsonicTabActivity {
                 onSearchRequested();
             }
         });
+        actionSearchButton.setVisibility(Util.isOffline(this) ? View.GONE : View.VISIBLE);
 
         // Button 3: overflow
         final View overflowButton = findViewById(R.id.action_button_3);

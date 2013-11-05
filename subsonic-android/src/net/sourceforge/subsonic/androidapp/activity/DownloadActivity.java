@@ -18,17 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -76,6 +65,17 @@ import net.sourceforge.subsonic.androidapp.util.SongView;
 import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import net.sourceforge.subsonic.androidapp.view.VisualizerView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
 
@@ -546,6 +546,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         } else {
         	screenOption.setTitle(R.string.download_menu_screen_on);
         }
+        MenuItem searchOption = menu.findItem(R.id.menu_search);
+        searchOption.setVisible(!Util.isOffline(this));
+
         return super.onPrepareOptionsMenu(menu);
     }
 
