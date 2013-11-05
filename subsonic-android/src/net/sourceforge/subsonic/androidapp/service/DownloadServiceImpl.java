@@ -625,8 +625,6 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         Util.broadcastPlaybackStatusChange(this, playerState);
 
         this.playerState = playerState;
-        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
-        NotificationUtil.updateNotification(this, this, handler, song, this.playerState == STARTED);
 
         if (playerState == STARTED) {
             scrobbler.scrobble(this, currentPlaying, false);
@@ -634,6 +632,9 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         } else if (playerState == COMPLETED) {
             scrobbler.scrobble(this, currentPlaying, true);
         }
+
+        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
+        NotificationUtil.updateNotification(this, this, handler, song, this.playerState == STARTED);
     }
 
     @Override
