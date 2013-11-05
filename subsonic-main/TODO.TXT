@@ -6,6 +6,7 @@ Added Estonian translation, courtesy of Olav M&auml;gi.
 TODO IN 4.9
 --------------
 Update icons in top.jsp.  Use latest Android icons.
+
 Shuffle play
 Dont use <div/>
 

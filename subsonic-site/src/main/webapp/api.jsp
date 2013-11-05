@@ -177,47 +177,47 @@
     </tr>
     <tr class="table-altrow">
         <td>4.9</td>
-        <td>1.10.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.9/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.10.1</a></td>
     </tr>
     <tr>
         <td>4.8</td>
-        <td>1.9.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.8/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.9.0</a></td>
     </tr>
     <tr class="table-altrow">
         <td>4.7</td>
-        <td>1.8.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.7/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.8.0</a></td>
     </tr>
     <tr>
         <td>4.6</td>
-        <td>1.7.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.6/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.7.0</a></td>
     </tr>
     <tr class="table-altrow">
         <td>4.5</td>
-        <td>1.6.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.5/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.6.0</a></td>
     </tr>
     <tr>
-        <td>4.3.1</td>
-        <td>1.5.0</td>
+        <td>4.4</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.4/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.5.0</a></td>
     </tr>
     <tr class="table-altrow">
         <td>4.2</td>
-        <td>1.4.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.2/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.4.0</a></td>
     </tr>
     <tr>
         <td>4.1</td>
-        <td>1.3.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.1.beta1/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.3.0</a></td>
     </tr>
     <tr class="table-altrow">
         <td>4.0</td>
-        <td>1.2.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.0/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.2.0</a></td>
     </tr>
     <tr>
         <td>3.9</td>
-        <td>1.1.1</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-3.9/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.1.1</a></td>
     </tr>
     <tr class="table-altrow">
         <td>3.8</td>
-        <td>1.0.0</td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-3.8/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.1.0</a></td>
     </tr>
 </table>
 <p>
