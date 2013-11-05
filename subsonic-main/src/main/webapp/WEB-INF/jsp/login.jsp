@@ -49,13 +49,13 @@
                 <tr><td colspan="2" style="padding-top:10px"><b><fmt:message key="login.logout"/></b></td></tr>
             </c:if>
             <c:if test="${model.error}">
-                <tr><td colspan="2" style="padding-top:10px"><b class="warning"><fmt:message key="login.error"/></b></td></tr>
+                <tr><td colspan="2" style="padding-top:10px"><span class="warning"><fmt:message key="login.error"/></span></td></tr>
             </c:if>
 
         </table>
 
         <c:if test="${model.insecure}">
-            <p><b class="warning"><fmt:message key="login.insecure"><fmt:param value="${model.brand}"/></fmt:message></b></p>
+            <p class="warning"><fmt:message key="login.insecure"><fmt:param value="${model.brand}"/></fmt:message></p>
         </c:if>
 
     </div>
