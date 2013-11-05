@@ -1,6 +1,7 @@
 DONE IN 4.9
 -------------
 Add "starred" to "Directory" and "Artist" in REST xsd.
+Added Estonian translation, courtesy of Olav M&auml;gi.
 
 TODO IN 4.9
 --------------
@@ -175,10 +176,8 @@ TODO IN ANDROID 4.0
 --------------------
 Starring support
   Make starring work for video also. Change wording.
-  Disable starring if offline.
   Test with REST 1.10 and older.
   Update demo with new war.
-  Order chronologically
 Add button to bring up context menu
   Find smaller icon
 Update to REST 1.10.1
