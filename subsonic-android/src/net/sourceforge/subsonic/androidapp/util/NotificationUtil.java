@@ -109,10 +109,10 @@ public final class NotificationUtil {
         });
     }
 
-    private static void setNotificationHiddenByUser(Context context) {
+    public static void setNotificationHiddenByUser(Context context, boolean hiddenByUser) {
         SharedPreferences preferences = Util.getPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, true);
+        editor.putBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, hiddenByUser);
         editor.commit();
     }
 

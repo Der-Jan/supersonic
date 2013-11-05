@@ -18,13 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +34,13 @@ import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.NotificationUtil;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Sindre Mehus
@@ -172,6 +172,7 @@ public class DownloadServiceLifecycleSupport {
                 handleKeyEvent(event);
             }
             if (intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_HIDE_NOTIFICATION, false)) {
+                NotificationUtil.setNotificationHiddenByUser(downloadService, true);
                 NotificationUtil.hideNotification(downloadService, new Handler());
             }
         }
