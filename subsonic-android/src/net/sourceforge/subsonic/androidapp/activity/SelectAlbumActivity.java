@@ -244,12 +244,13 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             inflater.inflate(R.menu.select_album_context, menu);
             menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
+            menu.findItem(R.id.album_menu_pin).setVisible(!offline);
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
             DownloadFile downloadFile = getDownloadService().forSong(entry);
-            menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
-            menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_pin).setVisible(!offline && !downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_unpin).setVisible(!offline && downloadFile.isSaved());
             menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
         }

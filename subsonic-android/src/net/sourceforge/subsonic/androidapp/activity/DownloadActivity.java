@@ -563,8 +563,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.nowplaying_context, menu);
 
-            menu.findItem(R.id.menu_pin).setVisible(!downloadFile.isSaved());
-            menu.findItem(R.id.menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.menu_pin).setVisible(!offline && !downloadFile.isSaved());
+            menu.findItem(R.id.menu_unpin).setVisible(!offline && downloadFile.isSaved());
             menu.findItem(R.id.download_menu_star).setVisible(!offline && !downloadFile.getSong().isStarred());
             menu.findItem(R.id.download_menu_unstar).setVisible(!offline && downloadFile.getSong().isStarred());
             menu.findItem(R.id.menu_remove).setVisible(true);
