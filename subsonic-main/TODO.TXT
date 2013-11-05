@@ -2,14 +2,24 @@ DONE IN 4.9
 -------------
 Add "starred" to "Directory" and "Artist" in REST xsd.
 Added Estonian translation, courtesy of Olav M&auml;gi.
+Update icons in top.jsp.  Use latest Android icons.
 
 TODO IN 4.9
 --------------
-Update icons in top.jsp.  Use latest Android icons.
+
+Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
+Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
+Starred: ic_action_not_important, ic_action_important
+Podcast: ic_action_network_wifi
+Settings: ic_action_settings
+Status: ic_action_network_cell, ic_action_import_export
+More:   ic_action_phone
+About: ic_action_about
+
+Rotate podcast icon 45 degrees
 
 Shuffle play
 Dont use <div/>
-
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
 Move xsd and xml examples to site.
