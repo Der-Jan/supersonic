@@ -6,6 +6,8 @@ Update icons in top.jsp.  Use latest Android icons.
 
 TODO IN 4.9
 --------------
+Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow applications downloaded from’ to ‘Anywhere’ in the Security & Privacy preferences before you download the DMG file.
+Update to Mavericks
 
 Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
 Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
