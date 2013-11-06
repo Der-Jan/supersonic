@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <subsonic-response xmlns="http://subsonic.org/restapi"
-                   status="ok" version="1.10.0">
+                   status="ok" version="1.10.1">
 
     <indexes lastModified="237462836472342" ignoredArticles="The El La Los Las Le Les">
         <shortcut id="11" name="Audio books"/>
@@ -9,7 +9,7 @@
         <index name="A">
             <artist id="1" name="ABBA"/>
             <artist id="2" name="Alanis Morisette"/>
-            <artist id="3" name="Alphaville"/>
+            <artist id="3" name="Alphaville" starred="2013-11-02T12:30:00"/>
         </index>
         <index name="B">
             <artist name="Bob Dylan" id="4"/>

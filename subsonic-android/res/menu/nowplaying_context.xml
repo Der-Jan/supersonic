@@ -9,6 +9,14 @@
           android:title="@string/download.menu_unpin"
           android:visible="false"/>
 
+    <item android:id="@+id/download.menu_star"
+          android:title="@string/star.menu_star"
+          android:visible="false"/>
+
+    <item android:id="@+id/download.menu_unstar"
+          android:title="@string/star.menu_unstar"
+          android:visible="false"/>
+
     <item android:id="@+id/menu_show_album"
           android:title="@string/download.menu_show_album"
           android:visible="false"/>

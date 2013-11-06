@@ -42,7 +42,6 @@
             android:singleLine="true"
             android:ellipsize="end"/>
 
-
     <TextView
             android:text="XX SONGS"
             android:id="@+id/select_album_song_count"
@@ -55,6 +54,17 @@
             android:textSize="10sp"
             android:singleLine="true"
             android:ellipsize="none"/>
+
+    <ImageView
+            android:id="@+id/select_album_star"
+            android:src="@drawable/unstarred"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dip"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"/>
 
 </RelativeLayout>
 

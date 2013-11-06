@@ -18,16 +18,18 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
-import net.sourceforge.subsonic.androidapp.domain.Artist;
-import net.sourceforge.subsonic.androidapp.R;
-import android.widget.ArrayAdapter;
-import android.widget.SectionIndexer;
-import android.content.Context;
-
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.ArrayList;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.SectionIndexer;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.Artist;
 
 /**
  * @author Sindre Mehus
@@ -39,7 +41,7 @@ public class ArtistAdapter extends ArrayAdapter<Artist> implements SectionIndexe
     private final Integer[] positions;
 
     public ArtistAdapter(Context context, List<Artist> artists) {
-        super(context, R.layout.artist_list_item, artists);
+        super(context, R.layout.artist_list_item, R.id.artist_name, artists);
 
         Set<String> sectionSet = new LinkedHashSet<String>(30);
         List<Integer> positionList = new ArrayList<Integer>(30);
@@ -53,6 +55,21 @@ public class ArtistAdapter extends ArrayAdapter<Artist> implements SectionIndexe
         }
         sections = sectionSet.toArray(new Object[sectionSet.size()]);
         positions = positionList.toArray(new Integer[positionList.size()]);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final View result = super.getView(position, convertView, parent);
+        View moreView = result.findViewById(R.id.artist_more);
+
+        moreView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                result.showContextMenu();
+            }
+        });
+
+        return result;
     }
 
     @Override

@@ -25,6 +25,7 @@
     <string name="main.shuffle">Shuffle play</string>
     <string name="main.shuffle_confirm">Do you want to start shuffle play?</string>
     <string name="main.use_offline">Use offline</string>
+    <string name="main.starred">My starred music</string>
     <string name="main.use_connected">Use connected</string>
     <string name="main.settings">Settings</string>
     <string name="main.albums_title">ALBUMS</string>
@@ -52,8 +53,10 @@
 
     <string name="search.label">Search</string>
     <string name="search.title">Search</string>
+    <string name="search.title_starred">Starred music</string>
     <string name="search.search">Click to search</string>
     <string name="search.no_match">No matches, please try again</string>
+    <string name="search.no_starred">No starred music found</string>
     <string name="search.artists">ARTISTS</string>
     <string name="search.albums">ALBUMS</string>
     <string name="search.songs">SONGS</string>
@@ -215,6 +218,13 @@
     <string name="widget.initial_text">Touch to select music</string>
     <string name="widget.sdcard_busy">SD card unavailable</string>
     <string name="widget.sdcard_missing">No SD card</string>
+
+    <string name="star.menu_star">Star</string>
+    <string name="star.menu_unstar">Unstar</string>
+    <string name="star.star_succesful">Starred \"%s\"</string>
+    <string name="star.unstar_succesful">Unstarred \"%s\"</string>
+    <string name="star.star_failed">Failed to star \"%s\"</string>
+    <string name="star.unstar_failed">Failed to unstar \"%s\"</string>
 
     <string name="util.bytes_format.gigabyte">0.00 GB</string>
     <string name="util.bytes_format.megabyte">0.00 MB</string>

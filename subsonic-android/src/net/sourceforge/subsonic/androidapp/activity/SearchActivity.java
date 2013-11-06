@@ -50,6 +50,7 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -89,8 +90,6 @@ public class SearchActivity extends SubsonicTabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-
-        setTitle(R.string.search_title);
 
         View buttons = LayoutInflater.from(this).inflate(R.layout.search_buttons, null);
 
@@ -163,14 +162,21 @@ public class SearchActivity extends SubsonicTabActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String query = intent.getStringExtra(Constants.INTENT_EXTRA_NAME_QUERY);
+        boolean starred = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_QUERY_STARRED, false);
         boolean autoplay = intent.getBooleanExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, false);
 
-        if (query != null) {
+        setTitle(starred ? R.string.search_title_starred : R.string.search_title);
+
+        if (query == null && !starred) {
+            populateList(false);
+        } else {
             mergeAdapter = new MergeAdapter();
             list.setAdapter(mergeAdapter);
-            search(query, autoplay);
-        } else {
-            populateList();
+            if (starred) {
+                getStarred();
+            } else {
+                search(query, autoplay);
+            }
         }
     }
 
@@ -181,22 +187,30 @@ public class SearchActivity extends SubsonicTabActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Object selectedItem = list.getItemAtPosition(info.position);
 
-        boolean isArtist = selectedItem instanceof Artist;
-        boolean isAlbum = selectedItem instanceof MusicDirectory.Entry && ((MusicDirectory.Entry) selectedItem).isDirectory();
-        boolean isSong = selectedItem instanceof MusicDirectory.Entry && (!((MusicDirectory.Entry) selectedItem).isDirectory())
-                && (!((MusicDirectory.Entry) selectedItem).isVideo());
+        Artist artist = selectedItem instanceof Artist ? (Artist) selectedItem : null;
+        MusicDirectory.Entry entry = selectedItem instanceof MusicDirectory.Entry ? (MusicDirectory.Entry) selectedItem : null;
+        boolean offline = Util.isOffline(this);
 
-        if (isArtist || isAlbum) {
+        if (artist != null) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.select_artist_context, menu);
+            menu.findItem(R.id.artist_menu_star).setVisible(!offline && !artist.isStarred());
+            menu.findItem(R.id.artist_menu_unstar).setVisible(!offline && artist.isStarred());
+        }
+        else if (entry != null && entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
-        } else if (isSong) {
-            MusicDirectory.Entry entry = (MusicDirectory.Entry) list.getItemAtPosition(info.position);
+            menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
+        }
+        else if (entry != null && !entry.isDirectory() && !entry.isVideo()) {
             DownloadFile downloadFile = getDownloadService().forSong(entry);
-
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
             menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
             menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
         }
     }
 
@@ -210,6 +224,22 @@ public class SearchActivity extends SubsonicTabActivity {
         String id = artist != null ? artist.getId() : entry.getId();
 
         switch (menuItem.getItemId()) {
+            case R.id.artist_menu_play_now:
+                downloadRecursively(artist.getId(), false, false, true);
+                break;
+            case R.id.artist_menu_play_last:
+                downloadRecursively(artist.getId(), false, true, false);
+                break;
+            case R.id.artist_menu_pin:
+                downloadRecursively(artist.getId(), true, true, false);
+                break;
+            case R.id.artist_menu_star:
+                StarUtil.starInBackground(this, artist, true);
+                return true;
+            case R.id.artist_menu_unstar:
+                StarUtil.starInBackground(this, artist, false);
+                artistAdapter.remove(artist);
+                return true;
             case R.id.album_menu_play_now:
                 downloadRecursively(id, false, false, true);
                 break;
@@ -219,6 +249,13 @@ public class SearchActivity extends SubsonicTabActivity {
             case R.id.album_menu_pin:
                 downloadRecursively(id, true, true, false);
                 break;
+            case R.id.album_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.album_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                albumAdapter.remove(entry);
+                return true;
             case R.id.song_menu_play_now:
                 onSongSelected(entry, false, false, true, false);
                 break;
@@ -234,6 +271,13 @@ public class SearchActivity extends SubsonicTabActivity {
             case R.id.song_menu_unpin:
                 getDownloadService().unpin(Arrays.asList(entry));
                 break;
+            case R.id.song_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.song_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                songAdapter.remove(entry);
+                return true;
             default:
                 return super.onContextItemSelected(menuItem);
         }
@@ -253,7 +297,7 @@ public class SearchActivity extends SubsonicTabActivity {
             @Override
             protected void done(SearchResult result) {
                 searchResult = result;
-                populateList();
+                populateList(false);
                 if (autoplay) {
                     autoplay();
                 }
@@ -263,7 +307,24 @@ public class SearchActivity extends SubsonicTabActivity {
         task.execute();
     }
 
-    private void populateList() {
+    private void getStarred() {
+        BackgroundTask<SearchResult> task = new TabActivityBackgroundTask<SearchResult>(this) {
+            @Override
+            protected SearchResult doInBackground() throws Throwable {
+                MusicService service = MusicServiceFactory.getMusicService(SearchActivity.this);
+                return service.getStarred(SearchActivity.this, this);
+            }
+
+            @Override
+            protected void done(SearchResult result) {
+                searchResult = result;
+                populateList(true);
+            }
+        };
+        task.execute();
+    }
+
+    private void populateList(boolean star) {
         mergeAdapter = new MergeAdapter();
 
         if (searchResult != null) {
@@ -274,6 +335,7 @@ public class SearchActivity extends SubsonicTabActivity {
             boolean empty = artists.isEmpty() && albums.isEmpty() && songs.isEmpty();
             if (empty) {
                 mergeAdapter.addView(noMatchTextView, true);
+                noMatchTextView.setText(star ? R.string.search_no_starred : R.string.search_no_match);
             }
 
             if (!artists.isEmpty()) {

@@ -18,6 +18,37 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.widget.Toast;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
+import net.sourceforge.subsonic.androidapp.domain.PlayerState;
+import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
+import net.sourceforge.subsonic.androidapp.domain.Version;
+import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
+import org.apache.http.HttpEntity;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -36,45 +67,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.http.HttpEntity;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.os.Environment;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
-import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
-import net.sourceforge.subsonic.androidapp.domain.PlayerState;
-import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
-import net.sourceforge.subsonic.androidapp.domain.Version;
-import net.sourceforge.subsonic.androidapp.receiver.MediaButtonIntentReceiver;
-
 /**
  * @author Sindre Mehus
  * @version $Id$
  */
 public final class Util {
 
-    private static final String TAG = Util.class.getSimpleName();
+    private static final Logger LOG = new Logger(Util.class);
 
     private static final DecimalFormat GIGA_BYTE_FORMAT = new DecimalFormat("0.00 GB");
     private static final DecimalFormat MEGA_BYTE_FORMAT = new DecimalFormat("0.00 MB");
@@ -268,7 +267,7 @@ public final class Util {
             if (!tmp.renameTo(to)) {
                 throw new IOException("Failed to rename " + tmp + " to " + to);
             }
-            Log.i(TAG, "Copied " + from + " to " + to);
+            LOG.info("Copied " + from + " to " + to);
         } catch (IOException x) {
             close(out);
             delete(to);
@@ -293,10 +292,10 @@ public final class Util {
     public static boolean delete(File file) {
         if (file != null && file.exists()) {
             if (!file.delete()) {
-                Log.w(TAG, "Failed to delete file " + file);
+                LOG.warn("Failed to delete file " + file);
                 return false;
             }
-            Log.i(TAG, "Deleted file " + file);
+            LOG.info("Deleted file " + file);
         }
         return true;
     }
@@ -305,8 +304,8 @@ public final class Util {
         toast(context, messageId, true);
     }
 
-    public static void toast(Context context, int messageId, boolean shortDuration) {
-        toast(context, context.getString(messageId), shortDuration);
+    public static void toast(Context context, int messageId, boolean shortDuration, Object... formatArgs) {
+        toast(context, context.getString(messageId, formatArgs), shortDuration);
     }
 
     public static void toast(Context context, String message) {
@@ -549,7 +548,7 @@ public final class Util {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException x) {
-            Log.w(TAG, "Interrupted from sleep.", x);
+            LOG.warn("Interrupted from sleep.", x);
         }
     }
 
@@ -725,5 +724,15 @@ public final class Util {
         if (!(handler instanceof SubsonicUncaughtExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new SubsonicUncaughtExceptionHandler(context));
         }
+    }
+
+    public static Bitmap decodeBitmap(Context context, int resourceId) {
+        return BitmapFactory.decodeResource(context.getResources(), resourceId);
+    }
+
+    public static boolean isServerCompatibleTo(Context context, String version) {
+        Version serverVersion = getServerRestVersion(context);
+        Version requiredVersion = new Version(version);
+        return serverVersion == null || serverVersion.compareTo(requiredVersion) >= 0;
     }
 }

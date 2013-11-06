@@ -11,8 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:paddingTop="1dip"
-            android:paddingBottom="1dip"
-            />
+            android:paddingBottom="1dip"/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -43,10 +42,11 @@
     </LinearLayout>
 
     <ImageView
-            android:src="@drawable/navigate_right"
+            android:id="@+id/album_more"
+            android:src="@drawable/action_overflow"
+            android:background="@drawable/media_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:paddingRight="6dip"/>
+            android:layout_gravity="right|center_vertical"/>
 
 </LinearLayout>

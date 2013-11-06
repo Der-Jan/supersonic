@@ -44,6 +44,14 @@ public class AlbumView extends LinearLayout {
         titleView = (TextView) findViewById(R.id.album_title);
         artistView = (TextView) findViewById(R.id.album_artist);
         coverArtView = findViewById(R.id.album_coverart);
+        View moreView = findViewById(R.id.album_more);
+
+        moreView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlbumView.this.showContextMenu();
+            }
+        });
     }
 
     public void setAlbum(MusicDirectory.Entry album, ImageLoader imageLoader) {

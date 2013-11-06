@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -38,6 +37,7 @@ import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 
 /**
  * Simple widget to show currently playing album art along
@@ -50,7 +50,7 @@ import net.sourceforge.subsonic.androidapp.util.FileUtil;
 public class SubsonicAppWidgetProvider extends AppWidgetProvider {
 
     private static SubsonicAppWidgetProvider instance;
-    private static final String TAG = SubsonicAppWidgetProvider.class.getSimpleName();
+    private static final Logger LOG = new Logger(SubsonicAppWidgetProvider.class);
 
     public static synchronized SubsonicAppWidgetProvider getInstance() {
         if (instance == null) {
@@ -157,7 +157,7 @@ public class SubsonicAppWidgetProvider extends AppWidgetProvider {
                 views.setImageViewBitmap(R.id.widget_albumart, bitmap);
             }
         } catch (Exception x) {
-            Log.e(TAG, "Failed to load cover art", x);
+            LOG.error("Failed to load cover art", x);
             views.setImageViewResource(R.id.widget_albumart, R.drawable.appwidget_art_unknown);
         }
 

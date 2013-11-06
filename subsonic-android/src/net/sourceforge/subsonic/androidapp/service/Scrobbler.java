@@ -1,7 +1,7 @@
 package net.sourceforge.subsonic.androidapp.service;
 
 import android.content.Context;
-import android.util.Log;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -12,7 +12,7 @@ import net.sourceforge.subsonic.androidapp.util.Util;
  */
 public class Scrobbler {
 
-    private static final String TAG = Scrobbler.class.getSimpleName();
+    private static final Logger LOG = new Logger(Scrobbler.class);
 
     private String lastSubmission;
     private String lastNowPlaying;
@@ -42,9 +42,9 @@ public class Scrobbler {
                 MusicService service = MusicServiceFactory.getMusicService(context);
                 try {
                     service.scrobble(id, submission, context, null);
-                    Log.i(TAG, "Scrobbled '" + (submission ? "submission" : "now playing") + "' for " + song);
+                    LOG.info("Scrobbled '" + (submission ? "submission" : "now playing") + "' for " + song);
                 } catch (Exception x) {
-                    Log.i(TAG, "Failed to scrobble'" + (submission ? "submission" : "now playing") + "' for " + song, x);
+                    LOG.info("Failed to scrobble'" + (submission ? "submission" : "now playing") + "' for " + song, x);
                 }
             }
         }.start();

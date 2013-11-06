@@ -42,6 +42,7 @@ public final class Constants {
     public static final String INTENT_EXTRA_NAME_AUTOPLAY = "subsonic.playall";
     public static final String INTENT_EXTRA_NAME_ERROR = "subsonic.error";
     public static final String INTENT_EXTRA_NAME_QUERY = "subsonic.query";
+    public static final String INTENT_EXTRA_NAME_QUERY_STARRED = "subsonic.queryStarred";
     public static final String INTENT_EXTRA_NAME_PLAYLIST_ID = "subsonic.playlist.id";
     public static final String INTENT_EXTRA_NAME_PLAYLIST_NAME = "subsonic.playlist.name";
     public static final String INTENT_EXTRA_NAME_ALBUM_LIST_TYPE = "subsonic.albumlisttype";
@@ -76,6 +77,7 @@ public final class Constants {
     public static final String PREFERENCES_KEY_REPEAT_MODE = "repeatMode";
     public static final String PREFERENCES_KEY_WIFI_REQUIRED_FOR_DOWNLOAD = "wifiRequiredForDownload";
     public static final String PREFERENCES_KEY_OFFLINE = "offline";
+    public static final String PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER = "hideNotificationByUser";
 
     // Name of the preferences file.
     public static final String PREFERENCES_FILE_NAME = "net.sourceforge.subsonic.androidapp_preferences";

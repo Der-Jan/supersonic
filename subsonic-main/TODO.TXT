@@ -1,17 +1,25 @@
 DONE IN 4.9
 -------------
-Set ID3 title tag based on Podcast episode name.
-Better icon/text alignment in <h1> tags.
-Use Lato, Ubuntu web fonts
-Larger text in top.jsp
-nicer logo
-Left-align in left.jsp
+Add "starred" to "Directory" and "Artist" in REST xsd.
+Added Estonian translation, courtesy of Olav M&auml;gi.
+Update icons in top.jsp.  Use latest Android icons.
 
 TODO IN 4.9
 --------------
+
+Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
+Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
+Starred: ic_action_not_important, ic_action_important
+Podcast: ic_action_network_wifi
+Settings: ic_action_settings
+Status: ic_action_network_cell, ic_action_import_export
+More:   ic_action_phone
+About: ic_action_about
+
+Rotate podcast icon 45 degrees
+
 Shuffle play
 Dont use <div/>
-
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
 Move xsd and xml examples to site.
@@ -146,7 +154,6 @@ ffmpeg processes not stopped in opera.
 Sharing (facebook, twitter++)
   Test video sharing
   Add some space towards bottom of main.jsp
-  todos in externalplayer.jsp
   Make it work if no songs are selected
   https://mail.google.com/a/activeobjects.no/#inbox/12ded75e94256283
 Add "append" parameter to createPlaylist REST method. (or create appendPlaylist method)
@@ -168,16 +175,27 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 3.9
+DONE IN ANDROID 4.0
 --------------------
-Fixed illegal xml in french locale.
-Send com.android.music.metachanged intent.
-Support dynamic number of servers.
-Notification controls (API level >= 11)
+Starring support
+Added context menu buttons.
+Use Roboto Thin font (API 16+)
+Hide search button and pin/unpin option when offline
+Don't show notification if previously dismissed and not currently playing.
+Update to REST 1.10.1
 
-TODO IN ANDROID 3.9
+TODO IN ANDROID 4.0
 --------------------
-Run CacheCleaner in bg, see dsub
+Starring support
+  Make starring work for video also. Change wording.
+  Test with REST 1.10 and older.
+  Update demo with new war.
+Add button to bring up context menu
+  Find smaller icon
+
+Google Cast
+  https://developers.google.com/cast/
+  https://developers.google.com/cast/cast_2nd-screen_app_tutorial
 
 Problem with shuffle + offline
   https://mail.google.com/mail/ca/u/0/#inbox/13b6b172df46f25d
@@ -185,7 +203,6 @@ Problem with shuffle + offline
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
 Lock screen controls
-Starring support
 Podcast support
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
@@ -194,7 +211,6 @@ Add option to delete file. (Rename to "Remove from playlist").
 Add to playlist
 Test on Android 2 and 3.
   Notification icon too big and bright.
-Poor quality of album art in album header?
 
 Review patches for AVRCP and lockscreen controls
   https://sourceforge.net/p/subsonic/patches/9/
@@ -873,7 +889,7 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.7 -m "Tagging Android 3.7"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.9 -m "Tagging Android 3.9"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).

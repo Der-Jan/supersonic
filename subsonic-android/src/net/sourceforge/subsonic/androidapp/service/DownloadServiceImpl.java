@@ -18,12 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +26,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.audiofx.EqualizerController;
 import net.sourceforge.subsonic.androidapp.audiofx.VisualizerController;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
@@ -40,10 +33,17 @@ import net.sourceforge.subsonic.androidapp.domain.PlayerState;
 import net.sourceforge.subsonic.androidapp.domain.RepeatMode;
 import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.LRUCache;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.NotificationUtil;
 import net.sourceforge.subsonic.androidapp.util.ShufflePlayBuffer;
 import net.sourceforge.subsonic.androidapp.util.SimpleServiceBinder;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
 
@@ -53,7 +53,7 @@ import static net.sourceforge.subsonic.androidapp.domain.PlayerState.*;
  */
 public class DownloadServiceImpl extends Service implements DownloadService {
 
-    private static final String TAG = DownloadServiceImpl.class.getSimpleName();
+    private static final Logger LOG = new Logger(DownloadServiceImpl.class);
 
     public static final String CMD_PLAY = "net.sourceforge.subsonic.androidapp.CMD_PLAY";
     public static final String CMD_TOGGLEPAUSE = "net.sourceforge.subsonic.androidapp.CMD_TOGGLEPAUSE";
@@ -616,7 +616,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     }
 
     synchronized void setPlayerState(PlayerState playerState) {
-        Log.i(TAG, this.playerState.name() + " -> " + playerState.name() + " (" + currentPlaying + ")");
+        LOG.info(this.playerState.name() + " -> " + playerState.name() + " (" + currentPlaying + ")");
 
         if (playerState == PAUSED) {
             lifecycleSupport.serializeDownloadQueue();
@@ -625,14 +625,16 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         Util.broadcastPlaybackStatusChange(this, playerState);
 
         this.playerState = playerState;
-        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
-        NotificationUtil.updateNotification(this, this, handler, song, this.playerState == STARTED);
 
         if (playerState == STARTED) {
             scrobbler.scrobble(this, currentPlaying, false);
+            NotificationUtil.setNotificationHiddenByUser(this, false);
         } else if (playerState == COMPLETED) {
             scrobbler.scrobble(this, currentPlaying, true);
         }
+
+        MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
+        NotificationUtil.updateNotification(this, this, handler, song, this.playerState == STARTED);
     }
 
     @Override
@@ -726,13 +728,13 @@ public class DownloadServiceImpl extends Service implements DownloadService {
                         Integer duration = downloadFile.getSong().getDuration() == null ? null : downloadFile.getSong().getDuration() * 1000;
                         if (duration != null) {
                             if (Math.abs(duration - pos) < 10000) {
-                                Log.i(TAG, "Skipping restart from " + pos  + " of " + duration);
+                                LOG.info("Skipping restart from " + pos + " of " + duration);
                                 onSongCompleted();
                                 return;
                             }
                         }
 
-                        Log.i(TAG, "Requesting restart from " + pos  + " of " + duration);
+                        LOG.info("Requesting restart from " + pos + " of " + duration);
                         reset();
                         bufferTask = new BufferTask(downloadFile, pos);
                         bufferTask.start();
@@ -741,7 +743,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
             });
 
             if (position != 0) {
-                Log.i(TAG, "Restarting player from position " + position);
+                LOG.info("Restarting player from position " + position);
                 mediaPlayer.seekTo(position);
             }
 
@@ -759,7 +761,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     }
 
     private void handleError(Exception x) {
-        Log.w(TAG, "Media player error: " + x, x);
+        LOG.warn("Media player error: " + x, x);
         mediaPlayer.reset();
         setPlayerState(IDLE);
     }
@@ -924,7 +926,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
             boolean completeFileAvailable = downloadFile.isCompleteFileAvailable();
             long size = partialFile.length();
 
-            Log.i(TAG, "Buffering " + partialFile + " (" + size + "/" + expectedFileSize + ", " + completeFileAvailable + ")");
+            LOG.info("Buffering " + partialFile + " (" + size + "/" + expectedFileSize + ", " + completeFileAvailable + ")");
             return completeFileAvailable || size >= expectedFileSize;
         }
 

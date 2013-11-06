@@ -18,13 +18,9 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.http.HttpResponse;
-
 import android.content.Context;
 import android.graphics.Bitmap;
+import net.sourceforge.subsonic.androidapp.domain.Artist;
 import net.sourceforge.subsonic.androidapp.domain.Indexes;
 import net.sourceforge.subsonic.androidapp.domain.JukeboxStatus;
 import net.sourceforge.subsonic.androidapp.domain.Lyrics;
@@ -39,6 +35,12 @@ import net.sourceforge.subsonic.androidapp.util.LRUCache;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
 import net.sourceforge.subsonic.androidapp.util.TimeLimitedCache;
 import net.sourceforge.subsonic.androidapp.util.Util;
+import org.apache.http.HttpResponse;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Sindre Mehus
@@ -52,6 +54,7 @@ public class CachedMusicService implements MusicService {
     private final LRUCache<String, TimeLimitedCache<MusicDirectory>> cachedMusicDirectories;
     private final TimeLimitedCache<Boolean> cachedLicenseValid = new TimeLimitedCache<Boolean>(120, TimeUnit.SECONDS);
     private final TimeLimitedCache<Indexes> cachedIndexes = new TimeLimitedCache<Indexes>(60 * 60, TimeUnit.SECONDS);
+    private final TimeLimitedCache<SearchResult> cachedStarred = new TimeLimitedCache<SearchResult>(60 * 60, TimeUnit.SECONDS);
     private final TimeLimitedCache<List<Playlist>> cachedPlaylists = new TimeLimitedCache<List<Playlist>>(60, TimeUnit.SECONDS);
     private final TimeLimitedCache<List<MusicFolder>> cachedMusicFolders = new TimeLimitedCache<List<MusicFolder>>(10 * 3600, TimeUnit.SECONDS);
     private String restUrl;
@@ -100,12 +103,13 @@ public class CachedMusicService implements MusicService {
             cachedMusicFolders.clear();
             cachedMusicDirectories.clear();
         }
-        Indexes result = cachedIndexes.get();
-        if (result == null) {
-            result = musicService.getIndexes(musicFolderId, refresh, context, progressListener);
-            cachedIndexes.set(result);
+        Indexes indexes = cachedIndexes.get();
+        if (indexes == null) {
+            indexes = musicService.getIndexes(musicFolderId, refresh, context, progressListener);
+            populateStarred(indexes.getArtists(), context, progressListener);
+            cachedIndexes.set(indexes);
         }
-        return result;
+        return indexes;
     }
 
     @Override
@@ -119,12 +123,61 @@ public class CachedMusicService implements MusicService {
             cache.set(dir);
             cachedMusicDirectories.put(id, cache);
         }
+        populateStarred(dir, context, progressListener);
         return dir;
+    }
+
+    private void populateStarred(MusicDirectory dir, Context context, ProgressListener progressListener) throws Exception {
+        // MusicDirectory.starred was added to the REST API in 1.10.1, so for backward compatibility
+        // we have to emulate it.
+        if (Util.isServerCompatibleTo(context, "1.10.1")) {
+            return;
+        }
+        for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
+            if (dir.getId().equals(starredDir.getId())) {
+                dir.setStarred(true);
+                return;
+            }
+        }
+    }
+
+    private void populateStarred(List<Artist> artists, Context context, ProgressListener progressListener) throws Exception {
+        // Artist.starred was added to the REST API in 1.10.1, so for backward compatibility
+        // we have to emulate it.
+        if (Util.isServerCompatibleTo(context, "1.10.1")) {
+            return;
+        }
+        List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
+        Set<String> starredArtistIds = new HashSet<String>();
+        for (Artist starredArtist : starredArtists) {
+            starredArtistIds.add(starredArtist.getId());
+        }
+        for (Artist artist : artists) {
+            artist.setStarred(starredArtistIds.contains(artist.getId()));
+        }
     }
 
     @Override
     public SearchResult search(SearchCritera criteria, Context context, ProgressListener progressListener) throws Exception {
         return musicService.search(criteria, context, progressListener);
+    }
+
+    @Override
+    public SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception {
+        checkSettingsChanged(context);
+        SearchResult result = cachedStarred.get();
+        if (result == null) {
+            result = musicService.getStarred(context, progressListener);
+            cachedStarred.set(result);
+            populateStarred(result.getArtists(), context, progressListener);
+        }
+        return result;
+    }
+
+    @Override
+    public void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception {
+        cachedStarred.clear();
+        musicService.star(id, star, context, progressListener);
     }
 
     @Override
@@ -230,6 +283,7 @@ public class CachedMusicService implements MusicService {
             cachedMusicDirectories.clear();
             cachedLicenseValid.clear();
             cachedIndexes.clear();
+            cachedStarred.clear();
             cachedPlaylists.clear();
             restUrl = newUrl;
         }

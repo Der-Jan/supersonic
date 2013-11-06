@@ -18,20 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import android.content.Context;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.domain.JukeboxStatus;
-import net.sourceforge.subsonic.androidapp.domain.PlayerState;
-import net.sourceforge.subsonic.androidapp.service.parser.SubsonicRESTException;
-import net.sourceforge.subsonic.androidapp.util.Util;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +28,20 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import android.content.Context;
+import android.os.Handler;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.JukeboxStatus;
+import net.sourceforge.subsonic.androidapp.domain.PlayerState;
+import net.sourceforge.subsonic.androidapp.service.parser.SubsonicRESTException;
+import net.sourceforge.subsonic.androidapp.util.Logger;
+import net.sourceforge.subsonic.androidapp.util.Util;
+
 /**
  * Provides an asynchronous interface to the remote jukebox on the Subsonic server.
  *
@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class JukeboxService {
 
-    private static final String TAG = JukeboxService.class.getSimpleName();
+    private static final Logger LOG = new Logger(JukeboxService.class);
     private static final long STATUS_UPDATE_INTERVAL_SECONDS = 5L;
 
     private final Handler handler = new Handler();
@@ -131,12 +131,12 @@ public class JukeboxService {
         } else if (x instanceof SubsonicRESTException && ((SubsonicRESTException) x).getCode() == 50 && !(task instanceof Stop)) {
             disableJukeboxOnError(x, R.string.download_jukebox_not_authorized);
         } else {
-            Log.e(TAG, "Failed to process jukebox task: " + x, x);
+            LOG.error("Failed to process jukebox task: " + x, x);
         }
     }
 
     private void disableJukeboxOnError(Throwable x, final int resourceId) {
-        Log.w(TAG, x.toString());
+        LOG.warn(x.toString());
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -250,7 +250,7 @@ public class JukeboxService {
                     }
                 }
             } catch (Throwable x) {
-                Log.w(TAG, "Failed to clean-up task queue.", x);
+                LOG.warn("Failed to clean-up task queue.", x);
             }
         }
 

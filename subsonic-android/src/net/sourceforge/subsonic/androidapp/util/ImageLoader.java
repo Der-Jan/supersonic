@@ -18,6 +18,9 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,7 +28,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,9 +35,6 @@ import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Asynchronous loading of images, with caching.
@@ -46,7 +45,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ImageLoader implements Runnable {
 
-    private static final String TAG = ImageLoader.class.getSimpleName();
+    private static final Logger LOG = new Logger(ImageLoader.class);
     private static final int CONCURRENCY = 5;
 
     private final LRUCache<String, Drawable> cache = new LRUCache<String, Drawable>(100);
@@ -85,7 +84,9 @@ public class ImageLoader implements Runnable {
         int size = large ? imageSizeLarge : imageSizeDefault;
         Drawable drawable = cache.get(getKey(entry.getCoverArt(), size));
         if (drawable != null) {
-            setImage(view, drawable, crossfade);
+            // Create a clone since the images can be modified by the caller.
+            Drawable clone = drawable.getConstantState().newDrawable();
+            setImage(view, clone, crossfade);
             return;
         }
 
@@ -148,7 +149,7 @@ public class ImageLoader implements Runnable {
                 Task task = queue.take();
                 task.execute();
             } catch (Throwable x) {
-                Log.e(TAG, "Unexpected exception in ImageLoader.", x);
+                LOG.error("Unexpected exception in ImageLoader.", x);
             }
         }
     }
@@ -185,7 +186,7 @@ public class ImageLoader implements Runnable {
                     }
                 });
             } catch (Throwable x) {
-                Log.e(TAG, "Failed to download album art.", x);
+                LOG.error("Failed to download album art.", x);
             }
         }
     }

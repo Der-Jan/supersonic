@@ -23,7 +23,6 @@ import java.util.WeakHashMap;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
@@ -44,7 +43,7 @@ import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
  */
 public class SongView extends RelativeLayout implements Checkable {
 
-    private static final String TAG = SongView.class.getSimpleName();
+    private static final Logger LOG = new Logger(SongView.class);
     private static final WeakHashMap<SongView, ?> INSTANCES = new WeakHashMap<SongView, Object>();
     private static Handler handler;
 
@@ -74,7 +73,7 @@ public class SongView extends RelativeLayout implements Checkable {
         INSTANCES.put(this, null);
         int instanceCount = INSTANCES.size();
         if (instanceCount > 50) {
-            Log.w(TAG, instanceCount + " live SongView instances");
+            LOG.warn(instanceCount + " live SongView instances");
         }
         startUpdater();
     }
@@ -130,7 +129,7 @@ public class SongView extends RelativeLayout implements Checkable {
             downloadButton.setImageResource(R.drawable.download_streaming);
         } else {
             statusTextView.setText(Util.formatDuration(song.getDuration()));
-            downloadButton.setImageDrawable(null);
+            downloadButton.setImageResource(R.drawable.action_overflow);
         }
 
         boolean playing = downloadService.getCurrentPlaying() == downloadFile;
@@ -165,7 +164,7 @@ public class SongView extends RelativeLayout implements Checkable {
                 }
             }
         } catch (Throwable x) {
-            Log.w(TAG, "Error when updating song views.", x);
+            LOG.warn("Error when updating song views.", x);
         }
     }
 

@@ -21,21 +21,21 @@ package net.sourceforge.subsonic.androidapp.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 
 /**
  * @author Sindre Mehus
  */
 public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
-    private static final String TAG = MediaButtonIntentReceiver.class.getSimpleName();
+    private static final Logger LOG = new Logger(MediaButtonIntentReceiver.class);
 
     @Override
     public void onReceive(Context context, Intent intent) {
         KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
-        Log.i(TAG, "Got MEDIA_BUTTON key event: " + event);
+        LOG.info("Got MEDIA_BUTTON key event: " + event);
 
         Intent serviceIntent = new Intent(context, DownloadServiceImpl.class);
         serviceIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);

@@ -23,12 +23,11 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RemoteViews;
 import net.sourceforge.subsonic.androidapp.R;
@@ -43,7 +42,10 @@ import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
  */
 public final class NotificationUtil {
 
-    private static final String TAG = NotificationUtil.class.getSimpleName();
+    private static final Logger LOG = new Logger(NotificationUtil.class);
+
+    private NotificationUtil() {
+    }
 
     public static void updateNotification(final Context context, final DownloadServiceImpl downloadService,
             Handler handler, MusicDirectory.Entry song, boolean playing) {
@@ -57,9 +59,6 @@ public final class NotificationUtil {
 
         // Update widget
         SubsonicAppWidgetProvider.getInstance().notifyChange(context, downloadService, playing);
-
-        // TODO: Test missing album art
-        // TODO: Test with widget
     }
 
     private static void updateSimpleNotification(Context context, final DownloadServiceImpl downloadService, Handler handler,
@@ -86,7 +85,7 @@ public final class NotificationUtil {
         if (song == null) {
             hideNotification(downloadService, handler);
 
-        } else {
+        } else if (!isNotificationHiddenByUser(context)) {
             final Notification notification = createCustomNotification(context, song, playing);
 
             // Send the notification and put the service in the foreground.
@@ -110,16 +109,28 @@ public final class NotificationUtil {
         });
     }
 
+    public static void setNotificationHiddenByUser(Context context, boolean hiddenByUser) {
+        SharedPreferences preferences = Util.getPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, hiddenByUser);
+        editor.commit();
+    }
+
+    private static boolean isNotificationHiddenByUser(Context context) {
+        SharedPreferences preferences = Util.getPreferences(context);
+        return preferences.getBoolean(Constants.PREFERENCES_KEY_HIDE_NOTIFICATION_BY_USER, false);
+    }
+
     private static Notification createSimpleNotification(Context context, MusicDirectory.Entry song) {
         Bitmap albumArt;
         try {
             albumArt = FileUtil.getAlbumArtBitmap(context, song, (int) Util.convertDpToPixel(64.0F, context));
             if (albumArt == null) {
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+                albumArt = Util.decodeBitmap(context, R.drawable.unknown_album);
             }
         } catch (Exception x) {
-            Log.w(TAG, "Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album);
+            LOG.warn("Failed to get notification cover art", x);
+            albumArt = Util.decodeBitmap(context, R.drawable.unknown_album);
         }
         Intent notificationIntent = new Intent(context, DownloadActivity.class);
         return new NotificationCompat.Builder(context).setOngoing(true)
@@ -137,11 +148,11 @@ public final class NotificationUtil {
         try {
             albumArt = FileUtil.getUnscaledAlbumArtBitmap(context, song);
             if (albumArt == null) {
-                albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+                albumArt = Util.decodeBitmap(context, R.drawable.unknown_album_large);
             }
         } catch (Exception x) {
-            Log.w(TAG, "Failed to get notification cover art", x);
-            albumArt = BitmapFactory.decodeResource(null, R.drawable.unknown_album_large);
+            LOG.warn("Failed to get notification cover art", x);
+            albumArt = Util.decodeBitmap(context, R.drawable.unknown_album_large);
         }
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);

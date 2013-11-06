@@ -31,11 +31,11 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.util.CacheCleaner;
 import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -44,7 +44,8 @@ import net.sourceforge.subsonic.androidapp.util.Util;
  */
 public class DownloadFile {
 
-    private static final String TAG = DownloadFile.class.getSimpleName();
+    private static final Logger LOG = new Logger(DownloadFile.class);
+
     private final Context context;
     private final MusicDirectory.Entry song;
     private final File partialFile;
@@ -184,7 +185,7 @@ public class DownloadFile {
         if (file.exists()) {
             boolean ok = file.setLastModified(System.currentTimeMillis());
             if (!ok) {
-                Log.w(TAG, "Failed to set last-modified date on " + file);
+                LOG.warn("Failed to set last-modified date on " + file);
             }
         }
     }
@@ -208,22 +209,22 @@ public class DownloadFile {
                     PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
                     wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, toString());
                     wakeLock.acquire();
-                    Log.i(TAG, "Acquired wake lock " + wakeLock);
+                    LOG.info("Acquired wake lock " + wakeLock);
                 }
 
                 wifiLock = Util.createWifiLock(context, toString());
                 wifiLock.acquire();
-                Log.i(TAG, "Acquired wifi lock " + wifiLock);
+                LOG.info("Acquired wifi lock " + wifiLock);
 
                 if (saveFile.exists()) {
-                    Log.i(TAG, saveFile + " already exists. Skipping.");
+                    LOG.info(saveFile + " already exists. Skipping.");
                     return;
                 }
                 if (completeFile.exists()) {
                     if (save) {
                         Util.atomicCopy(completeFile, saveFile);
                     } else {
-                        Log.i(TAG, completeFile + " already exists. Skipping.");
+                        LOG.info(completeFile + " already exists. Skipping.");
                     }
                     return;
                 }
@@ -235,12 +236,12 @@ public class DownloadFile {
                 in = response.getEntity().getContent();
                 boolean partial = response.getStatusLine().getStatusCode() == HttpStatus.SC_PARTIAL_CONTENT;
                 if (partial) {
-                    Log.i(TAG, "Executed partial HTTP GET, skipping " + partialFile.length() + " bytes");
+                    LOG.info("Executed partial HTTP GET, skipping " + partialFile.length() + " bytes");
                 }
 
                 out = new FileOutputStream(partialFile, partial);
                 long n = copy(in, out);
-                Log.i(TAG, "Downloaded " + n + " bytes to " + partialFile);
+                LOG.info("Downloaded " + n + " bytes to " + partialFile);
                 out.flush();
                 out.close();
 
@@ -263,7 +264,7 @@ public class DownloadFile {
                 Util.delete(saveFile);
                 if (!isCancelled()) {
                     failed = true;
-                    Log.w(TAG, "Failed to download '" + song + "'.", x);
+                    LOG.warn("Failed to download '" + song + "'.", x);
                 }
 
             } finally {
@@ -272,11 +273,11 @@ public class DownloadFile {
 
                 if (wakeLock != null) {
                     wakeLock.release();
-                    Log.i(TAG, "Released wake lock " + wakeLock);
+                    LOG.info("Released wake lock " + wakeLock);
                 }
                 if (wifiLock != null) {
                     wifiLock.release();
-                    Log.i(TAG, "Released wifi lock " + wifiLock);
+                    LOG.info("Released wifi lock " + wifiLock);
                 }
 
                 new CacheCleaner(context, DownloadServiceImpl.getInstance()).clean();
@@ -296,7 +297,7 @@ public class DownloadFile {
                     musicService.getCoverArt(context, song, size, true, null);
                 }
             } catch (Exception x) {
-                Log.e(TAG, "Failed to get cover art.", x);
+                LOG.error("Failed to get cover art.", x);
             }
         }
 
@@ -331,7 +332,7 @@ public class DownloadFile {
 
                 long now = System.currentTimeMillis();
                 if (now - lastLog > 3000L) {  // Only every so often.
-                    Log.i(TAG, "Downloaded " + Util.formatBytes(count) + " of " + song);
+                    LOG.info("Downloaded " + Util.formatBytes(count) + " of " + song);
                     lastLog = now;
                 }
             }

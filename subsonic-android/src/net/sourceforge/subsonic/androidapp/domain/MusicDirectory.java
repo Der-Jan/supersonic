@@ -27,9 +27,19 @@ import java.io.Serializable;
  */
 public class MusicDirectory {
 
+    private String id;
     private String name;
     private String parentId;
     private final List<Entry> children = new ArrayList<Entry>();
+    private boolean starred;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -45,6 +55,14 @@ public class MusicDirectory {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
     }
 
     public void addChild(Entry child) {
@@ -89,6 +107,7 @@ public class MusicDirectory {
         private Integer bitRate;
         private String path;
         private boolean video;
+        private boolean starred;
 
         public String getId() {
             return id;
@@ -240,6 +259,14 @@ public class MusicDirectory {
 
         public void setVideo(boolean video) {
             this.video = video;
+        }
+
+        public boolean isStarred() {
+            return starred;
+        }
+
+        public void setStarred(boolean starred) {
+            this.starred = starred;
         }
 
         @Override

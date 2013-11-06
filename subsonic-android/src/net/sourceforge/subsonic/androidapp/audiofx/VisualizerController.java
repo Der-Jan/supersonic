@@ -21,7 +21,7 @@ package net.sourceforge.subsonic.androidapp.audiofx;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
-import android.util.Log;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 
 /**
  * Backward-compatible wrapper for {@link Visualizer}, which is API Level 9.
@@ -31,7 +31,7 @@ import android.util.Log;
  */
 public class VisualizerController {
 
-    private static final String TAG = VisualizerController.class.getSimpleName();
+    private static final Logger LOG = new Logger(VisualizerController.class);
     private static final int PREFERRED_CAPTURE_SIZE = 128; // Must be a power of two.
 
     private final Context context;
@@ -58,7 +58,7 @@ public class VisualizerController {
         try {
             visualizer = new Visualizer(mediaPlayer.getAudioSessionId());
         } catch (Throwable x) {
-            Log.w(TAG, "Failed to create visualizer.", x);
+            LOG.warn("Failed to create visualizer.", x);
         }
 
         if (visualizer != null) {

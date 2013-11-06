@@ -25,7 +25,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
-import android.util.Log;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
@@ -36,7 +35,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
  */
 public class ShufflePlayBuffer {
 
-    private static final String TAG = ShufflePlayBuffer.class.getSimpleName();
+    private static final Logger LOG = new Logger(ShufflePlayBuffer.class);
     private static final int CAPACITY = 50;
     private static final int REFILL_THRESHOLD = 40;
 
@@ -66,7 +65,7 @@ public class ShufflePlayBuffer {
                 result.add(buffer.remove(buffer.size() - 1));
             }
         }
-        Log.i(TAG, "Taking " + result.size() + " songs from shuffle play buffer. " + buffer.size() + " remaining.");
+        LOG.info("Taking " + result.size() + " songs from shuffle play buffer. " + buffer.size() + " remaining.");
         return result;
     }
 
@@ -90,10 +89,10 @@ public class ShufflePlayBuffer {
 
             synchronized (buffer) {
                 buffer.addAll(songs.getChildren());
-                Log.i(TAG, "Refilled shuffle play buffer with " + songs.getChildren().size() + " songs.");
+                LOG.info("Refilled shuffle play buffer with " + songs.getChildren().size() + " songs.");
             }
         } catch (Exception x) {
-            Log.w(TAG, "Failed to refill shuffle play buffer.", x);
+            LOG.warn("Failed to refill shuffle play buffer.", x);
         }
     }
 

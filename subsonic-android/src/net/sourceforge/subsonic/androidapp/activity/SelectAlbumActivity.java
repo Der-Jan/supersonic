@@ -18,12 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -35,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.sourceforge.subsonic.androidapp.R;
@@ -44,8 +39,15 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static net.sourceforge.subsonic.androidapp.util.Constants.*;
 
@@ -62,6 +64,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
     private Button deleteButton;
     private Button moreButton;
     private ImageButton playAllButton;
+    private boolean isPlaylist;
 
     /**
      * Called when the activity is first created.
@@ -164,8 +167,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         registerForContextMenu(entryList);
 
         enableButtons();
+        isPlaylist = playlistId != null;
 
-        if (playlistId != null) {
+        if (isPlaylist) {
             getPlaylist(playlistId, playlistName);
         } else if (albumListType != null) {
             getAlbumList(albumListType, albumListSize, albumListOffset);
@@ -193,6 +197,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 onSearchRequested();
             }
         });
+        actionSearchButton.setVisibility(Util.isOffline(this) ? View.GONE : View.VISIBLE);
 
         // Button 3: overflow
         final View overflowButton = findViewById(R.id.action_button_3);
@@ -229,6 +234,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        boolean offline = Util.isOffline(this);
         MusicDirectory.Entry entry = getEntryAtPosition(info.position);
         if (entry == null) {
             return;
@@ -236,12 +242,17 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         if (entry.isDirectory()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_album_context, menu);
+            menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
+            menu.findItem(R.id.album_menu_pin).setVisible(!offline);
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
             DownloadFile downloadFile = getDownloadService().forSong(entry);
-            menu.findItem(R.id.song_menu_pin).setVisible(!downloadFile.isSaved());
-            menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_pin).setVisible(!offline && !downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_unpin).setVisible(!offline && downloadFile.isSaved());
+            menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
+            menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
         }
     }
 
@@ -264,6 +275,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             case R.id.album_menu_pin:
                 downloadRecursively(entry.getId(), true, true, false);
                 break;
+            case R.id.album_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.album_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                return true;
             case R.id.song_menu_play_now:
                 getDownloadService().download(songs, false, true, true);
                 break;
@@ -279,6 +296,12 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             case R.id.song_menu_unpin:
                 getDownloadService().unpin(songs);
                 break;
+            case R.id.song_menu_star:
+                StarUtil.starInBackground(this, entry, true);
+                return true;
+            case R.id.song_menu_unstar:
+                StarUtil.starInBackground(this, entry, false);
+                return true;
             default:
                 return super.onContextItemSelected(menuItem);
         }
@@ -296,16 +319,16 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(final MusicDirectory result) {
-                super.done(result);
-                setTitle(result.getName());
+            protected void done(final MusicDirectory directory) {
+                super.done(directory);
+                setTitle(directory.getName());
                 setBackAction(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent;
-                        if (result.getParentId() != null) {
+                        if (directory.getParentId() != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
-                            intent.putExtra(INTENT_EXTRA_NAME_ID, result.getParentId());
+                            intent.putExtra(INTENT_EXTRA_NAME_ID, directory.getParentId());
                         } else if (parentId != null) {
                             intent = new Intent(SelectAlbumActivity.this, SelectAlbumActivity.class);
                             intent.putExtra(INTENT_EXTRA_NAME_ID, parentId);
@@ -365,8 +388,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             @Override
-            protected void done(MusicDirectory result) {
-                if (!result.getChildren().isEmpty()) {
+            protected void done(MusicDirectory directory) {
+                if (!directory.getChildren().isEmpty()) {
                     pinButton.setVisibility(View.GONE);
                     unpinButton.setVisibility(View.GONE);
                     deleteButton.setVisibility(View.GONE);
@@ -388,7 +411,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                         }
                     });
                 }
-                super.done(result);
+                super.done(directory);
             }
         }.execute();
     }
@@ -527,8 +550,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         }
 
         @Override
-        protected void done(MusicDirectory result) {
-            List<MusicDirectory.Entry> entries = result.getChildren();
+        protected void done(MusicDirectory directory) {
+            List<MusicDirectory.Entry> entries = directory.getChildren();
 
             boolean hasSongs = false;
             for (MusicDirectory.Entry entry : entries) {
@@ -539,7 +562,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             }
 
             if (hasSongs) {
-                entryList.addHeaderView(createHeader(entries));
+                entryList.addHeaderView(createHeader(directory));
                 entryList.addFooterView(footer);
                 selectButton.setVisibility(View.VISIBLE);
                 playNowButton.setVisibility(View.VISIBLE);
@@ -559,11 +582,24 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         }
     }
 
-    private View createHeader(List<MusicDirectory.Entry> entries) {
+    private View createHeader(final MusicDirectory directory) {
+        List<MusicDirectory.Entry> entries = directory.getChildren();
         View header = LayoutInflater.from(this).inflate(R.layout.select_album_header, entryList, false);
 
         View coverArtView = header.findViewById(R.id.select_album_art);
-        getImageLoader().loadImage(coverArtView, entries.get(0), false, true);
+        getImageLoader().loadImage(coverArtView, entries.get(0), true, true);
+
+        final ImageView starView = (ImageView) header.findViewById(R.id.select_album_star);
+        starView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StarUtil.starInBackground(SelectAlbumActivity.this, directory, !directory.isStarred());
+                starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
+            }
+        });
+        boolean offline = Util.isOffline(this);
+        starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
+        starView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());

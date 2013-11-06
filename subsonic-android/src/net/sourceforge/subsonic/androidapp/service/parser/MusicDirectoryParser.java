@@ -18,21 +18,22 @@
  */
 package net.sourceforge.subsonic.androidapp.service.parser;
 
-import android.content.Context;
-import android.util.Log;
-import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
-import net.sourceforge.subsonic.androidapp.util.ProgressListener;
+import java.io.Reader;
+
 import org.xmlpull.v1.XmlPullParser;
 
-import java.io.Reader;
+import android.content.Context;
+import net.sourceforge.subsonic.androidapp.R;
+import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
+import net.sourceforge.subsonic.androidapp.util.Logger;
+import net.sourceforge.subsonic.androidapp.util.ProgressListener;
 
 /**
  * @author Sindre Mehus
  */
 public class MusicDirectoryParser extends MusicDirectoryEntryParser {
 
-    private static final String TAG = MusicDirectoryParser.class.getSimpleName();
+    private static final Logger LOG = new Logger(MusicDirectoryParser.class);
 
     public MusicDirectoryParser(Context context) {
         super(context);
@@ -53,8 +54,10 @@ public class MusicDirectoryParser extends MusicDirectoryEntryParser {
                 if ("child".equals(name)) {
                     dir.addChild(parseEntry());
                 } else if ("directory".equals(name)) {
+                    dir.setId(get("id"));
                     dir.setName(get("name"));
                     dir.setParentId(get("parent"));
+                    dir.setStarred(get("starred") != null);
                 } else if ("error".equals(name)) {
                     handleError();
                 }
@@ -65,7 +68,7 @@ public class MusicDirectoryParser extends MusicDirectoryEntryParser {
         updateProgress(progressListener, R.string.parser_reading_done);
 
         long t1 = System.currentTimeMillis();
-        Log.d(TAG, "Got music directory in " + (t1 - t0) + "ms.");
+        LOG.debug("Got music directory in " + (t1 - t0) + "ms.");
 
         return dir;
     }

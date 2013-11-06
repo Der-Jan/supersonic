@@ -19,9 +19,6 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -43,8 +40,12 @@ import net.sourceforge.subsonic.androidapp.util.ArtistAdapter;
 import net.sourceforge.subsonic.androidapp.util.BackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectArtistActivity extends SubsonicTabActivity implements AdapterView.OnItemClickListener {
 
@@ -96,6 +97,7 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
                 onSearchRequested();
             }
         });
+        actionSearchButton.setVisibility(Util.isOffline(this) ? View.GONE : View.VISIBLE);
 
         // Button 3: overflow
         final View overflowButton = findViewById(R.id.action_button_3);
@@ -179,9 +181,15 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        if (artistList.getItemAtPosition(info.position) instanceof Artist) {
+        boolean offline = Util.isOffline(this);
+        Object item = artistList.getItemAtPosition(info.position);
+        if (item instanceof Artist) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_artist_context, menu);
+            Artist artist = (Artist) item;
+            menu.findItem(R.id.artist_menu_star).setVisible(!offline && !artist.isStarred());
+            menu.findItem(R.id.artist_menu_unstar).setVisible(!offline && artist.isStarred());
+            menu.findItem(R.id.artist_menu_pin).setVisible(!offline);
         } else if (info.position == 0) {
             String musicFolderId = Util.getSelectedMusicFolderId(this);
             MenuItem menuItem = menu.add(MENU_GROUP_MUSIC_FOLDER, -1, 0, R.string.select_artist_all_folders);
@@ -218,6 +226,12 @@ public class SelectArtistActivity extends SubsonicTabActivity implements Adapter
                 case R.id.artist_menu_pin:
                     downloadRecursively(artist.getId(), true, true, false);
                     break;
+                case R.id.artist_menu_star:
+                    StarUtil.starInBackground(this, artist, true);
+                    return true;
+                case R.id.artist_menu_unstar:
+                    StarUtil.starInBackground(this, artist, false);
+                    return true;
                 default:
                     return super.onContextItemSelected(menuItem);
             }
