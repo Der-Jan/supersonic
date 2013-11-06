@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.10.0">
+           version="1.10.1">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -92,7 +92,7 @@
     <xs:complexType name="Artist">
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="starred" type="xs:dateTime" use="optional"/> <!-- Added in 1.10.0 -->
+        <xs:attribute name="starred" type="xs:dateTime" use="optional"/> <!-- Added in 1.10.1 -->
     </xs:complexType>
 
     <xs:complexType name="Genres">
@@ -168,7 +168,7 @@
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="parent" type="xs:string" use="optional"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="starred" type="xs:dateTime" use="optional"/> <!-- Added in 1.10.0 -->
+        <xs:attribute name="starred" type="xs:dateTime" use="optional"/> <!-- Added in 1.10.1 -->
     </xs:complexType>
 
     <xs:complexType name="Child">

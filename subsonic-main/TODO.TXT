@@ -182,6 +182,7 @@ Added context menu buttons.
 Use Roboto Thin font (API 16+)
 Hide search button and pin/unpin option when offline
 Don't show notification if previously dismissed and not currently playing.
+Update to REST 1.10.1
 
 TODO IN ANDROID 4.0
 --------------------
@@ -191,7 +192,6 @@ Starring support
   Update demo with new war.
 Add button to bring up context menu
   Find smaller icon
-Update to REST 1.10.1
 
 Google Cast
   https://developers.google.com/cast/

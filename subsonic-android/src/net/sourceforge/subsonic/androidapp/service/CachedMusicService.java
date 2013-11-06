@@ -128,9 +128,9 @@ public class CachedMusicService implements MusicService {
     }
 
     private void populateStarred(MusicDirectory dir, Context context, ProgressListener progressListener) throws Exception {
-        // MusicDirectory.starred was added to the REST API in 1.10, so for backward compatibility
+        // MusicDirectory.starred was added to the REST API in 1.10.1, so for backward compatibility
         // we have to emulate it.
-        if (Util.isServerCompatibleTo(context, "1.10")) {
+        if (Util.isServerCompatibleTo(context, "1.10.1")) {
             return;
         }
         for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
@@ -142,9 +142,9 @@ public class CachedMusicService implements MusicService {
     }
 
     private void populateStarred(List<Artist> artists, Context context, ProgressListener progressListener) throws Exception {
-        // Artist.starred was added to the REST API in 1.10, so for backward compatibility
+        // Artist.starred was added to the REST API in 1.10.1, so for backward compatibility
         // we have to emulate it.
-        if (Util.isServerCompatibleTo(context, "1.10")) {
+        if (Util.isServerCompatibleTo(context, "1.10.1")) {
             return;
         }
         List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
