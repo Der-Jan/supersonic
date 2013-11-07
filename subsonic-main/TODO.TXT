@@ -184,22 +184,9 @@ Linux locale issue
 
 DONE IN ANDROID 4.0
 --------------------
-Starring support
-Added context menu buttons.
-Use Roboto Thin font (API 16+)
-Hide search button and pin/unpin option when offline
-Don't show notification if previously dismissed and not currently playing.
-Update to REST 1.10.1
 
-TODO IN ANDROID 4.0
+TODO IN ANDROID 4.1
 --------------------
-Starring support
-  Make starring work for video also. Change wording.
-  Test with REST 1.10 and older.
-  Update demo with new war.
-Add button to bring up context menu
-  Find smaller icon
-
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial
@@ -896,7 +883,7 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.9 -m "Tagging Android 3.9"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.0 -m "Tagging Android 4.0"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).

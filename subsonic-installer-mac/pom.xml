@@ -74,15 +74,11 @@
                                         </jarbundler>
                                         <replace file="target/Subsonic.app/Contents/Info.plist" token="CFBundleHelpBookFolder" value="LSUIElement"/>
                                         <replace file="target/Subsonic.app/Contents/Info.plist" token="foobar" value="1"/>
-                                        <exec executable="/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker">
-                                            <arg value="--doc"/>
-                                            <arg value="${basedir}/src/subsonic.pmdoc"/>
-                                            <arg value="--version"/>
-                                            <arg value="${project.version}"/>
-                                            <arg value="--no-relocate"/>
-                                            <arg value="--out"/>
+                                        <exec executable="/usr/bin/productbuild">
+                                            <arg value="--component"/>
+                                            <arg value="${project.build.directory}/Subsonic.app"/>
+                                            <arg value="/Applications"/>
                                             <arg value="${project.build.directory}/subsonic-${project.version}.pkg"/>
-                                            <arg value="--verbose"/>
                                         </exec>
                                     </target>
                                 </configuration>
