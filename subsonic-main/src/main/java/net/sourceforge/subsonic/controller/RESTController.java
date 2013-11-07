@@ -18,6 +18,28 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.ajax.ChatService;
 import net.sourceforge.subsonic.ajax.LyricsInfo;
@@ -65,26 +87,6 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.XMLBuilder;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
 import static net.sourceforge.subsonic.util.XMLBuilder.Attribute;
@@ -1755,6 +1757,48 @@ public class RESTController extends MultiActionController {
         userSettingsController.createUser(command);
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
         response.getWriter().print(builder);
+    }
+
+    public void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        User user = securityService.getCurrentUser(request);
+        if (!user.isAdminRole()) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to update users.");
+            return;
+        }
+
+        String username = ServletRequestUtils.getRequiredStringParameter(request, "username");
+        User u = securityService.getUserByName(username);
+        UserSettings s = settingsService.getUserSettings(username);
+
+        UserSettingsCommand command = new UserSettingsCommand();
+        command.setUsername(username);
+        command.setEmail(ServletRequestUtils.getStringParameter(request, "email", u.getEmail()));
+        command.setLdapAuthenticated(ServletRequestUtils.getBooleanParameter(request, "ldapAuthenticated", u.isLdapAuthenticated()));
+        command.setAdminRole(ServletRequestUtils.getBooleanParameter(request, "adminRole", u.isAdminRole()));
+        command.setCommentRole(ServletRequestUtils.getBooleanParameter(request, "commentRole", u.isCommentRole()));
+        command.setCoverArtRole(ServletRequestUtils.getBooleanParameter(request, "coverArtRole", u.isCoverArtRole()));
+        command.setDownloadRole(ServletRequestUtils.getBooleanParameter(request, "downloadRole", u.isDownloadRole()));
+        command.setStreamRole(ServletRequestUtils.getBooleanParameter(request, "streamRole", u.isDownloadRole()));
+        command.setUploadRole(ServletRequestUtils.getBooleanParameter(request, "uploadRole", u.isUploadRole()));
+        command.setJukeboxRole(ServletRequestUtils.getBooleanParameter(request, "jukeboxRole", u.isJukeboxRole()));
+        command.setPodcastRole(ServletRequestUtils.getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
+        command.setSettingsRole(ServletRequestUtils.getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
+        command.setShareRole(ServletRequestUtils.getBooleanParameter(request, "shareRole", u.isShareRole()));
+        command.setTranscodeSchemeName(ServletRequestUtils.getStringParameter(request, "transcodeScheme", s.getTranscodeScheme().name()));
+
+        if (hasParameter(request, "password")) {
+            command.setPassword(decrypt(ServletRequestUtils.getRequiredStringParameter(request, "password")));
+            command.setPasswordChange(true);
+        }
+
+        userSettingsController.updateUser(command);
+        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
+        response.getWriter().print(builder);
+    }
+
+    private boolean hasParameter(HttpServletRequest request, String name) {
+        return request.getParameter(name) != null;
     }
 
     public void deleteUser(HttpServletRequest request, HttpServletResponse response) throws Exception {

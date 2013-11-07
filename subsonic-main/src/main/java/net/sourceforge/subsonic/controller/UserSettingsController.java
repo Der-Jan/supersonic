@@ -18,17 +18,23 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
-import net.sourceforge.subsonic.service.*;
-import net.sourceforge.subsonic.domain.*;
-import net.sourceforge.subsonic.command.*;
-import org.springframework.web.servlet.mvc.*;
-import org.springframework.web.bind.*;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.http.*;
+import net.sourceforge.subsonic.command.UserSettingsCommand;
+import net.sourceforge.subsonic.domain.TranscodeScheme;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.TranscodingService;
 
 /**
  * Controller for the page used to administrate users.
@@ -105,7 +111,7 @@ public class UserSettingsController extends SimpleFormController {
         updateUser(command);
     }
 
-    private void updateUser(UserSettingsCommand command) {
+    public void updateUser(UserSettingsCommand command) {
         User user = securityService.getUserByName(command.getUsername());
         user.setEmail(StringUtils.trimToNull(command.getEmail()));
         user.setLdapAuthenticated(command.isLdapAuthenticated());
