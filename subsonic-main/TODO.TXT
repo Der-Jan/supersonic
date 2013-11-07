@@ -7,13 +7,14 @@ Update icons in top.jsp.  Use latest Android icons.
 TODO IN 4.9
 --------------
 Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow applications downloaded from’ to ‘Anywhere’ in the Security & Privacy preferences before you download the DMG file.
-Update to Mavericks
+  spctl -v --assess --type install subsonic-4.9.beta1.pkg
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 REST: Create updateUser.
   Test service method
   Test API page
   https://mail.google.com/mail/ca/u/0/#inbox/142069c3fd3b77a0
+
 Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
 Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
 Starred: ic_action_not_important, ic_action_important
