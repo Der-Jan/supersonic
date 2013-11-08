@@ -72,6 +72,7 @@ public class DLNASettingsController extends ParameterizableViewController {
         boolean dlnaEnabled = ServletRequestUtils.getBooleanParameter(request, "dlnaEnabled", false);
         if (dlnaEnabled != settingsService.isDlnaEnabled()) {
             settingsService.setDlnaEnabled(dlnaEnabled);
+            settingsService.save();
             upnpService.setMediaServerEnabled(dlnaEnabled);
         }
     }

@@ -1,34 +1,27 @@
 DONE IN 4.9
 -------------
-Add "starred" to "Directory" and "Artist" in REST xsd.
 Added Estonian translation, courtesy of Olav M&auml;gi.
 Update icons in top.jsp.  Use latest Android icons.
 REST: Create updateUser.
+REST: Add "starred" to "Directory" and "Artist" in xsd
+Bugfix: Remember DLNA settings when restarting server
 
 TODO IN 4.9
 --------------
+From forum:
+ -Option to save the DLNA to be off resets itself when I restart Subsonic.
+ - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
+ - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
+
 Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow applications downloaded from’ to ‘Anywhere’ in the Security & Privacy preferences before you download the DMG file.
   spctl -v --assess --type install subsonic-4.9.beta1.pkg
-Amazon free app of the day
-  https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
-
-Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
-Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
-Starred: ic_action_not_important, ic_action_important
-Podcast: ic_action_network_wifi
-Settings: ic_action_settings
-Status: ic_action_network_cell, ic_action_import_export
-More:   ic_action_phone
-About: ic_action_about
-
-Rotate podcast icon 45 degrees
+Update screenshots
+Publish on Mac app store
 
 Shuffle play
 Dont use <div/>
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
-Move xsd and xml examples to site.
-  Create links to each version
 Recently added broken
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
 https port 8080 redirect to 8443 (jetty?)
@@ -185,6 +178,8 @@ DONE IN ANDROID 4.0
 
 TODO IN ANDROID 4.1
 --------------------
+Amazon free app of the day
+  https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial
