@@ -9,9 +9,16 @@ Bugfix: Remember DLNA settings when restarting server
 TODO IN 4.9
 --------------
 From forum:
- -Option to save the DLNA to be off resets itself when I restart Subsonic.
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
+ - Play next/last unreadable in themes
+ - Use song artist when scrobbling
+      http://forum.subsonic.org/forum/viewtopic.php?f=3&t=10402
+
+JavaFX client?
+DLNA
+  http://www.upnp-database.info/device.jsp
+  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
 
 Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow applications downloaded from’ to ‘Anywhere’ in the Security & Privacy preferences before you download the DMG file.
   spctl -v --assess --type install subsonic-4.9.beta1.pkg
