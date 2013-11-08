@@ -1751,8 +1751,8 @@ public class RESTController extends MultiActionController {
         command.setJukeboxRole(getBooleanParameter(request, "jukeboxRole", false));
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", false));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", true));
-        command.setTranscodeSchemeName(getStringParameter(request, "transcodeScheme", TranscodeScheme.OFF.name()));
         command.setShareRole(getBooleanParameter(request, "shareRole", false));
+        command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
 
         userSettingsController.createUser(command);
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
@@ -1771,6 +1771,14 @@ public class RESTController extends MultiActionController {
         User u = securityService.getUserByName(username);
         UserSettings s = settingsService.getUserSettings(username);
 
+        if (u == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "No such user: " + username);
+            return;
+        } else if (User.USERNAME_ADMIN.equals(username)) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, "Not allowed to change admin user");
+            return;
+        }
+
         UserSettingsCommand command = new UserSettingsCommand();
         command.setUsername(username);
         command.setEmail(getStringParameter(request, "email", u.getEmail()));
@@ -1785,7 +1793,7 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
         command.setShareRole(getBooleanParameter(request, "shareRole", u.isShareRole()));
-        command.setTranscodeSchemeName(getStringParameter(request, "transcodeScheme", s.getTranscodeScheme().name()));
+        command.setTranscodeSchemeName(s.getTranscodeScheme().name());
 
         if (hasParameter(request, "password")) {
             command.setPassword(decrypt(getRequiredStringParameter(request, "password")));
@@ -1810,6 +1818,11 @@ public class RESTController extends MultiActionController {
         }
 
         String username = getRequiredStringParameter(request, "username");
+        if (User.USERNAME_ADMIN.equals(username)) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, "Not allowed to delete admin user");
+            return;
+        }
+
         securityService.deleteUser(username);
 
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();

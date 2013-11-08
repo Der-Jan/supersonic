@@ -3,6 +3,7 @@ DONE IN 4.9
 Add "starred" to "Directory" and "Artist" in REST xsd.
 Added Estonian translation, courtesy of Olav M&auml;gi.
 Update icons in top.jsp.  Use latest Android icons.
+REST: Create updateUser.
 
 TODO IN 4.9
 --------------
@@ -10,10 +11,6 @@ Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow 
   spctl -v --assess --type install subsonic-4.9.beta1.pkg
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
-REST: Create updateUser.
-  Test service method
-  Test API page
-  https://mail.google.com/mail/ca/u/0/#inbox/142069c3fd3b77a0
 
 Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
 Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
