@@ -109,8 +109,8 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info"/>
         </receiver>
 
-        <provider android:name=".provider.SubsonicSearchRecentSuggestionProvider"
-                  android:authorities="net.sourceforge.subsonic.androidapp.provider.SubsonicSearchRecentSuggestionProvider"/>
+        <provider android:name=".provider.RecentSuggestionsProvider"
+                  android:authorities="net.sourceforge.subsonic.androidapp.provider.RecentSuggestionsProvider"/>
 
         <meta-data android:name="android.app.default_searchable"
                    android:value="net.sourceforge.subsonic.androidapp.activity.QueryReceiverActivity"/>

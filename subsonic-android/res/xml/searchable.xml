@@ -4,6 +4,5 @@
             android:hint="@string/search.title"
             android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
             android:voiceLanguageModel="web_search"
-            android:searchSuggestAuthority="net.sourceforge.subsonic.androidapp.provider.SubsonicSearchRecentSuggestionProvider"
-            android:searchSuggestSelection=" ?" >
+            android:searchSuggestAuthority="net.sourceforge.subsonic.androidapp.provider.SubsonicSearchCustomSuggestionProvider">
 </searchable>

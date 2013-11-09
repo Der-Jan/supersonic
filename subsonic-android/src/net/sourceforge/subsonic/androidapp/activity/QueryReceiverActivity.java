@@ -24,7 +24,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import net.sourceforge.subsonic.androidapp.provider.SubsonicSearchRecentSuggestionProvider;
+import net.sourceforge.subsonic.androidapp.provider.RecentSuggestionsProvider;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -42,8 +42,8 @@ public class QueryReceiverActivity extends Activity {
         String query = getIntent().getStringExtra(SearchManager.QUERY);
 
         if (query != null) {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SubsonicSearchRecentSuggestionProvider.AUTHORITY,
-                                                                              SubsonicSearchRecentSuggestionProvider.MODE);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, RecentSuggestionsProvider.AUTHORITY,
+                                                                              RecentSuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
 
             Intent intent = new Intent(QueryReceiverActivity.this, SearchActivity.class);
