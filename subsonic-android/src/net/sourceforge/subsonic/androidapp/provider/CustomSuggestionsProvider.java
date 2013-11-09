@@ -39,20 +39,19 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
  */
 public class CustomSuggestionsProvider extends ContentProvider {
 
+    private static final String RESOURCE_PREFIX = "android.resource://net.sourceforge.subsonic.androidapp/";
     private static final String[] COLUMNS = {"_id",
             SearchManager.SUGGEST_COLUMN_TEXT_1,
             SearchManager.SUGGEST_COLUMN_TEXT_2,
             SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+            SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA,
             SearchManager.SUGGEST_COLUMN_ICON_1};
-
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String query = selectionArgs[0] + "*";
         SearchResult searchResult = search(query);
         return createCursor(searchResult);
-
-        // TODO: Add icon
     }
 
     private SearchResult search(String query) {
@@ -73,15 +72,18 @@ public class CustomSuggestionsProvider extends ContentProvider {
         if (searchResult == null) {
             return cursor;
         }
+
         for (Artist artist : searchResult.getArtists()) {
-            String icon = "android.resource://net.sourceforge.subsonic.androidapp/" + R.drawable.media_start;
-            cursor.addRow(new Object[]{artist.getId(), artist.getName(), null, artist.getId(), icon});
+            String icon = RESOURCE_PREFIX + R.drawable.ic_action_artist;
+            cursor.addRow(new Object[]{artist.getId(), artist.getName(), null, artist.getId(), artist.getName(), icon});
         }
         for (MusicDirectory.Entry album : searchResult.getAlbums()) {
-            cursor.addRow(new Object[]{album.getId(), album.getTitle(), album.getArtist(), album.getId(), null});
+            String icon = RESOURCE_PREFIX + R.drawable.ic_action_album;
+            cursor.addRow(new Object[]{album.getId(), album.getTitle(), album.getArtist(), album.getId(), album.getTitle(), icon});
         }
         for (MusicDirectory.Entry song : searchResult.getSongs()) {
-            cursor.addRow(new Object[]{song.getId(), song.getTitle(), song.getArtist(), song.getParent(), null});
+            String icon = RESOURCE_PREFIX + R.drawable.ic_action_song;
+            cursor.addRow(new Object[]{song.getId(), song.getTitle(), song.getArtist(), song.getParent(), null, icon});
         }
         return cursor;
     }

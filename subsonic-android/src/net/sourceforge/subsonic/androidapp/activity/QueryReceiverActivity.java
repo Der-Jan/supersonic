@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import net.sourceforge.subsonic.androidapp.provider.RecentSuggestionsProvider;
 import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
@@ -35,8 +34,6 @@ import net.sourceforge.subsonic.androidapp.util.Util;
  * @author Sindre Mehus
  */
 public class QueryReceiverActivity extends Activity {
-
-    private final static Logger LOG = new Logger(QueryReceiverActivity.class);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +48,7 @@ public class QueryReceiverActivity extends Activity {
 
         // Handle a suggestions click (because the suggestions all use ACTION_VIEW)
         else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            showResult(intent.getDataString());
+            showResult(intent.getDataString(), intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
         }
 
         finish();
@@ -70,10 +67,13 @@ public class QueryReceiverActivity extends Activity {
         }
     }
 
-    private void showResult(String albumId) {
+    private void showResult(String albumId, String name) {
         if (albumId != null) {
             Intent intent = new Intent(this, SelectAlbumActivity.class);
             intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, albumId);
+            if (name != null) {
+                intent.putExtra(Constants.INTENT_EXTRA_NAME_NAME, name);
+            }
             Util.startActivityWithoutTransition(this, intent);
         }
     }

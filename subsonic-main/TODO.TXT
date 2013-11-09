@@ -190,11 +190,14 @@ Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Search suggestions
   Use icon to distinguish between artists, albums and songs.
-  Improve search query so that it returns stuff starting with stuff.
+  Set album name extra
   http://developer.android.com/guide/topics/search/adding-custom-suggestions.html
   http://stackoverflow.com/questions/12883071/android-search-suggestions-from-api/12895381#12895381
   https://www.grokkingandroid.com/android-tutorial-adding-suggestions-to-search/
   Remove SubsonicSearchRecentSuggestionProvider?
+
+Use smaller overflow icon.
+
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial
