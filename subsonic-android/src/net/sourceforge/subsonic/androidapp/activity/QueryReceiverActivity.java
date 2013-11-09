@@ -23,8 +23,6 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
-import net.sourceforge.subsonic.androidapp.provider.RecentSuggestionsProvider;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
@@ -57,10 +55,6 @@ public class QueryReceiverActivity extends Activity {
 
     private void doSearch(String query) {
         if (query != null) {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, RecentSuggestionsProvider.AUTHORITY,
-                    RecentSuggestionsProvider.MODE);
-            suggestions.saveRecentQuery(query, null);
-
             Intent intent = new Intent(QueryReceiverActivity.this, SearchActivity.class);
             intent.putExtra(Constants.INTENT_EXTRA_NAME_QUERY, query);
             Util.startActivityWithoutTransition(QueryReceiverActivity.this, intent);

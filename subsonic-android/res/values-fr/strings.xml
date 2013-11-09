@@ -162,7 +162,6 @@
     <string name="settings.cache_size_10000">10 Go</string>
     <string name="settings.cache_size_20000">20 Go</string>
     <string name="settings.cache_size_unlimited">Illimité</string>
-    <string name="settings.clear_search_history">Effacer l\'historique des recherches</string>
     <string name="settings.search_history_cleared">Historique des recherches effacé</string>
     <string name="settings.other_title">Autres paramètres</string>
     <string name="settings.scrobble_title">Scrobbler sur Last.fm</string>
