@@ -8,7 +8,7 @@
     <name>Subsonic</name>
     <packaging>pom</packaging>
     <organization>
-        <name>Sindre Mehus</name>
+        <name>Subsonic</name>
         <url>http://subsonic.org/</url>
     </organization>
     <inceptionYear>2004</inceptionYear>
@@ -89,6 +89,7 @@
                 <module>subsonic-backend</module>
                 <module>subsonic-site</module>
                 <module>subsonic-assembly</module>
+                <module>subsonic-fx</module>
             </modules>
         </profile>
 

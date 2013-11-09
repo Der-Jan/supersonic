@@ -1,0 +1,61 @@
+<!--
+  ~ This file is part of Subsonic.
+  ~
+  ~ Subsonic is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Subsonic is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Copyright 2013 (C) Sindre Mehus
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>subsonic-fx</artifactId>
+    <name>Subsonic FX</name>
+
+    <parent>
+        <groupId>net.sourceforge.subsonic</groupId>
+        <artifactId>subsonic</artifactId>
+        <version>4.9.beta1</version>
+    </parent>
+
+    <!--Prerequisites to build this module:-->
+    <!--1. Set JAVA_HOME correctly-->
+    <!--2. Run mvn com.zenjava:javafx-maven-plugin:2.0:fix-classpath (see http://zenjava.com/javafx/maven/fix-classpath.html)-->
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <mainClass>sample.Main</mainClass>
+                        </configuration>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
