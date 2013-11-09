@@ -8,6 +8,7 @@ Bugfix: Remember DLNA settings when restarting server
 
 TODO IN 4.9
 --------------
+Review icons.
 From forum:
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
