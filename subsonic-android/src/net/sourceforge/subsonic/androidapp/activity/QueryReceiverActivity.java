@@ -26,31 +26,55 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import net.sourceforge.subsonic.androidapp.provider.RecentSuggestionsProvider;
 import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.Util;
 
 /**
- * Receives search queries and forwards to the SelectAlbumActivity.
+ * Receives search queries and forwards to SearchActivity or SelectAlbumActivity.
  *
  * @author Sindre Mehus
  */
 public class QueryReceiverActivity extends Activity {
 
+    private final static Logger LOG = new Logger(QueryReceiverActivity.class);
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
 
-        String query = getIntent().getStringExtra(SearchManager.QUERY);
+        // Handle the normal search query case
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doSearch(query);
+        }
 
+        // Handle a suggestions click (because the suggestions all use ACTION_VIEW)
+        else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            showResult(intent.getDataString());
+        }
+
+        finish();
+        Util.disablePendingTransition(this);
+    }
+
+    private void doSearch(String query) {
         if (query != null) {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, RecentSuggestionsProvider.AUTHORITY,
-                                                                              RecentSuggestionsProvider.MODE);
+                    RecentSuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
 
             Intent intent = new Intent(QueryReceiverActivity.this, SearchActivity.class);
             intent.putExtra(Constants.INTENT_EXTRA_NAME_QUERY, query);
             Util.startActivityWithoutTransition(QueryReceiverActivity.this, intent);
         }
-        finish();
-        Util.disablePendingTransition(this);
+    }
+
+    private void showResult(String albumId) {
+        if (albumId != null) {
+            Intent intent = new Intent(this, SelectAlbumActivity.class);
+            intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, albumId);
+            Util.startActivityWithoutTransition(this, intent);
+        }
     }
 }

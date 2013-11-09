@@ -15,7 +15,8 @@ From forum:
  - Use song artist when scrobbling
       http://forum.subsonic.org/forum/viewtopic.php?f=3&t=10402
 
-JavaFX client?
+SubsonicFX client
+  Skattefunn 2015
 DLNA
   http://www.upnp-database.info/device.jsp
   http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
@@ -188,7 +189,8 @@ TODO IN ANDROID 4.1
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Search suggestions
-  MatrixCursor
+  Use icon to distinguish between artists, albums and songs.
+  Improve search query so that it returns stuff starting with stuff.
   http://developer.android.com/guide/topics/search/adding-custom-suggestions.html
   http://stackoverflow.com/questions/12883071/android-search-suggestions-from-api/12895381#12895381
   https://www.grokkingandroid.com/android-tutorial-adding-suggestions-to-search/
