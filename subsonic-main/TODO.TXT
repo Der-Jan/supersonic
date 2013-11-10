@@ -186,15 +186,15 @@ Linux locale issue
 DONE IN ANDROID 4.1
 --------------------
 Search suggestions
+Lock screen widget
 
 TODO IN ANDROID 4.1
 --------------------
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
-
+Lock screen control
 Skipping problem solved in Dsub.
 Use smaller overflow icon.
-Use mic instead of guitar
 
 Google Cast
   https://developers.google.com/cast/
