@@ -18,16 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.commons.lang.ObjectUtils;
-
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
@@ -38,6 +28,15 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.util.FileUtil;
+import org.apache.commons.lang.ObjectUtils;
+
+import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Provides services for scanning the music library.
@@ -158,6 +157,8 @@ public class MediaScannerService {
 
         try {
             Date lastScanned = new Date();
+
+            // Maps from artist name to album count.
             Map<String, Integer> albumCount = new HashMap<String, Integer>();
             scanCount = 0;
             statistics.reset();
@@ -236,7 +237,8 @@ public class MediaScannerService {
     }
 
     private void updateAlbum(MediaFile file, Date lastScanned, Map<String, Integer> albumCount) {
-        if (file.getAlbumName() == null || file.getArtist() == null || file.getParentPath() == null || !file.isAudio()) {
+        String artist = file.getAlbumArtist() != null ? file.getAlbumArtist() : file.getArtist();
+        if (file.getAlbumName() == null || artist == null || file.getParentPath() == null || !file.isAudio()) {
             return;
         }
 
@@ -245,7 +247,7 @@ public class MediaScannerService {
             album = new Album();
             album.setPath(file.getParentPath());
             album.setName(file.getAlbumName());
-            album.setArtist(file.getArtist());
+            album.setArtist(artist);
             album.setCreated(file.getChanged());
         }
         if (album.getCoverArtPath() == null) {
@@ -258,8 +260,8 @@ public class MediaScannerService {
         if (firstEncounter) {
             album.setDurationSeconds(0);
             album.setSongCount(0);
-            Integer n = albumCount.get(file.getArtist());
-            albumCount.put(file.getArtist(), n == null ? 1 : n + 1);
+            Integer n = albumCount.get(artist);
+            albumCount.put(artist, n == null ? 1 : n + 1);
         }
         if (file.getDurationSeconds() != null) {
             album.setDurationSeconds(album.getDurationSeconds() + file.getDurationSeconds());
@@ -278,7 +280,7 @@ public class MediaScannerService {
         // Update the file's album artist, if necessary.
         if (!ObjectUtils.equals(album.getArtist(), file.getAlbumArtist())) {
             file.setAlbumArtist(album.getArtist());
-             mediaFileDao.createOrUpdateMediaFile(file);
+            mediaFileDao.createOrUpdateMediaFile(file);
         }
     }
 

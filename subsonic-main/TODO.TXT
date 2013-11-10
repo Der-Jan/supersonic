@@ -5,19 +5,18 @@ Update icons in top.jsp.  Use latest Android icons.
 REST: Create updateUser.
 REST: Add "starred" to "Directory" and "Artist" in xsd
 Bugfix: Remember DLNA settings when restarting server
+Proper support for album artist.
 
 TODO IN 4.9
 --------------
 Review icons.
 From forum:
  - album vs song artist (various artists)
-    - Test: is it only a problem in REST, or also in the web interface?
-    - Despicable Me: Artist not displayed in browse mode.
-    - ensure album matching works (matches on artist and album name)
-    - expose album/song artists in tag edit?
+    - test upgrade path
+    - album artist is currently reset when editing tags.
+    - expose album/song artists in tag edit
     - increase media file version
-    - add album artist to REST
-    - MediaScannerService.java:280
+    - ensure it works if no album artist is set (MediaScannerService)
 
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"

@@ -83,7 +83,8 @@ public class JaudiotaggerParser extends MetaDataParser {
 
                 String songArtist = getTagField(tag, FieldKey.ARTIST);
                 String albumArtist = getTagField(tag, FieldKey.ALBUM_ARTIST);
-                metaData.setArtist(StringUtils.isBlank(albumArtist) ? songArtist : albumArtist);
+                metaData.setArtist(StringUtils.isBlank(songArtist) ? albumArtist : songArtist);
+                metaData.setAlbumArtist(StringUtils.isBlank(albumArtist) ? songArtist : albumArtist);
             }
 
             AudioHeader audioHeader = audioFile.getAudioHeader();
@@ -221,7 +222,7 @@ public class JaudiotaggerParser extends MetaDataParser {
             Tag tag = audioFile.getTagOrCreateAndSetDefault();
 
             tag.setField(FieldKey.ARTIST, StringUtils.trimToEmpty(metaData.getArtist()));
-            tag.setField(FieldKey.ALBUM_ARTIST, StringUtils.trimToEmpty(metaData.getArtist()));
+            tag.setField(FieldKey.ALBUM_ARTIST, StringUtils.trimToEmpty(metaData.getAlbumArtist()));
             tag.setField(FieldKey.ALBUM, StringUtils.trimToEmpty(metaData.getAlbumName()));
             tag.setField(FieldKey.TITLE, StringUtils.trimToEmpty(metaData.getTitle()));
             tag.setField(FieldKey.GENRE, StringUtils.trimToEmpty(metaData.getGenre()));

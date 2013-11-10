@@ -18,9 +18,9 @@
  */
 package net.sourceforge.subsonic.service.metadata;
 
-import java.io.File;
-
 import net.sourceforge.subsonic.domain.MediaFile;
+
+import java.io.File;
 
 /**
  * Parses meta data by guessing artist, album and song title based on the path of the file.
@@ -30,15 +30,17 @@ import net.sourceforge.subsonic.domain.MediaFile;
 public class DefaultMetaDataParser extends MetaDataParser {
 
     /**
-     * Parses meta data for the given file. No guessing or reformatting is done.
+     * Parses meta data for the given file.
      *
      * @param file The file to parse.
      * @return Meta data for the file.
      */
     public MetaData getRawMetaData(File file) {
         MetaData metaData = new MetaData();
-        metaData.setArtist(guessArtist(file));
-        metaData.setAlbumName(guessAlbum(file, metaData.getArtist()));
+        String artist = guessArtist(file);
+        metaData.setArtist(artist);
+        metaData.setAlbumArtist(artist);
+        metaData.setAlbumName(guessAlbum(file, artist));
         metaData.setTitle(guessTitle(file));
         return metaData;
     }

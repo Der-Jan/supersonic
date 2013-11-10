@@ -28,6 +28,7 @@ public class MetaData {
     private Integer trackNumber;
     private String title;
     private String artist;
+    private String albumArtist;
     private String albumName;
     private String genre;
     private Integer year;
@@ -59,6 +60,14 @@ public class MetaData {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAlbumArtist() {
+        return albumArtist;
+    }
+
+    public void setAlbumArtist(String albumArtist) {
+        this.albumArtist = albumArtist;
     }
 
     public String getArtist() {

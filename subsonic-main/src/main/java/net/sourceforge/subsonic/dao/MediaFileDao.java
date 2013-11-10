@@ -18,16 +18,15 @@
  */
 package net.sourceforge.subsonic.dao;
 
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -44,7 +43,7 @@ public class MediaFileDao extends AbstractDao {
             "track_number, year, genre, bit_rate, variable_bit_rate, duration_seconds, file_size, width, height, cover_art_path, " +
             "parent_path, play_count, last_played, comment, created, changed, last_scanned, children_last_updated, present, version";
 
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
 
     private final RowMapper rowMapper = new MediaFileMapper();
     private final RowMapper musicFileInfoRowMapper = new MusicFileInfoMapper();
