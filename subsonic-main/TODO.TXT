@@ -192,9 +192,7 @@ TODO IN ANDROID 4.1
 --------------------
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
-Lock screen control
 Skipping problem solved in Dsub.
-Use smaller overflow icon.
 
 Google Cast
   https://developers.google.com/cast/
@@ -205,7 +203,6 @@ Problem with shuffle + offline
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f324a7ec6654c8
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
-Lock screen controls
 Podcast support
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
