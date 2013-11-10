@@ -10,23 +10,20 @@ Proper support for album artist.
 TODO IN 4.9
 --------------
 Review icons.
+  Remove Now playing?
 From forum:
  - album vs song artist (various artists)
-    - test upgrade path
     - album artist is currently reset when editing tags.
-    - expose album/song artists in tag edit
-    - increase media file version
-    - ensure it works if no album artist is set (MediaScannerService)
+    - expose album/song artists in tag edit?
 
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
  - Play next/last unreadable in themes
- - Use song artist when scrobbling
-      http://forum.subsonic.org/forum/viewtopic.php?f=3&t=10402
 
 SubsonicFX client
   Skattefunn 2015
 DLNA
+  Playlist support
   http://www.upnp-database.info/device.jsp
   http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
 
@@ -201,6 +198,7 @@ Amazon free app of the day
 
 Skipping problem solved in Dsub.
 Use smaller overflow icon.
+Use mic instead of guitar
 
 Google Cast
   https://developers.google.com/cast/
