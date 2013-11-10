@@ -18,13 +18,8 @@
  */
 package net.sourceforge.subsonic.service.metadata;
 
-import java.io.File;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.logging.LogManager;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jaudiotagger.audio.AudioFile;
@@ -35,8 +30,12 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.GenreTypes;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
+import java.io.File;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.logging.LogManager;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parses meta data from audio files using the Jaudiotagger library
@@ -85,7 +84,7 @@ public class JaudiotaggerParser extends MetaDataParser {
                 String songArtist = getTagField(tag, FieldKey.ARTIST);
                 String albumArtist = getTagField(tag, FieldKey.ALBUM_ARTIST);
                 metaData.setArtist(StringUtils.isBlank(albumArtist) ? songArtist : albumArtist);
-        }
+            }
 
             AudioHeader audioHeader = audioFile.getAudioHeader();
             if (audioHeader != null) {

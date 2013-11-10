@@ -339,7 +339,7 @@
                                 </td>
                             </c:if>
 
-                            <c:if test="${model.visibility.artistVisible and model.multipleArtists}">
+                            <c:if test="${model.visibility.artistVisible}">
                                 <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
                                     <span class="detail" title="${child.artist}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.artist)}</str:truncateNicely></span>
                                 </td>

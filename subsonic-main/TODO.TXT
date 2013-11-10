@@ -10,6 +10,15 @@ TODO IN 4.9
 --------------
 Review icons.
 From forum:
+ - album vs song artist (various artists)
+    - Test: is it only a problem in REST, or also in the web interface?
+    - Despicable Me: Artist not displayed in browse mode.
+    - ensure album matching works (matches on artist and album name)
+    - expose album/song artists in tag edit?
+    - increase media file version
+    - add album artist to REST
+    - MediaScannerService.java:280
+
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
  - Play next/last unreadable in themes
@@ -191,6 +200,7 @@ TODO IN ANDROID 4.1
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 
+Skipping problem solved in Dsub.
 Use smaller overflow icon.
 
 Google Cast

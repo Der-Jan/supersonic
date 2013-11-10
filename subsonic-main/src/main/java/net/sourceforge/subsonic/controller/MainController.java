@@ -24,11 +24,10 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.AdService;
 import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -36,15 +35,12 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Controller for the main page.
@@ -95,7 +91,6 @@ public class MainController extends ParameterizableViewController {
         map.put("album", guessAlbum(children));
         map.put("player", player);
         map.put("user", securityService.getCurrentUser(request));
-        map.put("multipleArtists", isMultipleArtists(children));
         map.put("visibility", userSettings.getMainVisibility());
         map.put("showAlbumYear", settingsService.isSortAlbumsByYear());
         map.put("updateNowPlaying", request.getParameter("updateNowPlaying") != null);
@@ -245,30 +240,6 @@ public class MainController extends ParameterizableViewController {
                 map.put("nextAlbum", sieblings.get(index + 1));
             }
         }
-    }
-
-    private boolean isMultipleArtists(List<MediaFile> children) {
-        // Collect unique artist names.
-        Set<String> artists = new HashSet<String>();
-        for (MediaFile child : children) {
-            if (child.getArtist() != null) {
-                artists.add(child.getArtist().toLowerCase());
-            }
-        }
-
-        // If zero or one artist, it is definitely not multiple artists.
-        if (artists.size() < 2) {
-            return false;
-        }
-
-        // Fuzzily compare artist names, allowing for some differences in spelling, whitespace etc.
-        List<String> artistList = new ArrayList<String>(artists);
-        for (String artist : artistList) {
-            if (StringUtils.getLevenshteinDistance(artist, artistList.get(0)) > 3) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void setSecurityService(SecurityService securityService) {
