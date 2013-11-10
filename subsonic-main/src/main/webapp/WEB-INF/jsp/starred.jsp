@@ -23,6 +23,7 @@
 <body class="mainframe bgcolor1">
 
 <h1>
+    <img src="<spring:theme code="starredImage"/>" alt="">
     <fmt:message key="starred.title"/>
 </h1>
 
