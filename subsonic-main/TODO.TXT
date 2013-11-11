@@ -9,6 +9,7 @@ Proper support for album artist.
 
 TODO IN 4.9
 --------------
+Create light icons for dark themes.
 Update jw player?
 Review icons.
   Remove Now playing?
