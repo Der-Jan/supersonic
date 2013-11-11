@@ -9,8 +9,10 @@ Proper support for album artist.
 
 TODO IN 4.9
 --------------
+Update jw player?
 Review icons.
   Remove Now playing?
+  Smaller premium icon (from svg)
 From forum:
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
@@ -193,6 +195,7 @@ TODO IN ANDROID 4.1
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Skipping problem solved in Dsub.
+Sharing support
 
 Google Cast
   https://developers.google.com/cast/
