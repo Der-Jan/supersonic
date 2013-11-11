@@ -249,3 +249,7 @@ img {
 .ruleTableHeader {
     font-weight: bold;
 }
+
+.context-menu-item {
+    color: black;
+}

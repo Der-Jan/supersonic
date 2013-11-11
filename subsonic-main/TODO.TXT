@@ -6,6 +6,7 @@ REST: Create updateUser.
 REST: Add "starred" to "Directory" and "Artist" in xsd
 Bugfix: Remember DLNA settings when restarting server
 Proper support for album artist.
+Bugfix: Play next/last unreadable in some themes
 
 TODO IN 4.9
 --------------
@@ -17,7 +18,6 @@ Review icons.
 From forum:
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
- - Play next/last unreadable in themes
 
 SubsonicFX client
   Skattefunn 2015
