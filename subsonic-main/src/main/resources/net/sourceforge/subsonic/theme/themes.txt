@@ -5,53 +5,53 @@
 default "Subsonic Default"
 
 # Theme with dark colors.
-midnight "2 Minutes To Midnight"
+midnight "2 Minutes To Midnight" default
 
 # Theme with even darker colors.
-black "Back In Black"
+black "Back In Black" default
 
 # Theme with sandy colors.
-sandstorm "Sandstorm"
+sandstorm "Sandstorm" default
 
 # Similar to HD, but with normal fonts.
-barents "Barents Sea"
+barents "Barents Sea" default
 
 # Themes designed for large HDTV screens.
-hd720 "HD-720"
-hd768 "HD-768"
-hd1080 "HD-1080"
+hd720 "HD-720" default
+hd768 "HD-768" default
+hd1080 "HD-1080" default
 
 # Default theme when pre-installed on Ripserver NAS.
-ripserver "Ripserver"
+ripserver "Ripserver" default
 
 # Midnight fun theme, courtesy of Don Pearson http://www.midnightfun.co.uk/
-midnightfun "Midnight Fun"
+midnightfun "Midnight Fun" default
 
 # Themes by Dan Eriksen
-coolandclean "Cool and Clean"
-subStandard "SubStandard"
+coolandclean "Cool and Clean" default
+subStandard "SubStandard" default
 
 # Theme by David D.
-monochrome "Monochrome"
+monochrome "Monochrome" default
 
 # Theme by David D.
-monochrome_black "Monochrome (Black)"
+monochrome_black "Monochrome (Black)" default
 
 # Themes by Thomas Bruce Dyrud
-groove "Groove"
-groove_simple "Groove (Simple)"
-simplify "Simplify"
-pinkpanther "PinkPanther"
-denim "Denim"
-sonic "Sonic"
-sonic_blue "Sonic (Blue)"
-sonic_white "Sonic (White)"
+groove "Groove" default
+groove_simple "Groove (Simple)" default
+simplify "Simplify" default
+pinkpanther "PinkPanther" default
+denim "Denim" default
+sonic "Sonic" default
+sonic_blue "Sonic (Blue)" default
+sonic_white "Sonic (White)" default
 
 # Themes by Jeebs (Fisher Evans)
-slick "Slick"
-hicon "High Contrast"
-hiconi "High Contrast (Inverted)"
-hitech "High-Tech"
+slick "Slick" default
+hicon "High Contrast" default
+hiconi "High Contrast (Inverted)" default
+hitech "High-Tech" default
 
 # BUUF Theme by Fractal Systems - Based on icons by Paul Davey aka Mattahan. All rights reserved.
-buuftheme "BUUF Theme"
+buuftheme "BUUF Theme" default

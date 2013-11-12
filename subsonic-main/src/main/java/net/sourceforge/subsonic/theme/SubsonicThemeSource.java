@@ -22,6 +22,9 @@ import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
+import net.sourceforge.subsonic.domain.Theme;
+import net.sourceforge.subsonic.service.SettingsService;
+
 /**
  * Theme source implementation which uses two resource bundles: the
  * theme specific (e.g., barents.properties), and the default (default.properties).
@@ -30,20 +33,40 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 public class SubsonicThemeSource extends ResourceBundleThemeSource {
 
+    private SettingsService settingsService;
     private String defaultResourceBundle;
+    private String basenamePrefix;
 
     @Override
     protected MessageSource createMessageSource(String basename) {
         ResourceBundleMessageSource messageSource = (ResourceBundleMessageSource) super.createMessageSource(basename);
 
+        // Get parent theme.
+        String parent = defaultResourceBundle;
+        for (Theme theme : settingsService.getAvailableThemes()) {
+            if (basename.equals(theme.getId()) && theme.getParent() != null) {
+                parent = basenamePrefix + theme.getParent();
+            }
+        }
+
         ResourceBundleMessageSource parentMessageSource = new ResourceBundleMessageSource();
-        parentMessageSource.setBasename(defaultResourceBundle);
+        parentMessageSource.setBasename(parent);
         messageSource.setParentMessageSource(parentMessageSource);
 
         return messageSource;
     }
 
+    @Override
+    public void setBasenamePrefix(String basenamePrefix) {
+        this.basenamePrefix = basenamePrefix;
+        super.setBasenamePrefix(basenamePrefix);
+    }
+
     public void setDefaultResourceBundle(String defaultResourceBundle) {
         this.defaultResourceBundle = defaultResourceBundle;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 }

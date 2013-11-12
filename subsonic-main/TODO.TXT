@@ -198,6 +198,7 @@ Amazon free app of the day
 Skipping problem solved in Dsub.
 Sharing support
 
+Add more EQ options
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial
