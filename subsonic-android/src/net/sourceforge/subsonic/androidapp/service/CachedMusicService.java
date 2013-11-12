@@ -37,6 +37,7 @@ import net.sourceforge.subsonic.androidapp.util.TimeLimitedCache;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import org.apache.http.HttpResponse;
 
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -178,6 +179,11 @@ public class CachedMusicService implements MusicService {
     public void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception {
         cachedStarred.clear();
         musicService.star(id, star, context, progressListener);
+    }
+
+    @Override
+    public URL createShare(String id, Context context, ProgressListener progressListener) throws Exception {
+        return musicService.createShare(id, context, progressListener);
     }
 
     @Override

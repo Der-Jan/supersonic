@@ -60,6 +60,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.FadeOutAnimation;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.ShareUtil;
 import net.sourceforge.subsonic.androidapp.util.SilentBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.SongView;
 import net.sourceforge.subsonic.androidapp.util.StarUtil;
@@ -567,9 +568,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             menu.findItem(R.id.menu_unpin).setVisible(!offline && downloadFile.isSaved());
             menu.findItem(R.id.download_menu_star).setVisible(!offline && !downloadFile.getSong().isStarred());
             menu.findItem(R.id.download_menu_unstar).setVisible(!offline && downloadFile.getSong().isStarred());
-            menu.findItem(R.id.menu_remove).setVisible(true);
-            menu.findItem(R.id.menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
-            menu.findItem(R.id.menu_lyrics).setVisible(!Util.isOffline(this));
+            menu.findItem(R.id.download_menu_share).setVisible(!offline);
+            menu.findItem(R.id.download_menu_remove).setVisible(true);
+            menu.findItem(R.id.download_menu_show_album).setVisible(downloadFile.getSong().getParent() != null);
+            menu.findItem(R.id.download_menu_lyrics).setVisible(!Util.isOffline(this));
         }
     }
 
@@ -599,17 +601,20 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             case R.id.download_menu_unstar:
                 StarUtil.starInBackground(this, song.getSong(), false);
                 return true;
-            case R.id.menu_remove:
+            case R.id.download_menu_share:
+                ShareUtil.shareInBackground(this, song.getSong());
+                return true;
+            case R.id.download_menu_remove:
                 getDownloadService().remove(song);
                 onDownloadListChanged();
                 return true;
-            case R.id.menu_show_album:
+            case R.id.download_menu_show_album:
                 Intent intent = new Intent(this, SelectAlbumActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ID, song.getSong().getParent());
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_NAME, song.getSong().getAlbum());
                 Util.startActivityWithoutTransition(this, intent);
                 return true;
-            case R.id.menu_lyrics:
+            case R.id.download_menu_lyrics:
                 intent = new Intent(this, LyricsActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_ARTIST, song.getSong().getArtist());
                 intent.putExtra(Constants.INTENT_EXTRA_NAME_TITLE, song.getSong().getTitle());

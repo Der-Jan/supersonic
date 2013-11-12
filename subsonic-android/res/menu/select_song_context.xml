@@ -22,4 +22,7 @@
     <item android:id="@+id/song_menu_unstar"
           android:title="@string/star.menu_unstar"/>
 
+    <item android:id="@+id/song_menu_share"
+          android:title="@string/share.menu_share"/>
+
 </menu>

@@ -18,17 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,6 +34,18 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Sindre Mehus
@@ -156,6 +157,11 @@ public class OfflineMusicService extends RESTMusicService {
     @Override
     public void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception {
         throw new OfflineException("Starring not available in offline mode");
+    }
+
+    @Override
+    public URL createShare(String id, Context context, ProgressListener progressListener) throws Exception {
+        throw new OfflineException("Sharing not available in offline mode");
     }
 
     @Override

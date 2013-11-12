@@ -19,10 +19,6 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -50,9 +46,14 @@ import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.ShareUtil;
 import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Performs searches and displays the matching artists, albums and songs.
@@ -202,6 +203,7 @@ public class SearchActivity extends SubsonicTabActivity {
             inflater.inflate(R.menu.select_album_context, menu);
             menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
+            menu.findItem(R.id.album_menu_share).setVisible(!offline);
         }
         else if (entry != null && !entry.isDirectory() && !entry.isVideo()) {
             DownloadFile downloadFile = getDownloadService().forSong(entry);
@@ -211,6 +213,7 @@ public class SearchActivity extends SubsonicTabActivity {
             menu.findItem(R.id.song_menu_unpin).setVisible(downloadFile.isSaved());
             menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
+            menu.findItem(R.id.song_menu_share).setVisible(!offline);
         }
     }
 
@@ -256,6 +259,9 @@ public class SearchActivity extends SubsonicTabActivity {
                 StarUtil.starInBackground(this, entry, false);
                 albumAdapter.remove(entry);
                 return true;
+            case R.id.album_menu_share:
+                ShareUtil.shareInBackground(this, entry);
+                return true;
             case R.id.song_menu_play_now:
                 onSongSelected(entry, false, false, true, false);
                 break;
@@ -277,6 +283,9 @@ public class SearchActivity extends SubsonicTabActivity {
             case R.id.song_menu_unstar:
                 StarUtil.starInBackground(this, entry, false);
                 songAdapter.remove(entry);
+                return true;
+            case R.id.song_menu_share:
+                ShareUtil.shareInBackground(this, entry);
                 return true;
             default:
                 return super.onContextItemSelected(menuItem);

@@ -7,13 +7,15 @@ REST: Add "starred" to "Directory" and "Artist" in xsd
 Bugfix: Remember DLNA settings when restarting server
 Proper support for album artist.
 Bugfix: Play next/last unreadable in some themes
+Create light icons for dark themes.
 
 TODO IN 4.9
 --------------
-Playback doesn't work...
+Playback doesn't work?
 Rethink playAddDownload buttons.
+  Replace download with overflow icon.  Show context menu "play next", "download", "share", "add to playlist".
+
 Change current.png and same for volume icon?
-Create light icons for dark themes.
 Update jw player?
 Review icons.
   Remove Now playing?
@@ -200,6 +202,9 @@ Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Skipping problem solved in Dsub.
 Sharing support
+Add context menu icons
+Add share to album action bar menu.
+Review context menu visibility.
 
 Add more EQ options
 Google Cast
