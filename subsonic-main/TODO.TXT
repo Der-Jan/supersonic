@@ -202,9 +202,9 @@ Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Skipping problem solved in Dsub.
 Sharing support
-Add context menu icons
-Add share to album action bar menu.
+Add share button to album header.
 Review context menu visibility.
+Style context menu (font, background)
 
 Add more EQ options
 Google Cast

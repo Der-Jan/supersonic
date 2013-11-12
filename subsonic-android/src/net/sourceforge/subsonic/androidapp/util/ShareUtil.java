@@ -36,12 +36,20 @@ public final class ShareUtil {
     private ShareUtil() {
     }
 
-    public static void shareInBackground(final Activity activity, final MusicDirectory.Entry entry) {
+    public static void shareInBackground(Activity activity, MusicDirectory directory) {
+        shareInBackground(activity, directory.getId());
+    }
+
+    public static void shareInBackground(Activity activity, MusicDirectory.Entry entry) {
+        shareInBackground(activity, entry.getId());
+    }
+
+    public static void shareInBackground(final Activity activity, final String id) {
         new SilentBackgroundTask<URL>(activity) {
             @Override
             protected URL doInBackground() throws Throwable {
                 MusicService musicService = MusicServiceFactory.getMusicService(activity);
-                return musicService.createShare(entry.getId(), activity, null);
+                return musicService.createShare(id, activity, null);
             }
 
             @Override

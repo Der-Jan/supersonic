@@ -598,6 +598,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         View coverArtView = header.findViewById(R.id.select_album_art);
         getImageLoader().loadImage(coverArtView, entries.get(0), true, true);
 
+        boolean offline = Util.isOffline(this);
+
         final ImageView starView = (ImageView) header.findViewById(R.id.select_album_star);
         starView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -606,9 +608,17 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
             }
         });
-        boolean offline = Util.isOffline(this);
         starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
         starView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
+
+        final ImageView shareView = (ImageView) header.findViewById(R.id.select_album_share);
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareUtil.shareInBackground(SelectAlbumActivity.this, directory);
+            }
+        });
+        shareView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());
