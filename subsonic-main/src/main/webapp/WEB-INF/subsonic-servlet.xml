@@ -469,7 +469,6 @@
 
     <bean id="themeSource" class="net.sourceforge.subsonic.theme.SubsonicThemeSource">
         <property name="basenamePrefix" value="net.sourceforge.subsonic.theme."/>
-        <property name="defaultResourceBundle" value="net.sourceforge.subsonic.theme.default"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
 

@@ -213,11 +213,11 @@ img {
 }
 
 .back {
-    background-image:url("../icons/back.gif");
+    background-image:url("../icons/default_light/back.gif");
 }
 
 .forward {
-    background-image:url("../icons/forward.gif");
+    background-image:url("../icons/default_light/forward.gif");
 }
 
 .albumComment {

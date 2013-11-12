@@ -34,25 +34,20 @@ import net.sourceforge.subsonic.service.SettingsService;
 public class SubsonicThemeSource extends ResourceBundleThemeSource {
 
     private SettingsService settingsService;
-    private String defaultResourceBundle;
     private String basenamePrefix;
 
     @Override
     protected MessageSource createMessageSource(String basename) {
         ResourceBundleMessageSource messageSource = (ResourceBundleMessageSource) super.createMessageSource(basename);
 
-        // Get parent theme.
-        String parent = defaultResourceBundle;
+        // Create parent theme recursively.
         for (Theme theme : settingsService.getAvailableThemes()) {
-            if (basename.equals(theme.getId()) && theme.getParent() != null) {
-                parent = basenamePrefix + theme.getParent();
+            if (basename.equals(basenamePrefix + theme.getId()) && theme.getParent() != null) {
+                String parent = basenamePrefix + theme.getParent();
+                messageSource.setParentMessageSource(createMessageSource(parent));
+                break;
             }
         }
-
-        ResourceBundleMessageSource parentMessageSource = new ResourceBundleMessageSource();
-        parentMessageSource.setBasename(parent);
-        messageSource.setParentMessageSource(parentMessageSource);
-
         return messageSource;
     }
 
@@ -60,10 +55,6 @@ public class SubsonicThemeSource extends ResourceBundleThemeSource {
     public void setBasenamePrefix(String basenamePrefix) {
         this.basenamePrefix = basenamePrefix;
         super.setBasenamePrefix(basenamePrefix);
-    }
-
-    public void setDefaultResourceBundle(String defaultResourceBundle) {
-        this.defaultResourceBundle = defaultResourceBundle;
     }
 
     public void setSettingsService(SettingsService settingsService) {

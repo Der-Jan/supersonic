@@ -11,7 +11,7 @@
 
 <body>
 <h1>
-    <img src="icons/error.png" alt=""/>
+    <img src="icons/default_light/error.png" alt=""/>
     <span style="vertical-align: middle">Error</span>
 </h1>
 

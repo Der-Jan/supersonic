@@ -11,6 +11,7 @@ Bugfix: Play next/last unreadable in some themes
 TODO IN 4.9
 --------------
 Create light icons for dark themes.
+subsonic_white vs subsonic_black
 Update jw player?
 Review icons.
   Remove Now playing?
