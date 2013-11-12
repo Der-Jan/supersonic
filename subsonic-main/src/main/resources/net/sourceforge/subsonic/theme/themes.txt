@@ -5,10 +5,10 @@
 default "Subsonic Default" default_light
 
 # Theme with dark colors.
-midnight "2 Minutes To Midnight" default
+midnight "2 Minutes To Midnight" default_dark
 
 # Theme with even darker colors.
-black "Back In Black" default
+black "Back In Black" default_dark
 
 # Theme with sandy colors.
 sandstorm "Sandstorm" default
