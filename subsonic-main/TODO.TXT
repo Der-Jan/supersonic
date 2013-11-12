@@ -10,6 +10,9 @@ Bugfix: Play next/last unreadable in some themes
 
 TODO IN 4.9
 --------------
+Playback doesn't work...
+Rethink playAddDownload buttons.
+Change current.png and
 Create light icons for dark themes.
 subsonic_white vs subsonic_black
 Update jw player?
