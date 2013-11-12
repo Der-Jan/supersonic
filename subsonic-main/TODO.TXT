@@ -12,9 +12,8 @@ TODO IN 4.9
 --------------
 Playback doesn't work...
 Rethink playAddDownload buttons.
-Change current.png and
+Change current.png and same for volume icon?
 Create light icons for dark themes.
-subsonic_white vs subsonic_black
 Update jw player?
 Review icons.
   Remove Now playing?
