@@ -195,9 +195,13 @@ DONE IN ANDROID 4.1
 --------------------
 Search suggestions
 Lock screen widget
+Avoid repeated error message about starring when running against Subsonic 4.6
 
 TODO IN ANDROID 4.1
 --------------------
+Slow song switching?
+  https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d
+
 Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Skipping problem solved in Dsub.

@@ -134,6 +134,11 @@ public class CachedMusicService implements MusicService {
         if (Util.isServerCompatibleTo(context, "1.10.1")) {
             return;
         }
+
+        // getStarred REST method was added in 1.8.  Ignore starring if server is older.
+        if (!Util.isServerCompatibleTo(context, "1.8")) {
+            return;
+        }
         for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
             if (dir.getId().equals(starredDir.getId())) {
                 dir.setStarred(true);
@@ -146,6 +151,11 @@ public class CachedMusicService implements MusicService {
         // Artist.starred was added to the REST API in 1.10.1, so for backward compatibility
         // we have to emulate it.
         if (Util.isServerCompatibleTo(context, "1.10.1")) {
+            return;
+        }
+
+        // getStarred REST method was added in 1.8.  Ignore starring if server is older.
+        if (!Util.isServerCompatibleTo(context, "1.8")) {
             return;
         }
         List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
