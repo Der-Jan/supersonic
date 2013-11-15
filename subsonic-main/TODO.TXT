@@ -11,12 +11,11 @@ Create light icons for dark themes.
 
 TODO IN 4.9
 --------------
-Playback doesn't work?
-Rethink playAddDownload buttons.
-  Replace download with overflow icon.  Show context menu "play next", "download", "share", "add to playlist".
-
-Change current.png and same for volume icon?
+Update screenshots
 Update jw player?
+Change current.png and same for volume icon?
+  Replace download with overflow icon.  Show context menu "play next", "download", "share", "add to playlist".
+Rethink playAddDownload buttons.
 Review icons.
   Remove Now playing?
   Smaller premium icon (from svg)
@@ -30,10 +29,6 @@ DLNA
   Playlist support
   http://www.upnp-database.info/device.jsp
   http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
-
-Mac: Mountain Lion+ requires signed installer? you can temporarily set ‘Allow applications downloaded from’ to ‘Anywhere’ in the Security & Privacy preferences before you download the DMG file.
-  spctl -v --assess --type install subsonic-4.9.beta1.pkg
-Update screenshots
 Publish on Mac app store
 
 Shuffle play
