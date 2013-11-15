@@ -107,6 +107,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
     private Button equalizerButton;
     private Button visualizerButton;
     private Button jukeboxButton;
+    private ImageView shareButton;
+    private ImageView starButton;
     private ImageButton toggleListButton;
     private ScheduledExecutorService executorService;
     private DownloadFile currentPlaying;
@@ -153,6 +155,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         equalizerButton = (Button) findViewById(R.id.download_equalizer);
         visualizerButton = (Button) findViewById(R.id.download_visualizer);
         jukeboxButton = (Button) findViewById(R.id.download_jukebox);
+        shareButton = (ImageView) findViewById(R.id.download_share);
+        starButton = (ImageView) findViewById(R.id.download_star);
         LinearLayout visualizerViewLayout = (LinearLayout) findViewById(R.id.download_visualizer_view_layout);
         toggleListButton = (ImageButton) findViewById(R.id.download_toggle_list);
 
@@ -170,6 +174,8 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         equalizerButton.setOnTouchListener(touchListener);
         visualizerButton.setOnTouchListener(touchListener);
         jukeboxButton.setOnTouchListener(touchListener);
+        shareButton.setOnTouchListener(touchListener);
+        starButton.setOnTouchListener(touchListener);
         emptyTextView.setOnTouchListener(touchListener);
         albumArtImageView.setOnTouchListener(touchListener);
 
@@ -282,6 +288,28 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 getDownloadService().setJukeboxEnabled(jukeboxEnabled);
                 updateButtons();
                 Util.toast(DownloadActivity.this, jukeboxEnabled ? R.string.download_jukebox_on : R.string.download_jukebox_off, false);
+                setControlsVisible(true);
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentPlaying != null) {
+                    ShareUtil.shareInBackground(DownloadActivity.this, currentPlaying.getSong());
+                }
+                setControlsVisible(true);
+            }
+        });
+
+        starButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentPlaying != null) {
+                    MusicDirectory.Entry song = currentPlaying.getSong();
+                    StarUtil.starInBackground(DownloadActivity.this, song, !song.isStarred());
+                    starButton.setImageResource(song.isStarred() ? R.drawable.starred : R.drawable.unstarred);
+                }
                 setControlsVisible(true);
             }
         });
@@ -768,6 +796,9 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
         MusicDirectory.Entry song = currentPlaying == null ? null : currentPlaying.getSong();
         songTitleTextView.setText(song == null ? null : song.getTitle());
         artistTextView.setText(song == null ? null : song.getArtist());
+        starButton.setEnabled(song != null);
+        shareButton.setEnabled(song != null);
+        starButton.setImageResource(song != null && song.isStarred() ? R.drawable.starred : R.drawable.unstarred);
         getImageLoader().loadImage(albumArtImageView, song, true, true);
         if (playlistFlipper.getDisplayedChild() == 1) {
             getImageLoader().loadImage(toggleListButton, song, false, true);
