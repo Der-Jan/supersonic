@@ -11,6 +11,8 @@ Create light icons for dark themes.
 
 TODO IN 4.9
 --------------
+Add Dsub
+Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
 Change current.png and same for volume icon?
@@ -203,6 +205,7 @@ Amazon free app of the day
   https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
 Skipping problem solved in Dsub.
 Review context menu visibility.
+Make com.android.music.metachanged work.
 
 Add more EQ options
 Google Cast
