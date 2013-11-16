@@ -1,13 +1,5 @@
 DONE IN 4.9
 -------------
-Added Estonian translation, courtesy of Olav M&auml;gi.
-Update icons in top.jsp.  Use latest Android icons.
-REST: Create updateUser.
-REST: Add "starred" to "Directory" and "Artist" in xsd
-Bugfix: Remember DLNA settings when restarting server
-Proper support for album artist.
-Bugfix: Play next/last unreadable in some themes
-Create light icons for dark themes.
 
 TODO IN 4.9
 --------------
