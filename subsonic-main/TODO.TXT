@@ -15,7 +15,6 @@ Add Dsub
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
-Crop current.png
 Rethink playAddDownload buttons.
 Review icons.
   Remove Now playing?
