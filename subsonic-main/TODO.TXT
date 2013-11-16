@@ -15,8 +15,7 @@ Add Dsub
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
-Change current.png and same for volume icon?
-  Replace download with overflow icon.  Show context menu "play next", "download", "share", "add to playlist".
+Crop current.png
 Rethink playAddDownload buttons.
 Review icons.
   Remove Now playing?
