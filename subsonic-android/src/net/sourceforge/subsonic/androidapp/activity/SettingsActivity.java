@@ -18,10 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.activity;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -32,9 +28,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.provider.SearchRecentSuggestions;
 import net.sourceforge.subsonic.androidapp.R;
-import net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.service.MusicService;
@@ -46,6 +40,10 @@ import net.sourceforge.subsonic.androidapp.util.Logger;
 import net.sourceforge.subsonic.androidapp.util.ModalBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
 import net.sourceforge.subsonic.androidapp.util.Util;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -75,16 +73,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
         createServerSettings();
 
-        findPreference("clearSearchHistory").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SettingsActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-                suggestions.clearHistory();
-                Util.toast(SettingsActivity.this, R.string.settings_search_history_cleared);
-                return false;
-            }
-        });
-
         SharedPreferences prefs = Util.getPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -92,7 +80,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void createServerSettings() {
-        PreferenceCategory serverCategory = (PreferenceCategory)findPreference("servers");
+        PreferenceCategory serverCategory = (PreferenceCategory) findPreference("servers");
         serverCategory.removeAll();
 
         List<ServerSettingsManager.ServerSettings> servers = serverSettingsManager.getAllServers();
@@ -232,11 +220,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
         if (Constants.PREFERENCES_KEY_HIDE_MEDIA.equals(key)) {
             setHideMedia(sharedPreferences.getBoolean(key, false));
-        }
-        else if (Constants.PREFERENCES_KEY_MEDIA_BUTTONS.equals(key)) {
+        } else if (Constants.PREFERENCES_KEY_MEDIA_BUTTONS.equals(key)) {
             setMediaButtonsEnabled(sharedPreferences.getBoolean(key, true));
-        }
-        else if (Constants.PREFERENCES_KEY_CACHE_LOCATION.equals(key)) {
+        } else if (Constants.PREFERENCES_KEY_CACHE_LOCATION.equals(key)) {
             setCacheLocation(sharedPreferences.getString(key, ""));
         }
     }

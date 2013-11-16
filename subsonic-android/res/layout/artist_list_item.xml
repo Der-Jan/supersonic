@@ -6,7 +6,7 @@
 
     <ImageView
             android:id="@+id/artist_more"
-            android:src="@drawable/action_overflow"
+            android:src="@drawable/action_overflow_small"
             android:background="@drawable/media_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

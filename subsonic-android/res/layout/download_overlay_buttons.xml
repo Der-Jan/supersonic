@@ -25,4 +25,22 @@
             android:textOn="VIS"
             android:textOff="VIS"/>
 
+    <ImageView
+            android:id="@+id/download_star"
+            android:src="@drawable/unstarred"
+            android:background="@drawable/media_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:contentDescription="@null"/>
+
+    <ImageView
+            android:id="@+id/download_share"
+            android:src="@drawable/ic_action_share"
+            android:background="@drawable/media_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:contentDescription="@null"/>
+
 </LinearLayout>

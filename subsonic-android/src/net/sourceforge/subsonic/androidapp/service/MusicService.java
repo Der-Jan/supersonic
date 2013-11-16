@@ -18,10 +18,6 @@
  */
 package net.sourceforge.subsonic.androidapp.service;
 
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import net.sourceforge.subsonic.androidapp.domain.Indexes;
@@ -35,6 +31,10 @@ import net.sourceforge.subsonic.androidapp.domain.SearchResult;
 import net.sourceforge.subsonic.androidapp.domain.Version;
 import net.sourceforge.subsonic.androidapp.util.CancellableTask;
 import net.sourceforge.subsonic.androidapp.util.ProgressListener;
+import org.apache.http.HttpResponse;
+
+import java.net.URL;
+import java.util.List;
 
 /**
  * @author Sindre Mehus
@@ -56,6 +56,8 @@ public interface MusicService {
     SearchResult getStarred(Context context, ProgressListener progressListener) throws Exception;
 
     void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception;
+
+    URL createShare(String id, Context context, ProgressListener progressListener) throws Exception;
 
     MusicDirectory getPlaylist(String id, Context context, ProgressListener progressListener) throws Exception;
 

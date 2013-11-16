@@ -100,7 +100,9 @@ public class TagService {
                 return "SKIPPED";
             }
 
-            MetaData newMetaData = new MetaData();
+            MetaData newMetaData = parser.getMetaData(file.getFile());
+
+            // Note: album artist is intentionally set, as it is not user-changeable.
             newMetaData.setArtist(artist);
             newMetaData.setAlbumName(album);
             newMetaData.setTitle(title);

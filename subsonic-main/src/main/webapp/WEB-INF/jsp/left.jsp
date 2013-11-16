@@ -98,9 +98,9 @@
     <div id="playlists"></div>
     <div id="playlistOverflow" style="display:none"></div>
     <div style="padding-top: 0.3em"></div>
-    <div id="showAllPlaylists" style="display: none"><a href="javascript:noop()" onclick="showAllPlaylists()"><fmt:message key="left.showallplaylists"/></a></div>
-    <div><a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></div>
-    <div><a href="importPlaylist.view" target="main"><fmt:message key="left.importplaylist"/></a></div>
+    <div class="forward" id="showAllPlaylists" style="display: none"><a href="javascript:noop()" onclick="showAllPlaylists()"><fmt:message key="left.showallplaylists"/></a></div>
+    <div class="forward"><a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></div>
+    <div class="forward"><a href="importPlaylist.view" target="main"><fmt:message key="left.importplaylist"/></a></div>
 </div>
 
 <c:if test="${not empty model.radios}">

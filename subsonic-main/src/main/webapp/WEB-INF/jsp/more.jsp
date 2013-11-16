@@ -4,7 +4,7 @@
     <%@ include file="head.jsp" %>
     <style type="text/css">
         #progressBar {width: 350px; height: 10px; border: 1px solid black; display:none;}
-        #progressBarContent {width: 0; height: 10px; background: url("<c:url value="/icons/progress.png"/>") repeat;}
+        #progressBarContent {width: 0; height: 10px; background: url("<c:url value="/icons/default_light/progress.png"/>") repeat;}
     </style>
     <script type="text/javascript" src="<c:url value="/dwr/interface/transferService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
@@ -118,16 +118,19 @@
     </form>
 </c:if>
 
-<a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="<c:url value="/icons/apps.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+<a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="<c:url value="/icons/default_light/apps.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
 
 <h2>
     <img src="<spring:theme code="androidImage"/>" alt=""/>
     <span style="vertical-align: middle"><fmt:message key="more.apps.title"/></span>
 </h2>
 <fmt:message key="more.apps.text"/>
-<a href="<c:url value="/mini/index.html"/>" target="_blank"><img alt="MiniSub" src="<c:url value="/icons/minisub.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+<a href="<c:url value="/mini/index.html"/>" target="_blank"><img alt="MiniSub" src="<c:url value="/icons/default_light/minisub.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
 
-<h2><fmt:message key="more.minisub.title"/></h2>
+<h2>
+    <img src="<spring:theme code="html5Image"/>" alt=""/>
+    <span style="vertical-align: middle"><fmt:message key="more.minisub.title"/></span>
+</h2>
 <fmt:message key="more.minisub.text"/>
 
 <h2>

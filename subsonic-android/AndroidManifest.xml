@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.sourceforge.subsonic.androidapp"
           android:installLocation="auto"
-          android:versionCode="52"
-          android:versionName="3.9">
+          android:versionCode="53"
+          android:versionName="4.0">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -109,8 +109,8 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info"/>
         </receiver>
 
-        <provider android:name="net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider"
-                  android:authorities="net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider"/>
+        <provider android:name=".provider.CustomSuggestionsProvider"
+                  android:authorities="net.sourceforge.subsonic.androidapp.provider.CustomSuggestionsProvider"/>
 
         <meta-data android:name="android.app.default_searchable"
                    android:value="net.sourceforge.subsonic.androidapp.activity.QueryReceiverActivity"/>

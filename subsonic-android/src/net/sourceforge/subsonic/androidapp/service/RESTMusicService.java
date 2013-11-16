@@ -48,6 +48,7 @@ import net.sourceforge.subsonic.androidapp.service.parser.PlaylistsParser;
 import net.sourceforge.subsonic.androidapp.service.parser.RandomSongsParser;
 import net.sourceforge.subsonic.androidapp.service.parser.SearchResult2Parser;
 import net.sourceforge.subsonic.androidapp.service.parser.SearchResultParser;
+import net.sourceforge.subsonic.androidapp.service.parser.ShareParser;
 import net.sourceforge.subsonic.androidapp.service.parser.VersionParser;
 import net.sourceforge.subsonic.androidapp.service.ssl.SSLSocketFactory;
 import net.sourceforge.subsonic.androidapp.service.ssl.TrustSelfSignedStrategy;
@@ -91,6 +92,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -322,6 +324,18 @@ public class RESTMusicService implements MusicService {
         Reader reader = getReader(context, progressListener, "getStarred", null);
         try {
             return new SearchResult2Parser(context).parse(reader, progressListener);
+        } finally {
+            Util.close(reader);
+        }
+    }
+
+    @Override
+    public URL createShare(String id, Context context, ProgressListener progressListener) throws Exception {
+        checkServerVersion(context, "1.6", "Sharing not supported.");
+
+        Reader reader = getReader(context, progressListener, "createShare", null, "id", id);
+        try {
+            return new ShareParser(context).parse(reader, progressListener);
         } finally {
             Util.close(reader);
         }

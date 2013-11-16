@@ -929,6 +929,8 @@ public class SettingsService {
                     String[] elements = StringUtil.split(line);
                     if (elements.length == 2) {
                         themes.add(new Theme(elements[0], elements[1]));
+                    } else if (elements.length == 3) {
+                        themes.add(new Theme(elements[0], elements[1], elements[2]));
                     } else {
                         LOG.warn("Failed to parse theme from line: [" + line + "].");
                     }

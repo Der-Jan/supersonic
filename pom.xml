@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sourceforge.subsonic</groupId>
@@ -8,7 +8,7 @@
     <name>Subsonic</name>
     <packaging>pom</packaging>
     <organization>
-        <name>Sindre Mehus</name>
+        <name>Subsonic</name>
         <url>http://subsonic.org/</url>
     </organization>
     <inceptionYear>2004</inceptionYear>
@@ -75,7 +75,7 @@
 
     <modules>
         <module>subsonic-main</module>
-    </modules>
+  </modules>
 
     <profiles>
         <profile>
@@ -89,6 +89,7 @@
                 <module>subsonic-backend</module>
                 <module>subsonic-site</module>
                 <module>subsonic-assembly</module>
+                <module>subsonic-fx</module>
             </modules>
         </profile>
 

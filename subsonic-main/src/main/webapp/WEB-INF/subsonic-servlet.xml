@@ -469,17 +469,15 @@
 
     <bean id="themeSource" class="net.sourceforge.subsonic.theme.SubsonicThemeSource">
         <property name="basenamePrefix" value="net.sourceforge.subsonic.theme."/>
-        <property name="defaultResourceBundle" value="net.sourceforge.subsonic.theme.default"/>
+        <property name="settingsService" ref="settingsService"/>
     </bean>
 
-    <bean id="localeResolver"
-          class="net.sourceforge.subsonic.i18n.SubsonicLocaleResolver">
+    <bean id="localeResolver" class="net.sourceforge.subsonic.i18n.SubsonicLocaleResolver">
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
 
-    <bean id="themeResolver"
-          class="net.sourceforge.subsonic.theme.SubsonicThemeResolver">
+    <bean id="themeResolver" class="net.sourceforge.subsonic.theme.SubsonicThemeResolver">
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>

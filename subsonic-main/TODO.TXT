@@ -1,29 +1,40 @@
 DONE IN 4.9
 -------------
-Add "starred" to "Directory" and "Artist" in REST xsd.
 Added Estonian translation, courtesy of Olav M&auml;gi.
 Update icons in top.jsp.  Use latest Android icons.
+REST: Create updateUser.
+REST: Add "starred" to "Directory" and "Artist" in xsd
+Bugfix: Remember DLNA settings when restarting server
+Proper support for album artist.
+Bugfix: Play next/last unreadable in some themes
+Create light icons for dark themes.
 
 TODO IN 4.9
 --------------
+Update screenshots
+Update jw player?
+Change current.png and same for volume icon?
+  Replace download with overflow icon.  Show context menu "play next", "download", "share", "add to playlist".
+Rethink playAddDownload buttons.
+Review icons.
+  Remove Now playing?
+  Smaller premium icon (from svg)
+From forum:
+ - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
+ - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
 
-Home: ic_action_return_from_full_screen?, ic_action_place, ic_action_location_found
-Playing:  ic_action_headphones, ic_action_volume_on, ic_action_play_over_video
-Starred: ic_action_not_important, ic_action_important
-Podcast: ic_action_network_wifi
-Settings: ic_action_settings
-Status: ic_action_network_cell, ic_action_import_export
-More:   ic_action_phone
-About: ic_action_about
-
-Rotate podcast icon 45 degrees
+SubsonicFX client
+  Skattefunn 2015
+DLNA
+  Playlist support
+  http://www.upnp-database.info/device.jsp
+  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
+Publish on Mac app store
 
 Shuffle play
 Dont use <div/>
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
-Move xsd and xml examples to site.
-  Create links to each version
 Recently added broken
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=11955&p=55889#p55889
 https port 8080 redirect to 8443 (jetty?)
@@ -175,24 +186,25 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 4.0
+DONE IN ANDROID 4.1
 --------------------
-Starring support
-Added context menu buttons.
-Use Roboto Thin font (API 16+)
-Hide search button and pin/unpin option when offline
-Don't show notification if previously dismissed and not currently playing.
-Update to REST 1.10.1
+Search suggestions
+Sharing support
+Lock screen widget
+Avoid repeated error message about starring when running against Subsonic 4.6
+Add star and share icons next to EQ, RC, VIS
 
-TODO IN ANDROID 4.0
+TODO IN ANDROID 4.1
 --------------------
-Starring support
-  Make starring work for video also. Change wording.
-  Test with REST 1.10 and older.
-  Update demo with new war.
-Add button to bring up context menu
-  Find smaller icon
+Slow song switching?
+  https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d
 
+Amazon free app of the day
+  https://mail.google.com/mail/ca/u/0/#inbox/1422d6f137c63319
+Skipping problem solved in Dsub.
+Review context menu visibility.
+
+Add more EQ options
 Google Cast
   https://developers.google.com/cast/
   https://developers.google.com/cast/cast_2nd-screen_app_tutorial
@@ -202,7 +214,6 @@ Problem with shuffle + offline
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/13f324a7ec6654c8
 RC volume
   https://mail.google.com/mail/ca/u/0/#inbox/13b3fe25a8b5d8ee
-Lock screen controls
 Podcast support
 Audio focus
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13a5993b0b420581
@@ -889,7 +900,7 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-3.9 -m "Tagging Android 3.9"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.0 -m "Tagging Android 4.0"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).

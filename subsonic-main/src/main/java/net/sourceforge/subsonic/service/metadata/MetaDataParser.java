@@ -18,16 +18,15 @@
  */
 package net.sourceforge.subsonic.service.metadata;
 
-import java.io.File;
-import java.util.List;
-
-import org.apache.commons.io.FilenameUtils;
-
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.service.ServiceLocator;
 import net.sourceforge.subsonic.service.SettingsService;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
+import java.util.List;
 
 
 /**
@@ -47,11 +46,15 @@ public abstract class MetaDataParser {
 
         MetaData metaData = getRawMetaData(file);
         String artist = metaData.getArtist();
+        String albumArtist = metaData.getAlbumArtist();
         String album = metaData.getAlbumName();
         String title = metaData.getTitle();
 
         if (artist == null) {
             artist = guessArtist(file);
+        }
+        if (albumArtist == null) {
+            albumArtist = guessArtist(file);
         }
         if (album == null) {
             album = guessAlbum(file, artist);
@@ -62,6 +65,7 @@ public abstract class MetaDataParser {
 
         title = removeTrackNumberFromTitle(title, metaData.getTrackNumber());
         metaData.setArtist(artist);
+        metaData.setAlbumArtist(albumArtist);
         metaData.setAlbumName(album);
         metaData.setTitle(title);
 

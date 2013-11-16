@@ -23,14 +23,12 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import net.sourceforge.subsonic.androidapp.util.Constants;
 import net.sourceforge.subsonic.androidapp.util.Util;
-import net.sourceforge.subsonic.androidapp.provider.SearchSuggestionProvider;
 
 /**
  * Receives voice search queries and forwards to the SearchActivity.
- *
+ * <p/>
  * http://android-developers.blogspot.com/2010/09/supporting-new-music-voice-action.html
  *
  * @author Sindre Mehus
@@ -44,10 +42,6 @@ public class VoiceQueryReceiverActivity extends Activity {
         String query = getIntent().getStringExtra(SearchManager.QUERY);
 
         if (query != null) {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY,
-                                                                              SearchSuggestionProvider.MODE);
-            suggestions.saveRecentQuery(query, null);
-
             Intent intent = new Intent(VoiceQueryReceiverActivity.this, SearchActivity.class);
             intent.putExtra(Constants.INTENT_EXTRA_NAME_QUERY, query);
             intent.putExtra(Constants.INTENT_EXTRA_NAME_AUTOPLAY, true);

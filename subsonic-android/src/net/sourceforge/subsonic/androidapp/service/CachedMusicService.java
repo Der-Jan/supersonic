@@ -37,6 +37,7 @@ import net.sourceforge.subsonic.androidapp.util.TimeLimitedCache;
 import net.sourceforge.subsonic.androidapp.util.Util;
 import org.apache.http.HttpResponse;
 
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -133,6 +134,11 @@ public class CachedMusicService implements MusicService {
         if (Util.isServerCompatibleTo(context, "1.10.1")) {
             return;
         }
+
+        // getStarred REST method was added in 1.8.  Ignore starring if server is older.
+        if (!Util.isServerCompatibleTo(context, "1.8")) {
+            return;
+        }
         for (MusicDirectory.Entry starredDir : getStarred(context, progressListener).getAlbums()) {
             if (dir.getId().equals(starredDir.getId())) {
                 dir.setStarred(true);
@@ -145,6 +151,11 @@ public class CachedMusicService implements MusicService {
         // Artist.starred was added to the REST API in 1.10.1, so for backward compatibility
         // we have to emulate it.
         if (Util.isServerCompatibleTo(context, "1.10.1")) {
+            return;
+        }
+
+        // getStarred REST method was added in 1.8.  Ignore starring if server is older.
+        if (!Util.isServerCompatibleTo(context, "1.8")) {
             return;
         }
         List<Artist> starredArtists = getStarred(context, progressListener).getArtists();
@@ -178,6 +189,11 @@ public class CachedMusicService implements MusicService {
     public void star(String id, boolean star, Context context, ProgressListener progressListener) throws Exception {
         cachedStarred.clear();
         musicService.star(id, star, context, progressListener);
+    }
+
+    @Override
+    public URL createShare(String id, Context context, ProgressListener progressListener) throws Exception {
+        return musicService.createShare(id, context, progressListener);
     }
 
     @Override

@@ -174,8 +174,6 @@
     <string name="settings.cache_size_10000">10 GB</string>
     <string name="settings.cache_size_20000">20 GB</string>
     <string name="settings.cache_size_unlimited">Unlimited</string>
-    <string name="settings.clear_search_history">Clear search history</string>
-    <string name="settings.search_history_cleared">Search history cleared</string>
     <string name="settings.other_title">Other settings</string>
     <string name="settings.scrobble_title">Scrobble to Last.fm</string>
     <string name="settings.scrobble_summary">Remember to set up your Last.fm user and password on the Subsonic server</string>
@@ -225,6 +223,10 @@
     <string name="star.unstar_succesful">Unstarred \"%s\"</string>
     <string name="star.star_failed">Failed to star \"%s\"</string>
     <string name="star.unstar_failed">Failed to unstar \"%s\"</string>
+
+    <string name="share.menu_share">Share…</string>
+    <string name="share.failed">Failed to share. %s</string>
+    <string name="share_via">Share via</string>
 
     <string name="util.bytes_format.gigabyte">0.00 GB</string>
     <string name="util.bytes_format.megabyte">0.00 MB</string>

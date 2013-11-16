@@ -39,6 +39,7 @@ import net.sourceforge.subsonic.androidapp.service.MusicService;
 import net.sourceforge.subsonic.androidapp.service.MusicServiceFactory;
 import net.sourceforge.subsonic.androidapp.util.EntryAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
+import net.sourceforge.subsonic.androidapp.util.ShareUtil;
 import net.sourceforge.subsonic.androidapp.util.StarUtil;
 import net.sourceforge.subsonic.androidapp.util.TabActivityBackgroundTask;
 import net.sourceforge.subsonic.androidapp.util.Util;
@@ -245,6 +246,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             menu.findItem(R.id.album_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.album_menu_unstar).setVisible(!offline && entry.isStarred());
             menu.findItem(R.id.album_menu_pin).setVisible(!offline);
+            menu.findItem(R.id.album_menu_share).setVisible(!offline);
         } else {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.select_song_context, menu);
@@ -253,6 +255,7 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             menu.findItem(R.id.song_menu_unpin).setVisible(!offline && downloadFile.isSaved());
             menu.findItem(R.id.song_menu_star).setVisible(!offline && !entry.isStarred());
             menu.findItem(R.id.song_menu_unstar).setVisible(!offline && entry.isStarred());
+            menu.findItem(R.id.song_menu_share).setVisible(!offline);
         }
     }
 
@@ -281,6 +284,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
             case R.id.album_menu_unstar:
                 StarUtil.starInBackground(this, entry, false);
                 return true;
+            case R.id.album_menu_share:
+                ShareUtil.shareInBackground(this, entry);
+                return true;
             case R.id.song_menu_play_now:
                 getDownloadService().download(songs, false, true, true);
                 break;
@@ -301,6 +307,9 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 return true;
             case R.id.song_menu_unstar:
                 StarUtil.starInBackground(this, entry, false);
+                return true;
+            case R.id.song_menu_share:
+                ShareUtil.shareInBackground(this, entry);
                 return true;
             default:
                 return super.onContextItemSelected(menuItem);
@@ -589,6 +598,8 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
         View coverArtView = header.findViewById(R.id.select_album_art);
         getImageLoader().loadImage(coverArtView, entries.get(0), true, true);
 
+        boolean offline = Util.isOffline(this);
+
         final ImageView starView = (ImageView) header.findViewById(R.id.select_album_star);
         starView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -597,9 +608,17 @@ public class SelectAlbumActivity extends SubsonicTabActivity {
                 starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
             }
         });
-        boolean offline = Util.isOffline(this);
         starView.setImageResource(directory.isStarred() ? R.drawable.starred : R.drawable.unstarred);
         starView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
+
+        final ImageView shareView = (ImageView) header.findViewById(R.id.select_album_share);
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareUtil.shareInBackground(SelectAlbumActivity.this, directory);
+            }
+        });
+        shareView.setVisibility(offline || isPlaylist ? View.GONE : View.VISIBLE);
 
         TextView titleView = (TextView) header.findViewById(R.id.select_album_title);
         titleView.setText(getTitle());

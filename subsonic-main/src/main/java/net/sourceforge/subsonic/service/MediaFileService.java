@@ -18,22 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sourceforge.subsonic.Logger;
@@ -48,6 +32,21 @@ import net.sourceforge.subsonic.service.metadata.MetaData;
 import net.sourceforge.subsonic.service.metadata.MetaDataParser;
 import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
 import net.sourceforge.subsonic.util.FileUtil;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
 
@@ -410,7 +409,7 @@ public class MediaFileService {
             if (parser != null) {
                 MetaData metaData = parser.getMetaData(file);
                 mediaFile.setArtist(metaData.getArtist());
-                mediaFile.setAlbumArtist(metaData.getArtist());
+                mediaFile.setAlbumArtist(metaData.getAlbumArtist());
                 mediaFile.setAlbumName(metaData.getAlbumName());
                 mediaFile.setTitle(metaData.getTitle());
                 mediaFile.setDiscNumber(metaData.getDiscNumber());
@@ -448,7 +447,7 @@ public class MediaFileService {
                     MetaDataParser parser = metaDataParserFactory.getParser(firstChild);
                     if (parser != null) {
                         MetaData metaData = parser.getMetaData(firstChild);
-                        mediaFile.setArtist(metaData.getArtist());
+                        mediaFile.setArtist(metaData.getAlbumArtist());
                         mediaFile.setAlbumName(metaData.getAlbumName());
                         mediaFile.setYear(metaData.getYear());
                     }

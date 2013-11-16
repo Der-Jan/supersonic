@@ -4,4 +4,6 @@
                     android:minHeight="@dimen/widget_min_height"
                     android:updatePeriodMillis="0"
                     android:previewImage="@drawable/widget_preview"
-                    android:initialLayout="@layout/appwidget"/>
+                    android:widgetCategory="keyguard|home_screen"
+                    android:initialLayout="@layout/appwidget"
+                    android:initialKeyguardLayout="@layout/appwidget"/>

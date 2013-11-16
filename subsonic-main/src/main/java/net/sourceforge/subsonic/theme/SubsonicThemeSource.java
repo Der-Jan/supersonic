@@ -22,6 +22,9 @@ import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
+import net.sourceforge.subsonic.domain.Theme;
+import net.sourceforge.subsonic.service.SettingsService;
+
 /**
  * Theme source implementation which uses two resource bundles: the
  * theme specific (e.g., barents.properties), and the default (default.properties).
@@ -30,20 +33,31 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 public class SubsonicThemeSource extends ResourceBundleThemeSource {
 
-    private String defaultResourceBundle;
+    private SettingsService settingsService;
+    private String basenamePrefix;
 
     @Override
     protected MessageSource createMessageSource(String basename) {
         ResourceBundleMessageSource messageSource = (ResourceBundleMessageSource) super.createMessageSource(basename);
 
-        ResourceBundleMessageSource parentMessageSource = new ResourceBundleMessageSource();
-        parentMessageSource.setBasename(defaultResourceBundle);
-        messageSource.setParentMessageSource(parentMessageSource);
-
+        // Create parent theme recursively.
+        for (Theme theme : settingsService.getAvailableThemes()) {
+            if (basename.equals(basenamePrefix + theme.getId()) && theme.getParent() != null) {
+                String parent = basenamePrefix + theme.getParent();
+                messageSource.setParentMessageSource(createMessageSource(parent));
+                break;
+            }
+        }
         return messageSource;
     }
 
-    public void setDefaultResourceBundle(String defaultResourceBundle) {
-        this.defaultResourceBundle = defaultResourceBundle;
+    @Override
+    public void setBasenamePrefix(String basenamePrefix) {
+        this.basenamePrefix = basenamePrefix;
+        super.setBasenamePrefix(basenamePrefix);
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 }
