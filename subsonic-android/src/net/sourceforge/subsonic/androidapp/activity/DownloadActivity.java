@@ -629,9 +629,11 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
                 return true;
             case R.id.download_menu_star:
                 StarUtil.starInBackground(this, song.getSong(), true);
+                starButton.setImageResource(R.drawable.starred);
                 return true;
             case R.id.download_menu_unstar:
                 StarUtil.starInBackground(this, song.getSong(), false);
+                starButton.setImageResource(R.drawable.unstarred);
                 return true;
             case R.id.download_menu_share:
                 ShareUtil.shareInBackground(this, song.getSong());
