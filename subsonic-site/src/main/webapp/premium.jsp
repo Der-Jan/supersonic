@@ -14,7 +14,12 @@
 
     <div id="content">
         <div id="main-col">
-            <h1>Subsonic Premium &ndash; Only $1 per month</h1>
+            <h1>
+                <img src="inc/img/premium_large.png" alt=""/>
+                <span style="vertical-align: text-top">
+                    Subsonic Premium &ndash; Only $1 per month
+                </span>
+            </h1>
 
             <h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
 

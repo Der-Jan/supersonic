@@ -24,6 +24,7 @@
             <div class="floatcontainer margin10-t margin10-b">
                 <ul class="stars column-left">
                     <li><a href="#android">Subsonic</a> for Android</li>
+                    <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
@@ -59,9 +60,9 @@
                     <li><a href="#submariner">Submariner</a> for Mac</li>
                     <li><a href="#thumper">Thumper</a> for Mac</li>
                     <li><a href="#subclient">Subclient</a> for Windows</li>
+                    <li><a href="#subgadget">SubGadget</a> for Windows</li>
                 </ul>
                 <ul class="stars column-right"> 
-                    <li><a href="#subgadget">SubGadget</a> for Windows</li>
                     <li><a href="#periscope">Periscope</a> for Windows</li>
                     <li><a href="#subwiji">SubWiji</a> for Windows</li>
                     <li><a href="#supersonic">Supersonic</a> for Windows 8</li>
@@ -92,6 +93,7 @@
             </p>
 
             <%@ include file="apps-android.jsp" %>
+            <%@ include file="apps-dsub.jsp" %>
             <%@ include file="apps-isub.jsp" %>
             <%@ include file="apps-zsubsonic.jsp" %>
             <%@ include file="apps-substream.jsp" %>

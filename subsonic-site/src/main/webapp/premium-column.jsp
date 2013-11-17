@@ -1,5 +1,10 @@
 <div class="sidebox">
-    <h2>Subsonic Premium</h2>
+    <h2>
+        <img src="inc/img/premium_small.png" alt=""/>
+        <span style="vertical-align: text-top">
+            Subsonic Premium
+        </span>
+    </h2>
     <p>
         Upgrade to Subsonic Premium to enjoy these extra features:
     </p>
