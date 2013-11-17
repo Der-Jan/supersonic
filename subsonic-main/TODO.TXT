@@ -837,17 +837,17 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2013-04-16.tar db
+    tar cvf db-backup-2013-11-17.tar db
   cd subsonic-backend
   mvn clean install
 
-  mkdir /usr/local/jakarta/tomcat/webapps-2013-04-16/
+  mkdir /usr/local/jakarta/tomcat/webapps-2013-11-17/
 
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/pages
 
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/changelog.jsp  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-04-16/pages
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/changelog.jsp  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org
@@ -855,7 +855,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2013-05-01 webapps
+  ln -s webapps-2013-11-17 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat
