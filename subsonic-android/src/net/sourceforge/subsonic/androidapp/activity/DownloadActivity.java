@@ -428,6 +428,10 @@ public class DownloadActivity extends SubsonicTabActivity implements OnGestureLi
             visualizerView.setActive(downloadService != null && downloadService.getShowVisualization());
         }
 
+        boolean offline = Util.isOffline(this);
+        shareButton.setVisibility(offline ? View.GONE : View.VISIBLE);
+        starButton.setVisibility(offline ? View.GONE : View.VISIBLE);
+
         updateButtons();
     }
 

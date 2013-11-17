@@ -187,6 +187,7 @@ Add star and share icons next to EQ, RC, VIS
 
 TODO IN ANDROID 4.1
 --------------------
+Star status not updated in DownloadActivity.
 Slow song switching?
   https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d
 
