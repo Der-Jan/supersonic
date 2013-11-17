@@ -10,7 +10,7 @@
             </p>
             <img src="inc/img/screenshots/screen26.png" alt="" class="img-center"/>
             <p>
-                Developed and maintained by Scott Mark, and <a href="http://code.google.com/p/subgadget/">provided free or charge</a>.
+                Developed and maintained by Scott Mark, and <a href="http://code.google.com/p/subgadget/">provided free of charge</a>.
             </p>
         </div>
     </div>
