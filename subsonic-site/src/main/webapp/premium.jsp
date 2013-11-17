@@ -37,7 +37,7 @@
                 </ul>
             </div>
 
-            <p style="font-size:9px;">* Some apps must be purchased separately or are ad-supported.</p>
+            <p style="font-size:9px;">* Some apps must be purchased separately.</p>
 
             <p>The basic version of Subsonic is free. When you first install Subsonic, the premium features are available for 30 days so
                 you can try them out before deciding to upgrade.</p>

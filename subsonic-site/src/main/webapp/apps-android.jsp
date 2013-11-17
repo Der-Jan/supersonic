@@ -27,7 +27,7 @@
             </p>
 
             <p>
-                Developed and maintained by Sindre Mehus, the author of Subsonic. Available
+                Developed and maintained by Sindre Mehus, the author of Subsonic. Available free of charge
                 on <a href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>.
             </p>
 
