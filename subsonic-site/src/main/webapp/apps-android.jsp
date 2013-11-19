@@ -9,6 +9,11 @@
                 Stream music and video from your home computer to your phone. Never sync again!
                 All your media - anywhere, anytime!
             </p>
+
+            <a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt="" style="padding:3px;padding-left:40px;padding-right:20px"/></a>
+            <a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt="" style="padding:3px;padding-right:20px"/></a>
+            <a href="inc/img/screenshots/screen14.png"><img src="inc/img/screenshots/thumb14.png" alt="" style="padding:3px"/></a>
+
             <p>
                 Songs are cached for offline playback. Supports mp3, ogg, aac, flac, wma. Most video formats supported too.
             </p>
@@ -16,17 +21,20 @@
             <p>
                 You can also use this app as a remote control for music playing on your server.
             </p>
+
             <p>
                 Features offline mode, adaptive bitrates, equalizer and visualizer.
             </p>
+
             <p>
-                Developed and maintained by Sindre Mehus, the author of Subsonic. Available
-                on <a href="https://market.android.com/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>.
+                Developed and maintained by Sindre Mehus, the author of Subsonic. Available free of charge
+                on <a href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>.
             </p>
 
-            <a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt="" style="padding:3px;padding-left:40px;padding-right:20px"/></a>
-            <a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt="" style="padding:3px;padding-right:20px"/></a>
-            <a href="inc/img/screenshots/screen14.png"><img src="inc/img/screenshots/thumb14.png" alt="" style="padding:3px"/></a>
+            <a href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp">
+                <img alt="Get it on Google Play" class="img-center"
+                     src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
+            </a>
 
         </div>
     </div>

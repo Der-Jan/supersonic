@@ -582,7 +582,7 @@
             </c:if>
 
             <td style="padding-right:1.25em">
-                <img id="currentImage" src="<spring:theme code="currentImage"/>" alt="" style="display:none">
+                <img id="currentImage" src="<spring:theme code="currentImage"/>" alt="" style="display:none;padding-right: 0.5em">
                 <c:choose>
                     <c:when test="${model.player.externalWithPlaylist}">
                         <span id="title">Title</span>

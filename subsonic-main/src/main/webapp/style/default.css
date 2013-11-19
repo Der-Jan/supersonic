@@ -90,7 +90,7 @@ body {
 }
 
 body, form, label, table, a {
-    font-family: verdana, arial, sans-serif;
+    font-family: arial, sans-serif;
 }
 
 h1, h1 a {
@@ -110,7 +110,7 @@ body {
     padding:0;
     border:0;
     margin:0.75em;
-    font-size: 10pt;
+    font-size: 10.1pt;
     line-height: 1.5em;
 }
 

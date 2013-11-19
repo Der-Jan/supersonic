@@ -14,7 +14,12 @@
 
     <div id="content">
         <div id="main-col">
-            <h1>Subsonic Premium &ndash; Only $1 per month</h1>
+            <h1>
+                <img src="inc/img/premium_large.png" alt=""/>
+                <span style="vertical-align: text-top">
+                    Subsonic Premium &ndash; Only $1 per month
+                </span>
+            </h1>
 
             <h3 style="padding-top: 1em;padding-bottom: 1em">Upgrade to Subsonic Premium to enjoy these extra features:</h3>
 
@@ -32,7 +37,7 @@
                 </ul>
             </div>
 
-            <p style="font-size:9px;">* Some apps must be purchased separately or are ad-supported.</p>
+            <p style="font-size:9px;">* Some apps must be purchased separately.</p>
 
             <p>The basic version of Subsonic is free. When you first install Subsonic, the premium features are available for 30 days so
                 you can try them out before deciding to upgrade.</p>

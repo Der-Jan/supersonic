@@ -12,7 +12,7 @@
             <a href="inc/img/screenshots/screen16.png"><img src="inc/img/screenshots/thumb16.png" alt="" class="img-center"/></a>
             <p>
                 Developed and maintained by <a href="http://www.nonpixel.com/">Jim Resnowski</a>, and
-                <a href="http://www.nonpixel.com/subair/">provided free or charge</a>.
+                <a href="http://www.nonpixel.com/subair/">provided free of charge</a>.
             </p>
         </div>
     </div>
