@@ -49,6 +49,11 @@ public class RedirectionController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+//            TODO
+        if (true) {
+            return null;
+        }
+
         String redirectFrom = getRedirectFrom(request);
         if (RESERVED_REDIRECTS.containsKey(redirectFrom)) {
             LOG.info("Reserved redirection: " + redirectFrom);
@@ -59,9 +64,7 @@ public class RedirectionController implements Controller {
 
         if (redirection == null) {
             LOG.info("No redirection found: " + redirectFrom);
-//            TODO
-            return null;
-//            return new ModelAndView(new RedirectView("http://subsonic.org/pages"));
+            return new ModelAndView(new RedirectView("http://subsonic.org/pages"));
         }
 
         redirection.setLastRead(new Date());
