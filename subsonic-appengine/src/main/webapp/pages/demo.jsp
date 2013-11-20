@@ -1,9 +1,7 @@
 <%@ page import="java.util.Random" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<%! String current = "demo"; %>
 <%@ include file="header.jsp" %>
 
 <body>
@@ -11,7 +9,9 @@
 <a name="top"/>
 
 <div id="container">
-    <%@ include file="menu.jsp" %>
+    <jsp:include page="menu.jsp">
+        <jsp:param name="current" value="demo"/>
+    </jsp:include>
 
     <div id="content">
         <div id="main-col">

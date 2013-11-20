@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%!
-    String current = "hosting";
     String gigaProsUrl = "http://www.gigapros.com/affiliate/scripts/click.php?a_aid=subsonic&desturl=http://www.gigapros.com/portal/index.php/products-a-services/specialty-hosting/subsonic-server.html";
     String zazeenUrl = "https://www.zazeen.com/OnlinePC.html";
 %>
@@ -14,7 +13,9 @@
 <a name="top"/>
 
 <div id="container">
-    <%@ include file="menu.jsp" %>
+    <jsp:include page="menu.jsp">
+        <jsp:param name="current" value="documentation"/>
+    </jsp:include>
 
     <div id="content">
         <div id="main-col">
