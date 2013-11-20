@@ -5,6 +5,18 @@
 
     <display-name>Subsonic</display-name>
 
+    <!-- Location of application context.  Used by ContextLoaderListener. -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext-appengine.xml
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>subsonic-appengine</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

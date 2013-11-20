@@ -3,6 +3,9 @@ DONE IN 4.9
 
 TODO IN 4.9
 --------------
+Premium icons looks strange when in trial.
+Make license key field longer
+Make more space available on forum server.
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
@@ -13,6 +16,9 @@ Review icons.
 From forum:
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
+
+AppEngine
+  Specify java version in pom.
 
 SubsonicFX client
   Skattefunn 2015
@@ -829,6 +835,7 @@ Post message on forum.
 Update version number in pom.xml etc.
 Take backup of forum.
 
+subsonic.org: 66.49.215.227
 Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
@@ -863,11 +870,20 @@ rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subson
 
 subsonic.org backup
 -------------------
-BudgetVM 192.157.221.124
+BudgetVM 192.157.241.116
 % service tomcat6 stop
 % service tomcat6 start
+/etc/default/tomcat6  (memory settings)
 /etc/tomcat6
 /var/lib/tomcat6
+/usr/share/tomcat6
+
+rm -rf work/Catalina logs/*
+
+scp subsonic-backend/target/subsonic-backend-*.war root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/ROOT.war
+scp subsonic-main/target/subsonic.war              root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/demo.war
+scp subsonic-site/target/subsonic-site-*.war       root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/pages.war
+###rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/var/lib/tomcat6/webapps-2013-11-17/pages
 
 
 HOW TO RELEASE TO ANDROID MARKET
