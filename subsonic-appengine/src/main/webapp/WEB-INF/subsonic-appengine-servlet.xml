@@ -6,8 +6,8 @@
         <property name="daoHelper" ref="daoHelper"/>
         <property name="paymentDao" ref="paymentDao"/>
         <property name="subscriptionDao" ref="subscriptionDao"/>
-        <property name="whitelistGenerator" ref="whitelistGenerator"/>
-        <property name="licenseGenerator" ref="licenseGenerator"/>
+        <!--<property name="whitelistGenerator" ref="whitelistGenerator"/>-->
+        <!--<property name="licenseGenerator" ref="licenseGenerator"/>-->
     </bean>
 
     <bean id="redirectionController" class="net.sourceforge.subsonic.backend.controller.RedirectionController">

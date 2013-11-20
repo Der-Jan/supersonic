@@ -1,18 +1,17 @@
 package net.sourceforge.subsonic.backend.dao;
 
-import java.io.File;
-
-import javax.sql.DataSource;
-
-import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import net.sourceforge.subsonic.backend.Util;
 import net.sourceforge.subsonic.backend.dao.schema.Schema;
 import net.sourceforge.subsonic.backend.dao.schema.Schema10;
 import net.sourceforge.subsonic.backend.dao.schema.Schema20;
 import net.sourceforge.subsonic.backend.dao.schema.Schema30;
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * DAO helper class which creates the data source, and updates the database schema.
@@ -27,10 +26,12 @@ public class DaoHelper {
     private DataSource dataSource;
     private static boolean shutdownHookAdded;
 
-    public DaoHelper() {
-        dataSource = createDataSource();
-        checkDatabase();
-        addShutdownHook();
+    public DaoHelper() throws FileNotFoundException {
+
+        // TODO
+//        dataSource = createDataSource();
+//        checkDatabase();
+//        addShutdownHook();
     }
 
     private void addShutdownHook() {

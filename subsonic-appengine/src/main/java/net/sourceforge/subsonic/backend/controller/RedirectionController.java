@@ -20,7 +20,6 @@ package net.sourceforge.subsonic.backend.controller;
 
 import net.sourceforge.subsonic.backend.dao.RedirectionDao;
 import net.sourceforge.subsonic.backend.domain.Redirection;
-import static net.sourceforge.subsonic.backend.controller.RedirectionManagementController.RESERVED_REDIRECTS;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,12 +28,14 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
-import java.io.UnsupportedEncodingException;
+
+import static net.sourceforge.subsonic.backend.controller.RedirectionManagementController.RESERVED_REDIRECTS;
 
 /**
  * Redirects vanity URLs (such as http://sindre.subsonic.org).
@@ -58,7 +59,9 @@ public class RedirectionController implements Controller {
 
         if (redirection == null) {
             LOG.info("No redirection found: " + redirectFrom);
-            return new ModelAndView(new RedirectView("http://subsonic.org/pages"));
+//            TODO
+            return null;
+//            return new ModelAndView(new RedirectView("http://subsonic.org/pages"));
         }
 
         redirection.setLastRead(new Date());

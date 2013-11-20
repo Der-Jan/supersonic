@@ -18,18 +18,18 @@
 
     <bean id="daoHelper" class="net.sourceforge.subsonic.backend.dao.DaoHelper"/>
 
-    <bean id="licenseGenerator" class="net.sourceforge.subsonic.backend.service.LicenseGenerator" init-method="init">
-        <property name="paymentDao" ref="paymentDao"/>
-        <property name="subscriptionDao" ref="subscriptionDao"/>
-    </bean>
+    <!--<bean id="licenseGenerator" class="net.sourceforge.subsonic.backend.service.LicenseGenerator" init-method="init">-->
+        <!--<property name="paymentDao" ref="paymentDao"/>-->
+        <!--<property name="subscriptionDao" ref="subscriptionDao"/>-->
+    <!--</bean>-->
 
-    <bean class="net.sourceforge.subsonic.backend.service.EmailReminderGenerator" init-method="init">
-        <property name="paymentDao" ref="paymentDao"/>
-        <property name="subscriptionDao" ref="subscriptionDao"/>
-    </bean>
+    <!--<bean class="net.sourceforge.subsonic.backend.service.EmailReminderGenerator" init-method="init">-->
+        <!--<property name="paymentDao" ref="paymentDao"/>-->
+        <!--<property name="subscriptionDao" ref="subscriptionDao"/>-->
+    <!--</bean>-->
 
-    <bean id="whitelistGenerator" class="net.sourceforge.subsonic.backend.service.WhitelistGenerator">
-        <property name="paymentDao" ref="paymentDao"/>
-    </bean>
+    <!--<bean id="whitelistGenerator" class="net.sourceforge.subsonic.backend.service.WhitelistGenerator">-->
+        <!--<property name="paymentDao" ref="paymentDao"/>-->
+    <!--</bean>-->
 
 </beans>
