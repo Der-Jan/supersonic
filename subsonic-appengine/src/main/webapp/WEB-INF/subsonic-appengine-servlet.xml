@@ -2,10 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!--<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">-->
-        <!--<property name="alwaysUseFullPath" value="true"/>-->
-        <!--<property name="mappings">-->
-            <!--<props>-->
+    <bean id="redirectionController" class="net.sourceforge.subsonic.backend.controller.RedirectionController">
+        <!--<property name="redirectionDao" ref="redirectionDao"/>-->
+    </bean>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
+        <property name="mappings">
+            <props>
                 <!--&lt;!&ndash;<prop key="/backend/version.view">multiController</prop>&ndash;&gt;-->
                 <!--&lt;!&ndash;<prop key="/backend/db.view">multiController</prop>&ndash;&gt;-->
                 <!--&lt;!&ndash;<prop key="/backend/payment.view">multiController</prop>&ndash;&gt;-->
@@ -19,10 +23,10 @@
                 <!--&lt;!&ndash;<prop key="/backend/redirect/get.view">redirectionManagementController</prop>&ndash;&gt;-->
                 <!--&lt;!&ndash;<prop key="/backend/redirect/test.view">redirectionManagementController</prop>&ndash;&gt;-->
                 <!--&lt;!&ndash;<prop key="/backend/redirect/dump.view">redirectionManagementController</prop>&ndash;&gt;-->
-                <!--&lt;!&ndash;<prop key="/**">redirectionController</prop>&ndash;&gt;-->
-            <!--</props>-->
-        <!--</property>-->
-    <!--</bean>-->
+                <prop key="/**">redirectionController</prop>
+            </props>
+        </property>
+    </bean>
 
     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">-->
         <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
