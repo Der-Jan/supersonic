@@ -1,12 +1,12 @@
 DONE IN 4.9
 -------------
+Bugfix: Playlist management was broken when deploying on Tomcat 7.
 
 TODO IN 4.9
 --------------
 Premium icons looks strange when in trial.
 Make license key field longer
-Don't use "public" identifier:
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=12799&sid=555e63739705961241203eca51042fb4&p=59204#p59204
+When clicking "Create new playlist", automatically show all.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
@@ -872,6 +872,13 @@ Update backup server
 
 rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
 
+HOWTO: Enable remote JMX for JVisualVM
+--------------------------------------
+In subsonic.canaca.com:/usr/sbin/starttomcat, add
+        -Dcom.sun.management.jmxremote.port=1212
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=true
+Create /usr/local/jdk/jre/lib/management/jmxremote.password, remember to make it root-readable only.
 
 subsonic.org backup
 -------------------

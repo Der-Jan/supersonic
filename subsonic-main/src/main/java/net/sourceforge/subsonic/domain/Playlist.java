@@ -29,7 +29,7 @@ public class Playlist {
 
     private int id;
     private String username;
-    private boolean isPublic;
+    private boolean shared;
     private String name;
     private String comment;
     private int fileCount;
@@ -41,11 +41,11 @@ public class Playlist {
     public Playlist() {
     }
 
-    public Playlist(int id, String username, boolean isPublic, String name, String comment, int fileCount,
+    public Playlist(int id, String username, boolean shared, String name, String comment, int fileCount,
                     int durationSeconds, Date created, Date changed, String importedFrom) {
         this.id = id;
         this.username = username;
-        this.isPublic = isPublic;
+        this.shared = shared;
         this.name = name;
         this.comment = comment;
         this.fileCount = fileCount;
@@ -71,12 +71,12 @@ public class Playlist {
         this.username = username;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public boolean isShared() {
+        return shared;
     }
 
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
     public String getName() {

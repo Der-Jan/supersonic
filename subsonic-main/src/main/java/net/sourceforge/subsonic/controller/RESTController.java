@@ -18,27 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.ajax.ChatService;
 import net.sourceforge.subsonic.ajax.LyricsInfo;
@@ -86,6 +65,25 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.XMLBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
 import static net.sourceforge.subsonic.util.XMLBuilder.Attribute;
@@ -368,7 +366,7 @@ public class RESTController extends MultiActionController {
         attributes.add("name", playlist.getName());
         attributes.add("comment", playlist.getComment());
         attributes.add("owner", playlist.getUsername());
-        attributes.add("public", playlist.isPublic());
+        attributes.add("public", playlist.isShared());
         attributes.add("songCount", playlist.getFileCount());
         attributes.add("duration", playlist.getDurationSeconds());
         attributes.add("created", StringUtil.toISO8601(playlist.getCreated()));
@@ -734,7 +732,7 @@ public class RESTController extends MultiActionController {
             playlist.setName(name);
             playlist.setCreated(new Date());
             playlist.setChanged(new Date());
-            playlist.setPublic(false);
+            playlist.setShared(false);
             playlist.setUsername(username);
             playlistService.createPlaylist(playlist);
         }
@@ -776,9 +774,9 @@ public class RESTController extends MultiActionController {
         if (comment != null) {
             playlist.setComment(comment);
         }
-        Boolean isPublic = getBooleanParameter(request, "public");
-        if (isPublic != null) {
-            playlist.setPublic(isPublic);
+        Boolean shared = getBooleanParameter(request, "public");
+        if (shared != null) {
+            playlist.setShared(shared);
         }
         playlistService.updatePlaylist(playlist);
 

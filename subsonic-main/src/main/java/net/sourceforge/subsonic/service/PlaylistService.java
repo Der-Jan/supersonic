@@ -18,6 +18,25 @@
  */
 package net.sourceforge.subsonic.service;
 
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.dao.PlaylistDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.util.Pair;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -34,26 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.dao.PlaylistDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.util.Pair;
-import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
 
 /**
  * Provides services for loading and saving playlists to and from persistent storage.
@@ -116,7 +115,7 @@ public class PlaylistService {
         if (username == null) {
             return false;
         }
-        if (username.equals(playlist.getUsername()) || playlist.isPublic()) {
+        if (username.equals(playlist.getUsername()) || playlist.isShared()) {
             return true;
         }
         return playlistDao.getPlaylistUsers(playlist.getId()).contains(username);
@@ -156,7 +155,7 @@ public class PlaylistService {
             playlist.setUsername(username);
             playlist.setCreated(now);
             playlist.setChanged(now);
-            playlist.setPublic(true);
+            playlist.setShared(true);
             playlist.setName(playlistName);
             playlist.setComment("Auto-imported from " + fileName);
             playlist.setImportedFrom(fileName);

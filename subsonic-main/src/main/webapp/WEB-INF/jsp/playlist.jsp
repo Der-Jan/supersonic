@@ -20,10 +20,10 @@
                         $(this).dialog("close");
                         var name = $("#newName").val();
                         var comment = $("#newComment").val();
-                        var isPublic = $("#newPublic").is(":checked");
+                        var shared = $("#newShared").is(":checked");
                         $("#name").html(name);
                         $("#comment").html(comment);
-                        playlistService.updatePlaylist(playlist.id, name, comment, isPublic, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
+                        playlistService.updatePlaylist(playlist.id, name, comment, shared, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
                     },
                     "<fmt:message key="common.cancel"/>": function() {
                         $(this).dialog("close");
@@ -61,7 +61,7 @@
             $("#songCount").html(playlist.fileCount);
             $("#duration").html(playlist.durationAsString);
 
-            if (playlist.public) {
+            if (playlist.shared) {
                 $("#shared").html("<fmt:message key="playlist2.shared"/>");
             } else {
                 $("#shared").html("<fmt:message key="playlist2.notshared"/>");
@@ -229,8 +229,8 @@
         <label for="newComment" style="display:block;margin-top:1em"><fmt:message key="playlist2.comment"/></label>
         <input type="text" name="newComment" id="newComment" value="${model.playlist.comment}" class="ui-widget-content"
                style="display:block;width:95%;"/>
-        <input type="checkbox" name="newPublic" id="newPublic" ${model.playlist.public ? "checked='checked'" : ""} style="margin-top:1.5em" class="ui-widget-content"/>
-        <label for="newPublic"><fmt:message key="playlist2.public"/></label>
+        <input type="checkbox" name="newShared" id="newShared" ${model.playlist.shared ? "checked='checked'" : ""} style="margin-top:1.5em" class="ui-widget-content"/>
+        <label for="newShared"><fmt:message key="playlist2.public"/></label>
     </form>
 </div>
 
