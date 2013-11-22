@@ -2,7 +2,6 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<%! String current = "faq"; %>
 <%@ include file="header.jsp" %>
 
 <body>
@@ -10,7 +9,9 @@
 <a name="top"/>
 
 <div id="container">
-    <%@ include file="menu.jsp" %>
+    <jsp:include page="menu.jsp">
+        <jsp:param name="current" value="documentation"/>
+    </jsp:include>
 
     <div id="content">
         <div id="main-col">

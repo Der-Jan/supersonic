@@ -15,17 +15,21 @@
 <hr/>
 <div id="nav">
     <ul>
-        <li id="menu-home" ><a href="index.jsp" class="<%=current.equals("home") ? "open" : ""%>"><span>Home</span></a></li>
-        <li><a href="download.jsp" class="<%=current.equals("download") ? "open" : ""%>"><span>Download</span></a></li>
-        <li><a href="apps.jsp" class="<%=current.equals("apps") ? "open" : ""%>"><span>Apps</span></a></li>
-        <li id="menu-premium"><a href="premium.jsp" class="<%=current.equals("premium") ? "open" : ""%>"><span>Subsonic Premium</span></a></li>
-        <li><a href="documentation.jsp" class="<%=current.equals("documentation") ? "open" : ""%>"><span>Documentation</span></a></li>
-        <li><a href="features.jsp" class="<%=current.equals("features") ? "open" : ""%>"><span>Features</span></a></li>
-        <li><a href="screenshots.jsp" class="<%=current.equals("screenshots") ? "open" : ""%>"><span>Screenshots</span></a></li>
-        <li><a href="demo.jsp" class="<%=current.equals("demo") ? "open" : ""%>"><span>Demo</span></a></li>
-        <li><a href="forum.jsp" class="<%=current.equals("forum") ? "open" : ""%>"><span>Forum</span></a></li>
-        <li><a href="api.jsp" class="<%=current.equals("api") ? "open" : ""%>"><span>API</span></a></li>
+        <li id="menu-home"><a href="index.jsp" id="a-home"><span>Home</span></a></li>
+        <li><a href="download.jsp" id="a-download"><span>Download</span></a></li>
+        <li><a href="apps.jsp" id="a-apps"><span>Apps</span></a></li>
+        <li id="menu-premium"><a href="premium.jsp" id="a-premium"><span>Subsonic Premium</span></a></li>
+        <li><a href="documentation.jsp" id="a-documentation"><span>Documentation</span></a></li>
+        <li><a href="features.jsp" id="a-features"><span>Features</span></a></li>
+        <li><a href="screenshots.jsp" id="a-screenshots"><span>Screenshots</span></a></li>
+        <li><a href="demo.jsp" id="a-demo"><span>Demo</span></a></li>
+        <li><a href="forum.jsp" id="a-forum"><span>Forum</span></a></li>
+        <li><a href="api.jsp" id="a-api"><span>API</span></a></li>
     </ul>
+
+    <script type="text/javascript">
+        document.getElementById("a-${param.current}").className = "open"
+    </script>
 </div>
 <hr/>
 

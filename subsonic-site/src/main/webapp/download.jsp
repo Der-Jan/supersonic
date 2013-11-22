@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%!
-    String current = "download";
     String stable = "4.8";
     String beta = "4.9.beta2"; // Set to null if no beta is available.
 %>
@@ -14,7 +13,9 @@
 <a name="top"/>
 
 <div id="container">
-    <%@ include file="menu.jsp" %>
+    <jsp:include page="menu.jsp">
+        <jsp:param name="current" value="download"/>
+    </jsp:include>
 
     <div id="content">
         <div id="main-col">
