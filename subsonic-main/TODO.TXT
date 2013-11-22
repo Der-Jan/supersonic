@@ -2,11 +2,11 @@ DONE IN 4.9
 -------------
 Bugfix: Playlist management was broken when deploying on Tomcat 7.
 Make license key field longer
+When clicking "Create new playlist", automatically show all.
 
 TODO IN 4.9
 --------------
 Premium icons looks strange when in trial.
-When clicking "Create new playlist", automatically show all.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
