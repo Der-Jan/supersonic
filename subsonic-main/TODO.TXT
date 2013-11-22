@@ -5,7 +5,12 @@ TODO IN 4.9
 --------------
 Premium icons looks strange when in trial.
 Make license key field longer
+Don't use "public" identifier:
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=12799&sid=555e63739705961241203eca51042fb4&p=59204#p59204
+
 Make more space available on forum server.
+Deal with backup server. Document procedure for swapping over. Invoice notice.
+Use javascript to set css class in menu.
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
