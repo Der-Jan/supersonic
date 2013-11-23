@@ -127,7 +127,7 @@ public class MainController extends ParameterizableViewController {
         if (scheme != CoverArtScheme.OFF) {
             List<MediaFile> coverArts = getCoverArts(dir, children);
             int size = scheme.getSize();
-            if (dir.isAlbum() && coverArts.size() == 1) {
+            if (dir.isAlbum()) {
                 size *= 2;
             }
             map.put("coverArts", coverArts);
