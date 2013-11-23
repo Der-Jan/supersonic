@@ -227,6 +227,13 @@ img {
     padding-top: 0.25em;
 }
 
+.albumThumb {
+    display:inline-block;
+    vertical-align: top;
+    padding-bottom: 1em;
+    padding-right: 1em;
+}
+
 .log {
     white-space: nowrap;
     font-size: 90%;
