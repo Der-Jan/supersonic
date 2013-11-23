@@ -385,8 +385,6 @@
                                     </span>
                                 </td>
                             </c:if>
-
-
                         </c:otherwise>
                     </c:choose>
                 </tr>
@@ -396,7 +394,7 @@
 
     <td style="vertical-align:top;width:100%">
         <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-            <div style="float:left; padding:5px">
+            <div style="float:right; padding:5px">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${coverArt.id}"/>
                     <c:param name="albumName" value="${coverArt.name}"/>
