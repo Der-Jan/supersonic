@@ -5,6 +5,7 @@ Make license key field longer
 When clicking "Create new playlist", automatically show all.
 Use javascript to set css class in menu.
 Simplified/improved top.jsp
+Use Roboto font.
 
 TODO IN 4.9
 --------------

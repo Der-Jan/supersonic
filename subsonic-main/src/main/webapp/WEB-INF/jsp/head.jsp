@@ -9,4 +9,5 @@
 <link rel="shortcut icon" href="<c:url value="/${faviconImage}"/>" type="text/css">
 <link rel="stylesheet" href="<c:url value="/${styleSheet}"/>" type="text/css">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu&subset=latin,cyrillic-ext,greek-ext,greek,latin-ext,cyrillic" type="text/css"/>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:regular,medium,thin,italic,mediumitalic,bold" type="text/css"/>
 <title>Subsonic</title>

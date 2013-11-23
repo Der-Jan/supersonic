@@ -90,7 +90,7 @@ body {
 }
 
 body, form, label, table, a {
-    font-family: arial, sans-serif;
+    font-family: 'Roboto', arial, sans-serif;
 }
 
 h1, h1 a {
@@ -99,7 +99,8 @@ h1, h1 a {
 }
 
 h2, h2 a, .topHeader a {
-    font-family: arial, sans-serif;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: normal;
 }
 
 /***************************************************************************************
@@ -136,7 +137,7 @@ h1 {
 
 h2 {
     white-space: nowrap;
-    font-size: 100%;
+    font-size: 102%;
     margin: 1em 0 0.2em 0;
 }
 
@@ -198,11 +199,10 @@ img {
 }
 
 .topHeader, .topHeader a {
-    font-size: 100%;
+    font-size: 102%;
     padding: 0.15em 0 0 0;
     margin: 0;
     border: 0;
-    font-weight: bold;
 }
 
 .back, .forward {
