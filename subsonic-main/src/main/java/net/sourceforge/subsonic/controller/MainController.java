@@ -126,7 +126,10 @@ public class MainController extends ParameterizableViewController {
         CoverArtScheme scheme = player.getCoverArtScheme();
         if (scheme != CoverArtScheme.OFF) {
             List<MediaFile> coverArts = getCoverArts(dir, children);
-            int size = coverArts.size() > 1 ? scheme.getSize() : scheme.getSize() * 2;
+            int size = scheme.getSize();
+            if (dir.isAlbum() && coverArts.size() == 1) {
+                size *= 2;
+            }
             map.put("coverArts", coverArts);
             map.put("coverArtSize", size);
             if (coverArts.isEmpty() && dir.isAlbum()) {

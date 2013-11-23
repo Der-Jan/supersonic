@@ -6,6 +6,7 @@ When clicking "Create new playlist", automatically show all.
 Use javascript to set css class in menu.
 Simplified/improved top.jsp
 Use Roboto font.
+Larger album arts
 
 TODO IN 4.9
 --------------
