@@ -4,10 +4,11 @@ Bugfix: Playlist management was broken when deploying on Tomcat 7.
 Make license key field longer
 When clicking "Create new playlist", automatically show all.
 Use javascript to set css class in menu.
+Simplified/improved top.jsp
 
 TODO IN 4.9
 --------------
-Premium icons looks strange when in trial.
+Test new top.jsp in IE etc.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
