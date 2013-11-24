@@ -13,6 +13,7 @@ Don't let album art push combo box down.
 
 TODO IN 4.9
 --------------
+Top-align cover art with first song.
 Test layout with ads.
 home.jsp responsive design
    http://sourceforge.net/p/subsonic/patches/18/

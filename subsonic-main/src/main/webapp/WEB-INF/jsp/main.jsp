@@ -244,18 +244,18 @@
                         <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
                         <a target="_blank" href="${allmusicUrl}">allmusic</a> |
                         <a target="_blank" href="${lastFmUrl}">Last.fm</a>
-            </span>
-        </c:if>
-    </div>
-    <div class="detail" style="padding-top:0.2em">
-        <fmt:message key="main.playcount"><fmt:param value="${model.dir.playCount}"/></fmt:message>
-        <c:if test="${not empty model.dir.lastPlayed}">
-            <fmt:message key="main.lastplayed">
-                <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.dir.lastPlayed}"/></fmt:param>
-            </fmt:message>
-        </c:if>
-    </div>
 
+                &ndash;
+                <fmt:message key="main.playcount"><fmt:param value="${model.dir.playCount}"/></fmt:message>
+                <c:if test="${not empty model.dir.lastPlayed}">
+                    <fmt:message key="main.lastplayed">
+                        <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.dir.lastPlayed}"/></fmt:param>
+                    </fmt:message>
+                </c:if>
+            </span>
+
+        </c:if>
+    </div>
 </c:if>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
