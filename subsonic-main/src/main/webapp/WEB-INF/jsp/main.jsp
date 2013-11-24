@@ -278,11 +278,11 @@
 </script>
 
 
-<table cellpadding="10" style="width:100%">
+<table cellpadding="0" style="width:100%;padding-top: 0.3em;>
     <tr style="vertical-align:top;">
-        <td style="vertical-align:top;">
+        <td style="vertical-align:top;padding-bottom: 1em">
             <table style="border-collapse:collapse;white-space:nowrap">
-                <c:set var="cutoff" value="${model.visibility.captionCutoff}"/>
+            <c:set var="cutoff" value="${model.visibility.captionCutoff}"/>
                 <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
                     <%--@elvariable id="child" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <c:choose>
@@ -394,7 +394,7 @@
 
         <td style="vertical-align:top;width:100%;" rowspan="2">
             <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-                <div style="float:right; padding:5px">
+                <div style="float:right; padding-right:5px; padding-bottom:5px">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${coverArt.id}"/>
                         <c:param name="albumName" value="${coverArt.name}"/>

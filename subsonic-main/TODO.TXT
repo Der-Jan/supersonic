@@ -10,10 +10,10 @@ Larger album arts
 Right-align album art.
 Don't show "More action" if not album.
 Don't let album art push combo box down.
+Top-align cover art with first song.
 
 TODO IN 4.9
 --------------
-Top-align cover art with first song.
 Test layout with ads.
 home.jsp responsive design
    http://sourceforge.net/p/subsonic/patches/18/
