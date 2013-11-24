@@ -9,6 +9,7 @@ Use Roboto font.
 Larger album arts
 Right-align album art.
 Don't show "More action" if not album.
+Don't let album art push combo box down.
 
 TODO IN 4.9
 --------------
@@ -18,7 +19,6 @@ home.jsp responsive design
 Remove Player > Album art size
 Use larger album art in main.jsp (if only one image)
 Right-top align album art
-Don't let album art push combo box down.
 Test new top.jsp in IE etc.
 Show 20 albums by default.
 
