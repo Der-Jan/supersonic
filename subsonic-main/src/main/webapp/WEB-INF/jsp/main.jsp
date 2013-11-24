@@ -440,19 +440,21 @@
 </tr>
 </table>
 
-<select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
-    <option id="top" selected="selected"><fmt:message key="main.more"/></option>
-    <option style="color:blue;"><fmt:message key="main.more.selection"/></option>
-    <option id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
-    <option id="selectNone">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
-    <c:if test="${model.user.shareRole}">
-        <option id="share">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
-    </c:if>
-    <c:if test="${model.user.downloadRole}">
-        <option id="download">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-    </c:if>
-    <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
-</select>
+<c:if test="${model.dir.album}">
+    <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
+        <option id="top" selected="selected"><fmt:message key="main.more"/></option>
+        <option style="color:blue;"><fmt:message key="main.more.selection"/></option>
+        <option id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
+        <option id="selectNone">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
+        <c:if test="${model.user.shareRole}">
+            <option id="share">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
+        </c:if>
+        <c:if test="${model.user.downloadRole}">
+            <option id="download">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
+        </c:if>
+        <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
+    </select>
+</c:if>
 
 <div style="padding-bottom: 1em">
     <c:if test="${not empty model.previousAlbum}">

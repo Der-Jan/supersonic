@@ -8,10 +8,11 @@ Simplified/improved top.jsp
 Use Roboto font.
 Larger album arts
 Right-align album art.
+Don't show "More action" if not album.
 
 TODO IN 4.9
 --------------
-Don't show "More action" if not album.
+Test layout with ads.
 home.jsp responsive design
    http://sourceforge.net/p/subsonic/patches/18/
 Remove Player > Album art size
