@@ -81,63 +81,52 @@
 </c:when>
 <c:otherwise>
 
-    <table>
+    <div id="albumList">
         <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
-            <c:if test="${loopStatus.count % 5 == 1}">
-                <tr>
-            </c:if>
 
-            <td style="vertical-align:top">
-                <table>
-                    <tr><td>
-                            <c:import url="coverArt.jsp">
-                                <c:param name="albumId" value="${album.id}"/>
-                                <c:param name="albumName" value="${album.albumTitle}"/>
-                                <c:param name="coverArtSize" value="110"/>
-                                <c:param name="showLink" value="true"/>
-                                <c:param name="showZoom" value="false"/>
-                                <c:param name="showChange" value="false"/>
-                                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                            </c:import>
+            <div class="albumThumb">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${album.id}"/>
+                    <c:param name="albumName" value="${album.albumTitle}"/>
+                    <c:param name="coverArtSize" value="110"/>
+                    <c:param name="showLink" value="true"/>
+                    <c:param name="showZoom" value="false"/>
+                    <c:param name="showChange" value="false"/>
+                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                </c:import>
 
-                        <div class="detail">
-                            <c:if test="${not empty album.playCount}">
-                                <fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message>
-                            </c:if>
-                            <c:if test="${not empty album.lastPlayed}">
-                                <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
-                                <fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message>
-                            </c:if>
-                            <c:if test="${not empty album.created}">
-                                <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
-                                <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
-                            </c:if>
-                            <c:if test="${not empty album.rating}">
-                                <c:import url="rating.jsp">
-                                    <c:param name="readonly" value="true"/>
-                                    <c:param name="rating" value="${album.rating}"/>
-                                </c:import>
-                            </c:if>
-                        </div>
+                <div class="detail">
+                    <c:if test="${not empty album.playCount}">
+                        <fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message>
+                    </c:if>
+                    <c:if test="${not empty album.lastPlayed}">
+                        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
+                        <fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message>
+                    </c:if>
+                    <c:if test="${not empty album.created}">
+                        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
+                        <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
+                    </c:if>
+                    <c:if test="${not empty album.rating}">
+                        <c:import url="rating.jsp">
+                            <c:param name="readonly" value="true"/>
+                            <c:param name="rating" value="${album.rating}"/>
+                        </c:import>
+                    </c:if>
+                </div>
 
-                        <c:choose>
-                            <c:when test="${empty album.artist and empty album.albumTitle}">
-                                <div class="detail"><fmt:message key="common.unknown"/></div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="detail"><em><str:truncateNicely lower="15" upper="15">${album.artist}</str:truncateNicely></em></div>
-                                <div class="detail"><str:truncateNicely lower="15" upper="15">${album.albumTitle}</str:truncateNicely></div>
-                            </c:otherwise>
-                        </c:choose>
-
-                    </td></tr>
-                </table>
-            </td>
-            <c:if test="${loopStatus.count % 5 == 0}">
-                </tr>
-            </c:if>
+                <c:choose>
+                    <c:when test="${empty album.artist and empty album.albumTitle}">
+                        <div class="detail"><fmt:message key="common.unknown"/></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="detail"><em><str:truncateNicely lower="15" upper="15">${album.artist}</str:truncateNicely></em></div>
+                        <div class="detail"><str:truncateNicely lower="15" upper="15">${album.albumTitle}</str:truncateNicely></div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </c:forEach>
-    </table>
+    </div>
 
 <table>
     <tr>

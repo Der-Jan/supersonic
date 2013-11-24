@@ -81,7 +81,7 @@ public class PlaylistDao extends AbstractDao {
 
     public synchronized void createPlaylist(Playlist playlist) {
         update("insert into playlist(" + COLUMNS + ") values(" + questionMarks(COLUMNS) + ")",
-                null, playlist.getUsername(), playlist.isPublic(), playlist.getName(), playlist.getComment(),
+                null, playlist.getUsername(), playlist.isShared(), playlist.getName(), playlist.getComment(),
                 0, 0, playlist.getCreated(), playlist.getChanged(), playlist.getImportedFrom());
 
         int id = queryForInt("select max(id) from playlist", 0);
@@ -120,7 +120,7 @@ public class PlaylistDao extends AbstractDao {
 
     public void updatePlaylist(Playlist playlist) {
         update("update playlist set username=?, is_public=?, name=?, comment=?, changed=?, imported_from=? where id=?",
-                playlist.getUsername(), playlist.isPublic(), playlist.getName(), playlist.getComment(),
+                playlist.getUsername(), playlist.isShared(), playlist.getName(), playlist.getComment(),
                 new Date(), playlist.getImportedFrom(), playlist.getId());
     }
 

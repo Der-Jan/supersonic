@@ -1,8 +1,29 @@
 DONE IN 4.9
 -------------
+Bugfix: Playlist management was broken when deploying on Tomcat 7.
+Make license key field longer
+When clicking "Create new playlist", automatically show all.
+Use javascript to set css class in menu.
+Simplified/improved top.jsp
+Use Roboto font.
+Larger album arts
+Right-align album art.
 
 TODO IN 4.9
 --------------
+Don't show "More action" if not album.
+Unknown album image too small
+home.jsp responsive design
+   http://sourceforge.net/p/subsonic/patches/18/
+Remove Player > Album art size
+Use larger album art in main.jsp (if only one image)
+Right-top align album art
+Don't let album art push combo box down.
+Test new top.jsp in IE etc.
+Show 20 albums by default.
+
+Make more space available on forum server.
+Deal with backup server. Document procedure for swapping over. Invoice notice.
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Update jw player?
@@ -13,6 +34,9 @@ Review icons.
 From forum:
  - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
  - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
+
+AppEngine
+  Specify java version in pom.
 
 SubsonicFX client
   Skattefunn 2015
@@ -179,14 +203,10 @@ Linux locale issue
 
 DONE IN ANDROID 4.1
 --------------------
-Search suggestions
-Sharing support
-Lock screen widget
-Avoid repeated error message about starring when running against Subsonic 4.6
-Add star and share icons next to EQ, RC, VIS
 
 TODO IN ANDROID 4.1
 --------------------
+Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?
   https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d
@@ -834,6 +854,7 @@ Post message on forum.
 Update version number in pom.xml etc.
 Take backup of forum.
 
+subsonic.org: 66.49.215.227
 Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
@@ -865,14 +886,30 @@ Update backup server
 
 rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
 
+HOWTO: Enable remote JMX for JVisualVM
+--------------------------------------
+In subsonic.canaca.com:/usr/sbin/starttomcat, add
+        -Dcom.sun.management.jmxremote.port=1212
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=true
+Create /usr/local/jdk/jre/lib/management/jmxremote.password, remember to make it root-readable only.
 
 subsonic.org backup
 -------------------
-BudgetVM 192.157.221.124
+BudgetVM 192.157.241.116
 % service tomcat6 stop
 % service tomcat6 start
+/etc/default/tomcat6  (memory settings)
 /etc/tomcat6
 /var/lib/tomcat6
+/usr/share/tomcat6
+
+rm -rf work/Catalina logs/*
+
+scp subsonic-backend/target/subsonic-backend-*.war root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/ROOT.war
+scp subsonic-main/target/subsonic.war              root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/demo.war
+scp subsonic-site/target/subsonic-site-*.war       root@192.157.241.116:/var/lib/tomcat6/webapps-2013-11-17/pages.war
+###rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/var/lib/tomcat6/webapps-2013-11-17/pages
 
 
 HOW TO RELEASE TO ANDROID MARKET
@@ -893,12 +930,11 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.0 -m "Tagging Android 4.0"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.1 -m "Tagging Android 4.1"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7.apk
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/3.7/subsonic-3.7-adfree.apk
+  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/4.1/subsonic-4.1.apk
 
 HOW TO RELEASE BLACKBERRY
 ===============================

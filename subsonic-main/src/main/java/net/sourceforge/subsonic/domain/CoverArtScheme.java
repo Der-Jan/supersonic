@@ -28,9 +28,9 @@ package net.sourceforge.subsonic.domain;
 public enum CoverArtScheme {
 
     OFF(0),
-    SMALL(70),
-    MEDIUM(100),
-    LARGE(150);
+    SMALL(110),
+    MEDIUM(150),
+    LARGE(200);
 
     private int size;
 

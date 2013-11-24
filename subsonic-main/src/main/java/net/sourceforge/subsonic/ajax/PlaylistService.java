@@ -18,22 +18,20 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
+import org.directwebremoting.WebContextFactory;
+
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.service.SettingsService;
-import org.directwebremoting.WebContextFactory;
-
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.SecurityService;
 
 /**
  * Provides AJAX-enabled services for manipulating playlists.
@@ -82,7 +80,7 @@ public class PlaylistService {
         playlist.setUsername(securityService.getCurrentUsername(request));
         playlist.setCreated(now);
         playlist.setChanged(now);
-        playlist.setPublic(false);
+        playlist.setShared(false);
         playlist.setName(dateFormat.format(now));
 
         playlistService.createPlaylist(playlist);
@@ -156,11 +154,11 @@ public class PlaylistService {
         playlistService.deletePlaylist(id);
     }
 
-    public PlaylistInfo updatePlaylist(int id, String name, String comment, boolean isPublic) {
+    public PlaylistInfo updatePlaylist(int id, String name, String comment, boolean shared) {
         Playlist playlist = playlistService.getPlaylist(id);
         playlist.setName(name);
         playlist.setComment(comment);
-        playlist.setPublic(isPublic);
+        playlist.setShared(shared);
         playlistService.updatePlaylist(playlist);
         return getPlaylist(id);
     }

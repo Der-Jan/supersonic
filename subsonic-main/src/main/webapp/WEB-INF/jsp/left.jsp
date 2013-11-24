@@ -21,6 +21,7 @@
         }
 
         function createEmptyPlaylist() {
+            showAllPlaylists();
             playlistService.createEmptyPlaylist(playlistCallback);
         }
 

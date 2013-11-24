@@ -18,21 +18,6 @@
  */
 package net.sourceforge.subsonic.ajax;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.directwebremoting.WebContextFactory;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -46,6 +31,19 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
+import org.directwebremoting.WebContextFactory;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Provides AJAX-enabled services for manipulating the play queue of a player.
@@ -336,7 +334,7 @@ public class PlayQueueService {
         playlist.setUsername(securityService.getCurrentUsername(request));
         playlist.setCreated(now);
         playlist.setChanged(now);
-        playlist.setPublic(false);
+        playlist.setShared(false);
         playlist.setName(dateFormat.format(now));
 
         playlistService.createPlaylist(playlist);
