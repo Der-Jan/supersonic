@@ -12,7 +12,6 @@ Right-align album art.
 TODO IN 4.9
 --------------
 Don't show "More action" if not album.
-Unknown album image too small
 home.jsp responsive design
    http://sourceforge.net/p/subsonic/patches/18/
 Remove Player > Album art size

@@ -161,34 +161,6 @@
     </c:if>
 </h1>
 
-<c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-    <div style="float:right; padding:5px">
-        <c:import url="coverArt.jsp">
-            <c:param name="albumId" value="${coverArt.id}"/>
-            <c:param name="albumName" value="${coverArt.name}"/>
-            <c:param name="coverArtSize" value="${model.coverArtSize}"/>
-            <c:param name="showLink" value="${coverArt ne model.dir}"/>
-            <c:param name="showZoom" value="${coverArt eq model.dir}"/>
-            <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
-            <c:param name="showCaption" value="true"/>
-            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-        </c:import>
-    </div>
-</c:forEach>
-
-<c:if test="${model.showGenericCoverArt}">
-    <div style="float:right; padding:5px">
-        <c:import url="coverArt.jsp">
-            <c:param name="albumId" value="${model.dir.id}"/>
-            <c:param name="coverArtSize" value="${model.coverArtSize}"/>
-            <c:param name="showLink" value="false"/>
-            <c:param name="showZoom" value="false"/>
-            <c:param name="showChange" value="${model.user.coverArtRole}"/>
-            <c:param name="appearAfter" value="0"/>
-        </c:import>
-    </div>
-</c:if>
-
 <c:if test="${not model.partyMode}">
 <h2>
     <c:if test="${model.navigateUpAllowed}">
@@ -305,8 +277,8 @@
     }
 </script>
 
-<div style="float: left">
-<table cellpadding="10">
+
+<table cellpadding="10" style="width:100%">
 <tr style="vertical-align:top;">
     <td style="vertical-align:top;">
         <table style="border-collapse:collapse;white-space:nowrap">
@@ -420,6 +392,36 @@
         </table>
     </td>
 
+    <td style="vertical-align:top;width:100%">
+        <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
+            <div style="float:right; padding:5px">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${coverArt.id}"/>
+                    <c:param name="albumName" value="${coverArt.name}"/>
+                    <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                    <c:param name="showLink" value="${coverArt ne model.dir}"/>
+                    <c:param name="showZoom" value="${coverArt eq model.dir}"/>
+                    <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
+                    <c:param name="showCaption" value="true"/>
+                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                </c:import>
+            </div>
+        </c:forEach>
+
+        <c:if test="${model.showGenericCoverArt}">
+            <div style="float:left; padding:5px">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${model.dir.id}"/>
+                    <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                    <c:param name="showLink" value="false"/>
+                    <c:param name="showZoom" value="false"/>
+                    <c:param name="showChange" value="${model.user.coverArtRole}"/>
+                    <c:param name="appearAfter" value="0"/>
+                </c:import>
+            </div>
+        </c:if>
+    </td>
+
     <td style="vertical-align:top;">
         <div style="padding:0 1em 0 1em;">
             <c:if test="${not empty model.ad}">
@@ -439,37 +441,36 @@
 </table>
 
 <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
-        <option id="top" selected="selected"><fmt:message key="main.more"/></option>
-        <option style="color:blue;"><fmt:message key="main.more.selection"/></option>
-        <option id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
-        <option id="selectNone">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
-        <c:if test="${model.user.shareRole}">
-            <option id="share">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
-        </c:if>
-        <c:if test="${model.user.downloadRole}">
-            <option id="download">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-        </c:if>
-        <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
-    </select>
+    <option id="top" selected="selected"><fmt:message key="main.more"/></option>
+    <option style="color:blue;"><fmt:message key="main.more.selection"/></option>
+    <option id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
+    <option id="selectNone">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
+    <c:if test="${model.user.shareRole}">
+        <option id="share">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
+    </c:if>
+    <c:if test="${model.user.downloadRole}">
+        <option id="download">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
+    </c:if>
+    <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
+</select>
 
-    <div style="padding-bottom: 1em">
-        <c:if test="${not empty model.previousAlbum}">
-            <sub:url value="main.view" var="previousUrl">
-                <sub:param name="id" value="${model.previousAlbum.id}"/>
-            </sub:url>
-            <div class="back" style="float:left;padding-right:10pt"><a href="${previousUrl}" title="${model.previousAlbum.name}">
-                <str:truncateNicely upper="30">${fn:escapeXml(model.previousAlbum.name)}</str:truncateNicely>
-            </a></div>
-        </c:if>
-        <c:if test="${not empty model.nextAlbum}">
-            <sub:url value="main.view" var="nextUrl">
-                <sub:param name="id" value="${model.nextAlbum.id}"/>
-            </sub:url>
-            <div class="forward" style="float:left"><a href="${nextUrl}" title="${model.nextAlbum.name}">
-                <str:truncateNicely upper="30">${fn:escapeXml(model.nextAlbum.name)}</str:truncateNicely>
-            </a></div>
-        </c:if>
-    </div>
+<div style="padding-bottom: 1em">
+    <c:if test="${not empty model.previousAlbum}">
+        <sub:url value="main.view" var="previousUrl">
+            <sub:param name="id" value="${model.previousAlbum.id}"/>
+        </sub:url>
+        <div class="back" style="float:left;padding-right:10pt"><a href="${previousUrl}" title="${model.previousAlbum.name}">
+            <str:truncateNicely upper="30">${fn:escapeXml(model.previousAlbum.name)}</str:truncateNicely>
+        </a></div>
+    </c:if>
+    <c:if test="${not empty model.nextAlbum}">
+        <sub:url value="main.view" var="nextUrl">
+            <sub:param name="id" value="${model.nextAlbum.id}"/>
+        </sub:url>
+        <div class="forward" style="float:left"><a href="${nextUrl}" title="${model.nextAlbum.name}">
+            <str:truncateNicely upper="30">${fn:escapeXml(model.nextAlbum.name)}</str:truncateNicely>
+        </a></div>
+    </c:if>
 </div>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
