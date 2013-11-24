@@ -11,6 +11,7 @@ Right-align album art.
 Don't show "More action" if not album.
 Don't let album art push combo box down.
 Top-align cover art with first song.
+Show 20 albums by default.
 
 TODO IN 4.9
 --------------
@@ -21,7 +22,6 @@ Remove Player > Album art size
 Use larger album art in main.jsp (if only one image)
 Right-top align album art
 Test new top.jsp in IE etc.
-Show 20 albums by default.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.

@@ -18,21 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.view.RedirectView;
-
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
@@ -42,6 +27,19 @@ import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for the home page.
@@ -52,7 +50,7 @@ public class HomeController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(HomeController.class);
 
-    private static final int DEFAULT_LIST_SIZE = 15;
+    private static final int DEFAULT_LIST_SIZE = 20;
     private static final int MAX_LIST_SIZE = 500;
     private static final int DEFAULT_LIST_OFFSET = 0;
     private static final int MAX_LIST_OFFSET = 5000;
