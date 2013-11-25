@@ -120,8 +120,8 @@
                         <div class="detail"><fmt:message key="common.unknown"/></div>
                     </c:when>
                     <c:otherwise>
-                        <div class="detail"><em><str:truncateNicely lower="15" upper="15">${album.artist}</str:truncateNicely></em></div>
-                        <div class="detail"><str:truncateNicely lower="15" upper="15">${album.albumTitle}</str:truncateNicely></div>
+                        <div class="detail"><b><str:truncateNicely lower="22" upper="22">${album.artist}</str:truncateNicely></b></div>
+                        <div class="detail"><str:truncateNicely lower="22" upper="22">${album.albumTitle}</str:truncateNicely></div>
                     </c:otherwise>
                 </c:choose>
             </div>

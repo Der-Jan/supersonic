@@ -79,6 +79,6 @@ PARAMETERS
     </c:if>
 
     <c:if test="${not param.showZoom and not param.showChange and param.showCaption}">
-        <span class="detail"><str:truncateNicely upper="17">${param.albumName}</str:truncateNicely></span>
+        <span class="detail"><str:truncateNicely upper="22">${param.albumName}</str:truncateNicely></span>
     </c:if>
 </div>
