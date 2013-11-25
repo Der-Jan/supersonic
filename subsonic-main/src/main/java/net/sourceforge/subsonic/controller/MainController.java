@@ -137,7 +137,7 @@ public class MainController extends ParameterizableViewController {
             }
         }
 
-        setPreviousAndNextAlbums(dir, map);
+        setSieblingAlbums(dir, map);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -229,19 +229,13 @@ public class MainController extends ParameterizableViewController {
         return result;
     }
 
-    private void setPreviousAndNextAlbums(MediaFile dir, Map<String, Object> map) throws IOException {
+    private void setSieblingAlbums(MediaFile dir, Map<String, Object> map) throws IOException {
         MediaFile parent = mediaFileService.getParentOf(dir);
 
         if (dir.isAlbum() && !mediaFileService.isRoot(parent)) {
             List<MediaFile> sieblings = mediaFileService.getChildrenOf(parent, false, true, true);
-
-            int index = sieblings.indexOf(dir);
-            if (index > 0) {
-                map.put("previousAlbum", sieblings.get(index - 1));
-            }
-            if (index < sieblings.size() - 1) {
-                map.put("nextAlbum", sieblings.get(index + 1));
-            }
+            sieblings.remove(dir);
+            map.put("sieblingAlbums", sieblings);
         }
     }
 

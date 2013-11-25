@@ -278,7 +278,7 @@
 </script>
 
 
-<table cellpadding="0" style="width:100%;padding-top: 0.3em">
+<table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em;border: 1px solid black">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table style="border-collapse:collapse;white-space:nowrap">
@@ -392,7 +392,7 @@
             </table>
         </td>
 
-        <td style="vertical-align:top;width:100%;" rowspan="2">
+        <td style="vertical-align:top;width:100%;border:1px solid brown" rowspan="2">
             <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
                 <div style="float:right; padding-right:5px; padding-bottom:5px">
                     <c:import url="coverArt.jsp">
@@ -409,7 +409,7 @@
             </c:forEach>
 
             <c:if test="${model.showGenericCoverArt}">
-                <div style="float:left; padding:5px">
+                <div style="float:right; padding:5px">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${model.dir.id}"/>
                         <c:param name="coverArtSize" value="${model.coverArtSize}"/>
@@ -456,47 +456,28 @@
                     <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
                 </select>
             </c:if>
-            <div style="padding-bottom: 1em">
-                <c:if test="${not empty model.previousAlbum}">
-                    <sub:url value="main.view" var="previousUrl">
-                        <sub:param name="id" value="${model.previousAlbum.id}"/>
-                    </sub:url>
-                    <div class="back" style="float:left;padding-right:10pt"><a href="${previousUrl}" title="${model.previousAlbum.name}">
-                        <str:truncateNicely upper="30">${fn:escapeXml(model.previousAlbum.name)}</str:truncateNicely>
-                    </a></div>
-                </c:if>
-                <c:if test="${not empty model.nextAlbum}">
-                    <sub:url value="main.view" var="nextUrl">
-                        <sub:param name="id" value="${model.nextAlbum.id}"/>
-                    </sub:url>
-                    <div class="forward" style="float:left"><a href="${nextUrl}" title="${model.nextAlbum.name}">
-                        <str:truncateNicely upper="30">${fn:escapeXml(model.nextAlbum.name)}</str:truncateNicely>
-                    </a></div>
-                </c:if>
-            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="border:1px solid blue">
+            <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
+                <div style="float: right;padding: 5px">
+                    <c:import url="coverArt.jsp">
+                        <c:param name="albumId" value="${sieblingAlbum.id}"/>
+                        <c:param name="albumName" value="${sieblingAlbum.name}"/>
+                        <c:param name="coverArtSize" value="110"/>
+                        <c:param name="showLink" value="true"/>
+                        <c:param name="showZoom" value="false"/>
+                        <c:param name="showChange" value="false"/>
+                        <c:param name="showCaption" value="true"/>
+                        <c:param name="appearAfter" value="0"/>
+                    </c:import>
+                </div>
+            </c:forEach>
         </td>
     </tr>
 </table>
-
-<div>
-    <c:forEach begin="1" end="10">
-        <div style="float: right">
-
-        <c:import url="coverArt.jsp">
-            <c:param name="albumId" value="${model.previousAlbum.id}"/>
-            <c:param name="albumName" value="${model.previousAlbum.albumName}"/>
-            <c:param name="coverArtSize" value="110"/>
-            <c:param name="showLink" value="true"/>
-            <c:param name="showZoom" value="false"/>
-            <c:param name="showChange" value="false"/>
-            <c:param name="showCaption" value="true"/>
-            <c:param name="appearAfter" value="0"/>
-        </c:import>
-        </div>
-    </c:forEach>
-</div>
-
-
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>

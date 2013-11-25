@@ -23,12 +23,19 @@ TODO IN 4.9
 --------------
 Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
+Add spacing in Play All | Play random ...
 Replace detailColor with CSS.
 Show 25 albums by default.
 Change font color.
   http://developer.android.com/design/index.html
 Change back/forward icons.
-Show thumbnail for prev/next album
+Show thumbnail for siebling albums
+  - honor max # of cover arts.
+  - honor disabling of cover art.
+  - use correct album name
+  - use appearafter?
+  - test with ad
+
 More vertical (and horizontal) padding between album arts.
 Test layout with ads.
 home.jsp responsive design
