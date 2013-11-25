@@ -20,9 +20,12 @@ Changed colors in default theme.
 
 TODO IN 4.9
 --------------
+Replace detailColor with CSS.
 Show 25 albums by default.
 Change font color.
   http://developer.android.com/design/index.html
+Change back/forward icons.
+Show thumbnail for prev/next album
 More vertical (and horizontal) padding between album arts.
 Test layout with ads.
 home.jsp responsive design

@@ -278,7 +278,7 @@
 </script>
 
 
-<table cellpadding="0" style="width:100%;padding-top: 0.3em;>
+<table cellpadding="0" style="width:100%;padding-top: 0.3em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table style="border-collapse:collapse;white-space:nowrap">
