@@ -15,6 +15,11 @@ Show 20 albums by default.
 
 TODO IN 4.9
 --------------
+More vertical (and horizontal) padding between album arts.
+More space to the right of the Subsonic logo.
+Use larger album art on home page (150)
+Show artist name in bold in home page.
+Longer names before ellipsis
 Test layout with ads.
 home.jsp responsive design
    http://sourceforge.net/p/subsonic/patches/18/
