@@ -21,8 +21,13 @@ Improve styling for selected setting / album list tab.
 
 TODO IN 4.9
 --------------
+Podcasts and Bookmarks Title's Aren't The Same
+  https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c
+Use max gain 0dB in jukebox to avoid distortion caused by clipping.
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
 Use bold for certain headers.
 Check .headerSelected in skins.
+Less whitespace beneath <h1>
 Layout bug in playerSettings.jsp
 Add spacing in Play all | Play random ...
 Replace detailColor with CSS.
@@ -226,6 +231,9 @@ DONE IN ANDROID 4.1
 
 TODO IN ANDROID 4.1
 --------------------
+Make older version available. Debug problem with connection errors:
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
+
 Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?

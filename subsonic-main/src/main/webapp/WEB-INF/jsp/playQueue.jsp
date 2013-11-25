@@ -480,8 +480,8 @@
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
-                <td style="white-space:nowrap;" id="stop"><b><a href="javascript:void(0)" onclick="onStop()"><fmt:message key="playlist.stop"/></a></b> | </td>
-                <td style="white-space:nowrap;" id="start"><b><a href="javascript:void(0)" onclick="onStart()"><fmt:message key="playlist.start"/></a></b> | </td>
+                <td style="white-space:nowrap;" id="stop"><span class="header"><b><a href="javascript:void(0)" onclick="onStop()"><fmt:message key="playlist.stop"/></a></b></span>  | </td>
+                <td style="white-space:nowrap;" id="start"><span class="header"><b><a href="javascript:void(0)" onclick="onStart()"><fmt:message key="playlist.start"/></a></b></span>  | </td>
             </c:if>
 
             <c:if test="${model.player.jukebox}">
@@ -510,21 +510,21 @@
             </c:if>
 
             <c:if test="${model.player.web}">
-                <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onPrevious()"><b>&laquo;</b></a></td>
-                <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onNext(false)"><b>&raquo;</b></a> |</td>
+                <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onPrevious()"><b>&laquo;</b></a></span></td>
+                <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onNext(false)"><b>&raquo;</b></a></span> |</td>
             </c:if>
 
-            <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onClear()"><fmt:message key="playlist.clear"/></a> |</td>
-            <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onShuffle()"><fmt:message key="playlist.shuffle"/></a> |</td>
+            <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onClear()"><fmt:message key="playlist.clear"/></a></span> |</td>
+            <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onShuffle()"><fmt:message key="playlist.shuffle"/></a></span> |</td>
 
             <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
-                <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onToggleRepeat()"><span id="toggleRepeat"><fmt:message key="playlist.repeat_on"/></span></a> |</td>
+                <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onToggleRepeat()"><span id="toggleRepeat"><fmt:message key="playlist.repeat_on"/></span></a></span>  |</td>
             </c:if>
 
-            <td style="white-space:nowrap;"><a href="javascript:void(0)" onclick="onUndo()"><fmt:message key="playlist.undo"/></a> |</td>
+            <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onUndo()"><fmt:message key="playlist.undo"/></a></span>  |</td>
 
             <c:if test="${model.user.settingsRole}">
-                <td style="white-space:nowrap;"><a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a> |</td>
+                <td style="white-space:nowrap;"><span class="header"><a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a></span>  |</td>
             </c:if>
 
             <td style="white-space:nowrap;"><select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
