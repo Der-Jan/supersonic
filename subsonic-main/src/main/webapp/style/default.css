@@ -7,14 +7,14 @@
  * Author: Sindre Mehus
  */
 
-/* The primary background color (light blue). */
+/* The primary background color (light gray). */
 .bgcolor1 {
-    background-color: #EFEFEF;
+    background-color: #F9F9F9;
 }
 
-/* The secondary background color (darker blue). */
+/* The secondary background color (darker gray). */
 .bgcolor2, .ruleTableHeader, .log {
-    background-color: #DEE3E7
+    background-color: #F1F1F1
 }
 
 /* Put stuff here if you need to customize any of the frames. */

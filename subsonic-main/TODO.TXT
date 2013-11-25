@@ -16,11 +16,13 @@ Use larger album art on home page (150)
 Show artist name in bold in home page.
 Longer names before ellipsis
 More space to the right of the Subsonic logo.
+Changed colors in default theme.
 
 TODO IN 4.9
 --------------
 Show 25 albums by default.
-Change default colors.
+Change font color.
+  http://developer.android.com/design/index.html
 More vertical (and horizontal) padding between album arts.
 Test layout with ads.
 home.jsp responsive design
