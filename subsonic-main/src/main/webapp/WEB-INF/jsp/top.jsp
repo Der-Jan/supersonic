@@ -34,7 +34,7 @@
         </td>
     </tr>
     <tr>
-        <td style="padding-right:2.5em;">
+        <td style="padding-right:3.5em;">
             <a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a>
         </td>
         <td style="min-width:4em;padding-right:2em;text-align: center">
