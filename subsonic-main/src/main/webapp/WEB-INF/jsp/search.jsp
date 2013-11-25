@@ -32,7 +32,7 @@
 </c:if>
 
 <c:if test="${not empty command.artists}">
-    <h2><fmt:message key="search.hits.artists"/></h2>
+    <h2><b><fmt:message key="search.hits.artists"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
@@ -61,7 +61,7 @@
 </c:if>
 
 <c:if test="${not empty command.albums}">
-    <h2><fmt:message key="search.hits.albums"/></h2>
+    <h2><b><fmt:message key="search.hits.albums"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
@@ -96,7 +96,7 @@
 
 
 <c:if test="${not empty command.songs}">
-    <h2><fmt:message key="search.hits.songs"/></h2>
+    <h2><b><fmt:message key="search.hits.songs"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 

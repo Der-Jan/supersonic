@@ -26,7 +26,6 @@ Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
 Add spacing in Play all | Play random ...
 Replace detailColor with CSS.
-Show 25 albums by default.
 Change font color.
   http://developer.android.com/design/index.html
 Change back/forward icons.
