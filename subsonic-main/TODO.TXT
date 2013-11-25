@@ -23,7 +23,7 @@ TODO IN 4.9
 --------------
 Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
-Add spacing in Play All | Play random ...
+Add spacing in Play all | Play random ...
 Replace detailColor with CSS.
 Show 25 albums by default.
 Change font color.

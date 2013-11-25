@@ -167,15 +167,15 @@
         <sub:url value="main.view" var="upUrl">
             <sub:param name="id" value="${model.parent.id}"/>
         </sub:url>
-        <a href="${upUrl}"><fmt:message key="main.up"/></a>
+        <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
         <c:set var="needSep" value="true"/>
     </c:if>
 
     <c:if test="${model.user.streamRole}">
         <c:if test="${needSep}">|</c:if>
-        <a href="#" onclick="top.playQueue.onPlay(${model.dir.id});"><fmt:message key="main.playall"/></a> |
-        <a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 10);"><fmt:message key="main.playrandom"/></a> |
-        <a href="#" onclick="top.playQueue.onAdd(${model.dir.id});"><fmt:message key="main.addall"/></a>
+        <span class="header"><a href="#" onclick="top.playQueue.onPlay(${model.dir.id});"><fmt:message key="main.playall"/></a></span> |
+        <span class="header"><a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 10);"><fmt:message key="main.playrandom"/></a></span> |
+        <span class="header"><a href="#" onclick="top.playQueue.onAdd(${model.dir.id});"><fmt:message key="main.addall"/></a></span>
         <c:set var="needSep" value="true"/>
     </c:if>
 
@@ -186,7 +186,7 @@
                 <sub:param name="id" value="${model.dir.id}"/>
             </sub:url>
             <c:if test="${needSep}">|</c:if>
-            <a href="${downloadUrl}"><fmt:message key="common.download"/></a>
+            <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
             <c:set var="needSep" value="true"/>
         </c:if>
 
@@ -195,7 +195,7 @@
                 <sub:param name="id" value="${model.dir.id}"/>
             </sub:url>
             <c:if test="${needSep}">|</c:if>
-            <a href="${editTagsUrl}"><fmt:message key="main.tags"/></a>
+            <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
             <c:set var="needSep" value="true"/>
         </c:if>
 
@@ -203,7 +203,7 @@
 
     <c:if test="${model.user.commentRole}">
         <c:if test="${needSep}">|</c:if>
-        <a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a>
+        <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
     </c:if>
 </h2>
 </c:if>
