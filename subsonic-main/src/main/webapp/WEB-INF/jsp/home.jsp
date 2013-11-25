@@ -52,7 +52,7 @@
     <p class="warning"><fmt:message key="home.scan"/></p>
 </c:if>
 
-<h2><fmt:message key="home.${model.listType}.text"/></h2>
+<h2><b><fmt:message key="home.${model.listType}.text"/></b></h2>
 
 <table width="100%">
     <tr>
