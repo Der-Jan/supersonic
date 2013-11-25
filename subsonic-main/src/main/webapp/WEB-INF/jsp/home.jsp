@@ -88,7 +88,7 @@
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${album.id}"/>
                     <c:param name="albumName" value="${album.albumTitle}"/>
-                    <c:param name="coverArtSize" value="110"/>
+                    <c:param name="coverArtSize" value="${model.coverArtSize}"/>
                     <c:param name="showLink" value="true"/>
                     <c:param name="showZoom" value="false"/>
                     <c:param name="showChange" value="false"/>

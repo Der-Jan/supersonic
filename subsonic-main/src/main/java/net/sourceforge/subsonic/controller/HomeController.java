@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.controller;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
@@ -111,6 +112,7 @@ public class HomeController extends ParameterizableViewController {
         map.put("listType", listType);
         map.put("listSize", listSize);
         map.put("listOffset", listOffset);
+        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
