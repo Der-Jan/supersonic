@@ -17,9 +17,12 @@ Show artist name in bold in home page.
 Longer names before ellipsis
 More space to the right of the Subsonic logo.
 Changed colors in default theme.
+Improve styling for selected setting / album list tab.
 
 TODO IN 4.9
 --------------
+Check .headerSelected in skins.
+Layout bug in playerSettings.jsp
 Replace detailColor with CSS.
 Show 25 albums by default.
 Change font color.

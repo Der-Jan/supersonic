@@ -17,6 +17,10 @@
     background-color: #F1F1F1
 }
 
+.headerSelected {
+    border-bottom: 3px solid darkorange;
+}
+
 /* Put stuff here if you need to customize any of the frames. */
 .mainframe {
 }
@@ -29,10 +33,6 @@
 .playlistframe {
 }
 
-/* Background color for selected header. */
-.headerSelected {
-    background-color: lightyellow;
-}
 
 /* Background color for form controls (use default). */
 input, select {
@@ -74,7 +74,7 @@ a:hover, a:hover * {
 }
 
 /* Simple dark border. */
-.border1, .ruleTableHeader, .ruleTableCell, .headerSelected, .log {
+.border1, .ruleTableHeader, .ruleTableCell, .log {
     border: 1px solid black;
 }
 
@@ -184,8 +184,9 @@ img {
     vertical-align: middle;
 }
 
-.headerSelected {
-    padding: 0.25em;
+.header, .headerSelected {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 .detail {

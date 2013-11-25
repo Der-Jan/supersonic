@@ -29,7 +29,7 @@
             <span class="headerSelected"><fmt:message key="settingsheader.${cat}"/></span>
         </c:when>
         <c:otherwise>
-            <a href="${url}"><fmt:message key="settingsheader.${cat}"/></a>
+            <span class="header"><a href="${url}"><fmt:message key="settingsheader.${cat}"/></a></span>
         </c:otherwise>
     </c:choose>
 

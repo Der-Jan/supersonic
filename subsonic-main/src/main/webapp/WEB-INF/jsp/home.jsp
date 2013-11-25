@@ -41,7 +41,7 @@
                 <span class="headerSelected"><fmt:message key="home.${cat}.title"/></span>
             </c:when>
             <c:otherwise>
-                <a href="${url}"><fmt:message key="home.${cat}.title"/></a>
+                <span class="header"><a href="${url}"><fmt:message key="home.${cat}.title"/></a></span>
             </c:otherwise>
         </c:choose>
 
