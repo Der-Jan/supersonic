@@ -478,6 +478,25 @@
     </tr>
 </table>
 
+<div>
+    <c:forEach begin="1" end="10">
+        <div style="float: right">
+
+        <c:import url="coverArt.jsp">
+            <c:param name="albumId" value="${model.previousAlbum.id}"/>
+            <c:param name="albumName" value="${model.previousAlbum.albumName}"/>
+            <c:param name="coverArtSize" value="110"/>
+            <c:param name="showLink" value="true"/>
+            <c:param name="showZoom" value="false"/>
+            <c:param name="showChange" value="false"/>
+            <c:param name="showCaption" value="true"/>
+            <c:param name="appearAfter" value="0"/>
+        </c:import>
+        </div>
+    </c:forEach>
+</div>
+
+
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>
