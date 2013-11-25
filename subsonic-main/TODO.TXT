@@ -21,6 +21,7 @@ Improve styling for selected setting / album list tab.
 
 TODO IN 4.9
 --------------
+Use bold for certain headers.
 Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
 Add spacing in Play all | Play random ...
