@@ -429,7 +429,7 @@
             </c:if>
         </td>
 
-        <td style="vertical-align:top;">
+        <td style="vertical-align:top;" rowspan="2">
             <div style="padding:0 1em 0 1em;">
                 <c:if test="${not empty model.ad}">
                     <div class="detail" style="text-align:center">

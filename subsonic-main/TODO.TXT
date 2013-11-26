@@ -20,6 +20,7 @@ Changed colors in default theme.
 Improve styling for selected setting / album list tab.
 Add spacing in Play all | Play random ...
 Put captionLength into CoverArtScheme.
+Show thumbnail for siebling albums
 
 TODO IN 4.9
 --------------
@@ -36,10 +37,6 @@ Replace detailColor with CSS.
 Change font color.
   http://developer.android.com/design/index.html
 Change back/forward icons.
-Show thumbnail for siebling albums
-  - use correct album name
-  - use appearafter?
-  - test with ad
 
 More vertical (and horizontal) padding between album arts.
 Test layout with ads.
