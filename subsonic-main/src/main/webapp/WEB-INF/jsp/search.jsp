@@ -115,7 +115,7 @@
                 </c:import>
 
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
-                        ${match.title}
+                        <span class="songTitle">${match.title}</span>
                 </td>
 
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:1.25em">

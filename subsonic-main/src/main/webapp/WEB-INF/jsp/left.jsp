@@ -154,7 +154,7 @@
 
 <c:forEach items="${model.singleSongs}" var="song">
     <p class="dense" style="padding-left:2px">
-        <span title="${song.title}">
+        <span class="songTitle" title="${song.title}">
             <c:import url="playAddDownload.jsp">
                 <c:param name="id" value="${song.id}"/>
                 <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>

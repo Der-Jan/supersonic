@@ -196,6 +196,10 @@ img {
     line-height: 1.25em;
 }
 
+.songTitle {
+    font-style: italic;
+}
+
 .warning {
     white-space: nowrap;
 }

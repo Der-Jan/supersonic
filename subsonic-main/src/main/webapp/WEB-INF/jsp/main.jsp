@@ -326,7 +326,7 @@
                                 </c:if>
 
                                 <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
-                                    <span title="${child.title}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.title)}</str:truncateNicely></span>
+                                    <span class="songTitle" title="${child.title}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.title)}</str:truncateNicely></span>
                                 </td>
 
                                 <c:if test="${model.visibility.albumVisible}">

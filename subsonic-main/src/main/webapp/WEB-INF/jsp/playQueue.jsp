@@ -585,10 +585,10 @@
                 <img id="currentImage" src="<spring:theme code="currentImage"/>" alt="" style="display:none;padding-right: 0.5em">
                 <c:choose>
                     <c:when test="${model.player.externalWithPlaylist}">
-                        <span id="title">Title</span>
+                        <span id="title" class="songTitle">Title</span>
                     </c:when>
                     <c:otherwise>
-                        <a id="titleUrl" href="javascript:void(0)">Title</a>
+                        <span class="songTitle"><a id="titleUrl" href="javascript:void(0)">Title</a></span>
                     </c:otherwise>
                 </c:choose>
             </td>

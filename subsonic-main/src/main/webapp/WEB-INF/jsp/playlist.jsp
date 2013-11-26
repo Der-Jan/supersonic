@@ -195,7 +195,7 @@
                  onclick="onAdd(this.id.substring(3) - 1)"></a></td>
 
         <td style="padding-right:0.25em"></td>
-        <td style="padding-right:1.25em"><span id="title">Title</span></td>
+        <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
         <td style="padding-right:1.25em"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
         <td style="padding-right:1.25em"><span id="artist" class="detail">Artist</span></td>
         <td style="padding-right:1.25em;text-align:right;"><span id="duration" class="detail">Duration</span></td>

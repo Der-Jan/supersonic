@@ -21,10 +21,13 @@ Improve styling for selected setting / album list tab.
 Add spacing in Play all | Play random ...
 Put captionLength into CoverArtScheme.
 Show thumbnail for siebling albums
+Show all song titles in italic.
 
 TODO IN 4.9
 --------------
+Single songs in left.jsp have wrong color and v align.
 Find right captionLength.
+Replace Download button with Play last.
 Podcasts and Bookmarks Title's Aren't The Same
   https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c
 Use max gain 0dB in jukebox to avoid distortion caused by clipping.
