@@ -90,6 +90,7 @@ public class MainController extends ParameterizableViewController {
         map.put("artist", guessArtist(children));
         map.put("album", guessAlbum(children));
         map.put("player", player);
+        map.put("sieblingCoverArtScheme", CoverArtScheme.SMALL);
         map.put("user", securityService.getCurrentUser(request));
         map.put("visibility", userSettings.getMainVisibility());
         map.put("showAlbumYear", settingsService.isSortAlbumsByYear());
@@ -126,12 +127,7 @@ public class MainController extends ParameterizableViewController {
         CoverArtScheme scheme = player.getCoverArtScheme();
         if (scheme != CoverArtScheme.OFF) {
             List<MediaFile> coverArts = getCoverArts(dir, children);
-            int size = scheme.getSize();
-            if (dir.isAlbum()) {
-                size *= 2;
-            }
             map.put("coverArts", coverArts);
-            map.put("coverArtSize", size);
             if (coverArts.isEmpty() && dir.isAlbum()) {
                 map.put("showGenericCoverArt", true);
             }

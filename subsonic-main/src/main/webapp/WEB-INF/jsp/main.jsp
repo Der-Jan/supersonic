@@ -393,17 +393,25 @@
         </td>
 
         <td style="vertical-align:top;width:100%;border:1px solid brown" rowspan="2">
+
+            <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
+            <c:set var="captionLength" value="${model.player.coverArtScheme.captionLength}"/>
+            <c:if test="${model.showGenericCoverArt or fn:length(model.coverArts) eq 1}">
+                <c:set var="coverArtSize" value="${coverArtSize * 2}"/>
+                <c:set var="captionLength" value="${captionLength * 2}"/>
+            </c:if>
+
             <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
                 <div style="float:right; padding-right:5px; padding-bottom:5px">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${coverArt.id}"/>
                         <c:param name="albumName" value="${coverArt.name}"/>
-                        <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                        <c:param name="coverArtSize" value="${coverArtSize}"/>
                         <c:param name="showLink" value="${coverArt ne model.dir}"/>
                         <c:param name="showZoom" value="${coverArt eq model.dir}"/>
                         <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
                         <c:param name="showCaption" value="true"/>
-                        <c:param name="captionLength" value="22"/>
+                        <c:param name="captionLength" value="${captionLength}"/>
                         <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
                     </c:import>
                 </div>
@@ -413,7 +421,7 @@
                 <div style="float:right; padding:5px">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${model.dir.id}"/>
-                        <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                        <c:param name="coverArtSize" value="${coverArtSize}"/>
                         <c:param name="showLink" value="false"/>
                         <c:param name="showZoom" value="false"/>
                         <c:param name="showChange" value="${model.user.coverArtRole}"/>
@@ -467,12 +475,12 @@
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${sieblingAlbum.id}"/>
                         <c:param name="albumName" value="${sieblingAlbum.name}"/>
-                        <c:param name="coverArtSize" value="110"/>
+                        <c:param name="coverArtSize" value="${model.sieblingCoverArtScheme.size}"/>
                         <c:param name="showLink" value="true"/>
                         <c:param name="showZoom" value="false"/>
                         <c:param name="showChange" value="false"/>
                         <c:param name="showCaption" value="true"/>
-                        <c:param name="captionLength" value="19"/>
+                        <c:param name="captionLength" value="${model.sieblingCoverArtScheme.captionLength}"/>
                         <c:param name="appearAfter" value="0"/>
                     </c:import>
                 </div>

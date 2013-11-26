@@ -18,10 +18,12 @@ Longer names before ellipsis
 More space to the right of the Subsonic logo.
 Changed colors in default theme.
 Improve styling for selected setting / album list tab.
+Add spacing in Play all | Play random ...
+Put captionLength into CoverArtScheme.
 
 TODO IN 4.9
 --------------
-Put captionLength into CoverArtScheme.
+Find right captionLength.
 Podcasts and Bookmarks Title's Aren't The Same
   https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c
 Use max gain 0dB in jukebox to avoid distortion caused by clipping.
@@ -30,7 +32,6 @@ Use bold for certain headers.
 Check .headerSelected in skins.
 Less whitespace beneath <h1>
 Layout bug in playerSettings.jsp
-Add spacing in Play all | Play random ...
 Replace detailColor with CSS.
 Change font color.
   http://developer.android.com/design/index.html
