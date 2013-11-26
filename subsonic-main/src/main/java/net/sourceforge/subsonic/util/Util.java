@@ -22,10 +22,12 @@ import net.sourceforge.subsonic.Logger;
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.Inet4Address;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -85,19 +87,34 @@ public final class Util {
     }
 
     /**
-     * Returns the local IP address.
+     * Returns the local IP address.  Honours the "subsonic.host" system property.
+     *
      * @return The local IP, or the loopback address (127.0.0.1) if not found.
      */
     public static String getLocalIpAddress() {
-        try {
+        List<String> ipAddresses = getLocalIpAddresses();
+        String subsonicHost = System.getProperty("subsonic.host");
+        if (subsonicHost != null && ipAddresses.contains(subsonicHost)) {
+            return subsonicHost;
+        }
+        return ipAddresses.get(0);
+    }
 
-            // Try the simple way first.
+    private static List<String> getLocalIpAddresses() {
+        List<String> result = new ArrayList<String>();
+
+        // Try the simple way first.
+        try {
             InetAddress address = InetAddress.getLocalHost();
             if (!address.isLoopbackAddress()) {
-                return address.getHostAddress();
+                result.add(address.getHostAddress());
             }
+        } catch (Throwable x) {
+            LOG.warn("Failed to resolve local IP address.", x);
+        }
 
-            // Iterate through all network interfaces, looking for a suitable IP.
+        // Iterate through all network interfaces, looking for a suitable IP.
+        try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 NetworkInterface iface = interfaces.nextElement();
@@ -105,16 +122,19 @@ public final class Util {
                 while (addresses.hasMoreElements()) {
                     InetAddress addr = addresses.nextElement();
                     if (addr instanceof Inet4Address && !addr.isLoopbackAddress()) {
-                        return addr.getHostAddress();
+                        result.add(addr.getHostAddress());
                     }
                 }
             }
-
         } catch (Throwable x) {
             LOG.warn("Failed to resolve local IP address.", x);
         }
 
-        return "127.0.0.1";
+        if (result.isEmpty()) {
+            result.add("127.0.0.1");
+        }
+
+        return result;
     }
 
     public static int randomInt(int min, int max) {
