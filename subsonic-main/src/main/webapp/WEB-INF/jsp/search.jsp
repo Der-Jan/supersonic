@@ -41,11 +41,10 @@
             </sub:url>
 
             <tr class="artistRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
@@ -70,11 +69,10 @@
             </sub:url>
 
             <tr class="albumRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
@@ -105,11 +103,10 @@
             </sub:url>
 
             <tr class="songRow" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="video" value="${match.video and command.player.web}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>

@@ -155,11 +155,10 @@
 <c:forEach items="${model.singleSongs}" var="song">
     <p class="dense" style="padding-left:2px">
         <span class="songTitle" title="${song.title}">
-            <c:import url="playAddDownload.jsp">
+            <c:import url="playButtons.jsp">
                 <c:param name="id" value="${song.id}"/>
                 <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                 <c:param name="addEnabled" value="${model.user.streamRole}"/>
-                <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
                 <c:param name="video" value="${song.video and model.player.web}"/>
             </c:import>
             <str:truncateNicely upper="${model.captionCutoff}">${song.title}</str:truncateNicely>

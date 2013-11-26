@@ -164,14 +164,13 @@
 
                 <c:choose>
                     <c:when test="${empty episode.path}">
-                        <td ${cssClass} colspan="3"/>
+                        <td ${cssClass} colspan="3"></td>
                     </c:when>
                     <c:otherwise>
-                        <c:import url="playAddDownload.jsp">
+                        <c:import url="playButtons.jsp">
                             <c:param name="id" value="${episode.mediaFileId}"/>
                             <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                             <c:param name="addEnabled" value="${model.user.streamRole and not model.partyMode}"/>
-                            <c:param name="downloadEnabled" value="false"/>
                             <c:param name="asTable" value="true"/>
                         </c:import>
                     </c:otherwise>

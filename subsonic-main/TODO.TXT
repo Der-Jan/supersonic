@@ -30,12 +30,14 @@ home.jsp responsive design
 Test new top.jsp in IE etc.
 Support subsonic.host in Util.getLocalIpAddress()
   https://sourceforge.net/p/subsonic/bugs/95/
+Replace Download button with Play last.
 
 TODO IN 4.9
 --------------
+Place volume slider in right position.
+When playing a single song, queue rest of album.
 Single songs in left.jsp have wrong color and v align.
 Find right captionLength.
-Replace Download button with Play last.
 Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
 Change font color.
