@@ -276,7 +276,7 @@
 </script>
 
 
-<table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em;border: 1px solid black">
+<table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table style="border-collapse:collapse;white-space:nowrap">
@@ -390,7 +390,7 @@
             </table>
         </td>
 
-        <td style="vertical-align:top;width:100%;border:1px solid brown" rowspan="2">
+        <td style="vertical-align:top;width:100%" rowspan="2">
 
             <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
             <c:set var="captionLength" value="${model.player.coverArtScheme.captionLength}"/>
@@ -467,7 +467,7 @@
     </tr>
 
     <tr>
-        <td colspan="2" style="border:1px solid blue;padding-top: 1em">
+        <td colspan="2" style="padding-top: 1em">
             <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
                 <div style="float: right;padding: 5px">
                     <c:import url="coverArt.jsp">

@@ -33,7 +33,6 @@ Use bold for certain headers.
 Check .headerSelected in skins.
 Less whitespace beneath <h1>
 Layout bug in playerSettings.jsp
-Replace detailColor with CSS.
 Change font color.
   http://developer.android.com/design/index.html
 Change back/forward icons.
