@@ -403,6 +403,7 @@
                         <c:param name="showZoom" value="${coverArt eq model.dir}"/>
                         <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
                         <c:param name="showCaption" value="true"/>
+                        <c:param name="captionLength" value="22"/>
                         <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
                     </c:import>
                 </div>
@@ -460,7 +461,7 @@
     </tr>
 
     <tr>
-        <td colspan="2" style="border:1px solid blue">
+        <td colspan="2" style="border:1px solid blue;padding-top: 1em">
             <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
                 <div style="float: right;padding: 5px">
                     <c:import url="coverArt.jsp">
@@ -471,6 +472,7 @@
                         <c:param name="showZoom" value="false"/>
                         <c:param name="showChange" value="false"/>
                         <c:param name="showCaption" value="true"/>
+                        <c:param name="captionLength" value="19"/>
                         <c:param name="appearAfter" value="0"/>
                     </c:import>
                 </div>

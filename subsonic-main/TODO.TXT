@@ -21,6 +21,7 @@ Improve styling for selected setting / album list tab.
 
 TODO IN 4.9
 --------------
+Put captionLength into CoverArtScheme.
 Podcasts and Bookmarks Title's Aren't The Same
   https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c
 Use max gain 0dB in jukebox to avoid distortion caused by clipping.
