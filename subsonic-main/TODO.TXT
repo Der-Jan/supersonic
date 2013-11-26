@@ -22,6 +22,8 @@ Add spacing in Play all | Play random ...
 Put captionLength into CoverArtScheme.
 Show thumbnail for siebling albums
 Show all song titles in italic.
+Use max gain 0dB in jukebox to avoid distortion caused by clipping.
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
 
 TODO IN 4.9
 --------------
@@ -32,14 +34,10 @@ Find right captionLength.
 Replace Download button with Play last.
 Podcasts and Bookmarks Title's Aren't The Same
   https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c
-Use max gain 0dB in jukebox to avoid distortion caused by clipping.
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
-Use bold for certain headers.
 Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
 Change font color.
   http://developer.android.com/design/index.html
-Change back/forward icons.
 
 More vertical (and horizontal) padding between album arts.
 Test layout with ads.
