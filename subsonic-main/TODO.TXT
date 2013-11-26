@@ -23,6 +23,7 @@ Put captionLength into CoverArtScheme.
 
 TODO IN 4.9
 --------------
+vertical align middle in .header
 Find right captionLength.
 Podcasts and Bookmarks Title's Aren't The Same
   https://mail.google.com/mail/u/0/#inbox/1426bd989de09a9c

@@ -210,52 +210,50 @@
 
 <c:if test="${model.dir.album}">
 
-    <div class="detail">
-        <c:if test="${model.user.commentRole}">
-            <c:import url="rating.jsp">
-                <c:param name="path" value="${model.dir.path}"/>
-                <c:param name="readonly" value="false"/>
-                <c:param name="rating" value="${model.userRating}"/>
-            </c:import>
-        </c:if>
+<div class="detail">
+    <c:if test="${model.user.commentRole}">
+        <c:import url="rating.jsp">
+            <c:param name="path" value="${model.dir.path}"/>
+            <c:param name="readonly" value="false"/>
+            <c:param name="rating" value="${model.userRating}"/>
+        </c:import>
+    </c:if>
 
-        <c:if test="${model.user.shareRole}">
-            <a href="${shareUrl}"><img src="<spring:theme code="shareSmallImage"/>" alt=""></a>
-            <span class="detail" style="vertical-align: middle"><a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> |</span>
-        </c:if>
+    <c:if test="${model.user.shareRole}">
+        <span style="vertical-align: middle" class="header"><a href="${shareUrl}"><img src="<spring:theme code="shareSmallImage"/>" alt=""></a>
+            <a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> </span> |
+    </c:if>
 
-        <c:if test="${not empty model.artist and not empty model.album}">
-            <sub:url value="http://www.google.com/search" var="googleUrl" encoding="UTF-8">
-                <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
-            </sub:url>
-            <sub:url value="http://en.wikipedia.org/wiki/Special:Search" var="wikipediaUrl" encoding="UTF-8">
-                <sub:param name="search" value="\"${model.album}\""/>
-                <sub:param name="go" value="Go"/>
-            </sub:url>
-            <sub:url value="allmusic.view" var="allmusicUrl">
-                <sub:param name="album" value="${model.album}"/>
-            </sub:url>
-            <sub:url value="http://www.last.fm/search" var="lastFmUrl" encoding="UTF-8">
-                <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
-                <sub:param name="type" value="album"/>
-            </sub:url>
-            <span style="vertical-align: middle">
-                 <fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a> |
-                        <a target="_blank" href="${wikipediaUrl}">Wikipedia</a> |
-                        <a target="_blank" href="${allmusicUrl}">allmusic</a> |
-                        <a target="_blank" href="${lastFmUrl}">Last.fm</a>
+    <c:if test="${not empty model.artist and not empty model.album}">
+        <sub:url value="http://www.google.com/search" var="googleUrl" encoding="UTF-8">
+            <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
+        </sub:url>
+        <sub:url value="http://en.wikipedia.org/wiki/Special:Search" var="wikipediaUrl" encoding="UTF-8">
+            <sub:param name="search" value="\"${model.album}\""/>
+            <sub:param name="go" value="Go"/>
+        </sub:url>
+        <sub:url value="allmusic.view" var="allmusicUrl">
+            <sub:param name="album" value="${model.album}"/>
+        </sub:url>
+        <sub:url value="http://www.last.fm/search" var="lastFmUrl" encoding="UTF-8">
+            <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
+            <sub:param name="type" value="album"/>
+        </sub:url>
+        <span style="vertical-align: middle" class="header"><fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a></span> |
+        <span style="vertical-align: middle" class="header"><a target="_blank" href="${wikipediaUrl}">Wikipedia</a></span> |
+        <span style="vertical-align: middle" class="header"><a target="_blank" href="${allmusicUrl}">allmusic</a></span> |
+        <span style="vertical-align: middle" class="header"><a target="_blank" href="${lastFmUrl}">Last.fm</a></span> |
+        <span style="vertical-align: middle" class="header">
+            <fmt:message key="main.playcount"><fmt:param value="${model.dir.playCount}"/></fmt:message>
+            <c:if test="${not empty model.dir.lastPlayed}">
+                <fmt:message key="main.lastplayed">
+                    <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.dir.lastPlayed}"/></fmt:param>
+                </fmt:message>
+            </c:if>
+        </span>
 
-                &ndash;
-                <fmt:message key="main.playcount"><fmt:param value="${model.dir.playCount}"/></fmt:message>
-                <c:if test="${not empty model.dir.lastPlayed}">
-                    <fmt:message key="main.lastplayed">
-                        <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.dir.lastPlayed}"/></fmt:param>
-                    </fmt:message>
-                </c:if>
-            </span>
-
-        </c:if>
-    </div>
+    </c:if>
+</div>
 </c:if>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
