@@ -36,8 +36,6 @@ Change font color.
   http://developer.android.com/design/index.html
 Change back/forward icons.
 Show thumbnail for siebling albums
-  - honor max # of cover arts.
-  - honor disabling of cover art.
   - use correct album name
   - use appearafter?
   - test with ad

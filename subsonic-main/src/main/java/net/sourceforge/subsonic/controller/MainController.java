@@ -135,9 +135,8 @@ public class MainController extends ParameterizableViewController {
             if (coverArts.isEmpty() && dir.isAlbum()) {
                 map.put("showGenericCoverArt", true);
             }
+            setSieblingAlbums(dir, map);
         }
-
-        setSieblingAlbums(dir, map);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -194,7 +193,7 @@ public class MainController extends ParameterizableViewController {
                     if (child.getCoverArtPath() != null) {
                         coverArts.add(child);
                     }
-                    if (coverArts.size() > limit) {
+                    if (coverArts.size() >= limit) {
                         break;
                     }
                 }
@@ -235,6 +234,14 @@ public class MainController extends ParameterizableViewController {
         if (dir.isAlbum() && !mediaFileService.isRoot(parent)) {
             List<MediaFile> sieblings = mediaFileService.getChildrenOf(parent, false, true, true);
             sieblings.remove(dir);
+
+            int limit = settingsService.getCoverArtLimit();
+            if (limit == 0) {
+                limit = Integer.MAX_VALUE;
+            }
+            if (sieblings.size() > limit) {
+                sieblings = sieblings.subList(0, limit);
+            }
             map.put("sieblingAlbums", sieblings);
         }
     }
