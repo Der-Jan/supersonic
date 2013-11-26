@@ -186,7 +186,7 @@
 
 
                 <td ${cssClass} style="padding-left:0.6em">
-                    <span title="${episode.title}">
+                    <span title="${episode.title}" class="songTitle">
                         <c:choose>
                             <c:when test="${empty episode.path}">
                                 <str:truncateNicely upper="40">${episode.title}</str:truncateNicely>
