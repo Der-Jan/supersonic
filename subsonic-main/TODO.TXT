@@ -25,6 +25,8 @@ Show all song titles in italic.
 
 TODO IN 4.9
 --------------
+Support subsonic.host in Util.getLocalIpAddress()
+  https://sourceforge.net/p/subsonic/bugs/95/
 Single songs in left.jsp have wrong color and v align.
 Find right captionLength.
 Replace Download button with Play last.
@@ -34,7 +36,6 @@ Use max gain 0dB in jukebox to avoid distortion caused by clipping.
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
 Use bold for certain headers.
 Check .headerSelected in skins.
-Less whitespace beneath <h1>
 Layout bug in playerSettings.jsp
 Change font color.
   http://developer.android.com/design/index.html

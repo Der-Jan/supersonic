@@ -394,7 +394,7 @@
 
             <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
             <c:set var="captionLength" value="${model.player.coverArtScheme.captionLength}"/>
-            <c:if test="${model.showGenericCoverArt or fn:length(model.coverArts) eq 1}">
+            <c:if test="${model.dir.album and (model.showGenericCoverArt or fn:length(model.coverArts) eq 1)}">
                 <c:set var="coverArtSize" value="${coverArtSize * 2}"/>
                 <c:set var="captionLength" value="${captionLength * 2}"/>
             </c:if>
