@@ -42,6 +42,7 @@ import static net.sourceforge.subsonic.service.jukebox.AudioPlayer.State.*;
  */
 public class AudioPlayer {
 
+    public static final float DEFAULT_GAIN = 0.75f;
     private static final Logger LOG = Logger.getLogger(JukeboxService.class);
 
     private final InputStream in;
@@ -61,7 +62,7 @@ public class AudioPlayer {
 
         if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
             gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-            setGain(0.75f);
+            setGain(DEFAULT_GAIN);
         }
         new AudioDataWriter();
     }

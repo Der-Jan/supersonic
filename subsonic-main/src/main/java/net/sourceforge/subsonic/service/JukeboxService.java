@@ -54,7 +54,7 @@ public class JukeboxService implements AudioPlayer.Listener {
     private Player player;
     private TransferStatus status;
     private MediaFile currentPlayingFile;
-    private float gain = 0.5f;
+    private float gain = AudioPlayer.DEFAULT_GAIN;
     private int offset;
     private MediaFileService mediaFileService;
 

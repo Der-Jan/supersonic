@@ -49,7 +49,7 @@ public class SettingsServiceTestCase extends TestCase {
 
     public void testDefaultValues() {
         assertEquals("Wrong default language.", "en", settingsService.getLocale().getLanguage());
-        assertEquals("Wrong default cover art limit.", 30, settingsService.getCoverArtLimit());
+        assertEquals("Wrong default cover art limit.", 50, settingsService.getCoverArtLimit());
         assertEquals("Wrong default index creation interval.", 1, settingsService.getIndexCreationInterval());
         assertEquals("Wrong default index creation hour.", 3, settingsService.getIndexCreationHour());
         assertTrue("Wrong default playlist folder.", settingsService.getPlaylistFolder().endsWith("playlists"));
