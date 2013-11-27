@@ -36,7 +36,8 @@ Layout bug in playerSettings.jsp
 
 TODO IN 4.9
 --------------
-Single songs in left.jsp have wrong color and v align.
+Create dynamic cover art.
+Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
 Change font color.
   http://developer.android.com/design/index.html
