@@ -35,6 +35,17 @@ When playing a single song, queue rest of album.
 
 TODO IN 4.9
 --------------
+[2013-11-26 15:12:01,307] ERROR UPnPService - Failed to start UPnP service: java.lang.NoSuchMethodError: org.fourthline.cling.transport.impl.apache.StreamClientConfigurationImpl.<init>(Ljava/util/concurrent/ExecutorService;)V
+java.lang.NoSuchMethodError: org.fourthline.cling.transport.impl.apache.StreamClientConfigurationImpl.<init>(Ljava/util/concurrent/ExecutorService;)V
+	at net.sourceforge.subsonic.service.upnp.ApacheUpnpServiceConfiguration.createStreamClient(ApacheUpnpServiceConfiguration.java:43)
+	at org.fourthline.cling.transport.RouterImpl.<init>(RouterImpl.java:107)
+	at org.fourthline.cling.UpnpServiceImpl.createRouter(UpnpServiceImpl.java:97)
+	at org.fourthline.cling.UpnpServiceImpl.<init>(UpnpServiceImpl.java:81)
+	at net.sourceforge.subsonic.service.UPnPService.createService(UPnPService.java:120)
+	at net.sourceforge.subsonic.service.UPnPService.access$100(UPnPService.java:87)
+	at net.sourceforge.subsonic.service.UPnPService$1.run(UPnPService.java:109)
+	at java.lang.Thread.run(Thread.java:722)
+
 Place volume slider in right position.
 Single songs in left.jsp have wrong color and v align.
 Find right captionLength.
@@ -42,7 +53,6 @@ Check .headerSelected in skins.
 Layout bug in playerSettings.jsp
 Change font color.
   http://developer.android.com/design/index.html
-More vertical (and horizontal) padding between album arts.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.

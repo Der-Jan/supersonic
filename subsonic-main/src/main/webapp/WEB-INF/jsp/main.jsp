@@ -14,6 +14,11 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
+
+    <style type="text/css">
+        .coverart { float: right; padding-left:10px; padding-right:10px; padding-bottom:20px }
+    </style>
+
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <sub:url value="createShare.view" var="shareUrl">
@@ -399,7 +404,7 @@
             </c:if>
 
             <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-                <div style="float:right; padding-right:5px; padding-bottom:5px">
+                <div class="coverart">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${coverArt.id}"/>
                         <c:param name="albumName" value="${coverArt.name}"/>
@@ -415,7 +420,7 @@
             </c:forEach>
 
             <c:if test="${model.showGenericCoverArt}">
-                <div style="float:right; padding:5px">
+                <div class="coverart">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${model.dir.id}"/>
                         <c:param name="coverArtSize" value="${coverArtSize}"/>
@@ -468,7 +473,7 @@
     <tr>
         <td colspan="2" style="padding-top: 1em">
             <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
-                <div style="float: right;padding: 5px">
+                <div class="coverart">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${sieblingAlbum.id}"/>
                         <c:param name="albumName" value="${sieblingAlbum.name}"/>
