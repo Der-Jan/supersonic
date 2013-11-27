@@ -32,13 +32,12 @@ Support subsonic.host in Util.getLocalIpAddress()
   https://sourceforge.net/p/subsonic/bugs/95/
 Replace Download button with Play last.
 When playing a single song, queue rest of album.
+Layout bug in playerSettings.jsp
 
 TODO IN 4.9
 --------------
 Single songs in left.jsp have wrong color and v align.
-Find right captionLength.
 Check .headerSelected in skins.
-Layout bug in playerSettings.jsp
 Change font color.
   http://developer.android.com/design/index.html
 
