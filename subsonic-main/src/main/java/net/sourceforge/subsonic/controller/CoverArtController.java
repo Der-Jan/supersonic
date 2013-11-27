@@ -52,7 +52,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Random;
 
 /**
  * Controller which produces cover art images.
@@ -333,7 +332,6 @@ public class CoverArtController implements Controller, LastModified {
 
     static class AutoCover {
 
-        private final static Random RANDOM = new Random();
         private final static int[] COLORS = {0x33B5E5, 0xAA66CC, 0x99CC00, 0xFFBB33, 0xFF4444};
         private final Graphics2D graphics;
         private final MediaFile mediaFile;
@@ -344,7 +342,8 @@ public class CoverArtController implements Controller, LastModified {
             this.graphics = graphics;
             this.mediaFile = mediaFile;
             this.size = size;
-            int rgb = COLORS[RANDOM.nextInt(COLORS.length)];
+
+            int rgb = COLORS[mediaFile.hashCode() % COLORS.length];
             this.color = new Color(rgb);
         }
 
@@ -359,24 +358,29 @@ public class CoverArtController implements Controller, LastModified {
             graphics.fillRect(0, size * 2 / 3, size, size / 3);
 
             graphics.setPaint(Color.WHITE);
-            float fontSize = size * 0.1f;
+            float fontSize = size * 0.08f;
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int) fontSize);
             graphics.setFont(font);
 
             String album = mediaFile.getAlbumName();
             if (album != null) {
-                graphics.drawString(album, size * 0.1f, size * 0.6f);
+                graphics.drawString(album, size * 0.05f, size * 0.6f);
             }
             String artist = mediaFile.getAlbumArtist();
             if (artist == null) {
                 artist = mediaFile.getArtist();
             }
-            if (artist == null) {
-                graphics.drawString(artist, size * 0.1f, size * 0.8f);
+            if (artist != null) {
+                graphics.drawString(artist, size * 0.05f, size * 0.8f);
             }
-            int strokeWidth = size / 50;
-            graphics.setStroke(new BasicStroke(strokeWidth));
-            graphics.drawRect(strokeWidth / 2 - 1, strokeWidth / 2 - 1, size - strokeWidth + 1, size - strokeWidth + 1);
+            int borderWidth = size / 50;
+            graphics.fillRect(0, 0, borderWidth, size);
+            graphics.fillRect(size - borderWidth, 0, size - borderWidth, size);
+            graphics.fillRect(0, 0, size, borderWidth);
+            graphics.fillRect(0, size - borderWidth, size, size);
+
+            graphics.setColor(Color.BLACK);
+            graphics.drawRect(0, 0, size - 1, size - 1);
         }
     }
 }

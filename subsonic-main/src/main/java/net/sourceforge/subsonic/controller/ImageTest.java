@@ -23,10 +23,12 @@ public class ImageTest {
         JFrame frame = new JFrame();
 
         JPanel panel = new JPanel();
-        panel.add(new AlbumComponent(110));
+        panel.add(new AlbumComponent(150));
         panel.add(new AlbumComponent(200));
+        panel.add(new AlbumComponent(300));
         panel.add(new AlbumComponent(400));
 
+        panel.setBackground(Color.DARK_GRAY);
         frame.add(panel);
         frame.setSize(1000, 800);
         frame.setVisible(true);
@@ -43,6 +45,7 @@ public class ImageTest {
         @Override
         protected void paintComponent(Graphics g) {
             MediaFile mediaFile = new MediaFile();
+            mediaFile.setPath("/tmp");
             mediaFile.setAlbumArtist("Album artist");
             mediaFile.setAlbumArtist("Song artist");
             mediaFile.setTitle("Song title");
