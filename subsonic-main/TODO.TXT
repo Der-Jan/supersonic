@@ -37,6 +37,12 @@ Layout bug in playerSettings.jsp
 TODO IN 4.9
 --------------
 Create dynamic cover art.
+  Also support it in REST.
+  Use consistent colors (hash ID).
+  In main.jsp, show cover art for all sub albums.
+  Show artist name.
+  Black outer rectangle.
+
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
 Change font color.
