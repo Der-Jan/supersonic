@@ -343,7 +343,7 @@ public class CoverArtController implements Controller, LastModified {
             this.mediaFile = mediaFile;
             this.size = size;
 
-            int rgb = COLORS[mediaFile.hashCode() % COLORS.length];
+            int rgb = COLORS[Math.abs(mediaFile.getId()) % COLORS.length];
             this.color = new Color(rgb);
         }
 
@@ -373,6 +373,7 @@ public class CoverArtController implements Controller, LastModified {
             if (artist != null) {
                 graphics.drawString(artist, size * 0.05f, size * 0.8f);
             }
+
             int borderWidth = size / 50;
             graphics.fillRect(0, 0, borderWidth, size);
             graphics.fillRect(size - borderWidth, 0, size - borderWidth, size);
