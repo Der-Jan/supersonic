@@ -128,9 +128,6 @@ public class MainController extends ParameterizableViewController {
         if (scheme != CoverArtScheme.OFF) {
             List<MediaFile> coverArts = getCoverArts(dir, children);
             map.put("coverArts", coverArts);
-            if (coverArts.isEmpty() && dir.isAlbum()) {
-                map.put("showGenericCoverArt", true);
-            }
             setSieblingAlbums(dir, map);
         }
 
@@ -181,14 +178,12 @@ public class MainController extends ParameterizableViewController {
         }
 
         List<MediaFile> coverArts = new ArrayList<MediaFile>();
-        if (dir.isAlbum() && dir.getCoverArtPath() != null) {
+        if (dir.isAlbum()) {
             coverArts.add(dir);
         } else {
             for (MediaFile child : children) {
                 if (child.isAlbum()) {
-                    if (child.getCoverArtPath() != null) {
-                        coverArts.add(child);
-                    }
+                    coverArts.add(child);
                     if (coverArts.size() >= limit) {
                         break;
                     }

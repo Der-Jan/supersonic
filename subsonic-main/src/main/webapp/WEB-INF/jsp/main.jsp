@@ -398,7 +398,7 @@
 
             <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
             <c:set var="captionLength" value="${model.player.coverArtScheme.captionLength}"/>
-            <c:if test="${model.dir.album and (model.showGenericCoverArt or fn:length(model.coverArts) eq 1)}">
+            <c:if test="${model.dir.album and fn:length(model.coverArts) eq 1}">
                 <c:set var="coverArtSize" value="${coverArtSize * 2}"/>
                 <c:set var="captionLength" value="${captionLength * 2}"/>
             </c:if>
@@ -418,19 +418,6 @@
                     </c:import>
                 </div>
             </c:forEach>
-
-            <c:if test="${model.showGenericCoverArt}">
-                <div class="coverart">
-                    <c:import url="coverArt.jsp">
-                        <c:param name="albumId" value="${model.dir.id}"/>
-                        <c:param name="coverArtSize" value="${coverArtSize}"/>
-                        <c:param name="showLink" value="false"/>
-                        <c:param name="showZoom" value="false"/>
-                        <c:param name="showChange" value="${model.user.coverArtRole}"/>
-                        <c:param name="appearAfter" value="0"/>
-                    </c:import>
-                </div>
-            </c:if>
         </td>
 
         <td style="vertical-align:top;" rowspan="2">

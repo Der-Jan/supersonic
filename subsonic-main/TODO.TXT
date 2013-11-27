@@ -37,10 +37,10 @@ Layout bug in playerSettings.jsp
 TODO IN 4.9
 --------------
 Create dynamic cover art.
-  Also support it in REST.
-  In main.jsp, show cover art for all sub albums.
+  Also support it in REST?
   Show artist name.
   Log errors.
+  Make it work for "now playing"
 
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
