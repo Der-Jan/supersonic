@@ -18,15 +18,16 @@
  */
 package net.sourceforge.subsonic.dao;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -221,6 +222,19 @@ public class MediaFileDao extends AbstractDao {
         String orderBy = byArtist ? "artist, album" : "album";
         return query("select " + COLUMNS + " from media_file where type=? and artist != '' and present order by " + orderBy + " limit ? offset ?",
                 rowMapper, ALBUM.name(), count, offset);
+    }
+
+    /**
+     * Returns albums in a decade.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param decade The first year of the decade, e.g., 1980
+     * @return Albums in the decade.
+     */
+    public List<MediaFile> getAlbumsByDecade(int offset, int count, int decade) {
+        return query("select " + COLUMNS + " from media_file where type=? and present and year between ? and ? order by year limit ? offset ?",
+                rowMapper, ALBUM.name(), decade, decade + 9, count, offset);
     }
 
     public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {

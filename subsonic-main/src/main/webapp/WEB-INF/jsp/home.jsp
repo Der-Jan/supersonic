@@ -29,7 +29,7 @@
 </c:if>
 
 <h2>
-    <c:forTokens items="random newest starred highest frequent recent alphabetical users" delims=" " var="cat" varStatus="loopStatus">
+    <c:forTokens items="random newest starred highest frequent recent decade genre alphabetical users" delims=" " var="cat" varStatus="loopStatus">
         <c:if test="${loopStatus.count > 1}">&nbsp;|&nbsp;</c:if>
         <sub:url var="url" value="home.view">
             <sub:param name="listSize" value="${model.listSize}"/>
@@ -52,7 +52,16 @@
     <p class="warning"><fmt:message key="home.scan"/></p>
 </c:if>
 
-<h2><b><fmt:message key="home.${model.listType}.text"/></b></h2>
+<h2>
+    <b><fmt:message key="home.${model.listType}.text"/></b>
+    <c:if test="${model.listType eq 'decade'}">
+        <select name="decade" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;decade=' + options[selectedIndex].value">
+            <c:forEach items="${model.decades}" var="decade">
+                <option ${decade eq model.decade ? "selected" : ""} value="${decade}">${decade}</option>
+            </c:forEach>
+        </select>
+    </c:if>
+</h2>
 
 <table width="100%">
     <tr>
@@ -131,7 +140,7 @@
 <table>
     <tr>
         <td style="padding-right:1.5em">
-            <select name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=' + options[selectedIndex].value;">
+            <select id="listSize" name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=${model.decade}&amp;listSize=' + options[selectedIndex].value;">
                 <c:forTokens items="5 10 15 20 30 40 50" delims=" " var="size">
                     <option ${size eq model.listSize ? "selected" : ""} value="${size}"><fmt:message key="home.listsize"><fmt:param value="${size}"/></fmt:message></option>
                 </c:forTokens>
