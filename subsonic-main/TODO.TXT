@@ -40,7 +40,6 @@ Create dynamic cover art.
   Also support it in REST?
   Show artist name.
   Log errors.
-  Make it work for "now playing"
 
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
