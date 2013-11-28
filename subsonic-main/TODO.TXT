@@ -41,10 +41,10 @@ New album lists
   By genre
   Don't hardcode decades.
   Remember selected decade.
-  Populate album genre.
   REST support
   Make album list header always clickable.
   Remove "N albums per page"?
+  Add year & genre to ID3-based album.
 Create dynamic cover art.
   Also support it in REST?
   Show artist name.

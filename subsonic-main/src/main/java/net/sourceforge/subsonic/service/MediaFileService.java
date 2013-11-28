@@ -455,13 +455,14 @@ public class MediaFileService {
                 if (firstChild != null) {
                     mediaFile.setMediaType(ALBUM);
 
-                    // Guess artist/album name and year.
+                    // Guess artist/album name, year and genre.
                     MetaDataParser parser = metaDataParserFactory.getParser(firstChild);
                     if (parser != null) {
                         MetaData metaData = parser.getMetaData(firstChild);
                         mediaFile.setArtist(metaData.getAlbumArtist());
                         mediaFile.setAlbumName(metaData.getAlbumName());
                         mediaFile.setYear(metaData.getYear());
+                        mediaFile.setGenre(metaData.getGenre());
                     }
 
                     // Look for cover art.
