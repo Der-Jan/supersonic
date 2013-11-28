@@ -43,7 +43,8 @@ Create dynamic cover art.
 
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
-Change font color.
+More linespacing
+Change font color. Bigger font?
   http://developer.android.com/design/index.html
 
 Make more space available on forum server.
