@@ -33,18 +33,16 @@ Support subsonic.host in Util.getLocalIpAddress()
 Replace Download button with Play last.
 When playing a single song, queue rest of album.
 Layout bug in playerSettings.jsp
+New album lists: "By decade" and "By genre".
 
 TODO IN 4.9
 --------------
 New album lists
-  By decade
-  By genre
-  Don't hardcode decades.
-  Remember selected decade.
   REST support
   Make album list header always clickable.
-  Remove "N albums per page"?
   Add year & genre to ID3-based album.
+  Handle no genres.
+  Remove deprecated Album class.
 Create dynamic cover art.
   Also support it in REST?
   Show artist name.

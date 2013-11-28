@@ -61,6 +61,13 @@
             </c:forEach>
         </select>
     </c:if>
+    <c:if test="${model.listType eq 'genre'}">
+        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;genre=' + options[selectedIndex].value">
+            <c:forEach items="${model.genres}" var="genre">
+                <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
+            </c:forEach>
+        </select>
+    </c:if>
 </h2>
 
 <table width="100%">
@@ -140,7 +147,7 @@
 <table>
     <tr>
         <td style="padding-right:1.5em">
-            <select id="listSize" name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=${model.decade}&amp;listSize=' + options[selectedIndex].value;">
+            <select id="listSize" name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=${model.decade}&amp;genre=${model.genre}&amp;listSize=' + options[selectedIndex].value;">
                 <c:forTokens items="5 10 15 20 30 40 50" delims=" " var="size">
                     <option ${size eq model.listSize ? "selected" : ""} value="${size}"><fmt:message key="home.listsize"><fmt:param value="${size}"/></fmt:message></option>
                 </c:forTokens>

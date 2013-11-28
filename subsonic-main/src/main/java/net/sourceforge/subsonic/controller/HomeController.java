@@ -106,6 +106,8 @@ public class HomeController extends ParameterizableViewController {
             albums = getAlphabetical(listOffset, listSize, true);
         } else if ("decade".equals(listType)) {
             albums = getByDecade(listOffset, listSize, request, map);
+        } else if ("genre".equals(listType)) {
+            albums = getByGenre(listOffset, listSize, request, map);
         } else {
             albums = Collections.emptyList();
         }
@@ -230,6 +232,24 @@ public class HomeController extends ParameterizableViewController {
         int decade = Calendar.getInstance().get(Calendar.YEAR) / 10;
         for (int i = 0; i < 10; i++) {
             result.add((decade - i) * 10);
+        }
+        return result;
+    }
+
+    private List<Album> getByGenre(int offset, int count, HttpServletRequest request, Map<String, Object> map) {
+        List<String> genres = mediaFileService.getGenres();
+        if (genres.isEmpty()) {
+            return Collections.emptyList();
+        }
+        map.put("genres", genres);
+        String genre = ServletRequestUtils.getStringParameter(request, "genre", genres.get(0));
+        map.put("genre", genre);
+        List<Album> result = new ArrayList<Album>();
+        for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre)) {
+            Album album = createAlbum(file);
+            if (album != null) {
+                result.add(album);
+            }
         }
         return result;
     }

@@ -307,6 +307,18 @@ public class MediaFileService {
         return mediaFileDao.getAlbumsByDecade(offset, count, decade);
     }
 
+    /**
+     * Returns albums in a genre.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param genre The genre name.
+     * @return Albums in the genre.
+     */
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
+        return mediaFileDao.getAlbumsByGenre(offset, count, genre);
+    }
+
     public Date getMediaFileStarredDate(int id, String username) {
         return mediaFileDao.getMediaFileStarredDate(id, username);
     }

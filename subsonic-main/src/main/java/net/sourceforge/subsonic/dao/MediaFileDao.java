@@ -237,6 +237,19 @@ public class MediaFileDao extends AbstractDao {
                 rowMapper, ALBUM.name(), decade, decade + 9, count, offset);
     }
 
+    /**
+     * Returns albums in a genre.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param genre The genre name.
+     * @return Albums in the genre.
+     */
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
+        return query("select " + COLUMNS + " from media_file where type=? and present and genre=? limit ? offset ?",
+                rowMapper, ALBUM.name(), genre, count, offset);
+    }
+
     public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {
         return query("select " + COLUMNS + " from media_file where type in (?,?,?) and genre=? and present limit ? offset ?",
                 rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), genre, count, offset);
