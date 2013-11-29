@@ -38,11 +38,12 @@ New album lists: "By decade" and "By genre".
 TODO IN 4.9
 --------------
 New album lists
-  REST support
+  REST support, test it.
   Make album list header always clickable.
   Add year & genre to ID3-based album.
   Handle no genres.
   Remove deprecated Album class.
+  Move paging controls to top.
 Create dynamic cover art.
   Also support it in REST?
   Show artist name.

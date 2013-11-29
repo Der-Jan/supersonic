@@ -46,6 +46,8 @@ import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
+import static org.springframework.web.bind.ServletRequestUtils.*;
+
 /**
  * Controller for the home page.
  *
@@ -89,7 +91,7 @@ public class HomeController extends ParameterizableViewController {
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
-        List<Album> albums;
+        List<Album> albums = Collections.emptyList();
         if ("highest".equals(listType)) {
             albums = getHighestRated(listOffset, listSize);
         } else if ("frequent".equals(listType)) {
@@ -105,11 +107,19 @@ public class HomeController extends ParameterizableViewController {
         } else if ("alphabetical".equals(listType)) {
             albums = getAlphabetical(listOffset, listSize, true);
         } else if ("decade".equals(listType)) {
-            albums = getByDecade(listOffset, listSize, request, map);
+            List<Integer> decades = createDecades();
+            map.put("decades", decades);
+            int decade = getIntParameter(request, "decade", decades.get(0));
+            map.put("decade", decade);
+            albums = getByDecade(listOffset, listSize, decade);
         } else if ("genre".equals(listType)) {
-            albums = getByGenre(listOffset, listSize, request, map);
-        } else {
-            albums = Collections.emptyList();
+            List<String> genres = mediaFileService.getGenres();
+            map.put("genres", genres);
+            if (!genres.isEmpty()) {
+                String genre = getStringParameter(request, "genre", genres.get(0));
+                map.put("genre", genre);
+                albums = getByGenre(listOffset, listSize, genre);
+            }
         }
 
         map.put("albums", albums);
@@ -212,11 +222,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getByDecade(int offset, int count, HttpServletRequest request, Map<String, Object> map) {
-        List<Integer> decades = createDecades();
-        map.put("decades", decades);
-        int decade = ServletRequestUtils.getIntParameter(request, "decade", decades.get(0));
-        map.put("decade", decade);
+    public List<Album> getByDecade(int offset, int count, int decade) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByDecade(offset, count, decade)) {
             Album album = createAlbum(file);
@@ -236,14 +242,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getByGenre(int offset, int count, HttpServletRequest request, Map<String, Object> map) {
-        List<String> genres = mediaFileService.getGenres();
-        if (genres.isEmpty()) {
-            return Collections.emptyList();
-        }
-        map.put("genres", genres);
-        String genre = ServletRequestUtils.getStringParameter(request, "genre", genres.get(0));
-        map.put("genre", genre);
+    public List<Album> getByGenre(int offset, int count, String genre) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre)) {
             Album album = createAlbum(file);

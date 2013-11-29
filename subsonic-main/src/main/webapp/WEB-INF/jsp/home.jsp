@@ -164,11 +164,15 @@
                         <sub:param name="listType" value="${model.listType}"/>
                         <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
                         <sub:param name="listSize" value="${model.listSize}"/>
+                        <sub:param name="genre" value="${model.genre}"/>
+                        <sub:param name="decade" value="${model.decade}"/>
                     </sub:url>
                     <sub:url value="home.view" var="nextUrl">
                         <sub:param name="listType" value="${model.listType}"/>
                         <sub:param name="listOffset" value="${model.listOffset + model.listSize}"/>
                         <sub:param name="listSize" value="${model.listSize}"/>
+                        <sub:param name="genre" value="${model.genre}"/>
+                        <sub:param name="decade" value="${model.decade}"/>
                     </sub:url>
 
                     <td style="padding-right:1.5em"><fmt:message key="home.albums"><fmt:param value="${model.listOffset + 1}"/><fmt:param value="${model.listOffset + model.listSize}"/></fmt:message></td>

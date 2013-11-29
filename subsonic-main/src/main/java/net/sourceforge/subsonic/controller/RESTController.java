@@ -869,6 +869,10 @@ public class RESTController extends MultiActionController {
             albums = homeController.getAlphabetical(offset, size, true);
         } else if ("alphabeticalByName".equals(type)) {
             albums = homeController.getAlphabetical(offset, size, false);
+        } else if ("byGenre".equals(type)) {
+            albums = homeController.getByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+        } else if ("byDecade".equals(type)) {
+            albums = homeController.getByDecade(offset, size, getRequiredIntParameter(request, "decade"));
         } else if ("random".equals(type)) {
             albums = homeController.getRandom(size);
         } else {
