@@ -52,25 +52,71 @@
     <p class="warning"><fmt:message key="home.scan"/></p>
 </c:if>
 
-<h2>
-    <b><fmt:message key="home.${model.listType}.text"/></b>
-    <c:if test="${model.listType eq 'decade'}">
-        <select name="decade" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;decade=' + options[selectedIndex].value">
-            <c:forEach items="${model.decades}" var="decade">
-                <option ${decade eq model.decade ? "selected" : ""} value="${decade}">${decade}</option>
-            </c:forEach>
-        </select>
-    </c:if>
-    <c:if test="${model.listType eq 'genre'}">
-        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;genre=' + options[selectedIndex].value">
-            <c:forEach items="${model.genres}" var="genre">
-                <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
-            </c:forEach>
-        </select>
-    </c:if>
-</h2>
 
-<table width="100%">
+
+<table>
+    <tr>
+        <td>
+            <b><fmt:message key="home.${model.listType}.text"/></b>
+        </td>
+
+        <c:if test="${model.listType eq 'decade'}">
+            <td>
+                <select name="decade" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;decade=' + options[selectedIndex].value">
+                    <c:forEach items="${model.decades}" var="decade">
+                        <option ${decade eq model.decade ? "selected" : ""} value="${decade}">${decade}</option>
+                    </c:forEach>
+                </select>
+            </td>
+        </c:if>
+        <c:if test="${model.listType eq 'genre'}">
+            <td>
+                <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;listSize=${model.listSize}&amp;genre=' + options[selectedIndex].value">
+                    <c:forEach items="${model.genres}" var="genre">
+                        <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
+                    </c:forEach>
+                </select>
+            </td>
+        </c:if>
+
+        <td style="padding-left:10em;padding-right:1.5em">
+            <select id="listSize" name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=${model.decade}&amp;genre=${model.genre}&amp;listSize=' + options[selectedIndex].value;">
+                <c:forTokens items="5 10 15 20 30 40 50" delims=" " var="size">
+                    <option ${size eq model.listSize ? "selected" : ""} value="${size}"><fmt:message key="home.listsize"><fmt:param value="${size}"/></fmt:message></option>
+                </c:forTokens>
+            </select>
+        </td>
+
+        <c:choose>
+            <c:when test="${model.listType eq 'random'}">
+                <td><div class="forward"><a href="home.view?listType=random&amp;listSize=${model.listSize}"><fmt:message key="common.more"/></a></div></td>
+            </c:when>
+
+            <c:otherwise>
+                <sub:url value="home.view" var="previousUrl">
+                    <sub:param name="listType" value="${model.listType}"/>
+                    <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
+                    <sub:param name="listSize" value="${model.listSize}"/>
+                    <sub:param name="genre" value="${model.genre}"/>
+                    <sub:param name="decade" value="${model.decade}"/>
+                </sub:url>
+                <sub:url value="home.view" var="nextUrl">
+                    <sub:param name="listType" value="${model.listType}"/>
+                    <sub:param name="listOffset" value="${model.listOffset + model.listSize}"/>
+                    <sub:param name="listSize" value="${model.listSize}"/>
+                    <sub:param name="genre" value="${model.genre}"/>
+                    <sub:param name="decade" value="${model.decade}"/>
+                </sub:url>
+
+                <td style="padding-right:1.5em"><fmt:message key="home.albums"><fmt:param value="${model.listOffset + 1}"/><fmt:param value="${model.listOffset + model.listSize}"/></fmt:message></td>
+                <td style="padding-right:1.5em"><div class="back"><a href="${previousUrl}"><fmt:message key="common.previous"/></a></div></td>
+                <td><div class="forward"><a href="${nextUrl}"><fmt:message key="common.next"/></a></div></td>
+            </c:otherwise>
+        </c:choose>
+    </tr>
+</table>
+
+<table style="width: 100%">
     <tr>
         <td style="vertical-align:top;">
 <c:choose>
@@ -144,44 +190,6 @@
         </c:forEach>
     </div>
 
-<table>
-    <tr>
-        <td style="padding-right:1.5em">
-            <select id="listSize" name="listSize" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=${model.decade}&amp;genre=${model.genre}&amp;listSize=' + options[selectedIndex].value;">
-                <c:forTokens items="5 10 15 20 30 40 50" delims=" " var="size">
-                    <option ${size eq model.listSize ? "selected" : ""} value="${size}"><fmt:message key="home.listsize"><fmt:param value="${size}"/></fmt:message></option>
-                </c:forTokens>
-            </select>
-        </td>
-
-            <c:choose>
-                <c:when test="${model.listType eq 'random'}">
-                    <td><div class="forward"><a href="home.view?listType=random&amp;listSize=${model.listSize}"><fmt:message key="common.more"/></a></div></td>
-                </c:when>
-
-                <c:otherwise>
-                    <sub:url value="home.view" var="previousUrl">
-                        <sub:param name="listType" value="${model.listType}"/>
-                        <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
-                        <sub:param name="listSize" value="${model.listSize}"/>
-                        <sub:param name="genre" value="${model.genre}"/>
-                        <sub:param name="decade" value="${model.decade}"/>
-                    </sub:url>
-                    <sub:url value="home.view" var="nextUrl">
-                        <sub:param name="listType" value="${model.listType}"/>
-                        <sub:param name="listOffset" value="${model.listOffset + model.listSize}"/>
-                        <sub:param name="listSize" value="${model.listSize}"/>
-                        <sub:param name="genre" value="${model.genre}"/>
-                        <sub:param name="decade" value="${model.decade}"/>
-                    </sub:url>
-
-                    <td style="padding-right:1.5em"><fmt:message key="home.albums"><fmt:param value="${model.listOffset + 1}"/><fmt:param value="${model.listOffset + model.listSize}"/></fmt:message></td>
-                    <td style="padding-right:1.5em"><div class="back"><a href="${previousUrl}"><fmt:message key="common.previous"/></a></div></td>
-                    <td><div class="forward"><a href="${nextUrl}"><fmt:message key="common.next"/></a></div></td>
-                </c:otherwise>
-            </c:choose>
-        </tr>
-    </table>
 </c:otherwise>
 </c:choose>
         </td>
