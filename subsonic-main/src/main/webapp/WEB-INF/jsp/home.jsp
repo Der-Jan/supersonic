@@ -170,6 +170,9 @@
                                         <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
                                         <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
                                     </c:if>
+                                    <c:if test="${not empty album.year}">
+                                        ${album.year}
+                                    </c:if>
                                     <c:if test="${not empty album.rating}">
                                         <c:import url="rating.jsp">
                                             <c:param name="readonly" value="true"/>

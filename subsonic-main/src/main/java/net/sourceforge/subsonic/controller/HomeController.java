@@ -191,7 +191,9 @@ public class HomeController extends ParameterizableViewController {
     public List<Album> getByDecade(int offset, int count, int decade) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByDecade(offset, count, decade)) {
-            result.add(createAlbum(file));
+            Album album = createAlbum(file);
+            album.setYear(file.getYear());
+            result.add(album);
         }
         return result;
     }
@@ -260,6 +262,7 @@ public class HomeController extends ParameterizableViewController {
         private Integer playCount;
         private Integer rating;
         private int id;
+        private Integer year;
 
         public int getId() {
             return id;
@@ -331,6 +334,14 @@ public class HomeController extends ParameterizableViewController {
 
         public void setRating(Integer rating) {
             this.rating = rating;
+        }
+
+        public void setYear(Integer year) {
+            this.year = year;
+        }
+
+        public Integer getYear() {
+            return year;
         }
     }
 }
