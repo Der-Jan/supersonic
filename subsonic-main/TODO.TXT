@@ -41,8 +41,8 @@ New album lists
   REST support, test it.
   Add year & genre to ID3-based album.
   Handle no genres.
-  Remove deprecated Album class.
   Set backImage, forwardImage in all theme properties.
+  Show year in decade mode
 
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.

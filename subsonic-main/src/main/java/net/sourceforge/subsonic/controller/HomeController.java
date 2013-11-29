@@ -124,10 +124,8 @@ public class HomeController extends ParameterizableViewController {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
-            if (album != null) {
-                album.setRating((int) Math.round(ratingService.getAverageRating(mediaFile) * 10.0D));
-                result.add(album);
-            }
+            album.setRating((int) Math.round(ratingService.getAverageRating(mediaFile) * 10.0D));
+            result.add(album);
         }
         return result;
     }
@@ -136,10 +134,8 @@ public class HomeController extends ParameterizableViewController {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
-            if (album != null) {
-                album.setPlayCount(mediaFile.getPlayCount());
-                result.add(album);
-            }
+            album.setPlayCount(mediaFile.getPlayCount());
+            result.add(album);
         }
         return result;
     }
@@ -148,10 +144,8 @@ public class HomeController extends ParameterizableViewController {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : mediaFileService.getMostRecentlyPlayedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
-            if (album != null) {
-                album.setLastPlayed(mediaFile.getLastPlayed());
-                result.add(album);
-            }
+            album.setLastPlayed(mediaFile.getLastPlayed());
+            result.add(album);
         }
         return result;
     }
@@ -160,14 +154,12 @@ public class HomeController extends ParameterizableViewController {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getNewestAlbums(offset, count)) {
             Album album = createAlbum(file);
-            if (album != null) {
-                Date created = file.getCreated();
-                if (created == null) {
-                    created = file.getChanged();
-                }
-                album.setCreated(created);
-                result.add(album);
+            Date created = file.getCreated();
+            if (created == null) {
+                created = file.getChanged();
             }
+            album.setCreated(created);
+            result.add(album);
         }
         return result;
     }
@@ -175,10 +167,7 @@ public class HomeController extends ParameterizableViewController {
     List<Album> getStarred(int offset, int count, String username) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getStarredAlbums(offset, count, username)) {
-            Album album = createAlbum(file);
-            if (album != null) {
-                result.add(album);
-            }
+            result.add(createAlbum(file));
         }
         return result;
     }
@@ -186,10 +175,7 @@ public class HomeController extends ParameterizableViewController {
     List<Album> getRandom(int count) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : searchService.getRandomAlbums(count)) {
-            Album album = createAlbum(file);
-            if (album != null) {
-                result.add(album);
-            }
+            result.add(createAlbum(file));
         }
         return result;
     }
@@ -197,10 +183,7 @@ public class HomeController extends ParameterizableViewController {
     List<Album> getAlphabetical(int offset, int count, boolean byArtist) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlphabetialAlbums(offset, count, byArtist)) {
-            Album album = createAlbum(file);
-            if (album != null) {
-                result.add(album);
-            }
+            result.add(createAlbum(file));
         }
         return result;
     }
@@ -208,10 +191,7 @@ public class HomeController extends ParameterizableViewController {
     public List<Album> getByDecade(int offset, int count, int decade) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByDecade(offset, count, decade)) {
-            Album album = createAlbum(file);
-            if (album != null) {
-                result.add(album);
-            }
+            result.add(createAlbum(file));
         }
         return result;
     }
@@ -228,10 +208,7 @@ public class HomeController extends ParameterizableViewController {
     public List<Album> getByGenre(int offset, int count, String genre) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre)) {
-            Album album = createAlbum(file);
-            if (album != null) {
-                result.add(album);
-            }
+            result.add(createAlbum(file));
         }
         return result;
     }
@@ -240,23 +217,10 @@ public class HomeController extends ParameterizableViewController {
         Album album = new Album();
         album.setId(file.getId());
         album.setPath(file.getPath());
-        try {
-            resolveArtistAndAlbumTitle(album, file);
-            resolveCoverArt(album, file);
-        } catch (Exception x) {
-            LOG.warn("Failed to create albumTitle list entry for " + file.getPath(), x);
-            return null;
-        }
-        return album;
-    }
-
-    private void resolveArtistAndAlbumTitle(Album album, MediaFile file) throws IOException {
         album.setArtist(file.getArtist());
         album.setAlbumTitle(file.getAlbumName());
-    }
-
-    private void resolveCoverArt(Album album, MediaFile file) {
         album.setCoverArtPath(file.getCoverArtPath());
+        return album;
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -286,7 +250,6 @@ public class HomeController extends ParameterizableViewController {
     /**
      * Contains info for a single album.
      */
-    @Deprecated
     public static class Album {
         private String path;
         private String coverArtPath;
