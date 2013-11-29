@@ -40,11 +40,8 @@ TODO IN 4.9
 --------------
 New album lists
   Add year & genre to ID3 REST album.
-  Handle no genres.
-  Handle empty media collection.
-  Don't show pager if no albums.
   Set backImage, forwardImage in all theme properties.
-
+  Review colors in autocover. Use white album title?
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
 More linespacing

@@ -71,12 +71,14 @@
                     <sub:param name="decade" value="${model.decade}"/>
                 </sub:url>
 
-                <td style="padding-right:0.5em">
-                    <fmt:message key="home.albums">
-                        <fmt:param value="${model.listOffset + 1}"/>
-                        <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
-                    </fmt:message>
-                </td>
+                <c:if test="${fn:length(model.albums) gt 0}">
+                    <td style="padding-right:0.5em">
+                        <fmt:message key="home.albums">
+                            <fmt:param value="${model.listOffset + 1}"/>
+                            <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
+                        </fmt:message>
+                    </td>
+                </c:if>
 
                 <c:if test="${model.listOffset gt 0}">
                     <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
