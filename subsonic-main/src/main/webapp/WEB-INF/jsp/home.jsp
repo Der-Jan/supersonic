@@ -51,8 +51,6 @@
     <p class="warning"><fmt:message key="home.scan"/></p>
 </c:if>
 
-
-
 <table>
     <tr>
         <c:choose>
@@ -74,8 +72,12 @@
                     <sub:param name="decade" value="${model.decade}"/>
                 </sub:url>
                 <td style="padding-right:0.5em"><fmt:message key="home.albums"><fmt:param value="${model.listOffset + 1}"/><fmt:param value="${model.listOffset + model.listSize}"/></fmt:message></td>
-                <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
-                <td><a href="${nextUrl}"><img src="<spring:theme code="forwardImage"/>" alt=""></a></td>
+                <c:if test="${model.listOffset gt 0}">
+                    <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
+                </c:if>
+                <c:if test="${fn:length(model.albums) eq model.listSize}">
+                    <td><a href="${nextUrl}"><img src="<spring:theme code="forwardImage"/>" alt=""></a></td>
+                </c:if>
 
                 <c:if test="${model.listType eq 'decade'}">
                     <td style="padding-left: 2em">

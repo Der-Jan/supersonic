@@ -43,8 +43,7 @@ New album lists
   Handle no genres.
   Remove deprecated Album class.
   Set backImage, forwardImage in all theme properties.
-  Don't show previous if offset is 0.
-  Don't show next if no albums.
+  Show correct upper limit.
 
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
