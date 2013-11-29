@@ -8,9 +8,9 @@
 
     <script type="text/javascript" language="javascript">
         function init() {
-        <c:if test="${model.listType eq 'random'}">
+            <c:if test="${model.listType eq 'random'}">
             setTimeout("refresh()", 20000);
-        </c:if>
+            </c:if>
         }
 
         function refresh() {
@@ -57,7 +57,7 @@
             <c:when test="${model.listType eq 'random'}">
                 <td><div class="forward"><a href="home.view?listType=random"><fmt:message key="common.more"/></a></div></td>
             </c:when>
-            <c:otherwise>
+            <c:when test="${model.listType ne 'users'}">
                 <sub:url value="home.view" var="previousUrl">
                     <sub:param name="listType" value="${model.listType}"/>
                     <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
@@ -112,8 +112,7 @@
                         </select>
                     </td>
                 </c:if>
-
-            </c:otherwise>
+            </c:when>
         </c:choose>
     </tr>
 </table>
@@ -121,88 +120,88 @@
 <table style="width: 100%">
     <tr>
         <td style="vertical-align:top;">
-<c:choose>
-<c:when test="${model.listType eq 'users'}">
-    <table>
-        <tr>
-            <th><fmt:message key="home.chart.total"/></th>
-            <th><fmt:message key="home.chart.stream"/></th>
-        </tr>
-        <tr>
-            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="total"/></c:url>" alt=""></td>
-            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="stream"/></c:url>" alt=""></td>
-        </tr>
-        <tr>
-            <th><fmt:message key="home.chart.download"/></th>
-            <th><fmt:message key="home.chart.upload"/></th>
-        </tr>
-        <tr>
-            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="download"/></c:url>" alt=""></td>
-            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="upload"/></c:url>" alt=""></td>
-        </tr>
-</table>
+            <c:choose>
+                <c:when test="${model.listType eq 'users'}">
+                    <table>
+                        <tr>
+                            <th><fmt:message key="home.chart.total"/></th>
+                            <th><fmt:message key="home.chart.stream"/></th>
+                        </tr>
+                        <tr>
+                            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="total"/></c:url>" alt=""></td>
+                            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="stream"/></c:url>" alt=""></td>
+                        </tr>
+                        <tr>
+                            <th><fmt:message key="home.chart.download"/></th>
+                            <th><fmt:message key="home.chart.upload"/></th>
+                        </tr>
+                        <tr>
+                            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="download"/></c:url>" alt=""></td>
+                            <td><img src="<c:url value="/userChart.view"><c:param name="type" value="upload"/></c:url>" alt=""></td>
+                        </tr>
+                    </table>
 
-</c:when>
-<c:otherwise>
+                </c:when>
+                <c:otherwise>
 
-    <div id="albumList">
-        <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
+                    <div id="albumList">
+                        <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
-            <div class="albumThumb">
-                <c:import url="coverArt.jsp">
-                    <c:param name="albumId" value="${album.id}"/>
-                    <c:param name="albumName" value="${album.albumTitle}"/>
-                    <c:param name="coverArtSize" value="${model.coverArtSize}"/>
-                    <c:param name="showLink" value="true"/>
-                    <c:param name="showZoom" value="false"/>
-                    <c:param name="showChange" value="false"/>
-                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                </c:import>
+                            <div class="albumThumb">
+                                <c:import url="coverArt.jsp">
+                                    <c:param name="albumId" value="${album.id}"/>
+                                    <c:param name="albumName" value="${album.albumTitle}"/>
+                                    <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                                    <c:param name="showLink" value="true"/>
+                                    <c:param name="showZoom" value="false"/>
+                                    <c:param name="showChange" value="false"/>
+                                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                                </c:import>
 
-                <div class="detail">
-                    <c:if test="${not empty album.playCount}">
-                        <fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message>
-                    </c:if>
-                    <c:if test="${not empty album.lastPlayed}">
-                        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
-                        <fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message>
-                    </c:if>
-                    <c:if test="${not empty album.created}">
-                        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
-                        <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
-                    </c:if>
-                    <c:if test="${not empty album.rating}">
-                        <c:import url="rating.jsp">
-                            <c:param name="readonly" value="true"/>
-                            <c:param name="rating" value="${album.rating}"/>
-                        </c:import>
-                    </c:if>
-                </div>
+                                <div class="detail">
+                                    <c:if test="${not empty album.playCount}">
+                                        <fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message>
+                                    </c:if>
+                                    <c:if test="${not empty album.lastPlayed}">
+                                        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
+                                        <fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message>
+                                    </c:if>
+                                    <c:if test="${not empty album.created}">
+                                        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
+                                        <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
+                                    </c:if>
+                                    <c:if test="${not empty album.rating}">
+                                        <c:import url="rating.jsp">
+                                            <c:param name="readonly" value="true"/>
+                                            <c:param name="rating" value="${album.rating}"/>
+                                        </c:import>
+                                    </c:if>
+                                </div>
 
-                <c:choose>
-                    <c:when test="${empty album.artist and empty album.albumTitle}">
-                        <div class="detail"><fmt:message key="common.unknown"/></div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="detail"><b><str:truncateNicely lower="22" upper="22">${album.artist}</str:truncateNicely></b></div>
-                        <div class="detail"><str:truncateNicely lower="22" upper="22">${album.albumTitle}</str:truncateNicely></div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </c:forEach>
-    </div>
-
-</c:otherwise>
-</c:choose>
-        </td>
-            <c:if test="${not empty model.welcomeMessage}">
-                <td style="vertical-align:top;width:20em">
-                    <div style="padding:0 1em 0 1em;border-left:1px solid #<spring:theme code="detailColor"/>">
-                        <sub:wiki text="${model.welcomeMessage}"/>
+                                <c:choose>
+                                    <c:when test="${empty album.artist and empty album.albumTitle}">
+                                        <div class="detail"><fmt:message key="common.unknown"/></div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="detail"><b><str:truncateNicely lower="22" upper="22">${album.artist}</str:truncateNicely></b></div>
+                                        <div class="detail"><str:truncateNicely lower="22" upper="22">${album.albumTitle}</str:truncateNicely></div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </c:forEach>
                     </div>
-                </td>
-            </c:if>
-        </tr>
-    </table>
+
+                </c:otherwise>
+            </c:choose>
+        </td>
+        <c:if test="${not empty model.welcomeMessage}">
+            <td style="vertical-align:top;width:20em">
+                <div style="padding:0 1em 0 1em;border-left:1px solid #<spring:theme code="detailColor"/>">
+                    <sub:wiki text="${model.welcomeMessage}"/>
+                </div>
+            </td>
+        </c:if>
+    </tr>
+</table>
 
 </body></html>
