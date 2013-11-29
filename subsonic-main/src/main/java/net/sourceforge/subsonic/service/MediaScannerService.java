@@ -256,6 +256,13 @@ public class MediaScannerService {
                 album.setCoverArtPath(parent.getCoverArtPath());
             }
         }
+        if (album.getYear() == null) {
+            album.setYear(file.getYear());
+        }
+        if (album.getGenre() == null) {
+            album.setGenre(file.getGenre());
+        }
+
         boolean firstEncounter = !lastScanned.equals(album.getLastScanned());
         if (firstEncounter) {
             album.setDurationSeconds(0);

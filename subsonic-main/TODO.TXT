@@ -39,9 +39,10 @@ REST: Add year & genre to albums.
 TODO IN 4.9
 --------------
 New album lists
-  Add year & genre to ID3 REST album.
+  Add year & genre to ID3 album, also REST.
   Set backImage, forwardImage in all theme properties.
   Review colors in autocover. Use white album title?
+  Fancier autocover.
 Single songs in left.jsp have wrong v align.
 Check .headerSelected in skins.
 More linespacing
