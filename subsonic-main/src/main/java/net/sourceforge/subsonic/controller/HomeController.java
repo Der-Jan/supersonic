@@ -18,23 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.view.RedirectView;
-
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -45,8 +28,23 @@ import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.view.RedirectView;
 
-import static org.springframework.web.bind.ServletRequestUtils.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
+import static org.springframework.web.bind.ServletRequestUtils.getStringParameter;
 
 /**
  * Controller for the home page.
@@ -57,10 +55,7 @@ public class HomeController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(HomeController.class);
 
-    private static final int DEFAULT_LIST_SIZE = 20;
-    private static final int MAX_LIST_SIZE = 500;
-    private static final int DEFAULT_LIST_OFFSET = 0;
-    private static final int MAX_LIST_OFFSET = 5000;
+    private static final int LIST_SIZE = 20;
 
     private SettingsService settingsService;
     private MediaScannerService mediaScannerService;
@@ -75,50 +70,38 @@ public class HomeController extends ParameterizableViewController {
         if (user.isAdminRole() && settingsService.isGettingStartedEnabled()) {
             return new ModelAndView(new RedirectView("gettingStarted.view"));
         }
-
-        int listSize = DEFAULT_LIST_SIZE;
-        int listOffset = DEFAULT_LIST_OFFSET;
-        if (request.getParameter("listSize") != null) {
-            listSize = Math.max(0, Math.min(Integer.parseInt(request.getParameter("listSize")), MAX_LIST_SIZE));
-        }
-        if (request.getParameter("listOffset") != null) {
-            listOffset = Math.max(0, Math.min(Integer.parseInt(request.getParameter("listOffset")), MAX_LIST_OFFSET));
-        }
-
-        String listType = request.getParameter("listType");
-        if (listType == null) {
-            listType = "random";
-        }
+        int listOffset = getIntParameter(request, "listOffset", 0);
+        String listType = getStringParameter(request, "listType", "random");
 
         Map<String, Object> map = new HashMap<String, Object>();
         List<Album> albums = Collections.emptyList();
         if ("highest".equals(listType)) {
-            albums = getHighestRated(listOffset, listSize);
+            albums = getHighestRated(listOffset, LIST_SIZE);
         } else if ("frequent".equals(listType)) {
-            albums = getMostFrequent(listOffset, listSize);
+            albums = getMostFrequent(listOffset, LIST_SIZE);
         } else if ("recent".equals(listType)) {
-            albums = getMostRecent(listOffset, listSize);
+            albums = getMostRecent(listOffset, LIST_SIZE);
         } else if ("newest".equals(listType)) {
-            albums = getNewest(listOffset, listSize);
+            albums = getNewest(listOffset, LIST_SIZE);
         } else if ("starred".equals(listType)) {
-            albums = getStarred(listOffset, listSize, user.getUsername());
+            albums = getStarred(listOffset, LIST_SIZE, user.getUsername());
         } else if ("random".equals(listType)) {
-            albums = getRandom(listSize);
+            albums = getRandom(LIST_SIZE);
         } else if ("alphabetical".equals(listType)) {
-            albums = getAlphabetical(listOffset, listSize, true);
+            albums = getAlphabetical(listOffset, LIST_SIZE, true);
         } else if ("decade".equals(listType)) {
             List<Integer> decades = createDecades();
             map.put("decades", decades);
             int decade = getIntParameter(request, "decade", decades.get(0));
             map.put("decade", decade);
-            albums = getByDecade(listOffset, listSize, decade);
+            albums = getByDecade(listOffset, LIST_SIZE, decade);
         } else if ("genre".equals(listType)) {
             List<String> genres = mediaFileService.getGenres();
             map.put("genres", genres);
             if (!genres.isEmpty()) {
                 String genre = getStringParameter(request, "genre", genres.get(0));
                 map.put("genre", genre);
-                albums = getByGenre(listOffset, listSize, genre);
+                albums = getByGenre(listOffset, LIST_SIZE, genre);
             }
         }
 
@@ -128,7 +111,7 @@ public class HomeController extends ParameterizableViewController {
         map.put("welcomeMessage", settingsService.getWelcomeMessage());
         map.put("isIndexBeingCreated", mediaScannerService.isScanning());
         map.put("listType", listType);
-        map.put("listSize", listSize);
+        map.put("listSize", LIST_SIZE);
         map.put("listOffset", listOffset);
         map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
 
