@@ -18,6 +18,22 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sourceforge.subsonic.Logger;
@@ -32,21 +48,6 @@ import net.sourceforge.subsonic.service.metadata.MetaData;
 import net.sourceforge.subsonic.service.metadata.MetaDataParser;
 import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
 import net.sourceforge.subsonic.util.FileUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
 
@@ -285,7 +286,6 @@ public class MediaFileService {
     /**
      * Returns albums in alphabetial order.
      *
-     *
      * @param offset Number of albums to skip.
      * @param count  Maximum number of albums to return.
      * @param byArtist Whether to sort by artist name
@@ -293,6 +293,30 @@ public class MediaFileService {
      */
     public List<MediaFile> getAlphabetialAlbums(int offset, int count, boolean byArtist) {
         return mediaFileDao.getAlphabetialAlbums(offset, count, byArtist);
+    }
+
+    /**
+     * Returns albums in a decade.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param decade The first year of the decade, e.g., 1980
+     * @return Albums in the decade.
+     */
+    public List<MediaFile> getAlbumsByDecade(int offset, int count, int decade) {
+        return mediaFileDao.getAlbumsByDecade(offset, count, decade);
+    }
+
+    /**
+     * Returns albums in a genre.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param genre The genre name.
+     * @return Albums in the genre.
+     */
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
+        return mediaFileDao.getAlbumsByGenre(offset, count, genre);
     }
 
     public Date getMediaFileStarredDate(int id, String username) {
@@ -443,13 +467,14 @@ public class MediaFileService {
                 if (firstChild != null) {
                     mediaFile.setMediaType(ALBUM);
 
-                    // Guess artist/album name and year.
+                    // Guess artist/album name, year and genre.
                     MetaDataParser parser = metaDataParserFactory.getParser(firstChild);
                     if (parser != null) {
                         MetaData metaData = parser.getMetaData(firstChild);
                         mediaFile.setArtist(metaData.getAlbumArtist());
                         mediaFile.setAlbumName(metaData.getAlbumName());
                         mediaFile.setYear(metaData.getYear());
+                        mediaFile.setGenre(metaData.getGenre());
                     }
 
                     // Look for cover art.
@@ -606,5 +631,4 @@ public class MediaFileService {
     public void setAlbumDao(AlbumDao albumDao) {
         this.albumDao = albumDao;
     }
-
 }

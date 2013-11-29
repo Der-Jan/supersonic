@@ -32,7 +32,7 @@
 </c:if>
 
 <c:if test="${not empty command.artists}">
-    <h2><fmt:message key="search.hits.artists"/></h2>
+    <h2><b><fmt:message key="search.hits.artists"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
@@ -41,11 +41,10 @@
             </sub:url>
 
             <tr class="artistRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
@@ -61,7 +60,7 @@
 </c:if>
 
 <c:if test="${not empty command.albums}">
-    <h2><fmt:message key="search.hits.albums"/></h2>
+    <h2><b><fmt:message key="search.hits.albums"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
@@ -70,11 +69,10 @@
             </sub:url>
 
             <tr class="albumRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
@@ -96,7 +94,7 @@
 
 
 <c:if test="${not empty command.songs}">
-    <h2><fmt:message key="search.hits.songs"/></h2>
+    <h2><b><fmt:message key="search.hits.songs"/></b></h2>
     <table style="border-collapse:collapse">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 
@@ -105,17 +103,16 @@
             </sub:url>
 
             <tr class="songRow" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
-                    <c:param name="downloadEnabled" value="${command.user.downloadRole and not command.partyModeEnabled}"/>
                     <c:param name="video" value="${match.video and command.player.web}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
-                        ${match.title}
+                        <span class="songTitle">${match.title}</span>
                 </td>
 
                 <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:1.25em">

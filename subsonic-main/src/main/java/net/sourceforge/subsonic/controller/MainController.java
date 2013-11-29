@@ -90,6 +90,7 @@ public class MainController extends ParameterizableViewController {
         map.put("artist", guessArtist(children));
         map.put("album", guessAlbum(children));
         map.put("player", player);
+        map.put("sieblingCoverArtScheme", CoverArtScheme.SMALL);
         map.put("user", securityService.getCurrentUser(request));
         map.put("visibility", userSettings.getMainVisibility());
         map.put("showAlbumYear", settingsService.isSortAlbumsByYear());
@@ -126,18 +127,9 @@ public class MainController extends ParameterizableViewController {
         CoverArtScheme scheme = player.getCoverArtScheme();
         if (scheme != CoverArtScheme.OFF) {
             List<MediaFile> coverArts = getCoverArts(dir, children);
-            int size = scheme.getSize();
-            if (dir.isAlbum()) {
-                size *= 2;
-            }
             map.put("coverArts", coverArts);
-            map.put("coverArtSize", size);
-            if (coverArts.isEmpty() && dir.isAlbum()) {
-                map.put("showGenericCoverArt", true);
-            }
+            setSieblingAlbums(dir, map);
         }
-
-        setPreviousAndNextAlbums(dir, map);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -186,15 +178,13 @@ public class MainController extends ParameterizableViewController {
         }
 
         List<MediaFile> coverArts = new ArrayList<MediaFile>();
-        if (dir.isAlbum() && dir.getCoverArtPath() != null) {
+        if (dir.isAlbum()) {
             coverArts.add(dir);
         } else {
             for (MediaFile child : children) {
                 if (child.isAlbum()) {
-                    if (child.getCoverArtPath() != null) {
-                        coverArts.add(child);
-                    }
-                    if (coverArts.size() > limit) {
+                    coverArts.add(child);
+                    if (coverArts.size() >= limit) {
                         break;
                     }
                 }
@@ -229,19 +219,21 @@ public class MainController extends ParameterizableViewController {
         return result;
     }
 
-    private void setPreviousAndNextAlbums(MediaFile dir, Map<String, Object> map) throws IOException {
+    private void setSieblingAlbums(MediaFile dir, Map<String, Object> map) throws IOException {
         MediaFile parent = mediaFileService.getParentOf(dir);
 
         if (dir.isAlbum() && !mediaFileService.isRoot(parent)) {
             List<MediaFile> sieblings = mediaFileService.getChildrenOf(parent, false, true, true);
+            sieblings.remove(dir);
 
-            int index = sieblings.indexOf(dir);
-            if (index > 0) {
-                map.put("previousAlbum", sieblings.get(index - 1));
+            int limit = settingsService.getCoverArtLimit();
+            if (limit == 0) {
+                limit = Integer.MAX_VALUE;
             }
-            if (index < sieblings.size() - 1) {
-                map.put("nextAlbum", sieblings.get(index + 1));
+            if (sieblings.size() > limit) {
+                sieblings = sieblings.subList(0, limit);
             }
+            map.put("sieblingAlbums", sieblings);
         }
     }
 

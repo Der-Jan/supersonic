@@ -54,10 +54,10 @@
                         "<a title='" + nowPlaying[i].tooltip + "' target='main' href='" + nowPlaying[i].albumUrl + "'>";
 
                 if (nowPlaying[i].artist != null) {
-                    html += "<em>" + nowPlaying[i].artist + "</em><br/>";
+                    html += nowPlaying[i].artist + "<br/>";
                 }
 
-                html += nowPlaying[i].title + "</a><br/>" +
+                html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>" +
                         "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 430, 550)\">" +
                         "<fmt:message key="main.lyrics"/>" + "</a></span></td><td style='padding-top:1em'>";
 

@@ -7,14 +7,18 @@
  * Author: Sindre Mehus
  */
 
-/* The primary background color (light blue). */
+/* The primary background color (light gray). */
 .bgcolor1 {
-    background-color: #EFEFEF;
+    background-color: #F9F9F9;
 }
 
-/* The secondary background color (darker blue). */
+/* The secondary background color (darker gray). */
 .bgcolor2, .ruleTableHeader, .log {
-    background-color: #DEE3E7
+    background-color: #F1F1F1
+}
+
+.headerSelected {
+    border-bottom: 3px solid darkorange;
 }
 
 /* Put stuff here if you need to customize any of the frames. */
@@ -29,10 +33,6 @@
 .playlistframe {
 }
 
-/* Background color for selected header. */
-.headerSelected {
-    background-color: lightyellow;
-}
 
 /* Background color for form controls (use default). */
 input, select {
@@ -74,7 +74,7 @@ a:hover, a:hover * {
 }
 
 /* Simple dark border. */
-.border1, .ruleTableHeader, .ruleTableCell, .headerSelected, .log {
+.border1, .ruleTableHeader, .ruleTableCell, .log {
     border: 1px solid black;
 }
 
@@ -130,7 +130,7 @@ p {
 h1 {
     white-space: nowrap;
     font-size: 150%;
-    padding: 0 0 0.2em 0;
+    padding: 0;
     border: 0;
     margin: 0;
 }
@@ -138,7 +138,7 @@ h1 {
 h2 {
     white-space: nowrap;
     font-size: 102%;
-    margin: 1em 0 0.2em 0;
+    margin: 0.8em 0 0.2em 0;
 }
 
 form {
@@ -184,14 +184,20 @@ img {
     vertical-align: middle;
 }
 
-.headerSelected {
-    padding: 0.25em;
+.header, .headerSelected {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    vertical-align: middle;
 }
 
 .detail {
     white-space: nowrap;
     font-size: 90%;
     line-height: 1.25em;
+}
+
+.songTitle {
+    font-style: italic;
 }
 
 .warning {

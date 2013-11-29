@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -117,8 +118,21 @@ public class PlayQueueService {
 
         Player player = getCurrentPlayer(request, response);
         MediaFile file = mediaFileService.getMediaFile(id);
-        List<MediaFile> files = mediaFileService.getDescendantsOf(file, true);
+        List<MediaFile> files = file.isFile() ? getSubsequentFiles(file) : mediaFileService.getDescendantsOf(file, true);
         return doPlay(request, player, files);
+    }
+
+    private List<MediaFile> getSubsequentFiles(MediaFile file) {
+        MediaFile parent = mediaFileService.getParentOf(file);
+        if (parent == null) {
+            return Arrays.asList(file);
+        }
+        List<MediaFile> children = mediaFileService.getChildrenOf(parent, true, false, true);
+        int index = children.indexOf(file);
+        if (index == -1) {  // Just in case...
+            return Arrays.asList(file);
+        }
+        return children.subList(index, children.size());
     }
 
     public PlayQueueInfo playPlaylist(int id) throws Exception {

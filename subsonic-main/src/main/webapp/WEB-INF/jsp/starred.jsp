@@ -41,11 +41,10 @@
             </sub:url>
 
             <tr>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${artist.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyModeEnabled or not artist.directory)}"/>
-                    <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyModeEnabled}"/>
                     <c:param name="starEnabled" value="true"/>
                     <c:param name="starred" value="${not empty artist.starredDate}"/>
                     <c:param name="asTable" value="true"/>
@@ -68,11 +67,10 @@
             </sub:url>
 
             <tr>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${album.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyModeEnabled or not album.directory)}"/>
-                    <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyModeEnabled}"/>
                     <c:param name="starEnabled" value="true"/>
                     <c:param name="starred" value="${not empty album.starredDate}"/>
                     <c:param name="asTable" value="true"/>
@@ -101,11 +99,10 @@
             </sub:url>
 
             <tr>
-                <c:import url="playAddDownload.jsp">
+                <c:import url="playButtons.jsp">
                     <c:param name="id" value="${song.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyModeEnabled or not song.directory)}"/>
-                    <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyModeEnabled}"/>
                     <c:param name="starEnabled" value="true"/>
                     <c:param name="starred" value="${not empty song.starredDate}"/>
                     <c:param name="video" value="${song.video and model.player.web}"/>

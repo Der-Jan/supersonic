@@ -869,6 +869,10 @@ public class RESTController extends MultiActionController {
             albums = homeController.getAlphabetical(offset, size, true);
         } else if ("alphabeticalByName".equals(type)) {
             albums = homeController.getAlphabetical(offset, size, false);
+        } else if ("byGenre".equals(type)) {
+            albums = homeController.getByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+        } else if ("byDecade".equals(type)) {
+            albums = homeController.getByDecade(offset, size, getRequiredIntParameter(request, "decade"));
         } else if ("random".equals(type)) {
             albums = homeController.getRandom(size);
         } else {
@@ -1013,6 +1017,8 @@ public class RESTController extends MultiActionController {
         attributes.add("artist", mediaFile.getArtist());
         attributes.add("isDir", mediaFile.isDirectory());
         attributes.add("coverArt", findCoverArt(mediaFile, parent));
+        attributes.add("year", mediaFile.getYear());
+        attributes.add("genre", mediaFile.getGenre());
         attributes.add("created", StringUtil.toISO8601(mediaFile.getCreated()));
         attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
         attributes.add("userRating", ratingService.getRatingForUser(username, mediaFile));
@@ -1023,8 +1029,6 @@ public class RESTController extends MultiActionController {
             attributes.add("bitRate", mediaFile.getBitRate());
             attributes.add("track", mediaFile.getTrackNumber());
             attributes.add("discNumber", mediaFile.getDiscNumber());
-            attributes.add("year", mediaFile.getYear());
-            attributes.add("genre", mediaFile.getGenre());
             attributes.add("size", mediaFile.getFileSize());
             String suffix = mediaFile.getFormat();
             attributes.add("suffix", suffix);

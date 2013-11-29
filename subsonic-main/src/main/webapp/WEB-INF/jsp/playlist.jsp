@@ -152,18 +152,18 @@
 
 <h1 id="name">${model.playlist.name}</h1>
 <h2>
-    <a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a>
+    <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
     <c:if test="${model.user.downloadRole}">
         <c:url value="download.view" var="downloadUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
-        | <a href="${downloadUrl}"><fmt:message key="common.download"/></a>
+        | <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
     </c:if>
     <c:if test="${model.editAllowed}">
-        | <a href="javascript:void(0)" onclick="onEditPlaylist();"><fmt:message key="common.edit"/></a>
-        | <a href="javascript:void(0)" onclick="onDeletePlaylist();"><fmt:message key="common.delete"/></a>
+        | <span class="header"><a href="javascript:void(0)" onclick="onEditPlaylist();"><fmt:message key="common.edit"/></a></span>
+        | <span class="header"><a href="javascript:void(0)" onclick="onDeletePlaylist();"><fmt:message key="common.delete"/></a></span>
     </c:if>
     <c:url value="exportPlaylist.view" var="exportUrl"><c:param name="id" value="${model.playlist.id}"/></c:url>
-    | <a href="${exportUrl}"><fmt:message key="playlist2.export"/></a>
+    | <span class="header"><a href="${exportUrl}"><fmt:message key="playlist2.export"/></a></span>
 
 </h2>
 
@@ -195,7 +195,7 @@
                  onclick="onAdd(this.id.substring(3) - 1)"></a></td>
 
         <td style="padding-right:0.25em"></td>
-        <td style="padding-right:1.25em"><span id="title">Title</span></td>
+        <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
         <td style="padding-right:1.25em"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
         <td style="padding-right:1.25em"><span id="artist" class="detail">Artist</span></td>
         <td style="padding-right:1.25em;text-align:right;"><span id="duration" class="detail">Duration</span></td>

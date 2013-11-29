@@ -33,6 +33,8 @@ public class Album {
     private int songCount;
     private int durationSeconds;
     private String coverArtPath;
+    private Integer year;
+    private String genre;
     private int playCount;
     private Date lastPlayed;
     private String comment;
@@ -44,7 +46,7 @@ public class Album {
     }
 
     public Album(int id, String path, String name, String artist, int songCount, int durationSeconds, String coverArtPath,
-            int playCount, Date lastPlayed, String comment, Date created, Date lastScanned, boolean present) {
+            Integer year, String genre, int playCount, Date lastPlayed, String comment, Date created, Date lastScanned, boolean present) {
         this.id = id;
         this.path = path;
         this.name = name;
@@ -52,6 +54,8 @@ public class Album {
         this.songCount = songCount;
         this.durationSeconds = durationSeconds;
         this.coverArtPath = coverArtPath;
+        this.year = year;
+        this.genre = genre;
         this.playCount = playCount;
         this.lastPlayed = lastPlayed;
         this.comment = comment;
@@ -114,6 +118,22 @@ public class Album {
 
     public void setCoverArtPath(String coverArtPath) {
         this.coverArtPath = coverArtPath;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getPlayCount() {

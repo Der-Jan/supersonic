@@ -100,7 +100,6 @@ public class NowPlayingService {
                 }
 
                 MediaFile mediaFile = mediaFileService.getMediaFile(file);
-                File coverArt = mediaFileService.getCoverArt(mediaFile);
 
                 String artist = mediaFile.getArtist();
                 String title = mediaFile.getTitle();
@@ -108,8 +107,8 @@ public class NowPlayingService {
                 String albumUrl = url.replaceFirst("/dwr/.*", "/main.view?id=" + mediaFile.getId());
                 String lyricsUrl = url.replaceFirst("/dwr/.*", "/lyrics.view?artistUtf8Hex=" + StringUtil.utf8HexEncode(artist) +
                         "&songUtf8Hex=" + StringUtil.utf8HexEncode(title));
-                String coverArtUrl = coverArt == null ? null : url.replaceFirst("/dwr/.*", "/coverArt.view?size=48&id=" + mediaFile.getId());
-                String coverArtZoomUrl = coverArt == null ? null : url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + mediaFile.getId());
+                String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?size=48&id=" + mediaFile.getId());
+                String coverArtZoomUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + mediaFile.getId());
 
                 String avatarUrl = null;
                 if (userSettings.getAvatarScheme() == AvatarScheme.SYSTEM) {

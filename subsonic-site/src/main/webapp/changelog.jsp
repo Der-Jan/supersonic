@@ -17,15 +17,16 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
-            <a name="4.9.beta1"><h2 class="div">Subsonic 4.9.beta2 - Nov 16, 2013</h2></a>
+            <a name="4.9.beta2"><h2 class="div">Subsonic 4.9.beta2 - Nov 16, 2013</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Use modern icons and fonts.</li>
                 <li><span class="bugid">New: </span>Added light icons for dark themes.</li>
+                <li><span class="bugid">New: </span>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
                 <li><span class="bugid">Bugfix: </span>Proper support for album artist.</li>
                 <li><span class="bugid">Bugfix: </span>Remember DLNA settings when restarting server.</li>
                 <li><span class="bugid">Bugfix: </span>Play next/last popup menu was unreadable in some themes.</li>
                 <li><span class="bugid">Bugfix: </span>Created signed installer for Mac OS.</li>
-                <li><span class="bugid">New: </span>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
+                <li><span class="bugid">Bugfix: </span>Set ID3 title tag based on Podcast episode name.</li>
                 <li><span class="bugid">REST: </span>Created updateUser method.</li>
                 <li><span class="bugid">REST: </span>Added "starred" to "Directory" and "Artist" in xsd.</li>
             </ul>
