@@ -57,7 +57,6 @@
             <c:when test="${model.listType eq 'random'}">
                 <td><div class="forward"><a href="home.view?listType=random"><fmt:message key="common.more"/></a></div></td>
             </c:when>
-
             <c:otherwise>
                 <sub:url value="home.view" var="previousUrl">
                     <sub:param name="listType" value="${model.listType}"/>
@@ -71,10 +70,18 @@
                     <sub:param name="genre" value="${model.genre}"/>
                     <sub:param name="decade" value="${model.decade}"/>
                 </sub:url>
-                <td style="padding-right:0.5em"><fmt:message key="home.albums"><fmt:param value="${model.listOffset + 1}"/><fmt:param value="${model.listOffset + model.listSize}"/></fmt:message></td>
+
+                <td style="padding-right:0.5em">
+                    <fmt:message key="home.albums">
+                        <fmt:param value="${model.listOffset + 1}"/>
+                        <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
+                    </fmt:message>
+                </td>
+
                 <c:if test="${model.listOffset gt 0}">
                     <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
                 </c:if>
+
                 <c:if test="${fn:length(model.albums) eq model.listSize}">
                     <td><a href="${nextUrl}"><img src="<spring:theme code="forwardImage"/>" alt=""></a></td>
                 </c:if>
