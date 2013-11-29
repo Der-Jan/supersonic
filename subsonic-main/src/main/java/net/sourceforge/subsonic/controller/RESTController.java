@@ -1017,6 +1017,8 @@ public class RESTController extends MultiActionController {
         attributes.add("artist", mediaFile.getArtist());
         attributes.add("isDir", mediaFile.isDirectory());
         attributes.add("coverArt", findCoverArt(mediaFile, parent));
+        attributes.add("year", mediaFile.getYear());
+        attributes.add("genre", mediaFile.getGenre());
         attributes.add("created", StringUtil.toISO8601(mediaFile.getCreated()));
         attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
         attributes.add("userRating", ratingService.getRatingForUser(username, mediaFile));
@@ -1027,8 +1029,6 @@ public class RESTController extends MultiActionController {
             attributes.add("bitRate", mediaFile.getBitRate());
             attributes.add("track", mediaFile.getTrackNumber());
             attributes.add("discNumber", mediaFile.getDiscNumber());
-            attributes.add("year", mediaFile.getYear());
-            attributes.add("genre", mediaFile.getGenre());
             attributes.add("size", mediaFile.getFileSize());
             String suffix = mediaFile.getFormat();
             attributes.add("suffix", suffix);

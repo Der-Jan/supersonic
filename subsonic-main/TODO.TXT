@@ -34,12 +34,13 @@ Replace Download button with Play last.
 When playing a single song, queue rest of album.
 Layout bug in playerSettings.jsp
 New album lists: "By decade" and "By genre".
+REST: Add year & genre to albums.
 
 TODO IN 4.9
 --------------
 New album lists
   REST support, test it.
-  Add year & genre to ID3-based album.
+  Add year & genre to ID3 REST album.
   Handle no genres.
   Set backImage, forwardImage in all theme properties.
   Show year in decade mode
