@@ -42,8 +42,6 @@ TODO IN 4.9
 --------------
 Remove appengine and javafx modules.
 New album lists
-  Test "between ? and ?"
-  RestController doesn@t have to use HomeController methods for album lists.
   Set backImage, forwardImage in all theme properties.
   Review colors in autocover. Use white album title?
   Fancier autocover.

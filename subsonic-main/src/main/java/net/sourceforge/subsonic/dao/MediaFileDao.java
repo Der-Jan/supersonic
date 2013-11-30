@@ -217,7 +217,7 @@ public class MediaFileDao extends AbstractDao {
      * @param byArtist Whether to sort by artist name
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabetialAlbums(int offset, int count, boolean byArtist) {
+    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist) {
         String orderBy = byArtist ? "artist, album" : "album";
         return query("select " + COLUMNS + " from media_file where type=? and artist != '' and present order by " + orderBy + " limit ? offset ?",
                 rowMapper, ALBUM.name(), count, offset);
