@@ -40,8 +40,10 @@ Bugfix: Settings > Personal was broken on Tomcat 7.
 
 TODO IN 4.9
 --------------
+Remove appengine and javafx modules.
 New album lists
   Add year & genre to ID3 album, also REST.
+  Add to albumlist2
   Set backImage, forwardImage in all theme properties.
   Review colors in autocover. Use white album title?
   Fancier autocover.

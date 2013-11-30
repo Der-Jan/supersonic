@@ -355,6 +355,8 @@ public class RESTController extends MultiActionController {
         attributes.add("duration", album.getDurationSeconds());
         attributes.add("created", StringUtil.toISO8601(album.getCreated()));
         attributes.add("starred", StringUtil.toISO8601(albumDao.getAlbumStarredDate(album.getId(), username)));
+        attributes.add("year", album.getYear());
+        attributes.add("genre", album.getGenre());
 
         return attributes;
     }
