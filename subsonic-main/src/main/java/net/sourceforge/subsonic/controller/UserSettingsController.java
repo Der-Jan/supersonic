@@ -18,16 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
 import net.sourceforge.subsonic.command.UserSettingsCommand;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
@@ -35,6 +25,14 @@ import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Controller for the page used to administrate users.
@@ -60,7 +58,7 @@ public class UserSettingsController extends SimpleFormController {
             command.setTranscodeSchemeName(userSettings.getTranscodeScheme().name());
 
         } else {
-            command.setNew(true);
+            command.setNewUser(true);
             command.setStreamRole(true);
             command.setSettingsRole(true);
         }
@@ -89,9 +87,9 @@ public class UserSettingsController extends SimpleFormController {
     protected void doSubmitAction(Object comm) throws Exception {
         UserSettingsCommand command = (UserSettingsCommand) comm;
 
-        if (command.isDelete()) {
+        if (command.isDeleteUser()) {
             deleteUser(command);
-        } else if (command.isNew()) {
+        } else if (command.isNewUser()) {
             createUser(command);
         } else {
             updateUser(command);
@@ -141,9 +139,9 @@ public class UserSettingsController extends SimpleFormController {
     private void resetCommand(UserSettingsCommand command) {
         command.setUser(null);
         command.setUsers(securityService.getAllUsers());
-        command.setDelete(false);
+        command.setDeleteUser(false);
         command.setPasswordChange(false);
-        command.setNew(true);
+        command.setNewUser(true);
         command.setStreamRole(true);
         command.setSettingsRole(true);
         command.setPassword(null);

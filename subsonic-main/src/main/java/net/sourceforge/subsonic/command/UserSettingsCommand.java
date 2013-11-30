@@ -18,10 +18,11 @@
  */
 package net.sourceforge.subsonic.command;
 
-import java.util.List;
+import net.sourceforge.subsonic.controller.UserSettingsController;
+import net.sourceforge.subsonic.domain.TranscodeScheme;
+import net.sourceforge.subsonic.domain.User;
 
-import net.sourceforge.subsonic.controller.*;
-import net.sourceforge.subsonic.domain.*;
+import java.util.List;
 
 /**
  * Command used in {@link UserSettingsController}.
@@ -44,8 +45,8 @@ public class UserSettingsCommand {
     private List<User> users;
     private boolean isAdmin;
     private boolean isPasswordChange;
-    private boolean isNew;
-    private boolean isDelete;
+    private boolean isNewUser;
+    private boolean isDeleteUser;
     private String password;
     private String confirmPassword;
     private String email;
@@ -170,20 +171,20 @@ public class UserSettingsCommand {
         isPasswordChange = passwordChange;
     }
 
-    public boolean isNew() {
-        return isNew;
+    public boolean isNewUser() {
+        return isNewUser;
     }
 
-    public void setNew(boolean isNew) {
-        this.isNew = isNew;
+    public void setNewUser(boolean isNewUser) {
+        this.isNewUser = isNewUser;
     }
 
-    public boolean isDelete() {
-        return isDelete;
+    public boolean isDeleteUser() {
+        return isDeleteUser;
     }
 
-    public void setDelete(boolean delete) {
-        isDelete = delete;
+    public void setDeleteUser(boolean deleteUser) {
+        this.isDeleteUser = deleteUser;
     }
 
     public String getPassword() {

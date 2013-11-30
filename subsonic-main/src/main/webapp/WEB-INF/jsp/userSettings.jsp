@@ -119,10 +119,10 @@
         </tr>
     </table>
 
-    <c:if test="${not command.new and not command.admin}">
+    <c:if test="${not command.newUser and not command.admin}">
         <table class="indent">
             <tr>
-                <td><form:checkbox path="delete" id="delete" cssClass="checkbox"/></td>
+                <td><form:checkbox path="deleteUser" id="delete" cssClass="checkbox"/></td>
                 <td><label for="delete"><fmt:message key="usersettings.delete"/></label></td>
             </tr>
         </table>
@@ -139,7 +139,7 @@
     </c:if>
 
     <c:choose>
-        <c:when test="${command.new}">
+        <c:when test="${command.newUser}">
 
             <table class="indent">
                 <tr>
