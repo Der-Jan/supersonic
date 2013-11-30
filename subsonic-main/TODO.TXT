@@ -33,18 +33,17 @@ Support subsonic.host in Util.getLocalIpAddress()
 Replace Download button with Play last.
 When playing a single song, queue rest of album.
 Layout bug in playerSettings.jsp
-New album lists: "By decade" and "By genre".
+New album lists: "By year range" and "By genre".
 REST: Add year & genre to albums.
 Bugfix: Settings > Users was broken on Tomcat 7.
 Bugfix: Settings > Personal was broken on Tomcat 7.
 
 TODO IN 4.9
 --------------
-Replace "byDecade" with "byYears"
 Remove appengine and javafx modules.
 New album lists
-  Add year & genre to ID3 album, also REST.
-  Add to albumlist2
+  Test "between ? and ?"
+  RestController doesn@t have to use HomeController methods for album lists.
   Set backImage, forwardImage in all theme properties.
   Review colors in autocover. Use white album title?
   Fancier autocover.

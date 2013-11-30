@@ -873,8 +873,9 @@ public class RESTController extends MultiActionController {
             albums = homeController.getAlphabetical(offset, size, false);
         } else if ("byGenre".equals(type)) {
             albums = homeController.getByGenre(offset, size, getRequiredStringParameter(request, "genre"));
-        } else if ("byDecade".equals(type)) {
-            albums = homeController.getByDecade(offset, size, getRequiredIntParameter(request, "decade"));
+        } else if ("byYear".equals(type)) {
+            albums = homeController.getByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
+                    getRequiredIntParameter(request, "toYear"));
         } else if ("random".equals(type)) {
             albums = homeController.getRandom(size);
         } else {
@@ -915,8 +916,9 @@ public class RESTController extends MultiActionController {
             albums = albumDao.getAlphabetialAlbums(offset, size, false);
         } else if ("byGenre".equals(type)) {
             albums = albumDao.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"));
-        } else if ("byDecade".equals(type)) {
-            albums = albumDao.getAlbumsByDecade(offset, size, getRequiredIntParameter(request, "decade"));
+        } else if ("byYear".equals(type)) {
+            albums = albumDao.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
+                    getRequiredIntParameter(request, "toYear"));
         } else if ("starred".equals(type)) {
             albums = albumDao.getStarredAlbums(offset, size, securityService.getCurrentUser(request).getUsername());
         } else if ("random".equals(type)) {

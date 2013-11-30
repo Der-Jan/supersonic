@@ -207,16 +207,17 @@ public class AlbumDao extends AbstractDao {
     }
 
     /**
-     * Returns albums in a decade.
+     * Returns albums within a year range.
      *
      * @param offset Number of albums to skip.
      * @param count  Maximum number of albums to return.
-     * @param decade The first year of the decade, e.g., 1980
-     * @return Albums in the decade.
+     * @param fromYear The first year in the range.
+     * @param toYear The last year in the range.
+     * @return Albums in the year range.
      */
-    public List<Album> getAlbumsByDecade(int offset, int count, int decade) {
+    public List<Album> getAlbumsByYear(int offset, int count, int fromYear, int toYear) {
         return query("select " + COLUMNS + " from album where present and year between ? and ? order by year limit ? offset ?",
-                rowMapper, decade, decade + 9, count, offset);
+                rowMapper, fromYear, toYear, count, offset);
     }
 
 
