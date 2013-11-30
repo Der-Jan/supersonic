@@ -41,12 +41,11 @@ Bugfix: Settings > Personal was broken on Tomcat 7.
 TODO IN 4.9
 --------------
 Remove appengine and javafx modules.
-New album lists
-  Set backImage, forwardImage in all theme properties.
-  Review colors in autocover. Use white album title?
-  Fancier autocover.
+Check .headerSelected in themes.
+Retest themes.
+Review colors in autocover.
+Fancier autocover.
 Single songs in left.jsp have wrong v align.
-Check .headerSelected in skins.
 More linespacing
 Change font color. Bigger font?
   http://developer.android.com/design/index.html
