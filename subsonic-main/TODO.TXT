@@ -41,8 +41,6 @@ Bugfix: Settings > Personal was broken on Tomcat 7.
 TODO IN 4.9
 --------------
 Remove appengine and javafx modules.
-Check .headerSelected in themes.
-Retest themes.
 Review colors in autocover.
 Fancier autocover.
 Single songs in left.jsp have wrong v align.

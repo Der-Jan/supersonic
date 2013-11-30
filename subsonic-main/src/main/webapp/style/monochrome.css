@@ -16,13 +16,6 @@
     background-color: #CCC;
 }
 
-/* Background colour for selected header, log etc. */
-.headerSelected {
-    color: #000000;
-    background-color: #AAAAAA;
-}
-
-
 /* The secondary foreground colour used for h1, details etc. */
 h1, .detail, .albumComment {
     color: #000000;
@@ -63,19 +56,6 @@ a:hover, a:hover * {
 input, select {
     color: #333;
     background-color: #EEE;
-}
-
-/* Hover colour for form controls. */
-input:hover, select:hover {
-    color: #000000;
-    background-color: #FFF;
-}
-
-/* Background colour for option controls. */
-option {
-    font-weight: bold;
-    background-color: #666666;
-    color: #FFFFFF;
 }
 
 /* The primary foreground colour. */
