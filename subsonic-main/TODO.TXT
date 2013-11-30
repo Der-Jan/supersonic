@@ -36,6 +36,7 @@ Layout bug in playerSettings.jsp
 New album lists: "By decade" and "By genre".
 REST: Add year & genre to albums.
 Bugfix: Settings > Users was broken on Tomcat 7.
+Bugfix: Settings > Personal was broken on Tomcat 7.
 
 TODO IN 4.9
 --------------
