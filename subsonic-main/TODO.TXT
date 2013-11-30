@@ -40,6 +40,7 @@ Bugfix: Settings > Personal was broken on Tomcat 7.
 
 TODO IN 4.9
 --------------
+Replace "byDecade" with "byYears"
 Remove appengine and javafx modules.
 New album lists
   Add year & genre to ID3 album, also REST.

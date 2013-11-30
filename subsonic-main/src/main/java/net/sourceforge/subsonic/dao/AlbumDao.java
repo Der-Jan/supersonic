@@ -193,6 +193,33 @@ public class AlbumDao extends AbstractDao {
                 rowMapper, username, count, offset);
     }
 
+    /**
+     * Returns albums in a genre.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param genre The genre name.
+     * @return Albums in the genre.
+     */
+    public List<Album> getAlbumsByGenre(int offset, int count, String genre) {
+        return query("select " + COLUMNS + " from album where present and genre=? limit ? offset ?",
+                rowMapper, genre, count, offset);
+    }
+
+    /**
+     * Returns albums in a decade.
+     *
+     * @param offset Number of albums to skip.
+     * @param count  Maximum number of albums to return.
+     * @param decade The first year of the decade, e.g., 1980
+     * @return Albums in the decade.
+     */
+    public List<Album> getAlbumsByDecade(int offset, int count, int decade) {
+        return query("select " + COLUMNS + " from album where present and year between ? and ? order by year limit ? offset ?",
+                rowMapper, decade, decade + 9, count, offset);
+    }
+
+
     public void markNonPresent(Date lastScanned) {
         int minId = queryForInt("select top 1 id from album where last_scanned != ? and present", 0, lastScanned);
         int maxId = queryForInt("select max(id) from album where last_scanned != ? and present", 0, lastScanned);

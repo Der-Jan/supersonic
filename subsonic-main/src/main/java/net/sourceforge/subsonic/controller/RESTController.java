@@ -913,6 +913,10 @@ public class RESTController extends MultiActionController {
             albums = albumDao.getAlphabetialAlbums(offset, size, true);
         } else if ("alphabeticalByName".equals(type)) {
             albums = albumDao.getAlphabetialAlbums(offset, size, false);
+        } else if ("byGenre".equals(type)) {
+            albums = albumDao.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+        } else if ("byDecade".equals(type)) {
+            albums = albumDao.getAlbumsByDecade(offset, size, getRequiredIntParameter(request, "decade"));
         } else if ("starred".equals(type)) {
             albums = albumDao.getStarredAlbums(offset, size, securityService.getCurrentUser(request).getUsername());
         } else if ("random".equals(type)) {

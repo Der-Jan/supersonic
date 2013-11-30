@@ -21,7 +21,10 @@
         <td></td>
         <td>The list type. Must be one of the following: <code>random</code>, <code>newest</code>,
             <code>frequent</code>, <code>recent</code>, <code>starred</code>,
-            <code>alphabeticalByName</code> or <code>alphabeticalByArtist</code>.</td>
+            <code>alphabeticalByName</code> or <code>alphabeticalByArtist</code>.
+            Since <a href="#versions">1.10.1</a> you can use <code>byDecade</code> and <code>byGenre</code> to list albums in
+            a given decade or genre.
+        </td>
     </tr>
     <tr>
         <td><code>size</code></td>
@@ -34,6 +37,18 @@
         <td>No</td>
         <td>0</td>
         <td>The list offset. Useful if you for example want to page through the list of newest albums.</td>
+    </tr>
+    <tr>
+        <td><code>decade</code></td>
+        <td>Yes (if <code>type</code> is <code>byDecade</code></td>
+        <td></td>
+        <td>The first year of the decade, e.g., 1980.</td>
+    </tr>
+    <tr class="table-altrow">
+        <td><code>genre</code></td>
+        <td>Yes (if <code>type</code> is <code>byGenre</code></td>
+        <td></td>
+        <td>The name of the genre, e.g., "Rock".</td>
     </tr>
 </table>
 <p>
