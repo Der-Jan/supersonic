@@ -40,19 +40,19 @@
     </tr>
     <tr>
         <td><code>fromYear</code></td>
-        <td>Yes (if <code>type</code> is <code>byYear</code></td>
+        <td>Yes (if <code>type</code> is <code>byYear</code>)</td>
         <td></td>
         <td>The first year in the range.</td>
     </tr>
     <tr class="table-altrow">
         <td><code>toYear</code></td>
-        <td>Yes (if <code>type</code> is <code>byYear</code></td>
+        <td>Yes (if <code>type</code> is <code>byYear</code>)</td>
         <td></td>
         <td>The last year in the range.</td>
     </tr>
     <tr>
         <td><code>genre</code></td>
-        <td>Yes (if <code>type</code> is <code>byGenre</code></td>
+        <td>Yes (if <code>type</code> is <code>byGenre</code>)</td>
         <td></td>
         <td>The name of the genre, e.g., "Rock".</td>
     </tr>

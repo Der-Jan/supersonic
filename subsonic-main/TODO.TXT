@@ -1,42 +1,5 @@
-DONE IN 4.9
--------------
-Bugfix: Playlist management was broken when deploying on Tomcat 7.
-Make license key field longer
-When clicking "Create new playlist", automatically show all.
-Use javascript to set css class in menu.
-Simplified/improved top.jsp
-Use Roboto font.
-Larger album arts
-Right-align album art.
-Don't show "More action" if not album.
-Don't let album art push combo box down.
-Top-align cover art with first song.
-Show 20 albums by default.
-Use larger album art on home page (150)
-Show artist name in bold in home page.
-Longer names before ellipsis
-More space to the right of the Subsonic logo.
-Changed colors in default theme.
-Improve styling for selected setting / album list tab.
-Add spacing in Play all | Play random ...
-Put captionLength into CoverArtScheme.
-Show thumbnail for siebling albums
-Show all song titles in italic.
-Use max gain 0dB in jukebox to avoid distortion caused by clipping.
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
-Test layout with ads.
-home.jsp responsive design
-   http://sourceforge.net/p/subsonic/patches/18/
-Test new top.jsp in IE etc.
-Support subsonic.host in Util.getLocalIpAddress()
-  https://sourceforge.net/p/subsonic/bugs/95/
-Replace Download button with Play last.
-When playing a single song, queue rest of album.
-Layout bug in playerSettings.jsp
-New album lists: "By year range" and "By genre".
-REST: Add year & genre to albums.
-Bugfix: Settings > Users was broken on Tomcat 7.
-Bugfix: Settings > Personal was broken on Tomcat 7.
+DONE IN 4.9.beta3
+-----------------
 
 TODO IN 4.9
 --------------
