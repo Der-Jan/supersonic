@@ -75,7 +75,6 @@
 
     <modules>
         <module>subsonic-main</module>
-        <module>subsonic-appengine</module>
     </modules>
 
     <profiles>
