@@ -3,12 +3,11 @@ DONE IN 4.9.beta3
 
 TODO IN 4.9
 --------------
-Review colors in autocover.
-Fancier autocover.
+Can't play videos from left.jsp
 Single songs in left.jsp have wrong v align.
-More linespacing
-Change font color. Bigger font?
-  http://developer.android.com/design/index.html
+DLNA
+  Make DLNA name customizable
+  Don't use ID3, or make it customizable.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
@@ -85,7 +84,6 @@ Something wrong with matching players/users in Now Playing.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
-Reconsider album artist.
 Prefill minisub
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1394bd52aaaf4969
 FLAC crashes Flash in Firefox (with server on Linux).
@@ -93,21 +91,16 @@ FLAC crashes Flash in Firefox (with server on Linux).
 
 
 Postponed:
-  - ConcurrentModificationException
-      https://mail.google.com/mail/u/0/?tab=cm#inbox/13822e43383dca84
   - Add "Force rescan" option.
   - Increase line height in playlist.jsp
   - Rename to play queue in Settings > Player.
   - Show message if no songs are selected when doing add to playlist.
   - Encourage users to save email addresses, also for admin.  Explain why.
   - Update apps to include PlayBook version.
-  - REST: Add example links to demo server.
-  - Eliminate HomeController.Album.
   - Clicking play button on a video podcast doesn't work.
 
 Replace usage of dwr.util and prototype with jquery.
 Handle albums without artist. Don't create them?
-Support comment and ratings for Album table.
 Test getPlaylist vs old-style IDs.
 Fix broken REST scrobbling, as reported by Ben.
 JWPlayer subtitle plugin
@@ -133,7 +126,6 @@ subcl:
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=7897
 Better video quality when sharing
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=7646
-Show license details in About.
 Support custom domain name in sharing (Settings > Advanced)
 Rename "offsetSeconds" to "timeOffset" in StreamController, and update API doc.
 Add "byteOffset" parameter as well.
@@ -144,7 +136,6 @@ Bookmark support (for audiobooks, podcasts)
 Stream from devices
   https://mail.google.com/mail/?shva=1#inbox/13352f77f870eba1
 Go through tracker.
-Does canaca allow outgoing port 4040?
 Recursive getFolders API method?
   https://Smail.google.com/mail/?shva=1#inbox/13090cd32a9922bd
 Checkbox, combobox bg color
@@ -184,7 +175,7 @@ TODO IN ANDROID 4.1
 --------------------
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
-
+Support add to playlist
 Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?
