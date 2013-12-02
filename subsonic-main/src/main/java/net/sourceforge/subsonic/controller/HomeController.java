@@ -55,7 +55,7 @@ public class HomeController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(HomeController.class);
 
-    private static final int LIST_SIZE = 20;
+    private static final int LIST_SIZE = 40;
 
     private SettingsService settingsService;
     private MediaScannerService mediaScannerService;

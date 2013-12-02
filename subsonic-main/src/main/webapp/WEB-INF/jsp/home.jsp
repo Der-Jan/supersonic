@@ -93,8 +93,7 @@
                         <fmt:message key="home.decade.text"/>
                     </td>
                     <td>
-                        <select name="decade"
-                                onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=' + options[selectedIndex].value">
+                        <select name="decade" onchange="location='home.view?listType=${model.listType}&amp;decade=' + options[selectedIndex].value">
                             <c:forEach items="${model.decades}" var="decade">
                                 <option
                                     ${decade eq model.decade ? "selected" : ""} value="${decade}">${decade}</option>
@@ -107,7 +106,7 @@
                         <fmt:message key="home.genre.text"/>
                     </td>
                     <td>
-                        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;genre=' + options[selectedIndex].value">
+                        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;genre=' + options[selectedIndex].value">
                             <c:forEach items="${model.genres}" var="genre">
                                 <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
                             </c:forEach>
