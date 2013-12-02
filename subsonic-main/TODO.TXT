@@ -3,7 +3,6 @@ DONE IN 4.9.beta3
 
 TODO IN 4.9
 --------------
-Show album pager also at bottom.
 Review colors in autocover.
 Fancier autocover.
 Single songs in left.jsp have wrong v align.
