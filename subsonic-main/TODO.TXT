@@ -6,12 +6,18 @@ DLNA: song album art
 
 TODO IN 4.9
 --------------
-Can't play videos from left.jsp
-Single songs in left.jsp have wrong v align.
 DLNA
   Make DLNA name customizable
   Don't use ID3, or make it customizable.
   video
+  Playlists
+  Clean up TagBased
+  Make sure sublist works
+  Make sure top-level single files work.
+  Make sure only direct children are added.
+
+Can't play videos from left.jsp?
+Single songs in left.jsp have wrong v align.
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.

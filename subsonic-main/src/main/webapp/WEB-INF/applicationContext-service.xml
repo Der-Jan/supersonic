@@ -191,6 +191,7 @@
 
     <bean id="folderBasedContentDirectory" class="net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory">
         <property name="settingsService" ref="settingsService"/>
+        <property name="playlistService" ref="playlistService"/>
         <property name="playerService" ref="playerService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="mediaFileService" ref="mediaFileService"/>

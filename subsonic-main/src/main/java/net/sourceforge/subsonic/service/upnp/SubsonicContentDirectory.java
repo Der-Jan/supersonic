@@ -41,7 +41,7 @@ import org.seamless.util.MimeType;
  */
 public abstract class SubsonicContentDirectory extends AbstractContentDirectoryService {
 
-    protected static final String ROOT_CONTAINER_ID = "0";
+    protected static final String CONTAINER_ID_ROOT = "0";
 
     protected SettingsService settingsService;
     private PlayerService playerService;

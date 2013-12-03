@@ -23,7 +23,10 @@ import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlaylistService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
@@ -36,6 +39,7 @@ import org.fourthline.cling.support.model.WriteStatus;
 import org.fourthline.cling.support.model.container.Container;
 import org.fourthline.cling.support.model.container.MusicAlbum;
 import org.fourthline.cling.support.model.container.MusicArtist;
+import org.fourthline.cling.support.model.container.PlaylistContainer;
 import org.fourthline.cling.support.model.container.StorageFolder;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
@@ -52,8 +56,9 @@ import java.util.List;
 public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private static final Logger LOG = Logger.getLogger(FolderBasedContentDirectory.class);
-
+    public static final String CONTAINER_ID_PLAYLIST_ROOT = "playlists";
     private MediaFileService mediaFileService;
+    private PlaylistService playlistService;
 
     @Override
     public BrowseResult browse(String objectId, BrowseFlag browseFlag, String filter, long firstResult,
@@ -68,25 +73,24 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         }
 
         try {
-            if (ROOT_CONTAINER_ID.equals(objectId)) {
+            if (CONTAINER_ID_ROOT.equals(objectId)) {
                 return browseFlag == BrowseFlag.METADATA ? browseRootMetadata() : browseRoot(firstResult, maxResults);
+            }
+            if (CONTAINER_ID_PLAYLIST_ROOT.equals(objectId)) {
+                return browseFlag == BrowseFlag.METADATA ? browsePlaylistsMetadata() : browsePlaylists(firstResult, maxResults);
             }
             MediaFile mediaFile = mediaFileService.getMediaFile(Integer.parseInt(objectId));
             return browseFlag == BrowseFlag.METADATA ? browseMediaFileMetadata(mediaFile) : browseMediaFile(mediaFile, firstResult, maxResults);
 
         } catch (Throwable x) {
             LOG.error("UPnP error: " + x, x);
-            // TODO: Use different error codes.
-            throw new ContentDirectoryException(
-                    ContentDirectoryErrorCode.CANNOT_PROCESS,
-                    x.toString()
-            );
+            throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, x.toString());
         }
     }
 
     private BrowseResult browseRootMetadata() throws Exception {
         StorageFolder root = new StorageFolder();
-        root.setId(ROOT_CONTAINER_ID);
+        root.setId(CONTAINER_ID_ROOT);
         root.setParentID("-1");
 
         MediaLibraryStatistics statistics = settingsService.getMediaLibraryStatistics();
@@ -97,15 +101,31 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         root.setWriteStatus(WriteStatus.NOT_WRITABLE);
 
         List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
-        root.setChildCount(musicFolders.size());
+        root.setChildCount(musicFolders.size() + 1);  // +1 for playlists
 
         DIDLContent didl = new DIDLContent();
         didl.addContainer(root);
         return createBrowseResult(didl, 1, 1);
     }
 
+    private BrowseResult browsePlaylistsMetadata() throws Exception {
+        DIDLContent didl = new DIDLContent();
+        didl.addContainer(createPlaylistRootContainer());
+        return createBrowseResult(didl, 1, 1);
+    }
+
+    private BrowseResult browsePlaylists(long firstResult, long maxResults) throws Exception {
+        DIDLContent didl = new DIDLContent();
+        List<Playlist> allPlaylists = playlistService.getReadablePlaylistsForUser(User.USERNAME_ADMIN);
+        List<Playlist> selectedPlaylists = subList(allPlaylists, firstResult, maxResults);
+        for (Playlist playlist : selectedPlaylists) {
+            didl.addContainer(createPlaylistContainer(playlist));
+        }
+
+        return createBrowseResult(didl, selectedPlaylists.size(), allPlaylists.size());
+    }
+
     private BrowseResult browseRoot(long firstResult, long maxResults) throws Exception {
-        // TODO: Add playlists
         DIDLContent didl = new DIDLContent();
         List<MusicFolder> allFolders = settingsService.getAllMusicFolders();
         List<MusicFolder> selectedFolders = subList(allFolders, firstResult, maxResults);
@@ -113,7 +133,12 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
             MediaFile mediaFile = mediaFileService.getMediaFile(folder.getPath());
             addContainerOrItem(didl, mediaFile);
         }
-        return createBrowseResult(didl, selectedFolders.size(), allFolders.size());
+
+        if (maxResults > selectedFolders.size()) {
+            didl.addContainer(createPlaylistRootContainer());
+        }
+
+        return createBrowseResult(didl, (int) didl.getCount(), allFolders.size() + 1);
     }
 
     private BrowseResult browseMediaFileMetadata(MediaFile mediaFile) throws Exception {
@@ -177,7 +202,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, true, false);
         container.setChildCount(children.size());
 
-        container.setParentID(ROOT_CONTAINER_ID);
+        container.setParentID(CONTAINER_ID_ROOT);
         if (!mediaFileService.isRoot(mediaFile)) {
             MediaFile parent = mediaFileService.getParentOf(mediaFile);
             if (parent != null) {
@@ -187,15 +212,37 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         return container;
     }
 
+    private Container createPlaylistRootContainer() {
+        Container container = new MusicArtist(); // TODO: Use storage container?
+        container.setId(CONTAINER_ID_PLAYLIST_ROOT);
+        container.setTitle("Playlists");
+
+        List<Playlist> playlists = playlistService.getReadablePlaylistsForUser(User.USERNAME_ADMIN);
+        container.setChildCount(playlists.size());
+        container.setParentID(CONTAINER_ID_ROOT);
+        return container;
+    }
+
     private Container createAlbumContainer(MediaFile album) throws Exception {
         MusicAlbum container = new MusicAlbum();
         container.setAlbumArtURIs(new URI[]{getAlbumArtUrl(album)});
 
         // TODO: correct artist?
-        if (album.getAlbumArtist() != null) {
-            container.setArtists(new PersonWithRole[]{new PersonWithRole(album.getAlbumArtist())});
+        if (album.getArtist() != null) {
+            container.setArtists(new PersonWithRole[]{new PersonWithRole(album.getArtist())});
         }
         container.setDescription(album.getComment());
+
+        return container;
+    }
+
+    private Container createPlaylistContainer(Playlist playlist) {
+        PlaylistContainer container = new PlaylistContainer();
+        container.setId(xxx);
+        container.setParentID(CONTAINER_ID_PLAYLIST_ROOT);
+        container.setTitle(playlist.getName());
+        container.setDescription(playlist.getComment());
+        container.setChildCount(playlistService.getFilesInPlaylist(playlist.getId()).size());
 
         return container;
     }
@@ -206,5 +253,9 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
     }
 }
