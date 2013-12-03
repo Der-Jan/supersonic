@@ -1,5 +1,8 @@
 DONE IN 4.9.beta3
 -----------------
+DLNA: folder-based
+DLNA: duration format
+
 
 TODO IN 4.9
 --------------
