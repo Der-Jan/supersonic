@@ -18,6 +18,11 @@
  */
 package net.sourceforge.subsonic.service;
 
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.upnp.ApacheUpnpServiceConfiguration;
+import net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory;
+import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -38,12 +43,6 @@ import org.fourthline.cling.support.model.Protocol;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfos;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.Version;
-import net.sourceforge.subsonic.service.upnp.ApacheUpnpServiceConfiguration;
-import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
-import net.sourceforge.subsonic.service.upnp.TagBasedContentDirectory;
-
 /**
  * @author Sindre Mehus
  * @version $Id$
@@ -55,7 +54,7 @@ public class UPnPService {
     private SettingsService settingsService;
     private VersionService versionService;
     private UpnpService upnpService;
-    private TagBasedContentDirectory tagBasedContentDirectory;
+    private FolderBasedContentDirectory folderBasedContentDirectory;
 
     public void init() {
         startService();
@@ -127,11 +126,12 @@ public class UPnPService {
         // TODO: add smaller icon as well
         Icon icon = new Icon("image/png", 512, 512, 32, getClass().getResource("subsonic-512.png"));
 
-        LocalService<TagBasedContentDirectory> contentDirectoryservice = new AnnotationLocalServiceBinder().read(TagBasedContentDirectory.class);
-        contentDirectoryservice.setManager(new DefaultServiceManager<TagBasedContentDirectory>(contentDirectoryservice) {
+        LocalService<FolderBasedContentDirectory> contentDirectoryservice = new AnnotationLocalServiceBinder().read(FolderBasedContentDirectory.class);
+        contentDirectoryservice.setManager(new DefaultServiceManager<FolderBasedContentDirectory>(contentDirectoryservice) {
+
             @Override
-            protected TagBasedContentDirectory createServiceInstance() throws Exception {
-                return tagBasedContentDirectory;
+            protected FolderBasedContentDirectory createServiceInstance() throws Exception {
+                return folderBasedContentDirectory;
             }
         });
 
@@ -172,7 +172,7 @@ public class UPnPService {
         this.versionService = versionService;
     }
 
-    public void setTagBasedContentDirectory(TagBasedContentDirectory tagBasedContentDirectory) {
-        this.tagBasedContentDirectory = tagBasedContentDirectory;
+    public void setFolderBasedContentDirectory(FolderBasedContentDirectory folderBasedContentDirectory) {
+        this.folderBasedContentDirectory = folderBasedContentDirectory;
     }
 }

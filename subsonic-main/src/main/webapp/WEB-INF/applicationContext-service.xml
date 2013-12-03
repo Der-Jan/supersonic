@@ -189,10 +189,17 @@
         <property name="albumDao" ref="albumDao"/>
     </bean>
 
+    <bean id="folderBasedContentDirectory" class="net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory">
+        <property name="settingsService" ref="settingsService"/>
+        <property name="playerService" ref="playerService"/>
+        <property name="transcodingService" ref="transcodingService"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+    </bean>
+
     <bean id="upnpService" class="net.sourceforge.subsonic.service.UPnPService" init-method="init">
         <property name="settingsService" ref="settingsService"/>
         <property name="versionService" ref="versionService"/>
-        <property name="tagBasedContentDirectory" ref="tagBasedContentDirectory"/>
+        <property name="folderBasedContentDirectory" ref="folderBasedContentDirectory"/>
     </bean>
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
