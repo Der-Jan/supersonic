@@ -29,6 +29,7 @@ import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
+import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.PersonWithRole;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.fourthline.cling.support.model.WriteStatus;
@@ -40,6 +41,7 @@ import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -143,7 +145,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         }
     }
 
-    private Item createItem(MediaFile song) {
+    private Item createItem(MediaFile song) throws Exception {
         MediaFile parent = mediaFileService.getParentOf(song);
         MusicTrack item = new MusicTrack();
         item.setId(String.valueOf(song.getId()));
@@ -163,6 +165,8 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         }
         item.setResources(Arrays.asList(createResourceForsong(song)));
         item.setDescription(song.getComment());
+        item.addProperty(new DIDLObject.Property.UPNP.ALBUM_ART_URI(getAlbumArtUrl(parent)));
+
         return item;
     }
 
@@ -185,8 +189,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private Container createAlbumContainer(MediaFile album) throws Exception {
         MusicAlbum container = new MusicAlbum();
-        String albumArtUrl = getBaseUrl() + "coverArt.view?id=" + album.getId() + "&size=" + CoverArtScheme.LARGE.getSize();
-        container.setAlbumArtURIs(new URI[]{new URI(albumArtUrl)});
+        container.setAlbumArtURIs(new URI[]{getAlbumArtUrl(album)});
 
         // TODO: correct artist?
         if (album.getAlbumArtist() != null) {
@@ -195,6 +198,10 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         container.setDescription(album.getComment());
 
         return container;
+    }
+
+    private URI getAlbumArtUrl(MediaFile album) throws URISyntaxException {
+        return new URI(getBaseUrl() + "coverArt.view?id=" + album.getId() + "&size=" + CoverArtScheme.LARGE.getSize());
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {

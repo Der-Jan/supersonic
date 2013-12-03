@@ -2,7 +2,7 @@ DONE IN 4.9.beta3
 -----------------
 DLNA: folder-based
 DLNA: duration format
-
+DLNA: song album art
 
 TODO IN 4.9
 --------------
@@ -11,6 +11,7 @@ Single songs in left.jsp have wrong v align.
 DLNA
   Make DLNA name customizable
   Don't use ID3, or make it customizable.
+  video
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
