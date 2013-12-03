@@ -57,14 +57,8 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     public BrowseResult browse(String objectId, BrowseFlag browseFlag, String filter, long firstResult,
                                long maxResults, SortCriterion[] orderby) throws ContentDirectoryException {
 
-        // TODO
-        System.out.println("objectId    : " + objectId);
-        System.out.println("browseFlag  : " + browseFlag);
-        System.out.println("filter      : " + filter);
-        System.out.println("firstResult : " + firstResult);
-        System.out.println("maxResults  : " + maxResults);
-        System.out.println("orderBy     :" + Arrays.toString(orderby));
-        System.out.println();
+        LOG.info("UPnP request - objectId: " + objectId + ", browseFlag: " + browseFlag + ", firstResult: " +
+                firstResult + ", maxResults: " + maxResults);
 
         // maxResult == 0 means all.
         if (maxResults == 0) {
@@ -79,7 +73,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
             return browseFlag == BrowseFlag.METADATA ? browseMediaFileMetadata(mediaFile) : browseMediaFile(mediaFile, firstResult, maxResults);
 
         } catch (Throwable x) {
-            LOG.error("DLNA error: " + x, x);
+            LOG.error("UPnP error: " + x, x);
             // TODO: Use different error codes.
             throw new ContentDirectoryException(
                     ContentDirectoryErrorCode.CANNOT_PROCESS,

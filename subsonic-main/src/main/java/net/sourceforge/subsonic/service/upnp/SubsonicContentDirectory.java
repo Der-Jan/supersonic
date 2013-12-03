@@ -53,8 +53,6 @@ public abstract class SubsonicContentDirectory extends AbstractContentDirectoryS
         String mimeTypeString = StringUtil.getMimeType(suffix);
         MimeType mimeType = mimeTypeString == null ? null : MimeType.valueOf(mimeTypeString);
         String url = getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
-        System.err.println(url);
-
         Res res = new Res(mimeType, null, url);
         res.setDuration(song.getDurationString());
         return res;
