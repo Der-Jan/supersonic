@@ -180,15 +180,6 @@
         <property name="securityService" ref="securityService"/>
     </bean>
 
-    <bean id="tagBasedContentDirectory" class="net.sourceforge.subsonic.service.upnp.TagBasedContentDirectory">
-        <property name="settingsService" ref="settingsService"/>
-        <property name="playerService" ref="playerService"/>
-        <property name="transcodingService" ref="transcodingService"/>
-        <property name="mediaFileDao" ref="mediaFileDao"/>
-        <property name="artistDao" ref="artistDao"/>
-        <property name="albumDao" ref="albumDao"/>
-    </bean>
-
     <bean id="folderBasedContentDirectory" class="net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory">
         <property name="settingsService" ref="settingsService"/>
         <property name="playlistService" ref="playlistService"/>
