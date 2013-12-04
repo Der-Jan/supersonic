@@ -7,13 +7,22 @@ DLNA: playlists
 
 TODO IN 4.9
 --------------
+java.lang.SecurityException: Access denied to file /Users/sindre
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:139)
+	at net.sourceforge.subsonic.service.MediaFileService.getParentOf(MediaFileService.java:160)
+	at net.sourceforge.subsonic.service.MediaFileService.getCoverArt(MediaFileService.java:527)
+	at net.sourceforge.subsonic.controller.CoverArtController.getMediaFileImage(CoverArtController.java:155)
+	at net.sourceforge.subsonic.controller.CoverArtController.getImageFile(CoverArtController.java:136)
+	at net.sourceforge.subsonic.controller.CoverArtController.handleRequest(CoverArtController.java:90)
+	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:48)
+
 DLNA
   Make DLNA name customizable
-  Don't use ID3, or make it customizable.
   Video
     Perhaps never transcode?
   Poor cover art resolution?
-  Clean up TagBased
   Make sure sublist works
   Make sure top-level single files work.
   Make sure only direct children are added.

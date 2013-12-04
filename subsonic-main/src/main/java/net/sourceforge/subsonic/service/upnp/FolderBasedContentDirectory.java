@@ -18,11 +18,14 @@
  */
 package net.sourceforge.subsonic.service.upnp;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlaylistService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
@@ -39,14 +42,10 @@ import org.fourthline.cling.support.model.container.StorageFolder;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.PlaylistService;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Sindre Mehus
@@ -219,7 +218,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     }
 
     private Container createContainer(MediaFile mediaFile) throws Exception {
-        Container container = mediaFile.isAlbum() ? createAlbumContainer(mediaFile) : new StorageFolder();
+        Container container = mediaFile.isAlbum() ? createAlbumContainer(mediaFile) : new MusicAlbum();
         container.setId(String.valueOf(mediaFile.getId()));
         container.setTitle(mediaFile.getName());
         List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, true, false);
@@ -235,17 +234,6 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         return container;
     }
 
-    private Container createPlaylistRootContainer() {
-        Container container = new StorageFolder();
-        container.setId(CONTAINER_ID_PLAYLIST_ROOT);
-        container.setTitle("Playlists");
-
-        List<Playlist> playlists = playlistService.getAllPlaylists();
-        container.setChildCount(playlists.size());
-        container.setParentID(CONTAINER_ID_ROOT);
-        return container;
-    }
-
     private Container createAlbumContainer(MediaFile album) throws Exception {
         MusicAlbum container = new MusicAlbum();
         container.setAlbumArtURIs(new URI[]{getAlbumArtUrl(album)});
@@ -256,6 +244,17 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         }
         container.setDescription(album.getComment());
 
+        return container;
+    }
+
+    private Container createPlaylistRootContainer() {
+        Container container = new StorageFolder();
+        container.setId(CONTAINER_ID_PLAYLIST_ROOT);
+        container.setTitle("Playlists");
+
+        List<Playlist> playlists = playlistService.getAllPlaylists();
+        container.setChildCount(playlists.size());
+        container.setParentID(CONTAINER_ID_ROOT);
         return container;
     }
 
