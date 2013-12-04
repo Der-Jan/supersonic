@@ -3,15 +3,16 @@ DONE IN 4.9.beta3
 DLNA: folder-based
 DLNA: duration format
 DLNA: song album art
+DLNA: playlists
 
 TODO IN 4.9
 --------------
 DLNA
   Make DLNA name customizable
   Don't use ID3, or make it customizable.
-  video
-  Playlists
-    Make sure all playlists are shown.
+  Video
+    Perhaps never transcode?
+  Poor cover art resolution?
   Clean up TagBased
   Make sure sublist works
   Make sure top-level single files work.

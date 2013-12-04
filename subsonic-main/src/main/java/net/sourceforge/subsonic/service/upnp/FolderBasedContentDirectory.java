@@ -123,7 +123,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private BrowseResult browsePlaylistRoot(long firstResult, long maxResults) throws Exception {
         DIDLContent didl = new DIDLContent();
-        List<Playlist> allPlaylists = playlistService.getReadablePlaylistsForUser(User.USERNAME_ADMIN);
+        List<Playlist> allPlaylists = playlistService.getAllPlaylists();
         List<Playlist> selectedPlaylists = subList(allPlaylists, firstResult, maxResults);
         for (Playlist playlist : selectedPlaylists) {
             didl.addContainer(createPlaylistContainer(playlist));
@@ -241,7 +241,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         container.setId(CONTAINER_ID_PLAYLIST_ROOT);
         container.setTitle("Playlists");
 
-        List<Playlist> playlists = playlistService.getReadablePlaylistsForUser(User.USERNAME_ADMIN);
+        List<Playlist> playlists = playlistService.getAllPlaylists();
         container.setChildCount(playlists.size());
         container.setParentID(CONTAINER_ID_ROOT);
         return container;
