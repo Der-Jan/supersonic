@@ -7,6 +7,9 @@ DLNA: playlists
 
 TODO IN 4.9
 --------------
+New/deleted artists not picked up when scanning.
+Refresh caches in MediaFileService before/after scanning?
+
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
