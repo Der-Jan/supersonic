@@ -56,7 +56,8 @@ import java.util.List;
 public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private static final Logger LOG = Logger.getLogger(FolderBasedContentDirectory.class);
-    public static final String CONTAINER_ID_PLAYLIST_ROOT = "playlists";
+    private static final String CONTAINER_ID_PLAYLIST_ROOT = "playlists";
+    private static final String CONTAINER_ID_PLAYLIST_PREFIX = "playlist-";
     private MediaFileService mediaFileService;
     private PlaylistService playlistService;
 
@@ -77,8 +78,14 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
                 return browseFlag == BrowseFlag.METADATA ? browseRootMetadata() : browseRoot(firstResult, maxResults);
             }
             if (CONTAINER_ID_PLAYLIST_ROOT.equals(objectId)) {
-                return browseFlag == BrowseFlag.METADATA ? browsePlaylistsMetadata() : browsePlaylists(firstResult, maxResults);
+                return browseFlag == BrowseFlag.METADATA ? browsePlaylistRootMetadata() : browsePlaylistRoot(firstResult, maxResults);
             }
+            if (objectId.startsWith(CONTAINER_ID_PLAYLIST_PREFIX)) {
+                int playlistId = Integer.parseInt(objectId.replace(CONTAINER_ID_PLAYLIST_PREFIX, ""));
+                Playlist playlist = playlistService.getPlaylist(playlistId);
+                return browseFlag == BrowseFlag.METADATA ? browsePlaylistMetadata(playlist) : browsePlaylist(playlist, firstResult, maxResults);
+            }
+
             MediaFile mediaFile = mediaFileService.getMediaFile(Integer.parseInt(objectId));
             return browseFlag == BrowseFlag.METADATA ? browseMediaFileMetadata(mediaFile) : browseMediaFile(mediaFile, firstResult, maxResults);
 
@@ -108,13 +115,13 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         return createBrowseResult(didl, 1, 1);
     }
 
-    private BrowseResult browsePlaylistsMetadata() throws Exception {
+    private BrowseResult browsePlaylistRootMetadata() throws Exception {
         DIDLContent didl = new DIDLContent();
         didl.addContainer(createPlaylistRootContainer());
         return createBrowseResult(didl, 1, 1);
     }
 
-    private BrowseResult browsePlaylists(long firstResult, long maxResults) throws Exception {
+    private BrowseResult browsePlaylistRoot(long firstResult, long maxResults) throws Exception {
         DIDLContent didl = new DIDLContent();
         List<Playlist> allPlaylists = playlistService.getReadablePlaylistsForUser(User.USERNAME_ADMIN);
         List<Playlist> selectedPlaylists = subList(allPlaylists, firstResult, maxResults);
@@ -123,6 +130,23 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         }
 
         return createBrowseResult(didl, selectedPlaylists.size(), allPlaylists.size());
+    }
+
+    private BrowseResult browsePlaylistMetadata(Playlist playlist) throws Exception {
+        DIDLContent didl = new DIDLContent();
+        didl.addContainer(createPlaylistContainer(playlist));
+        return createBrowseResult(didl, 1, 1);
+    }
+
+    private BrowseResult browsePlaylist(Playlist playlist, long firstResult, long maxResults) throws Exception {
+        List<MediaFile> allChildren = playlistService.getFilesInPlaylist(playlist.getId());
+        List<MediaFile> selectedChildren = subList(allChildren, firstResult, maxResults);
+
+        DIDLContent didl = new DIDLContent();
+        for (MediaFile child : selectedChildren) {
+            addContainerOrItem(didl, child);
+        }
+        return createBrowseResult(didl, selectedChildren.size(), allChildren.size());
     }
 
     private BrowseResult browseRoot(long firstResult, long maxResults) throws Exception {
@@ -238,7 +262,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private Container createPlaylistContainer(Playlist playlist) {
         PlaylistContainer container = new PlaylistContainer();
-        container.setId(xxx);
+        container.setId(CONTAINER_ID_PLAYLIST_PREFIX + playlist.getId());
         container.setParentID(CONTAINER_ID_PLAYLIST_ROOT);
         container.setTitle(playlist.getName());
         container.setDescription(playlist.getComment());

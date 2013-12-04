@@ -11,6 +11,7 @@ DLNA
   Don't use ID3, or make it customizable.
   video
   Playlists
+    Make sure all playlists are shown.
   Clean up TagBased
   Make sure sublist works
   Make sure top-level single files work.
