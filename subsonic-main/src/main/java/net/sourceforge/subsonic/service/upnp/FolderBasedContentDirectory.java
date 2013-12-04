@@ -63,8 +63,8 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     public BrowseResult browse(String objectId, BrowseFlag browseFlag, String filter, long firstResult,
             long maxResults, SortCriterion[] orderby) throws ContentDirectoryException {
 
-        LOG.info("UPnP request - objectId: " + objectId + ", browseFlag: " + browseFlag + ", firstResult: " +
-                firstResult + ", maxResults: " + maxResults);
+        LOG.info("UPnP request - objectId: " + objectId + ", browseFlag: " + browseFlag + ", filter: " + filter +
+                ", firstResult: " + firstResult + ", maxResults: " + maxResults);
 
         // maxResult == 0 means all.
         if (maxResults == 0) {
