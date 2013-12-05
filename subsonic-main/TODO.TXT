@@ -8,9 +8,6 @@ Bugfix: Newly added media was sometimes not picked up when scanning libraries.
 
 TODO IN 4.9
 --------------
-New/deleted artists not picked up when scanning.
-Refresh caches in MediaFileService before/after scanning?
-
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
@@ -23,19 +20,6 @@ java.lang.SecurityException: Access denied to file /Users/sindre
 	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:48)
 
 DLNA
-
-   <custom-http-headers>
-<add header="transferMode.dlna.org: Streaming"/>
-<add header="contentFeatures.dlna.org: DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000"/>
-    </custom-http-headers>
-
-
-  http://www.ps3mediaserver.org/ (open source DLNA DMS implemented in Java)
-  org.fourthline.cling.support.model.dlna.DLNAProfiles
-  Make it work with WMP etc
-    Intel UPnP Spy
-      http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
-  Make DLNA name customizable
   Video
     Perhaps never transcode?
   Poor cover art resolution?
