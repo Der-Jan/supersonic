@@ -4,6 +4,7 @@ DLNA: folder-based
 DLNA: duration format
 DLNA: song album art
 DLNA: playlists
+Bugfix: Newly added media was sometimes not picked up when scanning libraries.
 
 TODO IN 4.9
 --------------
@@ -209,6 +210,8 @@ DONE IN ANDROID 4.1
 
 TODO IN ANDROID 4.1
 --------------------
+Subsonic Android Not Pausing for Google Voice Typing
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
 Support add to playlist

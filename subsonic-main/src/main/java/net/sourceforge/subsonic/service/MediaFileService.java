@@ -60,12 +60,12 @@ public class MediaFileService {
     private static final Logger LOG = Logger.getLogger(MediaFileService.class);
 
     private Ehcache mediaFileMemoryCache;
-
     private SecurityService securityService;
     private SettingsService settingsService;
     private MediaFileDao mediaFileDao;
     private AlbumDao albumDao;
     private MetaDataParserFactory metaDataParserFactory;
+    private boolean memoryCacheEnabled = true;
 
     /**
      * Returns a media file instance for the given file.  If possible, a cached value is returned.
@@ -88,8 +88,7 @@ public class MediaFileService {
     public MediaFile getMediaFile(File file, boolean useFastCache) {
 
         // Look in fast memory cache first.
-        Element element = mediaFileMemoryCache.get(file);
-        MediaFile result = element == null ? null : (MediaFile) element.getObjectValue();
+        MediaFile result = getFromMemoryCache(file);
         if (result != null) {
             return result;
         }
@@ -102,7 +101,7 @@ public class MediaFileService {
         result = mediaFileDao.getMediaFile(file.getPath());
         if (result != null) {
             result = checkLastModified(result, useFastCache);
-            mediaFileMemoryCache.put(new Element(file, result));
+            putInMemoryCache(file, result);
             return result;
         }
 
@@ -113,7 +112,7 @@ public class MediaFileService {
         result = createMediaFile(file);
 
         // Put in cache and database.
-        mediaFileMemoryCache.put(new Element(file, result));
+        putInMemoryCache(file, result);
         mediaFileDao.createOrUpdateMediaFile(result);
 
         return result;
@@ -515,6 +514,27 @@ public class MediaFileService {
         mediaFile = createMediaFile(mediaFile.getFile());
         mediaFileDao.createOrUpdateMediaFile(mediaFile);
         mediaFileMemoryCache.remove(mediaFile.getFile());
+    }
+
+    private void putInMemoryCache(File file, MediaFile mediaFile) {
+        if (memoryCacheEnabled) {
+            mediaFileMemoryCache.put(new Element(file, mediaFile));
+        }
+    }
+
+    private MediaFile getFromMemoryCache(File file) {
+        if (!memoryCacheEnabled) {
+            return null;
+        }
+        Element element = mediaFileMemoryCache.get(file);
+        return element == null ? null : (MediaFile) element.getObjectValue();
+    }
+
+    public void setMemoryCacheEnabled(boolean memoryCacheEnabled) {
+        this.memoryCacheEnabled = memoryCacheEnabled;
+        if (!memoryCacheEnabled) {
+            mediaFileMemoryCache.removeAll();
+        }
     }
 
     /**

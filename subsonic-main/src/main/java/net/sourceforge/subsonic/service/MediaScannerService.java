@@ -163,6 +163,7 @@ public class MediaScannerService {
             scanCount = 0;
             statistics.reset();
 
+            mediaFileService.setMemoryCacheEnabled(false);
             searchService.startIndexing();
 
             // Recurse through all files on disk.
@@ -193,8 +194,9 @@ public class MediaScannerService {
         } catch (Throwable x) {
             LOG.error("Failed to scan media library.", x);
         } finally {
-            scanning = false;
+            mediaFileService.setMemoryCacheEnabled(true);
             searchService.stopIndexing();
+            scanning = false;
         }
     }
 
