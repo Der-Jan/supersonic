@@ -63,6 +63,7 @@ import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.XMLBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -84,6 +85,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
 import static net.sourceforge.subsonic.util.XMLBuilder.Attribute;
@@ -132,6 +134,19 @@ public class RESTController extends MultiActionController {
     private ArtistDao artistDao;
     private AlbumDao albumDao;
     private BookmarkDao bookmarkDao;
+
+    private final Map<BookmarkKey, Bookmark> bookmarkCache = new ConcurrentHashMap<BookmarkKey, Bookmark>();
+
+    public void init() {
+        refreshBookmarkCache();
+    }
+
+    private void refreshBookmarkCache() {
+        bookmarkCache.clear();
+        for (Bookmark bookmark : bookmarkDao.getBookmarks()) {
+            bookmarkCache.put(BookmarkKey.forBookmark(bookmark), bookmark);
+        }
+    }
 
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
@@ -1043,6 +1058,11 @@ public class RESTController extends MultiActionController {
             attributes.add("isVideo", mediaFile.isVideo());
             attributes.add("path", getRelativePath(mediaFile));
 
+            Bookmark bookmark = bookmarkCache.get(new BookmarkKey(username, mediaFile.getId()));
+            if (bookmark != null) {
+                attributes.add("bookmarkPosition", bookmark.getPositionMillis());
+            }
+
             if (mediaFile.getArtist() != null && mediaFile.getAlbumName() != null) {
                 Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
                 if (album != null) {
@@ -1453,6 +1473,7 @@ public class RESTController extends MultiActionController {
 
         Bookmark bookmark = new Bookmark(0, mediaFileId, position, username, comment, now, now);
         bookmarkDao.createOrUpdateBookmark(bookmark);
+        refreshBookmarkCache();
         XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
         response.getWriter().print(builder);
     }
@@ -1464,6 +1485,7 @@ public class RESTController extends MultiActionController {
         String username = securityService.getCurrentUsername(request);
         int mediaFileId = getRequiredIntParameter(request, "id");
         bookmarkDao.deleteBookmark(username, mediaFileId);
+        refreshBookmarkCache();
 
         builder.endAll();
         response.getWriter().print(builder);
@@ -2142,6 +2164,16 @@ public class RESTController extends MultiActionController {
 
         public String getMessage() {
             return message;
+        }
+    }
+
+    private static class BookmarkKey extends Pair<String, Integer> {
+        private BookmarkKey(String username, int mediaFileId) {
+            super(username, mediaFileId);
+        }
+
+        static BookmarkKey forBookmark(Bookmark b) {
+            return new BookmarkKey(b.getUsername(), b.getMediaFileId());
         }
     }
 }

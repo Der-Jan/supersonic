@@ -6,9 +6,23 @@ DLNA: song album art
 DLNA: playlists
 Bugfix: Newly added media was sometimes not picked up when scanning libraries.
 Bugfix: http/https font issue
+REST: Add bookmark position to songs.
 
 TODO IN 4.9
 --------------
+Dodgy:
+              if (mediaFile.getArtist() != null && mediaFile.getAlbumName() != null) {
+                  Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
+                  if (album != null) {
+                      attributes.add("albumId", album.getId());
+                  }
+              }
+
+Make sure it compiles with Java 6
+  maven-compiler-plugin
+Add bookmark position to entries
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142c0800835b1cc2
+
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)

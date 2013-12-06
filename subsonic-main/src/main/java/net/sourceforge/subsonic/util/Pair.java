@@ -20,16 +20,15 @@ package net.sourceforge.subsonic.util;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.ObjectUtils;
+
 /**
  * @author Sindre Mehus
  */
 public class Pair<S, T> implements Serializable {
 
-    private S first;
-    private T second;
-
-    public Pair() {
-    }
+    private final S first;
+    private final T second;
 
     public Pair(S first, T second) {
         this.first = first;
@@ -40,15 +39,26 @@ public class Pair<S, T> implements Serializable {
         return first;
     }
 
-    public void setFirst(S first) {
-        this.first = first;
-    }
-
     public T getSecond() {
         return second;
     }
 
-    public void setSecond(T second) {
-        this.second = second;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Pair pair = (Pair) o;
+
+        return ObjectUtils.equals(first, pair.first) && ObjectUtils.equals(second, pair.second);
+    }
+
+    @Override
+    public int hashCode() {
+        return ObjectUtils.hashCode(first) * ObjectUtils.hashCode(second);
     }
 }
