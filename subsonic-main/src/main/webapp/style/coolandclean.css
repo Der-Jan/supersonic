@@ -22,14 +22,6 @@
     background-color: #D1D9E1;
 }
 
-/* Background for selected headers. */
-.headerSelected {
-    background-image:url( "../icons/coolandclean/home_hover.png" );
-    background-repeat:repeat;
-    color: #333333;
-}
-
-
 /* Foreground colour used for h1, h2, b, tr, details and albumcomments. */
 h1, h2, b, tr, .detail, .albumComment {
     color: #333333;

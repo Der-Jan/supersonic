@@ -55,7 +55,7 @@ public class HomeController extends ParameterizableViewController {
 
     private static final Logger LOG = Logger.getLogger(HomeController.class);
 
-    private static final int LIST_SIZE = 20;
+    private static final int LIST_SIZE = 40;
 
     private SettingsService settingsService;
     private MediaScannerService mediaScannerService;
@@ -94,7 +94,7 @@ public class HomeController extends ParameterizableViewController {
             map.put("decades", decades);
             int decade = getIntParameter(request, "decade", decades.get(0));
             map.put("decade", decade);
-            albums = getByDecade(listOffset, LIST_SIZE, decade);
+            albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9);
         } else if ("genre".equals(listType)) {
             List<String> genres = mediaFileService.getGenres();
             map.put("genres", genres);
@@ -120,7 +120,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getHighestRated(int offset, int count) {
+    private List<Album> getHighestRated(int offset, int count) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
@@ -130,7 +130,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getMostFrequent(int offset, int count) {
+    private List<Album> getMostFrequent(int offset, int count) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
@@ -140,7 +140,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getMostRecent(int offset, int count) {
+    private List<Album> getMostRecent(int offset, int count) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile mediaFile : mediaFileService.getMostRecentlyPlayedAlbums(offset, count)) {
             Album album = createAlbum(mediaFile);
@@ -150,7 +150,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getNewest(int offset, int count) throws IOException {
+    private List<Album> getNewest(int offset, int count) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getNewestAlbums(offset, count)) {
             Album album = createAlbum(file);
@@ -164,7 +164,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getStarred(int offset, int count, String username) throws IOException {
+    private List<Album> getStarred(int offset, int count, String username) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getStarredAlbums(offset, count, username)) {
             result.add(createAlbum(file));
@@ -172,7 +172,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getRandom(int count) throws IOException {
+    private List<Album> getRandom(int count) throws IOException {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : searchService.getRandomAlbums(count)) {
             result.add(createAlbum(file));
@@ -180,17 +180,17 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    List<Album> getAlphabetical(int offset, int count, boolean byArtist) throws IOException {
+    private List<Album> getAlphabetical(int offset, int count, boolean byArtist) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlphabetialAlbums(offset, count, byArtist)) {
+        for (MediaFile file : mediaFileService.getAlphabeticalAlbums(offset, count, byArtist)) {
             result.add(createAlbum(file));
         }
         return result;
     }
 
-    public List<Album> getByDecade(int offset, int count, int decade) {
+    private  List<Album> getByYear(int offset, int count, int fromYear, int toYear) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlbumsByDecade(offset, count, decade)) {
+        for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear)) {
             Album album = createAlbum(file);
             album.setYear(file.getYear());
             result.add(album);
@@ -207,7 +207,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    public List<Album> getByGenre(int offset, int count, String genre) {
+    private  List<Album> getByGenre(int offset, int count, String genre) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre)) {
             result.add(createAlbum(file));

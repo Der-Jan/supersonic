@@ -355,6 +355,8 @@ public class RESTController extends MultiActionController {
         attributes.add("duration", album.getDurationSeconds());
         attributes.add("created", StringUtil.toISO8601(album.getCreated()));
         attributes.add("starred", StringUtil.toISO8601(albumDao.getAlbumStarredDate(album.getId(), username)));
+        attributes.add("year", album.getYear());
+        attributes.add("genre", album.getGenre());
 
         return attributes;
     }
@@ -854,34 +856,34 @@ public class RESTController extends MultiActionController {
         size = Math.max(0, Math.min(size, 500));
         String type = getRequiredStringParameter(request, "type");
 
-        List<HomeController.Album> albums;
+        List<MediaFile> albums;
         if ("highest".equals(type)) {
-            albums = homeController.getHighestRated(offset, size);
+            albums = ratingService.getHighestRatedAlbums(offset, size);
         } else if ("frequent".equals(type)) {
-            albums = homeController.getMostFrequent(offset, size);
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size);
         } else if ("recent".equals(type)) {
-            albums = homeController.getMostRecent(offset, size);
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, size);
         } else if ("newest".equals(type)) {
-            albums = homeController.getNewest(offset, size);
+            albums = mediaFileService.getNewestAlbums(offset, size);
         } else if ("starred".equals(type)) {
-            albums = homeController.getStarred(offset, size, username);
+            albums = mediaFileService.getStarredAlbums(offset, size, username);
         } else if ("alphabeticalByArtist".equals(type)) {
-            albums = homeController.getAlphabetical(offset, size, true);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, true);
         } else if ("alphabeticalByName".equals(type)) {
-            albums = homeController.getAlphabetical(offset, size, false);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, false);
         } else if ("byGenre".equals(type)) {
-            albums = homeController.getByGenre(offset, size, getRequiredStringParameter(request, "genre"));
-        } else if ("byDecade".equals(type)) {
-            albums = homeController.getByDecade(offset, size, getRequiredIntParameter(request, "decade"));
+            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+        } else if ("byYear".equals(type)) {
+            albums = mediaFileService.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
+                    getRequiredIntParameter(request, "toYear"));
         } else if ("random".equals(type)) {
-            albums = homeController.getRandom(size);
+            albums = searchService.getRandomAlbums(size);
         } else {
             throw new Exception("Invalid list type: " + type);
         }
 
-        for (HomeController.Album album : albums) {
-            MediaFile mediaFile = mediaFileService.getMediaFile(album.getPath());
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
+        for (MediaFile album : albums) {
+            AttributeSet attributes = createAttributesForMediaFile(player, album, username);
             builder.add("album", attributes, true);
         }
         builder.endAll();
@@ -911,6 +913,11 @@ public class RESTController extends MultiActionController {
             albums = albumDao.getAlphabetialAlbums(offset, size, true);
         } else if ("alphabeticalByName".equals(type)) {
             albums = albumDao.getAlphabetialAlbums(offset, size, false);
+        } else if ("byGenre".equals(type)) {
+            albums = albumDao.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+        } else if ("byYear".equals(type)) {
+            albums = albumDao.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
+                    getRequiredIntParameter(request, "toYear"));
         } else if ("starred".equals(type)) {
             albums = albumDao.getStarredAlbums(offset, size, securityService.getCurrentUser(request).getUsername());
         } else if ("random".equals(type)) {

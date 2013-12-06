@@ -69,6 +69,10 @@ public class PlaylistService {
     private SecurityService securityService;
     private SettingsService settingsService;
 
+    public List<Playlist> getAllPlaylists() {
+        return playlistDao.getAllPlaylists();
+    }
+
     public List<Playlist> getReadablePlaylistsForUser(String username) {
         return playlistDao.getReadablePlaylistsForUser(username);
     }

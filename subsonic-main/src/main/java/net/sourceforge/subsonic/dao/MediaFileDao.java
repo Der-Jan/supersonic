@@ -18,16 +18,15 @@
  */
 package net.sourceforge.subsonic.dao;
 
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -218,23 +217,24 @@ public class MediaFileDao extends AbstractDao {
      * @param byArtist Whether to sort by artist name
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabetialAlbums(int offset, int count, boolean byArtist) {
+    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist) {
         String orderBy = byArtist ? "artist, album" : "album";
         return query("select " + COLUMNS + " from media_file where type=? and artist != '' and present order by " + orderBy + " limit ? offset ?",
                 rowMapper, ALBUM.name(), count, offset);
     }
 
     /**
-     * Returns albums in a decade.
+     * Returns albums within a year range.
      *
      * @param offset Number of albums to skip.
      * @param count  Maximum number of albums to return.
-     * @param decade The first year of the decade, e.g., 1980
-     * @return Albums in the decade.
+     * @param fromYear The first year in the range.
+     * @param toYear The last year in the range.
+     * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByDecade(int offset, int count, int decade) {
+    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear) {
         return query("select " + COLUMNS + " from media_file where type=? and present and year between ? and ? order by year limit ? offset ?",
-                rowMapper, ALBUM.name(), decade, decade + 9, count, offset);
+                rowMapper, ALBUM.name(), fromYear, toYear, count, offset);
     }
 
     /**

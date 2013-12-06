@@ -51,73 +51,7 @@
     <p class="warning"><fmt:message key="home.scan"/></p>
 </c:if>
 
-<table>
-    <tr>
-        <c:choose>
-            <c:when test="${model.listType eq 'random'}">
-                <td><div class="forward"><a href="home.view?listType=random"><fmt:message key="common.more"/></a></div></td>
-            </c:when>
-            <c:when test="${model.listType ne 'users'}">
-                <sub:url value="home.view" var="previousUrl">
-                    <sub:param name="listType" value="${model.listType}"/>
-                    <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
-                    <sub:param name="genre" value="${model.genre}"/>
-                    <sub:param name="decade" value="${model.decade}"/>
-                </sub:url>
-                <sub:url value="home.view" var="nextUrl">
-                    <sub:param name="listType" value="${model.listType}"/>
-                    <sub:param name="listOffset" value="${model.listOffset + model.listSize}"/>
-                    <sub:param name="genre" value="${model.genre}"/>
-                    <sub:param name="decade" value="${model.decade}"/>
-                </sub:url>
-
-                <c:if test="${fn:length(model.albums) gt 0}">
-                    <td style="padding-right:0.5em">
-                        <fmt:message key="home.albums">
-                            <fmt:param value="${model.listOffset + 1}"/>
-                            <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
-                        </fmt:message>
-                    </td>
-                </c:if>
-
-                <c:if test="${model.listOffset gt 0}">
-                    <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
-                </c:if>
-
-                <c:if test="${fn:length(model.albums) eq model.listSize}">
-                    <td><a href="${nextUrl}"><img src="<spring:theme code="forwardImage"/>" alt=""></a></td>
-                </c:if>
-
-                <c:if test="${model.listType eq 'decade'}">
-                    <td style="padding-left: 2em">
-                        <fmt:message key="home.decade.text"/>
-                    </td>
-                    <td>
-                        <select name="decade"
-                                onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;decade=' + options[selectedIndex].value">
-                            <c:forEach items="${model.decades}" var="decade">
-                                <option
-                                    ${decade eq model.decade ? "selected" : ""} value="${decade}">${decade}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </c:if>
-                <c:if test="${model.listType eq 'genre'}">
-                    <td style="padding-left: 2em">
-                        <fmt:message key="home.genre.text"/>
-                    </td>
-                    <td>
-                        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;listOffset=${model.listOffset}&amp;genre=' + options[selectedIndex].value">
-                            <c:forEach items="${model.genres}" var="genre">
-                                <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </c:if>
-            </c:when>
-        </c:choose>
-    </tr>
-</table>
+<%@ include file="homePager.jsp" %>
 
 <table style="width: 100%">
     <tr>
@@ -208,5 +142,9 @@
         </c:if>
     </tr>
 </table>
+
+<c:if test="${model.listSize eq fn:length(model.albums)}">
+    <%@ include file="homePager.jsp" %>
+</c:if>
 
 </body></html>

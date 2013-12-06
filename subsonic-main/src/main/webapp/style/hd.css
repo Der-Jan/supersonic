@@ -24,11 +24,6 @@
     background-color: #00042E
 }
 
-/* Background color for selected header, log etc. */
-.headerSelected {
-    background-color: #CFD1D6;
-}
-
 /* The primary foreground color. */
 body {
     color: #CFD1D6;
@@ -63,11 +58,6 @@ body {
     scrollbar-arrow-color: #000843;
     scrollbar-track-color: #000843;
     scrollbar-darkshadow-color: #000843;
-}
-
-/* Font 1 */
-body, h2, form, input, select, label, table, a, h1, h1 a {
-    font-family: calibri, arial, sans-serif;
 }
 
 body {

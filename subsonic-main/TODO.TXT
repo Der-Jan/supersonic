@@ -1,53 +1,35 @@
-DONE IN 4.9
--------------
-Bugfix: Playlist management was broken when deploying on Tomcat 7.
-Make license key field longer
-When clicking "Create new playlist", automatically show all.
-Use javascript to set css class in menu.
-Simplified/improved top.jsp
-Use Roboto font.
-Larger album arts
-Right-align album art.
-Don't show "More action" if not album.
-Don't let album art push combo box down.
-Top-align cover art with first song.
-Show 20 albums by default.
-Use larger album art on home page (150)
-Show artist name in bold in home page.
-Longer names before ellipsis
-More space to the right of the Subsonic logo.
-Changed colors in default theme.
-Improve styling for selected setting / album list tab.
-Add spacing in Play all | Play random ...
-Put captionLength into CoverArtScheme.
-Show thumbnail for siebling albums
-Show all song titles in italic.
-Use max gain 0dB in jukebox to avoid distortion caused by clipping.
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1427e184141efb65
-Test layout with ads.
-home.jsp responsive design
-   http://sourceforge.net/p/subsonic/patches/18/
-Test new top.jsp in IE etc.
-Support subsonic.host in Util.getLocalIpAddress()
-  https://sourceforge.net/p/subsonic/bugs/95/
-Replace Download button with Play last.
-When playing a single song, queue rest of album.
-Layout bug in playerSettings.jsp
-New album lists: "By decade" and "By genre".
-REST: Add year & genre to albums.
+DONE IN 4.9.beta3
+-----------------
+DLNA: folder-based
+DLNA: duration format
+DLNA: song album art
+DLNA: playlists
+Bugfix: Newly added media was sometimes not picked up when scanning libraries.
+Bugfix: http/https font issue
 
 TODO IN 4.9
 --------------
-New album lists
-  Add year & genre to ID3 album, also REST.
-  Set backImage, forwardImage in all theme properties.
-  Review colors in autocover. Use white album title?
-  Fancier autocover.
+java.lang.SecurityException: Access denied to file /Users/sindre
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
+	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:139)
+	at net.sourceforge.subsonic.service.MediaFileService.getParentOf(MediaFileService.java:160)
+	at net.sourceforge.subsonic.service.MediaFileService.getCoverArt(MediaFileService.java:527)
+	at net.sourceforge.subsonic.controller.CoverArtController.getMediaFileImage(CoverArtController.java:155)
+	at net.sourceforge.subsonic.controller.CoverArtController.getImageFile(CoverArtController.java:136)
+	at net.sourceforge.subsonic.controller.CoverArtController.handleRequest(CoverArtController.java:90)
+	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:48)
+
+DLNA
+  Video
+    Perhaps never transcode?
+  Poor cover art resolution?
+  Make sure sublist works
+  Make sure top-level single files work.
+  Make sure only direct children are added.
+
+Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
-Check .headerSelected in skins.
-More linespacing
-Change font color. Bigger font?
-  http://developer.android.com/design/index.html
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
@@ -124,7 +106,6 @@ Something wrong with matching players/users in Now Playing.
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 S1000 Data file size limit is reached in statement
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=9998&start=75#p44643 (sent email Sep 7)
-Reconsider album artist.
 Prefill minisub
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1394bd52aaaf4969
 FLAC crashes Flash in Firefox (with server on Linux).
@@ -132,21 +113,16 @@ FLAC crashes Flash in Firefox (with server on Linux).
 
 
 Postponed:
-  - ConcurrentModificationException
-      https://mail.google.com/mail/u/0/?tab=cm#inbox/13822e43383dca84
   - Add "Force rescan" option.
   - Increase line height in playlist.jsp
   - Rename to play queue in Settings > Player.
   - Show message if no songs are selected when doing add to playlist.
   - Encourage users to save email addresses, also for admin.  Explain why.
   - Update apps to include PlayBook version.
-  - REST: Add example links to demo server.
-  - Eliminate HomeController.Album.
   - Clicking play button on a video podcast doesn't work.
 
 Replace usage of dwr.util and prototype with jquery.
 Handle albums without artist. Don't create them?
-Support comment and ratings for Album table.
 Test getPlaylist vs old-style IDs.
 Fix broken REST scrobbling, as reported by Ben.
 JWPlayer subtitle plugin
@@ -172,7 +148,6 @@ subcl:
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=7897
 Better video quality when sharing
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=7646
-Show license details in About.
 Support custom domain name in sharing (Settings > Advanced)
 Rename "offsetSeconds" to "timeOffset" in StreamController, and update API doc.
 Add "byteOffset" parameter as well.
@@ -183,7 +158,6 @@ Bookmark support (for audiobooks, podcasts)
 Stream from devices
   https://mail.google.com/mail/?shva=1#inbox/13352f77f870eba1
 Go through tracker.
-Does canaca allow outgoing port 4040?
 Recursive getFolders API method?
   https://Smail.google.com/mail/?shva=1#inbox/13090cd32a9922bd
 Checkbox, combobox bg color
@@ -221,9 +195,11 @@ DONE IN ANDROID 4.1
 
 TODO IN ANDROID 4.1
 --------------------
+Subsonic Android Not Pausing for Google Voice Typing
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
-
+Support add to playlist
 Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?
@@ -853,9 +829,9 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta2/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta2/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta2/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -866,7 +842,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta2 -m "Tagging 4.9.beta2"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta3 -m "Tagging 4.9.beta3"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.

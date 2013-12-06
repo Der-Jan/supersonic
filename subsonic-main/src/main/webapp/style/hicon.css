@@ -24,12 +24,6 @@ body.bgcolor2 {
     border-bottom: 1px solid #5c5c5c;
 }
 
-/* Background color for selected header, log etc. */
-.headerSelected {
-    color: #5c5c5c;
-    background-color: white;
-}
-
 /* The primary foreground color. */
 body {
     color: #5c5c5c;
@@ -62,7 +56,7 @@ a:hover, a:hover * {
 }
 
 /* Simple border. */
-.border1, .ruleTableHeader, .ruleTableCell, .headerSelected, .log {
+.border1, .ruleTableHeader, .ruleTableCell, .log {
     border: 1px solid #5c5c5c;
 }
 
@@ -78,8 +72,8 @@ body {
 }
 
 .back {
-    background-image:url("../icons/midnight/back.png");background-position: 0px 3px; background-repeat:no-repeat; padding-left: 16px; line-height: 16px;
+    background-image:url("../icons/default_dark/back.png");background-position: 0px 3px; background-repeat:no-repeat; padding-left: 16px; line-height: 16px;
 }
 .forward {
-    background-image:url("../icons/midnight/forward.png");background-position: 0px 3px; background-repeat:no-repeat; padding-left: 16px; line-height: 16px;
+    background-image:url("../icons/default_dark/forward.png");background-position: 0px 3px; background-repeat:no-repeat; padding-left: 16px; line-height: 16px;
 }

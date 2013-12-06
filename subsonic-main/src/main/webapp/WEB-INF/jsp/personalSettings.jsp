@@ -25,7 +25,7 @@
 
 <h2><fmt:message key="personalsettings.title"><fmt:param>${command.user.username}</fmt:param></fmt:message></h2>
 
-<fmt:message key="common.default" var="default"/>
+<fmt:message key="common.default" var="defaultTitle"/>
 <form:form method="post" action="personalSettings.view" commandName="command">
 
     <table style="white-space:nowrap" class="indent">
@@ -34,7 +34,7 @@
             <td><fmt:message key="personalsettings.language"/></td>
             <td>
                 <form:select path="localeIndex" cssStyle="width:15em">
-                    <form:option value="-1" label="${default}"/>
+                    <form:option value="-1" label="${defaultTitle}"/>
                     <c:forEach items="${command.locales}" var="locale" varStatus="loopStatus">
                         <form:option value="${loopStatus.count - 1}" label="${locale}"/>
                     </c:forEach>
@@ -47,7 +47,7 @@
             <td><fmt:message key="personalsettings.theme"/></td>
             <td>
                 <form:select path="themeIndex" cssStyle="width:15em">
-                    <form:option value="-1" label="${default}"/>
+                    <form:option value="-1" label="${defaultTitle}"/>
                     <c:forEach items="${command.themes}" var="theme" varStatus="loopStatus">
                         <form:option value="${loopStatus.count - 1}" label="${theme.name}"/>
                     </c:forEach>

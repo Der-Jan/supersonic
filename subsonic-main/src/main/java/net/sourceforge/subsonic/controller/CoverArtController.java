@@ -354,11 +354,12 @@ public class CoverArtController implements Controller, LastModified {
             graphics.setPaint(color);
             graphics.fillRect(0, 0, size, size);
 
-            graphics.setPaint(Color.BLACK);
-            graphics.fillRect(0, size * 2 / 3, size, size / 3);
+            int y = size * 2 / 3;
+            graphics.setPaint(new GradientPaint(0, y, new Color(82, 82, 82), 0, size, Color.BLACK));
+            graphics.fillRect(0, y, size, size / 3);
 
             graphics.setPaint(Color.WHITE);
-            float fontSize = size * 0.08f;
+            float fontSize = 3.0f + size * 0.07f;
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int) fontSize);
             graphics.setFont(font);
 
