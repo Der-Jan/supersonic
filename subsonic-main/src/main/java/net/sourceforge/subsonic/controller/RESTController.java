@@ -1063,7 +1063,7 @@ public class RESTController extends MultiActionController {
                 attributes.add("bookmarkPosition", bookmark.getPositionMillis());
             }
 
-            if (mediaFile.getArtist() != null && mediaFile.getAlbumName() != null) {
+            if (mediaFile.getAlbumArtist() != null && mediaFile.getAlbumName() != null) {
                 Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
                 if (album != null) {
                     attributes.add("albumId", album.getId());

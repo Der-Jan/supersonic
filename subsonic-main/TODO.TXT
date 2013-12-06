@@ -10,13 +10,6 @@ REST: Add bookmark position to songs.
 
 TODO IN 4.9
 --------------
-Dodgy:
-              if (mediaFile.getArtist() != null && mediaFile.getAlbumName() != null) {
-                  Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
-                  if (album != null) {
-                      attributes.add("albumId", album.getId());
-                  }
-              }
 
 Make sure it compiles with Java 6
   maven-compiler-plugin
