@@ -32,7 +32,6 @@ DLNA
   Make sure sublist works
   Make sure top-level single files work.
   Make sure only direct children are added.
-  Make it work with https.
 
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
