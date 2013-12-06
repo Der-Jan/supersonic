@@ -10,7 +10,7 @@ REST: Add bookmark position to songs.
 
 TODO IN 4.9
 --------------
-
+Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
 Make sure it compiles with Java 6
   maven-compiler-plugin
 Add bookmark position to entries
