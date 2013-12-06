@@ -5,6 +5,7 @@ DLNA: duration format
 DLNA: song album art
 DLNA: playlists
 Bugfix: Newly added media was sometimes not picked up when scanning libraries.
+Bugfix: http/https font issue
 
 TODO IN 4.9
 --------------
