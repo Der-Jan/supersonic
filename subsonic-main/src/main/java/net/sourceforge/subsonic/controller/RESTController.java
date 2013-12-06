@@ -1120,6 +1120,9 @@ public class RESTController extends MultiActionController {
             String folderPath = musicFolder.getPath().getPath();
             folderPath = folderPath.replace('\\', '/');
             String folderPathLower = folderPath.toLowerCase();
+            if (!folderPathLower.endsWith("/")) {
+                folderPathLower += "/";
+            }
 
             if (filePathLower.startsWith(folderPathLower)) {
                 String relativePath = filePath.substring(folderPath.length());

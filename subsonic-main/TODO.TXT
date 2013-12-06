@@ -7,14 +7,12 @@ DLNA: playlists
 Bugfix: Newly added media was sometimes not picked up when scanning libraries.
 Bugfix: http/https font issue
 REST: Add bookmark position to songs.
+Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
 
 TODO IN 4.9
 --------------
-Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
 Make sure it compiles with Java 6
   maven-compiler-plugin
-Add bookmark position to entries
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142c0800835b1cc2
 
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
@@ -34,6 +32,7 @@ DLNA
   Make sure sublist works
   Make sure top-level single files work.
   Make sure only direct children are added.
+  Make it work with https.
 
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
