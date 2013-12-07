@@ -9,9 +9,11 @@ Bugfix: http/https font issue
 REST: Add bookmark position to songs.
 Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
 Fixed slow queries on large media collections (>100,000 files): get starred, get files in playlist, get genres
+Updated Dutch translation, courtesy of Toolman.
 
 TODO IN 4.9
 --------------
+Avoid line breaks in top. ("Speelt nu")
 REST performance problems
   https://mail.google.com/mail/u/0/#inbox/142a5e17ef913e8c
 
