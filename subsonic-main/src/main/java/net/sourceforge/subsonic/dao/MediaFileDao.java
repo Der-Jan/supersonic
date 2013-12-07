@@ -177,7 +177,7 @@ public class MediaFileDao extends AbstractDao {
     public void updateGenres(Map<String, Integer> genres) {
         update("delete from genre");
         for (Map.Entry<String, Integer> entry : genres.entrySet()) {
-            update("insert into genre values(null, ?, ?)", entry.getKey(), entry.getValue());
+            update("insert into genre values(?, ?)", entry.getKey(), entry.getValue());
         }
     }
 

@@ -54,7 +54,6 @@ public class Schema49 extends Schema {
         if (!tableExists(template, "genre")) {
             LOG.info("Database table 'genre' not found.  Creating it.");
             template.execute("create table genre (" +
-                    "id identity," +
                     "name varchar not null," +
                     "song_count int not null)");
 
