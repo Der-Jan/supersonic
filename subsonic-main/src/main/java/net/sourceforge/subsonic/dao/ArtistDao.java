@@ -105,7 +105,7 @@ public class ArtistDao extends AbstractDao {
      * @return The most recently starred artists for this user.
      */
     public List<Artist> getStarredArtists(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "artist") + " from artist, starred_artist where artist.id = starred_artist.artist_id and " +
+        return query("select " + prefix(COLUMNS, "artist") + " from starred_artist, artist where artist.id = starred_artist.artist_id and " +
                 "artist.present and starred_artist.username=? order by starred_artist.created desc limit ? offset ?",
                 rowMapper, username, count, offset);
     }

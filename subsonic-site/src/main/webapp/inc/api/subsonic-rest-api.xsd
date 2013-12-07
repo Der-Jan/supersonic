@@ -201,6 +201,7 @@
         <xs:attribute name="albumId" type="xs:string" use="optional"/>  <!-- Added in 1.8.0 -->
         <xs:attribute name="artistId" type="xs:string" use="optional"/>  <!-- Added in 1.8.0 -->
         <xs:attribute name="type" type="sub:MediaType" use="optional"/>  <!-- Added in 1.8.0 -->
+        <xs:attribute name="bookmarkPosition" type="xs:long" use="optional"/>  <!-- In millis. Added in 1.10.1 -->
     </xs:complexType>
 
     <xs:simpleType name="MediaType">

@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -79,7 +80,7 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<MediaFile> getFilesInPlaylist(int playlistId) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from media_file, playlist_file where " +
+        return query("select " + prefix(COLUMNS, "media_file") + " from playlist_file, media_file where " +
                 "media_file.id = playlist_file.media_file_id and " +
                 "playlist_file.playlist_id = ? and " +
                 "media_file.present order by playlist_file.id", rowMapper, playlistId);
@@ -170,7 +171,14 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<String> getGenres() {
-        return queryForStrings("select distinct genre from media_file where genre is not null and present order by genre");
+        return queryForStrings("select name from genre order by song_count desc");
+    }
+
+    public void updateGenres(Map<String, Integer> genres) {
+        update("delete from genre");
+        for (Map.Entry<String, Integer> entry : genres.entrySet()) {
+            update("insert into genre values(?, ?)", entry.getKey(), entry.getValue());
+        }
     }
 
     /**
@@ -264,7 +272,7 @@ public class MediaFileDao extends AbstractDao {
      * @return The most recently starred albums for this user.
      */
     public List<MediaFile> getStarredAlbums(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from media_file, starred_media_file where media_file.id = starred_media_file.media_file_id and " +
+        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
                 "media_file.present and media_file.type=? and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
                 rowMapper, ALBUM.name(), username, count, offset);
     }
@@ -278,7 +286,7 @@ public class MediaFileDao extends AbstractDao {
      * @return The most recently starred directories for this user.
      */
     public List<MediaFile> getStarredDirectories(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from media_file, starred_media_file where media_file.id = starred_media_file.media_file_id and " +
+        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
                 "media_file.present and media_file.type=? and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
                 rowMapper, DIRECTORY.name(), username, count, offset);
     }
@@ -292,7 +300,7 @@ public class MediaFileDao extends AbstractDao {
      * @return The most recently starred files for this user.
      */
     public List<MediaFile> getStarredFiles(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from media_file, starred_media_file where media_file.id = starred_media_file.media_file_id and " +
+        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
                 "media_file.present and media_file.type in (?,?,?,?) and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
                 rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name(), username, count, offset);
     }

@@ -6,9 +6,20 @@ DLNA: song album art
 DLNA: playlists
 Bugfix: Newly added media was sometimes not picked up when scanning libraries.
 Bugfix: http/https font issue
+REST: Add bookmark position to songs.
+Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
+Fixed slow queries on large media collections (>100,000 files): get starred, get files in playlist, get genres
+Updated Dutch translation, courtesy of Toolman.
+Validate input in Settings > Internet TV/radio
 
 TODO IN 4.9
 --------------
+Make DLNA premium.
+  Update doc
+Make DLNA video work.
+Make sure it compiles with Java 6
+  maven-compiler-plugin
+
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
@@ -199,6 +210,7 @@ Subsonic Android Not Pausing for Google Voice Typing
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
+Make it easier to add server URL.
 Support add to playlist
 Gradle
 Star status not updated in DownloadActivity.

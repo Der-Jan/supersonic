@@ -160,6 +160,10 @@ public class MediaScannerService {
 
             // Maps from artist name to album count.
             Map<String, Integer> albumCount = new HashMap<String, Integer>();
+
+            // Maps from genre name to song count.
+            Map<String, Integer> genreCount = new HashMap<String, Integer>();
+
             scanCount = 0;
             statistics.reset();
 
@@ -169,7 +173,7 @@ public class MediaScannerService {
             // Recurse through all files on disk.
             for (MusicFolder musicFolder : settingsService.getAllMusicFolders()) {
                 MediaFile root = mediaFileService.getMediaFile(musicFolder.getPath(), false);
-                scanFile(root, musicFolder, lastScanned, albumCount);
+                scanFile(root, musicFolder, lastScanned, albumCount, genreCount);
             }
             LOG.info("Scanned media library with " + scanCount + " entries.");
 
@@ -186,6 +190,9 @@ public class MediaScannerService {
                 statistics.incrementAlbums(albums);
             }
 
+            // Update genres
+            mediaFileDao.updateGenres(genreCount);
+
             settingsService.setMediaLibraryStatistics(statistics);
             settingsService.setLastScanned(lastScanned);
             settingsService.save(false);
@@ -200,7 +207,8 @@ public class MediaScannerService {
         }
     }
 
-    private void scanFile(MediaFile file, MusicFolder musicFolder, Date lastScanned, Map<String, Integer> albumCount) {
+    private void scanFile(MediaFile file, MusicFolder musicFolder, Date lastScanned,
+                          Map<String, Integer> albumCount, Map<String, Integer> genreCount) {
         scanCount++;
         if (scanCount % 250 == 0) {
             LOG.info("Scanned media library with " + scanCount + " entries.");
@@ -216,14 +224,15 @@ public class MediaScannerService {
 
         if (file.isDirectory()) {
             for (MediaFile child : mediaFileService.getChildrenOf(file, true, false, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount);
+                scanFile(child, musicFolder, lastScanned, albumCount, genreCount);
             }
             for (MediaFile child : mediaFileService.getChildrenOf(file, false, true, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount);
+                scanFile(child, musicFolder, lastScanned, albumCount, genreCount);
             }
         } else {
             updateAlbum(file, lastScanned, albumCount);
             updateArtist(file, lastScanned, albumCount);
+            updateGenre(file, genreCount);
             statistics.incrementSongs(1);
         }
 
@@ -235,6 +244,19 @@ public class MediaScannerService {
         }
         if (file.getFileSize() != null) {
             statistics.incrementTotalLengthInBytes(file.getFileSize());
+        }
+    }
+
+    private void updateGenre(MediaFile file, Map<String, Integer> genreCount) {
+        String genre = file.getGenre();
+        if (genre == null) {
+            return;
+        }
+        Integer count = genreCount.get(file.getGenre());
+        if (count == null) {
+            genreCount.put(genre, 1);
+        } else {
+            genreCount.put(genre, count + 1);
         }
     }
 

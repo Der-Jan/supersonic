@@ -18,18 +18,16 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.UPnPService;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.UPnPService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller for the page used to administrate the UPnP/DLNA server settings.
@@ -53,6 +51,7 @@ public class DLNASettingsController extends ParameterizableViewController {
 
         ModelAndView result = super.handleRequestInternal(request, response);
         map.put("dlnaEnabled", settingsService.isDlnaEnabled());
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         result.addObject("model", map);
         return result;

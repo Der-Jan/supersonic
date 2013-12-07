@@ -345,7 +345,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
     </bean>
-    <bean id="restController" class="net.sourceforge.subsonic.controller.RESTController">
+    <bean id="restController" class="net.sourceforge.subsonic.controller.RESTController" init-method="init">
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
