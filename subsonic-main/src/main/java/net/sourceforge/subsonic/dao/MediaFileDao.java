@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -170,7 +171,14 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<String> getGenres() {
-        return queryForStrings("select distinct genre from media_file where genre is not null and present order by genre");
+        return queryForStrings("select name from genre order by song_count desc");
+    }
+
+    public void updateGenres(Map<String, Integer> genres) {
+        update("delete from genre");
+        for (Map.Entry<String, Integer> entry : genres.entrySet()) {
+            update("insert into genre values(null, ?, ?)", entry.getKey(), entry.getValue());
+        }
     }
 
     /**
