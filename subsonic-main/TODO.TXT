@@ -14,7 +14,6 @@ Validate input in Settings > Internet TV/radio
 
 TODO IN 4.9
 --------------
-Avoid line breaks in top. ("Speelt nu")
 
 Missing validation in Settings > Internet radio and media folders.
 
