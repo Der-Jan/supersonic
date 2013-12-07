@@ -26,10 +26,10 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 /**
  * Controller for the page used to administrate the set of internet radio/tv stations.
@@ -98,7 +98,13 @@ public class InternetRadioSettingsController extends ParameterizableViewControll
         String homepageUrl = StringUtils.trimToNull(request.getParameter("homepageUrl"));
         boolean enabled = StringUtils.trimToNull(request.getParameter("enabled")) != null;
 
-        if (name != null && streamUrl != null) {
+        if (name != null || streamUrl != null || homepageUrl != null) {
+            if (name == null) {
+                return "internetradiosettings.noname";
+            }
+            if (streamUrl == null) {
+                return "internetradiosettings.nourl";
+            }
             settingsService.createInternetRadio(new InternetRadio(name, streamUrl, homepageUrl, enabled, new Date()));
         }
 
