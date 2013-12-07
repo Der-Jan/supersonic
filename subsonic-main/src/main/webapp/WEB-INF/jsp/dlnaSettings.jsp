@@ -39,14 +39,18 @@
            <c:if test="${model.dlnaEnabled}">checked="checked"</c:if>/>
     <label for="dlnaEnabled"><fmt:message key="dlnasettings.enabled"/></label>
 
-    <p class="detail" style="width:60%;white-space:normal">
+    <p class="detail" style="width:60%;white-space:normal;padding-top: 1em">
         <fmt:message key="dlnasettings.description"/>
     </p>
+
+    <c:set var="licenseInfo" value="${model.licenseInfo}"/>
+    <%@ include file="licenseNotice.jsp" %>
 
     <p>
         <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
         <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
     </p>
+
 </form>
 
 </body></html>

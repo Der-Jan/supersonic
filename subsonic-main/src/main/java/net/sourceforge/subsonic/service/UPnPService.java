@@ -134,7 +134,6 @@ public class UPnPService {
             }
         });
 
-
         final ProtocolInfos protocols = new ProtocolInfos();
         for (DLNAProfiles dlnaProfile : DLNAProfiles.values()) {
             if (dlnaProfile == DLNAProfiles.NONE) {

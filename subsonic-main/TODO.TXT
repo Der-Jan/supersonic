@@ -14,11 +14,9 @@ Validate input in Settings > Internet TV/radio
 
 TODO IN 4.9
 --------------
-
-Missing validation in Settings > Internet radio and media folders.
-
 Make DLNA premium.
-Change wording in Settings > UPnP
+  Update doc
+Make DLNA video work.
 Make sure it compiles with Java 6
   maven-compiler-plugin
 
