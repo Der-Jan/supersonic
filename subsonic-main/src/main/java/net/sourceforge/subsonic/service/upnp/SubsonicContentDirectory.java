@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.service.upnp;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -48,15 +49,17 @@ public abstract class SubsonicContentDirectory extends AbstractContentDirectoryS
     private PlayerService playerService;
     private TranscodingService transcodingService;
 
-    protected Res createResourceForsong(MediaFile song) {
+    protected Res createResourceForSong(MediaFile song) {
         Player player = playerService.getGuestPlayer(null);
-        String suffix = transcodingService.getSuffix(player, song, null);
-        String mimeTypeString = StringUtil.getMimeType(suffix);
-        MimeType mimeType = mimeTypeString == null ? null : MimeType.valueOf(mimeTypeString);
         String url = getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
         if (song.isVideo()) {
             url += "&format=" + TranscodingService.FORMAT_RAW;
         }
+
+        String suffix = song.isVideo() ? FilenameUtils.getExtension(song.getPath()) : transcodingService.getSuffix(player, song, null);
+        String mimeTypeString = StringUtil.getMimeType(suffix);
+        MimeType mimeType = mimeTypeString == null ? null : MimeType.valueOf(mimeTypeString);
+
         Res res = new Res(mimeType, null, url);
         res.setDuration(formatDuration(song.getDurationSeconds()));
         return res;
