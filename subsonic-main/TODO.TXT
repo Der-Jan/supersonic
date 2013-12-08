@@ -20,7 +20,6 @@ Make DLNA video work.
   don't transcode
 Make sure it compiles with Java 6
   maven-compiler-plugin
-Remove musicFileMemoryCache?
 
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
