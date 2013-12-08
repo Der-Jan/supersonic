@@ -18,6 +18,16 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.apache.commons.lang.ObjectUtils;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
@@ -28,15 +38,6 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.util.FileUtil;
-import org.apache.commons.lang.ObjectUtils;
-
-import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Provides services for scanning the music library.
@@ -169,6 +170,8 @@ public class MediaScannerService {
 
             mediaFileService.setMemoryCacheEnabled(false);
             searchService.startIndexing();
+
+            mediaFileService.clearMemoryCache();
 
             // Recurse through all files on disk.
             for (MusicFolder musicFolder : settingsService.getAllMusicFolders()) {

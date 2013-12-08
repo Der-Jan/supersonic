@@ -18,13 +18,6 @@
  */
 package net.sourceforge.subsonic.service.upnp;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Player;
-import net.sourceforge.subsonic.service.PlayerService;
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.TranscodingService;
-import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
 import org.apache.commons.lang.StringUtils;
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -34,6 +27,14 @@ import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.seamless.util.MimeType;
+
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -53,6 +54,9 @@ public abstract class SubsonicContentDirectory extends AbstractContentDirectoryS
         String mimeTypeString = StringUtil.getMimeType(suffix);
         MimeType mimeType = mimeTypeString == null ? null : MimeType.valueOf(mimeTypeString);
         String url = getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
+        if (song.isVideo()) {
+            url += "&format=" + TranscodingService.FORMAT_RAW;
+        }
         Res res = new Res(mimeType, null, url);
         res.setDuration(formatDuration(song.getDurationSeconds()));
         return res;
