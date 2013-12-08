@@ -12,6 +12,7 @@
         <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, BlackBerry, Roku and more*.</li>
         <li>Video streaming.</li>
         <li>Podcast receiver.</li>
+        <li>Play your media on compatible DLNA/UPnP devices.</li>
         <li>Share your media on Facebook, Twitter, Google+.</li>
         <li>No ads in the web interface.</li>
         <li>Your personal server address: <em>yourname</em>.subsonic.org</li>

@@ -32,6 +32,7 @@
                 </ul>
                 <ul class="stars column-right">
                     <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
+                    <li>Play your media on compatible DLNA/UPnP devices.</li>
                     <li>Share your media on Facebook, Twitter, Google+.</li>
                     <li>Other features to be released later.</li>
                 </ul>
