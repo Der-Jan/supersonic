@@ -1,16 +1,5 @@
 DONE IN 4.9.beta3
 -----------------
-DLNA: folder-based
-DLNA: duration format
-DLNA: song album art
-DLNA: playlists
-Bugfix: Newly added media was sometimes not picked up when scanning libraries.
-Bugfix: http/https font issue
-REST: Add bookmark position to songs.
-Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
-Fixed slow queries on large media collections (>100,000 files): get starred, get files in playlist, get genres
-Updated Dutch translation, courtesy of Toolman.
-Validate input in Settings > Internet TV/radio
 
 TODO IN 4.9
 --------------
