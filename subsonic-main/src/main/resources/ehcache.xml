@@ -212,17 +212,7 @@ used with JMX monitors.
            timeToIdleSeconds="0"
            timeToLiveSeconds="10"
            overflowToDisk="false"
-           statistics="true"
-            />
-
-    <cache name="musicFileMemoryCache"
-           maxElementsInMemory="1000"
-           eternal="false"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="10"
-           overflowToDisk="false"
-           statistics="true"
-            />
+           statistics="true"/>
 
     <cache name="userCache"
            maxElementsInMemory="1000"
@@ -231,8 +221,7 @@ used with JMX monitors.
            timeToLiveSeconds="172800"
            overflowToDisk="false"
            diskSpoolBufferSizeMB="1"
-           statistics="true"
-            />
+           statistics="true"/>
 
     <!--
     Sample caches. Following are some example caches. Remove these before use.

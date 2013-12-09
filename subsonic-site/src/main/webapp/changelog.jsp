@@ -17,7 +17,7 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
-            <a name="4.9.beta3"><h2 class="div">Subsonic 4.9.beta3 - Dec 01, 2013</h2></a>
+            <a name="4.9.beta3"><h2 class="div">Subsonic 4.9.beta3 - Dec 09, 2013</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Modernized web interface. Nicer fonts, colors and layout. Larger album art.</li>
                 <li><span class="bugid">New: </span>Show thumbnails for "siebling" albums.</li>
@@ -26,6 +26,13 @@
                 <li><span class="bugid">New: </span>Use max gain 0 dB in jukebox mode to avoid distortion caused by clipping.</li>
                 <li><span class="bugid">New: </span>When playing a song, queue rest of album.</li>
                 <li><span class="bugid">New: </span>Added album lists "By decade" and "By genre".</li>
+                <li><span class="bugid">New: </span>Support playlists in DLNA.</li>
+                <li><span class="bugid">New: </span>DLNA now browses by folder, not tags.</li>
+                <li><span class="bugid">New: </span>Updated Dutch translation, courtesy of Toolman.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed DLNA song duration and album art.</li>
+                <li><span class="bugid">Bugfix: </span>Newly added media was sometimes not picked up when scanning libraries.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed font problem when using https.</li>
+                <li><span class="bugid">Bugfix: </span>Validate input in Settings &gt; Internet TV/radio.</li>
                 <li><span class="bugid">Bugfix: </span>Honor "subsonic.host" system property when resolving local IP address.</li>
                 <li><span class="bugid">Bugfix: </span>Playlist management was broken on Tomcat 7.</li>
                 <li><span class="bugid">Bugfix: </span>Settings &gt; Users was broken on Tomcat 7.</li>
@@ -33,6 +40,8 @@
                 <li><span class="bugid">Bugfix: </span>When clicking "Create new playlist", automatically expand list of playlists.</li>
                 <li><span class="bugid">REST: </span>Add year and genre to albums.</li>
                 <li><span class="bugid">REST: </span>Added "byYear" and "byGenre" to getAlbumList and getAlbumList2.</li>
+                <li><span class="bugid">REST: </span>Add "bookmarkPosition" to songs.</li>
+                <li><span class="bugid">Performance: </span>Fixed slow queries on large media collections (&gt;100,000 files): get starred, get files in playlist, get genres.</li>
             </ul>
 
             <a name="4.9.beta2"><h2 class="div">Subsonic 4.9.beta2 - Nov 16, 2013</h2></a>

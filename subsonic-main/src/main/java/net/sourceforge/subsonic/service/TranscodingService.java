@@ -55,7 +55,7 @@ import net.sourceforge.subsonic.util.Util;
 public class TranscodingService {
 
     private static final Logger LOG = Logger.getLogger(TranscodingService.class);
-    private static final String FORMAT_RAW = "raw";
+    public static final String FORMAT_RAW = "raw";
 
     private TranscodingDao transcodingDao;
     private SettingsService settingsService;

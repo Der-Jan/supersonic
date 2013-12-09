@@ -186,6 +186,7 @@
             <ul class="list">
                 <li>Download Podcasts with the integrated Podcast receiver.</li>
                 <li>Manage your internet TV and radio stations.</li>
+                <li>Play your media on compatible DLNA/UPnP devices.</li>
                 <li>Play music directly on the server's audio hardware using the <b>jukebox</b> mode.</li>
             </ul>
         </div>

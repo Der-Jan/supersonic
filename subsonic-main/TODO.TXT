@@ -1,22 +1,14 @@
 DONE IN 4.9.beta3
 -----------------
-DLNA: folder-based
-DLNA: duration format
-DLNA: song album art
-DLNA: playlists
-Bugfix: Newly added media was sometimes not picked up when scanning libraries.
-Bugfix: http/https font issue
-REST: Add bookmark position to songs.
-Invalid path in REST: path=".var/Dimmu Borgir/Abrahadabra/01 - Xibir.mp3"
-Fixed slow queries on large media collections (>100,000 files): get starred, get files in playlist, get genres
-Updated Dutch translation, courtesy of Toolman.
-Validate input in Settings > Internet TV/radio
 
 TODO IN 4.9
 --------------
+Add browser notification
+  http://www.paulund.co.uk/html5-notifications
 Make DLNA premium.
   Update doc
 Make DLNA video work.
+  don't transcode
 Make sure it compiles with Java 6
   maven-compiler-plugin
 
@@ -46,13 +38,6 @@ Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
 Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
-From forum:
- - music track items are missing <upnp:albumArtURI>, thus will not show covers in most control points
- - duration attribute of <res> elements is not valid: for example "5:30" should be "0:05:30.000"
-DLNA
-  Playlist support
-  http://www.upnp-database.info/device.jsp
-  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
 Publish on Mac app store
 Shuffle play
 Dont use <div/>
@@ -63,14 +48,6 @@ Recently added broken
 https port 8080 redirect to 8443 (jetty?)
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
-UPnP
-  DLNA
-    https://github.com/longkerdandy/chii2;cid=1358200757747-963
-    http://4thline.org/projects/mailinglists.html#nabble-td2188762
-    http://4thline.org/projects/mailinglists.html#nabble-td2165790
-  Test on Linux (alternative JDK)
-  Add controls for config
-make menu text more visible
 Clean up podcasts in demo
 Update backup server (after a couple of days)
 Publish blackberry app.
@@ -90,20 +67,6 @@ Samsung tv, new (3450) - Can browse and play music, haven't tested video
 Samsung tv, old (3450) - Can browse, but can't play music.
 PS3 (3450) - Can browse albums
 
-
-  AbstractMediaReceiverRegistrarService
-  MiniDLNA
-    http://minidlna.sourceforge.net/
-  http://4thline.org/projects/cling/
-  Use 2.0?
-  Fails to play nrk podcast.
-  Premium
-  https://github.com/jinzora/jinzora-upnp-bridge/tree/master/src/main
-  https://github.com/jinzora/jinzora-upnp-bridge/blob/master/src/main/java/org/jinzora/upnp/MediaServer.java
-  http://upnp.org/specs/av/UPnP-av-ContentDirectory-v1-Service.pdf
-  Intel UPnP Spy
-    http://software.intel.com/en-us/articles/intel-software-for-upnp-technology-download-tools/#anchor_2
-  SkatteFUNN
   DAAP support.
     https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
     http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
@@ -121,7 +84,6 @@ Prefill minisub
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1394bd52aaaf4969
 FLAC crashes Flash in Firefox (with server on Linux).
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=10027&p=44673#p44673
-
 
 Postponed:
   - Add "Force rescan" option.
@@ -165,7 +127,6 @@ Add "byteOffset" parameter as well.
 Add rating attributes to <directory> in getMusicDirectory.
 REST: add method to get everything in search index (binary, compressed)?
 
-Bookmark support (for audiobooks, podcasts)
 Stream from devices
   https://mail.google.com/mail/?shva=1#inbox/13352f77f870eba1
 Go through tracker.
@@ -188,8 +149,6 @@ Handle non-square cover art
 Cover arts not always aligned in grid
   https://mail.google.com/a/activeobjects.no/#inbox/12defd71c5d9e916
 Upgrade ffmpeg and support wtv.
-Add browser notification
-  http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=5434&highlight=
 AdMob
 Show library statistics for video.
 Playing only first three seconds of podcast

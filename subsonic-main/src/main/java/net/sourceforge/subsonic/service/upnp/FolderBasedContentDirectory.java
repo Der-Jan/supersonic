@@ -18,14 +18,11 @@
  */
 package net.sourceforge.subsonic.service.upnp;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.PlaylistService;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
@@ -42,10 +39,14 @@ import org.fourthline.cling.support.model.container.StorageFolder;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlaylistService;
 
 /**
  * @author Sindre Mehus
@@ -215,7 +216,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
         if (song.getGenre() != null) {
             item.setGenres(new String[]{song.getGenre()});
         }
-        item.setResources(Arrays.asList(createResourceForsong(song)));
+        item.setResources(Arrays.asList(createResourceForSong(song)));
         item.setDescription(song.getComment());
         item.addProperty(new DIDLObject.Property.UPNP.ALBUM_ART_URI(getAlbumArtUrl(parent)));
 
