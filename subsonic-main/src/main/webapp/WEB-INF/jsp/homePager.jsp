@@ -54,7 +54,7 @@
                         <fmt:message key="home.genre.text"/>
                     </td>
                     <td>
-                        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;genre=' + options[selectedIndex].value">
+                        <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;genre=' + encodeURIComponent(options[selectedIndex].value)">
                             <c:forEach items="${model.genres}" var="genre">
                                 <option ${genre.name eq model.genre ? "selected" : ""} value="${genre.name}">${genre.name} (${genre.albumCount})</option>
                             </c:forEach>

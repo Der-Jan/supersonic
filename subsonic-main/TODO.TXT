@@ -3,10 +3,10 @@ DONE IN 4.9.beta3
 Fixed NPE if setting path empty for en existing media folder.
 Show album/song count in genre list.
 REST: Added album/song count in getGenres.
+By genre "R&B" broken.
 
 TODO IN 4.9
 --------------
-By genre "R&B" broken.
 album year/genre should update if songs have changed (same as song count)
 
 Add browser notification
