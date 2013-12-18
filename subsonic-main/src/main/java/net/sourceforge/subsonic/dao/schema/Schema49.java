@@ -18,8 +18,9 @@
  */
 package net.sourceforge.subsonic.dao.schema;
 
-import net.sourceforge.subsonic.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import net.sourceforge.subsonic.Logger;
 
 /**
  * Used for creating and evolving the database schema.
@@ -58,6 +59,12 @@ public class Schema49 extends Schema {
                     "song_count int not null)");
 
             LOG.info("Database table 'genre' was created successfully.");
+        }
+
+        if (!columnExists(template, "album_count", "genre")) {
+            LOG.info("Database column 'genre.album_count' not found.  Creating it.");
+            template.execute("alter table genre add album_count int default 0 not null");
+            LOG.info("Database column 'genre.album_count' was added successfully.");
         }
     }
 }

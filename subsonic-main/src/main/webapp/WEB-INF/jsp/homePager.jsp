@@ -56,7 +56,7 @@
                     <td>
                         <select name="genre" onchange="location='home.view?listType=${model.listType}&amp;genre=' + options[selectedIndex].value">
                             <c:forEach items="${model.genres}" var="genre">
-                                <option ${genre eq model.genre ? "selected" : ""} value="${genre}">${genre}</option>
+                                <option ${genre.name eq model.genre ? "selected" : ""} value="${genre.name}">${genre.name} (${genre.albumCount})</option>
                             </c:forEach>
                         </select>
                     </td>

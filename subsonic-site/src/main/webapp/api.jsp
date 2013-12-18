@@ -177,7 +177,7 @@
     </tr>
     <tr class="table-altrow">
         <td>4.9</td>
-        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.9/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.10.1</a></td>
+        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.9/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.10.2</a></td>
     </tr>
     <tr>
         <td>4.8</td>

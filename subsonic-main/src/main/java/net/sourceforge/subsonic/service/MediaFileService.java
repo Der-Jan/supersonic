@@ -40,6 +40,7 @@ import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
+import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaFileComparator;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -232,9 +233,10 @@ public class MediaFileService {
      * Returns all genres in the music collection.
      *
      * @return Sorted list of genres.
+     * @param sortByAlbum Whether to sort by album count, rather than song count.
      */
-    public List<String> getGenres() {
-        return mediaFileDao.getGenres();
+    public List<Genre> getGenres(boolean sortByAlbum) {
+        return mediaFileDao.getGenres(sortByAlbum);
     }
 
     /**
