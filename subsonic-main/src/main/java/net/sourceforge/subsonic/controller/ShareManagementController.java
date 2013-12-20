@@ -18,29 +18,27 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.PlaylistService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for sharing music on Twitter, Facebook etc.
@@ -53,6 +51,7 @@ public class ShareManagementController extends MultiActionController {
     private SettingsService settingsService;
     private ShareService shareService;
     private PlayerService playerService;
+    private PlaylistService playlistService;
     private SecurityService securityService;
 
     public ModelAndView createShare(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -77,9 +76,10 @@ public class ShareManagementController extends MultiActionController {
         return new ModelAndView("createShare", "model", map);
     }
 
-    private List<MediaFile> getMediaFiles(HttpServletRequest request) throws IOException {
+    private List<MediaFile> getMediaFiles(HttpServletRequest request) throws Exception {
         String dir = request.getParameter("dir");
         String playerId = request.getParameter("player");
+        Integer playlistId = ServletRequestUtils.getIntParameter(request, "playlist");
 
         List<MediaFile> result = new ArrayList<MediaFile>();
 
@@ -93,14 +93,16 @@ public class ShareManagementController extends MultiActionController {
             for (int index : indexes) {
                 result.add(children.get(index));
             }
-        } else if (playerId != null) {
+        }
+
+        else if (playerId != null) {
             Player player = playerService.getPlayerById(playerId);
             PlayQueue playQueue = player.getPlayQueue();
-            List<MediaFile> result1;
-            synchronized (playQueue) {
-                result1 = playQueue.getFiles();
-            }
-            result = result1;
+            result = playQueue.getFiles();
+        }
+
+        else if (playlistId != null) {
+            result = playlistService.getFilesInPlaylist(playlistId);
         }
 
         return result;
@@ -124,5 +126,9 @@ public class ShareManagementController extends MultiActionController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
     }
 }

@@ -97,6 +97,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="shareService" ref="shareService"/>
         <property name="playerService" ref="playerService"/>
+        <property name="playlistService" ref="playlistService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="setRatingController" class="net.sourceforge.subsonic.controller.SetRatingController">

@@ -14,25 +14,34 @@ Make it possible to create playlist from starred songs.
 Added "Play all" to starred.
 Use locale-specific names for automatically created playlists.
 Use icons for prev/next player controls.
+Support playlist sharing on Facebook etc.
 
 TODO IN 4.9
 --------------
+Many song in "Band of Horses" shared playlist is missing album art.
+Support playlist sharing.
+  Rename existing "share" with "visible to others"
+  Use "id" rather than "dir" in ShareManagementController
+  Set name/description for share.
+  Back button should go back to playlist.
+Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Remove obsolete resource strings.
 Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
-Support playlist sharing.
 When playing starred songs, queue other starred songs.
 Larger image in "Now playing"?
-Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Can siebling albums flow from bottom?
 Reverse siebling order
-
+Update Norwegian translation
+Fix bugs in Italian translation
+  https://mail.google.com/mail/u/0/#inbox/14311719d21ff572
 Download problem
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
   In main.jsp, single songs are downloaded as zip files.
 
-CoverArtProducer
-- Default, Automatic
+Cache generated album art
+  CoverArtProducer
+    Default, Automatic
 
 TODO IN 5.0
 --------------
