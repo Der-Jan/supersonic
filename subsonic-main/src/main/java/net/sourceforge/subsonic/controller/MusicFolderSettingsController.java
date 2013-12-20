@@ -25,6 +25,8 @@ import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.SettingsService;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -89,7 +91,10 @@ public class MusicFolderSettingsController extends SimpleFormController {
             if (musicFolderInfo.isDelete()) {
                 settingsService.deleteMusicFolder(musicFolderInfo.getId());
             } else {
-                settingsService.updateMusicFolder(musicFolderInfo.toMusicFolder());
+                MusicFolder musicFolder = musicFolderInfo.toMusicFolder();
+                if (musicFolder != null) {
+                    settingsService.updateMusicFolder(musicFolder);
+                }
             }
         }
 

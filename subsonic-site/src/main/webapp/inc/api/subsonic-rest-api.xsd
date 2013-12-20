@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.10.1">
+           version="1.10.2">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -97,8 +97,13 @@
 
     <xs:complexType name="Genres">
         <xs:sequence>
-            <xs:element name="genre" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="genre" type="sub:Genre" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Genre" mixed="true">
+        <xs:attribute name="songCount" type="xs:int" use="required"/>  <!-- Added in 1.10.2 -->
+        <xs:attribute name="albumCount" type="xs:int" use="required"/> <!-- Added in 1.10.2 -->
     </xs:complexType>
 
     <xs:complexType name="ArtistsID3">

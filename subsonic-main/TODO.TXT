@@ -1,17 +1,35 @@
 DONE IN 4.9.beta3
 -----------------
+Fixed NPE if setting path empty for en existing media folder.
+Show album/song count in genre list.
+REST: Added album/song count in getGenres.
+By genre "R&B" broken.
+Simplify cover art in external player.
+Removed support for "path" parameter in coverArt.view.
+Duplicate ID "duration" in playlist.jsp
+Added "Play next" button to playlist view.
+When playing a song from a playlist, queue other songs in that playlist.
+When playing a song from an album, queue other songs in that album as well, both previous and next.
 
 TODO IN 4.9
 --------------
+album year/genre should update if songs have changed (same as song count)
+Support playlist sharing.
+Make it possible to create playlist from starred songs.
+Larger image in "Now playing"?
+Clicking on image in "Now playing" shouldn't zoom, but open album page.
+Can siebling albums flow from bottom?
+back/forward buttons unaligned.
+Reverse siebling order
+
+CoverArtProducer
+- Default, Automatic
+
+TODO IN 5.0
+--------------
+Monitoring with JavaMelody
 Add browser notification
   http://www.paulund.co.uk/html5-notifications
-Make DLNA premium.
-  Update doc
-Make DLNA video work.
-  don't transcode
-Make sure it compiles with Java 6
-  maven-compiler-plugin
-
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
@@ -21,22 +39,19 @@ java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.controller.CoverArtController.getMediaFileImage(CoverArtController.java:155)
 	at net.sourceforge.subsonic.controller.CoverArtController.getImageFile(CoverArtController.java:136)
 	at net.sourceforge.subsonic.controller.CoverArtController.handleRequest(CoverArtController.java:90)
-	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:48)
 
 DLNA
-  Video
-    Perhaps never transcode?
-  Poor cover art resolution?
   Make sure sublist works
   Make sure top-level single files work.
-  Make sure only direct children are added.
 
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
 
+Upgrade ffmpeg. Use mpeg4?
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/142d1b52c5c53ff1
+
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.
-Gradient background in top.jsp (similar to subsonic.org)
 Update screenshots
 Publish on Mac app store
 Shuffle play
@@ -165,6 +180,7 @@ DONE IN ANDROID 4.1
 
 TODO IN ANDROID 4.1
 --------------------
+Upgrade to KitKat
 Subsonic Android Not Pausing for Google Voice Typing
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
@@ -802,7 +818,19 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
   rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
   rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg subsonic-installer-debian/target/subsonic*.deb subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+
+On Mac OS:
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+
+On VirtualBox Ubuntu
+  svn update
+  mvn clean install -Pfull
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+
+On VirtualBox Fedora
+  svn update
+  mvn clean install -Pfull
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -824,17 +852,16 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2013-11-17.tar db
+    tar cvf db-backup-2013-12-15.tar db
   cd subsonic-backend
   mvn clean install
 
-  mkdir /usr/local/jakarta/tomcat/webapps-2013-11-17/
+  mkdir /usr/local/jakarta/tomcat/webapps-2013-12-15/
 
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/pages
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/pages
 
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/changelog.jsp  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-11-17/pages
 
   Checkpoint database (db.view)
   ssh root@subsonic.org
@@ -842,7 +869,7 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
   rm webapps
-  ln -s webapps-2013-11-17 webapps
+  ln -s webapps-2013-12-15 webapps
 
   rm -rf work logs/*
   /usr/sbin/starttomcat

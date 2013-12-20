@@ -33,6 +33,7 @@ public class PlayQueueInfo {
     private final boolean repeatEnabled;
     private final boolean sendM3U;
     private final float gain;
+    private int startPlayerAt = -1;
 
     public PlayQueueInfo(List<Entry> entries, int index, boolean stopEnabled, boolean repeatEnabled, boolean sendM3U, float gain) {
         this.entries = entries;
@@ -65,6 +66,15 @@ public class PlayQueueInfo {
 
     public float getGain() {
         return gain;
+    }
+
+    public int getStartPlayerAt() {
+        return startPlayerAt;
+    }
+
+    public PlayQueueInfo setStartPlayerAt(int startPlayerAt) {
+        this.startPlayerAt = startPlayerAt;
+        return this;
     }
 
     public static class Entry {

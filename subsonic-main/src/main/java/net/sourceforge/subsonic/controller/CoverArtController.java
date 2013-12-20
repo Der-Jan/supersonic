@@ -100,7 +100,7 @@ public class CoverArtController implements Controller, LastModified {
             return null;
         }
 
-        // Send default image if no path is given. (No need to cache it, since it will be cached in browser.)
+        // Send default image if no ID is given. (No need to cache it, since it will be cached in browser.)
         Integer size = ServletRequestUtils.getIntParameter(request, "size");
         if (file == null) {
             sendDefault(size, request, response);
@@ -126,18 +126,17 @@ public class CoverArtController implements Controller, LastModified {
 
     private File getImageFile(HttpServletRequest request) {
         String id = request.getParameter("id");
-        if (id != null) {
-            if (id.startsWith(ALBUM_COVERART_PREFIX)) {
-                return getAlbumImage(Integer.valueOf(id.replace(ALBUM_COVERART_PREFIX, "")));
-            }
-            if (id.startsWith(ARTIST_COVERART_PREFIX)) {
-                return getArtistImage(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
-            }
-            return getMediaFileImage(Integer.valueOf(id));
+        if (id == null) {
+            return null;
         }
 
-        String path = StringUtils.trimToNull(request.getParameter("path"));
-        return path != null ? new File(path) : null;
+        if (id.startsWith(ALBUM_COVERART_PREFIX)) {
+            return getAlbumImage(Integer.valueOf(id.replace(ALBUM_COVERART_PREFIX, "")));
+        }
+        if (id.startsWith(ARTIST_COVERART_PREFIX)) {
+            return getArtistImage(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
+        }
+        return getMediaFileImage(Integer.valueOf(id));
     }
 
     private File getArtistImage(int id) {

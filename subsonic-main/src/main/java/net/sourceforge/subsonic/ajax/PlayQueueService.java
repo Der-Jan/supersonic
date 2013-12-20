@@ -118,8 +118,16 @@ public class PlayQueueService {
 
         Player player = getCurrentPlayer(request, response);
         MediaFile file = mediaFileService.getMediaFile(id);
-        List<MediaFile> files = file.isFile() ? getSubsequentFiles(file) : mediaFileService.getDescendantsOf(file, true);
-        return doPlay(request, player, files);
+
+        if (file.isFile()) {
+            MediaFile dir = mediaFileService.getParentOf(file);
+            List<MediaFile> songs = mediaFileService.getChildrenOf(dir, true, false, true);
+            int index = songs.indexOf(file);
+            return doPlay(request, player, songs).setStartPlayerAt(index);
+        } else {
+            List<MediaFile> songs = mediaFileService.getDescendantsOf(file, true);
+            return doPlay(request, player, songs).setStartPlayerAt(0);
+        }
     }
 
     private List<MediaFile> getSubsequentFiles(MediaFile file) {
@@ -135,13 +143,13 @@ public class PlayQueueService {
         return children.subList(index, children.size());
     }
 
-    public PlayQueueInfo playPlaylist(int id) throws Exception {
+    public PlayQueueInfo playPlaylist(int id, int index) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
         List<MediaFile> files = playlistService.getFilesInPlaylist(id);
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files);
+        return doPlay(request, player, files).setStartPlayerAt(index);
     }
 
     private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
@@ -162,7 +170,7 @@ public class PlayQueueService {
         Player player = getCurrentPlayer(request, response);
         player.getPlayQueue().addFiles(false, randomFiles);
         player.getPlayQueue().setRandomSearchCriteria(null);
-        return convert(request, player, true);
+        return convert(request, player, true).setStartPlayerAt(0);
     }
 
     public PlayQueueInfo add(int id) throws Exception {

@@ -7,16 +7,16 @@
     <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
 
-    <sub:url value="/coverArt.view" var="coverArtUrl">
-        <c:if test="${not empty model.coverArt}">
-            <sub:param name="path" value="${model.coverArt.path}"/>
-        </c:if>
-        <sub:param name="size" value="200"/>
-    </sub:url>
-
     <meta name="og:title" content="${fn:escapeXml(model.songs[0].artist)} &mdash; ${fn:escapeXml(model.songs[0].albumName)}"/>
     <meta name="og:type" content="album"/>
-    <meta name="og:image" content="http://${model.redirectFrom}.subsonic.org${coverArtUrl}"/>
+
+    <c:if test="${not empty model.songs}">
+        <sub:url value="/coverArt.view" var="coverArtUrl">
+            <sub:param name="id" value="${model.songs[0].id}"/>
+            <sub:param name="size" value="500"/>
+        </sub:url>
+        <meta name="og:image" content="http://${model.redirectFrom}.subsonic.org${coverArtUrl}"/>
+    </c:if>
 
     <script type="text/javascript">
         function init() {
@@ -51,10 +51,8 @@
             <sub:param name="player" value="${model.player}"/>
         </sub:url>
         <sub:url value="/coverArt.view" var="coverUrl">
-           <sub:param name="size" value="500"/>
-           <c:if test="${not empty model.coverArts[loopStatus.count - 1]}">
-              <sub:param name="path" value="${model.coverArts[loopStatus.count - 1].path}"/>
-           </c:if>
+            <sub:param name="id" value="${song.id}"/>
+            <sub:param name="size" value="500"/>
         </sub:url>
 
            <!-- TODO: Use video provider for aac, m4a -->

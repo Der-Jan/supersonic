@@ -34,6 +34,7 @@ import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.Genres;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -161,9 +162,7 @@ public class MediaScannerService {
 
             // Maps from artist name to album count.
             Map<String, Integer> albumCount = new HashMap<String, Integer>();
-
-            // Maps from genre name to song count.
-            Map<String, Integer> genreCount = new HashMap<String, Integer>();
+            Genres genres = new Genres();
 
             scanCount = 0;
             statistics.reset();
@@ -176,7 +175,7 @@ public class MediaScannerService {
             // Recurse through all files on disk.
             for (MusicFolder musicFolder : settingsService.getAllMusicFolders()) {
                 MediaFile root = mediaFileService.getMediaFile(musicFolder.getPath(), false);
-                scanFile(root, musicFolder, lastScanned, albumCount, genreCount);
+                scanFile(root, musicFolder, lastScanned, albumCount, genres);
             }
             LOG.info("Scanned media library with " + scanCount + " entries.");
 
@@ -194,7 +193,7 @@ public class MediaScannerService {
             }
 
             // Update genres
-            mediaFileDao.updateGenres(genreCount);
+            mediaFileDao.updateGenres(genres.getGenres());
 
             settingsService.setMediaLibraryStatistics(statistics);
             settingsService.setLastScanned(lastScanned);
@@ -211,7 +210,7 @@ public class MediaScannerService {
     }
 
     private void scanFile(MediaFile file, MusicFolder musicFolder, Date lastScanned,
-                          Map<String, Integer> albumCount, Map<String, Integer> genreCount) {
+                          Map<String, Integer> albumCount, Genres genres) {
         scanCount++;
         if (scanCount % 250 == 0) {
             LOG.info("Scanned media library with " + scanCount + " entries.");
@@ -227,18 +226,18 @@ public class MediaScannerService {
 
         if (file.isDirectory()) {
             for (MediaFile child : mediaFileService.getChildrenOf(file, true, false, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount, genreCount);
+                scanFile(child, musicFolder, lastScanned, albumCount, genres);
             }
             for (MediaFile child : mediaFileService.getChildrenOf(file, false, true, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount, genreCount);
+                scanFile(child, musicFolder, lastScanned, albumCount, genres);
             }
         } else {
             updateAlbum(file, lastScanned, albumCount);
             updateArtist(file, lastScanned, albumCount);
-            updateGenre(file, genreCount);
             statistics.incrementSongs(1);
         }
 
+        updateGenres(file, genres);
         mediaFileDao.markPresent(file.getPath(), lastScanned);
         artistDao.markPresent(file.getAlbumArtist(), lastScanned);
 
@@ -250,16 +249,16 @@ public class MediaScannerService {
         }
     }
 
-    private void updateGenre(MediaFile file, Map<String, Integer> genreCount) {
+    private void updateGenres(MediaFile file, Genres genres) {
         String genre = file.getGenre();
         if (genre == null) {
             return;
         }
-        Integer count = genreCount.get(file.getGenre());
-        if (count == null) {
-            genreCount.put(genre, 1);
-        } else {
-            genreCount.put(genre, count + 1);
+        if (file.isAlbum()) {
+            genres.incrementAlbumCount(genre);
+        }
+        else if (file.isAudio()) {
+            genres.incrementSongCount(genre);
         }
     }
 

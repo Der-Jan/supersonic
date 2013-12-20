@@ -18,16 +18,17 @@
  */
 package net.sourceforge.subsonic.dao;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.MediaFile;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.Genre;
+import net.sourceforge.subsonic.domain.MediaFile;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
@@ -41,13 +42,15 @@ public class MediaFileDao extends AbstractDao {
 
     private static final Logger LOG = Logger.getLogger(MediaFileDao.class);
     private static final String COLUMNS = "id, path, folder, type, format, title, album, artist, album_artist, disc_number, " +
-            "track_number, year, genre, bit_rate, variable_bit_rate, duration_seconds, file_size, width, height, cover_art_path, " +
-            "parent_path, play_count, last_played, comment, created, changed, last_scanned, children_last_updated, present, version";
+    "track_number, year, genre, bit_rate, variable_bit_rate, duration_seconds, file_size, width, height, cover_art_path, " +
+    "parent_path, play_count, last_played, comment, created, changed, last_scanned, children_last_updated, present, version";
+    private static final String GENRE_COLUMNS = "name, song_count, album_count";
 
     public static final int VERSION = 4;
 
     private final RowMapper rowMapper = new MediaFileMapper();
     private final RowMapper musicFileInfoRowMapper = new MusicFileInfoMapper();
+    private final RowMapper genreRowMapper = new GenreMapper();
 
     /**
      * Returns the media file for the given path.
@@ -170,14 +173,16 @@ public class MediaFileDao extends AbstractDao {
         update("update media_file set present=false, children_last_updated=? where path=?", new Date(0L), path);
     }
 
-    public List<String> getGenres() {
-        return queryForStrings("select name from genre order by song_count desc");
+    public List<Genre> getGenres(boolean sortByAlbum) {
+        String orderBy = sortByAlbum ? "album_count" : "song_count";
+        return query("select " + GENRE_COLUMNS + " from genre order by " + orderBy + " desc", genreRowMapper);
     }
 
-    public void updateGenres(Map<String, Integer> genres) {
+    public void updateGenres(List<Genre> genres) {
         update("delete from genre");
-        for (Map.Entry<String, Integer> entry : genres.entrySet()) {
-            update("insert into genre values(?, ?)", entry.getKey(), entry.getValue());
+        for (Genre genre : genres) {
+            update("insert into genre(" + GENRE_COLUMNS + ") values(?, ?, ?)",
+                    genre.getName(), genre.getSongCount(), genre.getAlbumCount());
         }
     }
 
@@ -391,4 +396,9 @@ public class MediaFileDao extends AbstractDao {
         }
     }
 
+    private static class GenreMapper implements ParameterizedRowMapper<Genre> {
+        public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Genre(rs.getString(1), rs.getInt(2), rs.getInt(3));
+        }
+    }
 }

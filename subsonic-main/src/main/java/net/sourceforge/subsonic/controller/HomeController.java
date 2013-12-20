@@ -18,22 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.MediaScannerService;
-import net.sourceforge.subsonic.service.RatingService;
-import net.sourceforge.subsonic.service.SearchService;
-import net.sourceforge.subsonic.service.SecurityService;
-import net.sourceforge.subsonic.service.SettingsService;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.view.RedirectView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +26,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
+import net.sourceforge.subsonic.domain.Genre;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.MediaScannerService;
+import net.sourceforge.subsonic.service.RatingService;
+import net.sourceforge.subsonic.service.SearchService;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
 
 import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
 import static org.springframework.web.bind.ServletRequestUtils.getStringParameter;
@@ -96,10 +99,10 @@ public class HomeController extends ParameterizableViewController {
             map.put("decade", decade);
             albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9);
         } else if ("genre".equals(listType)) {
-            List<String> genres = mediaFileService.getGenres();
+            List<Genre> genres = mediaFileService.getGenres(true);
             map.put("genres", genres);
             if (!genres.isEmpty()) {
-                String genre = getStringParameter(request, "genre", genres.get(0));
+                String genre = getStringParameter(request, "genre", genres.get(0).getName());
                 map.put("genre", genre);
                 albums = getByGenre(listOffset, LIST_SIZE, genre);
             }

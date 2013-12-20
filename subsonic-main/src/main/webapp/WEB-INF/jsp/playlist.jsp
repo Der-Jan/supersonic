@@ -95,8 +95,8 @@
                     $("#artist" + id).html(truncate(song.artist));
                     $("#artist" + id).attr("title", song.artist);
                 }
-                if ($("#duration" + id)) {
-                    $("#duration" + id).html(song.durationAsString);
+                if ($("#songDuration" + id)) {
+                    $("#songDuration" + id).html(song.durationAsString);
                 }
 
                 $("#pattern" + id).addClass((i % 2 == 0) ? "bgcolor2" : "bgcolor1");
@@ -119,13 +119,16 @@
         }
 
         function onPlay(index) {
-            top.playQueue.onPlay(songs[index].id);
+            top.playQueue.onPlayPlaylist(playlist.id, index);
         }
         function onPlayAll() {
             top.playQueue.onPlayPlaylist(playlist.id);
         }
         function onAdd(index) {
             top.playQueue.onAdd(songs[index].id);
+        }
+        function onAddNext(index) {
+            top.playQueue.onAddNext(songs[index].id);
         }
         function onStar(index) {
             playlistService.toggleStar(playlist.id, index, playlistCallback);
@@ -193,12 +196,15 @@
         <td class="bgcolor1"><a href="javascript:void(0)">
             <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
                  onclick="onAdd(this.id.substring(3) - 1)"></a></td>
+        <td class="bgcolor1"><a href="javascript:void(0)">
+            <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
+                 onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
 
         <td style="padding-right:0.25em"></td>
         <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
         <td style="padding-right:1.25em"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
         <td style="padding-right:1.25em"><span id="artist" class="detail">Artist</span></td>
-        <td style="padding-right:1.25em;text-align:right;"><span id="duration" class="detail">Duration</span></td>
+        <td style="padding-right:1.25em;text-align:right;"><span id="songDuration" class="detail">Duration</span></td>
 
         <c:if test="${model.editAllowed}">
             <td class="bgcolor1"><a href="javascript:void(0)">

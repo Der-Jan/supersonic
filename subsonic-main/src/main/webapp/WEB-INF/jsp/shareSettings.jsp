@@ -20,10 +20,10 @@
             <th style="padding-left:1em"><fmt:message key="sharesettings.name"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.owner"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.description"/></th>
-            <th style="padding-left:1em"><fmt:message key="sharesettings.expires"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.lastvisited"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.visits"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.files"/></th>
+            <th style="padding-left:1em"><fmt:message key="sharesettings.expires"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.expirein"/></th>
             <th style="padding-left:1em"><fmt:message key="common.delete"/></th>
         </tr>
@@ -47,10 +47,10 @@
                 <td ${cssClass} style="padding-left:1em"><a href="${model.shareBaseUrl}${share.name}" target="_blank">${share.name}</a></td>
                 <td ${cssClass} style="padding-left:1em">${share.username}</td>
                 <td ${cssClass} style="padding-left:1em"><input type="text" name="description[${share.id}]" size="40" value="${share.description}"/></td>
-                <td ${cssClass} style="padding-left:1em"><fmt:formatDate value="${share.expires}" type="date" dateStyle="medium"/></td>
                 <td ${cssClass} style="padding-left:1em"><fmt:formatDate value="${share.lastVisited}" type="date" dateStyle="medium"/></td>
                 <td ${cssClass} style="padding-left:1em; text-align:right">${share.visitCount}</td>
                 <td ${cssClass} style="padding-left:1em"><a href="${albumUrl}" title="${shareInfo.dir.name}"><str:truncateNicely upper="30">${fn:escapeXml(shareInfo.dir.name)}</str:truncateNicely></a></td>
+                <td ${cssClass} style="padding-left:1em"><fmt:formatDate value="${share.expires}" type="date" dateStyle="medium"/></td>
                 <td ${cssClass} style="padding-left:1em">
                     <label><input type="radio" name="expireIn[${share.id}]" value="7"><fmt:message key="sharesettings.expirein.week"/></label>
                     <label><input type="radio" name="expireIn[${share.id}]" value="30"><fmt:message key="sharesettings.expirein.month"/></label>
