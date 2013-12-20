@@ -508,8 +508,12 @@
             </c:if>
 
             <c:if test="${model.player.web}">
-                <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onPrevious()"><b>&laquo;</b></a></span></td>
-                <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onNext(false)"><b>&raquo;</b></a></span> |</td>
+                <td><span class="header">
+                    <a href="javascript:void(0)" onclick="onPrevious()"><img src="<spring:theme code="backImage"/>" alt=""></a></span>
+                </td>
+                <td><span class="header">
+                    <a href="javascript:void(0)" onclick="onNext(false)"><img src="<spring:theme code="forwardImage"/>" alt=""></a></span>
+                </td>
             </c:if>
 
             <td style="white-space:nowrap;"><span class="header"><a href="javascript:void(0)" onclick="onClear()"><fmt:message key="playlist.clear"/></a></span> |</td>

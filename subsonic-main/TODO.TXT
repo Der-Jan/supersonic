@@ -13,6 +13,7 @@ When playing a song from an album, queue other songs in that album as well, both
 Make it possible to create playlist from starred songs.
 Added "Play all" to starred.
 Use locale-specific names for automatically created playlists.
+Use icons for prev/next player controls.
 
 TODO IN 4.9
 --------------
@@ -24,7 +25,6 @@ When playing starred songs, queue other starred songs.
 Larger image in "Now playing"?
 Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Can siebling albums flow from bottom?
-back/forward buttons unaligned.
 Reverse siebling order
 
 Download problem
