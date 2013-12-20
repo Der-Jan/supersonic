@@ -119,7 +119,7 @@
         }
 
         function onPlay(index) {
-            top.playQueue.onPlay(songs[index].id);
+            top.playQueue.onPlayPlaylist(playlist.id, index);
         }
         function onPlayAll() {
             top.playQueue.onPlayPlaylist(playlist.id);

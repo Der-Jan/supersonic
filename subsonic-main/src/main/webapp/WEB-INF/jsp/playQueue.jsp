@@ -22,7 +22,7 @@
     var songs = null;
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
-    var startPlayer = false;
+    var startPlayerAt = -1;
     var repeatEnabled = false;
     var slider = null;
 
@@ -140,23 +140,23 @@
         skip(parseInt(getCurrentSongIndex()) - 1);
     }
     function onPlay(id) {
-        startPlayer = true;
+        startPlayerAt = 0;
         playQueueService.play(id, playQueueCallback);
     }
-    function onPlayPlaylist(id) {
-        startPlayer = true;
+    function onPlayPlaylist(id, index) {
+        startPlayerAt = index || 0;
         playQueueService.playPlaylist(id, playQueueCallback);
     }
     function onPlayRandom(id, count) {
-        startPlayer = true;
+        startPlayerAt = 0;
         playQueueService.playRandom(id, count, playQueueCallback);
     }
     function onAdd(id) {
-        startPlayer = false;
+        startPlayerAt = 0;
         playQueueService.add(id, playQueueCallback);
     }
     function onAddNext(id) {
-        startPlayer = false;
+        startPlayerAt = -1;
         playQueueService.addAt(id, getCurrentSongIndex() + 1, playQueueCallback);
     }
     function onShuffle() {
@@ -335,11 +335,11 @@
     }
 
     function triggerPlayer() {
-        if (startPlayer) {
-            startPlayer = false;
-            if (songs.length > 0) {
-                skip(0);
+        if (startPlayerAt != -1) {
+            if (songs.length > startPlayerAt) {
+                skip(startPlayerAt);
             }
+            startPlayerAt = -1;
         }
         updateCurrentImage();
         if (songs.length == 0) {
