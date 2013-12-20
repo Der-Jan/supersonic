@@ -118,8 +118,16 @@ public class PlayQueueService {
 
         Player player = getCurrentPlayer(request, response);
         MediaFile file = mediaFileService.getMediaFile(id);
-        List<MediaFile> files = file.isFile() ? getSubsequentFiles(file) : mediaFileService.getDescendantsOf(file, true);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+
+        if (file.isFile()) {
+            MediaFile dir = mediaFileService.getParentOf(file);
+            List<MediaFile> songs = mediaFileService.getChildrenOf(dir, true, false, true);
+            int index = songs.indexOf(file);
+            return doPlay(request, player, songs).setStartPlayerAt(index);
+        } else {
+            List<MediaFile> songs = mediaFileService.getDescendantsOf(file, true);
+            return doPlay(request, player, songs).setStartPlayerAt(0);
+        }
     }
 
     private List<MediaFile> getSubsequentFiles(MediaFile file) {
