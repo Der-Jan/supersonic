@@ -199,6 +199,7 @@
     function onSavePlaylist() {
         playQueueService.savePlaylist(function () {
             top.left.updatePlaylists();
+            top.left.showAllPlaylists();
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
         });
     }

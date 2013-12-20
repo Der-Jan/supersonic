@@ -87,6 +87,27 @@ public class PlaylistService {
         return getReadablePlaylists();
     }
 
+    public void createPlaylistForStarredSongs() {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        Locale locale = settingsService.getLocale();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
+
+        Date now = new Date();
+        Playlist playlist = new Playlist();
+        String username = securityService.getCurrentUsername(request);
+        playlist.setUsername(username);
+        playlist.setCreated(now);
+        playlist.setChanged(now);
+        playlist.setShared(false);
+
+        // TODO: Look up translation
+        playlist.setName("Starred " + dateFormat.format(now));
+
+        playlistService.createPlaylist(playlist);
+        List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        playlistService.setFilesInPlaylist(playlist.getId(), songs);
+    }
+
     public void appendToPlaylist(int playlistId, List<Integer> mediaFileIds) {
         List<MediaFile> files = playlistService.getFilesInPlaylist(playlistId);
         for (Integer mediaFileId : mediaFileIds) {

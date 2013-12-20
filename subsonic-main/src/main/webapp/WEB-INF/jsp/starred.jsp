@@ -6,6 +6,7 @@
     <script type="text/javascript" src="<c:url value='/dwr/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" language="javascript">
 
         function toggleStar(mediaFileId, imageId) {
@@ -17,6 +18,13 @@
                 $(imageId).attr("src", "<spring:theme code="ratingOnImage"/>");
                 starService.star(mediaFileId);
             }
+        }
+        function onSavePlaylist() {
+            playlistService.createPlaylistForStarredSongs(function () {
+                top.left.updatePlaylists();
+                top.left.showAllPlaylists();
+                $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
+            });
         }
     </script>
 </head>
@@ -124,6 +132,9 @@
 
         </c:forEach>
     </table>
+
+    <p class="forward"><a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a></p>
+
 </c:if>
 
 </body></html>

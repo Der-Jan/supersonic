@@ -10,17 +10,26 @@ Duplicate ID "duration" in playlist.jsp
 Added "Play next" button to playlist view.
 When playing a song from a playlist, queue other songs in that playlist.
 When playing a song from an album, queue other songs in that album as well, both previous and next.
+Make it possible to create playlist from starred songs.
 
 TODO IN 4.9
 --------------
+Look up translation in Playlistservice.
+Make it possible to create playlist from starred songs.
+  Move createPlaylist to PlaylistService.
+Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
-Make it possible to create playlist from starred songs.
+When playing starred songs, queue other starred songs.
 Larger image in "Now playing"?
 Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Can siebling albums flow from bottom?
 back/forward buttons unaligned.
 Reverse siebling order
+
+Download problem
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
+  In main.jsp, single songs are downloaded as zip files.
 
 CoverArtProducer
 - Default, Automatic
@@ -28,8 +37,17 @@ CoverArtProducer
 TODO IN 5.0
 --------------
 Monitoring with JavaMelody
+Artist art
+  Create collage of album covers?
+  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
+Update ffmpeg
+  Use mpeg4?
+  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
 Add browser notification
   http://www.paulund.co.uk/html5-notifications
+
+Change logo in forum
+
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
@@ -46,9 +64,6 @@ DLNA
 
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
-
-Upgrade ffmpeg. Use mpeg4?
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/142d1b52c5c53ff1
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.

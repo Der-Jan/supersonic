@@ -343,7 +343,6 @@ public class PlayQueueService {
         jukeboxService.setGain(gain);
     }
 
-
     public String savePlaylist() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
