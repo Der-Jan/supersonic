@@ -145,6 +145,9 @@
         index = index || 0;
         playQueueService.playPlaylist(id, index, playQueueCallback);
     }
+    function onPlayStarred() {
+        playQueueService.playStarred(playQueueCallback);
+    }
     function onPlayRandom(id, count) {
         playQueueService.playRandom(id, count, playQueueCallback);
     }

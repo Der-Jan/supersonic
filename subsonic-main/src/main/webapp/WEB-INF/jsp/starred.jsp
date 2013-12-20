@@ -19,6 +19,7 @@
                 starService.star(mediaFileId);
             }
         }
+
         function onSavePlaylist() {
             playlistService.createPlaylistForStarredSongs(function () {
                 top.left.updatePlaylists();
@@ -26,6 +27,11 @@
                 $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
             });
         }
+
+        function onPlayAll() {
+            top.playQueue.onPlayStarred();
+        }
+
     </script>
 </head>
 <body class="mainframe bgcolor1">
@@ -133,7 +139,13 @@
         </c:forEach>
     </table>
 
-    <p class="forward"><a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a></p>
+    <div class="forward" style="float:left;padding-right:1.5em">
+        <a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a>
+    </div>
+    <div class="forward" style="float: left">
+        <a href="javascript:noop()" onclick="onPlayAll()"><fmt:message key="main.playall"/></a>
+    </div>
+    <div style="clear: both"></div>
 
 </c:if>
 

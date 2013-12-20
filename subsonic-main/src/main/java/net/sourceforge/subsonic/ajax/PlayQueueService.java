@@ -149,6 +149,16 @@ public class PlayQueueService {
         return doPlay(request, player, files).setStartPlayerAt(index);
     }
 
+    public PlayQueueInfo playStarred() throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        String username = securityService.getCurrentUsername(request);
+        List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
     private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
         if (player.isWeb()) {
             removeVideoFiles(files);

@@ -11,6 +11,7 @@ Added "Play next" button to playlist view.
 When playing a song from a playlist, queue other songs in that playlist.
 When playing a song from an album, queue other songs in that album as well, both previous and next.
 Make it possible to create playlist from starred songs.
+Added "Play all" to starred.
 
 TODO IN 4.9
 --------------
