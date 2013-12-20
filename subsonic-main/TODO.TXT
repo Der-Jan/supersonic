@@ -6,13 +6,14 @@ REST: Added album/song count in getGenres.
 By genre "R&B" broken.
 Simplify cover art in external player.
 Removed support for "path" parameter in coverArt.view.
+Duplicate ID "duration" in playlist.jsp
 
 TODO IN 4.9
 --------------
+Add "Play next" button to playlist view.
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
 When playing a song from a playlist, queue other songs in that playlist.
-
 
 CoverArtProducer
 - Default, Automatic
