@@ -15,7 +15,10 @@ Added "Play all" to starred.
 
 TODO IN 4.9
 --------------
+Remove obsolete resource strings.
 Look up translation in Playlistservice.
+  Update norwegian translation, including "Spilleliste" -> "Spillekø".
+  Uses wrong date format for saved playlists.
 Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.

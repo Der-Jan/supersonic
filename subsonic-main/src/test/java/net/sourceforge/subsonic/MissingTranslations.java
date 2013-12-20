@@ -1,7 +1,10 @@
 package net.sourceforge.subsonic;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class MissingTranslations  {
 
@@ -10,6 +13,7 @@ public class MissingTranslations  {
 
         for (String locale : locales) {
             diff(locale, "en");
+            diff("en", locale);
         }
     }
 
