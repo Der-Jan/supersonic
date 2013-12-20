@@ -80,16 +80,8 @@ public class ExternalPlayerController extends ParameterizableViewController {
         share.setVisitCount(share.getVisitCount() + 1);
         shareDao.updateShare(share);
 
-        List<MediaFile> songs = getSongs(share);
-        List<File> coverArts = getCoverArts(songs);
-
         map.put("share", share);
-        map.put("songs", songs);
-        map.put("coverArts", coverArts);
-
-        if (!coverArts.isEmpty()) {
-            map.put("coverArt", coverArts.get(0));
-        }
+        map.put("songs", getSongs(share));
         map.put("redirectFrom", settingsService.getUrlRedirectFrom());
         map.put("player", playerService.getGuestPlayer(request).getId());
 
@@ -117,15 +109,6 @@ public class ExternalPlayerController extends ParameterizableViewController {
         }
         return result;
     }
-
-    private List<File> getCoverArts(List<MediaFile> songs) throws IOException {
-        List<File> result = new ArrayList<File>();
-        for (MediaFile song : songs) {
-            result.add(mediaFileService.getCoverArt(song));
-        }
-        return result;
-    }
-
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
