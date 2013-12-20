@@ -127,6 +127,9 @@
         function onAdd(index) {
             top.playQueue.onAdd(songs[index].id);
         }
+        function onAddNext(index) {
+            top.playQueue.onAddNext(songs[index].id);
+        }
         function onStar(index) {
             playlistService.toggleStar(playlist.id, index, playlistCallback);
         }
@@ -193,6 +196,9 @@
         <td class="bgcolor1"><a href="javascript:void(0)">
             <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
                  onclick="onAdd(this.id.substring(3) - 1)"></a></td>
+        <td class="bgcolor1"><a href="javascript:void(0)">
+            <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
+                 onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
 
         <td style="padding-right:0.25em"></td>
         <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
