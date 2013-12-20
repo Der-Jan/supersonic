@@ -22,6 +22,7 @@ import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.i18n.SubsonicLocaleResolver;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Provides AJAX-enabled services for manipulating playlists.
@@ -50,6 +52,7 @@ public class PlaylistService {
     private MediaFileDao mediaFileDao;
     private SettingsService settingsService;
     private PlayerService playerService;
+    private SubsonicLocaleResolver localeResolver;
 
     public List<Playlist> getReadablePlaylists() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
@@ -76,7 +79,7 @@ public class PlaylistService {
 
     public List<Playlist> createEmptyPlaylist() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
-        Locale locale = settingsService.getLocale();
+        Locale locale = localeResolver.resolveLocale(request);
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 
         Date now = new Date();
@@ -95,7 +98,7 @@ public class PlaylistService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         Player player = playerService.getPlayer(request, response);
-        Locale locale = settingsService.getLocale();
+        Locale locale = localeResolver.resolveLocale(request);
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 
         Date now = new Date();
@@ -112,7 +115,7 @@ public class PlaylistService {
 
     public void createPlaylistForStarredSongs() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
-        Locale locale = settingsService.getLocale();
+        Locale locale = localeResolver.resolveLocale(request);
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 
         Date now = new Date();
@@ -123,8 +126,8 @@ public class PlaylistService {
         playlist.setChanged(now);
         playlist.setShared(false);
 
-        // TODO: Look up translation
-        playlist.setName("Starred " + dateFormat.format(now));
+        ResourceBundle bundle = ResourceBundle.getBundle("net.sourceforge.subsonic.i18n.ResourceBundle", locale);
+        playlist.setName(bundle.getString("top.starred") + " " + dateFormat.format(now));
 
         playlistService.createPlaylist(playlist);
         List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
@@ -229,5 +232,9 @@ public class PlaylistService {
 
     public void setPlayerService(PlayerService playerService) {
         this.playerService = playerService;
+    }
+
+    public void setLocaleResolver(SubsonicLocaleResolver localeResolver) {
+        this.localeResolver = localeResolver;
     }
 }

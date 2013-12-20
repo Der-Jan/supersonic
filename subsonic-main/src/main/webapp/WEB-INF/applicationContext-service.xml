@@ -238,6 +238,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="playerService" ref="playerService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
+        <property name="localeResolver" ref="localeResolver"/>
     </bean>
 
     <bean id="ajaxLyricsService" class="net.sourceforge.subsonic.ajax.LyricsService"/>
@@ -261,6 +262,11 @@
 
     <bean id="ajaxChatService" class="net.sourceforge.subsonic.ajax.ChatService" init-method="init">
         <property name="securityService" ref="securityService"/>
+    </bean>
+
+    <bean id="localeResolver" class="net.sourceforge.subsonic.i18n.SubsonicLocaleResolver">
+        <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
     </bean>
 
 </beans>

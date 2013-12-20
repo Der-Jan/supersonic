@@ -472,11 +472,6 @@
         <property name="settingsService" ref="settingsService"/>
     </bean>
 
-    <bean id="localeResolver" class="net.sourceforge.subsonic.i18n.SubsonicLocaleResolver">
-        <property name="securityService" ref="securityService"/>
-        <property name="settingsService" ref="settingsService"/>
-    </bean>
-
     <bean id="themeResolver" class="net.sourceforge.subsonic.theme.SubsonicThemeResolver">
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>

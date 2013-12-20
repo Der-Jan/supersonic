@@ -12,13 +12,11 @@ When playing a song from a playlist, queue other songs in that playlist.
 When playing a song from an album, queue other songs in that album as well, both previous and next.
 Make it possible to create playlist from starred songs.
 Added "Play all" to starred.
+Use locale-specific names for automatically created playlists.
 
 TODO IN 4.9
 --------------
 Remove obsolete resource strings.
-Look up translation in Playlistservice.
-  Update norwegian translation, including "Spilleliste" -> "Spillekø".
-  Uses wrong date format for saved playlists.
 Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
