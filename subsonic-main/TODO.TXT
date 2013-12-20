@@ -15,8 +15,6 @@ Make it possible to create playlist from starred songs.
 TODO IN 4.9
 --------------
 Look up translation in Playlistservice.
-Make it possible to create playlist from starred songs.
-  Move createPlaylist to PlaylistService.
 Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.

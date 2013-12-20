@@ -197,7 +197,7 @@
         playQueueService.sortByAlbum(playQueueCallback);
     }
     function onSavePlaylist() {
-        playQueueService.savePlaylist(function () {
+        playlistService.createPlaylistForPlayQueue(function () {
             top.left.updatePlaylists();
             top.left.showAllPlaylists();
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");

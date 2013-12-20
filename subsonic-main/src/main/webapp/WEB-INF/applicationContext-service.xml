@@ -236,6 +236,7 @@
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="playerService" ref="playerService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 
