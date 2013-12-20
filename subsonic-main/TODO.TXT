@@ -5,6 +5,7 @@ Show album/song count in genre list.
 REST: Added album/song count in getGenres.
 By genre "R&B" broken.
 Simplify cover art in external player.
+Removed support for "path" parameter in coverArt.view.
 
 TODO IN 4.9
 --------------
@@ -12,7 +13,6 @@ album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
 What is default share expiration. Nothing showed in Settings > Shared
 When playing a song from a playlist, queue other songs in that playlist.
-
 
 TODO IN 5.0
 --------------
