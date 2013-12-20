@@ -11,8 +11,11 @@ TODO IN 4.9
 --------------
 album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
-What is default share expiration. Nothing showed in Settings > Shared
 When playing a song from a playlist, queue other songs in that playlist.
+
+
+CoverArtProducer
+- Default, Automatic
 
 TODO IN 5.0
 --------------
