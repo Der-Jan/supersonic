@@ -13,7 +13,7 @@ public class MissingTranslations  {
 
         for (String locale : locales) {
             diff(locale, "en");
-            diff("en", locale);
+//            diff("en", locale);
         }
     }
 
