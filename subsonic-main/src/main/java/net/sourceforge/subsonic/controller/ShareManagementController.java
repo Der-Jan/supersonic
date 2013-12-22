@@ -28,6 +28,7 @@ import net.sourceforge.subsonic.service.PlaylistService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -69,11 +70,23 @@ public class ShareManagementController extends MultiActionController {
         map.put("urlRedirectionEnabled", settingsService.isUrlRedirectionEnabled());
         map.put("dir", dir);
         map.put("user", securityService.getCurrentUser(request));
+
         Share share = shareService.createShare(request, files);
+        String description = getDescription(request);
+        if (description != null) {
+            share.setDescription(description);
+            shareService.updateShare(share);
+        }
+
         map.put("playUrl", shareService.getShareUrl(share));
         map.put("licenseInfo", settingsService.getLicenseInfo());
 
         return new ModelAndView("createShare", "model", map);
+    }
+
+    private String getDescription(HttpServletRequest request) throws ServletRequestBindingException {
+        Integer playlistId = ServletRequestUtils.getIntParameter(request, "playlist");
+        return playlistId == null ? null : playlistService.getPlaylist(playlistId).getName();
     }
 
     private List<MediaFile> getMediaFiles(HttpServletRequest request) throws Exception {
