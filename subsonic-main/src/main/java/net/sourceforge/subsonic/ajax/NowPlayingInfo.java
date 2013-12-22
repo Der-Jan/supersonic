@@ -33,12 +33,11 @@ public class NowPlayingInfo {
     private final String albumUrl;
     private final String lyricsUrl;
     private final String coverArtUrl;
-    private final String coverArtZoomUrl;
     private final String avatarUrl;
     private final int minutesAgo;
 
     public NowPlayingInfo(String user, String artist, String title, String tooltip, String streamUrl, String albumUrl,
-                          String lyricsUrl, String coverArtUrl, String coverArtZoomUrl, String avatarUrl, int minutesAgo) {
+                          String lyricsUrl, String coverArtUrl, String avatarUrl, int minutesAgo) {
         this.username = user;
         this.artist = artist;
         this.title = title;
@@ -47,7 +46,6 @@ public class NowPlayingInfo {
         this.albumUrl = albumUrl;
         this.lyricsUrl = lyricsUrl;
         this.coverArtUrl = coverArtUrl;
-        this.coverArtZoomUrl = coverArtZoomUrl;
         this.avatarUrl = avatarUrl;
         this.minutesAgo = minutesAgo;
     }
@@ -82,10 +80,6 @@ public class NowPlayingInfo {
 
     public String getCoverArtUrl() {
         return coverArtUrl;
-    }
-
-    public String getCoverArtZoomUrl() {
-        return coverArtZoomUrl;
     }
 
     public String getAvatarUrl() {
