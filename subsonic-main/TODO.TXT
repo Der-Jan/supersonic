@@ -22,7 +22,6 @@ Show cover art for starred albums
 TODO IN 4.9
 --------------
 Support playlist sharing.
-  Use "id" rather than "dir" in ShareManagementController
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
 When playing starred songs, queue other starred songs.

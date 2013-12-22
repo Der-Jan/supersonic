@@ -90,14 +90,14 @@ public class ShareManagementController extends MultiActionController {
     }
 
     private List<MediaFile> getMediaFiles(HttpServletRequest request) throws Exception {
-        String dir = request.getParameter("dir");
+        Integer id = ServletRequestUtils.getIntParameter(request, "id");
         String playerId = request.getParameter("player");
         Integer playlistId = ServletRequestUtils.getIntParameter(request, "playlist");
 
         List<MediaFile> result = new ArrayList<MediaFile>();
 
-        if (dir != null) {
-            MediaFile album = mediaFileService.getMediaFile(dir);
+        if (id != null) {
+            MediaFile album = mediaFileService.getMediaFile(id);
             int[] indexes = ServletRequestUtils.getIntParameters(request, "i");
             if (indexes.length == 0) {
                 return Arrays.asList(album);

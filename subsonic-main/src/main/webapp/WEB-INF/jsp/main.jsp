@@ -22,12 +22,9 @@
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <sub:url value="createShare.view" var="shareUrl">
-    <sub:param name="dir" value="${model.dir.path}"/>
+    <sub:param name="id" value="${model.dir.id}"/>
 </sub:url>
 <sub:url value="download.view" var="downloadUrl">
-    <sub:param name="dir" value="${model.dir.path}"/>
-</sub:url>
-<sub:url value="appendPlaylist.view" var="appendPlaylistUrl">
     <sub:param name="dir" value="${model.dir.path}"/>
 </sub:url>
 
