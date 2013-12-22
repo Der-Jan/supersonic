@@ -17,6 +17,7 @@ Use icons for prev/next player controls.
 Support playlist sharing on Facebook etc.
 Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Remove obsolete resource strings.
+Show cover art for starred albums
 
 TODO IN 4.9
 --------------
@@ -24,7 +25,6 @@ Support playlist sharing.
   Use "id" rather than "dir" in ShareManagementController
   Set name/description for share.
   Back button should go back to playlist.
-Show cover art for starred albums
 album year/genre should update if songs have changed (same as song count)
 When playing starred songs, queue other starred songs.
 Can siebling albums flow from bottom?

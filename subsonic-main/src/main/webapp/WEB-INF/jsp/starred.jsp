@@ -3,6 +3,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <link href="<c:url value="/style/shadow.css"/>" rel="stylesheet">
     <script type="text/javascript" src="<c:url value='/dwr/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
@@ -45,6 +46,36 @@
     <p style="padding-top: 1em"><em><fmt:message key="starred.empty"/></em></p>
 </c:if>
 
+<c:if test="${not empty model.albums}">
+    <h2><fmt:message key="search.hits.albums"/></h2>
+
+<div>
+    <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
+
+        <div class="albumThumb">
+            <c:import url="coverArt.jsp">
+                <c:param name="albumId" value="${album.id}"/>
+                <c:param name="albumName" value="${album.title}"/>
+                <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                <c:param name="showLink" value="true"/>
+                <c:param name="showZoom" value="false"/>
+                <c:param name="showChange" value="false"/>
+                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+            </c:import>
+            <c:choose>
+                <c:when test="${empty album.artist and empty album.title}">
+                    <div class="detail"><fmt:message key="common.unknown"/></div>
+                </c:when>
+                <c:otherwise>
+                    <div class="detail"><b><str:truncateNicely lower="22" upper="22">${album.artist}</str:truncateNicely></b></div>
+                    <div class="detail"><str:truncateNicely lower="22" upper="22">${album.name}</str:truncateNicely></div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </c:forEach>
+    </c:if>
+</div>
+
 <c:if test="${not empty model.artists}">
     <h2><fmt:message key="search.hits.artists"/></h2>
     <table style="border-collapse:collapse">
@@ -67,38 +98,6 @@
                     <a href="${mainUrl}">${artist.name}</a>
                 </td>
             </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
-<c:if test="${not empty model.albums}">
-    <h2><fmt:message key="search.hits.albums"/></h2>
-    <table style="border-collapse:collapse">
-        <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
-
-            <sub:url value="/main.view" var="mainUrl">
-                <sub:param name="path" value="${album.path}"/>
-            </sub:url>
-
-            <tr>
-                <c:import url="playButtons.jsp">
-                    <c:param name="id" value="${album.id}"/>
-                    <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                    <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyModeEnabled or not album.directory)}"/>
-                    <c:param name="starEnabled" value="true"/>
-                    <c:param name="starred" value="${not empty album.starredDate}"/>
-                    <c:param name="asTable" value="true"/>
-                </c:import>
-
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
-                    <a href="${mainUrl}">${album.albumName}</a>
-                </td>
-
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:0.25em">
-                    <span class="detail">${album.artist}</span>
-                </td>
-            </tr>
-
         </c:forEach>
     </table>
 </c:if>
