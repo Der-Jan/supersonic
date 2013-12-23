@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.dao;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.schema.Schema;
+import net.sourceforge.subsonic.dao.schema.Schema10;
 import net.sourceforge.subsonic.dao.schema.Schema25;
 import net.sourceforge.subsonic.dao.schema.Schema26;
 import net.sourceforge.subsonic.dao.schema.Schema27;
@@ -56,7 +57,7 @@ public class DaoHelper {
 
     private static final Logger LOG = Logger.getLogger(DaoHelper.class);
 
-    private Schema[] schemas = {new Schema25(), new Schema26(), new Schema27(), new Schema28(), new Schema29(),
+    private Schema[] schemas = {new Schema10(), new Schema25(), new Schema26(), new Schema27(), new Schema28(), new Schema29(),
                                 new Schema30(), new Schema31(), new Schema32(), new Schema33(), new Schema34(),
                                 new Schema35(), new Schema36(), new Schema37(), new Schema38(), new Schema40(),
                                 new Schema43(), new Schema45(), new Schema46(), new Schema47(), new Schema49()};
