@@ -22,7 +22,6 @@ import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
-import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.service.JukeboxService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -37,11 +36,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -150,6 +147,16 @@ public class PlayQueueService {
         List<MediaFile> files = playlistService.getFilesInPlaylist(id);
         Player player = getCurrentPlayer(request, response);
         return doPlay(request, player, files).setStartPlayerAt(index);
+    }
+
+    public PlayQueueInfo playStarred() throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        String username = securityService.getCurrentUsername(request);
+        List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
     }
 
     private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
@@ -343,27 +350,6 @@ public class PlayQueueService {
         jukeboxService.setGain(gain);
     }
 
-
-    public String savePlaylist() {
-        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
-        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
-        Player player = getCurrentPlayer(request, response);
-        Locale locale = settingsService.getLocale();
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
-
-        Date now = new Date();
-        Playlist playlist = new Playlist();
-        playlist.setUsername(securityService.getCurrentUsername(request));
-        playlist.setCreated(now);
-        playlist.setChanged(now);
-        playlist.setShared(false);
-        playlist.setName(dateFormat.format(now));
-
-        playlistService.createPlaylist(playlist);
-        playlistService.setFilesInPlaylist(playlist.getId(), player.getPlayQueue().getFiles());
-        return playlist.getName();
-    }
-        
     private List<MediaFile> getRandomChildren(MediaFile file, int count) throws IOException {
         List<MediaFile> children = mediaFileService.getDescendantsOf(file, false);
         removeVideoFiles(children);

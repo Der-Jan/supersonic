@@ -80,9 +80,9 @@
 <body class="mainframe bgcolor1" style="padding-top:2em" onload="init();">
 
 <div style="margin:auto;width:500px">
-    <h1 >${model.songs[0].artist}</h1>
+    <h1 >${empty model.share.description ? model.songs[0].artist : fn:escapeXml(model.share.description)}</h1>
     <div style="float:left;padding-right:1.5em">
-        <h2 style="margin:0;">${model.songs[0].albumName}</h2>
+        <h2 style="margin:0;">${empty model.share.description ? model.songs[0].albumName : model.share.username}</h2>
     </div>
     <div class="detail" style="float:right">Streaming by <a href="http://subsonic.org/" target="_blank"><b>Subsonic</b></a></div>
 
@@ -91,7 +91,6 @@
             <a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a>
         </div>
     </div>
-    <div style="padding-top: 2em">${fn:escapeXml(model.share.description)}</div>
 </div>
 </body>
 </html>

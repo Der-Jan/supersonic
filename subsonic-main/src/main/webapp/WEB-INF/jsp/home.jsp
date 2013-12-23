@@ -80,7 +80,7 @@
                 </c:when>
                 <c:otherwise>
 
-                    <div id="albumList">
+                    <div>
                         <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
                             <div class="albumThumb">

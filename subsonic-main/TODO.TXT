@@ -10,26 +10,60 @@ Duplicate ID "duration" in playlist.jsp
 Added "Play next" button to playlist view.
 When playing a song from a playlist, queue other songs in that playlist.
 When playing a song from an album, queue other songs in that album as well, both previous and next.
+Make it possible to create playlist from starred songs.
+Added "Play all" to starred.
+Use locale-specific names for automatically created playlists.
+Use icons for prev/next player controls.
+Support playlist sharing on Facebook etc.
+Clicking on image in "Now playing" shouldn't zoom, but open album page.
+Remove obsolete resource strings.
+Show cover art for starred albums
 
 TODO IN 4.9
 --------------
-album year/genre should update if songs have changed (same as song count)
 Support playlist sharing.
-Make it possible to create playlist from starred songs.
-Larger image in "Now playing"?
-Clicking on image in "Now playing" shouldn't zoom, but open album page.
+  Back button should go back to playlist.
+album year/genre should update if songs have changed (same as song count)
+When playing starred songs, queue other starred songs.
 Can siebling albums flow from bottom?
-back/forward buttons unaligned.
-Reverse siebling order
+Reverse sieblings and album list.
+Update Norwegian translation
+Fix bugs in Italian translation
+  https://mail.google.com/mail/u/0/#inbox/14311719d21ff572
+  Not only Italian?
+  Caused by build on Linux?
+ResourceBundle_ca.properties
+ResourceBundle_da.properties
+ResourceBundle_fi.properties
+ResourceBundle_is.properties
+ResourceBundle_it.properties
+ResourceBundle_nl.properties
+ResourceBundle_pt.properties
+ResourceBundle_zh_CN.properties
 
-CoverArtProducer
-- Default, Automatic
+Download problem
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
+  In main.jsp, single songs are downloaded as zip files.
+Thumbs in external player is often missing.
+
+Cache generated album art
+  CoverArtProducer
+    Default, Automatic
 
 TODO IN 5.0
 --------------
 Monitoring with JavaMelody
+Artist art
+  Create collage of album covers?
+  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
+Update ffmpeg
+  Use mpeg4?
+  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
 Add browser notification
   http://www.paulund.co.uk/html5-notifications
+
+Change logo in forum
+
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
@@ -46,9 +80,6 @@ DLNA
 
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
-
-Upgrade ffmpeg. Use mpeg4?
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/142d1b52c5c53ff1
 
 Make more space available on forum server.
 Deal with backup server. Document procedure for swapping over. Invoice notice.

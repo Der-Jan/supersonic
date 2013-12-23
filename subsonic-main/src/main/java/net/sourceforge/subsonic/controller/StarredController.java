@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.controller;
 
 import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -69,6 +70,7 @@ public class StarredController extends ParameterizableViewController {
         map.put("artists", artists);
         map.put("albums", albums);
         map.put("songs", songs);
+        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;

@@ -97,6 +97,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="shareService" ref="shareService"/>
         <property name="playerService" ref="playerService"/>
+        <property name="playlistService" ref="playlistService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="setRatingController" class="net.sourceforge.subsonic.controller.SetRatingController">
@@ -469,11 +470,6 @@
 
     <bean id="themeSource" class="net.sourceforge.subsonic.theme.SubsonicThemeSource">
         <property name="basenamePrefix" value="net.sourceforge.subsonic.theme."/>
-        <property name="settingsService" ref="settingsService"/>
-    </bean>
-
-    <bean id="localeResolver" class="net.sourceforge.subsonic.i18n.SubsonicLocaleResolver">
-        <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
 

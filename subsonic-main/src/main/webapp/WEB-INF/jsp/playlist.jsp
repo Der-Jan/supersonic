@@ -161,6 +161,10 @@
         <c:url value="download.view" var="downloadUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
         | <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
     </c:if>
+    <c:if test="${model.user.shareRole}">
+        <c:url value="createShare.view" var="shareUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
+        | <span class="header"><a href="${shareUrl}"><fmt:message key="share.title"/></a></span>
+    </c:if>
     <c:if test="${model.editAllowed}">
         | <span class="header"><a href="javascript:void(0)" onclick="onEditPlaylist();"><fmt:message key="common.edit"/></a></span>
         | <span class="header"><a href="javascript:void(0)" onclick="onDeletePlaylist();"><fmt:message key="common.delete"/></a></span>
