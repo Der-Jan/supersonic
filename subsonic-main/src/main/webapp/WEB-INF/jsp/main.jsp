@@ -16,7 +16,7 @@
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
     <style type="text/css">
-        .coverart { float: right; padding-left:10px; padding-right:10px; padding-bottom:20px }
+        .coverart { float: left; padding-left:10px; padding-right:10px; padding-bottom:20px }
     </style>
 
 </head><body class="mainframe bgcolor1" onload="init();">
@@ -400,21 +400,23 @@
                 <c:set var="captionLength" value="${captionLength * 2}"/>
             </c:if>
 
-            <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-                <div class="coverart">
-                    <c:import url="coverArt.jsp">
-                        <c:param name="albumId" value="${coverArt.id}"/>
-                        <c:param name="albumName" value="${coverArt.name}"/>
-                        <c:param name="coverArtSize" value="${coverArtSize}"/>
-                        <c:param name="showLink" value="${coverArt ne model.dir}"/>
-                        <c:param name="showZoom" value="${coverArt eq model.dir}"/>
-                        <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
-                        <c:param name="showCaption" value="true"/>
-                        <c:param name="captionLength" value="${captionLength}"/>
-                        <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                    </c:import>
-                </div>
-            </c:forEach>
+            <div style="float: right">
+                <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
+                    <div class="coverart">
+                        <c:import url="coverArt.jsp">
+                            <c:param name="albumId" value="${coverArt.id}"/>
+                            <c:param name="albumName" value="${coverArt.name}"/>
+                            <c:param name="coverArtSize" value="${coverArtSize}"/>
+                            <c:param name="showLink" value="${coverArt ne model.dir}"/>
+                            <c:param name="showZoom" value="${coverArt eq model.dir}"/>
+                            <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
+                            <c:param name="showCaption" value="true"/>
+                            <c:param name="captionLength" value="${captionLength}"/>
+                            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                        </c:import>
+                    </div>
+                </c:forEach>
+            </div>
         </td>
 
         <td style="vertical-align:top;" rowspan="2">
@@ -456,21 +458,23 @@
 
     <tr>
         <td colspan="2" style="padding-top: 1em">
-            <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
-                <div class="coverart">
-                    <c:import url="coverArt.jsp">
-                        <c:param name="albumId" value="${sieblingAlbum.id}"/>
-                        <c:param name="albumName" value="${sieblingAlbum.name}"/>
-                        <c:param name="coverArtSize" value="${model.sieblingCoverArtScheme.size}"/>
-                        <c:param name="showLink" value="true"/>
-                        <c:param name="showZoom" value="false"/>
-                        <c:param name="showChange" value="false"/>
-                        <c:param name="showCaption" value="true"/>
-                        <c:param name="captionLength" value="${model.sieblingCoverArtScheme.captionLength}"/>
-                        <c:param name="appearAfter" value="0"/>
-                    </c:import>
-                </div>
-            </c:forEach>
+            <div style="float: right">
+                <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
+                    <div class="coverart">
+                        <c:import url="coverArt.jsp">
+                            <c:param name="albumId" value="${sieblingAlbum.id}"/>
+                            <c:param name="albumName" value="${sieblingAlbum.name}"/>
+                            <c:param name="coverArtSize" value="${model.sieblingCoverArtScheme.size}"/>
+                            <c:param name="showLink" value="true"/>
+                            <c:param name="showZoom" value="false"/>
+                            <c:param name="showChange" value="false"/>
+                            <c:param name="showCaption" value="true"/>
+                            <c:param name="captionLength" value="${model.sieblingCoverArtScheme.captionLength}"/>
+                            <c:param name="appearAfter" value="0"/>
+                        </c:import>
+                    </div>
+                </c:forEach>
+            </div>
         </td>
     </tr>
 </table>

@@ -18,32 +18,22 @@ Support playlist sharing on Facebook etc.
 Clicking on image in "Now playing" shouldn't zoom, but open album page.
 Remove obsolete resource strings.
 Show cover art for starred albums
+Fixed character encoding problems in some translations.
+Show album thumbs in the right order.
 
 TODO IN 4.9
 --------------
+Remove obsolete translation strings.
 Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
 When playing starred songs, queue other starred songs.
 Can siebling albums flow from bottom?
-Reverse sieblings and album list.
+Test: Reverse sieblings and album list.
 Update Norwegian translation
-Fix bugs in Italian translation
-  https://mail.google.com/mail/u/0/#inbox/14311719d21ff572
-  Not only Italian?
-  Caused by build on Linux?
-ResourceBundle_ca.properties
-ResourceBundle_da.properties
-ResourceBundle_fi.properties
-ResourceBundle_is.properties
-ResourceBundle_it.properties
-ResourceBundle_nl.properties
-ResourceBundle_pt.properties
-ResourceBundle_zh_CN.properties
-
-Download problem
+Zip download problem
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
-  In main.jsp, single songs are downloaded as zip files.
+In main.jsp, single songs are downloaded as zip files.
 Thumbs in external player is often missing.
 
 Cache generated album art
