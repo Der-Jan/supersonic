@@ -23,12 +23,9 @@ Show album thumbs in the right order.
 
 TODO IN 4.9
 --------------
-Remove obsolete translation strings.
 Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
-When playing starred songs, queue other starred songs.
-Can siebling albums flow from bottom?
 Test: Reverse sieblings and album list.
 Update Norwegian translation
 Zip download problem
