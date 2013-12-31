@@ -25,7 +25,7 @@
     <sub:param name="id" value="${model.dir.id}"/>
 </sub:url>
 <sub:url value="download.view" var="downloadUrl">
-    <sub:param name="dir" value="${model.dir.path}"/>
+    <sub:param name="id" value="${model.dir.id}"/>
 </sub:url>
 
 <script type="text/javascript" language="javascript">
@@ -42,6 +42,7 @@
 
     <!-- actionSelected() is invoked when the users selects from the "More actions..." combo box. -->
     function actionSelected(id) {
+        const selectedIndexes = getSelectedIndexes();
 
         if (id == "top") {
             return;
@@ -49,11 +50,11 @@
             selectAll(true);
         } else if (id == "selectNone") {
             selectAll(false);
-        } else if (id == "share") {
-            parent.frames.main.location.href = "${shareUrl}&" + getSelectedIndexes();
-        } else if (id == "download") {
+        } else if (id == "share" && selectedIndexes != "") {
+            parent.frames.main.location.href = "${shareUrl}&" + selectedIndexes;
+        } else if (id == "download" && selectedIndexes != "") {
             location.href = "${downloadUrl}&" + getSelectedIndexes();
-        } else if (id == "appendPlaylist") {
+        } else if (id == "appendPlaylist" && selectedIndexes != "") {
             onAppendPlaylist();
         }
         $("#moreActions").prop("selectedIndex", 0);
@@ -184,9 +185,6 @@
     <c:if test="${model.dir.album}">
 
         <c:if test="${model.user.downloadRole}">
-            <sub:url value="download.view" var="downloadUrl">
-                <sub:param name="id" value="${model.dir.id}"/>
-            </sub:url>
             <c:if test="${needSep}">|</c:if>
             <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
             <c:set var="needSep" value="true"/>

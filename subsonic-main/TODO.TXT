@@ -21,9 +21,11 @@ Show cover art for starred albums
 Fixed character encoding problems in some translations.
 Show album thumbs in the right order.
 Cache generated album art
+In main.jsp, single songs are downloaded as zip files.
 
 TODO IN 4.9
 --------------
+Make font work when offline
 Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
@@ -32,7 +34,6 @@ Update Norwegian translation
 Zip download problem
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
 Download bugs
-  In main.jsp, single songs are downloaded as zip files.
   Can't download files from left frame.
   https://mail.google.com/mail/u/0/?shva=1#inbox/1430a59096e61868
   Ensure resuming works.

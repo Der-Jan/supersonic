@@ -411,6 +411,7 @@
 
     <!-- actionSelected() is invoked when the users selects from the "More actions..." combo box. -->
     function actionSelected(id) {
+        const selectedIndexes = getSelectedIndexes();
         if (id == "top") {
             return;
         } else if (id == "savePlaylist") {
@@ -431,9 +432,9 @@
             selectAll(false);
         } else if (id == "removeSelected") {
             onRemoveSelected();
-        } else if (id == "download") {
-            location.href = "download.view?player=${model.player.id}&" + getSelectedIndexes();
-        } else if (id == "appendPlaylist") {
+        } else if (id == "download" && selectedIndexes != "") {
+            location.href = "download.view?player=${model.player.id}&" + selectedIndexes;
+        } else if (id == "appendPlaylist" && selectedIndexes != "") {
             onAppendPlaylist();
         }
         $("#moreActions").prop("selectedIndex", 0);
