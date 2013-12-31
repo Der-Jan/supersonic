@@ -20,6 +20,7 @@ Remove obsolete resource strings.
 Show cover art for starred albums
 Fixed character encoding problems in some translations.
 Show album thumbs in the right order.
+Cache generated album art
 
 TODO IN 4.9
 --------------
@@ -30,15 +31,21 @@ Test: Reverse sieblings and album list.
 Update Norwegian translation
 Zip download problem
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
-In main.jsp, single songs are downloaded as zip files.
+Download bugs
+  In main.jsp, single songs are downloaded as zip files.
+  Can't download files from left frame.
+  https://mail.google.com/mail/u/0/?shva=1#inbox/1430a59096e61868
+  Ensure resuming works.
 Thumbs in external player is often missing.
-
+Jukebox clicking between tracks
+  https://mail.google.com/mail/u/0/?shva=1#inbox/141322f12f3aded0
 Cache generated album art
-  CoverArtProducer
-    Default, Automatic
+  Requests unscaled image when clicking on thumb
 
 TODO IN 5.0
 --------------
+Gzip REST
+  https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
 Monitoring with JavaMelody
 Artist art
   Create collage of album covers?

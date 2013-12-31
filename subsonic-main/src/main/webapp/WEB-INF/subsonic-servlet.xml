@@ -268,7 +268,6 @@
         <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="coverArtController" class="net.sourceforge.subsonic.controller.CoverArtController">
-        <property name="securityService" ref="securityService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>

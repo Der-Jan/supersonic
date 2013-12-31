@@ -18,8 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -55,14 +53,7 @@ public class AutoCoverDemo {
 
         @Override
         protected void paintComponent(Graphics g) {
-            MediaFile mediaFile = new MediaFile();
-            mediaFile.setPath("/tmp");
-            mediaFile.setAlbumArtist("Album artist");
-            mediaFile.setAlbumArtist("Song artist");
-            mediaFile.setTitle("Song title");
-            mediaFile.setAlbumName("Album name");
-
-            new CoverArtController.AutoCover((Graphics2D) g, mediaFile, size).paintCover();
+            new CoverArtController.AutoCover((Graphics2D) g, "abc", "Artist", "Album", size).paintCover();
         }
     }
 }
