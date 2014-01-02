@@ -39,7 +39,7 @@ PARAMETERS
                      title="<fmt:message key="common.play"/>"></a>
         </c:when>
         <c:otherwise>
-            <a href="javascript:noop()" onclick="top.playQueue.onPlay(${param.id});">
+            <a href="#" onclick="top.playQueue.onPlay(${param.id}); return false;">
                 <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
                      title="<fmt:message key="common.play"/>"></a>
         </c:otherwise>
@@ -49,7 +49,7 @@ PARAMETERS
 
 <c:if test="${param.asTable}"><td></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
-    <a href="javascript:noop()" onclick="top.playQueue.onAdd(${param.id});">
+    <a href="#" onclick="top.playQueue.onAdd(${param.id}); return false;">
         <img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="main.addlast"/>"
              title="<fmt:message key="main.addlast"/>"></a>
 </c:if>
@@ -57,7 +57,7 @@ PARAMETERS
 
 <c:if test="${param.asTable}"><td></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
-    <a href="javascript:noop()" onclick="top.playQueue.onAddNext(${param.id});">
+    <a href="#" onclick="top.playQueue.onAddNext(${param.id}); return false;">
         <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>"
              title="<fmt:message key="main.addnext"/>"></a>
 </c:if>
