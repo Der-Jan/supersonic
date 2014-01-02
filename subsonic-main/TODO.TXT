@@ -25,6 +25,9 @@ In main.jsp, single songs are downloaded as zip files.
 
 TODO IN 4.9
 --------------
+Download gives wrong filename in IE
+Error in IE when starting to play
+
 Make font work when offline
 Support playlist sharing.
   Back button should go back to playlist.

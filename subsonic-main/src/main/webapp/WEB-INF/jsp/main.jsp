@@ -42,7 +42,7 @@
 
     <!-- actionSelected() is invoked when the users selects from the "More actions..." combo box. -->
     function actionSelected(id) {
-        const selectedIndexes = getSelectedIndexes();
+        var selectedIndexes = getSelectedIndexes();
 
         if (id == "top") {
             return;
