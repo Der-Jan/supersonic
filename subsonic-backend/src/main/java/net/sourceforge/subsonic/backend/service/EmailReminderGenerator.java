@@ -159,7 +159,7 @@ public class EmailReminderGenerator {
                 null,
                 Arrays.asList("license@subsonic.org", "sindre@activeobjects.no"),
                 Arrays.asList("license@subsonic.org"),
-                "Your Subsonic Premium license is about to expire",
+                "Your Subsonic Premium subscription is about to expire",
                 createEmailContent(licenseExpires, firstName));
         LOG.info("Sent email reminder to " + to);
     }
@@ -171,13 +171,13 @@ public class EmailReminderGenerator {
         }
         return "Dear " + firstName + ",\n" +
                 "\n" +
-                "This is a friendly reminder that your Subsonic Premium license expires on " + DATE_FORMAT.format(licenseExpires) + ".\n" +
+                "This is a friendly reminder that your Subsonic Premium subscription expires on " + DATE_FORMAT.format(licenseExpires) + ".\n" +
                 "\n" +
-                "We hope that you enjoy the service and that you want to renew your license.\n" +
+                "We hope that you enjoy the service and that you choose to renew your subscription.\n" +
                 "\n" +
-                "Please visit http://premium.subsonic.org to stay in business!\n" +
+                "Please visit http://premium.subsonic.org for more details and purchase options!\n" +
                 "\n" +
-                "If you previously selected the automatic renewal option you will be charged automatically, and no action is required on your part.\n" +
+                "Note: If you previously selected the automatic renewal option you will be charged automatically, and no action is required on your part.\n" +
                 "\n" +
                 "Best regards,\n" +
                 "The Subsonic team\n" +

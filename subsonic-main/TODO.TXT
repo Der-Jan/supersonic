@@ -43,6 +43,10 @@ Jukebox clicking between tracks
 Cache generated album art
   Requests unscaled image when clicking on thumb
 
+Backend
+  Send email 7 days after subscription expires.
+  Mention that purchased subscription time is added to existing.
+
 TODO IN 5.0
 --------------
 Gzip REST
