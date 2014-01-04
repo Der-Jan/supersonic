@@ -1,28 +1,3 @@
-DONE IN 4.9.beta3
------------------
-Fixed NPE if setting path empty for en existing media folder.
-Show album/song count in genre list.
-REST: Added album/song count in getGenres.
-By genre "R&B" broken.
-Simplify cover art in external player.
-Removed support for "path" parameter in coverArt.view.
-Duplicate ID "duration" in playlist.jsp
-Added "Play next" button to playlist view.
-When playing a song from a playlist, queue other songs in that playlist.
-When playing a song from an album, queue other songs in that album as well, both previous and next.
-Make it possible to create playlist from starred songs.
-Added "Play all" to starred.
-Use locale-specific names for automatically created playlists.
-Use icons for prev/next player controls.
-Support playlist sharing on Facebook etc.
-Clicking on image in "Now playing" shouldn't zoom, but open album page.
-Remove obsolete resource strings.
-Show cover art for starred albums
-Fixed character encoding problems in some translations.
-Show album thumbs in the right order.
-Cache generated album art
-In main.jsp, single songs are downloaded as zip files.
-
 TODO IN 4.9
 --------------
 Download gives wrong filename in IE

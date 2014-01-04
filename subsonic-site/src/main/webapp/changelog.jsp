@@ -17,6 +17,26 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
+            <a name="4.9.beta4"><h2 class="div">Subsonic 4.9.beta4 - Jan 04, 2014</h2></a>
+            <ul>
+                <li><span class="bugid">New: </span>Support playlist sharing on Facebook etc.</li>
+                <li><span class="bugid">New: </span>Added "Play next" button to playlist view.</li>
+                <li><span class="bugid">New: </span>Added "Play all" to starred songs.</li>
+                <li><span class="bugid">New: </span>Added "Save as playlist" to starred songs.</li>
+                <li><span class="bugid">New: </span>Show cover art for starred albums.</li>
+                <li><span class="bugid">New: </span>Show album/song count in genre list.</li>
+                <li><span class="bugid">New: </span>When playing a song from a playlist, queue other songs in that playlist.</li>
+                <li><span class="bugid">New: </span>When clicking the play icon for a song, add whole album to play queue.</li>
+                <li><span class="bugid">New: </span>Clicking on album thumb in "Now playing" now opens album page.</li>
+                <li><span class="bugid">New: </span>Cache generated album art.</li>
+                <li><span class="bugid">Bugfix: </span>Don't create zip file when downloading a single song.</li>
+                <li><span class="bugid">Bugfix: </span>Show cover art in the right order.</li>
+                <li><span class="bugid">Bugfix: </span>Hande genres names with special characters (e.g., "R&amp;B").</li>
+                <li><span class="bugid">Bugfix: </span>Fixed character encoding problems in some translations.</li>
+                <li><span class="bugid">Bugfix: </span>Use locale-specific names for automatically created playlists.</li>
+                <li><span class="bugid">REST: </span>Added album/song count in getGenres.</li>
+            </ul>
+
             <a name="4.9.beta3"><h2 class="div">Subsonic 4.9.beta3 - Dec 09, 2013</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Modernized web interface. Nicer fonts, colors and layout. Larger album art.</li>
@@ -118,6 +138,7 @@
             <div class="sidebox">
                 <h2>Releases</h2>
                 <ul class="list">
+                    <li><a href="#4.9.beta4">Subsonic 4.9.beta4</a></li>
                     <li><a href="#4.9.beta3">Subsonic 4.9.beta3</a></li>
                     <li><a href="#4.9.beta2">Subsonic 4.9.beta2</a></li>
                     <li><a href="#4.9.beta1">Subsonic 4.9.beta1</a></li>
