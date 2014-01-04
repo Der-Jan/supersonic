@@ -29,13 +29,11 @@ Download gives wrong filename in IE
 Error in IE when starting to play
 
 Make font work when offline
+  https://github.com/typekit/webfontloader
 Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
-Test: Reverse sieblings and album list.
 Update Norwegian translation
-Zip download problem
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
 Download bugs
   Can't download files from left frame.
   https://mail.google.com/mail/u/0/?shva=1#inbox/1430a59096e61868
@@ -52,8 +50,9 @@ Backend
 
 TODO IN 5.0
 --------------
-Gzip REST
+Gzip REST / Jetty
   https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
+  Jetty GzipFilter? Remember it should work on Tomcat etc as well.
 Monitoring with JavaMelody
 Artist art
   Create collage of album covers?
@@ -849,21 +848,21 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On VirtualBox Ubuntu
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -874,7 +873,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta3 -m "Tagging 4.9.beta3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta4 -m "Tagging 4.9.beta4"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.
