@@ -26,15 +26,12 @@ import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
-import net.sourceforge.subsonic.util.FileUtil;
 import net.sourceforge.subsonic.util.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -65,93 +62,78 @@ public class CoverArtController implements Controller, LastModified {
 
     private static final Logger LOG = Logger.getLogger(CoverArtController.class);
 
-    private SecurityService securityService;
     private MediaFileService mediaFileService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
     public long getLastModified(HttpServletRequest request) {
-        try {
-            File file = getImageFile(request);
-            if (file == null) {
-                return 0;  // Request for the default image.
-            }
-            if (!FileUtil.exists(file)) {
-                return -1;
-            }
-
-            return FileUtil.lastModified(file);
-        } catch (Exception e) {
-            return  -1;
-        }
+        CoverArtRequest coverArtRequest = createCoverArtRequest(request);
+        long result = coverArtRequest.lastModified();
+//        LOG.info("getLastModified - " + coverArtRequest + ": " + new Date(result));
+        return result;
     }
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        File file = getImageFile(request);
 
-        if (file != null && !FileUtil.exists(file)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-
-        // Check access.
-        if (file != null && !securityService.isReadAllowed(file)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
-        }
-
-        // Send default image if no ID is given. (No need to cache it, since it will be cached in browser.)
+        CoverArtRequest coverArtRequest = createCoverArtRequest(request);
+//        LOG.info("handleRequest - " + coverArtRequest);
         Integer size = ServletRequestUtils.getIntParameter(request, "size");
-        if (file == null) {
-            sendDefault(size, request, response);
+
+        // Send fallback image if no ID is given. (No need to cache it, since it will be cached in browser.)
+        if (coverArtRequest == null) {
+            sendFallback(size, response);
             return null;
         }
 
         // Optimize if no scaling is required.
-        if (size == null) {
-            sendUnscaled(file, response);
+        if (size == null && coverArtRequest.getCoverArt() != null) {
+//            LOG.info("sendUnscaled - " + coverArtRequest);
+            sendUnscaled(coverArtRequest, response);
             return null;
         }
 
         // Send cached image, creating it if necessary.
+        if (size == null) {
+            size = CoverArtScheme.LARGE.getSize() * 2;
+        }
         try {
-            File cachedImage = getCachedImage(file, size);
+            File cachedImage = getCachedImage(coverArtRequest, size);
             sendImage(cachedImage, response);
         } catch (IOException e) {
-            sendDefault(size, request, response);
+            sendFallback(size, response);
         }
 
         return null;
     }
 
-    private File getImageFile(HttpServletRequest request) {
+    private CoverArtRequest createCoverArtRequest(HttpServletRequest request) {
         String id = request.getParameter("id");
         if (id == null) {
             return null;
         }
 
         if (id.startsWith(ALBUM_COVERART_PREFIX)) {
-            return getAlbumImage(Integer.valueOf(id.replace(ALBUM_COVERART_PREFIX, "")));
+            return createAlbumCoverArtRequest(Integer.valueOf(id.replace(ALBUM_COVERART_PREFIX, "")));
         }
         if (id.startsWith(ARTIST_COVERART_PREFIX)) {
-            return getArtistImage(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
+            return createArtistCoverArtRequest(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
         }
-        return getMediaFileImage(Integer.valueOf(id));
+        return createMediaFileCoverArtRequest(Integer.valueOf(id));
     }
 
-    private File getArtistImage(int id) {
-        Artist artist = artistDao.getArtist(id);
-        return artist == null || artist.getCoverArtPath() == null ? null : new File(artist.getCoverArtPath());
-    }
-
-    private File getAlbumImage(int id) {
+    private CoverArtRequest createAlbumCoverArtRequest(int id) {
         Album album = albumDao.getAlbum(id);
-        return album == null || album.getCoverArtPath() == null ? null : new File(album.getCoverArtPath());
+        return album == null ? null : new AlbumCoverArtRequest(album);
     }
 
-    private File getMediaFileImage(int id) {
+    private CoverArtRequest createArtistCoverArtRequest(int id) {
+        Artist artist = artistDao.getArtist(id);
+        return artist == null ? null : new ArtistCoverArtRequest(artist);
+    }
+
+    private CoverArtRequest createMediaFileCoverArtRequest(int id) {
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        return mediaFile == null ? null : mediaFileService.getCoverArt(mediaFile);
+        return mediaFile == null ? null : new MediaFileCoverArtRequest(mediaFile);
     }
 
     private void sendImage(File file, HttpServletResponse response) throws IOException {
@@ -162,33 +144,6 @@ public class CoverArtController implements Controller, LastModified {
         } finally {
             IOUtils.closeQuietly(in);
         }
-    }
-
-    private void sendDefault(Integer size, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            MediaFile mediaFile = mediaFileService.getMediaFile(id);
-            sendAutoGenerated(size, mediaFile, response);
-        } catch (Throwable x) {
-            sendFallback(size, response);
-        }
-    }
-
-    private void sendAutoGenerated(Integer size, MediaFile mediaFile, HttpServletResponse response) throws IOException {
-        if (mediaFile.isFile()) {
-            mediaFile = mediaFileService.getParentOf(mediaFile);
-        }
-        if (size == null) {
-            size = CoverArtScheme.MEDIUM.getSize() * 2;
-        }
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = image.createGraphics();
-        AutoCover autoCover = new AutoCover(graphics, mediaFile, size);
-        autoCover.paintCover();
-        graphics.dispose();
-
-        response.setContentType(StringUtil.getMimeType("png"));
-        ImageIO.write(image, "png", response.getOutputStream());
     }
 
     private void sendFallback(Integer size, HttpServletResponse response) throws IOException {
@@ -208,7 +163,8 @@ public class CoverArtController implements Controller, LastModified {
         }
     }
 
-    private void sendUnscaled(File file, HttpServletResponse response) throws IOException {
+    private void sendUnscaled(CoverArtRequest coverArtRequest, HttpServletResponse response) throws IOException {
+        File file = coverArtRequest.getCoverArt();
         JaudiotaggerParser parser = new JaudiotaggerParser();
         if (!parser.isApplicable(file)) {
             response.setContentType(StringUtil.getMimeType(FilenameUtils.getExtension(file.getName())));
@@ -222,36 +178,35 @@ public class CoverArtController implements Controller, LastModified {
         }
     }
 
-    private File getCachedImage(File file, int size) throws IOException {
-        String md5 = DigestUtils.md5Hex(file.getPath());
-        File cachedImage = new File(getImageCacheDirectory(size), md5 + ".jpeg");
+    private File getCachedImage(CoverArtRequest request, int size) throws IOException {
+        String hash = DigestUtils.md5Hex(request.getKey());
+        String encoding = request.getCoverArt() != null ? "jpeg" : "png";
+        File cachedImage = new File(getImageCacheDirectory(size), hash + "." + encoding);
 
         // Is cache missing or obsolete?
-        if (!cachedImage.exists() || FileUtil.lastModified(file) > cachedImage.lastModified()) {
-            InputStream in = null;
+        if (!cachedImage.exists() || request.lastModified() > cachedImage.lastModified()) {
+//            LOG.info("Cache MISS - " + request + " (" + size + ")");
             OutputStream out = null;
             try {
-                in = getImageInputStream(file);
-                out = new FileOutputStream(cachedImage);
-                BufferedImage image = ImageIO.read(in);
+                BufferedImage image = request.createImage(size);
                 if (image == null) {
                     throw new Exception("Unable to decode image.");
                 }
-
-                image = scale(image, size, size);
-                ImageIO.write(image, "jpeg", out);
+                out = new FileOutputStream(cachedImage);
+                ImageIO.write(image, encoding, out);
 
             } catch (Throwable x) {
                 // Delete corrupt (probably empty) thumbnail cache.
-                LOG.warn("Failed to create thumbnail for " + file, x);
+                LOG.warn("Failed to create thumbnail for " + request, x);
                 IOUtils.closeQuietly(out);
                 cachedImage.delete();
-                throw new IOException("Failed to create thumbnail for " + file + ". " + x.getMessage());
+                throw new IOException("Failed to create thumbnail for " + request + ". " + x.getMessage());
 
             } finally {
-                IOUtils.closeQuietly(in);
                 IOUtils.closeQuietly(out);
             }
+        } else {
+//            LOG.info("Cache HIT - " + request + " (" + size + ")");
         }
         return cachedImage;
     }
@@ -313,10 +268,6 @@ public class CoverArtController implements Controller, LastModified {
         return thumb;
     }
 
-    public void setSecurityService(SecurityService securityService) {
-        this.securityService = securityService;
-    }
-
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
     }
@@ -329,20 +280,178 @@ public class CoverArtController implements Controller, LastModified {
         this.albumDao = albumDao;
     }
 
+    private abstract class CoverArtRequest {
+
+        protected File coverArt;
+
+        private CoverArtRequest() {
+        }
+
+        private CoverArtRequest(String coverArtPath) {
+            this.coverArt = coverArtPath == null ? null : new File(coverArtPath);
+        }
+
+        private File getCoverArt() {
+            return coverArt;
+        }
+
+        public abstract String getKey();
+
+        public abstract long lastModified();
+
+        public BufferedImage createImage(int size) {
+            if (coverArt != null) {
+                InputStream in = null;
+                try {
+                    in = getImageInputStream(coverArt);
+                    return scale(ImageIO.read(in), size, size);
+                } catch (Throwable x) {
+                    LOG.warn("Failed to process cover art " + coverArt + ": " + x, x);
+                } finally {
+                    IOUtils.closeQuietly(in);
+                }
+            }
+            return createAutoCover(size);
+        }
+
+        protected BufferedImage createAutoCover(int size) {
+            BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = image.createGraphics();
+            AutoCover autoCover = new AutoCover(graphics, getKey(), getArtist(), getAlbum(), size);
+            autoCover.paintCover();
+            graphics.dispose();
+            return image;
+        }
+
+        public abstract String getAlbum();
+
+        public abstract String getArtist();
+    }
+
+    private class ArtistCoverArtRequest extends CoverArtRequest {
+
+        private final Artist artist;
+
+        private ArtistCoverArtRequest(Artist artist) {
+            super(artist.getCoverArtPath());
+            this.artist = artist;
+        }
+
+        @Override
+        public String getKey() {
+            return artist.getCoverArtPath() != null ? artist.getCoverArtPath() : (ARTIST_COVERART_PREFIX + artist.getId());
+        }
+
+        @Override
+        public long lastModified() {
+            return coverArt != null ? coverArt.lastModified() : artist.getLastScanned().getTime();
+        }
+
+        @Override
+        public String getAlbum() {
+            return null;
+        }
+
+        @Override
+        public String getArtist() {
+            return artist.getName();
+        }
+
+        @Override
+        public String toString() {
+            return "Artist " + artist.getId() + " - " + artist.getName();
+        }
+    }
+
+    private class AlbumCoverArtRequest extends CoverArtRequest {
+
+        private final Album album;
+
+        private AlbumCoverArtRequest(Album album) {
+            super(album.getCoverArtPath());
+            this.album = album;
+        }
+
+        @Override
+        public String getKey() {
+            return album.getCoverArtPath() != null ? album.getCoverArtPath() : (ALBUM_COVERART_PREFIX + album.getId());
+        }
+
+        @Override
+        public long lastModified() {
+            return coverArt != null ? coverArt.lastModified() : album.getLastScanned().getTime();
+        }
+
+        @Override
+        public String getAlbum() {
+            return album.getName();
+        }
+
+        @Override
+        public String getArtist() {
+            return album.getArtist();
+        }
+
+        @Override
+        public String toString() {
+            return "Album " + album.getId() + " - " + album.getName();
+        }
+    }
+
+    private class MediaFileCoverArtRequest extends CoverArtRequest {
+
+        private final MediaFile mediaFile;
+        private final MediaFile dir;
+
+        private MediaFileCoverArtRequest(MediaFile mediaFile) {
+            this.mediaFile = mediaFile;
+            dir = mediaFile.isDirectory() ? mediaFile : mediaFileService.getParentOf(mediaFile);
+            coverArt = mediaFileService.getCoverArt(mediaFile);
+        }
+
+        @Override
+        public String getKey() {
+            return coverArt != null ? coverArt.getPath() : dir.getPath();
+        }
+
+        @Override
+        public long lastModified() {
+            return coverArt != null ? coverArt.lastModified() : dir.getChanged().getTime();
+        }
+
+        @Override
+        public String getAlbum() {
+            return dir.getName();
+        }
+
+        @Override
+        public String getArtist() {
+            return dir.getAlbumArtist() != null ? dir.getAlbumArtist() : dir.getArtist();
+        }
+
+        @Override
+        public String toString() {
+            return "Media file " + mediaFile.getId() + " - " + mediaFile;
+        }
+    }
+
     static class AutoCover {
 
         private final static int[] COLORS = {0x33B5E5, 0xAA66CC, 0x99CC00, 0xFFBB33, 0xFF4444};
         private final Graphics2D graphics;
-        private final MediaFile mediaFile;
+        private final String artist;
+        private final String album;
         private final int size;
         private final Color color;
 
-        public AutoCover(Graphics2D graphics, MediaFile mediaFile, int size) {
+        public AutoCover(Graphics2D graphics, String key, String artist, String album, int size) {
             this.graphics = graphics;
-            this.mediaFile = mediaFile;
+            this.artist = artist;
+            this.album = album;
             this.size = size;
 
-            int rgb = COLORS[Math.abs(mediaFile.getId()) % COLORS.length];
+            int hash = key.hashCode();
+            int rgb = COLORS[Math.abs(hash) % COLORS.length];
             this.color = new Color(rgb);
         }
 
@@ -362,13 +471,8 @@ public class CoverArtController implements Controller, LastModified {
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int) fontSize);
             graphics.setFont(font);
 
-            String album = mediaFile.getAlbumName();
             if (album != null) {
                 graphics.drawString(album, size * 0.05f, size * 0.6f);
-            }
-            String artist = mediaFile.getAlbumArtist();
-            if (artist == null) {
-                artist = mediaFile.getArtist();
             }
             if (artist != null) {
                 graphics.drawString(artist, size * 0.05f, size * 0.8f);

@@ -1,57 +1,33 @@
-DONE IN 4.9.beta3
------------------
-Fixed NPE if setting path empty for en existing media folder.
-Show album/song count in genre list.
-REST: Added album/song count in getGenres.
-By genre "R&B" broken.
-Simplify cover art in external player.
-Removed support for "path" parameter in coverArt.view.
-Duplicate ID "duration" in playlist.jsp
-Added "Play next" button to playlist view.
-When playing a song from a playlist, queue other songs in that playlist.
-When playing a song from an album, queue other songs in that album as well, both previous and next.
-Make it possible to create playlist from starred songs.
-Added "Play all" to starred.
-Use locale-specific names for automatically created playlists.
-Use icons for prev/next player controls.
-Support playlist sharing on Facebook etc.
-Clicking on image in "Now playing" shouldn't zoom, but open album page.
-Remove obsolete resource strings.
-Show cover art for starred albums
-
 TODO IN 4.9
 --------------
+Download gives wrong filename in IE
+Error in IE when starting to play
+
+Make font work when offline
+  https://github.com/typekit/webfontloader
 Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
-When playing starred songs, queue other starred songs.
-Can siebling albums flow from bottom?
-Reverse sieblings and album list.
 Update Norwegian translation
-Fix bugs in Italian translation
-  https://mail.google.com/mail/u/0/#inbox/14311719d21ff572
-  Not only Italian?
-  Caused by build on Linux?
-ResourceBundle_ca.properties
-ResourceBundle_da.properties
-ResourceBundle_fi.properties
-ResourceBundle_is.properties
-ResourceBundle_it.properties
-ResourceBundle_nl.properties
-ResourceBundle_pt.properties
-ResourceBundle_zh_CN.properties
-
-Download problem
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=1424&start=15#p59187
-  In main.jsp, single songs are downloaded as zip files.
+Download bugs
+  Can't download files from left frame.
+  https://mail.google.com/mail/u/0/?shva=1#inbox/1430a59096e61868
+  Ensure resuming works.
 Thumbs in external player is often missing.
-
+Jukebox clicking between tracks
+  https://mail.google.com/mail/u/0/?shva=1#inbox/141322f12f3aded0
 Cache generated album art
-  CoverArtProducer
-    Default, Automatic
+  Requests unscaled image when clicking on thumb
+
+Backend
+  Send email 7 days after subscription expires.
+  Mention that purchased subscription time is added to existing.
 
 TODO IN 5.0
 --------------
+Gzip REST / Jetty
+  https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
+  Jetty GzipFilter? Remember it should work on Tomcat etc as well.
 Monitoring with JavaMelody
 Artist art
   Create collage of album covers?
@@ -847,21 +823,21 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On VirtualBox Ubuntu
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta3/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -872,7 +848,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta3 -m "Tagging 4.9.beta3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta4 -m "Tagging 4.9.beta4"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.

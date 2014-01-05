@@ -19,8 +19,7 @@
         <td><code>id</code></td>
         <td>Yes</td>
         <td></td>
-        <td>A string which uniquely identifies the cover art file to download. Obtained by calls to getMusicDirectory.
-        </td>
+        <td>The ID of a song, album or artist.</td>
     </tr>
     <tr>
         <td><code>size</code></td>
