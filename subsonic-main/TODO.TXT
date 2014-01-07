@@ -2,13 +2,10 @@ DONE IN 4.9
 -----------
 Rename "Download" to "Download all"
 Rename "More actions..." to "Selected songs..."
+When playing a song, queue only later songs (not earlier).
 
 TODO IN 4.9
 --------------
-Play song fails in jukebox mode (starts on first song of album)
-Download gives wrong filename in IE
-Error in IE when starting to play
-
 Make font work when offline
   https://github.com/typekit/webfontloader
 Support playlist sharing.

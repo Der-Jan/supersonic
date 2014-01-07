@@ -1,15 +1,12 @@
 package net.sourceforge.subsonic.service.jukebox;
 
-import java.awt.FlowLayout;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * @author Sindre Mehus
@@ -20,7 +17,6 @@ public class PlayerTest implements AudioPlayer.Listener {
     private AudioPlayer player;
 
     public PlayerTest() throws Exception {
-        player = new AudioPlayer(new FileInputStream("i:\\tmp\\foo.au"), this);
         createGUI();
     }
 
@@ -34,6 +30,7 @@ public class PlayerTest implements AudioPlayer.Listener {
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                createPlayer();
                 player.play();
             }
         });
@@ -45,6 +42,7 @@ public class PlayerTest implements AudioPlayer.Listener {
         resetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 player.close();
+                createPlayer();
             }
         });
         gainSlider.addChangeListener(new ChangeListener() {
@@ -62,6 +60,14 @@ public class PlayerTest implements AudioPlayer.Listener {
 
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createPlayer() {
+        try {
+            player = new AudioPlayer(new FileInputStream("/Users/sindre/Downloads/sample.au"), this);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws Exception {
