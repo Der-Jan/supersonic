@@ -186,7 +186,7 @@
 
         <c:if test="${model.user.downloadRole}">
             <c:if test="${needSep}">|</c:if>
-            <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
+            <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
             <c:set var="needSep" value="true"/>
         </c:if>
 
