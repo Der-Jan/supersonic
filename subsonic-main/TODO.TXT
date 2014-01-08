@@ -3,6 +3,9 @@ DONE IN 4.9
 
 TODO IN 4.9
 --------------
+Fail to change tags on some songs (e.g., Catch a Fire)
+  Related to album artist.
+  Probably for ID3v1.
 Selection in play queue is automatically cleared if no current playing.
   Happens if switching to jukebox, then back to web player.
 
