@@ -3,6 +3,9 @@ DONE IN 4.9
 
 TODO IN 4.9
 --------------
+Selection in play queue is automatically cleared if no current playing.
+  Happens if switching to jukebox, then back to web player.
+
 Make font work when offline
   https://github.com/typekit/webfontloader
 Support playlist sharing.
