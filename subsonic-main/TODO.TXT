@@ -6,6 +6,19 @@ TODO IN 4.9
 Fail to change tags on some songs (e.g., Catch a Fire)
   Related to album artist.
   Probably for ID3v1.
+
+java.lang.NullPointerException
+	at org.jaudiotagger.tag.id3.ID3v1Tag.createField(ID3v1Tag.java:660)
+	at org.jaudiotagger.tag.id3.ID3v1Tag.setField(ID3v1Tag.java:606)
+	at net.sourceforge.subsonic.service.metadata.JaudiotaggerParser.setMetaData(JaudiotaggerParser.java:225)
+	at net.sourceforge.subsonic.ajax.TagService.setTags(TagService.java:112)
+	at sun.reflect.GeneratedMethodAccessor182.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.directwebremoting.impl.DefaultRemoter$1.doFilter(DefaultRemoter.java:740)
+
+Catch exception in NowPlayingService to avoid error popup.
+
 Selection in play queue is automatically cleared if no current playing.
   Happens if switching to jukebox, then back to web player.
 
