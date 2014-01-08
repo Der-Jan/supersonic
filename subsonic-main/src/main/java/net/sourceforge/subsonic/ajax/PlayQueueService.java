@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -119,25 +118,15 @@ public class PlayQueueService {
         if (file.isFile()) {
             MediaFile dir = mediaFileService.getParentOf(file);
             List<MediaFile> songs = mediaFileService.getChildrenOf(dir, true, false, true);
-            int index = songs.indexOf(file);
-            return doPlay(request, player, songs).setStartPlayerAt(index);
+            if (!songs.isEmpty()) {
+                int index = songs.indexOf(file);
+                songs = songs.subList(index, songs.size());
+            }
+            return doPlay(request, player, songs).setStartPlayerAt(0);
         } else {
             List<MediaFile> songs = mediaFileService.getDescendantsOf(file, true);
             return doPlay(request, player, songs).setStartPlayerAt(0);
         }
-    }
-
-    private List<MediaFile> getSubsequentFiles(MediaFile file) {
-        MediaFile parent = mediaFileService.getParentOf(file);
-        if (parent == null) {
-            return Arrays.asList(file);
-        }
-        List<MediaFile> children = mediaFileService.getChildrenOf(parent, true, false, true);
-        int index = children.indexOf(file);
-        if (index == -1) {  // Just in case...
-            return Arrays.asList(file);
-        }
-        return children.subList(index, children.size());
     }
 
     public PlayQueueInfo playPlaylist(int id, int index) throws Exception {
@@ -145,8 +134,11 @@ public class PlayQueueService {
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
         List<MediaFile> files = playlistService.getFilesInPlaylist(id);
+        if (!files.isEmpty()) {
+            files = files.subList(index, files.size());
+        }
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(index);
+        return doPlay(request, player, files).setStartPlayerAt(0);
     }
 
     public PlayQueueInfo playStarred() throws Exception {
