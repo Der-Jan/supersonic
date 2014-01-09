@@ -17,6 +17,13 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
+            <a name="4.9"><h2 class="div">Subsonic 4.9 - Jan 09, 2014</h2></a>
+            <ul>
+                <li><span class="bugid">New: </span>Rename "Download" to "Download all"</li>
+                <li><span class="bugid">New: </span>Rename "More actions..." to "Selected songs..."</li>
+                <li><span class="bugid">New: </span>When playing a song, queue only later songs (not earlier).</li>
+            </ul>
+
             <a name="4.9.beta4"><h2 class="div">Subsonic 4.9.beta4 - Jan 04, 2014</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Support playlist sharing on Facebook etc.</li>
@@ -138,6 +145,7 @@
             <div class="sidebox">
                 <h2>Releases</h2>
                 <ul class="list">
+                    <li><a href="#4.9">Subsonic 4.9</a></li>
                     <li><a href="#4.9.beta4">Subsonic 4.9.beta4</a></li>
                     <li><a href="#4.9.beta3">Subsonic 4.9.beta3</a></li>
                     <li><a href="#4.9.beta2">Subsonic 4.9.beta2</a></li>

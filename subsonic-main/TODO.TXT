@@ -1,11 +1,27 @@
 DONE IN 4.9
 -----------
-Rename "Download" to "Download all"
-Rename "More actions..." to "Selected songs..."
-When playing a song, queue only later songs (not earlier).
 
 TODO IN 4.9
 --------------
+Fail to change tags on some songs (e.g., Catch a Fire)
+  Related to album artist.
+  Probably for ID3v1.
+
+java.lang.NullPointerException
+	at org.jaudiotagger.tag.id3.ID3v1Tag.createField(ID3v1Tag.java:660)
+	at org.jaudiotagger.tag.id3.ID3v1Tag.setField(ID3v1Tag.java:606)
+	at net.sourceforge.subsonic.service.metadata.JaudiotaggerParser.setMetaData(JaudiotaggerParser.java:225)
+	at net.sourceforge.subsonic.ajax.TagService.setTags(TagService.java:112)
+	at sun.reflect.GeneratedMethodAccessor182.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.directwebremoting.impl.DefaultRemoter$1.doFilter(DefaultRemoter.java:740)
+
+Catch exception in NowPlayingService to avoid error popup.
+
+Selection in play queue is automatically cleared if no current playing.
+  Happens if switching to jukebox, then back to web player.
+
 Make font work when offline
   https://github.com/typekit/webfontloader
 Support playlist sharing.
@@ -816,8 +832,8 @@ Vis "lignende" album.
 
 HOW TO RELEASE
 ===============================
-Update version number in pom.xml, version.html, MultiController.java.
-Update changelog.jsp, download.jsp
+Update version number in pom.xml, version.html, MultiController.java, download.jsp
+Update changelog.jsp
 Commit
 svn up
 mvn clean -P full
@@ -826,21 +842,21 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 Deploy
 Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On VirtualBox Ubuntu
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9.beta4/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -851,7 +867,7 @@ Upload site (OLD):
 Upload site (NEW):
   rsync -avP -e ssh --exclude ".*" subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9.beta4 -m "Tagging 4.9.beta4"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9 -m "Tagging 4.9"
 Register at freshmeat.
 Post message on forum.
 Update version number in pom.xml etc.
@@ -862,15 +878,15 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   Backup backend database.
     Checkpoint database (db.view)
     cd /var/subsonic-backend
-    tar cvf db-backup-2013-12-15.tar db
+    tar cvf db-backup-2014-01-04.tar db
   cd subsonic-backend
   mvn clean install
 
-  mkdir /usr/local/jakarta/tomcat/webapps-2013-12-15/
+  mkdir /usr/local/jakarta/tomcat/webapps-2014-01-04/
 
-  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/ROOT.war
-  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/demo.war
-  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2013-12-15/pages
+  scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-04/ROOT.war
+  scp subsonic-main/target/subsonic.war              root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-04/demo.war
+  rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-04/pages
 
 
   Checkpoint database (db.view)
@@ -878,11 +894,13 @@ Upgrade Subsonic backend: CHANGE DATE BELOW
   cd /usr/local/jakarta/tomcat
   ps -elf | grep jsvc
   /usr/sbin/stoptomcat
+  ps -elf | grep jsvc
   rm webapps
-  ln -s webapps-2013-12-15 webapps
-
+  ln -s webapps-2014-01-04 webapps
+  ll webapps/
   rm -rf work logs/*
   /usr/sbin/starttomcat
+  ps -elf | grep jsvc
 
 Update backup server
 
