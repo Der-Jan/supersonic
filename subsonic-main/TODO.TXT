@@ -1,6 +1,7 @@
 DONE IN 4.9
 -----------
 Bugfix: Changing artist for files with ID3v1 tags was broken.
+Updated Japanese translation, courtesy of Kenji Maekawa.
 
 TODO IN 4.9
 --------------
