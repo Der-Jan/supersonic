@@ -9,7 +9,7 @@
                 is an HTML5 mini player for Subsonic. It's bundled with the Subsonic server and is also available
                 as a Chrome app.
             </p>
-            <a href="inc/img/screenshots/screen46.png"><img src="inc/img/screenshots/thumb46.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/minisub/minisub-1.png"><img src="inc/img/screenshots/minisub/minisub-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>Flexible layout (scales to whatever size your browser window is)</li>
