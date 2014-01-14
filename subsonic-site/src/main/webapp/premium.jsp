@@ -27,18 +27,18 @@
                 <ul class="stars column-left">
                     <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, BlackBerry, Roku, Mac, Chrome and more*.</li>
                     <li>Video streaming.</li>
-                    <li>Podcast receiver.</li>
+                    <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
                     <li>No ads in the web interface.</li>
                 </ul>
                 <ul class="stars column-right">
-                    <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
+                    <li>Podcast receiver.</li>
                     <li>Play your media on compatible DLNA/UPnP devices.</li>
                     <li>Share your media on Facebook, Twitter, Google+.</li>
                     <li>Other features to be released later.</li>
                 </ul>
             </div>
 
-            <p style="font-size:9px;">* Some apps must be purchased separately.</p>
+            <p style="font-size:11px;">* Some apps must be purchased separately.</p>
 
             <p>The basic version of Subsonic is free. When you first install Subsonic, the premium features are available for 30 days so
                 you can try them out before deciding to upgrade.</p>
