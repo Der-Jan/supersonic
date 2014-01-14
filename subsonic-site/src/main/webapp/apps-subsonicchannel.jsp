@@ -8,7 +8,7 @@
                 <a href="http://www.randomwalking.com/project.php?project=roku_subsonic">Subsonic Channel</a> is an open-source Roku frontend to Subsonic.
             </p>
 
-            <a href="inc/img/screenshots/screen36.png"><img src="inc/img/screenshots/thumb36.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subsonicchannel/subsonicchannel-1.png"><img src="inc/img/screenshots/subsonicchannel/subsonicchannel-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>Browse your entire catalog.</li>

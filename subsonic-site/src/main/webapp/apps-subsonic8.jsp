@@ -10,7 +10,7 @@
                 is an open-source Windows&nbsp;8 app developed by Cristi Badila.
             </p>
 
-            <a href="inc/img/screenshots/screen51.png"><img src="inc/img/screenshots/thumb51.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subsonic8/subsonic8-1.png"><img src="inc/img/screenshots/subsonic8/subsonic8-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>Plays audio and video</li>

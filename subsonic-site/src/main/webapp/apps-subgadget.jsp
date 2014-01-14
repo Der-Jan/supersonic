@@ -8,7 +8,7 @@
                 <img src="inc/img/windows7.png" alt="Windows 7" class="img-left"/>
                 <a href="http://code.google.com/p/subgadget/">SubGadget</a> is a Windows Sidebar Gadget for Subsonic. Works with Windows 7 and Vista.
             </p>
-            <img src="inc/img/screenshots/screen26.png" alt="" class="img-center"/>
+            <img src="inc/img/screenshots/subgadget/subgadget-1.png" alt="" class="img-center"/>
             <p>
                 Developed and maintained by Scott Mark, and <a href="http://code.google.com/p/subgadget/">provided free of charge</a>.
             </p>

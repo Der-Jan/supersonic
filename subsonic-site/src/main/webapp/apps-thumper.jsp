@@ -7,7 +7,7 @@
             <p>
                 <a href="http://thumperapp.com/">Thumper</a> is a native Subsonic client for Mac.
             </p>
-            <a href="inc/img/screenshots/screen27.png"><img src="inc/img/screenshots/thumb27.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/thumper/thumper-1.png"><img src="inc/img/screenshots/thumper/thumper-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>A Native Mac Application - designed on the Mac, for the Mac.</li>

@@ -44,8 +44,8 @@
                 SubHub is developed by Voodoo77 Studios and is available on <a href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8">App Store</a>.
             </p>
 
-            <a href="inc/img/screenshots/screen52.png"><img src="inc/img/screenshots/thumb52.png" alt="" style="margin-left:85px;margin-right:50px;padding:3px"/></a>
-            <a href="inc/img/screenshots/screen53.png"><img src="inc/img/screenshots/thumb53.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/subhub/subhub-1.png"><img src="inc/img/screenshots/subhub/subhub-thumb-1.png" alt="" style="margin-left:85px;margin-right:50px;padding:3px"/></a>
+            <a href="inc/img/screenshots/subhub/subhub-2.png"><img src="inc/img/screenshots/subhub/subhub-thumb-2.png" alt="" style="padding:3px"/></a>
 
             <a href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8"><img src="inc/img/available_on_appstore.png" alt="" class="img-center"/></a>
 

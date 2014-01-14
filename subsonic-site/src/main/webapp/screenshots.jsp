@@ -29,9 +29,9 @@
             <a href="inc/img/screenshots/android/android-1.png" title="Subsonic app for Android"><img src="inc/img/screenshots/android/android-thumb-1.png" alt="" style="padding:3px;padding-right:30px"/></a>
             <a href="inc/img/screenshots/android/android-2.png" title="Subsonic app for Android"><img src="inc/img/screenshots/android/android-thumb-2.png" alt="" style="padding:3px;padding-right:30px"/></a>
             <a href="inc/img/screenshots/android/android-3.png" title="Subsonic app for Android"><img src="inc/img/screenshots/android/android-thumb-3.png" alt="" style="padding:3px;"/></a>
-            <a href="inc/img/screenshots/screen23.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/thumb23.png" alt="" style="padding:3px;padding-right:10px"/></a>
-            <a href="inc/img/screenshots/screen24.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/thumb24.png" alt="" style="padding:3px;padding-right:10px"/></a>
-            <a href="inc/img/screenshots/screen25.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/thumb25.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-1.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/winphone/winphone-thumb-1.png" alt="" style="padding:3px;padding-right:10px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-2.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/winphone/winphone-thumb-2.png" alt="" style="padding:3px;padding-right:10px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-3.png" title="Subsonic app for Windows Phone"><img src="inc/img/screenshots/winphone/winphone-thumb-3.png" alt="" style="padding:3px"/></a>
         </div>
 
         <div id="side-col">

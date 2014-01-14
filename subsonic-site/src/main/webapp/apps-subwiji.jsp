@@ -7,8 +7,8 @@
             <p>
                 <a href="http://forum.subsonic.org/forum/viewtopic.php?f=8&t=8772">SubWiji</a> is a Windows desktop application for Subsonic.
             </p>
-            <a href="inc/img/screenshots/screen40.png"><img src="inc/img/screenshots/thumb40.png" alt="" class="img-center"/></a>
-            <a href="inc/img/screenshots/screen41.png"><img src="inc/img/screenshots/thumb41.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subwiji/subwiji-1.png"><img src="inc/img/screenshots/subwiji/subwiji-thumb-1.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subwiji/subwiji-2.png"><img src="inc/img/screenshots/subwiji/subwiji-thumb-2.png" alt="" class="img-center"/></a>
             <p>Supports docking, auto-hiding, keyboard shortcuts, now playing popup, album grid viewer and much more.</p>
             <p>SubWiji is made by <a href="http://www.paulodell.co.uk/">Paul O'Dell</a>. Free of charge, but accepts donations.</p>
         </div>
