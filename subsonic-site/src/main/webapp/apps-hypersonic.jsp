@@ -13,9 +13,9 @@
                 Hypersonic is developed by Josh Betz and sells for $0.99 on <a href="http://bit.ly/hypersonicmp">App Store</a>.
             </p>
 
-            <a href="inc/img/screenshots/screen43.png"><img src="inc/img/screenshots/thumb43.png" alt="" style="margin-left:30px;padding:3px"/></a>
-            <a href="inc/img/screenshots/screen44.png"><img src="inc/img/screenshots/thumb44.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen45.png"><img src="inc/img/screenshots/thumb45.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/hypersonic/hypersonic-1.png"><img src="inc/img/screenshots/hypersonic/hypersonic-thumb-1.png" alt="" style="margin-left:30px;padding:3px"/></a>
+            <a href="inc/img/screenshots/hypersonic/hypersonic-2.png"><img src="inc/img/screenshots/hypersonic/hypersonic-thumb-2.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/hypersonic/hypersonic-3.png"><img src="inc/img/screenshots/hypersonic/hypersonic-thumb-3.png" alt="" style="padding:3px"/></a>
 
             <a href="http://bit.ly/hypersonicmp"><img src="inc/img/available_on_appstore.png" alt="" class="img-center"/></a>
 
