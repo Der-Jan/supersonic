@@ -9,9 +9,9 @@
                 <a href="http://z-subsonic.com/">Z-Subsonic</a> is an iPhone/iPad app developed by Olusola Abiodun, and is
                 available for purchase on the <a href="http://itunes.apple.com/us/app/z-subsonic/id358344265?mt=8">App Store</a>.
             </p>
-            <a href="inc/img/screenshots/screen17.png"><img src="inc/img/screenshots/thumb17.png" alt="" style="margin-left:30px;padding:3px"/></a>
-            <a href="inc/img/screenshots/screen18.png"><img src="inc/img/screenshots/thumb18.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen19.png"><img src="inc/img/screenshots/thumb19.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/zsubsonic/zsubsonic-1.png"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-1.png" alt="" style="margin-left:30px;padding:3px"/></a>
+            <a href="inc/img/screenshots/zsubsonic/zsubsonic-2.png"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-2.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/zsubsonic/zsubsonic-3.png"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-3.png" alt="" style="padding:3px"/></a>
 
             <ul class="list">
                 <li> Access your entire music library from anywhere on your iPhone or iPod regardless of the size of your music collection.</li>
