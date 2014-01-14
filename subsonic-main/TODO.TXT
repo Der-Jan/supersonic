@@ -3,6 +3,7 @@ DONE IN 4.9
 Bugfix: Changing artist for files with ID3v1 tags was broken.
 Updated Japanese translation, courtesy of Kenji Maekawa.
 Catch exception in NowPlayingService to avoid error popup.
+Change icon for Access denied page.
 
 TODO IN 4.9
 --------------
@@ -10,7 +11,6 @@ Problem with web ui becoming unresponsive (toggling between jukebox and web play
 Can't download files from left frame.
 Figure out problem with lots of stream requests swamping server.
 Add podcasts to new demo
-Change icon for Access denied page.
 
 Selection in play queue is automatically cleared if no current playing.
   Happens if switching to jukebox, then back to web player.
@@ -48,8 +48,6 @@ Update ffmpeg
   https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
 Add browser notification
   http://www.paulund.co.uk/html5-notifications
-
-Change logo in forum
 
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
