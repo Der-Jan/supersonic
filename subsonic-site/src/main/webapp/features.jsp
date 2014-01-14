@@ -46,7 +46,7 @@
             src="inc/img/top.gif" alt="Back To Top" height="16" width="16"/></a></div>
     <div class="content">
         <div class="screenshot">
-            <a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt="" style="padding-left:10px"/></a>
+            <a href="inc/img/screenshots/android/android-2.png"><img src="inc/img/screenshots/android/android-thumb-2.png" alt="" style="padding-left:10px"/></a>
         </div>
         <div class="description">
             <ul class="list">

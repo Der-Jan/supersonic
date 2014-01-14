@@ -10,9 +10,9 @@
                 All your media - anywhere, anytime!
             </p>
 
-            <a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt="" style="padding:3px;padding-left:40px;padding-right:20px"/></a>
-            <a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt="" style="padding:3px;padding-right:20px"/></a>
-            <a href="inc/img/screenshots/screen14.png"><img src="inc/img/screenshots/thumb14.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/android/android-1.png"><img src="inc/img/screenshots/android/android-thumb-1.png" alt="" style="padding:3px;padding-left:40px;padding-right:20px"/></a>
+            <a href="inc/img/screenshots/android/android-2.png"><img src="inc/img/screenshots/android/android-thumb-2.png" alt="" style="padding:3px;padding-right:20px"/></a>
+            <a href="inc/img/screenshots/android/android-3.png"><img src="inc/img/screenshots/android/android-thumb-3.png" alt="" style="padding:3px"/></a>
 
             <p>
                 Songs are cached for offline playback. Supports mp3, ogg, aac, flac, wma. Most video formats supported too.
