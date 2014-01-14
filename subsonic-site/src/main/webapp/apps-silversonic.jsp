@@ -9,9 +9,9 @@
                 <a href="http://www.windowsphone.com/en-us/store/app/silversonic/71c26f34-eb3f-4377-986e-865fc0c8805c">SilverSonic</a>
                 is a Windows Phone 7 app developed by Gabriele Cannata.
             </p>
-            <a href="inc/img/screenshots/screen47.png"><img src="inc/img/screenshots/thumb47.png" alt="" style="margin-left:0px;padding:0px"/></a>
-            <a href="inc/img/screenshots/screen48.png"><img src="inc/img/screenshots/thumb48.png" alt="" style="padding:0px"/></a>
-            <a href="inc/img/screenshots/screen49.png"><img src="inc/img/screenshots/thumb49.png" alt="" style="padding:0px"/></a>
+            <a href="inc/img/screenshots/silversonic/silversonic-1.png"><img src="inc/img/screenshots/silversonic/silversonic-thumb-1.png" alt="" style="margin-left:0px;padding:0px"/></a>
+            <a href="inc/img/screenshots/silversonic/silversonic-2.png"><img src="inc/img/screenshots/silversonic/silversonic-thumb-2.png" alt="" style="padding:0px"/></a>
+            <a href="inc/img/screenshots/silversonic/silversonic-3.png"><img src="inc/img/screenshots/silversonic/silversonic-thumb-3.png" alt="" style="padding:0px"/></a>
 
             <ul class="list">
                 <li>Offline caching</li>

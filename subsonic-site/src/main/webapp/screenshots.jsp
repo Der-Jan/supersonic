@@ -23,7 +23,7 @@
             <a href="inc/img/screenshots/screen09.png"><img src="inc/img/screenshots/thumb09.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/screen10.png"><img src="inc/img/screenshots/thumb10.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/screen11.png"><img src="inc/img/screenshots/thumb11.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen16.png" title="SubAir app"><img src="inc/img/screenshots/thumb16.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/subair/subair-1.png" title="SubAir app"><img src="inc/img/screenshots/subair/subair-thumb-1.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/screen17.png" title="Z-Subsonic app for iPhone"><img src="inc/img/screenshots/thumb17.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/isub/isub-1.png" title="iSub app for iPhone"><img src="inc/img/screenshots/isub/isub-thumb-1.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/android/android-1.png" title="Subsonic app for Android"><img src="inc/img/screenshots/android/android-thumb-1.png" alt="" style="padding:3px;padding-right:30px"/></a>
