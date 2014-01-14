@@ -2,10 +2,10 @@ DONE IN 4.9
 -----------
 Bugfix: Changing artist for files with ID3v1 tags was broken.
 Updated Japanese translation, courtesy of Kenji Maekawa.
+Catch exception in NowPlayingService to avoid error popup.
 
 TODO IN 4.9
 --------------
-Catch exception in NowPlayingService to avoid error popup.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Can't download files from left frame.
 Figure out problem with lots of stream requests swamping server.
