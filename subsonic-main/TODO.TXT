@@ -7,7 +7,7 @@ TODO IN 4.9
 --------------
 Catch exception in NowPlayingService to avoid error popup.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
-Setup monitoring of demo.subsonic.org
+Can't download files from left frame.
 Figure out problem with lots of stream requests swamping server.
 Add podcasts to new demo
 Change icon for Access denied page.
@@ -21,10 +21,6 @@ Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
 Update Norwegian translation
-Download bugs
-  Can't download files from left frame.
-  https://mail.google.com/mail/u/0/?shva=1#inbox/1430a59096e61868
-  Ensure resuming works.
 Thumbs in external player is often missing.
 Jukebox clicking between tracks
   https://mail.google.com/mail/u/0/?shva=1#inbox/141322f12f3aded0
