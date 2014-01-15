@@ -4,6 +4,9 @@ Bugfix: Changing artist for files with ID3v1 tags was broken.
 Updated Japanese translation, courtesy of Kenji Maekawa.
 Catch exception in NowPlayingService to avoid error popup.
 Change icon for Access denied page.
+Added button for downloading single files in left frame.
+Bugfix: Play/add buttons for single files in left frame didn't work.
+
 
 TODO IN 4.9
 --------------
@@ -30,6 +33,10 @@ Cache generated album art
 Backend
   Send email 7 days after subscription expires.
   Mention that purchased subscription time is added to existing.
+
+TODO IN SITE
+------------
+Create mosaic of apps, put on slideshow.
 
 TODO IN 5.0
 --------------

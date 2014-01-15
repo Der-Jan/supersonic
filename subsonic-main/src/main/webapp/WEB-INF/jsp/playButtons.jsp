@@ -5,8 +5,9 @@
 PARAMETERS
   id: ID of file.
   video: Whether the file is a video (default false).
-  playEnabled: Whether the current user is allowed to play songs (default true).
-  addEnabled: Whether the current user is allowed to add songs to the playlist (default true).
+  playEnabled: Whether to show play button (default true).
+  addEnabled: Whether to show add next/last buttons (default true).
+  downloadEnabled: Whether to show download button (default false).
   starEnabled: Whether to show star/unstar controls (default false).
   starred: Whether the file is currently starred.
   asTable: Whether to put the images in td tags.
@@ -60,5 +61,15 @@ PARAMETERS
     <a href="#" onclick="top.playQueue.onAddNext(${param.id}); return false;">
         <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>"
              title="<fmt:message key="main.addnext"/>"></a>
+</c:if>
+<c:if test="${param.asTable}"></td></c:if>
+
+<c:if test="${param.asTable}"><td></c:if>
+<c:if test="${param.downloadEnabled}">
+    <sub:url value="/download.view" var="downloadUrl">
+        <sub:param name="id" value="${param.id}"/>
+    </sub:url>
+    <a href="${downloadUrl}">
+        <img src="<spring:theme code="downloadImage"/>" alt="<fmt:message key="common.download"/>" title="<fmt:message key="common.download"/>"></a>
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
