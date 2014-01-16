@@ -11,7 +11,6 @@ Bugfix: Play/add buttons for single files in left frame didn't work.
 TODO IN 4.9
 --------------
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
-Can't download files from left frame.
 Figure out problem with lots of stream requests swamping server.
 Add podcasts to new demo
 
@@ -42,6 +41,9 @@ TODO IN 5.0
 --------------
 Review Madsonic features
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
+Slim scroll
+  http://rocha.la/jQuery-slimScroll/
+  http://sourceforge.net/p/subsonic/bugs/98/
 Replace paging with dynamic album fetching (like Google image search) in home.jsp
 Gzip REST / Jetty
   https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
