@@ -6,10 +6,11 @@ Catch exception in NowPlayingService to avoid error popup.
 Change icon for Access denied page.
 Added button for downloading single files in left frame.
 Bugfix: Play/add buttons for single files in left frame didn't work.
-
+Backend: "xxx.subsonic.org returned HTTP error code 404 Not Found"
 
 TODO IN 4.9
 --------------
+Thumbs in external player is often missing.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
 Add podcasts to new demo
@@ -23,7 +24,6 @@ Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
 Update Norwegian translation
-Thumbs in external player is often missing.
 Jukebox clicking between tracks
   https://mail.google.com/mail/u/0/?shva=1#inbox/141322f12f3aded0
 Cache generated album art

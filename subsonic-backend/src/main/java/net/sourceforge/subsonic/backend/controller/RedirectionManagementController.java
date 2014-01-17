@@ -18,19 +18,8 @@
  */
 package net.sourceforge.subsonic.backend.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import net.sourceforge.subsonic.backend.dao.RedirectionDao;
+import net.sourceforge.subsonic.backend.domain.Redirection;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -44,8 +33,17 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import net.sourceforge.subsonic.backend.dao.RedirectionDao;
-import net.sourceforge.subsonic.backend.domain.Redirection;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sindre Mehus
@@ -207,7 +205,7 @@ public class RedirectionManagementController extends MultiActionController {
         if (!url.endsWith("/")) {
             url += "/";
         }
-        url += "icons/favicon.ico";
+        url += "index.html";
 
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 15000);
