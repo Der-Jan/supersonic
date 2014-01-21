@@ -72,8 +72,8 @@
                 </div>
                 <div class="text">
                     Podcast receiver, jukebox mode, on-the-fly downsampling and conversion,
-                    multiple frontends, highly configurable, full support for tags, lyrics and album art, open API
-                    and <a href="features.jsp">much more</a>.
+                    multiple frontends, highly configurable, full support for tags, lyrics and album art, DLNA,
+                    open API and <a href="features.jsp">much more</a>.
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
 
                 <div class="title">
                     <div class="large">Stream movies!</div>
-                    <div class="small">To your browser or phone.</div>
+                    <div class="small">To your browser and phone.</div>
                     <img src="inc/img/banner/android-video.png" alt="" style="margin-top:20px;margin-left:10px;"/>
                 </div>
             </div>
