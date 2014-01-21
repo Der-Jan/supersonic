@@ -13,16 +13,10 @@
 
     <div id="content">
         <div id="main-col">
-            <a href="inc/img/screenshots/screen02.png"><img src="inc/img/screenshots/thumb02.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/screen01.png"><img src="inc/img/screenshots/thumb01.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen05.png"><img src="inc/img/screenshots/thumb05.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen06.png"><img src="inc/img/screenshots/thumb06.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/screen02.png"><img src="inc/img/screenshots/thumb02.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/screen03.png"><img src="inc/img/screenshots/thumb03.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen07.png"><img src="inc/img/screenshots/thumb07.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen08.png"><img src="inc/img/screenshots/thumb08.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen09.png"><img src="inc/img/screenshots/thumb09.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen10.png"><img src="inc/img/screenshots/thumb10.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen11.png"><img src="inc/img/screenshots/thumb11.png" alt="" style="padding:3px"/></a>
+
             <a href="inc/img/screenshots/subair/subair-1.png" title="SubAir app"><img src="inc/img/screenshots/subair/subair-thumb-1.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/zsubsonic/zsubsonic-1.png" title="Z-Subsonic app for iPhone"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-1.png" alt="" style="padding:3px"/></a>
             <a href="inc/img/screenshots/isub/isub-1.png" title="iSub app for iPhone"><img src="inc/img/screenshots/isub/isub-thumb-1.png" alt="" style="padding:3px"/></a>
