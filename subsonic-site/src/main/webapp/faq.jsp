@@ -18,10 +18,16 @@
             <h1 class="bottomspace">Frequently Asked Questions</h1>
 
             <h3>Are there other payment options than PayPal?</h3>
-            <p>Yes, you can make a payment to mail@subsonic.org on <a href="http://www.skrill.com/" target="_blank">Skrill</a>.
-            The price is the same, $1 per month, so if you pay for instance $12 your license will be valid for 12 months.
-            You can also transfer money to our bank account; please <a href="mailto:mail@subsonic.org">contact us</a> to
-            get the bank details.</p>
+            <p>Yes, you can use any of the following alternatives:</p>
+            <ul>
+                <li>Make a payment to mail@subsonic.org on <a href="http://www.skrill.com/" target="_blank">Skrill</a>.</li>
+                <li>Bitcoins are welcome on 16BzYq6HXPkCYdDaafpQWiaJqmqUfnYmFA</li>
+                <li>Transfer money to our bank account; please <a href="mailto:mail@subsonic.org">contact us</a> for bank details.</li>
+            </ul>
+            <p>
+                The price is always the same, $1 per month, so if you pay for instance the equivalent of $12 your license
+                will be valid for 12 months.
+            </p>
 
             <h3>How long does it take to get the license after I have made the payment?</h3>
             <p>Normally no more than ten minutes.  If it should take longer, please <a href="mailto:mail@subsonic.org">take contact</a>,
