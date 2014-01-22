@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/grid/grid.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/base/base.css">
 </head>
-<body>
+<body onload="document.getElementById('email').focus()">
 
 <h1>Resend Subsonic license key</h1>
 
@@ -31,7 +31,7 @@
     <c:otherwise>
         <form method="post" action="requestLicense.view">
             <label>Email address
-                <input type="text" size="30" name="email">
+                <input type="text" size="30" id="email" name="email">
             </label>
             <input type="submit" value="Send license key">
         </form>

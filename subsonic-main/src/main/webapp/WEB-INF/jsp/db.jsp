@@ -2,12 +2,12 @@
 
 <html><head>
     <%@ include file="head.jsp" %>
-</head><body class="mainframe bgcolor1">
+</head><body class="mainframe bgcolor1" onload="document.getElementById('query').focus()">
 
 <h1>Database query</h1>
 
 <form method="post" action="db.view">
-    <textarea rows="10" cols="80" name="query" style="margin-top:1em">${model.query}</textarea>
+    <textarea rows="10" cols="80" id="query" name="query" style="margin-top:1em">${model.query}</textarea>
     <input type="submit" value="<fmt:message key="common.ok"/>">
 </form>
 
