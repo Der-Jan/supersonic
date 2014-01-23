@@ -1,17 +1,3 @@
-DONE IN 4.9
------------
-Bugfix: Changing artist for files with ID3v1 tags was broken.
-Updated Japanese translation, courtesy of Kenji Maekawa.
-Catch exception in NowPlayingService to avoid error popup.
-Change icon for Access denied page.
-Added button for downloading single files in left frame.
-Bugfix: Play/add buttons for single files in left frame didn't work.
-Backend: "xxx.subsonic.org returned HTTP error code 404 Not Found"
-Fixed layout bug in podcast page.
-Trim podcast urls
-Use shorter urls in external player.
-Thumbs in external player is sometimes missing.
-
 TODO IN 4.9
 --------------
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
