@@ -9,6 +9,7 @@ Bugfix: Play/add buttons for single files in left frame didn't work.
 Backend: "xxx.subsonic.org returned HTTP error code 404 Not Found"
 Fixed layout bug in podcast page.
 Trim podcast urls
+Use shorter urls in external player.
 
 TODO IN 4.9
 --------------

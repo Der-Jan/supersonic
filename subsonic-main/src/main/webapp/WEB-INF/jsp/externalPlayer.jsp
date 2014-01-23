@@ -47,7 +47,7 @@
         <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
         <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
         <sub:url value="/stream" var="streamUrl">
-            <sub:param name="path" value="${song.path}"/>
+            <sub:param name="id" value="${song.id}"/>
             <sub:param name="player" value="${model.player}"/>
         </sub:url>
         <sub:url value="/coverArt.view" var="coverUrl">
