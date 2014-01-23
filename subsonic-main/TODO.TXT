@@ -10,13 +10,12 @@ Backend: "xxx.subsonic.org returned HTTP error code 404 Not Found"
 Fixed layout bug in podcast page.
 Trim podcast urls
 Use shorter urls in external player.
+Thumbs in external player is sometimes missing.
 
 TODO IN 4.9
 --------------
-Thumbs in external player is often missing.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
-No autocover for podcasts in demo.
 
 Selection in play queue is automatically cleared if no current playing.
   Happens if switching to jukebox, then back to web player.
