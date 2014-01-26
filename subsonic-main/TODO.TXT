@@ -1,5 +1,6 @@
-TODO IN 4.9
+TODO IN 5.0
 --------------
+Fix build errors on Debian/RPM.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
 
@@ -20,6 +21,11 @@ Cache generated album art
 Backend
   Send email 7 days after subscription expires.
   Mention that purchased subscription time is added to existing.
+
+DONE IN 5.0
+-----------
+External player doesn't auto-advance.
+
 
 TODO IN SITE
 ------------
@@ -829,22 +835,28 @@ cd subsonic-assembly; mvn assembly:assembly; cd ..
 cd subsonic-backend;  mvn clean install; cd ..
 Deploy
 Check that correct local version is displayed.
+
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On Mac OS:
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
   rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+
+On Windows
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On VirtualBox Ubuntu
   svn update
+  # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull
   rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull
   rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  sudo shutdown -h now
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
