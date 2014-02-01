@@ -1,3 +1,7 @@
+DONE IN 5.0
+-------------
+Added play overlay button in cover art images.
+
 TODO IN 5.0
 --------------
 Fix build errors on Debian/RPM.
@@ -33,9 +37,11 @@ Create mosaic of apps, put on slideshow.
 
 TODO IN 5.0
 --------------
+Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
 Slim scroll
+  ::-webkit-scrollbar
   http://rocha.la/jQuery-slimScroll/
   http://sourceforge.net/p/subsonic/bugs/98/
 Replace paging with dynamic album fetching (like Google image search) in home.jsp
@@ -869,15 +875,15 @@ Post message on forum.
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-01-04/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-04/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-04/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-01-25/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/ROOT.war
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-01-04 webapps
+ln -s webapps-2014-01-25 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -885,13 +891,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-01-04/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-01-04/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-01-25/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-01-25/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-01-04 webapps
+ln -s webapps-2014-01-25 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
