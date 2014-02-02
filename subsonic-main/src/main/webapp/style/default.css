@@ -151,6 +151,7 @@ form {
 
 input, select, textarea {
     font-size: 90%;
+    border: 1px solid lightgray;
 }
 
 label {
@@ -258,6 +259,7 @@ img {
 }
 
 .checkbox {
+    border: 0
 }
 
 /* Table with simple lines between the cells. */
