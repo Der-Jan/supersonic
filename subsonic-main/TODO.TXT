@@ -1,6 +1,7 @@
 DONE IN 5.0
 -------------
 Added play overlay button in cover art images.
+Nicer scrollbar (in Webkit browsers)
 
 TODO IN 5.0
 --------------
