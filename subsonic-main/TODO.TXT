@@ -4,13 +4,12 @@ Added play overlay button in cover art images.
 Nicer scrollbar (in Webkit browsers)
 Fix build errors on Debian/RPM.
 Bugfix: External player doesn't auto-advance.
-Add browser notification (WebKit only)
+Add browser notification
 Add settings for enabling notifications.
 
 TODO IN 5.0
 --------------
 Improve styling of input fields, e.g., search.
-Try again with HTML5 notif.
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features

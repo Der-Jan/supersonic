@@ -377,20 +377,30 @@
     }
 
     function showNotification(song) {
-        if (!window.webkitNotifications) {
+        if (!("Notification" in window)) {
             return;
         }
-        if (window.webkitNotifications.checkPermission() != 0) {
-            window.webkitNotifications.requestPermission();
-            return;
+        if (Notification.permission === "granted") {
+            createNotification(song);
         }
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+                Notification.permission = permission;
+                if (permission === "granted") {
+                    createNotification(song);
+                }
+            });
+        }
+    }
 
-        var n = window.webkitNotifications.createNotification('coverArt.view?id=' + song.id + '&size=110', song.title, song.artist + ' - ' + song.album);
-        n.ondisplay = function() {
-            setTimeout(function(){
-                n.cancel();
-            }, 5000); };
-        n.show();
+    function createNotification(song) {
+        var n = new Notification(song.title, {
+            body: song.artist + " - " + song.album,
+            icon: "coverArt.view?id=" + song.id + "&size=110"
+        });
+        n.onshow = function() {
+            setTimeout(function() {n.close()}, 5000);
+        }
     }
 
     function updateCurrentImage() {
