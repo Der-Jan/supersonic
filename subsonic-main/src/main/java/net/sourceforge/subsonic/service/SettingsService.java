@@ -1140,6 +1140,7 @@ public class SettingsService {
         UserSettings settings = new UserSettings(username);
         settings.setFinalVersionNotificationEnabled(true);
         settings.setBetaVersionNotificationEnabled(false);
+        settings.setSongNotificationEnabled(true);
         settings.setShowNowPlayingEnabled(true);
         settings.setShowChatEnabled(true);
         settings.setPartyModeEnabled(false);

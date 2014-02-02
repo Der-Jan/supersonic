@@ -371,7 +371,9 @@
         player.sendEvent("LOAD", list);
         player.sendEvent("PLAY");
 
+        <c:if test="${model.notify}">
         showNotification(song);
+        </c:if>
     }
 
     function showNotification(song) {

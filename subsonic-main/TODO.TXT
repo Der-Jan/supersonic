@@ -5,17 +5,16 @@ Nicer scrollbar (in Webkit browsers)
 Fix build errors on Debian/RPM.
 Bugfix: External player doesn't auto-advance.
 Add browser notification (WebKit only)
+Add settings for enabling notifications.
 
 TODO IN 5.0
 --------------
+Improve styling of input fields, e.g., search.
+Try again with HTML5 notif.
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
-Slim scroll
-  ::-webkit-scrollbar
-  http://rocha.la/jQuery-slimScroll/
-  http://sourceforge.net/p/subsonic/bugs/98/
 Replace paging with dynamic album fetching (like Google image search) in home.jsp
 Gzip REST / Jetty
   https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135

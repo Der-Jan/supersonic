@@ -18,14 +18,21 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import org.springframework.web.servlet.mvc.*;
-import org.apache.commons.lang.StringUtils;
-import net.sourceforge.subsonic.service.*;
-import net.sourceforge.subsonic.command.*;
-import net.sourceforge.subsonic.domain.*;
+import java.util.Date;
+import java.util.Locale;
 
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import net.sourceforge.subsonic.command.PersonalSettingsCommand;
+import net.sourceforge.subsonic.domain.AvatarScheme;
+import net.sourceforge.subsonic.domain.Theme;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Controller for the page used to administrate per-user settings.
@@ -58,6 +65,7 @@ public class PersonalSettingsController extends SimpleFormController {
         command.setPlaylistVisibility(userSettings.getPlaylistVisibility());
         command.setFinalVersionNotificationEnabled(userSettings.isFinalVersionNotificationEnabled());
         command.setBetaVersionNotificationEnabled(userSettings.isBetaVersionNotificationEnabled());
+        command.setSongNotificationEnabled(userSettings.isSongNotificationEnabled());
         command.setLastFmEnabled(userSettings.isLastFmEnabled());
         command.setLastFmUsername(userSettings.getLastFmUsername());
         command.setLastFmPassword(userSettings.getLastFmPassword());
@@ -115,6 +123,7 @@ public class PersonalSettingsController extends SimpleFormController {
         settings.setPlaylistVisibility(command.getPlaylistVisibility());
         settings.setFinalVersionNotificationEnabled(command.isFinalVersionNotificationEnabled());
         settings.setBetaVersionNotificationEnabled(command.isBetaVersionNotificationEnabled());
+        settings.setSongNotificationEnabled(command.isSongNotificationEnabled());
         settings.setLastFmEnabled(command.isLastFmEnabled());
         settings.setLastFmUsername(command.getLastFmUsername());
         settings.setSystemAvatarId(getSystemAvatarId(command));
