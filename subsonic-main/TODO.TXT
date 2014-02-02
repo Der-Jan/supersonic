@@ -3,9 +3,30 @@ DONE IN 5.0
 Added play overlay button in cover art images.
 Nicer scrollbar (in Webkit browsers)
 Fix build errors on Debian/RPM.
+Bugfix: External player doesn't auto-advance.
+Add browser notification (WebKit only)
 
 TODO IN 5.0
 --------------
+Bundle JRE?
+Bug in SettingsService.java:1269 if going from time limited to eternal license.
+Review Madsonic features
+  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
+Slim scroll
+  ::-webkit-scrollbar
+  http://rocha.la/jQuery-slimScroll/
+  http://sourceforge.net/p/subsonic/bugs/98/
+Replace paging with dynamic album fetching (like Google image search) in home.jsp
+Gzip REST / Jetty
+  https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
+  Jetty GzipFilter? Remember it should work on Tomcat etc as well.
+Monitoring with JavaMelody
+Artist art
+  Create collage of album covers?
+  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
+Update ffmpeg
+  Use mpeg4?
+  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
@@ -26,37 +47,12 @@ Backend
   Send email 7 days after subscription expires.
   Mention that purchased subscription time is added to existing.
 
-DONE IN 5.0
------------
-External player doesn't auto-advance.
-
-
 TODO IN SITE
 ------------
 Create mosaic of apps, put on slideshow.
 
 TODO IN 5.0
 --------------
-Bug in SettingsService.java:1269 if going from time limited to eternal license.
-Review Madsonic features
-  https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
-Slim scroll
-  ::-webkit-scrollbar
-  http://rocha.la/jQuery-slimScroll/
-  http://sourceforge.net/p/subsonic/bugs/98/
-Replace paging with dynamic album fetching (like Google image search) in home.jsp
-Gzip REST / Jetty
-  https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
-  Jetty GzipFilter? Remember it should work on Tomcat etc as well.
-Monitoring with JavaMelody
-Artist art
-  Create collage of album covers?
-  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
-Update ffmpeg
-  Use mpeg4?
-  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
-Add browser notification
-  http://www.paulund.co.uk/html5-notifications
 
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)

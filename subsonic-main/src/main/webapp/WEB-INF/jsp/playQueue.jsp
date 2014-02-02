@@ -370,6 +370,25 @@
 
         player.sendEvent("LOAD", list);
         player.sendEvent("PLAY");
+
+        showNotification(song);
+    }
+
+    function showNotification(song) {
+        if (!window.webkitNotifications) {
+            return;
+        }
+        if (window.webkitNotifications.checkPermission() != 0) {
+            window.webkitNotifications.requestPermission();
+            return;
+        }
+
+        var n = window.webkitNotifications.createNotification('coverArt.view?id=' + song.id + '&size=110', song.title, song.artist + ' - ' + song.album);
+        n.ondisplay = function() {
+            setTimeout(function(){
+                n.cancel();
+            }, 5000); };
+        n.show();
     }
 
     function updateCurrentImage() {
