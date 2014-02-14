@@ -18,29 +18,10 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.awt.Dimension;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.SearchService;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.math.LongRange;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
@@ -48,8 +29,10 @@ import net.sourceforge.subsonic.io.PlayQueueInputStream;
 import net.sourceforge.subsonic.io.RangeOutputStream;
 import net.sourceforge.subsonic.io.ShoutCastOutputStream;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
+import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
@@ -57,6 +40,20 @@ import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A controller which streams the content of a {@link net.sourceforge.subsonic.domain.PlayQueue} to a remote
@@ -192,7 +189,6 @@ public class StreamController implements Controller {
                 out = new ShoutCastOutputStream(out, player.getPlayQueue(), settingsService);
             }
 
-            logHttpHeaders(request, response);
             final int BUFFER_SIZE = 2048;
             byte[] buf = new byte[BUFFER_SIZE];
 
@@ -232,23 +228,6 @@ public class StreamController implements Controller {
             IOUtils.closeQuietly(in);
         }
         return null;
-    }
-
-    private void logHttpHeaders(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder("Request header for " + request.getRequestURI());
-        for (String headerName : Util.<String>toIterable(request.getHeaderNames())) {
-            builder.append("\n").append(headerName).append(": ").append(request.getHeader(headerName)).append(", ");
-        }
-        builder.setLength(builder.length() - 2);
-        LOG.debug(builder);
-
-//        builder.setLength(0);
-//        builder.append("Response header: ");
-//        for (String headerName : Util.<String>toIterable(response.getHeaderNames())) {
-//            builder.append(headerName).append(": ").append(response.getHeader(headerName)).append(", ");
-//        }
-//
-//        LOG.debug(builder);
     }
 
     private MediaFile getSingleFile(HttpServletRequest request) throws ServletRequestBindingException {
