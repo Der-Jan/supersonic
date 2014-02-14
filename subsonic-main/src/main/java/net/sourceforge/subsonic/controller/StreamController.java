@@ -54,6 +54,7 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -119,7 +120,7 @@ public class StreamController implements Controller {
             // Also, enable partial download (HTTP byte range).
             MediaFile file = getSingleFile(request);
             boolean isSingleFile = file != null;
-            LongRange range = null;
+            HttpRange range = null;
 
             if (isSingleFile) {
                 PlayQueue playQueue = new PlayQueue();
@@ -139,12 +140,11 @@ public class StreamController implements Controller {
 
                 range = getRange(request, file);
                 if (range != null) {
-                    LOG.info("Got range: " + range);
+                    LOG.info("Got HTTP range: " + range);
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-                    Util.setContentLength(response, fileLength - range.getMinimumLong());
-                    long firstBytePos = range.getMinimumLong();
-                    long lastBytePos = fileLength - 1;
-                    response.setHeader("Content-Range", "bytes " + firstBytePos + "-" + lastBytePos + "/" + fileLength);
+                    Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());
+                    long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
+                    response.setHeader("Content-Range", "bytes " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
                 } else if (!isHls && (!isConversion || estimateContentLength)) {
                     Util.setContentLength(response, fileLength);
                 }
@@ -192,6 +192,7 @@ public class StreamController implements Controller {
                 out = new ShoutCastOutputStream(out, player.getPlayQueue(), settingsService);
             }
 
+            logHttpHeaders(request, response);
             final int BUFFER_SIZE = 2048;
             byte[] buf = new byte[BUFFER_SIZE];
 
@@ -233,6 +234,23 @@ public class StreamController implements Controller {
         return null;
     }
 
+    private void logHttpHeaders(HttpServletRequest request, HttpServletResponse response) {
+        StringBuilder builder = new StringBuilder("Request header for " + request.getRequestURI());
+        for (String headerName : Util.<String>toIterable(request.getHeaderNames())) {
+            builder.append("\n").append(headerName).append(": ").append(request.getHeader(headerName)).append(", ");
+        }
+        builder.setLength(builder.length() - 2);
+        LOG.debug(builder);
+
+//        builder.setLength(0);
+//        builder.append("Response header: ");
+//        for (String headerName : Util.<String>toIterable(response.getHeaderNames())) {
+//            builder.append(headerName).append(": ").append(response.getHeader(headerName)).append(", ");
+//        }
+//
+//        LOG.debug(builder);
+    }
+
     private MediaFile getSingleFile(HttpServletRequest request) throws ServletRequestBindingException {
         String path = request.getParameter("path");
         if (path != null) {
@@ -267,10 +285,10 @@ public class StreamController implements Controller {
         return duration * maxBitRate * 1000L / 8L;
     }
 
-    private LongRange getRange(HttpServletRequest request, MediaFile file) {
+    private HttpRange getRange(HttpServletRequest request, MediaFile file) {
 
         // First, look for "Range" HTTP header.
-        LongRange range = StringUtil.parseRange(request.getHeader("Range"));
+        HttpRange range = HttpRange.valueOf(request.getHeader("Range"));
         if (range != null) {
             return range;
         }
@@ -285,7 +303,7 @@ public class StreamController implements Controller {
         return null;
     }
 
-    private LongRange parseAndConvertOffsetSeconds(String offsetSeconds, MediaFile file) {
+    private HttpRange parseAndConvertOffsetSeconds(String offsetSeconds, MediaFile file) {
         if (offsetSeconds == null) {
             return null;
         }
@@ -300,7 +318,7 @@ public class StreamController implements Controller {
 
             // Convert from time offset to byte offset.
             long byteOffset = (long) (fileSize * (offset / duration));
-            return new LongRange(byteOffset, Long.MAX_VALUE);
+            return new HttpRange(byteOffset, null);
 
         } catch (Exception x) {
             LOG.error("Failed to parse and convert time offset: " + offsetSeconds, x);

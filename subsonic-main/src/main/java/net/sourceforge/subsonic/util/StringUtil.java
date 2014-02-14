@@ -487,42 +487,6 @@ public final class StringUtil {
         return filename;
     }
 
-    /**
-     * Parses the given string as a HTTP header byte range.  See chapter 14.36.1 in RFC 2068
-     * for details.
-     * <p/>
-     * Only a subset of the allowed syntaxes are supported. Only ranges which specify first-byte-pos
-     * are supported. The last-byte-pos is optional.
-     *
-     * @param range The range from the HTTP header, for instance "bytes=0-499" or "bytes=500-"
-     * @return A range object (using inclusive values). If the last-byte-pos is not given, the end of
-     *         the returned range is {@link Long#MAX_VALUE}. The method returns <code>null</code> if the syntax
-     *         of the given range is not supported.
-     */
-    public static LongRange parseRange(String range) {
-        if (range == null) {
-            return null;
-        }
-
-        Pattern pattern = Pattern.compile("bytes=(\\d+)-(\\d*)");
-        Matcher matcher = pattern.matcher(range);
-
-        if (matcher.matches()) {
-            String firstString = matcher.group(1);
-            String lastString = StringUtils.trimToNull(matcher.group(2));
-
-            long first = Long.parseLong(firstString);
-            long last = lastString == null ? Long.MAX_VALUE : Long.parseLong(lastString);
-
-            if (first > last) {
-                return null;
-            }
-
-            return new LongRange(first, last);
-        }
-        return null;
-    }
-
     public static String removeMarkup(String s) {
         if (s == null) {
             return null;

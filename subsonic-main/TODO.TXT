@@ -10,6 +10,11 @@ Nicer styling of input fields and buttons.
 
 TODO IN 5.0
 --------------
+curl "http://www.longtailvideo.com/jw/upload/bunny.mp3" -o foo.mp3 -D - -s -r 0-1
+curl "http://localhost:4040/stream?id=23538" -o foo.mp3 -D - -s -r 0-1
+
+RangeOutputStream unit test
+Upgrade to servlet 3.0?
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features

@@ -23,9 +23,6 @@ import junit.framework.TestCase;
 import java.util.Locale;
 import java.util.Arrays;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.math.LongRange;
-
 /**
  * Unit test of {@link StringUtil}.
  *
@@ -199,30 +196,6 @@ public class StringUtilTestCase extends TestCase {
         assertEquals("Error in rewriteUrl().", "http://foo/", StringUtil.rewriteUrl("http://foo/", "not:a:url"));
         assertEquals("Error in rewriteUrl().", "http://foo/", StringUtil.rewriteUrl("http://foo/", ""));
         assertEquals("Error in rewriteUrl().", "http://foo/", StringUtil.rewriteUrl("http://foo/", null));
-    }
-
-    public void testParseRange() {
-        doTestParseRange(0L, 0L, "bytes=0-0");
-        doTestParseRange(0L, 1L, "bytes=0-1");
-        doTestParseRange(100L, 100L, "bytes=100-100");
-        doTestParseRange(0L, 499L, "bytes=0-499");
-        doTestParseRange(500L, 999L, "bytes=500-999");
-        doTestParseRange(9500L, Long.MAX_VALUE, "bytes=9500-");
-
-        assertNull("Error in parseRange().", StringUtil.parseRange(null));
-        assertNull("Error in parseRange().", StringUtil.parseRange(""));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes"));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes=a-b"));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes=-100-500"));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes=-500"));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes=500-600,601-999"));
-        assertNull("Error in parseRange().", StringUtil.parseRange("bytes=200-100"));
-    }
-
-    private void doTestParseRange(long expectedFrom, long expectedTo, String range) {
-        LongRange actual = StringUtil.parseRange(range);
-        assertEquals("Error in parseRange().", expectedFrom, actual.getMinimumLong());
-        assertEquals("Error in parseRange().", expectedTo, actual.getMaximumLong());
     }
 
     public void testRemoveMarkup() {
