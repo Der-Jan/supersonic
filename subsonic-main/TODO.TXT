@@ -25,6 +25,8 @@ Artist art
 Update ffmpeg
   Use mpeg4?
   https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
+  Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
+  Support ISO
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
@@ -48,9 +50,6 @@ Backend
 TODO IN SITE
 ------------
 Create mosaic of apps, put on slideshow.
-
-TODO IN 5.0
---------------
 
 java.lang.SecurityException: Access denied to file /Users/sindre
 	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
