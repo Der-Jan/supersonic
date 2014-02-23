@@ -7,14 +7,36 @@ Bugfix: External player doesn't auto-advance.
 Add browser notification
 Add settings for enabling notifications.
 Nicer styling of input fields and buttons.
+Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
-curl "http://www.longtailvideo.com/jw/upload/bunny.mp3" -o foo.mp3 -D - -s -r 0-1
-curl "http://localhost:4040/stream?id=23538" -o foo.mp3 -D - -s -r 0-1
+Add Audiophone
+  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
 
-RangeOutputStream unit test
 Upgrade to servlet 3.0?
+Upgrade JWPlayer
+  https doesn't work in Safari
+
+  Use html5
+  Fix format in playQueue.jsp
+  http://www.longtailvideo.com/support/jw-player/28842/working-with-playlists
+  JWPlayer key
+  Don't use hosted.
+  Custom colors
+  Video
+  (Re)Move player dropdown (hide if only one player)
+  Create option to select flash or html5
+  video
+  externalplayer
+  Use ogg for firefox, mp3 for other.
+  http://modernizr.com/docs/#features-html5
+
+http://alxgbsn.co.uk/2013/02/20/notify-js-a-handy-wrapper-for-the-web-notifications-api/
+Revert to webkit notification? (Unstable in chrome)
+Chromecast
+DLNA just expands more and more, eg audio/audio/audio/audio
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
@@ -492,7 +514,6 @@ Make maven build from root work.
 Java silent installation: http://java.sun.com/javase/6/webnotes/install/jre/silent.html
 WiX: https://sourceforge.net/projects/wix/
 Add track count REST.
-Upgrade JWPlayer
 Fix bug with executor in networkservice.
 Disable ads first 30 days?
 Show status in getting started.
