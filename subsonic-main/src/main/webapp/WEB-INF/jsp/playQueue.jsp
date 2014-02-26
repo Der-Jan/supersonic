@@ -12,6 +12,8 @@
     <script type="text/javascript" src="<c:url value="/script/webfx/range.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/timer.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/slider.js"/>"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+    <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
 </head>
 
@@ -506,7 +508,9 @@
             <c:if test="${model.player.web}">
                 <td style="width:340px; height:24px;padding-left:10px;padding-right:10px"><div id="placeholder">
                     <a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a>
-                </div></td>
+                </div>
+                </td>
+                <td><a href="#" onclick="launchApp(); return false;"><img id="casticon"></a></td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
@@ -658,6 +662,11 @@
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>
     <div id="dialog-select-playlist-list"></div>
+</div>
+
+<div style="margin:10px;">
+    <textarea rows="20" cols="180" id="debugmessage">
+    </textarea>
 </div>
 
 </body></html>
