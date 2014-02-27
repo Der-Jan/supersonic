@@ -7,32 +7,6 @@ var currentVolume = 0.5;
 var progressFlag = 1;
 var mediaCurrentTime = 0;
 var castSession = null;
-var mediaURLs = [
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/ED_1280.mp4',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/tears_of_steel_1080p.mov',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/reel_2012_1280x720.mp4',
-    'http://192.168.10.152:4040/hls?id=889&player=${model.player.id}',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/Google%20IO%202011%2045%20Min%20Walk%20Out.mp3'];
-
-var mediaTitles = [
-    'Big Buck Bunny',
-    'Elephant Dream',
-    'Tears of Steel',
-    'Reel 2012',
-    'Subsonic',
-    'Google I/O 2011 Audio'];
-
-var mediaThumbs = [
-    'images/bunny.jpg',
-    'images/ed.jpg',
-    'images/Tears.jpg',
-    'images/reel.jpg',
-    'images/reel.jpg',
-    'images/google-io-2011.jpg'];
-
-var currentMediaURL = mediaURLs[0];
-
 
 /**
  * Call initialization
@@ -69,7 +43,6 @@ function onError() {
 }
 
 ///**
-// * TODO: Not in use?
 // * generic success callback
 // */
 //function onSuccess(message) {
@@ -108,8 +81,8 @@ function sessionUpdateListener(isAlive) {
     if (!isAlive) {
         castSession = null;
         document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_idle.png"/>';
-        var playpauseresume = document.getElementById("playpauseresume");
-        playpauseresume.innerHTML = 'Play';
+//        var playpauseresume = document.getElementById("playpauseresume");
+//        playpauseresume.innerHTML = 'Play';
     }
 }
 
@@ -131,12 +104,12 @@ function receiverListener(e) {
  * select a media URL
  * @param {string} m An index for media URL
  */
-function selectMedia(m) {
-    log("media selected" + m);
-    currentMediaURL = mediaURLs[m];
-    var playpauseresume = document.getElementById("playpauseresume");
-    document.getElementById('thumb').src = mediaThumbs[m];
-}
+//function selectMedia(m) {
+//    log("media selected" + m);
+//    currentMediaURL = mediaURLs[m];
+//    var playpauseresume = document.getElementById("playpauseresume");
+//    document.getElementById('thumb').src = mediaThumbs[m];
+//}
 
 /**
  * launch app and request session
@@ -171,33 +144,30 @@ function stopApp() {
     castSession.stop(onStopAppSuccess, onError);
 }
 
-/**
- * load media
- * @param {string} i An index for media
- */
-function loadMedia(i) {
+function loadMedia(song) {
     if (!castSession) {
         log("no session");
         return;
     }
-    log("loading..." + currentMediaURL);
-    var mediaInfo = new chrome.cast.media.MediaInfo(currentMediaURL);
-    mediaInfo.contentType = 'video/mp4';
-//    mediaInfo.contentType = 'application/vnd.apple.mpegurl';
+    log("loading..." + song.remoteStreamUrl);
+    var mediaInfo = new chrome.cast.media.MediaInfo(song.remoteStreamUrl);
+    mediaInfo.contentType = song.contentType;
+    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
+    mediaInfo.duration = song.duration;
+
+    mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+    mediaInfo.metadata.albumName = song.album;
+    mediaInfo.metadata.artist = song.artist;
+    mediaInfo.metadata.trackNumber = song.trackNumber;
+    mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl)];
+    if (song.year) {
+        mediaInfo.metadata.releaseDate = song.year.toString();
+    }
+
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
     request.autoplay = true;
     request.currentTime = 0;
-
-    var payload = {
-        "title:": mediaTitles[i],
-        "thumb": mediaThumbs[i]
-    };
-
-    var json = {
-        "payload": payload
-    };
-
-    request.customData = json;
 
     castSession.loadMedia(request,
             onMediaDiscovered.bind(this, 'loadMedia'),
@@ -213,7 +183,7 @@ function onMediaDiscovered(how, mediaSession) {
     currentMediaSession = mediaSession;
     mediaSession.addUpdateListener(onMediaStatusUpdate);
     mediaCurrentTime = currentMediaSession.currentTime;
-    playpauseresume.innerHTML = 'Play';
+//    playpauseresume.innerHTML = 'Play';
     document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_active.png"/>';
 }
 
@@ -231,6 +201,7 @@ function onMediaError(e) {
  * @param {Object} e A non-null media object
  */
 function onMediaStatusUpdate(isAlive) {
+    log(currentMediaSession);
     if (progressFlag) {
         document.getElementById("progress").value = parseInt(100 * currentMediaSession.currentTime / currentMediaSession.media.duration);
     }

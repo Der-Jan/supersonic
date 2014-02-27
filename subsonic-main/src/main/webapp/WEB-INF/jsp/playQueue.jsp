@@ -370,8 +370,12 @@
             list[0].provider = "video";
         }
 
-        player.sendEvent("LOAD", list);
-        player.sendEvent("PLAY");
+        if (castSession) {
+            loadMedia(song);
+        } else {
+            player.sendEvent("LOAD", list);
+            player.sendEvent("PLAY");
+        }
 
         <c:if test="${model.notify}">
         showNotification(song);
