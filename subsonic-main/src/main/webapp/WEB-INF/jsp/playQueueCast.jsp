@@ -8,6 +8,12 @@ var progressFlag = 1;
 var mediaCurrentTime = 0;
 var castSession = null;
 
+
+/*
+ TODO: Only init if player type is "web".
+  TODO: Host google js locally.
+ */
+
 /**
  * Call initialization
  */
@@ -55,6 +61,15 @@ function onError() {
 function onStopAppSuccess() {
     log('Session stopped');
     document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_idle.png"/>';
+    setCastControlsVisible(false);
+}
+
+function setCastControlsVisible(visible) {
+    if (visible) {
+        $("#flashPlayer").show();
+    } else {
+        $("#flashPlayer").hide();
+    }
 }
 
 /**
@@ -127,6 +142,7 @@ function onRequestSessionSuccess(e) {
     log("session success: " + e.sessionId);
     castSession = e;
     document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_active.png"/>';
+    setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
 }
 
@@ -154,7 +170,6 @@ function loadMedia(song) {
     mediaInfo.contentType = song.contentType;
     mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
     mediaInfo.duration = song.duration;
-
     mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
     mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
     mediaInfo.metadata.songName = song.title;
@@ -163,9 +178,7 @@ function loadMedia(song) {
     mediaInfo.metadata.artist = song.artist;
     mediaInfo.metadata.trackNumber = song.trackNumber;
     mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl)];
-    if (song.year) {
-        mediaInfo.metadata.releaseDate = song.year.toString();
-    }
+    mediaInfo.metadata.releaseYear = song.year;
 
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
     request.autoplay = true;

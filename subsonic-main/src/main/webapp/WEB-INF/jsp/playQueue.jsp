@@ -510,9 +510,10 @@
                 </select></td>
             </c:if>
             <c:if test="${model.player.web}">
-                <td style="width:340px; height:24px;padding-left:10px;padding-right:10px"><div id="placeholder">
-                    <a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a>
-                </div>
+                <td>
+                    <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
+                        <div id="placeholder"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+                    </div>
                 </td>
                 <td><a href="#" onclick="launchApp(); return false;"><img id="casticon"></a></td>
             </c:if>
