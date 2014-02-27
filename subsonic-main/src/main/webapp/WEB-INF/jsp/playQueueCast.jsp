@@ -157,6 +157,8 @@ function loadMedia(song) {
 
     mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
     mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+    mediaInfo.metadata.songName = song.title;
+    mediaInfo.metadata.title = song.title;
     mediaInfo.metadata.albumName = song.album;
     mediaInfo.metadata.artist = song.artist;
     mediaInfo.metadata.trackNumber = song.trackNumber;
