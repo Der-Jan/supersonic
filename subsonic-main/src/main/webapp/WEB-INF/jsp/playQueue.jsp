@@ -514,8 +514,11 @@
                     <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
                         <div id="placeholder"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
                     </div>
+                    <div id="castPlayer" style="display: none">
+                        <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
+                    </div>
                 </td>
-                <td><a href="#" onclick="launchApp(); return false;"><img id="casticon"></a></td>
+                <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">

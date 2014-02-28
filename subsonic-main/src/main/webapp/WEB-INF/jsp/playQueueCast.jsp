@@ -7,11 +7,13 @@ var currentVolume = 0.5;
 var progressFlag = 1;
 var mediaCurrentTime = 0;
 var castSession = null;
-
+var playing = true;
 
 /*
- TODO: Only init if player type is "web".
+  TODO: Play/pause img
+  TODO: Only init if player type is "web".
   TODO: Host google js locally.
+  TODO: Use similar graphics for next/prev buttons.
  */
 
 /**
@@ -48,27 +50,26 @@ function onError() {
     log("error");
 }
 
-///**
-// * generic success callback
-// */
-//function onSuccess(message) {
-//    console.log(message);
-//}
-
 /**
  * callback on success for stopping app
  */
 function onStopAppSuccess() {
     log('Session stopped');
-    document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_idle.png"/>';
+    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
     setCastControlsVisible(false);
+}
+
+function setImage(id, image) {
+    document.getElementById(id).src = image;
 }
 
 function setCastControlsVisible(visible) {
     if (visible) {
-        $("#flashPlayer").show();
-    } else {
         $("#flashPlayer").hide();
+        $("#castPlayer").show();
+    } else {
+        $("#castPlayer").hide();
+        $("#flashPlayer").show();
     }
 }
 
@@ -95,7 +96,7 @@ function sessionUpdateListener(isAlive) {
     log(message);
     if (!isAlive) {
         castSession = null;
-        document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_idle.png"/>';
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
 //        var playpauseresume = document.getElementById("playpauseresume");
 //        playpauseresume.innerHTML = 'Play';
     }
@@ -107,10 +108,11 @@ function sessionUpdateListener(isAlive) {
 function receiverListener(e) {
     if (e === 'available') {
         log("receiver found");
-        document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_idle.png"/>';
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
     }
     else {
-        // TODO
+        // TODO: Remove
+        setCastControlsVisible(true);
         log("receiver list empty");
     }
 }
@@ -129,7 +131,7 @@ function receiverListener(e) {
 /**
  * launch app and request session
  */
-function launchApp() {
+function launchCastApp() {
     log("launching app...");
     chrome.cast.requestSession(onRequestSessionSuccess, onLaunchError);
 }
@@ -141,7 +143,7 @@ function launchApp() {
 function onRequestSessionSuccess(e) {
     log("session success: " + e.sessionId);
     castSession = e;
-    document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_active.png"/>';
+    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
 }
@@ -199,7 +201,7 @@ function onMediaDiscovered(how, ms) {
     mediaSession.addUpdateListener(onMediaStatusUpdate);
     mediaCurrentTime = mediaSession.currentTime;
 //    playpauseresume.innerHTML = 'Play';
-    document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_active.png"/>';
+    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
 }
 
 /**
@@ -208,7 +210,7 @@ function onMediaDiscovered(how, ms) {
  */
 function onMediaError(e) {
     log("media error");
-    document.getElementById("casticon").src = '<c:url value="/icons/cast/cast_icon_warning.png"/>';
+    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_warning.png"/>");
 }
 
 /**
@@ -226,12 +228,28 @@ function onMediaStatusUpdate(isAlive) {
 //    document.getElementById("playerstate").innerHTML = mediaSession.playerState;
 }
 
+
+function playPauseCast() {
+    if (!mediaSession) {
+        return;
+    }
+    if (playing) {
+        mediaSession.pause(null, mediaCommandSuccessCallback.bind(this, "paused " + mediaSession.sessionId), onError);
+        setImage("castPlayPause", "<spring:theme code="castPlayImage"/>");
+    } else {
+        mediaSession.play(null, mediaCommandSuccessCallback.bind(this, "playing started for " + mediaSession.sessionId), onError);
+        setImage("castPlayPause", "<spring:theme code="castPauseImage"/>");
+    }
+    playing = !playing;
+}
+
 /**
  * play media
  */
 function playMedia() {
     if (!mediaSession)
         return;
+
 
     var playpauseresume = document.getElementById("playpauseresume");
     if (playpauseresume.innerHTML == 'Play') {
