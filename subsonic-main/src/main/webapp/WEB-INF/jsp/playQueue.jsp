@@ -517,7 +517,7 @@
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">
                             <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
-                            <img src="<spring:theme code="volumeImage"/>" alt="">
+                            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
                         </div>
                         <div style="float:left">
                             <input type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"

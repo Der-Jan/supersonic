@@ -4,13 +4,15 @@
  */
 var mediaSession = null;
 var currentVolume = 0.5;
+var muted = false;
 var progressFlag = 1;
 var mediaCurrentTime = 0;
 var castSession = null;
 var playing = true;
 
 /*
-  TODO: Play/pause img
+  TODO: Mute
+  TODO: Set volume slider position
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Host google js locally.
@@ -217,32 +219,27 @@ function setCastVolume(level, mute) {
     if (!castSession)
         return;
 
+    muted = mute;
+
     if (!mute) {
-        castSession.setReceiverVolumeLevel(level,
-                mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
-                onError);
+        castSession.setReceiverVolumeLevel(level, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
         currentVolume = level;
+        setImage("castMute", "<spring:theme code="volumeImage"/>");
     }
     else {
-        castSession.setReceiverMuted(true,
-                mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
-                onError);
+        castSession.setReceiverMuted(true, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
     }
 }
 
-/**
- * mute media
- * @param {DOM Object} cb A checkbox element
- */
-function muteMedia(cb) {
-    if (cb.checked == true) {
-        document.getElementById('muteText').innerHTML = 'Unmute media';
-        setReceiverVolume(currentVolume, true);
-        log("media muted");
+function toggleCastMute() {
+    if (muted) {
+        setCastVolume(currentVolume, false);
+        setImage("castMute", "<spring:theme code="volumeImage"/>");
+        log("media unmuted");
     }
     else {
-        document.getElementById('muteText').innerHTML = 'Mute media';
-        setReceiverVolume(currentVolume, false);
+        setCastVolume(currentVolume, true);
+        setImage("castMute", "<spring:theme code="muteImage"/>");
         log("media unmuted");
     }
 }
