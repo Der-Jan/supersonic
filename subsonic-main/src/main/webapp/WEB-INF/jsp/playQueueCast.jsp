@@ -228,20 +228,12 @@ function setCastVolume(level, mute) {
     }
     else {
         castSession.setReceiverMuted(true, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
+        setImage("castMute", "<spring:theme code="muteImage"/>");
     }
 }
 
 function toggleCastMute() {
-    if (muted) {
-        setCastVolume(currentVolume, false);
-        setImage("castMute", "<spring:theme code="volumeImage"/>");
-        log("media unmuted");
-    }
-    else {
-        setCastVolume(currentVolume, true);
-        setImage("castMute", "<spring:theme code="muteImage"/>");
-        log("media unmuted");
-    }
+    setCastVolume(currentVolume, !muted);
 }
 
 /**
