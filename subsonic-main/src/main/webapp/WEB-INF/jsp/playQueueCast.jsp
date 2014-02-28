@@ -56,7 +56,7 @@ function onError() {
 function onStopAppSuccess() {
     log('Session stopped');
     setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
-    setCastControlsVisible(false);
+//    setCastControlsVisible(false);
 }
 
 function setImage(id, image) {
@@ -97,6 +97,7 @@ function sessionUpdateListener(isAlive) {
     if (!isAlive) {
         castSession = null;
         setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
+        setCastControlsVisible(false);
 //        var playpauseresume = document.getElementById("playpauseresume");
 //        playpauseresume.innerHTML = 'Play';
     }
@@ -111,8 +112,6 @@ function receiverListener(e) {
         setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
     }
     else {
-        // TODO: Remove
-        setCastControlsVisible(true);
         log("receiver list empty");
     }
 }
@@ -193,7 +192,6 @@ function loadMedia(song) {
 
 /**
  * callback on success for loading media
- * @param {Object} e A non-null media object
  */
 function onMediaDiscovered(how, ms) {
     mediaSession = ms;
@@ -215,10 +213,9 @@ function onMediaError(e) {
 
 /**
  * callback for media status event
- * @param {Object} e A non-null media object
  */
 function onMediaStatusUpdate(isAlive) {
-    log(mediaSession);
+    log(mediaSession.playerState);
     if (mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && mediaSession.idleReason === "FINISHED") {
         onNext(repeatEnabled);
     }
