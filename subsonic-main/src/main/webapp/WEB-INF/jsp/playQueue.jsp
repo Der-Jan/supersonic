@@ -516,6 +516,8 @@
                     </div>
                     <div id="castPlayer" style="display: none">
                         <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
+                        <img src="<spring:theme code="volumeImage"/>" alt="">
+                        <input type="range" min="0" max="100" step="1" onmouseup="setCastVolume(this.value/100, false);">
                     </div>
                 </td>
                 <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>

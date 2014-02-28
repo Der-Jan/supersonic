@@ -16,19 +16,11 @@ var playing = true;
   TODO: Use similar graphics for next/prev buttons.
  */
 
-/**
- * Call initialization
- */
 if (!chrome.cast || !chrome.cast.isAvailable) {
     setTimeout(initializeCastApi, 1000);
 }
 
-/**
- * initialization
- */
 function initializeCastApi() {
-    // default app ID to the default media receiver app
-    // optional: you may change it to your own app ID/receiver
     var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
     var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
@@ -36,9 +28,6 @@ function initializeCastApi() {
     chrome.cast.initialize(apiConfig, onInitSuccess, onError);
 }
 
-/**
- * initialization success callback
- */
 function onInitSuccess() {
     log("init success");
 }
@@ -55,8 +44,6 @@ function onError() {
  */
 function onStopAppSuccess() {
     log('Session stopped');
-    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
-//    setCastControlsVisible(false);
 }
 
 function setImage(id, image) {
@@ -67,9 +54,11 @@ function setCastControlsVisible(visible) {
     if (visible) {
         $("#flashPlayer").hide();
         $("#castPlayer").show();
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
     } else {
         $("#castPlayer").hide();
         $("#flashPlayer").show();
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
     }
 }
 
@@ -79,6 +68,7 @@ function setCastControlsVisible(visible) {
 function sessionListener(e) {
     log('New session ID:' + e.sessionId);
     castSession = e;
+    setCastControlsVisible(true);
     if (castSession.media.length != 0) {
         log('Found ' + castSession.media.length + ' existing media sessions.');
         onMediaDiscovered('onRequestSessionSuccess_', castSession.media[0]);
@@ -96,10 +86,7 @@ function sessionUpdateListener(isAlive) {
     log(message);
     if (!isAlive) {
         castSession = null;
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
         setCastControlsVisible(false);
-//        var playpauseresume = document.getElementById("playpauseresume");
-//        playpauseresume.innerHTML = 'Play';
     }
 }
 
@@ -117,17 +104,6 @@ function receiverListener(e) {
 }
 
 /**
- * select a media URL
- * @param {string} m An index for media URL
- */
-//function selectMedia(m) {
-//    log("media selected" + m);
-//    currentMediaURL = mediaURLs[m];
-//    var playpauseresume = document.getElementById("playpauseresume");
-//    document.getElementById('thumb').src = mediaThumbs[m];
-//}
-
-/**
  * launch app and request session
  */
 function launchCastApp() {
@@ -137,26 +113,19 @@ function launchCastApp() {
 
 /**
  * callback on success for requestSession call
- * @param {Object} e A non-null new session.
+ * @param {Object} s A non-null new session.
  */
-function onRequestSessionSuccess(e) {
-    log("session success: " + e.sessionId);
-    castSession = e;
-    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
+function onRequestSessionSuccess(s) {
+    log("session success: " + s.sessionId);
+    castSession = s;
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
 }
 
-/**
- * callback on launch error
- */
 function onLaunchError() {
     log("launch error");
 }
 
-/**
- * stop app/session
- */
 function stopApp() {
     castSession.stop(onStopAppSuccess, onError);
 }
@@ -198,8 +167,6 @@ function onMediaDiscovered(how, ms) {
     log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
     mediaSession.addUpdateListener(onMediaStatusUpdate);
     mediaCurrentTime = mediaSession.currentTime;
-//    playpauseresume.innerHTML = 'Play';
-    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
 }
 
 /**
@@ -241,83 +208,11 @@ function playPauseCast() {
 }
 
 /**
- * play media
- */
-function playMedia() {
-    if (!mediaSession)
-        return;
-
-
-    var playpauseresume = document.getElementById("playpauseresume");
-    if (playpauseresume.innerHTML == 'Play') {
-        mediaSession.play(null,
-                mediaCommandSuccessCallback.bind(this, "playing started for " + mediaSession.sessionId),
-                onError);
-        playpauseresume.innerHTML = 'Pause';
-        //mediaSession.addListener(onMediaStatusUpdate);
-        log("play started");
-    }
-    else {
-        if (playpauseresume.innerHTML == 'Pause') {
-            mediaSession.pause(null,
-                    mediaCommandSuccessCallback.bind(this, "paused " + mediaSession.sessionId),
-                    onError);
-            playpauseresume.innerHTML = 'Resume';
-            log("paused");
-        }
-        else {
-            if (playpauseresume.innerHTML == 'Resume') {
-                mediaSession.play(null,
-                        mediaCommandSuccessCallback.bind(this, "resumed " + mediaSession.sessionId),
-                        onError);
-                playpauseresume.innerHTML = 'Pause';
-                log("resumed");
-            }
-        }
-    }
-}
-
-/**
- * stop media
- */
-function stopMedia() {
-    if (!mediaSession)
-        return;
-
-    mediaSession.stop(null,
-            mediaCommandSuccessCallback.bind(this, "stopped " + mediaSession.sessionId),
-            onError);
-    var playpauseresume = document.getElementById("playpauseresume");
-    playpauseresume.innerHTML = 'Play';
-    log("media stopped");
-}
-
-/**
- * set media volume
- * @param {Number} level A number for volume level
- * @param {Boolean} mute A true/false for mute/unmute
- */
-function setMediaVolume(level, mute) {
-    if (!mediaSession)
-        return;
-
-    var volume = new chrome.cast.Volume();
-    volume.level = level;
-    currentVolume = volume.level;
-    volume.muted = mute;
-    var request = new chrome.cast.media.VolumeRequest();
-    request.volume = volume;
-    mediaSession.setVolume(request,
-            mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
-            onError);
-}
-
-/**
  * set receiver volume
  * @param {Number} level A number for volume level
  * @param {Boolean} mute A true/false for mute/unmute
  */
-function setReceiverVolume(level, mute) {
+function setCastVolume(level, mute) {
     if (!castSession)
         return;
 
@@ -341,50 +236,19 @@ function setReceiverVolume(level, mute) {
 function muteMedia(cb) {
     if (cb.checked == true) {
         document.getElementById('muteText').innerHTML = 'Unmute media';
-        //setMediaVolume(currentVolume, true);
         setReceiverVolume(currentVolume, true);
         log("media muted");
     }
     else {
         document.getElementById('muteText').innerHTML = 'Mute media';
-        //setMediaVolume(currentVolume, false);
         setReceiverVolume(currentVolume, false);
         log("media unmuted");
     }
 }
 
 /**
- * seek media position
- * @param {Number} pos A number to indicate percent
- */
-//function seekMedia(pos) {
-//    console.log('Seeking ' + mediaSession.sessionId + ':' +
-//            mediaSession.mediaSessionId + ' to ' + pos + "%");
-//    progressFlag = 0;
-//    var request = new chrome.cast.media.SeekRequest();
-//    request.currentTime = pos * mediaSession.media.duration / 100;
-//    mediaSession.seek(request,
-//            onSeekSuccess.bind(this, 'media seek done'),
-//            onError);
-//}
-
-/**
  * callback on success for media commands
  * @param {string} info A message string
- * @param {Object} e A non-null media object
- */
-//function onSeekSuccess(info) {
-//    console.log(info);
-//    log(info);
-//    setTimeout(function () {
-//        progressFlag = 1
-//    }, 1500);
-//}
-
-/**
- * callback on success for media commands
- * @param {string} info A message string
- * @param {Object} e A non-null media object
  */
 function mediaCommandSuccessCallback(info) {
     log(info);
