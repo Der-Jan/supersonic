@@ -11,7 +11,6 @@ var castSession = null;
 var playing = true;
 
 /*
-  TODO: Mute
   TODO: Set volume slider position
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
@@ -31,46 +30,13 @@ function initializeCastApi() {
     chrome.cast.initialize(apiConfig, onInitSuccess, onError);
 }
 
-function onInitSuccess() {
-    log("init success");
-}
-
-/**
- * initialization error callback
- */
-function onError() {
-    log("error");
-}
-
-/**
- * callback on success for stopping app
- */
-function onStopAppSuccess() {
-    log('Session stopped');
-}
-
-function setImage(id, image) {
-    document.getElementById(id).src = image;
-}
-
-function setCastControlsVisible(visible) {
-    if (visible) {
-        $("#flashPlayer").hide();
-        $("#castPlayer").show();
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
-    } else {
-        $("#castPlayer").hide();
-        $("#flashPlayer").show();
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
-    }
-}
-
 /**
  * session listener during initialization
  */
-function sessionListener(e) {
-    log('New session ID:' + e.sessionId);
-    castSession = e;
+function sessionListener(s) {
+    log('New session ID:' + s.sessionId);
+    log(s);
+    castSession = s;
     setCastControlsVisible(true);
     if (castSession.media.length != 0) {
         log('Found ' + castSession.media.length + ' existing media sessions.');
@@ -78,6 +44,19 @@ function sessionListener(e) {
     }
     castSession.addMediaListener(onMediaDiscovered.bind(this, 'addMediaListener'));
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
+}
+
+/**
+ * receiver listener during initialization
+ */
+function receiverListener(e) {
+    if (e === 'available') {
+        log("receiver found");
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
+    }
+    else {
+        log("receiver list empty");
+    }
 }
 
 /**
@@ -93,16 +72,23 @@ function sessionUpdateListener(isAlive) {
     }
 }
 
-/**
- * receiver listener during initialization
- */
-function receiverListener(e) {
-    if (e === 'available') {
-        log("receiver found");
+function onInitSuccess() {
+    log("init success");
+}
+
+function onError() {
+    log("error");
+}
+
+function setCastControlsVisible(visible) {
+    if (visible) {
+        $("#flashPlayer").hide();
+        $("#castPlayer").show();
+        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
+    } else {
+        $("#castPlayer").hide();
+        $("#flashPlayer").show();
         setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
-    }
-    else {
-        log("receiver list empty");
     }
 }
 
@@ -120,6 +106,7 @@ function launchCastApp() {
  */
 function onRequestSessionSuccess(s) {
     log("session success: " + s.sessionId);
+    log(s);
     castSession = s;
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
@@ -127,10 +114,6 @@ function onRequestSessionSuccess(s) {
 
 function onLaunchError() {
     log("launch error");
-}
-
-function stopApp() {
-    castSession.stop(onStopAppSuccess, onError);
 }
 
 function loadMedia(song) {
@@ -168,6 +151,7 @@ function loadMedia(song) {
 function onMediaDiscovered(how, ms) {
     mediaSession = ms;
     log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
+    log(ms);
     mediaSession.addUpdateListener(onMediaStatusUpdate);
     mediaCurrentTime = mediaSession.currentTime;
 }
@@ -244,10 +228,10 @@ function mediaCommandSuccessCallback(info) {
     log(info);
 }
 
-/**
- * append message to debug message window
- * @param {string} message A message string
- */
+function setImage(id, image) {
+    document.getElementById(id).src = image;
+}
+
 function log(message) {
     console.log(message);
     $("#debugmessage").html($("#debugmessage").html() + "\n" + JSON.stringify(message));
