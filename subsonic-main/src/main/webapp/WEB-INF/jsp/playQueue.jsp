@@ -520,7 +520,7 @@
                             <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
                         </div>
                         <div style="float:left">
-                            <input type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
                                    onchange="setCastVolume(this.value/100, false);">
                         </div>
                     </div>

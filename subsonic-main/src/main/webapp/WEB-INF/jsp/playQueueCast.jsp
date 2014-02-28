@@ -44,6 +44,7 @@ function sessionListener(s) {
     }
     castSession.addMediaListener(onMediaDiscovered.bind(this, 'addMediaListener'));
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
+    syncControls();
 }
 
 /**
@@ -110,6 +111,7 @@ function onRequestSessionSuccess(s) {
     castSession = s;
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
+    syncControls();
 }
 
 function onLaunchError() {
@@ -226,6 +228,13 @@ function toggleCastMute() {
  */
 function mediaCommandSuccessCallback(info) {
     log(info);
+}
+
+function syncControls() {
+    if (castSession.receiver.volume) {
+        setImage("castMute", castSession.receiver.volume.muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
+        document.getElementById("castVolume").value = castSession.receiver.volume.level * 100;
+    }
 }
 
 function setImage(id, image) {
