@@ -516,7 +516,7 @@
                     </div>
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">
-                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
+                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
                             <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
                         </div>
                         <div style="float:left">

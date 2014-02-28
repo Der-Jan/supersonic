@@ -1,21 +1,17 @@
 <script type="text/javascript">
-/**
- * global variables
- */
-var mediaSession = null;
-var currentVolume = 0.5;
-var muted = false;
-var progressFlag = 1;
-var mediaCurrentTime = 0;
+
 var castSession = null;
+var mediaSession = null;
 var playing = true;
+var volume = 1.0;
+var muted = false;
 
 /*
-  TODO: Set volume slider position
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Host google js locally.
   TODO: Use similar graphics for next/prev buttons.
+  TODO: Nicer cast icons
  */
 
 if (!chrome.cast || !chrome.cast.isAvailable) {
@@ -38,7 +34,7 @@ function sessionListener(s) {
     log(s);
     castSession = s;
     setCastControlsVisible(true);
-    if (castSession.media.length != 0) {
+    if (castSession.media.length > 0) {
         log('Found ' + castSession.media.length + ' existing media sessions.');
         onMediaDiscovered('onRequestSessionSuccess_', castSession.media[0]);
     }
@@ -155,7 +151,6 @@ function onMediaDiscovered(how, ms) {
     log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
     log(ms);
     mediaSession.addUpdateListener(onMediaStatusUpdate);
-    mediaCurrentTime = mediaSession.currentTime;
 }
 
 /**
@@ -175,12 +170,7 @@ function onMediaStatusUpdate(isAlive) {
     if (mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && mediaSession.idleReason === "FINISHED") {
         onNext(repeatEnabled);
     }
-//    if (progressFlag) {
-//        document.getElementById("progress").value = parseInt(100 * mediaSession.currentTime / mediaSession.media.duration);
-//    }
-//    document.getElementById("playerstate").innerHTML = mediaSession.playerState;
 }
-
 
 function playPauseCast() {
     if (!mediaSession) {
@@ -209,7 +199,7 @@ function setCastVolume(level, mute) {
 
     if (!mute) {
         castSession.setReceiverVolumeLevel(level, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
-        currentVolume = level;
+        volume = level;
         setImage("castMute", "<spring:theme code="volumeImage"/>");
     }
     else {
@@ -219,7 +209,7 @@ function setCastVolume(level, mute) {
 }
 
 function toggleCastMute() {
-    setCastVolume(currentVolume, !muted);
+    setCastVolume(volume, !muted);
 }
 
 /**
@@ -232,9 +222,13 @@ function mediaCommandSuccessCallback(info) {
 
 function syncControls() {
     if (castSession.receiver.volume) {
-        setImage("castMute", castSession.receiver.volume.muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
-        document.getElementById("castVolume").value = castSession.receiver.volume.level * 100;
+        volume = castSession.receiver.volume.level;
+        muted = castSession.receiver.volume.muted;
+        setImage("castMute", muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
+        document.getElementById("castVolume").value = volume * 100;
     }
+    playing = castSession.media.length > 0 && castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
+    setImage("castPlayPause", playing ? "<spring:theme code="castPauseImage"/>" : "<spring:theme code="castPlayImage"/>");
 }
 
 function setImage(id, image) {
