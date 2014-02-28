@@ -515,9 +515,14 @@
                         <div id="placeholder"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
                     </div>
                     <div id="castPlayer" style="display: none">
-                        <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
-                        <img src="<spring:theme code="volumeImage"/>" alt="">
-                        <input type="range" min="0" max="100" step="1" onmouseup="setCastVolume(this.value/100, false);">
+                        <div style="float:left">
+                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPauseImage"/>"></a>
+                            <img src="<spring:theme code="volumeImage"/>" alt="">
+                        </div>
+                        <div style="float:left">
+                            <input type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                                   onchange="setCastVolume(this.value/100, false);">
+                        </div>
                     </div>
                 </td>
                 <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>

@@ -11,6 +11,7 @@ var playing = true;
 
 /*
   TODO: Play/pause img
+  TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Host google js locally.
   TODO: Use similar graphics for next/prev buttons.
