@@ -13,7 +13,8 @@ TODO IN 5.0
 --------------
 Add Audiophone
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
-
+Use more modern embedding of jwplayer
+  http://www.longtailvideo.com/support/jw5/31164/javascript-api-reference
 Upgrade to servlet 3.0?
 Upgrade JWPlayer
   https doesn't work in Safari

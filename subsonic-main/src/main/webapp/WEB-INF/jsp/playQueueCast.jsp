@@ -7,6 +7,9 @@ var volume = 1.0;
 var muted = false;
 
 /*
+  TODO: Nicer cover art
+  TODO: Custom receiver
+  TODO: Start on right position when casting.
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Host google js locally.
@@ -31,7 +34,6 @@ function initializeCastApi() {
  */
 function sessionListener(s) {
     log('New session ID:' + s.sessionId);
-    log(s);
     castSession = s;
     setCastControlsVisible(true);
     if (castSession.media.length > 0) {
@@ -103,18 +105,20 @@ function launchCastApp() {
  */
 function onRequestSessionSuccess(s) {
     log("session success: " + s.sessionId);
-    log(s);
     castSession = s;
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
     syncControls();
+
+    // Continue playing same song as in browser.
+    skip(getCurrentSongIndex());
 }
 
 function onLaunchError() {
     log("launch error");
 }
 
-function loadMedia(song) {
+function loadCastMedia(song) {
     if (!castSession) {
         log("no session");
         return;

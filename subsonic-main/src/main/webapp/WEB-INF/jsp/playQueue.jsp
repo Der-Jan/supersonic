@@ -371,7 +371,7 @@
         }
 
         if (castSession) {
-            loadMedia(song);
+            loadCastMedia(song);
         } else {
             player.sendEvent("LOAD", list);
             player.sendEvent("PLAY");
@@ -401,6 +401,7 @@
 
     function createNotification(song) {
         var n = new Notification(song.title, {
+            tag: "subsonic",
             body: song.artist + " - " + song.album,
             icon: "coverArt.view?id=" + song.id + "&size=110"
         });
