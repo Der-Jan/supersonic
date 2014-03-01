@@ -170,6 +170,7 @@ function onMediaStatusUpdate(isAlive) {
     if (mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && mediaSession.idleReason === "FINISHED") {
         onNext(repeatEnabled);
     }
+    syncControls();
 }
 
 function playPauseCast() {
