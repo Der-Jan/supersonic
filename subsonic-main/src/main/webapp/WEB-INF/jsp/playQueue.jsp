@@ -3,12 +3,13 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playQueueService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/range.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/timer.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/slider.js"/>"></script>
@@ -20,7 +21,6 @@
 <body class="bgcolor2 playlistframe" onload="init()">
 
 <script type="text/javascript" language="javascript">
-    var player = null;
     var songs = null;
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
@@ -38,14 +38,8 @@
                 }
             }});
 
-    <c:choose>
-    <c:when test="${model.player.web}">
-        createPlayer();
-    </c:when>
-    <c:otherwise>
+        <c:if test="${model.player.web}">createPlayer();</c:if>
         getPlayQueue();
-    </c:otherwise>
-    </c:choose>
     }
 
     function startTimer() {
@@ -69,32 +63,16 @@
     }
 
     function createPlayer() {
-        var flashvars = {
+        jwplayer("jwplayer").setup({
+            flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
+            height: 24,
+            width: 350,
+            controlbar: "bottom",
             backcolor:"<spring:theme code="backgroundColor"/>",
-            frontcolor:"<spring:theme code="textColor"/>",
-            id:"player1"
-        };
-        var params = {
-            allowfullscreen:"true",
-            allowscriptaccess:"always"
-        };
-        var attributes = {
-            id:"player1",
-            name:"player1"
-        };
-        swfobject.embedSWF("<c:url value="/flash/jw-player-5.10.swf"/>", "placeholder", "340", "24", "9.0.0", false, flashvars, params, attributes);
-    }
+            frontcolor:"<spring:theme code="textColor"/>"
+        });
 
-    function playerReady(thePlayer) {
-        player = document.getElementById("player1");
-        player.addModelListener("STATE", "stateListener");
-        getPlayQueue();
-    }
-
-    function stateListener(obj) { // IDLE, BUFFERING, PLAYING, PAUSED, COMPLETED
-        if (obj.newstate == "COMPLETED") {
-            onNext(repeatEnabled);
-        }
+        jwplayer().onComplete(function() {onNext(repeatEnabled)});
     }
 
     function getPlayQueue() {
@@ -343,8 +321,8 @@
         }
         updateCurrentImage();
         if (songs.length == 0) {
-            player.sendEvent("LOAD", new Array());
-            player.sendEvent("STOP");
+            jwplayer().stop();
+            jwplayer().load([]);
         }
     }
 
@@ -356,25 +334,18 @@
         var song = songs[index];
         currentStreamUrl = song.streamUrl;
         updateCurrentImage();
-        var list = new Array();
-        list[0] = {
-            file:song.streamUrl,
-            title:song.title,
-            provider:"sound"
-        };
-
-        if (song.duration != null) {
-            list[0].duration = song.duration;
-        }
-        if (song.format == "aac" || song.format == "m4a") {
-            list[0].provider = "video";
-        }
 
         if (castSession) {
             loadCastMedia(song);
         } else {
-            player.sendEvent("LOAD", list);
-            player.sendEvent("PLAY");
+
+            jwplayer().load({
+                file: song.streamUrl,
+                provider: song.format == "aac" || song.format == "m4a" ? "video" : "sound",
+                duration: song.duration
+            });
+            jwplayer().play();
+            console.log(song.streamUrl);
         }
 
         <c:if test="${model.notify}">
@@ -513,7 +484,7 @@
             <c:if test="${model.player.web}">
                 <td>
                     <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
-                        <div id="placeholder"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+                        <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
                     </div>
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">

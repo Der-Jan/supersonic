@@ -11,6 +11,8 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
+Test aac playback in jwplayer.  Use provider "video" if necessary.
+Use javascript embedding of jwplayer everywhere.
 Add Audiophone
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
 Use more modern embedding of jwplayer
