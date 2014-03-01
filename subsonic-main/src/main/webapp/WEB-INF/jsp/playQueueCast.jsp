@@ -9,12 +9,15 @@ var muted = false;
 /*
   TODO: Nicer cover art
   TODO: Custom receiver
-  TODO: Start on right position when casting.
+  TODO: Fix mute icon
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Host google js locally.
   TODO: Use similar graphics for next/prev buttons.
   TODO: Nicer cast icons
+  TODO: HLS with Media Player Library
+  TODO: Debug: 192.168.10.185:9222
+  TODO: Cast icon should disappear when no receivers available
  */
 
 if (!chrome.cast || !chrome.cast.isAvailable) {
@@ -22,7 +25,8 @@ if (!chrome.cast || !chrome.cast.isAvailable) {
 }
 
 function initializeCastApi() {
-    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+//    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+    var applicationID = "4FBFE470";
     var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
 
@@ -51,7 +55,7 @@ function sessionListener(s) {
 function receiverListener(e) {
     if (e === 'available') {
         log("receiver found");
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
+        setImage("castIcon", "<spring:theme code="castOffImage"/>");
     }
     else {
         log("receiver list empty");
@@ -83,11 +87,11 @@ function setCastControlsVisible(visible) {
     if (visible) {
         $("#flashPlayer").hide();
         $("#castPlayer").show();
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_active.png"/>");
+        setImage("castIcon", "<spring:theme code="castOnImage"/>");
     } else {
         $("#castPlayer").hide();
         $("#flashPlayer").show();
-        setImage("castIcon", "<c:url value="/icons/cast/cast_icon_idle.png"/>");
+        setImage("castIcon", "<spring:theme code="castOffImage"/>");
     }
 }
 
@@ -171,6 +175,7 @@ function onMediaDiscovered(how, ms) {
  */
 function onMediaError(e) {
     log("media error");
+//    TODO: icon
     setImage("castIcon", "<c:url value="/icons/cast/cast_icon_warning.png"/>");
 }
 
