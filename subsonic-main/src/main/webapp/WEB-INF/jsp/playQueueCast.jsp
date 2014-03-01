@@ -106,19 +106,27 @@ function launchCastApp() {
 function onRequestSessionSuccess(s) {
     log("session success: " + s.sessionId);
     castSession = s;
+
+    var position = -1;
+    if (jwplayer().getState() == "PLAYING") {
+        position = jwplayer().getPosition();
+    }
+
     setCastControlsVisible(true);
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
     syncControls();
 
-    // Continue playing same song as in browser.
-    skip(getCurrentSongIndex());
+    // Continue song at same position?
+    if (position != -1) {
+        skip(getCurrentSongIndex(), position);
+    }
 }
 
 function onLaunchError() {
     log("launch error");
 }
 
-function loadCastMedia(song) {
+function loadCastMedia(song, position) {
     if (!castSession) {
         log("no session");
         return;
@@ -140,7 +148,7 @@ function loadCastMedia(song) {
 
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
     request.autoplay = true;
-    request.currentTime = 0;
+    request.currentTime = position;
 
     castSession.loadMedia(request,
             onMediaDiscovered.bind(this, 'loadMedia'),

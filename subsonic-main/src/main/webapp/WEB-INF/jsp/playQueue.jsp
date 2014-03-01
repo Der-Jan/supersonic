@@ -326,7 +326,7 @@
         }
     }
 
-    function skip(index) {
+    function skip(index, position) {
         if (index < 0 || index >= songs.length) {
             return;
         }
@@ -336,7 +336,7 @@
         updateCurrentImage();
 
         if (castSession) {
-            loadCastMedia(song);
+            loadCastMedia(song, position);
         } else {
 
             jwplayer().load({
