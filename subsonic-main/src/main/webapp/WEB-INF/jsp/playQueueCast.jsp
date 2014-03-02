@@ -7,17 +7,15 @@ var volume = 1.0;
 var muted = false;
 
 /*
-  TODO: Nicer cover art
   TODO: Custom receiver
   TODO: Fix mute icon
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
-  TODO: Host google js locally.
   TODO: Use similar graphics for next/prev buttons.
   TODO: Nicer cast icons
   TODO: HLS with Media Player Library
   TODO: Debug: 192.168.10.185:9222
-  TODO: Cast icon should disappear when no receivers available
+  TODO: Use play/pause icons also in jukebox mode.
  */
 
 if (!chrome.cast || !chrome.cast.isAvailable) {
@@ -59,6 +57,7 @@ function receiverListener(e) {
     }
     else {
         log("receiver list empty");
+        setImage("castIcon", "");
     }
 }
 
@@ -147,7 +146,7 @@ function loadCastMedia(song, position) {
     mediaInfo.metadata.albumName = song.album;
     mediaInfo.metadata.artist = song.artist;
     mediaInfo.metadata.trackNumber = song.trackNumber;
-    mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl)];
+    mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl + "&size=384")];
     mediaInfo.metadata.releaseYear = song.year;
 
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
