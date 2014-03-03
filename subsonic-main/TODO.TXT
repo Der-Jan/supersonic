@@ -13,7 +13,7 @@ Bugfix: Set correct "Content-Range" http header for transcoded streams.
 TODO IN 5.0
 --------------
 Test aac playback in jwplayer.  Use provider "video" if necessary.
-Use javascript embedding of jwplayer everywhere.
+Use javascript embedding of jwplayer everywhere?
 Add Audiophone
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
 Use more modern embedding of jwplayer
@@ -903,6 +903,7 @@ Update subsonic.org (66.49.215.227)
 mkdir /usr/local/jakarta/tomcat/webapps-2014-01-25/
 scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/ROOT.war
 rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/pages
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
