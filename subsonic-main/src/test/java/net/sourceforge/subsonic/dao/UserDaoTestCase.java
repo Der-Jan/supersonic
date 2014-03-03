@@ -1,15 +1,14 @@
 package net.sourceforge.subsonic.dao;
 
-import java.util.Date;
-import java.util.Locale;
-
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Unit test of {@link UserDao}.
@@ -150,7 +149,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         assertNull("Error in getUserSettings().", userSettings.getThemeId());
         assertFalse("Error in getUserSettings().", userSettings.isFinalVersionNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isBetaVersionNotificationEnabled());
-        assertTrue("Error in getUserSettings().", userSettings.isSongNotificationEnabled());
+        assertFalse("Error in getUserSettings().", userSettings.isSongNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isLastFmEnabled());
         assertNull("Error in getUserSettings().", userSettings.getLastFmUsername());
         assertNull("Error in getUserSettings().", userSettings.getLastFmPassword());

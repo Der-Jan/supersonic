@@ -7,8 +7,10 @@ var volume = 1.0;
 var muted = false;
 
 /*
+  TODO: Premium feature
   TODO: Custom receiver
   TODO: Fix mute icon
+  TODO: Darker icons
   TODO: Util.getLocalIp() performance.
   TODO: Only init if player type is "web".
   TODO: Use similar graphics for next/prev buttons.

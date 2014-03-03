@@ -26,7 +26,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 /**
  * @author Sindre Mehus
@@ -75,7 +74,6 @@ public class RangeOutputStreamTestCase extends TestCase {
     }
 
     private void verify(byte[] bytes, int first, Integer last, int sourceSize) {
-        System.out.println(Arrays.toString(bytes));
         if (last == null) {
             assertEquals(sourceSize - first, bytes.length);
         } else {
