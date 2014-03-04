@@ -8,7 +8,6 @@ Add browser notification
 Add settings for enabling notifications.
 Nicer styling of input fields and buttons.
 Added Estonian translation, courtesy of Olav M&auml;gi
-Bugfix: Set correct "Content-Range" http header for transcoded streams.
 
 TODO IN 5.0
 --------------
