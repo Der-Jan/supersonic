@@ -11,16 +11,26 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
+Cast:
+  Use webm for video (new ffmpeg)
+  Use -ss %o for skipping
+
 Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
 Add Audiophone
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
 Use more modern embedding of jwplayer
   http://www.longtailvideo.com/support/jw5/31164/javascript-api-reference
-Upgrade to servlet 3.0?
-Upgrade JWPlayer
-  https doesn't work in Safari
 
+Upgrade to servlet 3.0?
+Upgrade Jetty?
+Update ffmpeg
+  Use mpeg4?
+  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
+  Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
+  Support ISO
+
+Upgrade JWPlayer
   Use html5
   Fix format in playQueue.jsp
   http://www.longtailvideo.com/support/jw-player/28842/working-with-playlists
@@ -52,11 +62,6 @@ Monitoring with JavaMelody
 Artist art
   Create collage of album covers?
   https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
-Update ffmpeg
-  Use mpeg4?
-  https://mail.google.com/mail/u/0/#inbox/142d1b52c5c53ff1
-  Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
-  Support ISO
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
