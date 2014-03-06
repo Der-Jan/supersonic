@@ -11,70 +11,53 @@
         <sub:param name="id" value="${model.video.id}"/>
     </sub:url>
 
-    <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
+    <%--todo--%>
     <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
     <script type="text/javascript" language="javascript">
 
-        var player;
         var position;
         var maxBitRate = ${model.maxBitRate};
         var timeOffset = ${model.timeOffset};
 
         function init() {
 
-            var flashvars = {
-                id:"player1",
+            jwplayer("jwplayer").setup({
+                flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
+                height: "${model.popout ? '85%' : '360'}",
+                width: "${model.popout ? '100%' : '600'}",
                 skin:"<c:url value="/flash/whotube.zip"/>",
-//                plugins:"metaviewer-1",
                 screencolor:"000000",
                 controlbar:"over",
                 autostart:"false",
                 bufferlength:3,
                 backcolor:"<spring:theme code="backgroundColor"/>",
                 frontcolor:"<spring:theme code="textColor"/>",
-                provider:"video"
-            };
-            var params = {
-                allowfullscreen:"true",
-                allowscriptaccess:"always"
-            };
-            var attributes = {
-                id:"player1",
-                name:"player1"
-            };
+                provider:"video",
+                events: {
+                    onTime: function(event) {
+                        var newPosition = Math.round(event.position);
+                        if (newPosition != position) {
+                            position = newPosition;
+                            updatePosition();
+                        }
+                    }
+                }
+            });
 
-            var width = "${model.popout ? '100%' : '600'}";
-            var height = "${model.popout ? '85%' : '360'}";
-            swfobject.embedSWF("<c:url value="/flash/jw-player-5.10.swf"/>", "placeholder1", width, height, "9.0.0", false, flashvars, params, attributes);
-        }
-
-        function playerReady(thePlayer) {
-            player = $("player1");
-            player.addModelListener("TIME", "timeListener");
-
-        <c:if test="${not (model.trial and model.trialExpired)}">
-            play();
-        </c:if>
+            <c:if test="${not (model.trial and model.trialExpired)}">
+                play();
+            </c:if>
         }
 
         function play() {
-            var list = new Array();
-            list[0] = {
+            jwplayer().load({
                 file:"${streamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}",
                 duration:${model.duration} - timeOffset,
                 provider:"video"
-            };
-            player.sendEvent("LOAD", list);
-            player.sendEvent("PLAY");
-        }
-
-        function timeListener(obj) {
-            var newPosition = Math.round(obj.position);
-            if (newPosition != position) {
-                position = newPosition;
-                updatePosition();
-            }
+            });
+            jwplayer().play();
         }
 
         function updatePosition() {
@@ -130,8 +113,8 @@
 
 <c:if test="${licenseInfo.licenseOrTrialValid}">
 
-    <div id="wrapper" style="padding-top:1em">
-        <div id="placeholder1"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+    <div style="padding-top:1em">
+        <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
     </div>
 
     <div style="padding-top:0.7em;padding-bottom:0.7em">
