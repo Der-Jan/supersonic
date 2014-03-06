@@ -3,6 +3,7 @@
 <html>
 <head>
     <%@ include file="head.jsp" %>
+    <%@ include file="jquery.jsp" %>
 
     <sub:url value="videoPlayer.view" var="baseUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
     <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
@@ -11,8 +12,6 @@
         <sub:param name="id" value="${model.video.id}"/>
     </sub:url>
 
-    <%--todo--%>
-    <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
     <script type="text/javascript" language="javascript">
@@ -71,16 +70,16 @@
                 result += "0";
             }
             result += seconds;
-            $("position").innerHTML = result;
+            $("#position").html(result);
         }
 
         function changeTimeOffset() {
-            timeOffset = $("timeOffset").getValue();
+            timeOffset = $("#timeOffset").val();
             play();
         }
 
         function changeBitRate() {
-            maxBitRate = $("maxBitRate").getValue();
+            maxBitRate = $("#maxBitRate").val();
             timeOffset = getPosition();
             play();
         }
