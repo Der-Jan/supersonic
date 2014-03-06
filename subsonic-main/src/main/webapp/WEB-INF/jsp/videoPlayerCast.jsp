@@ -6,30 +6,14 @@ var playing = true;
 var volume = 1.0;
 var muted = false;
 
-/*
-  TODO: Factor out common cast code.
-  TODO: Premium feature
-  TODO: Fix mute icon
-  TODO: Darker icons
-  TODO: Util.getLocalIp() performance.
-  TODO: Only init if player type is "web".
-  TODO: Use similar graphics for next/prev buttons.
-  TODO: Nicer cast icons
-  TODO: HLS with Media Player Library
-  TODO: Debug: http://192.168.10.185:9222
-  TODO: window.location.reload(true);
-  TODO: Use play/pause icons also in jukebox mode.
-  TODO: Test with https
- */
-
 if (!chrome.cast || !chrome.cast.isAvailable) {
     setTimeout(initializeCastApi, 1000);
 }
 
 function initializeCastApi() {
 //    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-    var applicationID = "4FBFE470";  // Styled receiver
-//    var applicationID = "644BA8AC"; // Custom receiver
+//    var applicationID = "4FBFE470";  // Styled receiver
+    var applicationID = "644BA8AC"; // Custom receiver
     var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
 
