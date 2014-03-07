@@ -91,6 +91,7 @@ public final class StringUtil {
             {"divx", "video/divx"},
             {"m2ts", "video/MP2T"},
             {"ts", "video/MP2T"},
+            {"webm", "video/webm"},
 
             {"gif", "image/gif"},
             {"jpg", "image/jpeg"},

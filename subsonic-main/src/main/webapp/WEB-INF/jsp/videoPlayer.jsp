@@ -14,6 +14,7 @@
 
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
+    <%@ include file="videoPlayerCast.jsp" %>
     <script type="text/javascript" language="javascript">
 
         var position;

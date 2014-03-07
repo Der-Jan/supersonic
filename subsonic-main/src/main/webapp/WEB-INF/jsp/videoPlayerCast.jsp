@@ -118,29 +118,25 @@ function onLaunchError() {
     log("launch error");
 }
 
-function loadCastMedia(song, position) {
+function loadCastMedia(video) {
     if (!castSession) {
         log("no session");
         return;
     }
-    log("loading..." + song.remoteStreamUrl);
-    var mediaInfo = new chrome.cast.media.MediaInfo(song.remoteStreamUrl);
-    mediaInfo.contentType = song.contentType;
-    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
-    mediaInfo.duration = song.duration;
-    mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-    mediaInfo.metadata.songName = song.title;
-    mediaInfo.metadata.title = song.title;
-    mediaInfo.metadata.albumName = song.album;
-    mediaInfo.metadata.artist = song.artist;
-    mediaInfo.metadata.trackNumber = song.trackNumber;
-    mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl + "&size=384")];
-    mediaInfo.metadata.releaseYear = song.year;
+    log("loading..." + video.remoteStreamUrl);
+    var mediaInfo = new chrome.cast.media.MediaInfo(video.remoteStreamUrl);
+    mediaInfo.contentType = video.contentType;
+    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;  //TODO: Use LIVE?
+    mediaInfo.duration = video.duration;
+    mediaInfo.metadata = new chrome.cast.media.MovieMediaMetadata();
+    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+    mediaInfo.metadata.title = video.title;
+    mediaInfo.metadata.images = [new chrome.cast.Image(video.remoteCoverArtUrl + "&size=384")];
+    mediaInfo.metadata.releaseYear = video.year;
 
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
     request.autoplay = true;
-    request.currentTime = position;
+    request.currentTime = 0;
 
     castSession.loadMedia(request,
             onMediaDiscovered.bind(this, 'loadMedia'),
