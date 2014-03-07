@@ -259,6 +259,9 @@ function setImage(id, image) {
 
 function log(message) {
     console.log(message);
-    $("#debugmessage").html($("#debugmessage").html() + "\n" + JSON.stringify(message));
+    var debug = $("#debugmessage");
+    if (debug) {
+        debug.html(debug.html() + "\n" + JSON.stringify(message));
+    }
 }
 </script>

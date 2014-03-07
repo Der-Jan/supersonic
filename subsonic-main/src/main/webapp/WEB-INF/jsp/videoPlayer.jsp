@@ -14,6 +14,7 @@
 
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="videoPlayerCast.jsp" %>
     <script type="text/javascript" language="javascript">
 
@@ -113,8 +114,19 @@
 
 <c:if test="${licenseInfo.licenseOrTrialValid}">
 
-    <div style="padding-top:1em">
+    <div id="flashPlayer" style="padding-top:1em">
         <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+    </div>
+
+    <div id="castPlayer" style="display: none">
+        <div style="float:left">
+            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
+            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+        </div>
+        <div style="float:left">
+            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                   onchange="setCastVolume(this.value/100, false);">
+        </div>
     </div>
 
     <div style="padding-top:0.7em;padding-bottom:0.7em">
@@ -147,6 +159,8 @@
         </select>
     </div>
 
+    <a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a>
+
     <c:choose>
         <c:when test="${model.popout}">
             <div class="back"><a href="javascript:popin();"><fmt:message key="common.back"/></a></div>
@@ -158,6 +172,12 @@
     </c:choose>
 
 </c:if>
+<div style="clear: both"></div>
+
+<div style="margin:10px;">
+    <textarea rows="10" cols="100" id="debugmessage">
+    </textarea>
+</div>
 
 </body>
 </html>
