@@ -53,12 +53,23 @@
         }
 
         function play() {
-            jwplayer().load({
-                file:"${streamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}",
-                duration:${model.duration} - timeOffset,
-                provider:"video"
-            });
-            jwplayer().play();
+            if (castSession) {
+                loadCastMedia({
+                    remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&format=webm",
+                    title: ${model.video.title},
+                    year: ${model.video.year},
+                    duration: ${model.duration} - timeOffset,
+                    contentType: "video/webm"
+                });
+            } else {
+
+                jwplayer().load({
+                    file:"${streamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}",
+                    duration:${model.duration} - timeOffset,
+                    provider:"video"
+                });
+                jwplayer().play();
+            }
         }
 
         function updatePosition() {
@@ -157,9 +168,9 @@
                 </c:choose>
             </c:forEach>
         </select>
+        <a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a>
     </div>
 
-    <a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a>
 
     <c:choose>
         <c:when test="${model.popout}">

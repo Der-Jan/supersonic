@@ -18,22 +18,22 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Controller for the page used to play videos.
@@ -65,8 +65,16 @@ public class VideoPlayerController extends ParameterizableViewController {
             duration -= timeOffset;
         }
 
+        String playerId = playerService.getPlayer(request, response).getId();
+        String url = request.getRequestURL().toString();
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?player=" + playerId + "&id=" + file.getId());
+        String host = new URL(streamUrl).getHost();
+        String ip = Util.getLocalIpAddress();
+        String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
+
         map.put("video", file);
-        map.put("player", playerService.getPlayer(request, response).getId());
+        map.put("player", playerId);
+        map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));
         map.put("popout", ServletRequestUtils.getBooleanParameter(request, "popout", false));
         map.put("duration", duration);

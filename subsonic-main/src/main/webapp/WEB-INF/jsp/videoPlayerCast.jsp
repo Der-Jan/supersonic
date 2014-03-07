@@ -12,8 +12,8 @@ if (!chrome.cast || !chrome.cast.isAvailable) {
 
 function initializeCastApi() {
 //    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-//    var applicationID = "4FBFE470";  // Styled receiver
-    var applicationID = "644BA8AC"; // Custom receiver
+    var applicationID = "4FBFE470";  // Styled receiver
+//    var applicationID = "644BA8AC"; // Custom receiver
     var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
 
