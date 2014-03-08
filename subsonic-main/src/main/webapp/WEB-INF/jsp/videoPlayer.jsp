@@ -56,8 +56,8 @@
             if (castSession) {
                 loadCastMedia({
                     remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&format=webm",
-                    title: ${model.video.title},
-                    year: ${model.video.year},
+                    title: "${model.video.title}",
+                 //   year: "${model.video.year}", // TODO, year can be null
                     duration: ${model.duration} - timeOffset,
                     contentType: "video/webm"
                 });
@@ -155,6 +155,9 @@
                 </c:choose>
             </c:forEach>
         </select>
+
+        <input id="positionSlider" type="range" min="0" max="100" step="1" style="width: 200px; margin-left: 10px; margin-right: 10px"
+               onchange="setCastVolume(this.value/100, false);">
 
         <select id="maxBitRate" onchange="changeBitRate();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
             <c:forEach items="${model.bitRates}" var="bitRate">
