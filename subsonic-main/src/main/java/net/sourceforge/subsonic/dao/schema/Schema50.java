@@ -41,7 +41,7 @@ public class Schema50 extends Schema {
 
             template.execute("insert into transcoding2(name, source_formats, target_format, step1, default_active) values('webm video', " +
                     "'avi mpg mpeg mp4 m4v mkv mov wmv ogv divx m2ts', 'webm', " +
-                    "'ffmpeg -ss %o -i %s -c:v libvpx -crf 10 -b:v %bk -c:a libvorbis -f webm -threads 4 -', 'true')");
+                    "'ffmpeg -ss %o -i %s -c:v libvpx -crf 20 -b:v %bk -c:a libvorbis -f webm -threads 4 -', 'true')");
 
             template.execute("insert into player_transcoding2(player_id, transcoding_id) " +
                     "select distinct p.id, t.id from player p, transcoding2 t where t.name='webm video'");

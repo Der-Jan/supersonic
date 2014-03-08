@@ -17,6 +17,7 @@ var muted = false;
   TODO: Nicer cast icons
   TODO: HLS with Media Player Library
   TODO: Debug: http://192.168.10.185:9222
+  TODO: Debug: http://192.168.10.180:9222
   TODO: window.location.reload(true);
   TODO: Use play/pause icons also in jukebox mode.
   TODO: Test with https

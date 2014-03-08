@@ -12,8 +12,8 @@ if (!chrome.cast || !chrome.cast.isAvailable) {
 
 function initializeCastApi() {
 //    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-    var applicationID = "4FBFE470";  // Styled receiver
-//    var applicationID = "644BA8AC"; // Custom receiver
+//    var applicationID = "4FBFE470";  // Styled receiver
+    var applicationID = "644BA8AC"; // Custom receiver
     var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
 
@@ -34,6 +34,7 @@ function sessionListener(s) {
     castSession.addMediaListener(onMediaDiscovered.bind(this, 'addMediaListener'));
     castSession.addUpdateListener(sessionUpdateListener.bind(this));
     syncControls();
+    play();
 }
 
 /**
@@ -109,9 +110,9 @@ function onRequestSessionSuccess(s) {
     syncControls();
 
     // Continue song at same position?
-    if (position != -1) {
-        skip(getCurrentSongIndex(), position);
-    }
+//    if (position != -1) {
+//        skip(getCurrentSongIndex(), position);
+//    }
 }
 
 function onLaunchError() {
@@ -126,12 +127,13 @@ function loadCastMedia(video) {
     log("loading..." + video.remoteStreamUrl);
     var mediaInfo = new chrome.cast.media.MediaInfo(video.remoteStreamUrl);
     mediaInfo.contentType = video.contentType;
-    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;  //TODO: Use LIVE?
+//    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;  //TODO: Use LIVE?
+    mediaInfo.streamType = chrome.cast.media.StreamType.LIVE;  //TODO: Use LIVE?
     mediaInfo.duration = video.duration;
     mediaInfo.metadata = new chrome.cast.media.MovieMediaMetadata();
     mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
     mediaInfo.metadata.title = video.title;
-    mediaInfo.metadata.images = [new chrome.cast.Image(video.remoteCoverArtUrl + "&size=384")];
+//    mediaInfo.metadata.images = [new chrome.cast.Image(video.remoteCoverArtUrl + "&size=384")];
     mediaInfo.metadata.releaseYear = video.year;
 
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
@@ -176,6 +178,7 @@ function onMediaStatusUpdate(isAlive) {
 
 function playPauseCast() {
     if (!mediaSession) {
+        log("No session");
         return;
     }
     if (playing) {

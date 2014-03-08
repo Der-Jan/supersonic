@@ -1,3 +1,8 @@
+gcc 4.8.2 (GCC)
+  configuration: --enable-gpl --enable-version3 --disable-w32threads --enable-avisynth --enable-bzlib --enable-fontconfig --enable-frei0r --enable-gnutls --enable-iconv --enable-libass --enable-libbluray --enable-libcaca --enable-libfreetype --enable-libgsm --enable-libilbc --enable-libmodplug --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-librtmp --enable-libschroedinger --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvo-aacenc --enable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libx264 --enable-libx265 --enable-libxavs --enable-libxvid --enable-zlib
+
+.\ffmpeg -ss 0 -i c:\movies\Savannens.Helter.avi -async 1 -b 1000k -s 704x302 -ar 44100 -ac 2 -f mp4 -vcodec libx264 -preset superfast -threads 0 -
+
 DONE IN 5.0
 -------------
 Added play overlay button in cover art images.

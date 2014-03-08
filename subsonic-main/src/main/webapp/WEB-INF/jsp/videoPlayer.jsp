@@ -53,13 +53,19 @@
         }
 
         function play() {
+            console.log("play: " + castSession);
             if (castSession) {
                 loadCastMedia({
-                    remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&format=webm",
-                    title: "${model.video.title}",
+                    <%--remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&format=webm",--%>
+                    <%--remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&format=mp4",--%>
+                    remoteStreamUrl: "http://192.168.10.152:4040/hls?player=5&id=895",
+                    // title: "${model.video.title}",
                  //   year: "${model.video.year}", // TODO, year can be null
                     duration: ${model.duration} - timeOffset,
-                    contentType: "video/webm"
+//                    contentType: "video/webm"
+//                    contentType: "video/mp4"
+//                    contentType: "video/h264"
+                    contentType: "application/x-mpegURL"
                 });
             } else {
 
