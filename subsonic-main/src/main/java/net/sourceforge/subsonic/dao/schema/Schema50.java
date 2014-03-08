@@ -18,9 +18,8 @@
  */
 package net.sourceforge.subsonic.dao.schema;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import net.sourceforge.subsonic.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * Used for creating and evolving the database schema.
@@ -39,9 +38,9 @@ public class Schema50 extends Schema {
             LOG.info("Updating database schema to version 22.");
             template.execute("insert into version values (22)");
 
-            template.execute("insert into transcoding2(name, source_formats, target_format, step1, default_active) values('webm video', " +
-                    "'avi mpg mpeg mp4 m4v mkv mov wmv ogv divx m2ts', 'webm', " +
-                    "'ffmpeg -ss %o -i %s -c:v libvpx -crf 20 -b:v %bk -c:a libvorbis -f webm -threads 4 -', 'true')");
+            template.execute("insert into transcoding2(name, source_formats, target_format, step1, default_active) values('mkv video', " +
+                    "'avi mpg mpeg mp4 m4v mkv mov wmv ogv divx m2ts', 'mkv', " +
+                    "'ffmpeg -ss %o -i %s -c:v libx264 -preset superfast -b:v %bk -c:a libvorbis -f matroska -threads 0 -', 'true')");
 
             template.execute("insert into player_transcoding2(player_id, transcoding_id) " +
                     "select distinct p.id, t.id from player p, transcoding2 t where t.name='webm video'");

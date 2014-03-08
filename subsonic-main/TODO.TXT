@@ -17,9 +17,8 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 TODO IN 5.0
 --------------
 Cast:
-  Use webm for video (new ffmpeg)
-  Use -ss %o for skipping
-
+  Don't show play icon when buffering
+  Use 2000 kbps as default?
 Use same slider for jukebox volume.
 Create position slider for flv video player.
 Test aac playback in jwplayer.  Use provider "video" if necessary.
