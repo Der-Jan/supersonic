@@ -19,6 +19,9 @@ TODO IN 5.0
 Cast:
   Don't show play icon when buffering
   Use 2000 kbps as default?
+  Make js namespace / class.
+  Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
+  Move cast code to videoPlayer.jsp
 Use same slider for jukebox volume.
 Create position slider for flv video player.
 Test aac playback in jwplayer.  Use provider "video" if necessary.

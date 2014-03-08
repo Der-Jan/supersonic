@@ -53,6 +53,8 @@
         }
 
         function play() {
+            position = 0;
+            updatePosition();
             console.log("play: " + castSession);
             if (castSession) {
                 loadCastMedia({

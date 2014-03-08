@@ -37,6 +37,16 @@ function sessionListener(s) {
     play();
 }
 
+function incrementProgress() {
+    var playing = mediaSession && mediaSession.playerState === chrome.cast.media.PlayerState.PLAYING;
+    if (playing) {
+        position += 1;
+        updatePosition();
+    }
+}
+
+// TODO: Rename progress/position/time
+
 /**
  * receiver listener during initialization
  */
@@ -77,6 +87,10 @@ function setCastControlsVisible(visible) {
         $("#flashPlayer").hide();
         $("#castPlayer").show();
         setImage("castIcon", "<spring:theme code="castOnImage"/>");
+
+        // TODO: Clear?
+        setInterval(incrementProgress, 1000);
+
     } else {
         $("#castPlayer").hide();
         $("#flashPlayer").show();
@@ -170,9 +184,10 @@ function onMediaError(e) {
  */
 function onMediaStatusUpdate(isAlive) {
     log(mediaSession.playerState);
-    if (mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && mediaSession.idleReason === "FINISHED") {
-        onNext(repeatEnabled);
-    }
+
+    position = mediaSession.currentTime;
+    updatePosition();
+
     syncControls();
 }
 
@@ -232,7 +247,7 @@ function syncControls() {
         setImage("castMute", muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
         document.getElementById("castVolume").value = volume * 100;
     }
-    playing = castSession.media.length > 0 && castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
+    playing = mediaSession && mediaSession.playerState === chrome.cast.media.PlayerState.PLAYING;
     setImage("castPlayPause", playing ? "<spring:theme code="castPauseImage"/>" : "<spring:theme code="castPlayImage"/>");
 }
 
