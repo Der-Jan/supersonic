@@ -7,8 +7,10 @@
 (function () {
     'use strict';
 
-    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-    var PROGRESS_BAR_WIDTH = 600;
+//    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+    var MEDIA_SOURCE_URL = "http://localhost:4040/stream?player=5&id=2352&maxBitRate=2000";
+    var DURATION = 257; // TODO
+    var PROGRESS_BAR_WIDTH = 300;
 
     /**
      * Constants of states for Chromecast device
@@ -66,22 +68,31 @@
         /* Local player variables */
         // @type {PLAYER_STATE} A state for local media player
         this.localPlayerState = PLAYER_STATE.IDLE;
-        // @type {HTMLElement} local player
+        // @type {jwplayer} local player
         this.localPlayer = null;
 
         /* Current media variables */
         // @type {Boolean} Audio on and off
         this.audio = true;
+
         // @type {Number} A number for current media index
         this.currentMediaIndex = 0;
+
+        // @type {Number} A number for current media offset
+        this.currentMediaOffset = 0;
+
         // @type {Number} A number for current media time
         this.currentMediaTime = 0;
+
         // @type {Number} A number for current media duration
         this.currentMediaDuration = -1;
+
         // @type {Timer} A timer for tracking progress of media
         this.timer = null;
+
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
         this.progressFlag = true;
+
         // @type {Number} A number in milliseconds for minimal progress update
         this.timerStep = 1000;
 
@@ -93,7 +104,29 @@
      * Initialize local media player
      */
     CastPlayer.prototype.initializeLocalPlayer = function () {
-        this.localPlayer = document.getElementById('video_element')
+        jwplayer("jwplayer").setup({
+            flashplayer: "/flash/jw-player-5.10.swf",
+            height: 360,
+            width: 600,
+            skin:"/flash/jw-player-subsonic-skin.zip",
+            screencolor:"000000",
+            controlbar:"over",
+            autostart:"false",
+            bufferlength:3,
+//            backcolor:"<spring:theme code="backgroundColor"/>",
+//            frontcolor:"<spring:theme code="textColor"/>",
+            provider:"video",
+            events: {
+                onTime: function(event) {
+                    var newPosition = Math.round(event.position);
+                    if (newPosition != position) {
+                        position = newPosition;
+                        updatePosition();
+                    }
+                }
+            }
+        });
+        this.localPlayer = jwplayer();
     };
 
     /**
@@ -295,11 +328,11 @@
         }
         console.log("loading..." + MEDIA_SOURCE_URL);
         var mediaInfo = new chrome.cast.media.MediaInfo(MEDIA_SOURCE_URL);
-        mediaInfo.contentType = 'video/mp4';
+        mediaInfo.contentType = 'video/mp4'; // TODO
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = this.autoplay;
         if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-            request.currentTime = this.localPlayer.currentTime;
+            request.currentTime = this.localPlayer.getPosition();
         }
         else {
             request.currentTime = 0;
@@ -333,36 +366,19 @@
         }
 
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
-            // start progress timer
             this.startProgressTimer(this.incrementMediaTime);
         }
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
         this.currentMediaDuration = this.currentMediaSession.media.duration;
-        var duration = this.currentMediaDuration;
-        var hr = parseInt(duration / 3600);
-        duration -= hr * 3600;
-        var min = parseInt(duration / 60);
-        var sec = parseInt(duration % 60);
-        if (hr > 0) {
-            duration = hr + ":" + min + ":" + sec;
-        }
-        else {
-            if (min > 0) {
-                duration = min + ":" + sec;
-            }
-            else {
-                duration = sec;
-            }
-        }
-        document.getElementById("duration").innerHTML = duration;
+        this.updateDurationLabel();
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-            this.localPlayerState == PLAYER_STATE.STOPPED;
-            var vi = document.getElementById('video_image');
-            vi.style.display = 'block';
-            this.localPlayer.style.display = 'none';
+            this.localPlayerState = PLAYER_STATE.STOPPED;
+//            var vi = document.getElementById('video_image');
+//            vi.style.display = 'block';
+//            this.localPlayer.style.display = 'none';
             // start progress timer
             this.startProgressTimer(this.incrementMediaTime);
         }
@@ -416,21 +432,33 @@
 
     /**
      * Play media in local player
-     * @param {Number} currentTime A number for media current position
+     * @param {Number} offset A number for media current position
      */
-    CastPlayer.prototype.playMediaLocally = function (currentTime) {
-        var vi = document.getElementById('video_image');
-        vi.style.display = 'none';
-        this.localPlayer.style.display = 'block';
+    CastPlayer.prototype.playMediaLocally = function (offset) {
+//        var vi = document.getElementById('video_image');
+//        vi.style.display = 'none';
+//        this.localPlayer.style.display = 'block';
         if (this.localPlayerState != PLAYER_STATE.PLAYING && this.localPlayerState != PLAYER_STATE.PAUSED) {
-            this.localPlayer.src = MEDIA_SOURCE_URL;
-            this.localPlayer.load();
-            this.localPlayer.addEventListener('loadeddata', this.onMediaLoadedLocally.bind(this, currentTime));
+            this.currentMediaOffset = offset;
+            this.currentMediaDuration = DURATION;
+            this.updateDurationLabel();
+            this.localPlayer.load({
+                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
+                duration: this.currentMediaDuration,
+                provider:"video"
+            });
+            this.localPlayer.play();
+//            this.localPlayer.src = MEDIA_SOURCE_URL;
+//            this.localPlayer.load();
+//            this.localPlayer.addEventListener('loadeddata', this.onMediaLoadedLocally.bind(this, currentTime));
         }
         else {
             this.localPlayer.play();
-            this.startProgressTimer(this.incrementMediaTime);
+//            this.startProgressTimer(this.incrementMediaTime);
         }
+
+//        this.startProgressTimer(this.incrementMediaTime);
+
         this.localPlayerState = PLAYER_STATE.PLAYING;
         this.updateMediaControlUI();
     };
@@ -439,12 +467,21 @@
      * Callback when media is loaded in local player
      * @param {Number} currentTime A number for media current position
      */
-    CastPlayer.prototype.onMediaLoadedLocally = function (currentTime) {
-        this.currentMediaDuration = this.localPlayer.duration;
-        var duration = this.currentMediaDuration;
+//    CastPlayer.prototype.onMediaLoadedLocally = function (currentTime) {
+//        this.currentMediaDuration = this.localPlayer.duration;
+//        this.localPlayer.currentTime = currentTime;
+//        this.localPlayer.play();
+//        this.startProgressTimer(this.incrementMediaTime);
+//    };
 
+    /**
+     * Updates the duration label.
+     */
+    CastPlayer.prototype.updateDurationLabel = function () {
+        var duration = this.currentMediaDuration;
         var hr = parseInt(duration / 3600);
         duration -= hr * 3600;
+        // TODO: make sure seconds and minutes are always two digits.
         var min = parseInt(duration / 60);
         var sec = parseInt(duration % 60);
         if (hr > 0) {
@@ -458,10 +495,8 @@
                 duration = sec;
             }
         }
-        document.getElementById("duration").innerHTML = duration;
-        this.localPlayer.currentTime = currentTime;
-        this.localPlayer.play();
-        this.startProgressTimer(this.incrementMediaTime);
+//        document.getElementById("duration").innerHTML = duration;
+        document.getElementById("duration").innerHTML = this.currentMediaDuration;
     };
 
     /**
@@ -551,7 +586,7 @@
      * Stop media playback in local player
      */
     CastPlayer.prototype.stopMediaLocally = function () {
-        var vi = document.getElementById('video_image')
+        var vi = document.getElementById('video_image');
         vi.style.display = 'block';
         this.localPlayer.style.display = 'none';
         this.localPlayer.stop();
@@ -572,7 +607,7 @@
             var pos = parseInt(p.clientHeight) - parseInt(event.offsetY);
         }
         if (!this.currentMediaSession) {
-            this.localPlayer.volume = pos < 100 ? pos / 100 : 1;
+            this.localPlayer.setVolume(pos < 100 ? pos : 100);
             p.style.height = pos + 'px';
             p.style.marginTop = -pos + 'px';
             return;
@@ -619,7 +654,7 @@
                 this.setReceiverVolume(true);
             }
             else {
-                this.localPlayer.muted = true;
+                this.localPlayer.setMute(true);
             }
         }
         else {
@@ -630,7 +665,7 @@
                 this.setReceiverVolume(false);
             }
             else {
-                this.localPlayer.muted = false;
+                this.localPlayer.setMute(false);
             }
         }
         this.updateMediaControlUI();
@@ -657,9 +692,11 @@
         }
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
-            this.localPlayer.currentTime = curr;
-            this.currentMediaTime = curr;
-            this.localPlayer.play();
+            this.localPlayerState = PLAYER_STATE.SEEKING;
+            this.playMediaLocally(curr);
+//            this.localPlayer.currentTime = curr;
+//            this.currentMediaTime = curr;
+//            this.localPlayer.play();
         }
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED
@@ -716,7 +753,7 @@
             pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + 'px';
             clearInterval(this.timer);
             this.castPlayerState = PLAYER_STATE.STOPPED;
-            this.updateDisplayMessage();
+//            this.updateDisplayMessage();
         }
         else {
             p.style.width = Math.ceil(PROGRESS_BAR_WIDTH * e.currentTime / this.currentMediaSession.media.duration + 1) + 'px';
@@ -724,7 +761,7 @@
             setTimeout(this.setProgressFlag.bind(this), 1000); // don't update progress in 1 second
             var pp = Math.ceil(PROGRESS_BAR_WIDTH * e.currentTime / this.currentMediaSession.media.duration);
             pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + pp + 'px';
-        }
+//        }
     };
 
     /**
@@ -744,7 +781,7 @@
             p.style.width = 0;
         }
         if (this.currentMediaDuration > 0) {
-            var pp = Math.floor(PROGRESS_BAR_WIDTH * this.currentMediaTime / this.currentMediaDuration);
+            var pp = Math.floor(PROGRESS_BAR_WIDTH * (this.currentMediaOffset + this.currentMediaTime) / this.currentMediaDuration);
         }
 
         if (this.progressFlag) {
@@ -768,19 +805,19 @@
      */
     CastPlayer.prototype.updateDisplayMessage = function () {
         if (this.deviceState != DEVICE_STATE.ACTIVE || this.castPlayerState == PLAYER_STATE.IDLE || this.castPlayerState == PLAYER_STATE.STOPPED) {
-            document.getElementById("playerstate").style.display = 'none';
-            document.getElementById("playerstatebg").style.display = 'none';
+//            document.getElementById("playerstate").style.display = 'none';
+//            document.getElementById("playerstatebg").style.display = 'none';
             document.getElementById("play").style.display = 'block';
-            document.getElementById("video_image_overlay").style.display = 'none';
+//            document.getElementById("video_image_overlay").style.display = 'none';
         }
         else {
-            document.getElementById("playerstate").style.display = 'block';
-            document.getElementById("playerstatebg").style.display = 'block';
-            document.getElementById("video_image_overlay").style.display = 'block';
-            document.getElementById("playerstate").innerHTML = this.castPlayerState
-                + " on " + this.session.receiver.friendlyName;
+//            document.getElementById("playerstate").style.display = 'block';
+//            document.getElementById("playerstatebg").style.display = 'block';
+//            document.getElementById("video_image_overlay").style.display = 'block';
+//            document.getElementById("playerstate").innerHTML = this.castPlayerState
+//                + " on " + this.session.receiver.friendlyName;
         }
-    }
+    };
 
     /**
      * Update media control UI components based on localPlayerState or castPlayerState
@@ -847,8 +884,6 @@
         document.getElementById("audio_bg_track").addEventListener('click', this.setReceiverVolume.bind(this, false));
         document.getElementById("audio_bg").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
-
-        // enable play/pause buttons
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
         document.getElementById("progress_indicator").draggable = true;

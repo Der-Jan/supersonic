@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Cast Videos: Google Cast Chrome Sender SDK Demo App</title>
-<link rel="stylesheet" type="text/css" href="css/CastVideos.css">
-<link href='//fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic-ext,greek-ext,latin-ext' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
-<script src="CastVideos.js"></script>
+    <title>Cast Videos: Google Cast Chrome Sender SDK Demo App</title>
+    <link rel="stylesheet" type="text/css" href="css/CastVideos.css">
+    <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+    <script type="text/javascript" src="/script/jwplayer-5.10.min.js"></script>
+    <script src="CastVideos.js"></script>
 </head>
 <body>
-      <div id="main_video">
-        <div class="imageSub"> <!-- Put Your Image Width -->
-           <div class="blackbg" id="playerstatebg">IDLE</div>
-           <div class=label id="playerstate">IDLE</div>
-           <img src="images/bunny.jpg" id="video_image">
-           <div id="video_image_overlay"></div>
-           <video id="video_element">
-           </video>
-        </div>
-          
-        <div id="media_control">
-           <div id="play"></div>
-           <div id="pause"></div>
-           <div id="progress_bg"></div>
-           <div id="progress"></div>
-           <div id="progress_indicator"></div>
-           <div id="casticonactive"></div>
-           <div id="casticonidle"></div>
-           <div id="audio_bg"></div>
-           <div id="audio_bg_track"></div>
-           <div id="audio_indicator"></div>
-           <div id="audio_bg_level"></div>
-           <div id="audio_on"></div>
-           <div id="audio_off"></div>
-           <div id="duration">00:00:00</div>
-        </div>
-      </div>
+<div id="main_video">
+    <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank">Get Flash</a></div>
+
+    <!--<div class="imageSub"> &lt;!&ndash; Put Your Image Width &ndash;&gt;-->
+        <!--<div class="blackbg" id="playerstatebg">IDLE</div>-->
+        <!--<div class=label id="playerstate">IDLE</div>-->
+        <!--<img src="images/bunny.jpg" id="video_image">-->
+
+        <!--<div id="video_image_overlay"></div>-->
+    <!--</div>-->
+
+    <div id="media_control">
+        <div id="play"></div>
+        <div id="pause"></div>
+        <div id="progress_bg"></div>
+        <div id="progress"></div>
+        <div id="progress_indicator"></div>
+        <div id="casticonactive"></div>
+        <div id="casticonidle"></div>
+        <div id="audio_bg"></div>
+        <div id="audio_bg_track"></div>
+        <div id="audio_indicator"></div>
+        <div id="audio_bg_level"></div>
+        <div id="audio_on"></div>
+        <div id="audio_off"></div>
+        <div id="duration">0:00:00</div>
+    </div>
+</div>
 
 <script type="text/javascript">
-  var CastPlayer = new CastPlayer();
+    var CastPlayer = new CastPlayer();
 </script>
 </body>
 </html>
