@@ -1,3 +1,4 @@
+//TODO: Don't overlay player controls.
 //TODO: Use local media
 //TODO: Use styled media receiver
 //TODO: Reload when seeking
@@ -303,16 +304,6 @@
         else {
             request.currentTime = 0;
         }
-//        var payload = {
-//            "title:": this.mediaContents[0]['title'],
-//            "thumb": this.mediaContents[0]['thumb']
-//        };
-//
-//        var json = {
-//            "payload": payload
-//        };
-//
-//        request.customData = json;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
         this.session.loadMedia(request,
@@ -438,7 +429,6 @@
         }
         else {
             this.localPlayer.play();
-            // start progress timer
             this.startProgressTimer(this.incrementMediaTime);
         }
         this.localPlayerState = PLAYER_STATE.PLAYING;
@@ -471,7 +461,6 @@
         document.getElementById("duration").innerHTML = duration;
         this.localPlayer.currentTime = currentTime;
         this.localPlayer.play();
-        // start progress timer
         this.startProgressTimer(this.incrementMediaTime);
     };
 
@@ -783,13 +772,11 @@
             document.getElementById("playerstatebg").style.display = 'none';
             document.getElementById("play").style.display = 'block';
             document.getElementById("video_image_overlay").style.display = 'none';
-            //document.getElementById("media_control").style.opacity = 0.0;
         }
         else {
             document.getElementById("playerstate").style.display = 'block';
             document.getElementById("playerstatebg").style.display = 'block';
             document.getElementById("video_image_overlay").style.display = 'block';
-            //document.getElementById("media_control").style.opacity = 0.5;
             document.getElementById("playerstate").innerHTML = this.castPlayerState
                 + " on " + this.session.receiver.friendlyName;
         }
@@ -844,11 +831,6 @@
      * Initialize UI components and add event listeners
      */
     CastPlayer.prototype.initializeUI = function () {
-        // set initial values for title, subtitle, and description
-//        document.getElementById("media_title").innerHTML = this.mediaContents[0]['title'];
-//        document.getElementById("media_subtitle").innerHTML = this.mediaContents[this.currentMediaIndex]['subtitle'];
-//        document.getElementById("media_desc").innerHTML = this.mediaContents[this.currentMediaIndex]['description'];
-
         // add event handlers to UI components
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
@@ -865,28 +847,12 @@
         document.getElementById("audio_bg_track").addEventListener('click', this.setReceiverVolume.bind(this, false));
         document.getElementById("audio_bg").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
-        document.getElementById("media_control").addEventListener('mouseover', this.showMediaControl.bind(this));
-        document.getElementById("media_control").addEventListener('mouseout', this.hideMediaControl.bind(this));
 
         // enable play/pause buttons
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
         document.getElementById("progress_indicator").draggable = true;
 
-    };
-
-    /**
-     * Show the media control
-     */
-    CastPlayer.prototype.showMediaControl = function () {
-        document.getElementById('media_control').style.opacity = 0.7;
-    };
-
-    /**
-     * Hide the media control
-     */
-    CastPlayer.prototype.hideMediaControl = function () {
-        document.getElementById('media_control').style.opacity = 0;
     };
 
     /**
