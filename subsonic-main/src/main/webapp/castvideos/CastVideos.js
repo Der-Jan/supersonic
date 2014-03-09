@@ -10,7 +10,6 @@
 //    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
     var MEDIA_SOURCE_URL = "http://localhost:4040/stream?player=5&id=2352&maxBitRate=2000";
     var DURATION = 257; // TODO
-    var PROGRESS_BAR_WIDTH = 300;
 
     /**
      * Constants of states for Chromecast device
@@ -736,34 +735,6 @@
      */
     CastPlayer.prototype.setProgressFlag = function () {
         this.progressFlag = true;
-    };
-
-    /**
-     * Update progress bar based on timer
-     */
-    CastPlayer.prototype.updateProgressBarByTimer = function () {
-        var p = document.getElementById("progress");
-        if (isNaN(parseInt(p.style.width))) {
-            p.style.width = 0;
-        }
-        if (this.currentMediaDuration > 0) {
-            var pp = Math.floor(PROGRESS_BAR_WIDTH * (this.currentMediaOffset + this.currentMediaTime) / this.currentMediaDuration);
-        }
-
-        if (this.progressFlag) {
-            // don't update progress if it's been updated on media status update event
-            p.style.width = pp + 'px';
-            var pi = document.getElementById("progress_indicator");
-            pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + pp + 'px';
-        }
-
-        if (pp > PROGRESS_BAR_WIDTH) {
-            clearInterval(this.timer);
-            this.deviceState = DEVICE_STATE.IDLE;
-            this.castPlayerState = PLAYER_STATE.IDLE;
-            this.updateDisplayMessage();
-            this.updateMediaControlUI();
-        }
     };
 
     /**
