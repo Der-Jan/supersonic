@@ -117,16 +117,18 @@
 //            frontcolor:"<spring:theme code="textColor"/>",
             provider: "video",
             events: {
-                onTime: function (event) {
-                    var newPosition = Math.round(event.position);
-                    if (newPosition != position) {
-                        position = newPosition;
-                        updatePosition();
-                    }
-                }
+                onTime: this.updateLocalProgress.bind(this)
             }
         });
         this.localPlayer = jwplayer();
+    };
+
+    CastPlayer.prototype.updateLocalProgress = function (event) {
+        var newTime = Math.round(event.position);
+        if (newTime != this.currentMediaTime) {
+            this.currentMediaTime = newTime;
+            this.updateProgressBar();
+        }
     };
 
     /**
@@ -408,7 +410,7 @@
             this.castPlayerState = PLAYER_STATE.IDLE;
         }
         console.log("updating media");
-        this.updateProgressBar(e);
+        this.updateProgressBar();
         this.updateDisplayMessage();
         this.updateMediaControlUI();
     };
@@ -421,7 +423,7 @@
         if (this.castPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PLAYING) {
             if (this.currentMediaTime < this.currentMediaDuration) {
                 this.currentMediaTime += 1;
-                this.updateProgressBarByTimer();
+                this.updateProgressBar();
             }
             else {
                 this.currentMediaTime = 0;
@@ -677,32 +679,12 @@
      * @param {Event} e An event object from seek
      */
     CastPlayer.prototype.seekMedia = function (event) {
-        var pos = parseInt(event.offsetX);
-        var pi = document.getElementById("progress_indicator");
-        var p = document.getElementById("progress");
-        if (event.currentTarget.id == 'progress_indicator') {
-            var curr = parseInt(this.currentMediaTime + this.currentMediaDuration * pos / PROGRESS_BAR_WIDTH);
-            var pp = parseInt(pi.style.marginLeft) + pos;
-            var pw = parseInt(p.style.width) + pos;
-        }
-        else {
-            var curr = parseInt(pos * this.currentMediaDuration / PROGRESS_BAR_WIDTH);
-            var pp = pos - 21 - PROGRESS_BAR_WIDTH;
-            var pw = pos;
-        }
+
+        var slider = document.getElementById("progress_slider");
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayerState = PLAYER_STATE.SEEKING;
-            this.playMediaLocally(curr);
-//            this.localPlayer.currentTime = curr;
-//            this.currentMediaTime = curr;
-//            this.localPlayer.play();
-        }
-
-        if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED
-            || this.castPlayerState == PLAYER_STATE.PLAYING || this.castPlayerState == PLAYER_STATE.PAUSED) {
-            p.style.width = pw + 'px';
-            pi.style.marginLeft = pp + 'px';
+            this.playMediaLocally(slider.value - this.currentMediaOffset);
         }
 
         if (this.castPlayerState != PLAYER_STATE.PLAYING && this.castPlayerState != PLAYER_STATE.PAUSED) {
@@ -742,26 +724,10 @@
     };
 
     /**
-     * Update progress bar when there is a media status update
-     * @param {Object} e An media status update object
+     * Update progress bar with the current media time.
      */
-    CastPlayer.prototype.updateProgressBar = function (e) {
-        var p = document.getElementById("progress");
-        var pi = document.getElementById("progress_indicator");
-        if (e.idleReason == 'FINISHED' && e.playerState == 'IDLE') {
-            p.style.width = '0px';
-            pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + 'px';
-            clearInterval(this.timer);
-            this.castPlayerState = PLAYER_STATE.STOPPED;
-//            this.updateDisplayMessage();
-        }
-        else {
-            p.style.width = Math.ceil(PROGRESS_BAR_WIDTH * e.currentTime / this.currentMediaSession.media.duration + 1) + 'px';
-            this.progressFlag = false;
-            setTimeout(this.setProgressFlag.bind(this), 1000); // don't update progress in 1 second
-            var pp = Math.ceil(PROGRESS_BAR_WIDTH * e.currentTime / this.currentMediaSession.media.duration);
-            pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + pp + 'px';
-        }
+    CastPlayer.prototype.updateProgressBar = function () {
+        document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
     };
 
     /**
@@ -868,12 +834,13 @@
      * Initialize UI components and add event listeners
      */
     CastPlayer.prototype.initializeUI = function () {
+
+        document.getElementById("progress_slider").max = DURATION;
+
         // add event handlers to UI components
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
-        document.getElementById("progress_bg").addEventListener('click', this.seekMedia.bind(this));
-        document.getElementById("progress").addEventListener('click', this.seekMedia.bind(this));
-        document.getElementById("progress_indicator").addEventListener('dragend', this.seekMedia.bind(this));
+        document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
         document.getElementById("audio_on").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("audio_bg").addEventListener('mouseover', this.showVolumeSlider.bind(this));
@@ -886,8 +853,6 @@
         document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
-        document.getElementById("progress_indicator").draggable = true;
-
     };
 
     /**
