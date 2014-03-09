@@ -28,7 +28,7 @@
                 flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
                 height: "${model.popout ? '85%' : '360'}",
                 width: "${model.popout ? '100%' : '600'}",
-                skin:"<c:url value="/flash/whotube.zip"/>",
+                skin:"<c:url value="/flash/jw-player-subsonic-skin.zip"/>",
                 screencolor:"000000",
                 controlbar:"over",
                 autostart:"false",

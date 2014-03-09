@@ -17,17 +17,28 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 TODO IN 5.0
 --------------
 Cast:
+  Can JWPlayer be controlled without control bar? Full screen, seeking, etc
+  Create custom jwplayer skin with black background and only a full screen button.
+  Start from scratch with CastVideos-chrome sample app.
   Don't show play icon when buffering
   Use 2000 kbps as default?
   Make js namespace / class.
   Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
   Move cast code to videoPlayer.jsp
+  Incorrect update of position.
+  Stop casting when clicking cast icon.
+  Invisible Flash player for audio? Refactor.
 Use same slider for jukebox volume.
 Create position slider for flv video player.
 Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
-Add Audiophone
-  https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/1444720e872c1517
+LyricsService error with special characters
+  https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1449b103acad6d60
+XML-encoding in JSON
+  https://mail.google.com/mail/ca/u/0/?ui=2#inbox/13d17ec1fdfb80bc
+  Use JAXB, Jettison, ...?
+Problem with Content-Range for transcoded audio
+  https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1447f4b647387e8b
 Use more modern embedding of jwplayer
   http://www.longtailvideo.com/support/jw5/31164/javascript-api-reference
 
