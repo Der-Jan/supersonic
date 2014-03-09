@@ -1,3 +1,8 @@
+//TODO: Use local media
+//TODO: Use styled media receiver
+//TODO: Reload when seeking
+//TODO: Replace html5 player with jwplayer
+
 (function () {
     'use strict';
 
@@ -62,8 +67,6 @@
         this.localPlayerState = PLAYER_STATE.IDLE;
         // @type {HTMLElement} local player
         this.localPlayer = null;
-        // @type {Boolean} Fullscreen mode on/off
-        this.fullscreen = false;
 
         /* Current media variables */
         // @type {Boolean} Audio on and off
@@ -192,6 +195,7 @@
      * Select a media content
      * @param {Number} mediaIndex A number for media index
      */
+    // TODO: Don't delete. Similar logic is needed when seeking.
     CastPlayer.prototype.selectMedia = function (mediaIndex) {
         console.log("media selected" + mediaIndex);
 
@@ -863,10 +867,6 @@
         document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("media_control").addEventListener('mouseover', this.showMediaControl.bind(this));
         document.getElementById("media_control").addEventListener('mouseout', this.hideMediaControl.bind(this));
-        document.getElementById("fullscreen_expand").addEventListener('click', this.requestFullScreen.bind(this));
-        document.getElementById("fullscreen_collapse").addEventListener('click', this.cancelFullScreen.bind(this));
-        document.addEventListener("fullscreenchange", this.changeHandler.bind(this), false);
-        document.addEventListener("webkitfullscreenchange", this.changeHandler.bind(this), false);
 
         // enable play/pause buttons
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
@@ -907,48 +907,6 @@
         document.getElementById('audio_bg_track').style.opacity = 0;
         document.getElementById('audio_bg_level').style.opacity = 0;
         document.getElementById('audio_indicator').style.opacity = 0;
-    };
-
-    /**
-     * Request full screen mode
-     */
-    CastPlayer.prototype.requestFullScreen = function () {
-        // Supports most browsers and their versions.
-        var element = document.getElementById("video_element");
-        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen;
-
-        if (requestMethod) { // Native full screen.
-            requestMethod.call(element);
-            console.log("requested fullscreen");
-        }
-    };
-
-    /**
-     * Exit full screen mode
-     */
-    CastPlayer.prototype.cancelFullScreen = function () {
-        // Supports most browsers and their versions.
-        var requestMethod = document.cancelFullScreen || document.webkitCancelFullScreen;
-
-        if (requestMethod) {
-            requestMethod.call(document);
-        }
-    };
-
-    /**
-     * Exit fullscreen mode by escape
-     */
-    CastPlayer.prototype.changeHandler = function () {
-        if (this.fullscreen) {
-            document.getElementById('fullscreen_expand').style.display = 'block';
-            document.getElementById('fullscreen_collapse').style.display = 'none';
-            this.fullscreen = false;
-        }
-        else {
-            document.getElementById('fullscreen_expand').style.display = 'none';
-            document.getElementById('fullscreen_collapse').style.display = 'block';
-            this.fullscreen = true;
-        }
     };
 
     /**

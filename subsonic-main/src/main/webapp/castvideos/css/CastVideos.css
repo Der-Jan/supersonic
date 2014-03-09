@@ -220,24 +220,6 @@ body {
   z-index:1000;
 }
 
-#fullscreen_expand {
-  float:right;
-  width: 32px;
-  height: 32px;
-  margin:10px 20px 10px 0px;
-  display:block; 
-  background-image:url('../imagefiles/fullscreen_expand.png');
-}
-
-#fullscreen_collapse {
-  float:right;
-  width: 32px;
-  height: 32px;
-  margin:10px 20px 10px 0px;
-  display:none; 
-  background-image:url('../imagefiles/fullscreen_collapse.png');
-}
-
 #duration {
   float:right;
   color: #fff;
