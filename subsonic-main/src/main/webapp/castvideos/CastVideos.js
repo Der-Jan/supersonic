@@ -108,16 +108,16 @@
             flashplayer: "/flash/jw-player-5.10.swf",
             height: 360,
             width: 600,
-            skin:"/flash/jw-player-subsonic-skin.zip",
-            screencolor:"000000",
-            controlbar:"over",
-            autostart:"false",
-            bufferlength:3,
+            skin: "/flash/jw-player-subsonic-skin.zip",
+            screencolor: "000000",
+            controlbar: "over",
+            autostart: "false",
+            bufferlength: 3,
 //            backcolor:"<spring:theme code="backgroundColor"/>",
 //            frontcolor:"<spring:theme code="textColor"/>",
-            provider:"video",
+            provider: "video",
             events: {
-                onTime: function(event) {
+                onTime: function (event) {
                     var newPosition = Math.round(event.position);
                     if (newPosition != position) {
                         position = newPosition;
@@ -229,7 +229,7 @@
      * Select a media content
      * @param {Number} mediaIndex A number for media index
      */
-    // TODO: Don't delete. Similar logic is needed when seeking.
+        // TODO: Don't delete. Similar logic is needed when seeking.
     CastPlayer.prototype.selectMedia = function (mediaIndex) {
         console.log("media selected" + mediaIndex);
 
@@ -445,7 +445,7 @@
             this.localPlayer.load({
                 file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
                 duration: this.currentMediaDuration,
-                provider:"video"
+                provider: "video"
             });
             this.localPlayer.play();
 //            this.localPlayer.src = MEDIA_SOURCE_URL;
@@ -761,7 +761,7 @@
             setTimeout(this.setProgressFlag.bind(this), 1000); // don't update progress in 1 second
             var pp = Math.ceil(PROGRESS_BAR_WIDTH * e.currentTime / this.currentMediaSession.media.duration);
             pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + pp + 'px';
-//        }
+        }
     };
 
     /**
