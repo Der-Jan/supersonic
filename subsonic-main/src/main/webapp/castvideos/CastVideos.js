@@ -8,7 +8,7 @@
     'use strict';
 
 //    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-    var MEDIA_SOURCE_URL = "http://localhost:4040/stream?player=5&id=2352&maxBitRate=2000";
+    var MEDIA_SOURCE_URL = "http://192.168.10.158:4040/stream?player=5&id=2352&maxBitRate=2000";
     var DURATION = 257; // TODO
 
     /**
@@ -89,7 +89,7 @@
         this.currentMediaTime = 0;
 
         // @type {Number} A number for current media duration
-        this.currentMediaDuration = -1;
+        this.currentMediaDuration = DURATION;
 
         // @type {Timer} A timer for tracking progress of media
         this.timer = null;
@@ -100,6 +100,7 @@
         // @type {Number} A number in milliseconds for minimal progress update
         this.timerStep = 1000;
 
+        this.updateDurationLabel();
         this.initializeCastPlayer();
         this.initializeLocalPlayer();
     };
@@ -332,9 +333,11 @@
             console.log("no session");
             return;
         }
-        console.log("loading..." + MEDIA_SOURCE_URL);
-        var mediaInfo = new chrome.cast.media.MediaInfo(MEDIA_SOURCE_URL);
-        mediaInfo.contentType = 'video/mp4'; // TODO
+        var url = MEDIA_SOURCE_URL + "&format=mkv";
+        console.log("loading..." + url);
+        var mediaInfo = new chrome.cast.media.MediaInfo(url);
+        mediaInfo.contentType = 'video/x-matroska'; // TODO
+        // TODO: Add metadata.
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = this.autoplay;
         if (this.localPlayerState == PLAYER_STATE.PLAYING) {
@@ -358,12 +361,7 @@
         console.log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
         this.currentMediaSession = mediaSession;
         if (how == 'loadMedia') {
-            if (this.autoplay) {
-                this.castPlayerState = PLAYER_STATE.PLAYING;
-            }
-            else {
-                this.castPlayerState = PLAYER_STATE.LOADED;
-            }
+            this.castPlayerState = this.autoplay ? PLAYER_STATE.PLAYING : this.castPlayerState = PLAYER_STATE.LOADED;
         }
 
         if (how == 'activeSession') {
@@ -377,16 +375,13 @@
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
-        this.currentMediaDuration = this.currentMediaSession.media.duration;
-        this.updateDurationLabel();
-
         if (this.localPlayerState == PLAYER_STATE.PLAYING) {
             this.localPlayerState = PLAYER_STATE.STOPPED;
 //            var vi = document.getElementById('video_image');
 //            vi.style.display = 'block';
 //            this.localPlayer.style.display = 'none';
             // start progress timer
-            this.startProgressTimer(this.incrementMediaTime);
+//            this.startProgressTimer(this.incrementMediaTime);
         }
         // update UIs
         this.updateMediaControlUI();
@@ -424,8 +419,8 @@
      * Increment media current position by 1 second
      */
     CastPlayer.prototype.incrementMediaTime = function () {
-        if (this.castPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PLAYING) {
-            if (this.currentMediaTime < this.currentMediaDuration) {
+        if (this.castPlayerState == PLAYER_STATE.PLAYING) {
+            if (this.currentMediaOffset + this.currentMediaTime < this.currentMediaDuration) {
                 this.currentMediaTime += 1;
                 this.updateProgressBar();
             }
@@ -447,8 +442,6 @@
             this.localPlayer.play();
         } else {
             this.currentMediaOffset = offset;
-            this.currentMediaDuration = DURATION;
-            this.updateDurationLabel();
             this.localPlayer.load({
                 file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
                 duration: this.currentMediaDuration,
