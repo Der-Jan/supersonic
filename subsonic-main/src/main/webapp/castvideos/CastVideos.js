@@ -21,9 +21,6 @@
         'ERROR': 3
     };
 
-    /**
-     * Constants of states for CastPlayer
-     **/
     var PLAYER_STATE = {
         'IDLE': 'IDLE',
         'LOADING': 'LOADING',
@@ -53,24 +50,32 @@
         this.deviceState = DEVICE_STATE.IDLE;
 
         /* Cast player variables */
+
         // @type {Object} a chrome.cast.media.Media object
         this.currentMediaSession = null;
+
         // @type {Number} volume
         this.currentVolume = 0.5;
+
         // @type {Boolean} A flag for autoplay after load
         this.autoplay = true;
+
         // @type {string} a chrome.cast.Session object
         this.session = null;
+
         // @type {PLAYER_STATE} A state for Cast media player
         this.castPlayerState = PLAYER_STATE.IDLE;
 
         /* Local player variables */
+
         // @type {PLAYER_STATE} A state for local media player
         this.localPlayerState = PLAYER_STATE.IDLE;
+
         // @type {jwplayer} local player
         this.localPlayer = null;
 
         /* Current media variables */
+
         // @type {Boolean} Audio on and off
         this.audio = true;
 
@@ -90,7 +95,7 @@
         this.timer = null;
 
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
-        this.progressFlag = true;
+        this.seekInProgress = false;
 
         // @type {Number} A number in milliseconds for minimal progress update
         this.timerStep = 1000;
@@ -124,7 +129,7 @@
 
     CastPlayer.prototype.updateLocalProgress = function (event) {
         var newTime = Math.round(event.position);
-        if (newTime != this.currentMediaTime) {
+        if (newTime != this.currentMediaTime && !this.seekInProgress) {
             this.currentMediaTime = newTime;
             this.updateProgressBar();
         }
@@ -436,10 +441,11 @@
      * @param {Number} offset A number for media current position
      */
     CastPlayer.prototype.playMediaLocally = function (offset) {
-//        var vi = document.getElementById('video_image');
-//        vi.style.display = 'none';
-//        this.localPlayer.style.display = 'block';
-        if (this.localPlayerState != PLAYER_STATE.PLAYING && this.localPlayerState != PLAYER_STATE.PAUSED) {
+
+        // Resume?
+        if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
+            this.localPlayer.play();
+        } else {
             this.currentMediaOffset = offset;
             this.currentMediaDuration = DURATION;
             this.updateDurationLabel();
@@ -449,16 +455,8 @@
                 provider: "video"
             });
             this.localPlayer.play();
-//            this.localPlayer.src = MEDIA_SOURCE_URL;
-//            this.localPlayer.load();
-//            this.localPlayer.addEventListener('loadeddata', this.onMediaLoadedLocally.bind(this, currentTime));
+            this.seekInProgress = false;
         }
-        else {
-            this.localPlayer.play();
-//            this.startProgressTimer(this.incrementMediaTime);
-        }
-
-//        this.startProgressTimer(this.incrementMediaTime);
 
         this.localPlayerState = PLAYER_STATE.PLAYING;
         this.updateMediaControlUI();
@@ -679,18 +677,20 @@
      */
     CastPlayer.prototype.seekMedia = function (event) {
 
-        var slider = document.getElementById("progress_slider");
+        this.seekInProgress = true;
+        var offset = parseInt(document.getElementById("progress_slider").value);
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayerState = PLAYER_STATE.SEEKING;
-            this.playMediaLocally(slider.value - this.currentMediaOffset);
+            this.playMediaLocally(offset);
+            return;
         }
 
         if (this.castPlayerState != PLAYER_STATE.PLAYING && this.castPlayerState != PLAYER_STATE.PAUSED) {
             return;
         }
 
-        this.currentMediaTime = curr;
+//        this.currentMediaTime = curr;
         console.log('Seeking ' + this.currentMediaSession.sessionId + ':' +
             this.currentMediaSession.mediaSessionId + ' to ' + pos + "%");
         var request = new chrome.cast.media.SeekRequest();
@@ -727,14 +727,6 @@
      */
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
-    };
-
-    /**
-     * Set progressFlag with a timeout of 1 second to avoid UI update
-     * until a media status update from receiver
-     */
-    CastPlayer.prototype.setProgressFlag = function () {
-        this.progressFlag = true;
     };
 
     /**
