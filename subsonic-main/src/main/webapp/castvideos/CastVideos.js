@@ -8,8 +8,8 @@
     'use strict';
 
 //    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-    var MEDIA_SOURCE_URL = "http://192.168.10.158:4040/stream?player=5&id=2352&maxBitRate=2000";
-    var DURATION = 257; // TODO
+    var MEDIA_SOURCE_URL = "http://192.168.10.140:4040/stream?player=1&id=6&maxBitRate=2000";
+    var DURATION = 137; // TODO
 
     /**
      * Constants of states for Chromecast device
@@ -471,24 +471,27 @@
      */
     CastPlayer.prototype.updateDurationLabel = function () {
         var duration = this.currentMediaDuration;
-        var hr = parseInt(duration / 3600);
-        duration -= hr * 3600;
-        // TODO: make sure seconds and minutes are always two digits.
-        var min = parseInt(duration / 60);
-        var sec = parseInt(duration % 60);
-        if (hr > 0) {
-            duration = hr + ":" + min + ":" + sec;
-        }
-        else {
-            if (min > 0) {
-                duration = min + ":" + sec;
-            }
-            else {
-                duration = sec;
+
+        var hours = Math.round(duration / 3600);
+        duration = duration % 3600;
+        var minutes = Math.round(duration / 60);
+        var seconds = duration % 60;
+
+        var s = "";
+        if (hours > 0) {
+            s += hours + ":";
+            if (minutes < 10) {
+                s += "0";
             }
         }
-//        document.getElementById("duration").innerHTML = duration;
-        document.getElementById("duration").innerHTML = this.currentMediaDuration;
+        s += minutes + ":";
+        if (seconds < 10) {
+            s += "0";
+        }
+        s += seconds;
+
+        document.getElementById("duration").innerHTML = s;
+//        document.getElementById("duration").innerHTML = this.currentMediaDuration;
     };
 
     /**
