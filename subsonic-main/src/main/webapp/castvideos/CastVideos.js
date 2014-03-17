@@ -122,7 +122,10 @@
 //            frontcolor:"<spring:theme code="textColor"/>",
             provider: "video",
             events: {
-                onTime: this.updateLocalProgress.bind(this)
+                onTime: this.updateLocalProgress.bind(this),
+                onPlay: this.updateLocalState.bind(this),
+                onPause: this.updateLocalState.bind(this),
+                onIdle: this.updateLocalState.bind(this)
             }
         });
         this.localPlayer = jwplayer();
@@ -134,6 +137,17 @@
             this.currentMediaTime = newTime;
             this.updateProgressBar();
         }
+    };
+
+    CastPlayer.prototype.updateLocalState = function (event) {
+        if (jwplayer().getState() == "PLAYING") {
+            this.localPlayerState = PLAYER_STATE.PLAYING;
+        } else if (jwplayer().getState() == "PAUSED") {
+            this.localPlayerState = PLAYER_STATE.PAUSED;
+        } else if (jwplayer().getState() == "IDLE") {
+            this.localPlayerState = PLAYER_STATE.IDLE;
+        }
+        this.updateMediaControlUI();
     };
 
     /**
@@ -333,7 +347,7 @@
             console.log("no session");
             return;
         }
-        var url = MEDIA_SOURCE_URL + "&format=mkv";
+        var url = MEDIA_SOURCE_URL + "&format=mkv";  // TODO
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska'; // TODO
