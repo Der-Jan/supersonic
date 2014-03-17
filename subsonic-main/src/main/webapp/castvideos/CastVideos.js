@@ -1,8 +1,5 @@
-//TODO: Don't overlay player controls.
-//TODO: Use local media
-//TODO: Use styled media receiver
-//TODO: Reload when seeking
-//TODO: Replace html5 player with jwplayer
+
+// TODO: Hide cast icon if no receivers found.
 
 (function () {
     'use strict';
@@ -15,10 +12,11 @@
      * Constants of states for Chromecast device
      **/
     var DEVICE_STATE = {
-        'IDLE': 0,
-        'ACTIVE': 1,
-        'WARNING': 2,
-        'ERROR': 3
+        'NOT_PRESENT': 0,
+        'IDLE': 1,
+        'ACTIVE': 2,
+        'WARNING': 3,
+        'ERROR': 4
     };
 
     var PLAYER_STATE = {
@@ -45,9 +43,11 @@
      *  - Current media variables for transition between Cast and local modes
      */
     var CastPlayer = function () {
+
         /* device variables */
+
         // @type {DEVICE_STATE} A state for device
-        this.deviceState = DEVICE_STATE.IDLE;
+        this.deviceState = DEVICE_STATE.NOT_PRESENT;
 
         /* Cast player variables */
 
@@ -221,10 +221,13 @@
     CastPlayer.prototype.receiverListener = function (e) {
         if (e === 'available') {
             console.log("receiver found");
+            this.deviceState = DEVICE_STATE.IDLE;
         }
         else {
             console.log("receiver list empty");
+            this.deviceState = DEVICE_STATE.NOT_PRESENT;
         }
+        this.updateMediaControlUI();
     };
 
     /**
@@ -468,17 +471,6 @@
         this.localPlayerState = PLAYER_STATE.PLAYING;
         this.updateMediaControlUI();
     };
-
-    /**
-     * Callback when media is loaded in local player
-     * @param {Number} currentTime A number for media current position
-     */
-//    CastPlayer.prototype.onMediaLoadedLocally = function (currentTime) {
-//        this.currentMediaDuration = this.localPlayer.duration;
-//        this.localPlayer.currentTime = currentTime;
-//        this.localPlayer.play();
-//        this.startProgressTimer(this.incrementMediaTime);
-//    };
 
     /**
      * Updates the duration label.
@@ -762,14 +754,17 @@
      * Update media control UI components based on localPlayerState or castPlayerState
      */
     CastPlayer.prototype.updateMediaControlUI = function () {
-        if (this.deviceState == DEVICE_STATE.ACTIVE) {
+        if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
+            document.getElementById("casticonactive").style.display = 'none';
+            document.getElementById("casticonidle").style.display = 'none';
+            var playerState = this.localPlayerState;
+        } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
             document.getElementById("casticonactive").style.display = 'block';
             document.getElementById("casticonidle").style.display = 'none';
             var playerState = this.castPlayerState;
-        }
-        else {
-            document.getElementById("casticonidle").style.display = 'block';
+        } else {
             document.getElementById("casticonactive").style.display = 'none';
+            document.getElementById("casticonidle").style.display = 'block';
             var playerState = this.localPlayerState;
         }
 

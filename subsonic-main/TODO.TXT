@@ -17,15 +17,14 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 TODO IN 5.0
 --------------
 Cast:
+  Use separate appId for video.
   Can JWPlayer be controlled without control bar? Full screen, seeking, etc
   Create custom jwplayer skin with black background and only a full screen button.
   Start from scratch with CastVideos-chrome sample app.
   Don't show play icon when buffering
   Use 2000 kbps as default?
-  Make js namespace / class.
   Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
   Move cast code to videoPlayer.jsp
-  Incorrect update of position.
   Stop casting when clicking cast icon.
   Invisible Flash player for audio? Refactor.
 Use same slider for jukebox volume.
