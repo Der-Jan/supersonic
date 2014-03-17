@@ -1,10 +1,10 @@
 
-// TODO: Hide cast icon if no receivers found.
+// TODO: Show overlay when playing remote
+// TODO: Emulate youtube controls.
 
 (function () {
     'use strict';
 
-//    var MEDIA_SOURCE_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
     var MEDIA_SOURCE_URL = "http://192.168.10.140:4040/stream?player=1&id=6&maxBitRate=2000";
     var DURATION = 137; // TODO
 
@@ -118,8 +118,6 @@
             controlbar: "over",
             autostart: "false",
             bufferlength: 3,
-//            backcolor:"<spring:theme code="backgroundColor"/>",
-//            frontcolor:"<spring:theme code="textColor"/>",
             provider: "video",
             events: {
                 onTime: this.updateLocalProgress.bind(this),

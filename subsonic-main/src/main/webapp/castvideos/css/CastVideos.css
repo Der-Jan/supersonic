@@ -2,6 +2,14 @@ body {
     background-color: #F2F2F2;
 }
 
+#overlay {
+    width: 600px;
+    height: 360px;
+    position: absolute;
+    z-index: 1;
+    background-color: #AAA;
+}
+
 #media_control {
     width: 600px;
     height: 60px;
