@@ -302,7 +302,8 @@
         console.log("session success: " + e.sessionId);
         this.session = e;
         this.deviceState = DEVICE_STATE.ACTIVE;
-        this.updateMediaControlUI();
+        this.stopMediaLocally();
+//        this.updateMediaControlUI();
         this.loadMedia(this.currentMediaIndex);
         this.session.addUpdateListener(this.sessionUpdateListener.bind(this));
     };
@@ -350,19 +351,14 @@
             console.log("no session");
             return;
         }
-        var url = MEDIA_SOURCE_URL + "&format=mkv";  // TODO
+        var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + (this.currentMediaOffset + this.currentMediaTime);  // TODO: mkv
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska'; // TODO
         // TODO: Add metadata.
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = this.autoplay;
-        if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-            request.currentTime = this.localPlayer.getPosition();
-        }
-        else {
-            request.currentTime = 0;
-        }
+        request.currentTime = 0;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
         this.session.loadMedia(request,
@@ -497,7 +493,6 @@
         s += seconds;
 
         document.getElementById("duration").innerHTML = s;
-//        document.getElementById("duration").innerHTML = this.currentMediaDuration;
     };
 
     /**
@@ -587,9 +582,9 @@
      * Stop media playback in local player
      */
     CastPlayer.prototype.stopMediaLocally = function () {
-        var vi = document.getElementById('video_image');
-        vi.style.display = 'block';
-        this.localPlayer.style.display = 'none';
+//        var vi = document.getElementById('video_image');
+//        vi.style.display = 'block';
+//        this.localPlayer.style.display = 'none';
         this.localPlayer.stop();
         this.localPlayerState = PLAYER_STATE.STOPPED;
         this.updateMediaControlUI();
