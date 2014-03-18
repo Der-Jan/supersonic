@@ -408,7 +408,7 @@
         var hours = Math.floor(duration / 3600);
         duration = duration % 3600;
         var minutes = Math.floor(duration / 60);
-        var seconds = duration % 60;
+        var seconds = Math.floor(duration % 60);
 
         var result = "";
         if (hours > 0) {
