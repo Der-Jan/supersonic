@@ -80,9 +80,6 @@
         // @type {Boolean} Muted audio
         this.muted = false;
 
-        // @type {Number} A number for current media index
-        this.currentMediaIndex = 0;
-
         // @type {Number} A number for current media offset
         this.currentMediaOffset = 0;
 
@@ -206,7 +203,7 @@
                 this.onMediaDiscovered('activeSession', this.session.media[0]);
             }
             else {
-                this.loadMedia(this.currentMediaIndex);
+                this.loadMedia();
             }
             this.session.addUpdateListener(this.sessionUpdateListener.bind(this));
         }
@@ -303,7 +300,7 @@
         this.deviceState = DEVICE_STATE.ACTIVE;
         this.stopMediaLocally();
 //        this.updateMediaControlUI();
-        this.loadMedia(this.currentMediaIndex);
+        this.loadMedia();
         this.session.addUpdateListener(this.sessionUpdateListener.bind(this));
     };
 
@@ -343,9 +340,8 @@
 
     /**
      * Loads media into a running receiver application
-     * @param {Number} mediaIndex An index number to indicate current media content
      */
-    CastPlayer.prototype.loadMedia = function (mediaIndex) {
+    CastPlayer.prototype.loadMedia = function () {
         if (!this.session) {
             console.log("no session");
             return;
@@ -360,6 +356,7 @@
         request.currentTime = 0;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
+//        this.localPlayerState = PLAYER_STATE.IDLE;
         this.session.loadMedia(request,
             this.onMediaDiscovered.bind(this, 'loadMedia'),
             this.onLoadMediaError.bind(this));
@@ -517,7 +514,7 @@
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
             case PLAYER_STATE.STOPPED:
-                this.loadMedia(this.currentMediaIndex);
+                this.loadMedia();
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
                 break;
