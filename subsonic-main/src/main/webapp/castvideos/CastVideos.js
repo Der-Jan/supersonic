@@ -3,6 +3,7 @@
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
 // TODO: Remote seeking broken.
+// TODO: Remote volume broken.
 
 (function () {
     'use strict';
@@ -237,45 +238,12 @@
             this.castPlayerState = PLAYER_STATE.IDLE;
             this.currentMediaSession = null;
             clearInterval(this.timer);
-            this.updateDisplayMessage();
 
             // continue to play media locally
             console.log("current time: " + this.currentMediaTime);
             this.playMediaLocally(this.currentMediaTime);
             this.updateMediaControlUI();
         }
-    };
-
-    /**
-     * Select a media content
-     * @param {Number} mediaIndex A number for media index
-     */
-        // TODO: Don't delete. Similar logic is needed when seeking.
-    CastPlayer.prototype.selectMedia = function (mediaIndex) {
-        console.log("media selected" + mediaIndex);
-
-        this.currentMediaIndex = mediaIndex;
-        // reset progress bar
-        var pi = document.getElementById("progress_indicator");
-        var p = document.getElementById("progress");
-
-        // reset currentMediaTime
-        this.currentMediaTime = 0;
-
-        p.style.width = '0px';
-        pi.style.marginLeft = -21 - PROGRESS_BAR_WIDTH + 'px';
-
-        if (!this.currentMediaSession) {
-            if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-                this.localPlayerState = PLAYER_STATE.IDLE;
-                this.playMediaLocally(0);
-            }
-        }
-        else {
-            this.castPlayerState = PLAYER_STATE.IDLE;
-            this.playMedia();
-        }
-        this.selectMediaUpdateUI(mediaIndex);
     };
 
     /**
@@ -330,7 +298,6 @@
         this.castPlayerState = PLAYER_STATE.IDLE;
         this.currentMediaSession = null;
         clearInterval(this.timer);
-        this.updateDisplayMessage();
 
         // continue to play media locally
         console.log("current time: " + this.currentMediaTime);
@@ -387,9 +354,8 @@
 //        if (this.localPlayerState == PLAYER_STATE.PLAYING) {
 //            this.localPlayerState = PLAYER_STATE.IDLE;
 //        }
-        // update UIs
+        // update UI
         this.updateMediaControlUI();
-        this.updateDisplayMessage();
     };
 
     /**
@@ -400,7 +366,6 @@
         this.castPlayerState = PLAYER_STATE.IDLE;
         // update UIs
         this.updateMediaControlUI();
-        this.updateDisplayMessage();
     };
 
     /**
@@ -414,7 +379,6 @@
         }
         console.log("updating media");
         this.updateProgressBar();
-        this.updateDisplayMessage();
         this.updateMediaControlUI();
     };
 
@@ -517,7 +481,6 @@
                 break;
         }
         this.updateMediaControlUI();
-        this.updateDisplayMessage();
     };
 
     /**
@@ -535,7 +498,6 @@
                 this.mediaCommandSuccessCallback.bind(this, "paused " + this.currentMediaSession.sessionId),
                 this.onError.bind(this));
             this.updateMediaControlUI();
-            this.updateDisplayMessage();
             clearInterval(this.timer);
         }
     };
@@ -565,7 +527,6 @@
         this.castPlayerState = PLAYER_STATE.STOPPED;
         clearInterval(this.timer);
 
-        this.updateDisplayMessage();
         this.updateMediaControlUI();
     };
 
@@ -645,7 +606,6 @@
             this.onError.bind(this));
         this.castPlayerState = PLAYER_STATE.SEEKING;
 
-        this.updateDisplayMessage();
         this.updateMediaControlUI();
     };
 
@@ -656,7 +616,6 @@
     CastPlayer.prototype.onSeekSuccess = function (info) {
         console.log(info);
         this.castPlayerState = PLAYER_STATE.PLAYING;
-        this.updateDisplayMessage();
         this.updateMediaControlUI();
     };
 
@@ -672,25 +631,6 @@
      */
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
-    };
-
-    /**
-     * Update display message depending on cast mode by deviceState
-     */
-    CastPlayer.prototype.updateDisplayMessage = function () {
-        if (this.deviceState != DEVICE_STATE.ACTIVE || this.castPlayerState == PLAYER_STATE.IDLE || this.castPlayerState == PLAYER_STATE.STOPPED) {
-//            document.getElementById("playerstate").style.display = 'none';
-//            document.getElementById("playerstatebg").style.display = 'none';
-            document.getElementById("play").style.display = 'block';
-//            document.getElementById("video_image_overlay").style.display = 'none';
-        }
-        else {
-//            document.getElementById("playerstate").style.display = 'block';
-//            document.getElementById("playerstatebg").style.display = 'block';
-//            document.getElementById("video_image_overlay").style.display = 'block';
-//            document.getElementById("playerstate").innerHTML = this.castPlayerState
-//                + " on " + this.session.receiver.friendlyName;
-        }
     };
 
     /**
@@ -731,18 +671,6 @@
             default:
                 break;
         }
-    }
-
-    /**
-     * Update UI components after selectMedia call
-     * @param {Number} mediaIndex An number
-     */
-    CastPlayer.prototype.selectMediaUpdateUI = function (mediaIndex) {
-//        document.getElementById('video_image').src = MEDIA_SOURCE_ROOT + this.mediaContents[mediaIndex]['thumb'];
-//        document.getElementById("progress").style.width = '0px';
-//        document.getElementById("media_title").innerHTML = this.mediaContents[mediaIndex]['title'];
-//        document.getElementById("media_subtitle").innerHTML = this.mediaContents[mediaIndex]['subtitle'];
-//        document.getElementById("media_desc").innerHTML = this.mediaContents[mediaIndex]['description'];
     };
 
     /**
