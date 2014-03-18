@@ -1,5 +1,4 @@
 
-// TODO: Bug in formatDuration.
 // TODO: Seek = set offset + load
 // TODO: Initial volume
 // TODO: Show overlay when playing remote
@@ -406,9 +405,9 @@
     };
 
     CastPlayer.prototype.formatDuration = function (duration) {
-        var hours = Math.round(duration / 3600);
+        var hours = Math.floor(duration / 3600);
         duration = duration % 3600;
-        var minutes = Math.round(duration / 60);
+        var minutes = Math.floor(duration / 60);
         var seconds = duration % 60;
 
         var result = "";
