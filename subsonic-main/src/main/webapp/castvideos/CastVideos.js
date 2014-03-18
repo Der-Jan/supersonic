@@ -1,10 +1,17 @@
 
 // TODO: Seek = set offset + load
 // TODO: Initial volume
-// TODO: Show overlay when playing remote
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
 // TODO: Remote seeking not implemented.
+// TODO: Integrate with videoPlayer.jsp
+// TODO: Smaller play/pause buttons
+// TODO: Fonts
+// TODO: Show overlay before local media is loaded (to hide nonfunction play button)
+// TODO: Proper handling of EOM
+// TODO: Test on other browsers
+// TODO: Starts playing locally when session times out.
+
 
 (function () {
     'use strict';
