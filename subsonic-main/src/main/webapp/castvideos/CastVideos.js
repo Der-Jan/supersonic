@@ -138,7 +138,7 @@
         }
     };
 
-    CastPlayer.prototype.updateLocalState = function (event) {
+    CastPlayer.prototype.updateLocalState = function () {
         if (this.localPlayer.getState() == "PLAYING" || this.localPlayer.getState() == "BUFFERING") {
             this.localPlayerState = PLAYER_STATE.PLAYING;
         } else if (this.localPlayer.getState() == "PAUSED") {
@@ -332,6 +332,7 @@
     /**
      * Callback function for loadMedia success
      * @param {Object} mediaSession A new media object.
+     * @param {String} how How the session was discovered.
      */
     CastPlayer.prototype.onMediaDiscovered = function (how, mediaSession) {
         console.log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
@@ -665,7 +666,7 @@
     };
 
     /**
-     * @param {function} A callback function for the fucntion to start timer
+     * @param {function} callback A callback function for the fucntion to start timer
      */
     CastPlayer.prototype.startProgressTimer = function (callback) {
         if (this.timer) {
