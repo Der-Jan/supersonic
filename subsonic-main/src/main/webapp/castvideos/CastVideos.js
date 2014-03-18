@@ -1,4 +1,6 @@
 
+// TODO: Seek = set offset + load
+// TODO: Initial volume
 // TODO: Show overlay when playing remote
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
@@ -322,7 +324,6 @@
         request.currentTime = 0;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
-//        this.localPlayerState = PLAYER_STATE.IDLE;
         this.session.loadMedia(request,
             this.onMediaDiscovered.bind(this, 'loadMedia'),
             this.onLoadMediaError.bind(this));
@@ -350,9 +351,6 @@
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
-//        if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-//            this.localPlayerState = PLAYER_STATE.IDLE;
-//        }
         // update UI
         this.updateMediaControlUI();
     };
@@ -372,7 +370,7 @@
      * @param {!Boolean} e true/false
      */
     CastPlayer.prototype.onMediaStatusUpdate = function (e) {
-        if (e == false) {
+        if (!e) {
             this.currentMediaTime = 0;
             this.castPlayerState = PLAYER_STATE.IDLE;
         }
