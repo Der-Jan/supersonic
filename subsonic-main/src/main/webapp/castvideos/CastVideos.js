@@ -397,30 +397,6 @@
     };
 
     /**
-     * Play media in local player
-     * @param {Number} offset A number for media current position
-     */
-    CastPlayer.prototype.playMediaLocally = function (offset) {
-
-        // Resume?
-        if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
-            this.localPlayer.play();
-        } else {
-            this.currentMediaOffset = offset;
-            this.localPlayer.load({
-                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
-                duration: this.currentMediaDuration,
-                provider: "video"
-            });
-            this.localPlayer.play();
-            this.seekInProgress = false;
-        }
-
-//        this.localPlayerState = PLAYER_STATE.PLAYING;
-        this.updateMediaControlUI();
-    };
-
-    /**
      * Updates the duration label.
      */
     CastPlayer.prototype.updateDurationLabel = function () {
@@ -476,6 +452,28 @@
                 break;
             default:
                 break;
+        }
+        this.updateMediaControlUI();
+    };
+
+    /**
+     * Play media in local player
+     * @param {Number} offset A number for media current position
+     */
+    CastPlayer.prototype.playMediaLocally = function (offset) {
+
+        // Resume?
+        if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
+            this.localPlayer.play();
+        } else {
+            this.currentMediaOffset = offset;
+            this.localPlayer.load({
+                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
+                duration: this.currentMediaDuration,
+                provider: "video"
+            });
+            this.localPlayer.play();
+            this.seekInProgress = false;
         }
         this.updateMediaControlUI();
     };
