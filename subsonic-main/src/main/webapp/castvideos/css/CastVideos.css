@@ -8,6 +8,7 @@ body {
     position: absolute;
     z-index: 1;
     background-color: #AAA;
+    display: none;
 }
 
 #media_control {
@@ -23,17 +24,18 @@ body {
 }
 
 #progress_slider {
-    margin-top: 5px;
-    width: 300px;
+    margin-left: 5px;
+    width: 590px;
 }
 
 #volume_slider {
-    margin-top: 35px;
-    width: 100px;
+    margin-left: 5px;
+    margin-top: 12px;
+    width: 90px;
 }
 
 #play {
-    margin: 10px 20px 10px 10px;
+    margin-left: 5px;
     float: left;
     width: 65px;
     height: 40px;
@@ -50,7 +52,7 @@ body {
 
 #pause {
     display: none;
-    margin: 10px 20px 10px 10px;
+    margin-left: 5px;
     float: left;
     width: 65px;
     height: 40px;
@@ -63,9 +65,10 @@ body {
 
 #casticonactive {
     float: right;
-    margin: 10px 17px 14px 0px;
     width: 32px;
     height: 32px;
+    margin-right: 10px;
+    margin-top: 0;
     display: none;
     background-image: url('../imagefiles/ic_media_route_on_custom.png');
 }
@@ -74,119 +77,39 @@ body {
     float: right;
     width: 32px;
     height: 32px;
-    margin: 10px 17px 14px 0px;
+    margin-right: 10px;
+    margin-top: 0;
     display: none;
     background-image: url('../imagefiles/ic_media_route_off_custom.png');
 }
 
 #audio_off {
-    float: right;
-    margin: 10px 10px 10px 0px;
+    float: left;
     width: 32px;
     height: 32px;
+    margin-left: 10px;
+    margin-top: 3px;
     display: none;
     background-image: url('../imagefiles/audio_off.png');
 }
 
 #audio_on {
-    float: right;
+    float: left;
     width: 32px;
     height: 32px;
-    margin: 10px 10px 10px 0px;
+    margin-left: 10px;
+    margin-top: 3px;
     display: block;
     background-image: url('../imagefiles/audio_on.png');
 }
 
-/*#audio_bg {*/
-    /*float: right;*/
-    /*opacity: 0.1;*/
-    /*width: 41px;*/
-    /*height: 124px;*/
-    /*margin: -115px 8px -10px 0px;*/
-    /*display: block;*/
-    /*background-image: url('../imagefiles/audio_bg.png');*/
-    /*position: relative;*/
-    /*z-index: 10;*/
-/*}*/
-
-/*#audio_bg_track {*/
-    /*float: right;*/
-    /*opacity: 0.0;*/
-    /*width: 16px;*/
-    /*height: 100px;*/
-    /*margin: -100px 20px -30px 0px;*/
-    /*display: block;*/
-    /*background-image: url('../imagefiles/audio_bg_track.png');*/
-    /*position: relative;*/
-    /*z-index: 1000;*/
-/*}*/
-
-/*#audio_indicator {*/
-    /*float: right;*/
-    /*opacity: 0.0;*/
-    /*width: 16px;*/
-    /*height: 5px;*/
-    /*margin: -50px 20px -30px 0px;*/
-    /*display: none;*/
-    /*background-image: url('../imagefiles/audio_indicator.png');*/
-    /*position: relative;*/
-    /*z-index: 1000;*/
-/*}*/
-
-/*#audio_bg_level {*/
-    /*float: right;*/
-    /*opacity: 0.0;*/
-    /*width: 16px;*/
-    /*height: 50px;*/
-    /*margin: -50px 20px -30px 0px;*/
-    /*display: block;*/
-    /*background-image: url('../imagefiles/audio_bg_level.png');*/
-    /*position: relative;*/
-    /*z-index: 1000;*/
-/*}*/
-
 #duration {
-    float: right;
+    float: left;
     color: #fff;
-    width: 60px;
-    height: 32px;
-    margin: 20px 15px 10px 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+    /*width: 60px;*/
+    /*height: 32px;*/
+    /*margin: 20px 15px 10px 15px;*/
     display: block;
 }
-
-/*div.imageSub { position: relative; }*/
-/*div.imageSub img { z-index: 1; }*/
-/*div.imageSub div {*/
-/*position: absolute;*/
-/*left: 0%;*/
-/*right: 0%;*/
-/*bottom: 0px;*/
-/*padding: 0px;*/
-/*}*/
-/*div.imageSub div.blackbg {*/
-/*z-index: 2000;*/
-/*bottom: 60px;*/
-/*left: 300px;*/
-/*width: 400px;*/
-/*height: 30px;*/
-/*color: #000;*/
-/*background-color: #000;*/
-/*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";*/
-/*filter: alpha(opacity=50);*/
-/*opacity: 0.5;*/
-/*font-size:120%;*/
-/*display:none;*/
-/*padding:10px;*/
-/*}*/
-
-/*div.imageSub div.label {*/
-/*z-index: 3000;*/
-/*bottom: 60px;*/
-/*left: 300px;*/
-/*width: 400px;*/
-/*height: 30px;*/
-/*color: white;*/
-/*font-size:120%;*/
-/*display:none;*/
-/*padding:10px;*/
-/*}*/

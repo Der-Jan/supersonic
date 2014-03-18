@@ -762,40 +762,12 @@
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
         document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
-        document.getElementById("volume_slider").addEventListener('mouseup', this.setReceiverVolume.bind(this, false));
+        document.getElementById("volume_slider").addEventListener('change', this.setReceiverVolume.bind(this, false));
         document.getElementById("audio_on").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
-//        document.getElementById("audio_bg").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-//        document.getElementById("audio_on").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-//        document.getElementById("audio_bg_level").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-//        document.getElementById("audio_bg_track").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-//        document.getElementById("audio_bg_level").addEventListener('click', this.setReceiverVolume.bind(this, false));
-//        document.getElementById("audio_bg_track").addEventListener('click', this.setReceiverVolume.bind(this, false));
-//        document.getElementById("audio_bg").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
-//        document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
     };
-
-    /**
-     * Show the volume slider
-     */
-//    CastPlayer.prototype.showVolumeSlider = function () {
-//        document.getElementById('audio_bg').style.opacity = 1;
-//        document.getElementById('audio_bg_track').style.opacity = 1;
-//        document.getElementById('audio_bg_level').style.opacity = 1;
-//        document.getElementById('audio_indicator').style.opacity = 1;
-//    };
-
-    /**
-     * Hide the volume slider
-     */
-//    CastPlayer.prototype.hideVolumeSlider = function () {
-//        document.getElementById('audio_bg').style.opacity = 0;
-//        document.getElementById('audio_bg_track').style.opacity = 0;
-//        document.getElementById('audio_bg_level').style.opacity = 0;
-//        document.getElementById('audio_indicator').style.opacity = 0;
-//    };
 
     /**
      * @param {function} A callback function for the fucntion to start timer
