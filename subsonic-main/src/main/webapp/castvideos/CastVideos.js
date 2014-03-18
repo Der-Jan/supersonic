@@ -1,6 +1,7 @@
 
 // TODO: Show overlay when playing remote
 // TODO: Emulate youtube controls.
+// TODO: Use jquery
 
 (function () {
     'use strict';
@@ -707,17 +708,21 @@
      * Update media control UI components based on localPlayerState or castPlayerState
      */
     CastPlayer.prototype.updateMediaControlUI = function () {
+
         if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'none';
+            document.getElementById("overlay").style.display = 'none';
             var playerState = this.localPlayerState;
         } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
             document.getElementById("casticonactive").style.display = 'block';
             document.getElementById("casticonidle").style.display = 'none';
+            document.getElementById("overlay").style.display = 'block';
             var playerState = this.castPlayerState;
         } else {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'block';
+            document.getElementById("overlay").style.display = 'none';
             var playerState = this.localPlayerState;
         }
 
