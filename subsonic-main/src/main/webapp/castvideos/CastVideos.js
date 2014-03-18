@@ -3,7 +3,6 @@
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
 // TODO: Remote seeking broken.
-// TODO: Remote volume broken.
 
 (function () {
     'use strict';
@@ -57,7 +56,7 @@
         // @type {Object} a chrome.cast.media.Media object
         this.currentMediaSession = null;
 
-        // @type {Number} volume
+        // @type {Number} volume between 0.0 and 1.0
         this.currentVolume = 0.5;
 
         // @type {Boolean} A flag for autoplay after load
@@ -559,7 +558,7 @@
                     this.mediaCommandSuccessCallback.bind(this),
                     this.onError.bind(this));
         } else {
-            this.session.setReceiverVolumeLevel(this.currentVolume,
+            this.session.setReceiverVolumeLevel(this.currentVolume / 100.0,
                     this.mediaCommandSuccessCallback.bind(this),
                     this.onError.bind(this));
         }
