@@ -23,8 +23,13 @@ body {
 }
 
 #progress_slider {
-    margin-top: 20px;
+    margin-top: 5px;
     width: 300px;
+}
+
+#volume_slider {
+    margin-top: 35px;
+    width: 100px;
 }
 
 #play {
@@ -92,53 +97,53 @@ body {
     background-image: url('../imagefiles/audio_on.png');
 }
 
-#audio_bg {
-    float: right;
-    opacity: 0.1;
-    width: 41px;
-    height: 124px;
-    margin: -115px 8px -10px 0px;
-    display: block;
-    background-image: url('../imagefiles/audio_bg.png');
-    position: relative;
-    z-index: 10;
-}
+/*#audio_bg {*/
+    /*float: right;*/
+    /*opacity: 0.1;*/
+    /*width: 41px;*/
+    /*height: 124px;*/
+    /*margin: -115px 8px -10px 0px;*/
+    /*display: block;*/
+    /*background-image: url('../imagefiles/audio_bg.png');*/
+    /*position: relative;*/
+    /*z-index: 10;*/
+/*}*/
 
-#audio_bg_track {
-    float: right;
-    opacity: 0.0;
-    width: 16px;
-    height: 100px;
-    margin: -100px 20px -30px 0px;
-    display: block;
-    background-image: url('../imagefiles/audio_bg_track.png');
-    position: relative;
-    z-index: 1000;
-}
+/*#audio_bg_track {*/
+    /*float: right;*/
+    /*opacity: 0.0;*/
+    /*width: 16px;*/
+    /*height: 100px;*/
+    /*margin: -100px 20px -30px 0px;*/
+    /*display: block;*/
+    /*background-image: url('../imagefiles/audio_bg_track.png');*/
+    /*position: relative;*/
+    /*z-index: 1000;*/
+/*}*/
 
-#audio_indicator {
-    float: right;
-    opacity: 0.0;
-    width: 16px;
-    height: 5px;
-    margin: -50px 20px -30px 0px;
-    display: none;
-    background-image: url('../imagefiles/audio_indicator.png');
-    position: relative;
-    z-index: 1000;
-}
+/*#audio_indicator {*/
+    /*float: right;*/
+    /*opacity: 0.0;*/
+    /*width: 16px;*/
+    /*height: 5px;*/
+    /*margin: -50px 20px -30px 0px;*/
+    /*display: none;*/
+    /*background-image: url('../imagefiles/audio_indicator.png');*/
+    /*position: relative;*/
+    /*z-index: 1000;*/
+/*}*/
 
-#audio_bg_level {
-    float: right;
-    opacity: 0.0;
-    width: 16px;
-    height: 50px;
-    margin: -50px 20px -30px 0px;
-    display: block;
-    background-image: url('../imagefiles/audio_bg_level.png');
-    position: relative;
-    z-index: 1000;
-}
+/*#audio_bg_level {*/
+    /*float: right;*/
+    /*opacity: 0.0;*/
+    /*width: 16px;*/
+    /*height: 50px;*/
+    /*margin: -50px 20px -30px 0px;*/
+    /*display: block;*/
+    /*background-image: url('../imagefiles/audio_bg_level.png');*/
+    /*position: relative;*/
+    /*z-index: 1000;*/
+/*}*/
 
 #duration {
     float: right;

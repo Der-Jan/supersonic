@@ -76,8 +76,8 @@
 
         /* Current media variables */
 
-        // @type {Boolean} Audio on and off
-        this.audio = true;
+        // @type {Boolean} Muted audio
+        this.muted = false;
 
         // @type {Number} A number for current media index
         this.currentMediaIndex = 0;
@@ -593,45 +593,24 @@
      * @param {Boolean} mute A boolean
      */
     CastPlayer.prototype.setReceiverVolume = function (mute) {
-        var p = document.getElementById("audio_bg_level");
-        if (event.currentTarget.id == 'audio_bg_track') {
-            var pos = 100 - parseInt(event.offsetY);
-        }
-        else {
-            var pos = parseInt(p.clientHeight) - parseInt(event.offsetY);
-        }
+        this.currentVolume = parseInt(document.getElementById("volume_slider").value);
+
         if (!this.currentMediaSession) {
-            this.localPlayer.setVolume(pos < 100 ? pos : 100);
-            p.style.height = pos + 'px';
-            p.style.marginTop = -pos + 'px';
+            jwplayer().setMute(mute);
+            if (!mute) {
+                jwplayer().setVolume(this.currentVolume);
+            }
             return;
         }
 
-        if (event.currentTarget.id == 'audio_bg_track' || event.currentTarget.id == 'audio_bg_level') {
-            // add a drag to avoid loud volume
-            if (pos < 100) {
-                var vScale = this.currentVolume * 100;
-                if (pos > vScale) {
-                    pos = vScale + (pos - vScale) / 2;
-                }
-                p.style.height = pos + 'px';
-                p.style.marginTop = -pos + 'px';
-                this.currentVolume = pos / 100;
-            }
-            else {
-                this.currentVolume = 1;
-            }
-        }
-
-        if (!mute) {
-            this.session.setReceiverVolumeLevel(this.currentVolume,
-                this.mediaCommandSuccessCallback.bind(this),
-                this.onError.bind(this));
-        }
-        else {
+        if (mute) {
             this.session.setReceiverMuted(true,
-                this.mediaCommandSuccessCallback.bind(this),
-                this.onError.bind(this));
+                    this.mediaCommandSuccessCallback.bind(this),
+                    this.onError.bind(this));
+        } else {
+            this.session.setReceiverVolumeLevel(this.currentVolume,
+                    this.mediaCommandSuccessCallback.bind(this),
+                    this.onError.bind(this));
         }
         this.updateMediaControlUI();
     };
@@ -640,31 +619,12 @@
      * Mute media function in either Cast or local mode
      */
     CastPlayer.prototype.muteMedia = function () {
-        if (this.audio == true) {
-            this.audio = false;
-            document.getElementById('audio_on').style.display = 'none';
-            document.getElementById('audio_off').style.display = 'block';
-            if (this.currentMediaSession) {
-                this.setReceiverVolume(true);
-            }
-            else {
-                this.localPlayer.setMute(true);
-            }
-        }
-        else {
-            this.audio = true;
-            document.getElementById('audio_on').style.display = 'block';
-            document.getElementById('audio_off').style.display = 'none';
-            if (this.currentMediaSession) {
-                this.setReceiverVolume(false);
-            }
-            else {
-                this.localPlayer.setMute(false);
-            }
-        }
+        this.muted = !this.muted;
+        this.setReceiverVolume(this.muted);
+        document.getElementById('audio_on').style.display = this.muted ? 'none' : 'block';
+        document.getElementById('audio_off').style.display = this.muted ? 'block' : 'none';
         this.updateMediaControlUI();
     };
-
 
     /**
      * media seek function in either Cast or local mode
@@ -785,7 +745,7 @@
      */
     CastPlayer.prototype.selectMediaUpdateUI = function (mediaIndex) {
 //        document.getElementById('video_image').src = MEDIA_SOURCE_ROOT + this.mediaContents[mediaIndex]['thumb'];
-        document.getElementById("progress").style.width = '0px';
+//        document.getElementById("progress").style.width = '0px';
 //        document.getElementById("media_title").innerHTML = this.mediaContents[mediaIndex]['title'];
 //        document.getElementById("media_subtitle").innerHTML = this.mediaContents[mediaIndex]['subtitle'];
 //        document.getElementById("media_desc").innerHTML = this.mediaContents[mediaIndex]['description'];
@@ -802,16 +762,17 @@
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
         document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
+        document.getElementById("volume_slider").addEventListener('mouseup', this.setReceiverVolume.bind(this, false));
         document.getElementById("audio_on").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
-        document.getElementById("audio_bg").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-        document.getElementById("audio_on").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-        document.getElementById("audio_bg_level").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-        document.getElementById("audio_bg_track").addEventListener('mouseover', this.showVolumeSlider.bind(this));
-        document.getElementById("audio_bg_level").addEventListener('click', this.setReceiverVolume.bind(this, false));
-        document.getElementById("audio_bg_track").addEventListener('click', this.setReceiverVolume.bind(this, false));
-        document.getElementById("audio_bg").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
-        document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
+//        document.getElementById("audio_bg").addEventListener('mouseover', this.showVolumeSlider.bind(this));
+//        document.getElementById("audio_on").addEventListener('mouseover', this.showVolumeSlider.bind(this));
+//        document.getElementById("audio_bg_level").addEventListener('mouseover', this.showVolumeSlider.bind(this));
+//        document.getElementById("audio_bg_track").addEventListener('mouseover', this.showVolumeSlider.bind(this));
+//        document.getElementById("audio_bg_level").addEventListener('click', this.setReceiverVolume.bind(this, false));
+//        document.getElementById("audio_bg_track").addEventListener('click', this.setReceiverVolume.bind(this, false));
+//        document.getElementById("audio_bg").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
+//        document.getElementById("audio_on").addEventListener('mouseout', this.hideVolumeSlider.bind(this));
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
     };
@@ -819,22 +780,22 @@
     /**
      * Show the volume slider
      */
-    CastPlayer.prototype.showVolumeSlider = function () {
-        document.getElementById('audio_bg').style.opacity = 1;
-        document.getElementById('audio_bg_track').style.opacity = 1;
-        document.getElementById('audio_bg_level').style.opacity = 1;
-        document.getElementById('audio_indicator').style.opacity = 1;
-    };
+//    CastPlayer.prototype.showVolumeSlider = function () {
+//        document.getElementById('audio_bg').style.opacity = 1;
+//        document.getElementById('audio_bg_track').style.opacity = 1;
+//        document.getElementById('audio_bg_level').style.opacity = 1;
+//        document.getElementById('audio_indicator').style.opacity = 1;
+//    };
 
     /**
      * Hide the volume slider
      */
-    CastPlayer.prototype.hideVolumeSlider = function () {
-        document.getElementById('audio_bg').style.opacity = 0;
-        document.getElementById('audio_bg_track').style.opacity = 0;
-        document.getElementById('audio_bg_level').style.opacity = 0;
-        document.getElementById('audio_indicator').style.opacity = 0;
-    };
+//    CastPlayer.prototype.hideVolumeSlider = function () {
+//        document.getElementById('audio_bg').style.opacity = 0;
+//        document.getElementById('audio_bg_track').style.opacity = 0;
+//        document.getElementById('audio_bg_level').style.opacity = 0;
+//        document.getElementById('audio_indicator').style.opacity = 0;
+//    };
 
     /**
      * @param {function} A callback function for the fucntion to start timer
