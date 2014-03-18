@@ -515,7 +515,7 @@
     };
 
     /**
-     * Set media volume in Cast mode
+     * Set media volume in local or Cast mode
      * @param {Boolean} mute A boolean
      */
     CastPlayer.prototype.setReceiverVolume = function (mute) {
@@ -542,7 +542,7 @@
     };
 
     /**
-     * Mute media function in either Cast or local mode
+     * Toggle mute in either Cast or local mode
      */
     CastPlayer.prototype.muteMedia = function () {
         this.muted = !this.muted;
@@ -554,9 +554,8 @@
 
     /**
      * media seek function in either Cast or local mode
-     * @param {Event} e An event object from seek
      */
-    CastPlayer.prototype.seekMedia = function (event) {
+    CastPlayer.prototype.seekMedia = function () {
 
         this.seekInProgress = true;
         var offset = parseInt(document.getElementById("progress_slider").value);
@@ -571,7 +570,6 @@
             return;
         }
 
-//        this.currentMediaTime = curr;
         console.log('Seeking ' + this.currentMediaSession.sessionId + ':' +
             this.currentMediaSession.mediaSessionId + ' to ' + pos + "%");
         var request = new chrome.cast.media.SeekRequest();
