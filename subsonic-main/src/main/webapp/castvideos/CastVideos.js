@@ -504,27 +504,8 @@
      */
     CastPlayer.prototype.pauseMediaLocally = function () {
         this.localPlayer.pause();
-//        this.localPlayerState = PLAYER_STATE.PAUSED;
         this.updateMediaControlUI();
         clearInterval(this.timer);
-    };
-
-    /**
-     * Stop media playback in either Cast or local mode
-     */
-    CastPlayer.prototype.stopMedia = function () {
-        if (!this.currentMediaSession) {
-            this.stopMediaLocally();
-            return;
-        }
-
-        this.currentMediaSession.stop(null,
-            this.mediaCommandSuccessCallback.bind(this, "stopped " + this.currentMediaSession.sessionId),
-            this.onError.bind(this));
-        this.castPlayerState = PLAYER_STATE.STOPPED;
-        clearInterval(this.timer);
-
-        this.updateMediaControlUI();
     };
 
     /**
@@ -532,7 +513,6 @@
      */
     CastPlayer.prototype.stopMediaLocally = function () {
         this.localPlayer.stop();
-//        this.localPlayerState = PLAYER_STATE.STOPPED;
         this.updateMediaControlUI();
     };
 
