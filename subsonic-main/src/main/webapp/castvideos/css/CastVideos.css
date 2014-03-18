@@ -7,8 +7,14 @@ body {
     height: 360px;
     position: absolute;
     z-index: 1;
-    background-color: #AAA;
+    background-color: #000;
     display: none;
+}
+
+#overlay_text {
+    text-align: center;
+    margin-top: 170px;
+    color: white;
 }
 
 #media_control {
