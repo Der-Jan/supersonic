@@ -3,7 +3,7 @@ body {
 }
 
 #overlay {
-    width: 600px;
+    width: 640px;
     height: 360px;
     position: absolute;
     z-index: 1;
@@ -12,7 +12,7 @@ body {
 }
 
 #media_control {
-    width: 600px;
+    width: 640px;
     height: 60px;
     /*z-index: 1000;*/
     /*opacity: 0.7;*/
@@ -25,7 +25,7 @@ body {
 
 #progress_slider {
     margin-left: 5px;
-    width: 590px;
+    width: 630px;
 }
 
 #volume_slider {
