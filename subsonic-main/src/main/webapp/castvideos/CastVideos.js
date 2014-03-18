@@ -2,6 +2,7 @@
 // TODO: Show overlay when playing remote
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
+// TODO: Remote seeking broken.
 
 (function () {
     'use strict';
@@ -136,7 +137,7 @@
     };
 
     CastPlayer.prototype.updateLocalState = function (event) {
-        if (this.localPlayer.getState() == "PLAYING") {
+        if (this.localPlayer.getState() == "PLAYING" || this.localPlayer.getState() == "BUFFERING") {
             this.localPlayerState = PLAYER_STATE.PLAYING;
         } else if (this.localPlayer.getState() == "PAUSED") {
             this.localPlayerState = PLAYER_STATE.PAUSED;
@@ -383,9 +384,9 @@
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
-        if (this.localPlayerState == PLAYER_STATE.PLAYING) {
-            this.localPlayerState = PLAYER_STATE.STOPPED;
-        }
+//        if (this.localPlayerState == PLAYER_STATE.PLAYING) {
+//            this.localPlayerState = PLAYER_STATE.IDLE;
+//        }
         // update UIs
         this.updateMediaControlUI();
         this.updateDisplayMessage();
@@ -454,7 +455,7 @@
             this.seekInProgress = false;
         }
 
-        this.localPlayerState = PLAYER_STATE.PLAYING;
+//        this.localPlayerState = PLAYER_STATE.PLAYING;
         this.updateMediaControlUI();
     };
 
@@ -544,7 +545,7 @@
      */
     CastPlayer.prototype.pauseMediaLocally = function () {
         this.localPlayer.pause();
-        this.localPlayerState = PLAYER_STATE.PAUSED;
+//        this.localPlayerState = PLAYER_STATE.PAUSED;
         this.updateMediaControlUI();
         clearInterval(this.timer);
     };
@@ -573,7 +574,7 @@
      */
     CastPlayer.prototype.stopMediaLocally = function () {
         this.localPlayer.stop();
-        this.localPlayerState = PLAYER_STATE.STOPPED;
+//        this.localPlayerState = PLAYER_STATE.STOPPED;
         this.updateMediaControlUI();
     };
 
