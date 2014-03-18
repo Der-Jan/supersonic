@@ -1,10 +1,11 @@
 
+// TODO: Bug in formatDuration.
 // TODO: Seek = set offset + load
 // TODO: Initial volume
 // TODO: Show overlay when playing remote
 // TODO: Emulate youtube controls.
 // TODO: Use jquery
-// TODO: Remote seeking broken.
+// TODO: Remote seeking not implemented.
 
 (function () {
     'use strict';
@@ -401,27 +402,29 @@
      * Updates the duration label.
      */
     CastPlayer.prototype.updateDurationLabel = function () {
-        var duration = this.currentMediaDuration;
+        document.getElementById("duration").innerHTML = this.formatDuration(this.currentMediaDuration);
+    };
 
+    CastPlayer.prototype.formatDuration = function (duration) {
         var hours = Math.round(duration / 3600);
         duration = duration % 3600;
         var minutes = Math.round(duration / 60);
         var seconds = duration % 60;
 
-        var s = "";
+        var result = "";
         if (hours > 0) {
-            s += hours + ":";
+            result += hours + ":";
             if (minutes < 10) {
-                s += "0";
+                result += "0";
             }
         }
-        s += minutes + ":";
+        result += minutes + ":";
         if (seconds < 10) {
-            s += "0";
+            result += "0";
         }
-        s += seconds;
+        result += seconds;
 
-        document.getElementById("duration").innerHTML = s;
+        return result;
     };
 
     /**
@@ -441,7 +444,6 @@
                     this.onError.bind(this));
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
-                // start progress timer
                 this.startProgressTimer(this.incrementMediaTime);
                 break;
             case PLAYER_STATE.IDLE:
@@ -605,6 +607,7 @@
      */
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
+        document.getElementById("progress").innerHTML = this.formatDuration(this.currentMediaOffset + this.currentMediaTime);
     };
 
     /**

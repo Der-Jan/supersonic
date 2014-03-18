@@ -103,13 +103,21 @@ body {
     background-image: url('../imagefiles/audio_on.png');
 }
 
-#duration {
+#progress {
+    font-size: 12px;
     float: left;
     color: #fff;
     margin-left: 10px;
-    margin-top: 10px;
-    /*width: 60px;*/
-    /*height: 32px;*/
-    /*margin: 20px 15px 10px 15px;*/
+    margin-top: 12px;
     display: block;
 }
+
+#duration {
+    font-size: 12px;
+    float: left;
+    color: #c4c4c4;
+    margin-left: 10px;
+    margin-top: 12px;
+    display: block;
+}
+
