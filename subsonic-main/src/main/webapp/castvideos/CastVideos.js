@@ -136,11 +136,11 @@
     };
 
     CastPlayer.prototype.updateLocalState = function (event) {
-        if (jwplayer().getState() == "PLAYING") {
+        if (this.localPlayer.getState() == "PLAYING") {
             this.localPlayerState = PLAYER_STATE.PLAYING;
-        } else if (jwplayer().getState() == "PAUSED") {
+        } else if (this.localPlayer.getState() == "PAUSED") {
             this.localPlayerState = PLAYER_STATE.PAUSED;
-        } else if (jwplayer().getState() == "IDLE") {
+        } else if (this.localPlayer.getState() == "IDLE") {
             this.localPlayerState = PLAYER_STATE.IDLE;
         }
         this.updateMediaControlUI();
@@ -299,7 +299,6 @@
         this.session = e;
         this.deviceState = DEVICE_STATE.ACTIVE;
         this.stopMediaLocally();
-//        this.updateMediaControlUI();
         this.loadMedia();
         this.session.addUpdateListener(this.sessionUpdateListener.bind(this));
     };
@@ -386,11 +385,6 @@
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING) {
             this.localPlayerState = PLAYER_STATE.STOPPED;
-//            var vi = document.getElementById('video_image');
-//            vi.style.display = 'block';
-//            this.localPlayer.style.display = 'none';
-            // start progress timer
-//            this.startProgressTimer(this.incrementMediaTime);
         }
         // update UIs
         this.updateMediaControlUI();
@@ -578,9 +572,6 @@
      * Stop media playback in local player
      */
     CastPlayer.prototype.stopMediaLocally = function () {
-//        var vi = document.getElementById('video_image');
-//        vi.style.display = 'block';
-//        this.localPlayer.style.display = 'none';
         this.localPlayer.stop();
         this.localPlayerState = PLAYER_STATE.STOPPED;
         this.updateMediaControlUI();
@@ -594,9 +585,9 @@
         this.currentVolume = parseInt(document.getElementById("volume_slider").value);
 
         if (!this.currentMediaSession) {
-            jwplayer().setMute(mute);
+            this.localPlayer.setMute(mute);
             if (!mute) {
-                jwplayer().setVolume(this.currentVolume);
+                this.localPlayer.setVolume(this.currentVolume);
             }
             return;
         }
