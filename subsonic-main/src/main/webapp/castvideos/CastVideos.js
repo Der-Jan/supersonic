@@ -578,14 +578,8 @@
             return;
         }
 
-        console.log('Seeking ' + this.currentMediaSession.sessionId + ':' +
-            this.currentMediaSession.mediaSessionId + ' to ' + pos + "%");
-        var request = new chrome.cast.media.SeekRequest();
-        request.currentTime = this.currentMediaTime;
-        this.currentMediaSession.seek(request,
-            this.onSeekSuccess.bind(this, 'media seek done'),
-            this.onError.bind(this));
         this.castPlayerState = PLAYER_STATE.SEEKING;
+        this.loadMedia();
 
         this.updateMediaControlUI();
     };
