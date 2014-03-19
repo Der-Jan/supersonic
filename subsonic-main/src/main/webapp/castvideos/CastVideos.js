@@ -169,7 +169,7 @@
         }
         // default set to the default media receiver app ID
         // optional: you may change it to point to your own
-        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
 
         // request session
         var sessionRequest = new chrome.cast.SessionRequest(applicationID);
@@ -368,7 +368,6 @@
     CastPlayer.prototype.onLoadMediaError = function (e) {
         console.log("media error");
         this.castPlayerState = PLAYER_STATE.IDLE;
-        // update UIs
         this.updateMediaControlUI();
     };
 
@@ -581,16 +580,6 @@
         this.castPlayerState = PLAYER_STATE.SEEKING;
         this.loadMedia();
 
-        this.updateMediaControlUI();
-    };
-
-    /**
-     * Callback function for seek success
-     * @param {String} info A string that describe seek event
-     */
-    CastPlayer.prototype.onSeekSuccess = function (info) {
-        console.log(info);
-        this.castPlayerState = PLAYER_STATE.PLAYING;
         this.updateMediaControlUI();
     };
 
