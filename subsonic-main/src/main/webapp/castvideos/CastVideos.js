@@ -169,7 +169,8 @@
         }
         // default set to the default media receiver app ID
         // optional: you may change it to point to your own
-        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
+//        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
+        var applicationID = "644BA8AC"; // Custom receiver
 
         // request session
         var sessionRequest = new chrome.cast.SessionRequest(applicationID);
@@ -320,7 +321,9 @@
             console.log("no session");
             return;
         }
-        var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + (this.currentMediaOffset + this.currentMediaTime);  // TODO: mkv
+        var offset = Math.floor(this.currentMediaOffset + this.currentMediaTime);
+        this.currentMediaOffset = offset;
+        var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + offset;  // TODO: mkv
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska'; // TODO
@@ -350,6 +353,7 @@
         if (how == 'activeSession') {
             this.castPlayerState = this.session.media[0].playerState;
             this.currentMediaTime = this.session.media[0].currentTime;
+            console.log("Media time from device: " + this.currentMediaTime);
         }
 
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
@@ -475,7 +479,7 @@
         } else {
             this.currentMediaOffset = offset;
             this.localPlayer.load({
-                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
+                file: MEDIA_SOURCE_URL + "&timeOffset=" + Math.floor(offset),
                 duration: this.currentMediaDuration,
                 provider: "video"
             });
@@ -587,6 +591,7 @@
      * Callback function for media command success
      */
     CastPlayer.prototype.mediaCommandSuccessCallback = function (info, e) {
+        this.currentMediaTime = this.session.media[0].currentTime;
         console.log(info);
     };
 
