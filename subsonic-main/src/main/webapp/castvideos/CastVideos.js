@@ -10,6 +10,7 @@
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
+// TODO: Sometimes playing both locally and remote.
 
 
 (function () {
@@ -582,6 +583,7 @@
         }
 
         this.castPlayerState = PLAYER_STATE.SEEKING;
+        this.currentMediaOffset = offset;
         this.loadMedia();
 
         this.updateMediaControlUI();
@@ -601,7 +603,6 @@
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
         document.getElementById("progress").innerHTML = this.formatDuration(this.currentMediaOffset + this.currentMediaTime);
-        this.updateDebug();
     };
 
     CastPlayer.prototype.updateDebug = function () {
@@ -654,7 +655,6 @@
             default:
                 break;
         }
-        this.updateDebug();
     };
 
     /**
@@ -673,6 +673,8 @@
         document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
+
+        setInterval(this.updateDebug.bind(this), 100);
     };
 
     /**
