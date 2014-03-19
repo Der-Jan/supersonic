@@ -7,7 +7,6 @@
 // TODO: Integrate with videoPlayer.jsp
 // TODO: Smaller play/pause buttons
 // TODO: Fonts
-// TODO: Show overlay before local media is loaded (to hide nonfunction play button)
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
@@ -624,17 +623,21 @@
         if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'none';
+            document.getElementById("overlay_text").style.display = 'none';
             document.getElementById("overlay").style.display = 'none';
             var playerState = this.localPlayerState;
         } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
             document.getElementById("casticonactive").style.display = 'block';
             document.getElementById("casticonidle").style.display = 'none';
+            document.getElementById("overlay_text").style.display = 'block';
             document.getElementById("overlay").style.display = 'block';
             var playerState = this.castPlayerState;
         } else {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'block';
-            document.getElementById("overlay").style.display = 'none';
+            document.getElementById("overlay_text").style.display = 'none';
+            var loaded = this.localPlayer.getPlaylist().length > 0;
+            document.getElementById("overlay").style.display = loaded ? 'none' : 'block';
             var playerState = this.localPlayerState;
         }
 

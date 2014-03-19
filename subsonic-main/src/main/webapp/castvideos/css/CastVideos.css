@@ -8,13 +8,14 @@ body {
     position: absolute;
     z-index: 1;
     background-color: #000;
-    display: none;
+    display: block;
 }
 
 #overlay_text {
     text-align: center;
     margin-top: 170px;
     color: white;
+    display: none;
 }
 
 #media_control {
