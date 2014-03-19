@@ -11,6 +11,7 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
+Make mac installer work
 Cast:
   Use separate appId for video.
   Can JWPlayer be controlled without control bar? Full screen, seeking, etc
