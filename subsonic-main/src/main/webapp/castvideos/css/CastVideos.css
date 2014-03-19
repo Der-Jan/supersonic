@@ -44,6 +44,7 @@ body {
     width: 65px;
     height: 40px;
     background-image: url('../imagefiles/play.png');
+    cursor: pointer;
 }
 
 #play:hover {
@@ -61,6 +62,7 @@ body {
     width: 65px;
     height: 40px;
     background-image: url('../imagefiles/pause.png');
+    cursor: pointer;
 }
 
 #pause:hover {
@@ -75,6 +77,7 @@ body {
     margin-top: 0;
     display: none;
     background-image: url('../imagefiles/ic_media_route_on_custom.png');
+    cursor: pointer;
 }
 
 #casticonidle {
@@ -85,6 +88,7 @@ body {
     margin-top: 0;
     display: none;
     background-image: url('../imagefiles/ic_media_route_off_custom.png');
+    cursor: pointer;
 }
 
 #audio_off {
@@ -95,6 +99,7 @@ body {
     margin-top: 3px;
     display: none;
     background-image: url('../imagefiles/audio_off.png');
+    cursor: pointer;
 }
 
 #audio_on {
@@ -105,6 +110,7 @@ body {
     margin-top: 3px;
     display: block;
     background-image: url('../imagefiles/audio_on.png');
+    cursor: pointer;
 }
 
 #progress {
