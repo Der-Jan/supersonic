@@ -601,6 +601,15 @@
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
         document.getElementById("progress").innerHTML = this.formatDuration(this.currentMediaOffset + this.currentMediaTime);
+        this.updateDebug();
+    };
+
+    CastPlayer.prototype.updateDebug = function () {
+        var debug = "<br>currentMediaOffset: " + this.currentMediaOffset + "<br>"
+                + "currentMediaTime: " + this.currentMediaTime + "<br>"
+                + "localPlayerState: " + this.localPlayerState + "<br>"
+                + "castPlayerState: " + this.castPlayerState;
+        document.getElementById("debug").innerHTML = debug;
     };
 
     /**
@@ -645,6 +654,7 @@
             default:
                 break;
         }
+        this.updateDebug();
     };
 
     /**
