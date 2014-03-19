@@ -30,8 +30,6 @@ XML-encoding in JSON
   Use JAXB, Jettison, ...?
 Problem with Content-Range for transcoded audio
   https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1447f4b647387e8b
-Use more modern embedding of jwplayer
-  http://www.longtailvideo.com/support/jw5/31164/javascript-api-reference
 
 Upgrade to servlet 3.0?
 Upgrade Jetty?
