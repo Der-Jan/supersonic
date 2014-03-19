@@ -18,22 +18,23 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Controller for the page used to play videos.
@@ -69,7 +70,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         String url = request.getRequestURL().toString();
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId());
         String host = new URL(streamUrl).getHost();
-        String ip = Util.getLocalIpAddress();
+        String ip = settingsService.getLocalIpAddress();
         String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
 
         map.put("video", file);

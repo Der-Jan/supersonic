@@ -31,6 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Miscellaneous general utility methods.
@@ -90,6 +91,8 @@ public final class Util {
 
     /**
      * Returns the local IP address.  Honours the "subsonic.host" system property.
+     * <p/>
+     * NOTE: For improved performance, use {@link SettingsService#getLocalIpAddress()} instead.
      *
      * @return The local IP, or the loopback address (127.0.0.1) if not found.
      */

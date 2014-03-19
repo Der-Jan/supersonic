@@ -18,6 +18,20 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.directwebremoting.WebContextFactory;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -30,19 +44,6 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
-import org.directwebremoting.WebContextFactory;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Provides AJAX-enabled services for manipulating the play queue of a player.
@@ -383,13 +384,7 @@ public class PlayQueueService {
 
         List<PlayQueueInfo.Entry> entries = new ArrayList<PlayQueueInfo.Entry>();
         PlayQueue playQueue = player.getPlayQueue();
-
-        // TODO: Beware of performance.
-        long t1 = System.nanoTime();
-        String ip = Util.getLocalIpAddress();
-        long t2 = System.nanoTime();
-        System.out.println((t2 - t1) / 1000L + " us");
-
+        String ip = settingsService.getLocalIpAddress();
 
         for (MediaFile file : playQueue.getFiles()) {
 
