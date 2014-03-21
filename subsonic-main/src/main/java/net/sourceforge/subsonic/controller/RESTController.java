@@ -836,9 +836,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
     }
 
     public void updatePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -905,9 +903,7 @@ public class RESTController extends MultiActionController {
             playlistService.setFilesInPlaylist(id, songs);
         }
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
     }
 
     public void deletePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -926,9 +922,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.deletePlaylist(id);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
     }
 
     public void getAlbumList(HttpServletRequest request, HttpServletResponse response) throws Exception {
