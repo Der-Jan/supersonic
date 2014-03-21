@@ -53,6 +53,8 @@ import org.subsonic.restapi.Indexes;
 import org.subsonic.restapi.License;
 import org.subsonic.restapi.MediaType;
 import org.subsonic.restapi.MusicFolders;
+import org.subsonic.restapi.PlaylistWithSongs;
+import org.subsonic.restapi.Playlists;
 import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
@@ -463,6 +465,22 @@ public class RESTController extends MultiActionController {
         return attributes;
     }
 
+    private <T extends org.subsonic.restapi.Playlist> T createPlaylist(T jaxbPlaylist, Playlist playlist) {
+        jaxbPlaylist.setId(String.valueOf(playlist.getId()));
+        jaxbPlaylist.setName(playlist.getName());
+        jaxbPlaylist.setComment(playlist.getComment());
+        jaxbPlaylist.setOwner(playlist.getUsername());
+        jaxbPlaylist.setPublic(playlist.isShared());
+        jaxbPlaylist.setSongCount(playlist.getFileCount());
+        jaxbPlaylist.setDuration(playlist.getDurationSeconds());
+        jaxbPlaylist.setCreated(jaxbWriter.convertDate(playlist.getCreated()));
+
+        for (String username : playlistService.getPlaylistUsers(playlist.getId())) {
+            jaxbPlaylist.getAllowedUser().add(username);
+        }
+        return jaxbPlaylist;
+    }
+
     public void getAlbum(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -653,7 +671,6 @@ public class RESTController extends MultiActionController {
 
     public void getPlaylists(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         User user = securityService.getCurrentUser(request);
         String authenticatedUsername = user.getUsername();
@@ -666,29 +683,21 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        builder.add("playlists", false);
+        Playlists result = new Playlists();
 
         for (Playlist playlist : playlistService.getReadablePlaylistsForUser(requestedUsername)) {
-            List<String> sharedUsers = playlistService.getPlaylistUsers(playlist.getId());
-            builder.add("playlist", createAttributesForPlaylist(playlist), sharedUsers.isEmpty());
-            if (!sharedUsers.isEmpty()) {
-                for (String username : sharedUsers) {
-                    builder.add("allowedUser", (Iterable<Attribute>) null, username, true);
-                }
-                builder.end();
-            }
+            result.getPlaylist().add(createPlaylist(new org.subsonic.restapi.Playlist(), playlist));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setPlaylists(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getPlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
-
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         int id = getRequiredIntParameter(request, "id");
 
@@ -701,17 +710,14 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_AUTHORIZED, "Permission denied for playlist " + id);
             return;
         }
-        builder.add("playlist", createAttributesForPlaylist(playlist), false);
-        for (String allowedUser : playlistService.getPlaylistUsers(playlist.getId())) {
-            builder.add("allowedUser", (Iterable<Attribute>) null, allowedUser, true);
-        }
+        PlaylistWithSongs result = createPlaylist(new PlaylistWithSongs(), playlist);
         for (MediaFile mediaFile : playlistService.getFilesInPlaylist(id)) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("entry", attributes, true);
+            result.getEntry().add(createChild(player, mediaFile, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setPlaylist(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void jukeboxControl(HttpServletRequest request, HttpServletResponse response) throws Exception {
