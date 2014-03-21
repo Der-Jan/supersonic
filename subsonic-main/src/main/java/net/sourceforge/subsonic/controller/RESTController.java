@@ -47,6 +47,8 @@ import org.subsonic.restapi.ArtistID3;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
 import org.subsonic.restapi.Bookmarks;
+import org.subsonic.restapi.ChatMessage;
+import org.subsonic.restapi.ChatMessages;
 import org.subsonic.restapi.Child;
 import org.subsonic.restapi.Directory;
 import org.subsonic.restapi.Genres;
@@ -1972,21 +1974,22 @@ public class RESTController extends MultiActionController {
     @SuppressWarnings("UnusedDeclaration")
     public void getChatMessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-
         long since = getLongParameter(request, "since", 0L);
 
-        builder.add("chatMessages", false);
-
+        ChatMessages result = new ChatMessages();
         for (ChatService.Message message : chatService.getMessages(0L).getMessages()) {
             long time = message.getDate().getTime();
             if (time > since) {
-                builder.add("chatMessage", true, new Attribute("username", message.getUsername()),
-                        new Attribute("time", time), new Attribute("message", message.getContent()));
+                ChatMessage c = new ChatMessage();
+                result.getChatMessage().add(c);
+                c.setUsername(message.getUsername());
+                c.setTime(time);
+                c.setMessage(message.getContent());
             }
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setChatMessages(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
