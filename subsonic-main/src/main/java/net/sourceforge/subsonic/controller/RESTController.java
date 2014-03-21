@@ -63,6 +63,8 @@ import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
 import org.subsonic.restapi.Songs;
+import org.subsonic.restapi.Starred;
+import org.subsonic.restapi.Starred2;
 import org.subsonic.restapi.Videos;
 
 import net.sourceforge.subsonic.Logger;
@@ -1417,19 +1419,19 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("starred", false);
+        Starred result = new Starred();
         for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
-            builder.add("artist", createAttributesForArtist(artist, username), true);
+            result.getArtist().add(createArtist(artist, username));
         }
         for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
-            builder.add("album", createAttributesForMediaFile(player, album, username), true);
+            result.getAlbum().add(createChild(player, album, username));
         }
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
-            builder.add("song", createAttributesForMediaFile(player, song, username), true);
+            result.getSong().add(createChild(player, song, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setStarred(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getStarred2(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1437,19 +1439,19 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("starred2", false);
+        Starred2 result = new Starred2();
         for (Artist artist : artistDao.getStarredArtists(0, Integer.MAX_VALUE, username)) {
-            builder.add("artist", createAttributesForArtist(artist, username), true);
+            result.getArtist().add(createArtist(new ArtistID3(), artist, username));
         }
         for (Album album : albumDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
-            builder.add("album", createAttributesForAlbum(album, username), true);
+            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
         }
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
-            builder.add("song", createAttributesForMediaFile(player, song, username), true);
+            result.getSong().add(createChild(player, song, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setStarred2(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getPodcasts(HttpServletRequest request, HttpServletResponse response) throws Exception {
