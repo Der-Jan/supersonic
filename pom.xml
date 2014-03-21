@@ -84,6 +84,7 @@
     </developers>
 
     <modules>
+        <module>subsonic-rest-api</module>
         <module>subsonic-main</module>
     </modules>
 
