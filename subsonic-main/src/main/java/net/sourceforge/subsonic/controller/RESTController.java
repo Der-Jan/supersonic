@@ -39,9 +39,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.subsonic.restapi.AlbumID3;
+import org.subsonic.restapi.AlbumWithSongsID3;
 import org.subsonic.restapi.ArtistID3;
+import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
 import org.subsonic.restapi.Child;
+import org.subsonic.restapi.Directory;
 import org.subsonic.restapi.Genres;
 import org.subsonic.restapi.Index;
 import org.subsonic.restapi.IndexID3;
@@ -322,7 +326,7 @@ public class RESTController extends MultiActionController {
             result.getIndex().add(index);
             index.setName(entry.getKey().getIndex());
             for (MusicIndex.SortableArtistWithArtist sortableArtist : entry.getValue()) {
-                index.getArtist().add(createArtist(sortableArtist.getArtist(), username));
+                index.getArtist().add(createArtist(new ArtistID3(), sortableArtist.getArtist(), username));
             }
         }
 
@@ -331,6 +335,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @Deprecated
     private AttributeSet createAttributesForArtist(Artist artist, String username) {
         AttributeSet attributes = new AttributeSet();
         attributes.add("id", artist.getId());
@@ -343,18 +348,18 @@ public class RESTController extends MultiActionController {
         return attributes;
     }
 
-    private ArtistID3 createArtist(Artist artist, String username) {
-        ArtistID3 result = new ArtistID3();
-        result.setId(String.valueOf(artist.getId()));
-        result.setName(artist.getName());
-        result.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(artist.getId(), username)));
-        result.setAlbumCount(artist.getAlbumCount());
+    private <T extends ArtistID3> T createArtist(T jaxbArtist, Artist artist, String username) {
+        jaxbArtist.setId(String.valueOf(artist.getId()));
+        jaxbArtist.setName(artist.getName());
+        jaxbArtist.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(artist.getId(), username)));
+        jaxbArtist.setAlbumCount(artist.getAlbumCount());
         if (artist.getCoverArtPath() != null) {
-            result.setCoverArt(CoverArtController.ARTIST_COVERART_PREFIX + artist.getId());
+            jaxbArtist.setCoverArt(CoverArtController.ARTIST_COVERART_PREFIX + artist.getId());
         }
-        return result;
+        return jaxbArtist;
     }
 
+    @Deprecated
     private AttributeSet createAttributesForArtist(MediaFile artist, String username) {
         AttributeSet attributes = new AttributeSet();
         attributes.add("id", artist.getId());
@@ -374,7 +379,6 @@ public class RESTController extends MultiActionController {
 
     public void getArtist(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         String username = securityService.getCurrentUsername(request);
         int id = getRequiredIntParameter(request, "id");
@@ -384,15 +388,39 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        builder.add("artist", createAttributesForArtist(artist, username), false);
+        ArtistWithAlbumsID3 result = createArtist(new ArtistWithAlbumsID3(), artist, username);
         for (Album album : albumDao.getAlbumsForArtist(artist.getName())) {
-            builder.add("album", createAttributesForAlbum(album, username), true);
+            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setArtist(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
+    private <T extends AlbumID3> T createAlbum(T jaxbAlbum, Album album, String username) {
+        jaxbAlbum.setId(String.valueOf(album.getId()));
+        jaxbAlbum.setName(album.getName());
+        if (album.getArtist() != null) {
+            jaxbAlbum.setArtist(album.getArtist());
+            Artist artist = artistDao.getArtist(album.getArtist());
+            if (artist != null) {
+                jaxbAlbum.setArtistId(String.valueOf(artist.getId()));
+            }
+        }
+        if (album.getCoverArtPath() != null) {
+            jaxbAlbum.setCoverArt(CoverArtController.ALBUM_COVERART_PREFIX + album.getId());
+        }
+        jaxbAlbum.setSongCount(album.getSongCount());
+        jaxbAlbum.setDuration(album.getDurationSeconds());
+        jaxbAlbum.setCreated(jaxbWriter.convertDate(album.getCreated()));
+        jaxbAlbum.setStarred(jaxbWriter.convertDate(albumDao.getAlbumStarredDate(album.getId(), username)));
+        jaxbAlbum.setYear(album.getYear());
+        jaxbAlbum.setGenre(album.getGenre());
+        return jaxbAlbum;
+    }
+
+    @Deprecated
     private AttributeSet createAttributesForAlbum(Album album, String username) {
         AttributeSet attributes;
         attributes = new AttributeSet();
@@ -418,6 +446,7 @@ public class RESTController extends MultiActionController {
         return attributes;
     }
 
+    @Deprecated
     private AttributeSet createAttributesForPlaylist(Playlist playlist) {
         AttributeSet attributes;
         attributes = new AttributeSet();
@@ -436,7 +465,6 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         int id = getRequiredIntParameter(request, "id");
         Album album = albumDao.getAlbum(id);
@@ -445,20 +473,20 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        builder.add("album", createAttributesForAlbum(album, username), false);
+        AlbumWithSongsID3 result = createAlbum(new AlbumWithSongsID3(), album, username);
         for (MediaFile mediaFile : mediaFileDao.getSongsForAlbum(album.getArtist(), album.getName())) {
-            builder.add("song", createAttributesForMediaFile(player, mediaFile, username), true);
+            result.getSong().add(createChild(player, mediaFile, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setAlbum(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getSong(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         int id = getRequiredIntParameter(request, "id");
         MediaFile song = mediaFileDao.getMediaFile(id);
@@ -466,10 +494,10 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Song not found.");
             return;
         }
-        builder.add("song", createAttributesForMediaFile(player, song, username), true);
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setSong(createChild(player, song, username));
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getMusicDirectory(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -485,27 +513,25 @@ public class RESTController extends MultiActionController {
         }
 
         MediaFile parent = mediaFileService.getParentOf(dir);
-        AttributeSet attributes = new AttributeSet();
-        attributes.add("id", id);
+        Directory directory = new Directory();
+        directory.setId(String.valueOf(id));
         try {
             if (!mediaFileService.isRoot(parent)) {
-                attributes.add("parent", parent.getId());
+                directory.setParent(String.valueOf(parent.getId()));
             }
         } catch (SecurityException x) {
             // Ignored.
         }
-        attributes.add("name", dir.getName());
-        attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(id, username)));
-
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("directory", attributes, false);
+        directory.setName(dir.getName());
+        directory.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(id, username)));
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
-            attributes = createAttributesForMediaFile(player, child, username);
-            builder.add("child", attributes, true);
+            directory.getChild().add(createChild(player, child, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setDirectory(directory);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @Deprecated
