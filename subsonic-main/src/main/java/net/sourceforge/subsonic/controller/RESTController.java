@@ -58,6 +58,7 @@ import org.subsonic.restapi.Indexes;
 import org.subsonic.restapi.InternetRadioStation;
 import org.subsonic.restapi.InternetRadioStations;
 import org.subsonic.restapi.License;
+import org.subsonic.restapi.Lyrics;
 import org.subsonic.restapi.MediaType;
 import org.subsonic.restapi.MusicFolders;
 import org.subsonic.restapi.NowPlaying;
@@ -2006,14 +2007,14 @@ public class RESTController extends MultiActionController {
         String title = request.getParameter("title");
         LyricsInfo lyrics = lyricsService.getLyrics(artist, title);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        AttributeSet attributes = new AttributeSet();
-        attributes.add("artist", lyrics.getArtist());
-        attributes.add("title", lyrics.getTitle());
-        builder.add("lyrics", attributes, lyrics.getLyrics(), true);
+        Lyrics result = new Lyrics();
+        result.setArtist(lyrics.getArtist());
+        result.setTitle(lyrics.getTitle());
+        result.setContent(lyrics.getLyrics());
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setLyrics(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void setRating(HttpServletRequest request, HttpServletResponse response) throws Exception {
