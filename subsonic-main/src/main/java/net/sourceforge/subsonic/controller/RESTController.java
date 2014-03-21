@@ -54,6 +54,8 @@ import org.subsonic.restapi.License;
 import org.subsonic.restapi.MediaType;
 import org.subsonic.restapi.MusicFolders;
 import org.subsonic.restapi.Response;
+import org.subsonic.restapi.SearchResult2;
+import org.subsonic.restapi.SearchResult3;
 import org.subsonic.restapi.Songs;
 
 import net.sourceforge.subsonic.Logger;
@@ -537,7 +539,6 @@ public class RESTController extends MultiActionController {
     @Deprecated
     public void search(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
@@ -566,25 +567,24 @@ public class RESTController extends MultiActionController {
         criteria.setOffset(getIntParameter(request, "offset", 0));
 
         SearchResult result = searchService.search(criteria, SearchService.IndexType.SONG);
-        builder.add("searchResult", false,
-                new Attribute("offset", result.getOffset()),
-                new Attribute("totalHits", result.getTotalHits()));
-
+        org.subsonic.restapi.SearchResult searchResult = new org.subsonic.restapi.SearchResult();
+        searchResult.setOffset(result.getOffset());
+        searchResult.setTotalHits(result.getTotalHits());
+        
         for (MediaFile mediaFile : result.getMediaFiles()) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("match", attributes, true);
+            searchResult.getMatch().add(createChild(player, mediaFile, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setSearchResult(searchResult);
+        jaxbWriter.writeResponse(request, response, res);
     }
-
+    
     public void search2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        builder.add("searchResult2", false);
+        SearchResult2 searchResult = new SearchResult2();
 
         String query = request.getParameter("query");
         SearchCriteria criteria = new SearchCriteria();
@@ -593,63 +593,62 @@ public class RESTController extends MultiActionController {
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
         SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
         for (MediaFile mediaFile : artists.getMediaFiles()) {
-            builder.add("artist", createAttributesForArtist(mediaFile, username), true);
+            searchResult.getArtist().add(createArtist(mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
         SearchResult albums = searchService.search(criteria, SearchService.IndexType.ALBUM);
         for (MediaFile mediaFile : albums.getMediaFiles()) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("album", attributes, true);
+            searchResult.getAlbum().add(createChild(player, mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
         SearchResult songs = searchService.search(criteria, SearchService.IndexType.SONG);
         for (MediaFile mediaFile : songs.getMediaFiles()) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("song", attributes, true);
+            searchResult.getSong().add(createChild(player, mediaFile, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setSearchResult2(searchResult);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void search3(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        builder.add("searchResult3", false);
+        SearchResult3 searchResult = new SearchResult3();
 
         String query = request.getParameter("query");
         SearchCriteria criteria = new SearchCriteria();
         criteria.setQuery(StringUtils.trimToEmpty(query));
         criteria.setCount(getIntParameter(request, "artistCount", 20));
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
-        SearchResult searchResult = searchService.search(criteria, SearchService.IndexType.ARTIST_ID3);
-        for (Artist artist : searchResult.getArtists()) {
-            builder.add("artist", createAttributesForArtist(artist, username), true);
+        SearchResult result = searchService.search(criteria, SearchService.IndexType.ARTIST_ID3);
+        for (Artist artist : result.getArtists()) {
+            searchResult.getArtist().add(createArtist(new ArtistID3(), artist, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
-        searchResult = searchService.search(criteria, SearchService.IndexType.ALBUM_ID3);
-        for (Album album : searchResult.getAlbums()) {
-            builder.add("album", createAttributesForAlbum(album, username), true);
+        result = searchService.search(criteria, SearchService.IndexType.ALBUM_ID3);
+        for (Album album : result.getAlbums()) {
+            searchResult.getAlbum().add(createAlbum(new AlbumID3(), album, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
-        searchResult = searchService.search(criteria, SearchService.IndexType.SONG);
-        for (MediaFile song : searchResult.getMediaFiles()) {
-            builder.add("song", createAttributesForMediaFile(player, song, username), true);
+        result = searchService.search(criteria, SearchService.IndexType.SONG);
+        for (MediaFile song : result.getMediaFiles()) {
+            searchResult.getSong().add(createChild(player, song, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setSearchResult3(searchResult);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getPlaylists(HttpServletRequest request, HttpServletResponse response) throws Exception {
