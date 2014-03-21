@@ -260,7 +260,7 @@ public class RESTController extends MultiActionController {
 
         List<MediaFile> shortcuts = leftController.getShortcuts(musicFolders, settingsService.getShortcutsAsArray());
         for (MediaFile shortcut : shortcuts) {
-            indexes.getShortcut().add(createArtist(shortcut, username));
+            indexes.getShortcut().add(createJaxbArtist(shortcut, username));
         }
 
         SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists =
@@ -290,7 +290,7 @@ public class RESTController extends MultiActionController {
         List<MediaFile> singleSongs = leftController.getSingleSongs(musicFolders, false);
 
         for (MediaFile singleSong : singleSongs) {
-            indexes.getChild().add(createChild(player, singleSong, username));
+            indexes.getChild().add(createJaxbChild(player, singleSong, username));
         }
 
         res.setIndexes(indexes);
@@ -328,7 +328,7 @@ public class RESTController extends MultiActionController {
         count = Math.max(0, Math.min(count, 500));
 
         for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count)) {
-            songs.getSong().add(createChild(player, mediaFile, username));
+            songs.getSong().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setSongsByGenre(songs);
@@ -350,7 +350,7 @@ public class RESTController extends MultiActionController {
             result.getIndex().add(index);
             index.setName(entry.getKey().getIndex());
             for (MusicIndex.SortableArtistWithArtist sortableArtist : entry.getValue()) {
-                index.getArtist().add(createArtist(new ArtistID3(), sortableArtist.getArtist(), username));
+                index.getArtist().add(createJaxbArtist(new ArtistID3(), sortableArtist.getArtist(), username));
             }
         }
 
@@ -359,7 +359,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
-    private <T extends ArtistID3> T createArtist(T jaxbArtist, Artist artist, String username) {
+    private <T extends ArtistID3> T createJaxbArtist(T jaxbArtist, Artist artist, String username) {
         jaxbArtist.setId(String.valueOf(artist.getId()));
         jaxbArtist.setName(artist.getName());
         jaxbArtist.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(artist.getId(), username)));
@@ -370,7 +370,7 @@ public class RESTController extends MultiActionController {
         return jaxbArtist;
     }
 
-    private org.subsonic.restapi.Artist createArtist(MediaFile artist, String username) {
+    private org.subsonic.restapi.Artist createJaxbArtist(MediaFile artist, String username) {
         org.subsonic.restapi.Artist result = new org.subsonic.restapi.Artist();
         result.setId(String.valueOf(artist.getId()));
         result.setName(artist.getName());
@@ -390,9 +390,9 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        ArtistWithAlbumsID3 result = createArtist(new ArtistWithAlbumsID3(), artist, username);
+        ArtistWithAlbumsID3 result = createJaxbArtist(new ArtistWithAlbumsID3(), artist, username);
         for (Album album : albumDao.getAlbumsForArtist(artist.getName())) {
-            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
+            result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -400,7 +400,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
-    private <T extends AlbumID3> T createAlbum(T jaxbAlbum, Album album, String username) {
+    private <T extends AlbumID3> T createJaxbAlbum(T jaxbAlbum, Album album, String username) {
         jaxbAlbum.setId(String.valueOf(album.getId()));
         jaxbAlbum.setName(album.getName());
         if (album.getArtist() != null) {
@@ -422,7 +422,7 @@ public class RESTController extends MultiActionController {
         return jaxbAlbum;
     }
 
-    private <T extends org.subsonic.restapi.Playlist> T createPlaylist(T jaxbPlaylist, Playlist playlist) {
+    private <T extends org.subsonic.restapi.Playlist> T createJaxbPlaylist(T jaxbPlaylist, Playlist playlist) {
         jaxbPlaylist.setId(String.valueOf(playlist.getId()));
         jaxbPlaylist.setName(playlist.getName());
         jaxbPlaylist.setComment(playlist.getComment());
@@ -451,9 +451,9 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        AlbumWithSongsID3 result = createAlbum(new AlbumWithSongsID3(), album, username);
+        AlbumWithSongsID3 result = createJaxbAlbum(new AlbumWithSongsID3(), album, username);
         for (MediaFile mediaFile : mediaFileDao.getSongsForAlbum(album.getArtist(), album.getName())) {
-            result.getSong().add(createChild(player, mediaFile, username));
+            result.getSong().add(createJaxbChild(player, mediaFile, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -475,7 +475,7 @@ public class RESTController extends MultiActionController {
         }
 
         Response res = jaxbWriter.createResponse(true);
-        res.setSong(createChild(player, song, username));
+        res.setSong(createJaxbChild(player, song, username));
         jaxbWriter.writeResponse(request, response, res);
     }
 
@@ -505,7 +505,7 @@ public class RESTController extends MultiActionController {
         directory.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(id, username)));
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
-            directory.getChild().add(createChild(player, child, username));
+            directory.getChild().add(createJaxbChild(player, child, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -549,7 +549,7 @@ public class RESTController extends MultiActionController {
         searchResult.setTotalHits(result.getTotalHits());
         
         for (MediaFile mediaFile : result.getMediaFiles()) {
-            searchResult.getMatch().add(createChild(player, mediaFile, username));
+            searchResult.getMatch().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setSearchResult(searchResult);
@@ -571,21 +571,21 @@ public class RESTController extends MultiActionController {
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
         SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
         for (MediaFile mediaFile : artists.getMediaFiles()) {
-            searchResult.getArtist().add(createArtist(mediaFile, username));
+            searchResult.getArtist().add(createJaxbArtist(mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
         SearchResult albums = searchService.search(criteria, SearchService.IndexType.ALBUM);
         for (MediaFile mediaFile : albums.getMediaFiles()) {
-            searchResult.getAlbum().add(createChild(player, mediaFile, username));
+            searchResult.getAlbum().add(createJaxbChild(player, mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
         SearchResult songs = searchService.search(criteria, SearchService.IndexType.SONG);
         for (MediaFile mediaFile : songs.getMediaFiles()) {
-            searchResult.getSong().add(createChild(player, mediaFile, username));
+            searchResult.getSong().add(createJaxbChild(player, mediaFile, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -608,21 +608,21 @@ public class RESTController extends MultiActionController {
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
         SearchResult result = searchService.search(criteria, SearchService.IndexType.ARTIST_ID3);
         for (Artist artist : result.getArtists()) {
-            searchResult.getArtist().add(createArtist(new ArtistID3(), artist, username));
+            searchResult.getArtist().add(createJaxbArtist(new ArtistID3(), artist, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
         result = searchService.search(criteria, SearchService.IndexType.ALBUM_ID3);
         for (Album album : result.getAlbums()) {
-            searchResult.getAlbum().add(createAlbum(new AlbumID3(), album, username));
+            searchResult.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
         result = searchService.search(criteria, SearchService.IndexType.SONG);
         for (MediaFile song : result.getMediaFiles()) {
-            searchResult.getSong().add(createChild(player, song, username));
+            searchResult.getSong().add(createJaxbChild(player, song, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -648,7 +648,7 @@ public class RESTController extends MultiActionController {
         Playlists result = new Playlists();
 
         for (Playlist playlist : playlistService.getReadablePlaylistsForUser(requestedUsername)) {
-            result.getPlaylist().add(createPlaylist(new org.subsonic.restapi.Playlist(), playlist));
+            result.getPlaylist().add(createJaxbPlaylist(new org.subsonic.restapi.Playlist(), playlist));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -672,9 +672,9 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_AUTHORIZED, "Permission denied for playlist " + id);
             return;
         }
-        PlaylistWithSongs result = createPlaylist(new PlaylistWithSongs(), playlist);
+        PlaylistWithSongs result = createJaxbPlaylist(new PlaylistWithSongs(), playlist);
         for (MediaFile mediaFile : playlistService.getFilesInPlaylist(id)) {
-            result.getEntry().add(createChild(player, mediaFile, username));
+            result.getEntry().add(createJaxbChild(player, mediaFile, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -927,7 +927,7 @@ public class RESTController extends MultiActionController {
 
         AlbumList result = new AlbumList();
         for (MediaFile album : albums) {
-            result.getAlbum().add(createChild(player, album, username));
+            result.getAlbum().add(createJaxbChild(player, album, username));
         }
         
         Response res = jaxbWriter.createResponse(true);
@@ -970,7 +970,7 @@ public class RESTController extends MultiActionController {
         }
         AlbumList2 result = new AlbumList2();
         for (Album album : albums) {
-            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
+            result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setAlbumList2(result);
@@ -992,7 +992,7 @@ public class RESTController extends MultiActionController {
 
         Songs result = new Songs();
         for (MediaFile mediaFile : searchService.getRandomSongs(criteria)) {
-            result.getSong().add(createChild(player, mediaFile, username));
+            result.getSong().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setRandomSongs(result);
@@ -1010,7 +1010,7 @@ public class RESTController extends MultiActionController {
 
         Videos result = new Videos();
         for (MediaFile mediaFile : mediaFileDao.getVideos(size, offset)) {
-            result.getVideo().add(createChild(player, mediaFile, username));
+            result.getVideo().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setVideos(result);
@@ -1043,7 +1043,7 @@ public class RESTController extends MultiActionController {
                     entry.setPlayerId(Integer.parseInt(player.getId()));
                     entry.setPlayerName(player.getName());
                     entry.setMinutesAgo((int) minutesAgo);
-                    result.getEntry().add(createChild(entry, player, mediaFile, username));
+                    result.getEntry().add(createJaxbChild(entry, player, mediaFile, username));
                 }
             }
         }
@@ -1053,11 +1053,11 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
-    private Child createChild(Player player, MediaFile mediaFile, String username) {
-        return createChild(new Child(), player, mediaFile, username);
+    private Child createJaxbChild(Player player, MediaFile mediaFile, String username) {
+        return createJaxbChild(new Child(), player, mediaFile, username);
     }
     
-    private <T extends Child> T createChild(T child, Player player, MediaFile mediaFile, String username) {
+    private <T extends Child> T createJaxbChild(T child, Player player, MediaFile mediaFile, String username) {
         MediaFile parent = mediaFileService.getParentOf(mediaFile);
         child.setId(String.valueOf(mediaFile.getId()));
         try {
@@ -1384,13 +1384,13 @@ public class RESTController extends MultiActionController {
 
         Starred result = new Starred();
         for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
-            result.getArtist().add(createArtist(artist, username));
+            result.getArtist().add(createJaxbArtist(artist, username));
         }
         for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
-            result.getAlbum().add(createChild(player, album, username));
+            result.getAlbum().add(createJaxbChild(player, album, username));
         }
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
-            result.getSong().add(createChild(player, song, username));
+            result.getSong().add(createJaxbChild(player, song, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setStarred(result);
@@ -1405,13 +1405,13 @@ public class RESTController extends MultiActionController {
 
         Starred2 result = new Starred2();
         for (Artist artist : artistDao.getStarredArtists(0, Integer.MAX_VALUE, username)) {
-            result.getArtist().add(createArtist(new ArtistID3(), artist, username));
+            result.getArtist().add(createJaxbArtist(new ArtistID3(), artist, username));
         }
         for (Album album : albumDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
-            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
+            result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
-            result.getSong().add(createChild(player, song, username));
+            result.getSong().add(createJaxbChild(player, song, username));
         }
         Response res = jaxbWriter.createResponse(true);
         res.setStarred2(result);
@@ -1450,7 +1450,7 @@ public class RESTController extends MultiActionController {
                         String path = episode.getPath();
                         if (path != null) {
                             MediaFile mediaFile = mediaFileService.getMediaFile(path);
-                            e = createChild(new org.subsonic.restapi.PodcastEpisode(), player, mediaFile, username);
+                            e = createJaxbChild(new org.subsonic.restapi.PodcastEpisode(), player, mediaFile, username);
                             e.setStreamId(String.valueOf(mediaFile.getId()));
                         }
 
@@ -1579,7 +1579,7 @@ public class RESTController extends MultiActionController {
             b.setChanged(jaxbWriter.convertDate(bookmark.getChanged()));
 
             MediaFile mediaFile = mediaFileService.getMediaFile(bookmark.getMediaFileId());
-            b.setEntry(createChild(player, mediaFile, username));
+            b.setEntry(createJaxbChild(player, mediaFile, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -1623,11 +1623,11 @@ public class RESTController extends MultiActionController {
 
         Shares result = new Shares();
         for (Share share : shareService.getSharesForUser(user)) {
-            org.subsonic.restapi.Share s = createShare(share);
+            org.subsonic.restapi.Share s = createJaxbShare(share);
             result.getShare().add(s);
 
             for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
-                s.getEntry().add(createChild(player, mediaFile, username));
+                s.getEntry().add(createJaxbChild(player, mediaFile, username));
             }
         }
         Response res = jaxbWriter.createResponse(true);
@@ -1668,11 +1668,11 @@ public class RESTController extends MultiActionController {
         shareService.updateShare(share);
 
         Shares result = new Shares();
-        org.subsonic.restapi.Share s = createShare(share);
+        org.subsonic.restapi.Share s = createJaxbShare(share);
         result.getShare().add(s);
 
         for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
-            s.getEntry().add(createChild(player, mediaFile, username));
+            s.getEntry().add(createJaxbChild(player, mediaFile, username));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -1726,7 +1726,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
-    private org.subsonic.restapi.Share createShare(Share share) {
+    private org.subsonic.restapi.Share createJaxbShare(Share share) {
         org.subsonic.restapi.Share result = new org.subsonic.restapi.Share();
         result.setId(String.valueOf(share.getId()));
         result.setUrl(shareService.getShareUrl(share));
