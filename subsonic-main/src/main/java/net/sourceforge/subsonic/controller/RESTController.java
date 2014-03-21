@@ -67,6 +67,7 @@ import org.subsonic.restapi.Podcasts;
 import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
+import org.subsonic.restapi.Shares;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
@@ -1618,23 +1619,20 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
-
         User user = securityService.getCurrentUser(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
-        builder.add("shares", false);
+        Shares result = new Shares();
         for (Share share : shareService.getSharesForUser(user)) {
-            builder.add("share", createAttributesForShare(share), false);
+            org.subsonic.restapi.Share s = createShare(share);
+            result.getShare().add(s);
 
             for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
-                AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-                builder.add("entry", attributes, true);
+                s.getEntry().add(createChild(player, mediaFile, username));
             }
-
-            builder.end();
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setShares(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1654,8 +1652,6 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-
         List<MediaFile> files = new ArrayList<MediaFile>();
         for (int id : getRequiredIntParameters(request, "id")) {
             files.add(mediaFileService.getMediaFile(id));
@@ -1671,16 +1667,17 @@ public class RESTController extends MultiActionController {
         }
         shareService.updateShare(share);
 
-        builder.add("shares", false);
-        builder.add("share", createAttributesForShare(share), false);
+        Shares result = new Shares();
+        org.subsonic.restapi.Share s = createShare(share);
+        result.getShare().add(s);
 
         for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("entry", attributes, true);
+            s.getEntry().add(createChild(player, mediaFile, username));
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setShares(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1729,29 +1726,17 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
-    private List<Attribute> createAttributesForShare(Share share) {
-        List<Attribute> attributes = new ArrayList<Attribute>();
-
-        attributes.add(new Attribute("id", share.getId()));
-        attributes.add(new Attribute("url", shareService.getShareUrl(share)));
-        attributes.add(new Attribute("username", share.getUsername()));
-        attributes.add(new Attribute("created", StringUtil.toISO8601(share.getCreated())));
-        attributes.add(new Attribute("visitCount", share.getVisitCount()));
-        attributes.add(new Attribute("description", share.getDescription()));
-        attributes.add(new Attribute("expires", StringUtil.toISO8601(share.getExpires())));
-        attributes.add(new Attribute("lastVisited", StringUtil.toISO8601(share.getLastVisited())));
-
-        return attributes;
-    }
-
-    private List<Attribute> createAttributesForBookmark(Bookmark bookmark) {
-        List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("position", bookmark.getPositionMillis()));
-        attributes.add(new Attribute("username", bookmark.getUsername()));
-        attributes.add(new Attribute("comment", bookmark.getComment()));
-        attributes.add(new Attribute("created", StringUtil.toISO8601(bookmark.getCreated())));
-        attributes.add(new Attribute("changed", StringUtil.toISO8601(bookmark.getChanged())));
-        return attributes;
+    private org.subsonic.restapi.Share createShare(Share share) {
+        org.subsonic.restapi.Share result = new org.subsonic.restapi.Share();
+        result.setId(String.valueOf(share.getId()));
+        result.setUrl(shareService.getShareUrl(share));
+        result.setUsername(share.getUsername());
+        result.setCreated(jaxbWriter.convertDate(share.getCreated()));
+        result.setVisitCount(share.getVisitCount());
+        result.setDescription(share.getDescription());
+        result.setExpires(jaxbWriter.convertDate(share.getExpires()));
+        result.setLastVisited(jaxbWriter.convertDate(share.getLastVisited()));
+        return result;
     }
 
     public ModelAndView videoPlayer(HttpServletRequest request, HttpServletResponse response) throws Exception {
