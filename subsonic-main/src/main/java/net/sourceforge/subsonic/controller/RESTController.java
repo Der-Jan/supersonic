@@ -55,6 +55,8 @@ import org.subsonic.restapi.Indexes;
 import org.subsonic.restapi.License;
 import org.subsonic.restapi.MediaType;
 import org.subsonic.restapi.MusicFolders;
+import org.subsonic.restapi.NowPlaying;
+import org.subsonic.restapi.NowPlayingEntry;
 import org.subsonic.restapi.PlaylistWithSongs;
 import org.subsonic.restapi.Playlists;
 import org.subsonic.restapi.Response;
@@ -1056,8 +1058,7 @@ public class RESTController extends MultiActionController {
 
     public void getNowPlaying(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("nowPlaying", false);
+        NowPlaying result = new NowPlaying();
 
         for (TransferStatus status : statusService.getAllStreamStatuses()) {
 
@@ -1075,84 +1076,88 @@ public class RESTController extends MultiActionController {
 
                 long minutesAgo = status.getMillisSinceLastUpdate() / 1000L / 60L;
                 if (minutesAgo < 60) {
-                    AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-                    attributes.add("username", username);
-                    attributes.add("playerId", player.getId());
-                    attributes.add("playerName", player.getName());
-                    attributes.add("minutesAgo", minutesAgo);
-                    builder.add("entry", attributes, true);
+                    NowPlayingEntry entry = new NowPlayingEntry();
+                    entry.setUsername(username);
+                    entry.setPlayerId(Integer.parseInt(player.getId()));
+                    entry.setPlayerName(player.getName());
+                    entry.setMinutesAgo((int) minutesAgo);
+                    result.getEntry().add(createChild(entry, player, mediaFile, username));
                 }
             }
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setNowPlaying(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     private Child createChild(Player player, MediaFile mediaFile, String username) {
-        Child result = new Child();
+        return createChild(new Child(), player, mediaFile, username);
+    }
+    
+    private <T extends Child> T createChild(T child, Player player, MediaFile mediaFile, String username) {
         MediaFile parent = mediaFileService.getParentOf(mediaFile);
-        result.setId(String.valueOf(mediaFile.getId()));
+        child.setId(String.valueOf(mediaFile.getId()));
         try {
             if (!mediaFileService.isRoot(parent)) {
-                result.setParent(String.valueOf(parent.getId()));
+                child.setParent(String.valueOf(parent.getId()));
             }
         } catch (SecurityException x) {
             // Ignored.
         }
-        result.setTitle(mediaFile.getName());
-        result.setAlbum(mediaFile.getAlbumName());
-        result.setArtist(mediaFile.getArtist());
-        result.setIsDir(mediaFile.isDirectory());
-        result.setCoverArt(findCoverArt(mediaFile, parent));
-        result.setYear(mediaFile.getYear());
-        result.setGenre(mediaFile.getGenre());
-        result.setCreated(jaxbWriter.convertDate(mediaFile.getCreated()));
-        result.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
-        result.setUserRating(ratingService.getRatingForUser(username, mediaFile));
-        result.setAverageRating(ratingService.getAverageRating(mediaFile));
+        child.setTitle(mediaFile.getName());
+        child.setAlbum(mediaFile.getAlbumName());
+        child.setArtist(mediaFile.getArtist());
+        child.setIsDir(mediaFile.isDirectory());
+        child.setCoverArt(findCoverArt(mediaFile, parent));
+        child.setYear(mediaFile.getYear());
+        child.setGenre(mediaFile.getGenre());
+        child.setCreated(jaxbWriter.convertDate(mediaFile.getCreated()));
+        child.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
+        child.setUserRating(ratingService.getRatingForUser(username, mediaFile));
+        child.setAverageRating(ratingService.getAverageRating(mediaFile));
 
         if (mediaFile.isFile()) {
-            result.setDuration(mediaFile.getDurationSeconds());
-            result.setBitRate(mediaFile.getBitRate());
-            result.setTrack(mediaFile.getTrackNumber());
-            result.setDiscNumber(mediaFile.getDiscNumber());
-            result.setSize(mediaFile.getFileSize());
+            child.setDuration(mediaFile.getDurationSeconds());
+            child.setBitRate(mediaFile.getBitRate());
+            child.setTrack(mediaFile.getTrackNumber());
+            child.setDiscNumber(mediaFile.getDiscNumber());
+            child.setSize(mediaFile.getFileSize());
             String suffix = mediaFile.getFormat();
-            result.setSuffix(suffix);
-            result.setContentType(StringUtil.getMimeType(suffix));
-            result.setIsVideo(mediaFile.isVideo());
-            result.setPath(getRelativePath(mediaFile));
+            child.setSuffix(suffix);
+            child.setContentType(StringUtil.getMimeType(suffix));
+            child.setIsVideo(mediaFile.isVideo());
+            child.setPath(getRelativePath(mediaFile));
 
             Bookmark bookmark = bookmarkCache.get(new BookmarkKey(username, mediaFile.getId()));
             if (bookmark != null) {
-                result.setBookmarkPosition(bookmark.getPositionMillis());
+                child.setBookmarkPosition(bookmark.getPositionMillis());
             }
 
             if (mediaFile.getAlbumArtist() != null && mediaFile.getAlbumName() != null) {
                 Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
                 if (album != null) {
-                    result.setAlbumId(String.valueOf(album.getId()));
+                    child.setAlbumId(String.valueOf(album.getId()));
                 }
             }
             if (mediaFile.getArtist() != null) {
                 Artist artist = artistDao.getArtist(mediaFile.getArtist());
                 if (artist != null) {
-                    result.setArtistId(String.valueOf(artist.getId()));
+                    child.setArtistId(String.valueOf(artist.getId()));
                 }
             }
             switch (mediaFile.getMediaType()) {
                 case MUSIC:
-                    result.setType(MediaType.MUSIC);
+                    child.setType(MediaType.MUSIC);
                     break;
                 case PODCAST:
-                    result.setType(MediaType.PODCAST);
+                    child.setType(MediaType.PODCAST);
                     break;
                 case AUDIOBOOK:
-                    result.setType(MediaType.AUDIOBOOK);
+                    child.setType(MediaType.AUDIOBOOK);
                     break;
                 case VIDEO:
-                    result.setType(MediaType.VIDEO);
+                    child.setType(MediaType.VIDEO);
                     break;
                 default:
                     break;
@@ -1160,11 +1165,11 @@ public class RESTController extends MultiActionController {
 
             if (transcodingService.isTranscodingRequired(mediaFile, player)) {
                 String transcodedSuffix = transcodingService.getSuffix(player, mediaFile, null);
-                result.setTranscodedSuffix(transcodedSuffix);
-                result.setTranscodedContentType(StringUtil.getMimeType(transcodedSuffix));
+                child.setTranscodedSuffix(transcodedSuffix);
+                child.setTranscodedContentType(StringUtil.getMimeType(transcodedSuffix));
             }
         }
-        return result;
+        return child;
     }
 
     private AttributeSet createAttributesForMediaFile(Player player, MediaFile mediaFile, String username) {
