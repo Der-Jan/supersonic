@@ -59,6 +59,8 @@ import org.subsonic.restapi.NowPlaying;
 import org.subsonic.restapi.NowPlayingEntry;
 import org.subsonic.restapi.PlaylistWithSongs;
 import org.subsonic.restapi.Playlists;
+import org.subsonic.restapi.PodcastStatus;
+import org.subsonic.restapi.Podcasts;
 import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
@@ -1420,46 +1422,48 @@ public class RESTController extends MultiActionController {
         boolean includeEpisodes = getBooleanParameter(request, "includeEpisodes", true);
         Integer channelId = getIntParameter(request, "id");
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("podcasts", false);
+        Podcasts result = new Podcasts();
 
         for (PodcastChannel channel : podcastService.getAllChannels()) {
             if (channelId == null || channelId.equals(channel.getId())) {
-                AttributeSet channelAttrs = new AttributeSet();
-                channelAttrs.add("id", channel.getId());
-                channelAttrs.add("url", channel.getUrl());
-                channelAttrs.add("status", channel.getStatus().toString().toLowerCase());
-                channelAttrs.add("title", channel.getTitle());
-                channelAttrs.add("description", channel.getDescription());
-                channelAttrs.add("errorMessage", channel.getErrorMessage());
-                builder.add("channel", channelAttrs, false);
+
+                org.subsonic.restapi.PodcastChannel c = new org.subsonic.restapi.PodcastChannel();
+                result.getChannel().add(c);
+
+                c.setId(String.valueOf(channel.getId()));
+                c.setUrl(channel.getUrl());
+                c.setStatus(PodcastStatus.valueOf(channel.getStatus().name()));
+                c.setTitle(channel.getTitle());
+                c.setDescription(channel.getDescription());
+                c.setErrorMessage(channel.getErrorMessage());
 
                 if (includeEpisodes) {
                     List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
                     for (PodcastEpisode episode : episodes) {
-                        AttributeSet episodeAttrs = new AttributeSet();
+
+                        org.subsonic.restapi.PodcastEpisode e = new org.subsonic.restapi.PodcastEpisode();
 
                         String path = episode.getPath();
                         if (path != null) {
                             MediaFile mediaFile = mediaFileService.getMediaFile(path);
-                            episodeAttrs.addAll(createAttributesForMediaFile(player, mediaFile, username));
-                            episodeAttrs.add("streamId", mediaFile.getId());
+                            e = createChild(new org.subsonic.restapi.PodcastEpisode(), player, mediaFile, username);
+                            e.setStreamId(String.valueOf(mediaFile.getId()));
                         }
 
-                        episodeAttrs.add("id", episode.getId());  // Overwrites the previous "id" attribute.
-                        episodeAttrs.add("status", episode.getStatus().toString().toLowerCase());
-                        episodeAttrs.add("title", episode.getTitle());
-                        episodeAttrs.add("description", episode.getDescription());
-                        episodeAttrs.add("publishDate", episode.getPublishDate());
+                        e.setId(String.valueOf(episode.getId()));  // Overwrites the previous "id" attribute.
+                        e.setStatus(PodcastStatus.valueOf(episode.getStatus().name()));
+                        e.setTitle(episode.getTitle());
+                        e.setDescription(episode.getDescription());
+                        e.setPublishDate(jaxbWriter.convertDate(episode.getPublishDate()));
 
-                        builder.add("episode", episodeAttrs, true);
+                        c.getEpisode().add(e);
                     }
                 }
-                builder.end(); // <channel>
             }
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setPodcasts(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
