@@ -116,6 +116,10 @@ public class JAXBWriter {
         }
     }
 
+    public void writeEmptyResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        writeResponse(request, response, createResponse(true));
+    }
+
     public XMLGregorianCalendar convertDate(Date date) {
         if (date == null) {
             return null;

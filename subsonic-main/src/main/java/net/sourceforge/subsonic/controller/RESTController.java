@@ -841,7 +841,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
 
-        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void updatePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -908,7 +908,7 @@ public class RESTController extends MultiActionController {
             playlistService.setFilesInPlaylist(id, songs);
         }
 
-        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void deletePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -927,7 +927,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.deletePlaylist(id);
 
-        jaxbWriter.writeResponse(request, response, jaxbWriter.createResponse(true));
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getAlbumList(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1330,7 +1330,6 @@ public class RESTController extends MultiActionController {
 
     public void scrobble(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         Player player = playerService.getPlayer(request, response);
 
@@ -1358,8 +1357,7 @@ public class RESTController extends MultiActionController {
             audioScrobblerService.register(file, player.getUsername(), submission, time);
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void star(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1372,7 +1370,6 @@ public class RESTController extends MultiActionController {
 
     private void starOrUnstar(HttpServletRequest request, HttpServletResponse response, boolean star) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         String username = securityService.getCurrentUser(request).getUsername();
         for (int id : getIntParameters(request, "id")) {
@@ -1412,8 +1409,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getStarred(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1513,8 +1509,7 @@ public class RESTController extends MultiActionController {
             return;
         }
         podcastService.refreshAllChannels(true);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void createPodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1527,8 +1522,7 @@ public class RESTController extends MultiActionController {
 
         String url = getRequiredStringParameter(request, "url");
         podcastService.createChannel(url);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void deletePodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1541,8 +1535,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         podcastService.deleteChannel(id);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void deletePodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1555,8 +1548,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         podcastService.deleteEpisode(id, true);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void downloadPodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1575,8 +1567,7 @@ public class RESTController extends MultiActionController {
         }
 
         podcastService.downloadEpisode(episode);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getInternetRadioStations(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1626,21 +1617,18 @@ public class RESTController extends MultiActionController {
         Bookmark bookmark = new Bookmark(0, mediaFileId, position, username, comment, now, now);
         bookmarkDao.createOrUpdateBookmark(bookmark);
         refreshBookmarkCache();
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void deleteBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
         String username = securityService.getCurrentUsername(request);
         int mediaFileId = getRequiredIntParameter(request, "id");
         bookmarkDao.deleteBookmark(username, mediaFileId);
         refreshBookmarkCache();
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getShares(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1727,8 +1715,7 @@ public class RESTController extends MultiActionController {
         }
 
         shareService.deleteShare(id);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void updateShare(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1753,8 +1740,7 @@ public class RESTController extends MultiActionController {
             share.setExpires(expires == 0L ? null : new Date(expires));
         }
         shareService.updateShare(share);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     private List<Attribute> createAttributesForShare(Share share) {
@@ -1841,8 +1827,7 @@ public class RESTController extends MultiActionController {
         user.setPassword(password);
         securityService.updateUser(user);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1938,8 +1923,7 @@ public class RESTController extends MultiActionController {
         command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
 
         userSettingsController.createUser(command);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1984,8 +1968,7 @@ public class RESTController extends MultiActionController {
         }
 
         userSettingsController.updateUser(command);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     private boolean hasParameter(HttpServletRequest request, String name) {
@@ -2008,8 +1991,7 @@ public class RESTController extends MultiActionController {
 
         securityService.deleteUser(username);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getChatMessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -2034,8 +2016,7 @@ public class RESTController extends MultiActionController {
     public void addChatMessage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         chatService.doAddMessage(getRequiredStringParameter(request, "message"), request);
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     public void getLyrics(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -2071,8 +2052,7 @@ public class RESTController extends MultiActionController {
         String username = securityService.getCurrentUsername(request);
         ratingService.setRatingForUser(username, mediaFile, rating);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeEmptyResponse(request, response);
     }
 
     private HttpServletRequest wrapRequest(HttpServletRequest request) {
