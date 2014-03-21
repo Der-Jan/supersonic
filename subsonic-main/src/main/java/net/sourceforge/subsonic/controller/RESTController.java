@@ -71,6 +71,7 @@ import org.subsonic.restapi.Shares;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
+import org.subsonic.restapi.Users;
 import org.subsonic.restapi.Videos;
 
 import net.sourceforge.subsonic.Logger;
@@ -1134,6 +1135,7 @@ public class RESTController extends MultiActionController {
         return child;
     }
 
+    @Deprecated
     private AttributeSet createAttributesForMediaFile(Player player, MediaFile mediaFile, String username) {
         MediaFile parent = mediaFileService.getParentOf(mediaFile);
         AttributeSet attributes = new AttributeSet();
@@ -1823,12 +1825,9 @@ public class RESTController extends MultiActionController {
 
         UserSettings userSettings = settingsService.getUserSettings(username);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        List<Attribute> attributes = createAttributesForUser(requestedUser, userSettings);
-
-        builder.add("user", attributes, true);
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setUser(createJaxbUser(requestedUser, userSettings));
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1841,35 +1840,34 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("users", false);
+        Users result = new Users();
         for (User user : securityService.getAllUsers()) {
             UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
-            List<Attribute> attributes = createAttributesForUser(user, userSettings);
-            builder.add("user", attributes, true);
-
+            result.getUser().add(createJaxbUser(user, userSettings));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setUsers(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
-    private List<Attribute> createAttributesForUser(User user, UserSettings userSettings) {
-        return Arrays.asList(
-                new Attribute("username", user.getUsername()),
-                new Attribute("email", user.getEmail()),
-                new Attribute("scrobblingEnabled", userSettings.isLastFmEnabled()),
-                new Attribute("adminRole", user.isAdminRole()),
-                new Attribute("settingsRole", user.isSettingsRole()),
-                new Attribute("downloadRole", user.isDownloadRole()),
-                new Attribute("uploadRole", user.isUploadRole()),
-                new Attribute("playlistRole", true),  // Since 1.8.0
-                new Attribute("coverArtRole", user.isCoverArtRole()),
-                new Attribute("commentRole", user.isCommentRole()),
-                new Attribute("podcastRole", user.isPodcastRole()),
-                new Attribute("streamRole", user.isStreamRole()),
-                new Attribute("jukeboxRole", user.isJukeboxRole()),
-                new Attribute("shareRole", user.isShareRole())
-        );
+    private org.subsonic.restapi.User createJaxbUser(User user, UserSettings userSettings) {
+        org.subsonic.restapi.User result = new org.subsonic.restapi.User();
+        result.setUsername(user.getUsername());
+        result.setEmail(user.getEmail());
+        result.setScrobblingEnabled(userSettings.isLastFmEnabled());
+        result.setAdminRole(user.isAdminRole());
+        result.setSettingsRole(user.isSettingsRole());
+        result.setDownloadRole(user.isDownloadRole());
+        result.setUploadRole(user.isUploadRole());
+        result.setPlaylistRole(true);  // Since 1.8.0
+        result.setCoverArtRole(user.isCoverArtRole());
+        result.setCommentRole(user.isCommentRole());
+        result.setPodcastRole(user.isPodcastRole());
+        result.setStreamRole(user.isStreamRole());
+        result.setJukeboxRole(user.isJukeboxRole());
+        result.setShareRole(user.isShareRole());
+        return result;
     }
 
     @SuppressWarnings("UnusedDeclaration")
