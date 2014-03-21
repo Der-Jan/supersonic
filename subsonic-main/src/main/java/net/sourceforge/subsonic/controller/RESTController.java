@@ -46,12 +46,15 @@ import org.subsonic.restapi.AlbumWithSongsID3;
 import org.subsonic.restapi.ArtistID3;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
+import org.subsonic.restapi.Bookmarks;
 import org.subsonic.restapi.Child;
 import org.subsonic.restapi.Directory;
 import org.subsonic.restapi.Genres;
 import org.subsonic.restapi.Index;
 import org.subsonic.restapi.IndexID3;
 import org.subsonic.restapi.Indexes;
+import org.subsonic.restapi.InternetRadioStation;
+import org.subsonic.restapi.InternetRadioStations;
 import org.subsonic.restapi.License;
 import org.subsonic.restapi.MediaType;
 import org.subsonic.restapi.MusicFolders;
@@ -1543,19 +1546,19 @@ public class RESTController extends MultiActionController {
     @SuppressWarnings("UnusedDeclaration")
     public void getInternetRadioStations(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        XMLBuilder builder = createXMLBuilder(request, response, true);
 
-        builder.add("internetRadioStations", false);
+        InternetRadioStations result = new InternetRadioStations();
         for (InternetRadio radio : settingsService.getAllInternetRadios()) {
-            AttributeSet attrs = new AttributeSet();
-            attrs.add("id", radio.getId());
-            attrs.add("name", radio.getName());
-            attrs.add("streamUrl", radio.getStreamUrl());
-            attrs.add("homePageUrl", radio.getHomepageUrl());
-            builder.add("internetRadioStation", attrs, true);
+            InternetRadioStation i = new InternetRadioStation();
+            i.setId(String.valueOf(radio.getId()));
+            i.setName(radio.getName());
+            i.setStreamUrl(radio.getStreamUrl());
+            i.setHomePageUrl(radio.getHomepageUrl());
+            result.getInternetRadioStation().add(i);
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setInternetRadioStations(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1564,18 +1567,23 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-
-        builder.add("bookmarks", false);
+        Bookmarks result = new Bookmarks();
         for (Bookmark bookmark : bookmarkDao.getBookmarks(username)) {
-            builder.add("bookmark", createAttributesForBookmark(bookmark), false);
+            org.subsonic.restapi.Bookmark b = new org.subsonic.restapi.Bookmark();
+            result.getBookmark().add(b);
+            b.setPosition(bookmark.getPositionMillis());
+            b.setUsername(bookmark.getUsername());
+            b.setComment(bookmark.getComment());
+            b.setCreated(jaxbWriter.convertDate(bookmark.getCreated()));
+            b.setChanged(jaxbWriter.convertDate(bookmark.getChanged()));
+
             MediaFile mediaFile = mediaFileService.getMediaFile(bookmark.getMediaFileId());
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("entry", attributes, true);
-            builder.end();
+            b.setEntry(createChild(player, mediaFile, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setBookmarks(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
