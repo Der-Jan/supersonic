@@ -104,7 +104,7 @@
 
 <p>
     All methods (except those that return binary data) returns XML documents conforming to the
-    <code><a href="inc/api/subsonic-rest-api.xsd">subsonic-rest-api.xsd</a></code> schema.
+    <code>subsonic-rest-api.xsd</code> schema.
 </p>
 
 <h2 class="div">Error handling</h2>
@@ -177,7 +177,7 @@
     </tr>
     <tr class="table-altrow">
         <td>4.9</td>
-        <td><a href="http://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.9/subsonic-main/src/main/webapp/xsd/subsonic-rest-api.xsd">1.10.2</a></td>
+        <td><a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-4.9/subsonic-site/src/main/webapp/inc/api/subsonic-rest-api.xsd">1.10.2</a></td>
     </tr>
     <tr>
         <td>4.8</td>

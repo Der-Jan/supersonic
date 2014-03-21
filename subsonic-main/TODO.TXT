@@ -11,7 +11,9 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
-Make mac installer work
+Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
+Remove lame?
+Update doc of recommended transcode settings.
 Cast:
   Use separate appId for video.
   Can JWPlayer be controlled without control bar? Full screen, seeking, etc
