@@ -179,11 +179,13 @@ public class RESTController extends MultiActionController {
         }
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Response res = jaxbWriter.createResponse(true);
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getLicense(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         License license = new License();
@@ -205,6 +207,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getMusicFolders(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -220,6 +223,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getIndexes(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Response res = jaxbWriter.createResponse(true);
@@ -287,6 +291,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getGenres(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Genres genres = new Genres();
@@ -303,6 +308,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getSongsByGenre(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -323,6 +329,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getArtists(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         String username = securityService.getCurrentUsername(request);
@@ -346,19 +353,6 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
-    @Deprecated
-    private AttributeSet createAttributesForArtist(Artist artist, String username) {
-        AttributeSet attributes = new AttributeSet();
-        attributes.add("id", artist.getId());
-        attributes.add("name", artist.getName());
-        if (artist.getCoverArtPath() != null) {
-            attributes.add("coverArt", CoverArtController.ARTIST_COVERART_PREFIX + artist.getId());
-        }
-        attributes.add("albumCount", artist.getAlbumCount());
-        attributes.add("starred", StringUtil.toISO8601(artistDao.getArtistStarredDate(artist.getId(), username)));
-        return attributes;
-    }
-
     private <T extends ArtistID3> T createArtist(T jaxbArtist, Artist artist, String username) {
         jaxbArtist.setId(String.valueOf(artist.getId()));
         jaxbArtist.setName(artist.getName());
@@ -368,15 +362,6 @@ public class RESTController extends MultiActionController {
             jaxbArtist.setCoverArt(CoverArtController.ARTIST_COVERART_PREFIX + artist.getId());
         }
         return jaxbArtist;
-    }
-
-    @Deprecated
-    private AttributeSet createAttributesForArtist(MediaFile artist, String username) {
-        AttributeSet attributes = new AttributeSet();
-        attributes.add("id", artist.getId());
-        attributes.add("name", artist.getName());
-        attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(artist.getId(), username)));
-        return attributes;
     }
 
     private org.subsonic.restapi.Artist createArtist(MediaFile artist, String username) {
@@ -431,47 +416,6 @@ public class RESTController extends MultiActionController {
         return jaxbAlbum;
     }
 
-    @Deprecated
-    private AttributeSet createAttributesForAlbum(Album album, String username) {
-        AttributeSet attributes;
-        attributes = new AttributeSet();
-        attributes.add("id", album.getId());
-        attributes.add("name", album.getName());
-        attributes.add("artist", album.getArtist());
-        if (album.getArtist() != null) {
-            Artist artist = artistDao.getArtist(album.getArtist());
-            if (artist != null) {
-                attributes.add("artistId", artist.getId());
-            }
-        }
-        if (album.getCoverArtPath() != null) {
-            attributes.add("coverArt", CoverArtController.ALBUM_COVERART_PREFIX + album.getId());
-        }
-        attributes.add("songCount", album.getSongCount());
-        attributes.add("duration", album.getDurationSeconds());
-        attributes.add("created", StringUtil.toISO8601(album.getCreated()));
-        attributes.add("starred", StringUtil.toISO8601(albumDao.getAlbumStarredDate(album.getId(), username)));
-        attributes.add("year", album.getYear());
-        attributes.add("genre", album.getGenre());
-
-        return attributes;
-    }
-
-    @Deprecated
-    private AttributeSet createAttributesForPlaylist(Playlist playlist) {
-        AttributeSet attributes;
-        attributes = new AttributeSet();
-        attributes.add("id", playlist.getId());
-        attributes.add("name", playlist.getName());
-        attributes.add("comment", playlist.getComment());
-        attributes.add("owner", playlist.getUsername());
-        attributes.add("public", playlist.isShared());
-        attributes.add("songCount", playlist.getFileCount());
-        attributes.add("duration", playlist.getDurationSeconds());
-        attributes.add("created", StringUtil.toISO8601(playlist.getCreated()));
-        return attributes;
-    }
-
     private <T extends org.subsonic.restapi.Playlist> T createPlaylist(T jaxbPlaylist, Playlist playlist) {
         jaxbPlaylist.setId(String.valueOf(playlist.getId()));
         jaxbPlaylist.setName(playlist.getName());
@@ -488,6 +432,7 @@ public class RESTController extends MultiActionController {
         return jaxbPlaylist;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getAlbum(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -510,6 +455,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getSong(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -603,7 +549,8 @@ public class RESTController extends MultiActionController {
         res.setSearchResult(searchResult);
         jaxbWriter.writeResponse(request, response, res);
     }
-    
+
+    @SuppressWarnings("UnusedDeclaration")
     public void search2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -640,6 +587,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void search3(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -676,6 +624,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getPlaylists(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -846,6 +795,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void updatePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request, true);
         String username = securityService.getCurrentUsername(request);
@@ -932,6 +882,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getAlbumList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -978,6 +929,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getAlbumList2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -1041,6 +993,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getVideos(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1058,6 +1011,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getNowPlaying(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         NowPlaying result = new NowPlaying();
@@ -1362,10 +1316,12 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void star(HttpServletRequest request, HttpServletResponse response) throws Exception {
         starOrUnstar(request, response, true);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void unstar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         starOrUnstar(request, response, false);
     }
@@ -1414,6 +1370,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getStarred(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1434,6 +1391,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getStarred2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1454,6 +1412,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getPodcasts(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1503,6 +1462,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void refreshPodcasts(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1514,6 +1474,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void createPodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1527,6 +1488,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void deletePodcastChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1540,6 +1502,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void deletePodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1553,6 +1516,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void downloadPodcastEpisode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1572,6 +1536,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getInternetRadioStations(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         XMLBuilder builder = createXMLBuilder(request, response, true);
@@ -1589,6 +1554,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getBookmarks(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1608,6 +1574,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void createBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         String username = securityService.getCurrentUsername(request);
@@ -1622,6 +1589,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void deleteBookmark(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -1633,6 +1601,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getShares(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1656,6 +1625,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void createShare(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -1701,6 +1671,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void deleteShare(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1720,6 +1691,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void updateShare(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1808,11 +1780,13 @@ public class RESTController extends MultiActionController {
         return coverArtController.handleRequest(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public ModelAndView getAvatar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         return avatarController.handleRequest(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void changePassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -1832,6 +1806,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -1859,6 +1834,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getUsers(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -1899,6 +1875,7 @@ public class RESTController extends MultiActionController {
         );
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void createUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1928,6 +1905,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         User user = securityService.getCurrentUser(request);
@@ -1996,6 +1974,7 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getChatMessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         XMLBuilder builder = createXMLBuilder(request, response, true);
@@ -2015,12 +1994,14 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void addChatMessage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         chatService.doAddMessage(getRequiredStringParameter(request, "message"), request);
         jaxbWriter.writeEmptyResponse(request, response);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void getLyrics(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         String artist = request.getParameter("artist");
@@ -2096,6 +2077,7 @@ public class RESTController extends MultiActionController {
         }
     }
 
+    @Deprecated
     public static void error(HttpServletRequest request, HttpServletResponse response, ErrorCode code, String message) throws IOException {
         XMLBuilder builder = createXMLBuilder(request, response, false);
         builder.add("error", true,
