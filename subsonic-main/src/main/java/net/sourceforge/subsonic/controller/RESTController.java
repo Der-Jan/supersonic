@@ -40,6 +40,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.subsonic.restapi.AlbumID3;
+import org.subsonic.restapi.AlbumList;
+import org.subsonic.restapi.AlbumList2;
 import org.subsonic.restapi.AlbumWithSongsID3;
 import org.subsonic.restapi.ArtistID3;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
@@ -930,9 +932,6 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("albumList", false);
-
         int size = getIntParameter(request, "size", 10);
         int offset = getIntParameter(request, "offset", 0);
         size = Math.max(0, Math.min(size, 500));
@@ -964,19 +963,18 @@ public class RESTController extends MultiActionController {
             throw new Exception("Invalid list type: " + type);
         }
 
+        AlbumList result = new AlbumList();
         for (MediaFile album : albums) {
-            AttributeSet attributes = createAttributesForMediaFile(player, album, username);
-            builder.add("album", attributes, true);
+            result.getAlbum().add(createChild(player, album, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        
+        Response res = jaxbWriter.createResponse(true);
+        res.setAlbumList(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getAlbumList2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("albumList2", false);
 
         int size = getIntParameter(request, "size", 10);
         int offset = getIntParameter(request, "offset", 0);
@@ -1007,11 +1005,13 @@ public class RESTController extends MultiActionController {
         } else {
             throw new Exception("Invalid list type: " + type);
         }
+        AlbumList2 result = new AlbumList2();
         for (Album album : albums) {
-            builder.add("album", createAttributesForAlbum(album, username), true);
+            result.getAlbum().add(createAlbum(new AlbumID3(), album, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setAlbumList2(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getRandomSongs(HttpServletRequest request, HttpServletResponse response) throws Exception {
