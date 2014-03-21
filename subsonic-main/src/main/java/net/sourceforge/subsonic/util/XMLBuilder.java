@@ -60,6 +60,7 @@ import org.json.XML;
  *
  * @author Sindre Mehus
  */
+@Deprecated
 public class XMLBuilder {
 
     private static final String INDENTATION = "  ";

@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.subsonic.restapi.Response;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.ajax.ChatService;
@@ -139,6 +140,7 @@ public class RESTController extends MultiActionController {
     private BookmarkDao bookmarkDao;
 
     private final Map<BookmarkKey, Bookmark> bookmarkCache = new ConcurrentHashMap<BookmarkKey, Bookmark>();
+    private final JAXBWriter jaxbWriter = new JAXBWriter();
 
     public void init() {
         refreshBookmarkCache();
@@ -152,8 +154,8 @@ public class RESTController extends MultiActionController {
     }
 
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        XMLBuilder builder = createXMLBuilder(request, response, true).endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getLicense(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1979,6 +1981,7 @@ public class RESTController extends MultiActionController {
         response.getWriter().print(builder);
     }
 
+    @Deprecated
     private static XMLBuilder createXMLBuilder(HttpServletRequest request, HttpServletResponse response, boolean ok) throws IOException {
         String format = getStringParameter(request, "f", "xml");
         boolean json = "json".equals(format);
