@@ -11,7 +11,9 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
-Get REST version programmatically.
+JAXB
+  Get REST version programmatically.
+  Simplify date format.
 ResourceBundle_et should use iso-8859-1
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?

@@ -19,11 +19,14 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.StringWriter;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
@@ -46,6 +49,7 @@ public class JAXBWriter {
 
     private final Marshaller xmlMarshaller;
     private final Marshaller jsonMarshaller;
+    private DatatypeFactory datatypeFactory;
 
     public JAXBWriter() {
         try {
@@ -60,7 +64,10 @@ public class JAXBWriter {
             jsonMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jsonMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
             jsonMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
-        } catch (JAXBException x) {
+
+            datatypeFactory = DatatypeFactory.newInstance();
+
+        } catch (Exception x) {
             throw new RuntimeException(x);
         }
     }
@@ -107,5 +114,15 @@ public class JAXBWriter {
             LOG.error("Failed to marshal JAXB", x);
             throw x;
         }
+    }
+
+    public XMLGregorianCalendar convertDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(date);
+        return datatypeFactory.newXMLGregorianCalendar(c).normalize();
     }
 }
