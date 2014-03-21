@@ -61,6 +61,7 @@ import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
 import org.subsonic.restapi.Songs;
+import org.subsonic.restapi.Videos;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.ajax.ChatService;
@@ -1019,9 +1020,6 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("randomSongs", false);
-
         int size = getIntParameter(request, "size", 10);
         size = Math.max(0, Math.min(size, 500));
         String genre = getStringParameter(request, "genre");
@@ -1030,12 +1028,13 @@ public class RESTController extends MultiActionController {
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
         RandomSearchCriteria criteria = new RandomSearchCriteria(size, genre, fromYear, toYear, musicFolderId);
 
+        Songs result = new Songs();
         for (MediaFile mediaFile : searchService.getRandomSongs(criteria)) {
-            AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-            builder.add("song", attributes, true);
+            result.getSong().add(createChild(player, mediaFile, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setRandomSongs(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getVideos(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1043,16 +1042,16 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-        builder.add("videos", false);
         int size = getIntParameter(request, "size", Integer.MAX_VALUE);
         int offset = getIntParameter(request, "offset", 0);
 
+        Videos result = new Videos();
         for (MediaFile mediaFile : mediaFileDao.getVideos(size, offset)) {
-            builder.add("video", createAttributesForMediaFile(player, mediaFile, username), true);
+            result.getVideo().add(createChild(player, mediaFile, username));
         }
-        builder.endAll();
-        response.getWriter().print(builder);
+        Response res = jaxbWriter.createResponse(true);
+        res.setVideos(result);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void getNowPlaying(HttpServletRequest request, HttpServletResponse response) throws Exception {
