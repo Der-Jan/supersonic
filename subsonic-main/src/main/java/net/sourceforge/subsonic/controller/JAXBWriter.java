@@ -25,6 +25,7 @@ import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -53,31 +54,34 @@ public class JAXBWriter {
 
     private static final Logger LOG = Logger.getLogger(JAXBWriter.class);
 
-    private final Marshaller xmlMarshaller;
-    private final Marshaller jsonMarshaller;
+    private final javax.xml.bind.JAXBContext jaxbContext;
+    private final DatatypeFactory datatypeFactory;
     private final String restProtocolVersion;
-    private DatatypeFactory datatypeFactory;
 
     public JAXBWriter() {
         try {
-            javax.xml.bind.JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
-
-            xmlMarshaller = jaxbContext.createMarshaller();
-            xmlMarshaller.setProperty(Marshaller.JAXB_ENCODING, StringUtil.ENCODING_UTF8);
-            xmlMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            jsonMarshaller = jaxbContext.createMarshaller();
-            jsonMarshaller.setProperty(Marshaller.JAXB_ENCODING, StringUtil.ENCODING_UTF8);
-            jsonMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jsonMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-            jsonMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
-
+            jaxbContext = JAXBContext.newInstance(Response.class);
             datatypeFactory = DatatypeFactory.newInstance();
             restProtocolVersion = getRESTProtocolVersion();
-
         } catch (Exception x) {
             throw new RuntimeException(x);
         }
+    }
+
+    private Marshaller createXmlMarshaller() throws JAXBException {
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, StringUtil.ENCODING_UTF8);
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        return marshaller;
+    }
+
+    private Marshaller createJsonMarshaller() throws JAXBException {
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, StringUtil.ENCODING_UTF8);
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+        marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+        return marshaller;
     }
 
     private String getRESTProtocolVersion() throws Exception {
@@ -112,13 +116,13 @@ public class JAXBWriter {
         Marshaller marshaller;
 
         if (json) {
-            marshaller = jsonMarshaller;
+            marshaller = createJsonMarshaller();
             httpResponse.setContentType("application/json");
         } else if (jsonp) {
-            marshaller = jsonMarshaller;
+            marshaller = createJsonMarshaller();
             httpResponse.setContentType("text/javascript");
         } else {
-            marshaller = xmlMarshaller;
+            marshaller = createXmlMarshaller();
             httpResponse.setContentType("text/xml");
         }
 
