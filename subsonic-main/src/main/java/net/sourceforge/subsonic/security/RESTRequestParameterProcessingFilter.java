@@ -35,15 +35,14 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.ProviderManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.controller.JAXBWriter;
 import net.sourceforge.subsonic.controller.RESTController;
 import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.Version;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.XMLBuilder;
 
 /**
  * Performs authentication based on credentials being present in the HTTP request parameters. Also checks
@@ -51,7 +50,7 @@ import net.sourceforge.subsonic.util.XMLBuilder;
  * <p/>
  * The username should be set in parameter "u", and the password should be set in parameter "p".
  * The REST protocol version should be set in parameter "v".
- *
+ * <p/>
  * The password can either be in plain text or be UTF-8 hexencoded preceded by "enc:".
  *
  * @author Sindre Mehus
@@ -60,12 +59,10 @@ public class RESTRequestParameterProcessingFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(RESTRequestParameterProcessingFilter.class);
 
+    private final JAXBWriter jaxbWriter = new JAXBWriter();
     private ProviderManager authenticationManager;
     private SettingsService settingsService;
 
-    /**
-     * {@inheritDoc}
-     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!(request instanceof HttpServletRequest)) {
             throw new ServletException("Can only process HttpServletRequest");
@@ -174,46 +171,16 @@ public class RESTRequestParameterProcessingFilter implements Filter {
     }
 
     private void sendErrorXml(HttpServletRequest request, HttpServletResponse response, RESTController.ErrorCode errorCode) throws IOException {
-        String format = ServletRequestUtils.getStringParameter(request, "f", "xml");
-        boolean json = "json".equals(format);
-        boolean jsonp = "jsonp".equals(format);
-        XMLBuilder builder;
-
-        response.setCharacterEncoding(StringUtil.ENCODING_UTF8);
-
-        if (json) {
-            builder = XMLBuilder.createJSONBuilder();
-            response.setContentType("application/json");
-        } else if (jsonp) {
-            builder = XMLBuilder.createJSONPBuilder(request.getParameter("callback"));
-            response.setContentType("text/javascript");
-        } else {
-        	builder = XMLBuilder.createXMLBuilder();
-            response.setContentType("text/xml");
+        try {
+            jaxbWriter.writeErrorResponse(request, response, errorCode, errorCode.getMessage());
+        } catch (Exception e) {
+            LOG.error("Failed to send error response.", e);
         }
-
-        builder.preamble(StringUtil.ENCODING_UTF8);
-        builder.add("subsonic-response", false,
-                    new XMLBuilder.Attribute("xmlns", "http://subsonic.org/restapi"),
-                    new XMLBuilder.Attribute("status", "failed"),
-                    new XMLBuilder.Attribute("version", StringUtil.getRESTProtocolVersion()));
-
-        builder.add("error", true,
-                    new XMLBuilder.Attribute("code", errorCode.getCode()),
-                    new XMLBuilder.Attribute("message", errorCode.getMessage()));
-        builder.end();
-        response.getWriter().print(builder);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void destroy() {
     }
 

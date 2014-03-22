@@ -14,6 +14,8 @@ TODO IN 5.0
 JAXB
   Get REST version programmatically.
   Simplify date format.
+  Inject JAXBWriter.
+  Ensure thread safety.
 ResourceBundle_et should use iso-8859-1
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?
