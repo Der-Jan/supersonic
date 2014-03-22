@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -127,11 +126,8 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.XMLBuilder;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
-import static net.sourceforge.subsonic.util.XMLBuilder.Attribute;
-import static net.sourceforge.subsonic.util.XMLBuilder.AttributeSet;
 import static org.springframework.web.bind.ServletRequestUtils.*;
 
 /**
@@ -552,7 +548,7 @@ public class RESTController extends MultiActionController {
         org.subsonic.restapi.SearchResult searchResult = new org.subsonic.restapi.SearchResult();
         searchResult.setOffset(result.getOffset());
         searchResult.setTotalHits(result.getTotalHits());
-        
+
         for (MediaFile mediaFile : result.getMediaFiles()) {
             searchResult.getMatch().add(createJaxbChild(player, mediaFile, username));
         }
@@ -937,7 +933,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile album : albums) {
             result.getAlbum().add(createJaxbChild(player, album, username));
         }
-        
+
         Response res = jaxbWriter.createResponse(true);
         res.setAlbumList(result);
         jaxbWriter.writeResponse(request, response, res);
@@ -1064,7 +1060,7 @@ public class RESTController extends MultiActionController {
     private Child createJaxbChild(Player player, MediaFile mediaFile, String username) {
         return createJaxbChild(new Child(), player, mediaFile, username);
     }
-    
+
     private <T extends Child> T createJaxbChild(T child, Player player, MediaFile mediaFile, String username) {
         MediaFile parent = mediaFileService.getParentOf(mediaFile);
         child.setId(String.valueOf(mediaFile.getId()));
@@ -1140,82 +1136,6 @@ public class RESTController extends MultiActionController {
             }
         }
         return child;
-    }
-
-    @Deprecated
-    private AttributeSet createAttributesForMediaFile(Player player, MediaFile mediaFile, String username) {
-        MediaFile parent = mediaFileService.getParentOf(mediaFile);
-        AttributeSet attributes = new AttributeSet();
-        attributes.add("id", mediaFile.getId());
-        try {
-            if (!mediaFileService.isRoot(parent)) {
-                attributes.add("parent", parent.getId());
-            }
-        } catch (SecurityException x) {
-            // Ignored.
-        }
-        attributes.add("title", mediaFile.getName());
-        attributes.add("album", mediaFile.getAlbumName());
-        attributes.add("artist", mediaFile.getArtist());
-        attributes.add("isDir", mediaFile.isDirectory());
-        attributes.add("coverArt", findCoverArt(mediaFile, parent));
-        attributes.add("year", mediaFile.getYear());
-        attributes.add("genre", mediaFile.getGenre());
-        attributes.add("created", StringUtil.toISO8601(mediaFile.getCreated()));
-        attributes.add("starred", StringUtil.toISO8601(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
-        attributes.add("userRating", ratingService.getRatingForUser(username, mediaFile));
-        attributes.add("averageRating", ratingService.getAverageRating(mediaFile));
-
-        if (mediaFile.isFile()) {
-            attributes.add("duration", mediaFile.getDurationSeconds());
-            attributes.add("bitRate", mediaFile.getBitRate());
-            attributes.add("track", mediaFile.getTrackNumber());
-            attributes.add("discNumber", mediaFile.getDiscNumber());
-            attributes.add("size", mediaFile.getFileSize());
-            String suffix = mediaFile.getFormat();
-            attributes.add("suffix", suffix);
-            attributes.add("contentType", StringUtil.getMimeType(suffix));
-            attributes.add("isVideo", mediaFile.isVideo());
-            attributes.add("path", getRelativePath(mediaFile));
-
-            Bookmark bookmark = bookmarkCache.get(new BookmarkKey(username, mediaFile.getId()));
-            if (bookmark != null) {
-                attributes.add("bookmarkPosition", bookmark.getPositionMillis());
-            }
-
-            if (mediaFile.getAlbumArtist() != null && mediaFile.getAlbumName() != null) {
-                Album album = albumDao.getAlbum(mediaFile.getAlbumArtist(), mediaFile.getAlbumName());
-                if (album != null) {
-                    attributes.add("albumId", album.getId());
-                }
-            }
-            if (mediaFile.getArtist() != null) {
-                Artist artist = artistDao.getArtist(mediaFile.getArtist());
-                if (artist != null) {
-                    attributes.add("artistId", artist.getId());
-                }
-            }
-            switch (mediaFile.getMediaType()) {
-                case MUSIC:
-                    attributes.add("type", "music");
-                    break;
-                case PODCAST:
-                    attributes.add("type", "podcast");
-                    break;
-                case AUDIOBOOK:
-                    attributes.add("type", "audiobook");
-                    break;
-                default:
-                    break;
-            }
-
-            if (transcodingService.isTranscodingRequired(mediaFile, player)) {
-                String transcodedSuffix = transcodingService.getSuffix(player, mediaFile, null);
-                attributes.add("transcodedSuffix", transcodedSuffix);
-                attributes.add("transcodedContentType", StringUtil.getMimeType(transcodedSuffix));
-            }
-        }
-        return attributes;
     }
 
     private String findCoverArt(MediaFile mediaFile, MediaFile parent) {
@@ -1748,6 +1668,7 @@ public class RESTController extends MultiActionController {
         return result;
     }
 
+    @SuppressWarnings("UnusedParameters")
     public ModelAndView videoPlayer(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
 
@@ -2082,34 +2003,6 @@ public class RESTController extends MultiActionController {
 
     public void error(HttpServletRequest request, HttpServletResponse response, ErrorCode code, String message) throws Exception {
         jaxbWriter.writeErrorResponse(request, response, code, message);
-    }
-
-    @Deprecated
-    private static XMLBuilder createXMLBuilder(HttpServletRequest request, HttpServletResponse response, boolean ok) throws IOException {
-        String format = getStringParameter(request, "f", "xml");
-        boolean json = "json".equals(format);
-        boolean jsonp = "jsonp".equals(format);
-        XMLBuilder builder;
-
-        response.setCharacterEncoding(StringUtil.ENCODING_UTF8);
-
-        if (json) {
-            builder = XMLBuilder.createJSONBuilder();
-            response.setContentType("application/json");
-        } else if (jsonp) {
-            builder = XMLBuilder.createJSONPBuilder(request.getParameter("callback"));
-            response.setContentType("text/javascript");
-        } else {
-            builder = XMLBuilder.createXMLBuilder();
-            response.setContentType("text/xml");
-        }
-
-        builder.preamble(StringUtil.ENCODING_UTF8);
-        builder.add("subsonic-response", false,
-                new Attribute("xmlns", "http://subsonic.org/restapi"),
-                new Attribute("status", ok ? "ok" : "failed"),
-                new Attribute("version", StringUtil.getRESTProtocolVersion()));
-        return builder;
     }
 
     private String createPlayerIfNecessary(HttpServletRequest request, boolean jukebox) {
