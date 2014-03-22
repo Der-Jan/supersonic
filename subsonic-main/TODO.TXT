@@ -11,6 +11,8 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 
 TODO IN 5.0
 --------------
+Help icon.
+Button backgrounds.
 JAXB
   Simplify date format.
   Inject JAXBWriter.
