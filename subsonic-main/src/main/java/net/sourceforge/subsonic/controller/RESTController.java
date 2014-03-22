@@ -57,6 +57,8 @@ import org.subsonic.restapi.IndexID3;
 import org.subsonic.restapi.Indexes;
 import org.subsonic.restapi.InternetRadioStation;
 import org.subsonic.restapi.InternetRadioStations;
+import org.subsonic.restapi.JukeboxPlaylist;
+import org.subsonic.restapi.JukeboxStatus;
 import org.subsonic.restapi.License;
 import org.subsonic.restapi.Lyrics;
 import org.subsonic.restapi.MediaType;
@@ -156,7 +158,6 @@ public class RESTController extends MultiActionController {
     private AvatarController avatarController;
     private UserSettingsController userSettingsController;
     private LeftController leftController;
-    private HomeController homeController;
     private StatusService statusService;
     private StreamController streamController;
     private HLSController hlsController;
@@ -729,36 +730,39 @@ public class RESTController extends MultiActionController {
             throw new Exception("Unknown jukebox action: '" + action + "'.");
         }
 
-        XMLBuilder builder = createXMLBuilder(request, response, true);
-
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
         Player jukeboxPlayer = jukeboxService.getPlayer();
         boolean controlsJukebox = jukeboxPlayer != null && jukeboxPlayer.getId().equals(player.getId());
         PlayQueue playQueue = player.getPlayQueue();
 
-        List<Attribute> attrs = new ArrayList<Attribute>(Arrays.asList(
-                new Attribute("currentIndex", controlsJukebox && !playQueue.isEmpty() ? playQueue.getIndex() : -1),
-                new Attribute("playing", controlsJukebox && !playQueue.isEmpty() && playQueue.getStatus() == PlayQueue.Status.PLAYING),
-                new Attribute("gain", jukeboxService.getGain()),
-                new Attribute("position", controlsJukebox && !playQueue.isEmpty() ? jukeboxService.getPosition() : 0)));
 
+        int currentIndex = controlsJukebox && !playQueue.isEmpty() ? playQueue.getIndex() : -1;
+        boolean playing = controlsJukebox && !playQueue.isEmpty() && playQueue.getStatus() == PlayQueue.Status.PLAYING;
+        float gain = jukeboxService.getGain();
+        int position = controlsJukebox && !playQueue.isEmpty() ? jukeboxService.getPosition() : 0;
+
+        Response res = jaxbWriter.createResponse(true);
         if (returnPlaylist) {
-            builder.add("jukeboxPlaylist", attrs, false);
-            List<MediaFile> result;
-            synchronized (playQueue) {
-                result = playQueue.getFiles();
-            }
-            for (MediaFile mediaFile : result) {
-                AttributeSet attributes = createAttributesForMediaFile(player, mediaFile, username);
-                builder.add("entry", attributes, true);
+            JukeboxPlaylist result = new JukeboxPlaylist();
+            res.setJukeboxPlaylist(result);
+            result.setCurrentIndex(currentIndex);
+            result.setPlaying(playing);
+            result.setGain(gain);
+            result.setPosition(position);
+            for (MediaFile mediaFile : playQueue.getFiles()) {
+                result.getEntry().add(createJaxbChild(player, mediaFile, username));
             }
         } else {
-            builder.add("jukeboxStatus", attrs, false);
+            JukeboxStatus result = new JukeboxStatus();
+            res.setJukeboxStatus(result);
+            result.setCurrentIndex(currentIndex);
+            result.setPlaying(playing);
+            result.setGain(gain);
+            result.setPosition(position);
         }
 
-        builder.endAll();
-        response.getWriter().print(builder);
+        jaxbWriter.writeResponse(request, response, res);
     }
 
     public void createPlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -2183,10 +2187,6 @@ public class RESTController extends MultiActionController {
 
     public void setChatService(ChatService chatService) {
         this.chatService = chatService;
-    }
-
-    public void setHomeController(HomeController homeController) {
-        this.homeController = homeController;
     }
 
     public void setLyricsService(LyricsService lyricsService) {
