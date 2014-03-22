@@ -30,6 +30,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.subsonic.restapi.Error;
 import org.subsonic.restapi.ObjectFactory;
 import org.subsonic.restapi.Response;
 import org.subsonic.restapi.ResponseStatus;
@@ -118,6 +119,16 @@ public class JAXBWriter {
 
     public void writeEmptyResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         writeResponse(request, response, createResponse(true));
+    }
+
+    public void writeErrorResponse(HttpServletRequest request, HttpServletResponse response,
+            RESTController.ErrorCode code, String message) throws Exception {
+        Response res = createResponse(false);
+        Error error = new Error();
+        res.setError(error);
+        error.setCode(code.getCode());
+        error.setMessage(message);
+        writeResponse(request, response, res);
     }
 
     public XMLGregorianCalendar convertDate(Date date) {

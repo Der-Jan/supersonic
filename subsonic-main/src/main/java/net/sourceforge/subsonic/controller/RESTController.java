@@ -2076,14 +2076,8 @@ public class RESTController extends MultiActionController {
         }
     }
 
-    @Deprecated
-    public static void error(HttpServletRequest request, HttpServletResponse response, ErrorCode code, String message) throws IOException {
-        XMLBuilder builder = createXMLBuilder(request, response, false);
-        builder.add("error", true,
-                new XMLBuilder.Attribute("code", code.getCode()),
-                new XMLBuilder.Attribute("message", message));
-        builder.end();
-        response.getWriter().print(builder);
+    public void error(HttpServletRequest request, HttpServletResponse response, ErrorCode code, String message) throws Exception {
+        jaxbWriter.writeErrorResponse(request, response, code, message);
     }
 
     @Deprecated

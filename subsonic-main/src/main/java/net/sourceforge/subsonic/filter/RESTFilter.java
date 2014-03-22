@@ -33,6 +33,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.util.NestedServletException;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.controller.JAXBWriter;
 import net.sourceforge.subsonic.controller.RESTController;
 
 import static net.sourceforge.subsonic.controller.RESTController.ErrorCode.GENERIC;
@@ -50,6 +51,8 @@ public class RESTFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(RESTFilter.class);
 
+    private final JAXBWriter jaxbWriter = new JAXBWriter();
+
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(req, res);
@@ -61,7 +64,7 @@ public class RESTFilter implements Filter {
         }
     }
 
-    private void handleException(Throwable x, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void handleException(Throwable x, HttpServletRequest request, HttpServletResponse response) {
         if (x instanceof NestedServletException && x.getCause() != null) {
             x = x.getCause();
         }
@@ -70,7 +73,11 @@ public class RESTFilter implements Filter {
         String msg = getErrorMessage(x);
         LOG.warn("Error in REST API: " + msg, x);
 
-        RESTController.error(request, response, code, msg);
+        try {
+            jaxbWriter.writeErrorResponse(request, response, code, msg);
+        } catch (Exception e) {
+            LOG.error("Failed to write error response.", e);
+        }
     }
 
     private String getErrorMessage(Throwable x) {
