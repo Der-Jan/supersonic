@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,8 +29,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.jdom.Attribute;
+import org.jdom.Document;
+import org.jdom.input.SAXBuilder;
 import org.subsonic.restapi.Error;
 import org.subsonic.restapi.ObjectFactory;
 import org.subsonic.restapi.Response;
@@ -50,6 +55,7 @@ public class JAXBWriter {
 
     private final Marshaller xmlMarshaller;
     private final Marshaller jsonMarshaller;
+    private final String restProtocolVersion;
     private DatatypeFactory datatypeFactory;
 
     public JAXBWriter() {
@@ -67,16 +73,33 @@ public class JAXBWriter {
             jsonMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
 
             datatypeFactory = DatatypeFactory.newInstance();
+            restProtocolVersion = getRESTProtocolVersion();
 
         } catch (Exception x) {
             throw new RuntimeException(x);
         }
     }
 
+    private String getRESTProtocolVersion() throws Exception {
+        InputStream in = null;
+        try {
+            in = StringUtil.class.getResourceAsStream("/subsonic-rest-api.xsd");
+            Document document = new SAXBuilder().build(in);
+            Attribute version = document.getRootElement().getAttribute("version");
+            return version.getValue();
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
+
+    public String getRestProtocolVersion() {
+        return restProtocolVersion;
+    }
+
     public Response createResponse(boolean ok) {
         Response response = new ObjectFactory().createResponse();
         response.setStatus(ok ? ResponseStatus.OK : ResponseStatus.FAILED);
-        response.setVersion(StringUtil.getRESTProtocolVersion());
+        response.setVersion(restProtocolVersion);
         return response;
     }
 

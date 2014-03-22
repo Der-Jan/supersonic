@@ -12,7 +12,6 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 TODO IN 5.0
 --------------
 JAXB
-  Get REST version programmatically.
   Simplify date format.
   Inject JAXBWriter.
   Ensure thread safety.

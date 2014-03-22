@@ -43,7 +43,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.LongRange;
 
 /**
  * Miscellaneous string utility methods.
@@ -493,10 +492,5 @@ public final class StringUtil {
             return null;
         }
         return s.replaceAll("<.*?>", "");
-    }
-
-    public static String getRESTProtocolVersion() {
-        // TODO: Read from xsd.
-        return "1.10.2";
     }
 }

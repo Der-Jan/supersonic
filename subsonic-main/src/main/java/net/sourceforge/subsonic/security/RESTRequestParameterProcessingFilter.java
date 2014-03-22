@@ -110,7 +110,7 @@ public class RESTRequestParameterProcessingFilter implements Filter {
     }
 
     private RESTController.ErrorCode checkAPIVersion(String version) {
-        Version serverVersion = new Version(StringUtil.getRESTProtocolVersion());
+        Version serverVersion = new Version(jaxbWriter.getRestProtocolVersion());
         Version clientVersion = new Version(version);
 
         if (serverVersion.getMajor() > clientVersion.getMajor()) {
