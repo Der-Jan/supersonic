@@ -9,9 +9,9 @@
                 <a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">SubStream</a> is an iPhone/iPad app developed by Figment Inc., and is
                 available free of charge on the <a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">App Store</a>.
             </p>
-            <a href="inc/img/screenshots/screen29.png"><img src="inc/img/screenshots/thumb29.png" alt="" style="margin-left:30px;padding:3px"/></a>
-            <a href="inc/img/screenshots/screen30.png"><img src="inc/img/screenshots/thumb30.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen31.png"><img src="inc/img/screenshots/thumb31.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/substream/substream-1.png"><img src="inc/img/screenshots/substream/substream-thumb-1.png" alt="" style="margin-left:30px;padding:3px"/></a>
+            <a href="inc/img/screenshots/substream/substream-2.png"><img src="inc/img/screenshots/substream/substream-thumb-2.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/substream/substream-3.png"><img src="inc/img/screenshots/substream/substream-thumb-3.png" alt="" style="padding:3px"/></a>
 
             <a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8"><img src="inc/img/available_on_appstore.png" alt="" class="img-center"/></a>
 

@@ -35,7 +35,6 @@ import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -99,7 +98,7 @@ public abstract class SubsonicContentDirectory extends AbstractContentDirectoryS
         String contextPath = settingsService.getUrlRedirectContextPath();
 
         StringBuilder url = new StringBuilder(isHttps ? "https://" : "http://")
-                .append(Util.getLocalIpAddress())
+                .append(settingsService.getLocalIpAddress())
                 .append(":")
                 .append(isHttps ? httpsPort : port)
                 .append("/");

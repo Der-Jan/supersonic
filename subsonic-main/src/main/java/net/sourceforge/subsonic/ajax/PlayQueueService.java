@@ -18,6 +18,20 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.directwebremoting.WebContextFactory;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -30,17 +44,6 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.directwebremoting.WebContextFactory;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Provides AJAX-enabled services for manipulating the play queue of a player.
@@ -381,9 +384,16 @@ public class PlayQueueService {
 
         List<PlayQueueInfo.Entry> entries = new ArrayList<PlayQueueInfo.Entry>();
         PlayQueue playQueue = player.getPlayQueue();
+        String ip = settingsService.getLocalIpAddress();
+
         for (MediaFile file : playQueue.getFiles()) {
+
             String albumUrl = url.replaceFirst("/dwr/.*", "/main.view?id=" + file.getId());
             String streamUrl = url.replaceFirst("/dwr/.*", "/stream?player=" + player.getId() + "&id=" + file.getId());
+            String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + file.getId());
+            String host = new URL(streamUrl).getHost();
+            String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
+            String remoteCoverArtUrl = coverArtUrl.replaceFirst(host, ip);
 
             // Rewrite URLs in case we're behind a proxy.
             if (settingsService.isRewriteUrlEnabled()) {
@@ -398,7 +408,8 @@ public class PlayQueueService {
             entries.add(new PlayQueueInfo.Entry(file.getId(), file.getTrackNumber(), file.getTitle(), file.getArtist(),
                     file.getAlbumName(), file.getGenre(), file.getYear(), formatBitRate(file),
                     file.getDurationSeconds(), file.getDurationString(), format, formatContentType(format),
-                    formatFileSize(file.getFileSize(), locale), starred, albumUrl, streamUrl));
+                    formatFileSize(file.getFileSize(), locale), starred, albumUrl, streamUrl, remoteStreamUrl,
+                    coverArtUrl, remoteCoverArtUrl));
         }
         boolean isStopEnabled = playQueue.getStatus() == PlayQueue.Status.PLAYING && !player.isExternalWithPlaylist();
         float gain = jukeboxService.getGain();

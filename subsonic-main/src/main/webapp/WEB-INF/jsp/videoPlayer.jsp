@@ -3,6 +3,7 @@
 <html>
 <head>
     <%@ include file="head.jsp" %>
+    <%@ include file="jquery.jsp" %>
 
     <sub:url value="videoPlayer.view" var="baseUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
     <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
@@ -11,69 +12,66 @@
         <sub:param name="id" value="${model.video.id}"/>
     </sub:url>
 
-    <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
+    <%@ include file="videoPlayerCast.jsp" %>
     <script type="text/javascript" language="javascript">
 
-        var player;
         var position;
         var maxBitRate = ${model.maxBitRate};
         var timeOffset = ${model.timeOffset};
 
         function init() {
 
-            var flashvars = {
-                id:"player1",
-                skin:"<c:url value="/flash/whotube.zip"/>",
-//                plugins:"metaviewer-1",
+            jwplayer("jwplayer").setup({
+                flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
+                height: "${model.popout ? '85%' : '360'}",
+                width: "${model.popout ? '100%' : '600'}",
+                skin:"<c:url value="/flash/jw-player-subsonic-skin.zip"/>",
                 screencolor:"000000",
                 controlbar:"over",
                 autostart:"false",
                 bufferlength:3,
                 backcolor:"<spring:theme code="backgroundColor"/>",
                 frontcolor:"<spring:theme code="textColor"/>",
-                provider:"video"
-            };
-            var params = {
-                allowfullscreen:"true",
-                allowscriptaccess:"always"
-            };
-            var attributes = {
-                id:"player1",
-                name:"player1"
-            };
+                provider:"video",
+                events: {
+                    onTime: function(event) {
+                        var newPosition = Math.round(event.position);
+                        if (newPosition != position) {
+                            position = newPosition;
+                            updatePosition();
+                        }
+                    }
+                }
+            });
 
-            var width = "${model.popout ? '100%' : '600'}";
-            var height = "${model.popout ? '85%' : '360'}";
-            swfobject.embedSWF("<c:url value="/flash/jw-player-5.10.swf"/>", "placeholder1", width, height, "9.0.0", false, flashvars, params, attributes);
-        }
-
-        function playerReady(thePlayer) {
-            player = $("player1");
-            player.addModelListener("TIME", "timeListener");
-
-        <c:if test="${not (model.trial and model.trialExpired)}">
-            play();
-        </c:if>
+            <c:if test="${not (model.trial and model.trialExpired)}">
+                play();
+            </c:if>
         }
 
         function play() {
-            var list = new Array();
-            list[0] = {
-                file:"${streamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}",
-                duration:${model.duration} - timeOffset,
-                provider:"video"
-            };
-            player.sendEvent("LOAD", list);
-            player.sendEvent("PLAY");
-        }
+            position = 0;
+            updatePosition();
+            console.log("play: " + castSession);
+            if (castSession) {
+                loadCastMedia({
+                    remoteStreamUrl: "${model.remoteStreamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}&format=mkv",
+                    title: "${model.video.title}",
+                 //   year: "${model.video.year}", // TODO, year can be null
+                    duration: ${model.duration} - timeOffset,
+                    contentType: "video/x-matroska"
+                });
+            } else {
 
-        function timeListener(obj) {
-            var newPosition = Math.round(obj.position);
-            if (newPosition != position) {
-                position = newPosition;
-                updatePosition();
+                jwplayer().load({
+                    file:"${streamUrl}&maxBitRate=" + maxBitRate + "&timeOffset=" + timeOffset + "&player=${model.player}",
+                    duration:${model.duration} - timeOffset,
+                    provider:"video"
+                });
+                jwplayer().play();
             }
         }
 
@@ -88,16 +86,16 @@
                 result += "0";
             }
             result += seconds;
-            $("position").innerHTML = result;
+            $("#position").html(result);
         }
 
         function changeTimeOffset() {
-            timeOffset = $("timeOffset").getValue();
+            timeOffset = $("#timeOffset").val();
             play();
         }
 
         function changeBitRate() {
-            maxBitRate = $("maxBitRate").getValue();
+            maxBitRate = $("#maxBitRate").val();
             timeOffset = getPosition();
             play();
         }
@@ -130,13 +128,24 @@
 
 <c:if test="${licenseInfo.licenseOrTrialValid}">
 
-    <div id="wrapper" style="padding-top:1em">
-        <div id="placeholder1"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+    <div id="flashPlayer" style="padding-top:1em">
+        <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+    </div>
+
+    <div id="castPlayer" style="display: none">
+        <div style="float:left">
+            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
+            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+        </div>
+        <div style="float:left">
+            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                   onchange="setCastVolume(this.value/100, false);">
+        </div>
     </div>
 
     <div style="padding-top:0.7em;padding-bottom:0.7em">
 
-        <span id="position" style="padding-right:0.5em">0:00</span>
+        <span id="progress" style="padding-right:0.5em">0:00</span>
         <select id="timeOffset" onchange="changeTimeOffset();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
             <c:forEach items="${model.skipOffsets}" var="skipOffset">
                 <c:choose>
@@ -150,6 +159,9 @@
             </c:forEach>
         </select>
 
+        <input id="positionSlider" type="range" min="0" max="100" step="1" style="width: 200px; margin-left: 10px; margin-right: 10px"
+               onchange="setCastVolume(this.value/100, false);">
+
         <select id="maxBitRate" onchange="changeBitRate();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em">
             <c:forEach items="${model.bitRates}" var="bitRate">
                 <c:choose>
@@ -162,7 +174,9 @@
                 </c:choose>
             </c:forEach>
         </select>
+        <a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a>
     </div>
+
 
     <c:choose>
         <c:when test="${model.popout}">
@@ -175,6 +189,12 @@
     </c:choose>
 
 </c:if>
+<div style="clear: both"></div>
+
+<div style="margin:10px;">
+    <textarea rows="10" cols="100" id="debugmessage">
+    </textarea>
+</div>
 
 </body>
 </html>

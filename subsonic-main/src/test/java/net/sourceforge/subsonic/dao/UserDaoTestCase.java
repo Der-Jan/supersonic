@@ -1,15 +1,14 @@
 package net.sourceforge.subsonic.dao;
 
-import java.util.Date;
-import java.util.Locale;
-
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Unit test of {@link UserDao}.
@@ -150,6 +149,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         assertNull("Error in getUserSettings().", userSettings.getThemeId());
         assertFalse("Error in getUserSettings().", userSettings.isFinalVersionNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isBetaVersionNotificationEnabled());
+        assertFalse("Error in getUserSettings().", userSettings.isSongNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isLastFmEnabled());
         assertNull("Error in getUserSettings().", userSettings.getLastFmUsername());
         assertNull("Error in getUserSettings().", userSettings.getLastFmPassword());
@@ -165,6 +165,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         settings.setLocale(Locale.SIMPLIFIED_CHINESE);
         settings.setThemeId("midnight");
         settings.setBetaVersionNotificationEnabled(true);
+        settings.setSongNotificationEnabled(false);
         settings.getMainVisibility().setCaptionCutoff(42);
         settings.getMainVisibility().setBitRateVisible(true);
         settings.getPlaylistVisibility().setCaptionCutoff(44);
@@ -187,6 +188,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         assertEquals("Error in getUserSettings().", Locale.SIMPLIFIED_CHINESE, userSettings.getLocale());
         assertEquals("Error in getUserSettings().", false, userSettings.isFinalVersionNotificationEnabled());
         assertEquals("Error in getUserSettings().", true, userSettings.isBetaVersionNotificationEnabled());
+        assertEquals("Error in getUserSettings().", false, userSettings.isSongNotificationEnabled());
         assertEquals("Error in getUserSettings().", "midnight", userSettings.getThemeId());
         assertEquals("Error in getUserSettings().", 42, userSettings.getMainVisibility().getCaptionCutoff());
         assertEquals("Error in getUserSettings().", true, userSettings.getMainVisibility().isBitRateVisible());

@@ -9,9 +9,9 @@
                 <a href="http://isubapp.com/">iSub</a> is an iPhone/iPad app developed by Ben Baron, and is
                 available for purchase on the <a href="http://itunes.apple.com/us/app/isub-music-streamer/id362920532?mt=8">App&nbsp;Store</a>.
             </p>
-            <a href="inc/img/screenshots/screen20.png"><img src="inc/img/screenshots/thumb20.png" alt="" style="padding:15px;padding-left:80px"/></a>
-            <a href="inc/img/screenshots/screen21.png"><img src="inc/img/screenshots/thumb21.png" alt="" style="padding:15px"/></a>
-            <a href="inc/img/screenshots/screen22.png"><img src="inc/img/screenshots/thumb22.png" alt="" style="padding:15px"/></a>
+            <a href="inc/img/screenshots/isub/isub-1.png"><img src="inc/img/screenshots/isub/isub-thumb-1.png" alt="" style="padding:15px;padding-left:80px"/></a>
+            <a href="inc/img/screenshots/isub/isub-2.png"><img src="inc/img/screenshots/isub/isub-thumb-2.png" alt="" style="padding:15px"/></a>
+            <a href="inc/img/screenshots/isub/isub-3.png"><img src="inc/img/screenshots/isub/isub-thumb-3.png" alt="" style="padding:15px"/></a>
 
             <ul class="list">
                 <li>Full support for creating and managing on-the-go playlists.</li>

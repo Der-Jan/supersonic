@@ -18,7 +18,7 @@
  */
 package net.sourceforge.subsonic.io;
 
-import org.apache.commons.lang.math.Range;
+import net.sourceforge.subsonic.util.HttpRange;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -28,24 +28,21 @@ import java.io.OutputStream;
 /**
  * Special output stream for grabbing only part of a passed stream.
  *
- * @author Sindre Mehus (based on code found on http://www.koders.com/
+ * @author Sindre Mehus
  */
 public class RangeOutputStream extends FilterOutputStream {
 
-    /**
-     * The starting index.
-     */
-    private long start;
-
-    /**
-     * The ending index.
-     */
-    private long end;
+    private final HttpRange range;
 
     /**
      * The current position.
      */
     protected long pos;
+
+    public RangeOutputStream(OutputStream out, HttpRange range) {
+        super(out);
+        this.range = range;
+    }
 
     /**
      * Wraps the given output stream in a RangeOutputStream, using the values
@@ -56,49 +53,33 @@ public class RangeOutputStream extends FilterOutputStream {
      * @param range The range, may be <code>null</code>.
      * @return The possibly wrapped output stream.
      */
-    public static OutputStream wrap(OutputStream out, Range range) {
+    public static OutputStream wrap(OutputStream out, HttpRange range) {
         if (range == null) {
             return out;
         }
-        return new RangeOutputStream(out, range.getMinimumLong(), range.getMaximumLong());
+        return new RangeOutputStream(out, range);
     }
 
     /**
-     * Creates the stream with the passed start and end.
-     *
-     * @param out   The stream to write to.
-     * @param start The starting position.
-     * @param end   The ending position.
-     */
-    public RangeOutputStream(OutputStream out, long start, long end) {
-        super(out);
-        this.start = start;
-        this.end = end;
-        pos = 0;
-    }
-
-    /**
-     * Writes the byte IF it is within the range, otherwise it only
-     * increments the position.
+     * Writes the byte if it's within the range.
      *
      * @param b The byte to write.
      * @throws IOException Thrown if there was a problem writing to the stream.
      */
     @Override
     public void write(int b) throws IOException {
-        if ((pos >= start) && (pos <= end)) {
+        if (range.contains(pos)) {
             super.write(b);
         }
         pos++;
     }
 
     /**
-     * Writes the bytes IF it is within the range, otherwise it only
-     * increments the position.
+     * Writes the subset of the bytes that are within the range.
      *
      * @param b   The bytes to write.
      * @param off The offset to start at.
-     * @param len The length to write.
+     * @param len The number of bytes to write.
      * @throws IOException Thrown if there was a problem writing to the stream.
      */
     @Override
@@ -142,9 +123,11 @@ public class RangeOutputStream extends FilterOutputStream {
         if (allowWrite) {
             out.write(b, (int) newOff, (int) newLen);
         }
+        pos += len;
+    }
 
-        // Move the cursor along
-        pos += off + len;
+    private long min(long a, long b, long c) {
+        return Math.min(a, Math.min(b, c));
     }
 }
 

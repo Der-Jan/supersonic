@@ -72,8 +72,8 @@
                 </div>
                 <div class="text">
                     Podcast receiver, jukebox mode, on-the-fly downsampling and conversion,
-                    multiple frontends, highly configurable, full support for tags, lyrics and album art, open API
-                    and <a href="features.jsp">much more</a>.
+                    multiple frontends, highly configurable, full support for tags, lyrics and album art, DLNA,
+                    open API and <a href="features.jsp">much more</a>.
                 </div>
             </div>
         </div>
@@ -82,9 +82,9 @@
                 <img src="inc/img/banner/video.png" alt="" class="screenshot"/>
 
                 <div class="title">
-                    <div class="large">New in Subsonic 4.3</div>
-                    <div class="small">Stream all your movies too!</div>
-                    <img src="inc/img/banner/android-video.png" alt="" style="margin-top:20px;margin-left:90px;"/>
+                    <div class="large">Stream movies!</div>
+                    <div class="small">To your browser and phone.</div>
+                    <img src="inc/img/banner/android-video.png" alt="" style="margin-top:20px;margin-left:10px;"/>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@
                 <a href="http://appworld.blackberry.com/webstore/content/55137?lang=en">SonicAir</a> is a Subsonic app for the BlackBerry PlayBook.  Play all sorts of video and audio, even high definition 720P MKV files.
             </p>
 
-            <img src="inc/img/screenshots/screen32.png" alt="" class="img-center"/>
+            <img src="inc/img/screenshots/sonicair/sonicair-1.png" alt="" class="img-center"/>
 
             <ul class="list">
                 <li>Listen to music and watch videos.</li>

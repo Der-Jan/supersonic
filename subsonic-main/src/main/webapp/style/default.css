@@ -151,6 +151,7 @@ form {
 
 input, select, textarea {
     font-size: 90%;
+    border: 1px solid lightgray;
 }
 
 label {
@@ -182,6 +183,16 @@ img {
     margin: 0;
     padding: 0;
     vertical-align: middle;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.5);
+    border-radius: 6px;
 }
 
 .header, .headerSelected {
@@ -248,6 +259,7 @@ img {
 }
 
 .checkbox {
+    border: 0
 }
 
 /* Table with simple lines between the cells. */

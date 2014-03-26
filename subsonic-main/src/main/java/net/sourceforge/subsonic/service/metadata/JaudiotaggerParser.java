@@ -222,10 +222,14 @@ public class JaudiotaggerParser extends MetaDataParser {
             Tag tag = audioFile.getTagOrCreateAndSetDefault();
 
             tag.setField(FieldKey.ARTIST, StringUtils.trimToEmpty(metaData.getArtist()));
-            tag.setField(FieldKey.ALBUM_ARTIST, StringUtils.trimToEmpty(metaData.getAlbumArtist()));
             tag.setField(FieldKey.ALBUM, StringUtils.trimToEmpty(metaData.getAlbumName()));
             tag.setField(FieldKey.TITLE, StringUtils.trimToEmpty(metaData.getTitle()));
             tag.setField(FieldKey.GENRE, StringUtils.trimToEmpty(metaData.getGenre()));
+            try {
+                tag.setField(FieldKey.ALBUM_ARTIST, StringUtils.trimToEmpty(metaData.getAlbumArtist()));
+            } catch (Exception x) {
+                // Silently ignored. ID3v1 doesn't support album artist.
+            }
 
             Integer track = metaData.getTrackNumber();
             if (track == null) {

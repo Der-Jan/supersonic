@@ -374,7 +374,6 @@
         <property name="avatarController" ref="avatarController"/>
         <property name="userSettingsController" ref="userSettingsController"/>
         <property name="leftController" ref="leftController"/>
-        <property name="homeController" ref="homeController"/>
     </bean>
     <bean id="dbController" class="net.sourceforge.subsonic.controller.DBController">
         <property name="viewName" value="db"/>

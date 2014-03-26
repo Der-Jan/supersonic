@@ -18,17 +18,20 @@
  */
 package net.sourceforge.subsonic.util;
 
-import net.sourceforge.subsonic.Logger;
-
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Miscellaneous general utility methods.
@@ -88,6 +91,8 @@ public final class Util {
 
     /**
      * Returns the local IP address.  Honours the "subsonic.host" system property.
+     * <p/>
+     * NOTE: For improved performance, use {@link SettingsService#getLocalIpAddress()} instead.
      *
      * @return The local IP, or the loopback address (127.0.0.1) if not found.
      */
@@ -142,6 +147,29 @@ public final class Util {
             return 0;
         }
         return min + RANDOM.nextInt(max - min);
+    }
 
+    public static <T> Iterable<T> toIterable(final Enumeration<?> e) {
+        return new Iterable<T>() {
+            public Iterator<T> iterator() {
+                return toIterator(e);
+            }
+        };
+    }
+
+    public static <T> Iterator<T> toIterator(final Enumeration<?> e) {
+        return new Iterator<T>() {
+            public boolean hasNext() {
+                return e.hasMoreElements();
+            }
+
+            public T next() {
+                return (T) e.nextElement();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 }

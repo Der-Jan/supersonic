@@ -8,7 +8,7 @@
                 <a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn">Perisonic</a> is a simple
                 Chrome app for playing random music from Subsonic.
             </p>
-            <img src="inc/img/screenshots/screen34.png" alt="" class="img-center"/>
+            <img src="inc/img/screenshots/perisonic/perisonic-1.png" alt="" class="img-center"/>
             <p style="padding-top:1em">
                 Perisonic is developed by Robin Bakker and is
                 <a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn">available</a> free of charge.

@@ -36,9 +36,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     Subsonic server software on your home computer.
 </p>
 
-<a href="inc/img/screenshots/screen12.png"><img src="inc/img/screenshots/thumb12.png" alt=""/></a>
-<a href="inc/img/screenshots/screen13.png"><img src="inc/img/screenshots/thumb13.png" alt=""/></a>
-<a href="inc/img/screenshots/screen14.png"><img src="inc/img/screenshots/thumb14.png" alt=""/></a>
+<a href="inc/img/screenshots/android/android-1.png"><img src="inc/img/screenshots/android/android-thumb-1.png" alt=""/></a>
+<a href="inc/img/screenshots/android/android-2.png"><img src="inc/img/screenshots/android/android-thumb-2.png" alt=""/></a>
+<a href="inc/img/screenshots/android/android-3.png"><img src="inc/img/screenshots/android/android-thumb-3.png" alt=""/></a>
 
 </body>
 </html>

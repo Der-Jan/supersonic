@@ -17,11 +17,18 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
-            <a name="4.9"><h2 class="div">Subsonic 4.9 - Jan 09, 2014</h2></a>
+            <a name="4.9"><h2 class="div">Subsonic 4.9 - Jan 25, 2014</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Rename "Download" to "Download all"</li>
                 <li><span class="bugid">New: </span>Rename "More actions..." to "Selected songs..."</li>
                 <li><span class="bugid">New: </span>When playing a song, queue only later songs (not earlier).</li>
+                <li><span class="bugid">New: </span>Added button for downloading single files in left frame.</li>
+                <li><span class="bugid">New: </span>Updated Japanese translation, courtesy of Kenji Maekawa.</li>
+                <li><span class="bugid">Bugfix: </span>Changing artist for files with ID3v1 tags was broken.</li>
+                <li><span class="bugid">Bugfix: </span>Play/add buttons for single files in left frame didn't work.</li>
+                <li><span class="bugid">Bugfix: </span>Thumbs in external player was sometimes missing.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed layout bug in podcast page.</li>
+                <li><span class="bugid">Bugfix: </span>Trim podcast urls.</li>
             </ul>
 
             <a name="4.9.beta4"><h2 class="div">Subsonic 4.9.beta4 - Jan 04, 2014</h2></a>

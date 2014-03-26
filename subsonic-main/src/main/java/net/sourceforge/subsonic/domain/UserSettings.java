@@ -18,7 +18,8 @@
  */
 package net.sourceforge.subsonic.domain;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Represent user-specific settings.
@@ -34,6 +35,7 @@ public class UserSettings {
     private boolean showChatEnabled;
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
+    private boolean songNotificationEnabled;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
@@ -105,6 +107,14 @@ public class UserSettings {
 
     public void setBetaVersionNotificationEnabled(boolean betaVersionNotificationEnabled) {
         this.betaVersionNotificationEnabled = betaVersionNotificationEnabled;
+    }
+
+    public boolean isSongNotificationEnabled() {
+        return songNotificationEnabled;
+    }
+
+    public void setSongNotificationEnabled(boolean songNotificationEnabled) {
+        this.songNotificationEnabled = songNotificationEnabled;
     }
 
     public Visibility getMainVisibility() {

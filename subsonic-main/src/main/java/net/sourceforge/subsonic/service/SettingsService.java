@@ -226,7 +226,10 @@ public class SettingsService {
     private Date licenseExpires;
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> licenseValidationFuture;
+
     private static final long LICENSE_VALIDATION_DELAY_HOURS = 12;
+    private static final long LOCAL_IP_LOOKUP_DELAY_SECONDS = 60;
+    private String localIpAddress;
 
     public SettingsService() {
         File propertyFile = getPropertyFile();
@@ -267,6 +270,7 @@ public class SettingsService {
      */
     public void init() {
         ServiceLocator.setSettingsService(this);
+        scheduleLocalIpAddressLookup();
         scheduleLicenseValidation();
     }
 
@@ -1150,6 +1154,7 @@ public class SettingsService {
         UserSettings settings = new UserSettings(username);
         settings.setFinalVersionNotificationEnabled(true);
         settings.setBetaVersionNotificationEnabled(false);
+        settings.setSongNotificationEnabled(true);
         settings.setShowNowPlayingEnabled(true);
         settings.setShowChatEnabled(true);
         settings.setPartyModeEnabled(false);
@@ -1234,6 +1239,10 @@ public class SettingsService {
         setBoolean(KEY_DLNA_ENABLED, dlnaEnabled);
     }
 
+    public String getLocalIpAddress() {
+        return localIpAddress;
+    }
+
     private void setProperty(String key, String value) {
         if (value == null) {
             properties.remove(key);
@@ -1297,6 +1306,15 @@ public class SettingsService {
             }
         };
         licenseValidationFuture = executor.scheduleWithFixedDelay(task, 0L, LICENSE_VALIDATION_DELAY_HOURS, TimeUnit.HOURS);
+    }
+
+    private void scheduleLocalIpAddressLookup() {
+        Runnable task = new Runnable() {
+            public void run() {
+                localIpAddress = Util.getLocalIpAddress();
+            }
+        };
+        executor.scheduleWithFixedDelay(task, 0L, LOCAL_IP_LOOKUP_DELAY_SECONDS, TimeUnit.SECONDS);
     }
 
     public void setInternetRadioDao(InternetRadioDao internetRadioDao) {

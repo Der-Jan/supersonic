@@ -7,7 +7,7 @@
             <p>
                 <a href="http://www.read-write.fr/subapp/index.php">Submariner</a> is a Subsonic desktop application for Mac.
             </p>
-            <a href="inc/img/screenshots/screen35.png"><img src="inc/img/screenshots/thumb35.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/submariner/submariner-1.png"><img src="inc/img/screenshots/submariner/submariner-thumb-1.png" alt="" class="img-center"/></a>
 
             <p>
                 It provides a clean user interface to manage your remote libraries and to listen your music with simplicity.

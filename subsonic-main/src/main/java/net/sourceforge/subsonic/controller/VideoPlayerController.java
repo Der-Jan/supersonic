@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -65,8 +66,16 @@ public class VideoPlayerController extends ParameterizableViewController {
             duration -= timeOffset;
         }
 
+        String playerId = playerService.getPlayer(request, response).getId();
+        String url = request.getRequestURL().toString();
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId());
+        String host = new URL(streamUrl).getHost();
+        String ip = settingsService.getLocalIpAddress();
+        String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
+
         map.put("video", file);
-        map.put("player", playerService.getPlayer(request, response).getId());
+        map.put("player", playerId);
+        map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));
         map.put("popout", ServletRequestUtils.getBooleanParameter(request, "popout", false));
         map.put("duration", duration);

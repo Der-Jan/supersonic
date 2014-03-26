@@ -10,8 +10,8 @@
                 and is available for purchase on <a href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub">Google Play</a>.
             </p>
 
-            <a href="inc/img/screenshots/dsub-1.png"><img src="inc/img/screenshots/dsub-thumb-1.png" alt="" style="padding-right:25px;padding-left:25px"/></a>
-            <a href="inc/img/screenshots/dsub-3.png"><img src="inc/img/screenshots/dsub-thumb-3.png" alt=""/></a>
+            <a href="inc/img/screenshots/dsub/dsub-1.png"><img src="inc/img/screenshots/dsub/dsub-thumb-1.png" alt="" style="padding-right:25px;padding-left:25px"/></a>
+            <a href="inc/img/screenshots/dsub/dsub-3.png"><img src="inc/img/screenshots/dsub/dsub-thumb-3.png" alt=""/></a>
 
             <ul class="list">
                 <li>Automatic full song caching for the best network performance with no music drop outs.</li>

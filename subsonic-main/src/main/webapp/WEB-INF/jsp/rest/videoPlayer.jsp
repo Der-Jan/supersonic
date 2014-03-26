@@ -110,7 +110,7 @@
 
 <div style="padding-top:1.3em;padding-bottom:0.7em;font-size:16px">
 
-    <span id="position" style="padding-right:0.5em">0:00</span>
+    <span id="progress" style="padding-right:0.5em">0:00</span>
     <select id="timeOffset" onchange="changeTimeOffset();" style="padding-left:0.25em;padding-right:0.25em;margin-right:0.5em;font-size:16px">
         <c:forEach items="${model.skipOffsets}" var="skipOffset">
             <c:choose>

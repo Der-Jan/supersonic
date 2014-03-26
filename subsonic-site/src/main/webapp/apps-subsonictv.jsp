@@ -9,7 +9,7 @@
                 No need to go through the hassle of uploading to the cloud and syncing your files.
             </p>
 
-            <a href="inc/img/screenshots/screen33.png"><img src="inc/img/screenshots/thumb33.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subsonictv/subsonictv-1.png"><img src="inc/img/screenshots/subsonictv/subsonictv-thumb-1.png" alt="" class="img-center"/></a>
 
             <p>
                 Developed by JNC Ventures and Musiclouds, it's available both as a free lite version and a paid premium version.

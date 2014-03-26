@@ -3,22 +3,24 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playQueueService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/range.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/timer.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/webfx/slider.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
+    <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
 </head>
 
 <body class="bgcolor2 playlistframe" onload="init()">
 
 <script type="text/javascript" language="javascript">
-    var player = null;
     var songs = null;
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
@@ -36,14 +38,8 @@
                 }
             }});
 
-    <c:choose>
-    <c:when test="${model.player.web}">
-        createPlayer();
-    </c:when>
-    <c:otherwise>
+        <c:if test="${model.player.web}">createPlayer();</c:if>
         getPlayQueue();
-    </c:otherwise>
-    </c:choose>
     }
 
     function startTimer() {
@@ -67,32 +63,16 @@
     }
 
     function createPlayer() {
-        var flashvars = {
+        jwplayer("jwplayer").setup({
+            flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
+            height: 24,
+            width: 350,
+            controlbar: "bottom",
             backcolor:"<spring:theme code="backgroundColor"/>",
-            frontcolor:"<spring:theme code="textColor"/>",
-            id:"player1"
-        };
-        var params = {
-            allowfullscreen:"true",
-            allowscriptaccess:"always"
-        };
-        var attributes = {
-            id:"player1",
-            name:"player1"
-        };
-        swfobject.embedSWF("<c:url value="/flash/jw-player-5.10.swf"/>", "placeholder", "340", "24", "9.0.0", false, flashvars, params, attributes);
-    }
+            frontcolor:"<spring:theme code="textColor"/>"
+        });
 
-    function playerReady(thePlayer) {
-        player = document.getElementById("player1");
-        player.addModelListener("STATE", "stateListener");
-        getPlayQueue();
-    }
-
-    function stateListener(obj) { // IDLE, BUFFERING, PLAYING, PAUSED, COMPLETED
-        if (obj.newstate == "COMPLETED") {
-            onNext(repeatEnabled);
-        }
+        jwplayer().onComplete(function() {onNext(repeatEnabled)});
     }
 
     function getPlayQueue() {
@@ -341,12 +321,12 @@
         }
         updateCurrentImage();
         if (songs.length == 0) {
-            player.sendEvent("LOAD", new Array());
-            player.sendEvent("STOP");
+            jwplayer().stop();
+            jwplayer().load([]);
         }
     }
 
-    function skip(index) {
+    function skip(index, position) {
         if (index < 0 || index >= songs.length) {
             return;
         }
@@ -354,22 +334,51 @@
         var song = songs[index];
         currentStreamUrl = song.streamUrl;
         updateCurrentImage();
-        var list = new Array();
-        list[0] = {
-            file:song.streamUrl,
-            title:song.title,
-            provider:"sound"
-        };
 
-        if (song.duration != null) {
-            list[0].duration = song.duration;
-        }
-        if (song.format == "aac" || song.format == "m4a") {
-            list[0].provider = "video";
+        if (castSession) {
+            loadCastMedia(song, position);
+        } else {
+
+            jwplayer().load({
+                file: song.streamUrl,
+                provider: song.format == "aac" || song.format == "m4a" ? "video" : "sound",
+                duration: song.duration
+            });
+            jwplayer().play();
+            console.log(song.streamUrl);
         }
 
-        player.sendEvent("LOAD", list);
-        player.sendEvent("PLAY");
+        <c:if test="${model.notify}">
+        showNotification(song);
+        </c:if>
+    }
+
+    function showNotification(song) {
+        if (!("Notification" in window)) {
+            return;
+        }
+        if (Notification.permission === "granted") {
+            createNotification(song);
+        }
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+                Notification.permission = permission;
+                if (permission === "granted") {
+                    createNotification(song);
+                }
+            });
+        }
+    }
+
+    function createNotification(song) {
+        var n = new Notification(song.title, {
+            tag: "subsonic",
+            body: song.artist + " - " + song.album,
+            icon: "coverArt.view?id=" + song.id + "&size=110"
+        });
+        n.onshow = function() {
+            setTimeout(function() {n.close()}, 5000);
+        }
     }
 
     function updateCurrentImage() {
@@ -473,9 +482,22 @@
                 </select></td>
             </c:if>
             <c:if test="${model.player.web}">
-                <td style="width:340px; height:24px;padding-left:10px;padding-right:10px"><div id="placeholder">
-                    <a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a>
-                </div></td>
+                <td>
+                    <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
+                        <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
+                    </div>
+                    <div id="castPlayer" style="display: none">
+                        <div style="float:left">
+                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
+                            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+                        </div>
+                        <div style="float:left">
+                            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                                   onchange="setCastVolume(this.value/100, false);">
+                        </div>
+                    </div>
+                </td>
+                <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
@@ -627,6 +649,11 @@
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>
     <div id="dialog-select-playlist-list"></div>
+</div>
+
+<div style="margin:10px;">
+    <textarea rows="20" cols="180" id="debugmessage">
+    </textarea>
 </div>
 
 </body></html>

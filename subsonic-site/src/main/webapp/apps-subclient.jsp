@@ -7,7 +7,7 @@
             <p>
                 <a href="http://www.subclient.net/">Subclient</a> is Java desktop client for Subsonic.
             </p>
-            <a href="inc/img/screenshots/screen42.png"><img src="inc/img/screenshots/thumb42.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/subclient/subclient-1.png"><img src="inc/img/screenshots/subclient/subclient-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>VLC-based audio and video playback.</li>

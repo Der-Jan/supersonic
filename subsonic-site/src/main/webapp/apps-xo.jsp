@@ -4,7 +4,7 @@
     <div class="heading">XO <a href="#top" class="backtotop" title="Top"><img src="inc/img/top.gif" alt="" height="16" width="16"/></a></div>
     <div class="content">
         <div class="wide-content">
-            <a href="inc/img/screenshots/screen39.png"><img src="inc/img/screenshots/thumb39.png" alt="" class="img-right"/></a>
+            <a href="inc/img/screenshots/xo/xo-1.png"><img src="inc/img/screenshots/xo/xo-thumb-1.png" alt="" class="img-right"/></a>
 
             <p>
                 <a href="https://developer.palm.com/appredirect/?packageid=com.ericblade.xo">XO</a> is a Subsonic app for webOS.

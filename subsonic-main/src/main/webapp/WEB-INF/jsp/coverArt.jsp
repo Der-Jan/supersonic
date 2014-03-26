@@ -40,15 +40,21 @@ PARAMETERS
     </sub:url>
 
     <str:randomString count="5" type="alphabet" var="divId"/>
-    <div class="outerpair1" id="${divId}" style="display:none">
+    <div style="position: relative; width: 0; height: 0">
+        <a href="#" onclick="top.playQueue.onPlay(${param.albumId}); return false;">
+            <img src="<spring:theme code="playOverlayImage"/>" id="${divId}-play"
+                 onmouseover="$('#${divId}-play').show()"
+                 style="position: relative; top: 8px; left: 8px; z-index: 2; display: none" ></a>
+    </div>
+    <div class="outerpair1" id="${divId}" style="display:none;">
         <div class="outerpair2">
             <div class="shadowbox">
                 <div class="innerbox">
-                    <c:choose>
-                        <c:when test="${param.showLink}"><a href="${mainUrl}" title="${param.albumName}"></c:when>
+                <c:choose>
+                <c:when test="${param.showLink}"><a href="${mainUrl}" title="${param.albumName}"></c:when>
                         <c:when test="${param.showZoom}"><a href="${zoomCoverArtUrl}" rel="zoom" title="${param.albumName}"></c:when>
                     </c:choose>
-                        <img src="${coverArtUrl}" alt="${param.albumName}">
+                        <img src="${coverArtUrl}" alt="${param.albumName}" onmouseover="$('#${divId}-play').show()" onmouseout="$('#${divId}-play').hide()">
                         <c:if test="${param.showLink or param.showZoom}"></a></c:if>
                 </div>
             </div>

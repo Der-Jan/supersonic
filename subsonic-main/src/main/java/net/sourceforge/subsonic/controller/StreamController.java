@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
+<<<<<<< HEAD
 import java.lang.Math;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -39,9 +40,12 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
+=======
+>>>>>>> subsonic.svn
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
@@ -49,14 +53,31 @@ import net.sourceforge.subsonic.io.PlayQueueInputStream;
 import net.sourceforge.subsonic.io.RangeOutputStream;
 import net.sourceforge.subsonic.io.ShoutCastOutputStream;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
+import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A controller which streams the content of a {@link net.sourceforge.subsonic.domain.PlayQueue} to a remote
@@ -104,6 +125,8 @@ public class StreamController implements Controller {
                 LOG.info("Incoming Podcast request for playlist " + playlistId);
             }
 
+            response.addHeader("Access-Control-Allow-Origin", "*");
+
             String contentType = StringUtil.getMimeType(request.getParameter("suffix"));
             response.setContentType(contentType);
 
@@ -120,7 +143,7 @@ public class StreamController implements Controller {
             // Also, enable partial download (HTTP byte range).
             MediaFile file = getSingleFile(request);
             boolean isSingleFile = file != null;
-            LongRange range = null;
+            HttpRange range = null;
 
             if (isSingleFile) {
                 PlayQueue playQueue = new PlayQueue();
@@ -139,14 +162,11 @@ public class StreamController implements Controller {
 
                 range = getRange(request, file);
                 if (range != null) {
-                    LOG.info("Got range: " + range);
+                    LOG.info("Got HTTP range: " + range);
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-                    long maxLength = fileLength;
-                    if (maxLength>range.getMaximumLong()) maxLength=range.getMaximumLong()+1; 
-                    Util.setContentLength(response, Math.max(maxLength - range.getMinimumLong(),0));
-                    long firstBytePos = range.getMinimumLong();
-                    long lastBytePos = maxLength - 1;
-                    response.setHeader("Content-Range", "bytes " + firstBytePos + "-" + lastBytePos + "/" + fileLength);
+                    Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());
+                    long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
+                    response.setHeader("Content-Range", "bytes " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
                 } else if (!isHls && (!isConversion || estimateContentLength)) {
                     Util.setContentLength(response, fileLength);
                 }
@@ -269,10 +289,10 @@ public class StreamController implements Controller {
         return duration * maxBitRate * 1000L / 8L;
     }
 
-    private LongRange getRange(HttpServletRequest request, MediaFile file) {
+    private HttpRange getRange(HttpServletRequest request, MediaFile file) {
 
         // First, look for "Range" HTTP header.
-        LongRange range = StringUtil.parseRange(request.getHeader("Range"));
+        HttpRange range = HttpRange.valueOf(request.getHeader("Range"));
         if (range != null) {
             return range;
         }
@@ -287,7 +307,7 @@ public class StreamController implements Controller {
         return null;
     }
 
-    private LongRange parseAndConvertOffsetSeconds(String offsetSeconds, MediaFile file) {
+    private HttpRange parseAndConvertOffsetSeconds(String offsetSeconds, MediaFile file) {
         if (offsetSeconds == null) {
             return null;
         }
@@ -302,7 +322,7 @@ public class StreamController implements Controller {
 
             // Convert from time offset to byte offset.
             long byteOffset = (long) (fileSize * (offset / duration));
-            return new LongRange(byteOffset, Long.MAX_VALUE);
+            return new HttpRange(byteOffset, null);
 
         } catch (Exception x) {
             LOG.error("Failed to parse and convert time offset: " + offsetSeconds, x);

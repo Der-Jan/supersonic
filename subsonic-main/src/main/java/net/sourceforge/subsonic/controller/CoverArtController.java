@@ -183,32 +183,36 @@ public class CoverArtController implements Controller, LastModified {
         String encoding = request.getCoverArt() != null ? "jpeg" : "png";
         File cachedImage = new File(getImageCacheDirectory(size), hash + "." + encoding);
 
-        // Is cache missing or obsolete?
-        if (!cachedImage.exists() || request.lastModified() > cachedImage.lastModified()) {
-//            LOG.info("Cache MISS - " + request + " (" + size + ")");
-            OutputStream out = null;
-            try {
-                BufferedImage image = request.createImage(size);
-                if (image == null) {
-                    throw new Exception("Unable to decode image.");
+        // Synchronize to avoid concurrent writing to the same file.
+        synchronized (hash.intern()) {
+
+            // Is cache missing or obsolete?
+            if (!cachedImage.exists() || request.lastModified() > cachedImage.lastModified()) {
+//                LOG.info("Cache MISS - " + request + " (" + size + ")");
+                OutputStream out = null;
+                try {
+                    BufferedImage image = request.createImage(size);
+                    if (image == null) {
+                        throw new Exception("Unable to decode image.");
+                    }
+                    out = new FileOutputStream(cachedImage);
+                    ImageIO.write(image, encoding, out);
+
+                } catch (Throwable x) {
+                    // Delete corrupt (probably empty) thumbnail cache.
+                    LOG.warn("Failed to create thumbnail for " + request, x);
+                    IOUtils.closeQuietly(out);
+                    cachedImage.delete();
+                    throw new IOException("Failed to create thumbnail for " + request + ". " + x.getMessage());
+
+                } finally {
+                    IOUtils.closeQuietly(out);
                 }
-                out = new FileOutputStream(cachedImage);
-                ImageIO.write(image, encoding, out);
-
-            } catch (Throwable x) {
-                // Delete corrupt (probably empty) thumbnail cache.
-                LOG.warn("Failed to create thumbnail for " + request, x);
-                IOUtils.closeQuietly(out);
-                cachedImage.delete();
-                throw new IOException("Failed to create thumbnail for " + request + ". " + x.getMessage());
-
-            } finally {
-                IOUtils.closeQuietly(out);
+            } else {
+//                LOG.info("Cache HIT - " + request + " (" + size + ")");
             }
-        } else {
-//            LOG.info("Cache HIT - " + request + " (" + size + ")");
+            return cachedImage;
         }
-        return cachedImage;
     }
 
     /**

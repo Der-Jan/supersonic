@@ -2,6 +2,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Subsonic &raquo; Free Music Streamer</title>
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,medium,thin,italic,mediumitalic,bold" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="inc/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="inc/css/banner.css"/>
     <link rel="shortcut icon" href="favicon.ico"/>

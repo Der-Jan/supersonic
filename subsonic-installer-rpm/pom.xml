@@ -16,11 +16,11 @@
     <profiles>
 
         <profile>
-            <id>linux</id>
+            <id>rpm</id>
             <activation>
-                <os>
-                    <family>linux</family>
-                </os>
+                <property>
+                    <name>rpm</name>
+                </property>
             </activation>
 
             <build>

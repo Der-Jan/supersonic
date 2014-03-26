@@ -46,7 +46,6 @@ import net.sourceforge.subsonic.service.upnp.ClingRouter;
 import net.sourceforge.subsonic.service.upnp.NATPMPRouter;
 import net.sourceforge.subsonic.service.upnp.Router;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
 
 /**
  * Provides network-related services, including port forwarding on UPnP routers and
@@ -227,7 +226,7 @@ public class NetworkService {
             params.add(new BasicNameValuePair("serverId", settingsService.getServerId()));
             params.add(new BasicNameValuePair("redirectFrom", settingsService.getUrlRedirectFrom()));
             params.add(new BasicNameValuePair("port", String.valueOf(port)));
-            params.add(new BasicNameValuePair("localIp", Util.getLocalIpAddress()));
+            params.add(new BasicNameValuePair("localIp", settingsService.getLocalIpAddress()));
             params.add(new BasicNameValuePair("localPort", String.valueOf(port)));
             params.add(new BasicNameValuePair("contextPath", settingsService.getUrlRedirectContextPath()));
             params.add(new BasicNameValuePair("trial", String.valueOf(trial)));

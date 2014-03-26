@@ -43,6 +43,16 @@
 
     <pluginRepositories>
         <pluginRepository>
+            <id>local1</id>
+            <name>Local Repository 1</name>
+            <url>file:repo</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>local2</id>
+            <name>Local Repository 2</name>
+            <url>file:../repo</url>
+        </pluginRepository>
+        <pluginRepository>
             <id>Codehaus Repository</id>
             <url>http://repository.codehaus.org/</url>
         </pluginRepository>
@@ -74,6 +84,7 @@
     </developers>
 
     <modules>
+        <module>subsonic-rest-api</module>
         <module>subsonic-main</module>
     </modules>
 

@@ -144,6 +144,10 @@
             <td><form:checkbox path="betaVersionNotificationEnabled" id="beta" cssClass="checkbox"/></td>
             <td><label for="beta"><fmt:message key="personalsettings.betaversionnotification"/></label></td>
         </tr>
+        <tr>
+            <td><form:checkbox path="songNotificationEnabled" id="song" cssClass="checkbox"/></td>
+            <td><label for="song"><fmt:message key="personalsettings.songnotification"/></label></td>
+        </tr>
     </table>
 
     <table class="indent">

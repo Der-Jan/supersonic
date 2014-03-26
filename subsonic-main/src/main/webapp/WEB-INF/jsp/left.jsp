@@ -4,7 +4,6 @@
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/smooth-scroll.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" language="javascript">
@@ -159,6 +158,7 @@
                 <c:param name="id" value="${song.id}"/>
                 <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                 <c:param name="addEnabled" value="${model.user.streamRole}"/>
+                <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
                 <c:param name="video" value="${song.video and model.player.web}"/>
             </c:import>
             <str:truncateNicely upper="${model.captionCutoff}">${song.title}</str:truncateNicely>

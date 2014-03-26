@@ -9,9 +9,9 @@
                 <a href="http://www.avzuylen.com/subsonic-music-streamer.aspx">Subsonic Music Streamer</a> is a Windows Phone 7 app developed by Anton Van Zuylen, and is
                 available for purchase in the <a href="http://redirect.zune.net/redirect?type=phoneApp&id=2eb445a5-ca04-e011-9264-00237de2db9e&source=WP7applist">Windows Marketplace</a>.
             </p>
-            <a href="inc/img/screenshots/screen23.png"><img src="inc/img/screenshots/thumb23.png" alt="" style="margin-left:30px;padding:3px"/></a>
-            <a href="inc/img/screenshots/screen24.png"><img src="inc/img/screenshots/thumb24.png" alt="" style="padding:3px"/></a>
-            <a href="inc/img/screenshots/screen25.png"><img src="inc/img/screenshots/thumb25.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-1.png"><img src="inc/img/screenshots/winphone/winphone-thumb-1.png" alt="" style="margin-left:30px;padding:3px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-2.png"><img src="inc/img/screenshots/winphone/winphone-thumb-2.png" alt="" style="padding:3px"/></a>
+            <a href="inc/img/screenshots/winphone/winphone-3.png"><img src="inc/img/screenshots/winphone/winphone-thumb-3.png" alt="" style="padding:3px"/></a>
 
             <ul class="list">
                 <li>Always have access to your entire music collection without the need for any third party server or subscription.</li>

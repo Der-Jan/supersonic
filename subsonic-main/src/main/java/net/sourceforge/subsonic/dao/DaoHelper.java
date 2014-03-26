@@ -18,6 +18,13 @@
  */
 package net.sourceforge.subsonic.dao;
 
+import java.io.File;
+
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.schema.Schema;
 import net.sourceforge.subsonic.dao.schema.Schema10;
@@ -41,12 +48,8 @@ import net.sourceforge.subsonic.dao.schema.Schema45;
 import net.sourceforge.subsonic.dao.schema.Schema46;
 import net.sourceforge.subsonic.dao.schema.Schema47;
 import net.sourceforge.subsonic.dao.schema.Schema49;
+import net.sourceforge.subsonic.dao.schema.Schema50;
 import net.sourceforge.subsonic.service.SettingsService;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import javax.sql.DataSource;
-import java.io.File;
 
 /**
  * DAO helper class which creates the data source, and updates the database schema.
@@ -60,7 +63,8 @@ public class DaoHelper {
     private Schema[] schemas = {new Schema10(), new Schema25(), new Schema26(), new Schema27(), new Schema28(), new Schema29(),
                                 new Schema30(), new Schema31(), new Schema32(), new Schema33(), new Schema34(),
                                 new Schema35(), new Schema36(), new Schema37(), new Schema38(), new Schema40(),
-                                new Schema43(), new Schema45(), new Schema46(), new Schema47(), new Schema49()};
+                                new Schema43(), new Schema45(), new Schema46(), new Schema47(), new Schema49(),
+                                new Schema50()};
     private DataSource dataSource;
     private static boolean shutdownHookAdded;
 
