@@ -84,43 +84,15 @@ public class RangeOutputStream extends FilterOutputStream {
      */
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
-        boolean allowWrite = false;
-        long newPos = pos + off, newOff = off, newLen = len;
-
-        // Check to see if we are in the range
-        if (newPos <= end) {
-            if (newPos >= start) {
-                // We are so check to make sure we don't leave it
-                if (newPos + newLen > end) {
-                    newLen = end - newPos + 1;
-                }
-
-                // Enable writing
-                allowWrite = true;
+        long start = range.getFirstBytePos();
+        Long end = range.getLastBytePos();
+        if (pos + len >= start && (end == null || pos <= end)) {
+            long skipStart = Math.max(0, start - pos);
+            long newOff = off + skipStart;
+            long newLen = len - skipStart;
+            if (end != null) {
+                newLen = min(newLen, end - pos + 1, end - start + 1);
             }
-
-            // We aren't yet in the range, but if see if the proposed write
-            // would place us there
-            else if (newPos + newLen >= start) {
-                // It would so, update the offset
-                newOff += start - newPos;
-
-                // New offset means, a new position, so update that too
-                newPos = newOff + pos;
-                newLen = len + (pos - newPos);
-
-                // Make sure we don't go past the range
-                if (newPos + newLen > end) {
-                    newLen = end - newPos + 1;
-                }
-
-                // Enable writting
-                allowWrite = true;
-            }
-        }
-
-        // If we have enabled writing, do the write!
-        if (allowWrite) {
             out.write(b, (int) newOff, (int) newLen);
         }
         pos += len;

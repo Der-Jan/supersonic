@@ -18,30 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-<<<<<<< HEAD
-import java.lang.Math;
-import java.awt.Dimension;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.SearchService;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.math.LongRange;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-
-=======
->>>>>>> subsonic.svn
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -152,6 +128,7 @@ public class StreamController implements Controller {
 
                 if (!file.isVideo()) {
                     response.setIntHeader("ETag", file.getId());
+                    response.setHeader("Accept-Ranges", "bytes");
                 }
 
                 TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, null);
