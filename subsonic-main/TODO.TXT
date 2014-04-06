@@ -247,6 +247,7 @@ Linux locale issue
 
 DONE IN ANDROID 4.1
 --------------------
+Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later?)
 
 TODO IN ANDROID 4.1
 --------------------
