@@ -69,7 +69,7 @@ public class CacheCleaner {
             // Delete empty directory and associated album artwork.
             if (children.length == 0) {
                 Util.delete(dir);
-                Util.delete(FileUtil.getAlbumArtFile(dir));
+                Util.delete(FileUtil.getAlbumArtFile(context, dir));
             }
         }
     }
@@ -108,7 +108,7 @@ public class CacheCleaner {
 
             if (file.getName().equals(Constants.ALBUM_ART_FILE)) {
                 // Move artwork to new folder.
-                file.renameTo(FileUtil.getAlbumArtFile(file.getParentFile()));
+                file.renameTo(FileUtil.getAlbumArtFile(context, file.getParentFile()));
 
             } else if (bytesToDelete > bytesDeleted || file.getName().endsWith(".partial") || file.getName().contains(".partial.")) {
                 if (!undeletable.contains(file)) {

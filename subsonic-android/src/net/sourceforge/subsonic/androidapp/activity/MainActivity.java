@@ -19,6 +19,8 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
+import java.util.Arrays;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,13 +39,10 @@ import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.Constants;
-import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
 import net.sourceforge.subsonic.androidapp.util.Util;
-
-import java.util.Arrays;
 
 public class MainActivity extends SubsonicTabActivity {
 
@@ -187,12 +186,6 @@ public class MainActivity extends SubsonicTabActivity {
     private void loadSettings() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         SharedPreferences prefs = Util.getPreferences(this);
-        if (!prefs.contains(Constants.PREFERENCES_KEY_CACHE_LOCATION)) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, FileUtil.getDefaultMusicDirectory().getPath());
-            editor.commit();
-        }
-
         if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);

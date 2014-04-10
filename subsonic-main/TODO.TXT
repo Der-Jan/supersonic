@@ -8,6 +8,8 @@ Add browser notification
 Add settings for enabling notifications.
 Nicer styling of input fields and buttons.
 Added Estonian translation, courtesy of Olav M&auml;gi
+Link to Jamstash
+  https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
 
 TODO IN 5.0
 --------------
@@ -19,6 +21,8 @@ JAXB
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?
 Update doc of recommended transcode settings.
+Consider scrobble when calculating "now playing".
+  https://mail.google.com/mail/ca/u/0/#inbox/13f532a5e871a675
 Cast:
   Use separate appId for video.
   Can JWPlayer be controlled without control bar? Full screen, seeking, etc
@@ -247,6 +251,7 @@ Linux locale issue
 
 DONE IN ANDROID 4.1
 --------------------
+Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later?)
 
 TODO IN ANDROID 4.1
 --------------------

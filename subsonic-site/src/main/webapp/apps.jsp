@@ -78,7 +78,7 @@
                     <li><a href="#perisonic">Perisonic</a> for Google Chrome</li>
                 </ul>
                 <ul class="stars column-right">
-                    <li><a href="#minisub">MiniSub</a> for Google Chrome</li>
+                    <li><a href="#jamstash">Jamstash</a> for HTML5</li>
                 </ul>
             </div>
 
@@ -119,7 +119,7 @@
             <%@ include file="apps-subsonic8.jsp" %>
             <%@ include file="apps-subclient.jsp" %>
             <%@ include file="apps-perisonic.jsp" %>
-            <%@ include file="apps-minisub.jsp" %>
+            <%@ include file="apps-jamstash.jsp" %>
 
         </div>
 

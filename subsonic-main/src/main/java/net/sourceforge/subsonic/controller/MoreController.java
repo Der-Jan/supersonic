@@ -32,10 +32,12 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller for the "more" page.
@@ -58,16 +60,26 @@ public class MoreController extends ParameterizableViewController {
             uploadDirectory = new File(musicFolders.get(0).getPath(), "Incoming").getPath();
         }
 
+        User user = securityService.getCurrentUser(request);
+
+        StringBuilder jamstashUrl = new StringBuilder("http://jamstash.com/#/settings?u=" + StringUtil.urlEncode(user.getUsername()) + "&url=");
+        if (settingsService.isUrlRedirectionEnabled()) {
+            jamstashUrl.append(StringUtil.urlEncode("http://" + settingsService.getUrlRedirectFrom() + ".subsonic.org"));
+        } else {
+            jamstashUrl.append(StringUtil.urlEncode(request.getRequestURL().toString().replaceAll("/more.view.*", "")));
+        }
+
         Player player = playerService.getPlayer(request, response);
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
-        map.put("user", securityService.getCurrentUser(request));
+        map.put("user", user);
         map.put("uploadDirectory", uploadDirectory);
         map.put("genres", mediaFileService.getGenres(false));
         map.put("currentYear", Calendar.getInstance().get(Calendar.YEAR));
         map.put("musicFolders", settingsService.getAllMusicFolders());
         map.put("clientSidePlaylist", player.isExternalWithPlaylist() || player.isWeb());
         map.put("brand", settingsService.getBrand());
+        map.put("jamstashUrl", jamstashUrl);
         return result;
     }
 

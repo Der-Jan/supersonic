@@ -1,15 +1,14 @@
 <div class="featureitem">
-    <a name="minisub"></a>
+    <a name="jamstash"></a>
 
-    <div class="heading">MiniSub<a href="#top" class="backtotop" title="Top"><img src="inc/img/top.gif" alt="" height="16" width="16"/></a></div>
+    <div class="heading">Jamstash<a href="#top" class="backtotop" title="Top"><img src="inc/img/top.gif" alt="" height="16" width="16"/></a></div>
     <div class="content">
         <div class="wide-content">
             <p>
-                <a href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc">MiniSub</a>
-                is an HTML5 mini player for Subsonic. It's bundled with the Subsonic server and is also available
-                as a Chrome app.
+                <a href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc">Jamstash</a>
+                is an HTML5 player for Subsonic and is also available as a Chrome app.
             </p>
-            <a href="inc/img/screenshots/minisub/minisub-1.png"><img src="inc/img/screenshots/minisub/minisub-thumb-1.png" alt="" class="img-center"/></a>
+            <a href="inc/img/screenshots/jamstash/jamstash-1.png"><img src="inc/img/screenshots/jamstash/jamstash-thumb-1.png" alt="" class="img-center"/></a>
 
             <ul class="list">
                 <li>Flexible layout (scales to whatever size your browser window is)</li>
@@ -22,7 +21,7 @@
             </ul>
 
             <p style="padding-top:1em">
-                MiniSub is developed by <a href="https://twitter.com/tsquillario">tsquillario</a> and is
+                Jamstash is developed by <a href="https://twitter.com/tsquillario">tsquillario</a> and is
                 <a href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc">available</a> free of charge.
             </p>
         </div>

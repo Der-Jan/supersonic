@@ -33,6 +33,7 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Environment;
 import net.sourceforge.subsonic.androidapp.domain.MusicDirectory;
 
@@ -45,7 +46,6 @@ public class FileUtil {
     private static final String[] FILE_SYSTEM_UNSAFE = {"/", "\\", "..", ":", "\"", "?", "*", "<", ">"};
     private static final String[] FILE_SYSTEM_UNSAFE_DIR = {"\\", "..", ":", "\"", "?", "*", "<", ">"};
     private static final List<String> MUSIC_FILE_EXTENSIONS = Arrays.asList("mp3", "ogg", "aac", "flac", "m4a", "wav", "wma");
-    private static final File DEFAULT_MUSIC_DIR = createDirectory("music");
 
     public static File getSongFile(Context context, MusicDirectory.Entry song) {
         File dir = getAlbumDirectory(context, song);
@@ -72,11 +72,11 @@ public class FileUtil {
 
     public static File getAlbumArtFile(Context context, MusicDirectory.Entry entry) {
         File albumDir = getAlbumDirectory(context, entry);
-        return getAlbumArtFile(albumDir);
+        return getAlbumArtFile(context, albumDir);
     }
 
-    public static File getAlbumArtFile(File albumDir) {
-        File albumArtDir = getAlbumArtDirectory();
+    public static File getAlbumArtFile(Context context, File albumDir) {
+        File albumArtDir = getAlbumArtDirectory(context);
         return new File(albumArtDir, Util.md5Hex(albumDir.getPath()) + ".jpeg");
     }
 
@@ -93,8 +93,8 @@ public class FileUtil {
         return null;
     }
 
-    public static File getAlbumArtDirectory() {
-        File albumArtDir = new File(getSubsonicDirectory(), "artwork");
+    public static File getAlbumArtDirectory(Context context) {
+        File albumArtDir = new File(getSubsonicDirectory(context), "artwork");
         ensureDirectoryExistsAndIsReadWritable(albumArtDir);
         ensureDirectoryExistsAndIsReadWritable(new File(albumArtDir, ".nomedia"));
         return albumArtDir;
@@ -122,26 +122,32 @@ public class FileUtil {
         }
     }
 
-    private static File createDirectory(String name) {
-        File dir = new File(getSubsonicDirectory(), name);
+    private static File createDirectory(Context context, String name) {
+        File dir = new File(getSubsonicDirectory(context), name);
         if (!dir.exists() && !dir.mkdirs()) {
             LOG.error("Failed to create " + name);
         }
         return dir;
     }
 
-    public static File getSubsonicDirectory() {
-        return new File(Environment.getExternalStorageDirectory(), "subsonic");
-    }
+    public static File getSubsonicDirectory(Context context) {
 
-    public static File getDefaultMusicDirectory() {
-        return DEFAULT_MUSIC_DIR;
+        // Starting with Kitkat, write access is not always allowed outside the app's private directory.
+        // Earlier versions of the app stored files in Environment.getExternalStorageDirectory(). Keep using it if
+        // pre-Kitkat, or if the directory exists and is writable.
+        File dir = new File(Environment.getExternalStorageDirectory(), "subsonic");
+        if (Build.VERSION.SDK_INT < 19 || dir.exists() && dir.canWrite()) {
+            return dir;
+        }
+
+        //.. otherwise, use the app-private dir that is now recommended by Android.
+        return new File(context.getExternalFilesDir(null), "subsonic");
     }
 
     public static File getMusicDirectory(Context context) {
-        String path = Util.getPreferences(context).getString(Constants.PREFERENCES_KEY_CACHE_LOCATION, DEFAULT_MUSIC_DIR.getPath());
-        File dir = new File(path);
-        return ensureDirectoryExistsAndIsReadWritable(dir) ? dir : getDefaultMusicDirectory();
+        File dir = new File(getSubsonicDirectory(context), "music");
+        ensureDirectoryExistsAndIsReadWritable(dir);
+        return dir;
     }
 
     public static boolean ensureDirectoryExistsAndIsReadWritable(File dir) {

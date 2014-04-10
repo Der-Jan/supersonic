@@ -55,10 +55,6 @@
                 android:entryValues="@array/cacheSizeValues"
                 android:entries="@array/cacheSizeNames"/>
 
-        <EditTextPreference
-                android:title="@string/settings.cache_location"
-                android:key="cacheLocation"/>
-
         <ListPreference
                 android:title="@string/settings.preload"
                 android:key="preloadCount"

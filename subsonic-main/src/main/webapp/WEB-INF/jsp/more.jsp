@@ -125,13 +125,17 @@
     <span style="vertical-align: middle"><fmt:message key="more.apps.title"/></span>
 </h2>
 <fmt:message key="more.apps.text"/>
-<a href="<c:url value="/mini/index.html"/>" target="_blank"><img alt="MiniSub" src="<c:url value="/icons/default_light/minisub.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
+
+
+<a href="<c:url value="${model.jamstashUrl}"/>" target="_blank">
+    <img alt="Jamstash" src="<c:url value="/icons/default_light/jamstash.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/>
+</a>
 
 <h2>
     <img src="<spring:theme code="html5Image"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.minisub.title"/></span>
+    <span style="vertical-align: middle"><fmt:message key="more.jamstash.title"/></span>
 </h2>
-<fmt:message key="more.minisub.text"/>
+<fmt:message key="more.jamstash.text"><fmt:param>${model.jamstashUrl}</fmt:param></fmt:message>
 
 <h2>
     <img src="<spring:theme code="podcastImage"/>" alt=""/>
