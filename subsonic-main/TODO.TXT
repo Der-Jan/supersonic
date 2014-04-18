@@ -8,6 +8,7 @@ Add browser notification
 Add settings for enabling notifications.
 Nicer styling of input fields and buttons.
 Added Estonian translation, courtesy of Olav M&auml;gi
+Added Korean translation, courtesy of Rhetor Choi
 Link to Jamstash
   https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
 
