@@ -11,14 +11,12 @@ Added Estonian translation, courtesy of Olav M&auml;gi
 Added Korean translation, courtesy of Rhetor Choi
 Link to Jamstash
   https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
+Fixed broken Mac installer
 
 TODO IN 5.0
 --------------
 Help icon.
 Button backgrounds.
-JAXB
-  Simplify date format.
-  Inject JAXBWriter.
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?
 Update doc of recommended transcode settings.
@@ -38,9 +36,6 @@ Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
 LyricsService error with special characters
   https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1449b103acad6d60
-XML-encoding in JSON
-  https://mail.google.com/mail/ca/u/0/?ui=2#inbox/13d17ec1fdfb80bc
-  Use JAXB, Jettison, ...?
 Problem with Content-Range for transcoded audio
   https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1447f4b647387e8b
 
@@ -898,7 +893,7 @@ Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW
 
 On Mac OS:
   rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-signed.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
 
 On Windows
   rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/

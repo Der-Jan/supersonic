@@ -74,13 +74,18 @@
                                         </jarbundler>
                                         <replace file="target/Subsonic.app/Contents/Info.plist" token="CFBundleHelpBookFolder" value="LSUIElement"/>
                                         <replace file="target/Subsonic.app/Contents/Info.plist" token="foobar" value="1"/>
-                                        <exec executable="/usr/bin/productbuild">
+
+                                        <!--Requires installation of Packages, see http://s.sudre.free.fr/Software/Packages/about.html or subsonic-tools-->
+                                        <exec executable="/usr/local/bin/packagesbuild">
+                                            <arg value="-v"/>
+                                            <arg value="${project.basedir}/src/subsonic.pkgproj"/>
+                                        </exec>
+
+                                        <exec executable="/usr/bin/productsign">
                                             <arg value="--sign"/>
                                             <arg value="Sindre Mehus"/>
-                                            <arg value="--component"/>
-                                            <arg value="${project.build.directory}/Subsonic.app"/>
-                                            <arg value="/Applications"/>
-                                            <arg value="${project.build.directory}/subsonic-${project.version}.pkg"/>
+                                            <arg value="${project.build.directory}/subsonic.pkg"/>
+                                            <arg value="${project.build.directory}/subsonic-signed.pkg"/>
                                         </exec>
                                     </target>
                                 </configuration>
