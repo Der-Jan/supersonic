@@ -582,18 +582,18 @@
 			<key>BACKGROUND</key>
 			<dict>
 				<key>ALIGNMENT</key>
-				<integer>3</integer>
+				<integer>6</integer>
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>icon-512.png</string>
+					<string>subsonic.png</string>
 					<key>PATH_TYPE</key>
 					<integer>1</integer>
 				</dict>
 				<key>CUSTOM</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>SCALING</key>
-				<integer>0</integer>
+				<integer>2</integer>
 			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
