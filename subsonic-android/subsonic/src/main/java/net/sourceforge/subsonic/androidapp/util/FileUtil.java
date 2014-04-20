@@ -59,7 +59,7 @@ public class FileUtil {
             fileName.append(track).append("-");
         }
 
-        fileName.append(fileSystemSafe(song.getTitle())).append(".");
+        fileName.append(fileSystemSafe(song.getTitle())).append("");
 
         if (song.getTranscodedSuffix() != null) {
             fileName.append(song.getTranscodedSuffix());
