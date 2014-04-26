@@ -1,5 +1,5 @@
 
-// TODO: When starting cast, progress starts moving too early.
+// TODO: Simplify states
 // TODO: Initial volume
 // TODO: Use jquery
 // TODO: Integrate with videoPlayer.jsp
@@ -33,9 +33,7 @@
         'LOADED': 'LOADED',
         'PLAYING': 'PLAYING',
         'PAUSED': 'PAUSED',
-        'STOPPED': 'STOPPED',
-        'SEEKING': 'SEEKING',
-        'ERROR': 'ERROR'
+        'SEEKING': 'SEEKING'
     };
 
     /**
@@ -443,7 +441,6 @@
                 break;
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
-            case PLAYER_STATE.STOPPED:
                 this.loadMedia();
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
@@ -639,7 +636,6 @@
             case PLAYER_STATE.PAUSED:
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
-            case PLAYER_STATE.STOPPED:
                 document.getElementById("play").style.display = 'block';
                 document.getElementById("pause").style.display = 'none';
                 break;
