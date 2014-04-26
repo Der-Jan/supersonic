@@ -253,14 +253,12 @@ TODO IN ANDROID 4.1
 --------------------
 Disable RC if connected to Bluetooth.
   https://mail.google.com/mail/ca/u/0/#inbox/1446ffa5fca92812
-Upgrade to KitKat
 Subsonic Android Not Pausing for Google Voice Typing
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
 Make it easier to add server URL.
 Support add to playlist
-Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?
   https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d

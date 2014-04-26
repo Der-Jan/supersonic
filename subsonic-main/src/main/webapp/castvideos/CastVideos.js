@@ -93,7 +93,7 @@
         // @type {Number} A number for current media offset
         this.currentMediaOffset = 0;
 
-        // @type {Number} A number for current media time
+        // @type {Number} A number for current media time, relative to offset
         this.currentMediaTime = 0;
 
         // @type {Number} A number for current media duration
@@ -141,6 +141,7 @@
         var newTime = Math.round(event.position);
         if (newTime != this.currentMediaTime && !this.seekInProgress) {
             this.currentMediaTime = newTime;
+            console.log(this.currentMediaTime + " (updateLocalProgress)");
             this.updateProgressBar();
         }
     };
@@ -249,8 +250,8 @@
             clearInterval(this.timer);
 
             // continue to play media locally
-            console.log("current time: " + this.currentMediaTime);
-            this.playMediaLocally(this.currentMediaTime);
+            console.log("current time (sessionUpdateListener): " + this.currentMediaTime);
+            this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
             this.updateMediaControlUI();
         }
     };
@@ -309,8 +310,8 @@
         clearInterval(this.timer);
 
         // continue to play media locally
-        console.log("current time: " + this.currentMediaTime);
-        this.playMediaLocally(this.currentMediaTime);
+        console.log("current time (onStopAppSuccess): " + this.currentMediaTime);
+        this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
         this.updateMediaControlUI();
     };
 
@@ -322,8 +323,11 @@
             console.log("no session");
             return;
         }
-        var offset = Math.floor(this.currentMediaOffset + this.currentMediaTime);
+        var offset = this.currentMediaOffset + this.currentMediaTime;
         this.currentMediaOffset = offset;
+        this.currentMediaTime = 0;
+        console.log(this.currentMediaTime + " (loadMedia cast)");
+
         var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + offset;  // TODO: mkv
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
@@ -353,8 +357,8 @@
 
         if (how == 'activeSession') {
             this.castPlayerState = this.session.media[0].playerState;
-            this.currentMediaTime = this.session.media[0].currentTime;
-            console.log("Media time from device: " + this.currentMediaTime);
+            this.currentMediaTime = Math.round(this.session.media[0].currentTime);
+            console.log(this.currentMediaTime + " (media time from device)");
         }
 
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
@@ -382,7 +386,7 @@
      */
     CastPlayer.prototype.onMediaStatusUpdate = function (e) {
         if (!e) {
-            this.currentMediaTime = 0;
+//            this.currentMediaTime = 0;
             this.castPlayerState = PLAYER_STATE.IDLE;
         }
         console.log("updating media");
@@ -398,10 +402,11 @@
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
             if (this.currentMediaOffset + this.currentMediaTime < this.currentMediaDuration) {
                 this.currentMediaTime += 1;
+                console.log(this.currentMediaTime + " (incrementMediaTime)");
                 this.updateProgressBar();
             }
             else {
-                this.currentMediaTime = 0;
+//                this.currentMediaTime = 0;
                 clearInterval(this.timer);
             }
         }
@@ -479,8 +484,11 @@
             this.localPlayer.play();
         } else {
             this.currentMediaOffset = offset;
+            this.currentMediaTime = 0;
+            console.log(this.currentMediaTime + " (playMediaLocally)");
+
             this.localPlayer.load({
-                file: MEDIA_SOURCE_URL + "&timeOffset=" + Math.floor(offset),
+                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
                 duration: this.currentMediaDuration,
                 provider: "video"
             });
@@ -569,8 +577,12 @@
      */
     CastPlayer.prototype.seekMedia = function () {
 
-        this.seekInProgress = true;
         var offset = parseInt(document.getElementById("progress_slider").value);
+        this.seekInProgress = true;
+        this.currentMediaOffset = offset;
+        this.currentMediaTime = 0;
+        console.log(this.currentMediaTime + " (seekMedia)");
+
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayerState = PLAYER_STATE.SEEKING;
@@ -583,7 +595,6 @@
         }
 
         this.castPlayerState = PLAYER_STATE.SEEKING;
-        this.currentMediaOffset = offset;
         this.loadMedia();
 
         this.updateMediaControlUI();
@@ -593,7 +604,8 @@
      * Callback function for media command success
      */
     CastPlayer.prototype.mediaCommandSuccessCallback = function (info, e) {
-        this.currentMediaTime = this.session.media[0].currentTime;
+        this.currentMediaTime = Math.round(this.session.media[0].currentTime);
+        console.log(this.currentMediaTime + " (mediaCommandSuccessCallback)");
         console.log(info);
     };
 
