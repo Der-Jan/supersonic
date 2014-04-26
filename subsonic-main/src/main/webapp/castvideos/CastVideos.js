@@ -98,9 +98,9 @@
         this.seekInProgress = false;
 
         this.updateDurationLabel();
-        this.initializeCastPlayer();
+        this.initializeUI();
         this.initializeLocalPlayer();
-        this.timer = setInterval(this.incrementMediaTime.bind(this), 1000);
+        this.initializeCastPlayer();
     };
 
     /**
@@ -170,8 +170,7 @@
             this.receiverListener.bind(this));
 
         chrome.cast.initialize(apiConfig, this.onInitSuccess.bind(this), this.onError.bind(this));
-
-        this.initializeUI();
+        this.timer = setInterval(this.incrementMediaTime.bind(this), 1000);
     };
 
     /**
