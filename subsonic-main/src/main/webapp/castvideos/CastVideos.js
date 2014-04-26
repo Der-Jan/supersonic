@@ -131,7 +131,6 @@
         var newTime = Math.round(event.position);
         if (newTime != this.currentMediaTime && !this.seekInProgress) {
             this.currentMediaTime = newTime;
-            console.log(this.currentMediaTime + " (updateLocalProgress)");
             this.updateProgressBar();
         }
     };
@@ -236,10 +235,10 @@
             this.session = null;
             this.deviceState = DEVICE_STATE.IDLE;
             this.castPlayerState = PLAYER_STATE.IDLE;
+            console.log(this.castPlayerState + " (sessionUpdateListener)");
             this.currentMediaSession = null;
 
             // continue to play media locally
-            console.log("current time (sessionUpdateListener): " + this.currentMediaTime);
             this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
             this.updateMediaControlUI();
         }
@@ -292,10 +291,10 @@
         console.log(message);
         this.deviceState = DEVICE_STATE.IDLE;
         this.castPlayerState = PLAYER_STATE.IDLE;
+        console.log(this.castPlayerState + " (onStopAppSuccess)");
         this.currentMediaSession = null;
 
         // continue to play media locally
-        console.log("current time (onStopAppSuccess): " + this.currentMediaTime);
         this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
         this.updateMediaControlUI();
     };
@@ -311,7 +310,6 @@
         var offset = this.currentMediaOffset + this.currentMediaTime;
         this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
-        console.log(this.currentMediaTime + " (loadMedia cast)");
 
         var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + offset;  // TODO: mkv
         console.log("loading..." + url);
@@ -323,6 +321,8 @@
         request.currentTime = 0;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
+        console.log(this.castPlayerState + " (loadMedia)");
+
         this.session.loadMedia(request,
             this.onMediaDiscovered.bind(this, 'loadMedia'),
             this.onLoadMediaError.bind(this));
@@ -338,14 +338,15 @@
         this.currentMediaSession = mediaSession;
         if (how == 'loadMedia') {
             this.castPlayerState = this.castPlayerState = PLAYER_STATE.LOADED;
+            console.log(this.castPlayerState + " (onMediaDiscovered-loadMedia)");
         }
 
         if (how == 'activeSession') {
+            // TODO: Use currentMediaSession?
             this.castPlayerState = this.session.media[0].playerState;
+            console.log(this.castPlayerState + " (onMediaDiscovered-activeSession)");
             this.currentMediaTime = Math.round(this.session.media[0].currentTime);
-            console.log(this.currentMediaTime + " (media time from device)");
         }
-
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
@@ -359,6 +360,7 @@
     CastPlayer.prototype.onLoadMediaError = function (e) {
         console.log("media error");
         this.castPlayerState = PLAYER_STATE.IDLE;
+        console.log(this.castPlayerState + " (onLoadMediaError)");
         this.updateMediaControlUI();
     };
 
@@ -369,11 +371,12 @@
     CastPlayer.prototype.onMediaStatusUpdate = function (alive) {
         if (!alive) {
             this.castPlayerState = PLAYER_STATE.IDLE;
+            console.log(this.castPlayerState + " (onMediaStatusUpdate-dead)");
         } else {
             this.castPlayerState = this.currentMediaSession.playerState;
+            console.log(this.castPlayerState + " (onMediaStatusUpdate)");
         }
 
-        console.log("updating media " + this.currentMediaSession.playerState);
         this.updateProgressBar();
         this.updateMediaControlUI();
     };
@@ -386,7 +389,6 @@
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
             if (this.currentMediaOffset + this.currentMediaTime < this.currentMediaDuration) {
                 this.currentMediaTime += 1;
-                console.log(this.currentMediaTime + " (incrementMediaTime)");
                 this.updateProgressBar();
             }
         }
@@ -438,12 +440,14 @@
                     this.onError.bind(this));
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
+                console.log(this.castPlayerState + " (playMedia)");
                 break;
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
                 this.loadMedia();
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
+                console.log(this.castPlayerState + " (playMedia)");
                 break;
             default:
                 break;
@@ -463,7 +467,6 @@
         } else {
             this.currentMediaOffset = offset;
             this.currentMediaTime = 0;
-            console.log(this.currentMediaTime + " (playMediaLocally)");
 
             this.localPlayer.load({
                 file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
@@ -487,6 +490,7 @@
 
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
             this.castPlayerState = PLAYER_STATE.PAUSED;
+            console.log(this.castPlayerState + " (pauseMedia)");
             this.currentMediaSession.pause(null,
                 this.mediaCommandSuccessCallback.bind(this, "paused " + this.currentMediaSession.sessionId),
                 this.onError.bind(this));
@@ -557,8 +561,6 @@
         this.seekInProgress = true;
         this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
-        console.log(this.currentMediaTime + " (seekMedia)");
-
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayerState = PLAYER_STATE.SEEKING;
@@ -572,7 +574,6 @@
 
         this.castPlayerState = PLAYER_STATE.SEEKING;
         this.loadMedia();
-
         this.updateMediaControlUI();
     };
 
@@ -581,7 +582,6 @@
      */
     CastPlayer.prototype.mediaCommandSuccessCallback = function (info, e) {
         this.currentMediaTime = Math.round(this.session.media[0].currentTime);
-        console.log(this.currentMediaTime + " (mediaCommandSuccessCallback)");
         console.log(info);
     };
 
