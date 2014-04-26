@@ -1,9 +1,7 @@
 
-// TODO: Seek = set offset + load
+// TODO: When starting cast, progress starts moving too early.
 // TODO: Initial volume
-// TODO: Emulate youtube controls.
 // TODO: Use jquery
-// TODO: Remote seeking not implemented.
 // TODO: Integrate with videoPlayer.jsp
 // TODO: Smaller play/pause buttons
 // TODO: Fonts
@@ -11,7 +9,6 @@
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
 // TODO: Sometimes playing both locally and remote.
-
 
 (function () {
     'use strict';
@@ -99,18 +96,13 @@
         // @type {Number} A number for current media duration
         this.currentMediaDuration = DURATION;
 
-        // @type {Timer} A timer for tracking progress of media
-        this.timer = null;
-
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
         this.seekInProgress = false;
-
-        // @type {Number} A number in milliseconds for minimal progress update
-        this.timerStep = 1000;
 
         this.updateDurationLabel();
         this.initializeCastPlayer();
         this.initializeLocalPlayer();
+        this.timer = setInterval(this.incrementMediaTime.bind(this), 1000);
     };
 
     /**
@@ -247,7 +239,6 @@
             this.deviceState = DEVICE_STATE.IDLE;
             this.castPlayerState = PLAYER_STATE.IDLE;
             this.currentMediaSession = null;
-            clearInterval(this.timer);
 
             // continue to play media locally
             console.log("current time (sessionUpdateListener): " + this.currentMediaTime);
@@ -264,9 +255,6 @@
     CastPlayer.prototype.launchApp = function () {
         console.log("launching app...");
         chrome.cast.requestSession(this.onRequestSessionSuccess.bind(this), this.onLaunchError.bind(this));
-        if (this.timer) {
-            clearInterval(this.timer);
-        }
     };
 
     /**
@@ -307,7 +295,6 @@
         this.deviceState = DEVICE_STATE.IDLE;
         this.castPlayerState = PLAYER_STATE.IDLE;
         this.currentMediaSession = null;
-        clearInterval(this.timer);
 
         // continue to play media locally
         console.log("current time (onStopAppSuccess): " + this.currentMediaTime);
@@ -352,7 +339,7 @@
         console.log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
         this.currentMediaSession = mediaSession;
         if (how == 'loadMedia') {
-            this.castPlayerState = this.autoplay ? PLAYER_STATE.PLAYING : this.castPlayerState = PLAYER_STATE.LOADED;
+            this.castPlayerState = this.castPlayerState = PLAYER_STATE.LOADED;
         }
 
         if (how == 'activeSession') {
@@ -361,9 +348,6 @@
             console.log(this.currentMediaTime + " (media time from device)");
         }
 
-        if (this.castPlayerState == PLAYER_STATE.PLAYING) {
-            this.startProgressTimer(this.incrementMediaTime);
-        }
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
@@ -382,14 +366,16 @@
 
     /**
      * Callback function for media status update from receiver
-     * @param {!Boolean} e true/false
+     * @param {!Boolean} alive whether the media object is still alive.
      */
-    CastPlayer.prototype.onMediaStatusUpdate = function (e) {
-        if (!e) {
-//            this.currentMediaTime = 0;
+    CastPlayer.prototype.onMediaStatusUpdate = function (alive) {
+        if (!alive) {
             this.castPlayerState = PLAYER_STATE.IDLE;
+        } else {
+            this.castPlayerState = this.currentMediaSession.playerState;
         }
-        console.log("updating media");
+
+        console.log("updating media " + this.currentMediaSession.playerState);
         this.updateProgressBar();
         this.updateMediaControlUI();
     };
@@ -404,10 +390,6 @@
                 this.currentMediaTime += 1;
                 console.log(this.currentMediaTime + " (incrementMediaTime)");
                 this.updateProgressBar();
-            }
-            else {
-//                this.currentMediaTime = 0;
-                clearInterval(this.timer);
             }
         }
     };
@@ -458,7 +440,6 @@
                     this.onError.bind(this));
                 this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
                 this.castPlayerState = PLAYER_STATE.PLAYING;
-                this.startProgressTimer(this.incrementMediaTime);
                 break;
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
@@ -513,7 +494,6 @@
                 this.mediaCommandSuccessCallback.bind(this, "paused " + this.currentMediaSession.sessionId),
                 this.onError.bind(this));
             this.updateMediaControlUI();
-            clearInterval(this.timer);
         }
     };
 
@@ -523,7 +503,6 @@
     CastPlayer.prototype.pauseMediaLocally = function () {
         this.localPlayer.pause();
         this.updateMediaControlUI();
-        clearInterval(this.timer);
     };
 
     /**
@@ -687,19 +666,6 @@
         document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
 
         setInterval(this.updateDebug.bind(this), 100);
-    };
-
-    /**
-     * @param {function} callback A callback function for the fucntion to start timer
-     */
-    CastPlayer.prototype.startProgressTimer = function (callback) {
-        if (this.timer) {
-            clearInterval(this.timer);
-            this.timer = null;
-        }
-
-        // start progress timer
-        this.timer = setInterval(callback.bind(this), this.timerStep);
     };
 
     window.CastPlayer = CastPlayer;
