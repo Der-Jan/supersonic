@@ -52,49 +52,49 @@
 
         /* device variables */
 
-// @type {DEVICE_STATE} A state for device
+        // @type {DEVICE_STATE} A state for device
         this.deviceState = DEVICE_STATE.NOT_PRESENT;
 
         /* Cast player variables */
 
-// @type {Object} a chrome.cast.media.Media object
+        // @type {Object} a chrome.cast.media.Media object
         this.currentMediaSession = null;
 
-// @type {Number} volume between 0 and 100
+        // @type {Number} volume between 0 and 100
         this.currentVolume = 50;
 
-// @type {Boolean} A flag for autoplay after load
+        // @type {Boolean} A flag for autoplay after load
         this.autoplay = true;
 
-// @type {string} a chrome.cast.Session object
+        // @type {string} a chrome.cast.Session object
         this.session = null;
 
-// @type {PLAYER_STATE} A state for Cast media player
+        // @type {PLAYER_STATE} A state for Cast media player
         this.castPlayerState = PLAYER_STATE.IDLE;
 
         /* Local player variables */
 
-// @type {PLAYER_STATE} A state for local media player
+        // @type {PLAYER_STATE} A state for local media player
         this.localPlayerState = PLAYER_STATE.IDLE;
 
-// @type {jwplayer} local player
+        // @type {jwplayer} local player
         this.localPlayer = null;
 
         /* Current media variables */
 
-// @type {Boolean} Muted audio
+        // @type {Boolean} Muted audio
         this.muted = false;
 
-// @type {Number} A number for current media offset
+        // @type {Number} A number for current media offset
         this.currentMediaOffset = 0;
 
-// @type {Number} A number for current media time, relative to offset
+        // @type {Number} A number for current media time, relative to offset
         this.currentMediaTime = 0;
 
-// @type {Number} A number for current media duration
+        // @type {Number} A number for current media duration
         this.currentMediaDuration = DURATION;
 
-// @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
+        // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
         this.seekInProgress = false;
 
         this.updateDurationLabel();
@@ -166,7 +166,7 @@
 //        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
         var applicationID = "644BA8AC"; // Custom receiver
 
-// request session
+        // request session
         var sessionRequest = new chrome.cast.SessionRequest(applicationID);
         var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
                 this.sessionListener.bind(this),
@@ -240,7 +240,7 @@
             console.log(this.castPlayerState + " (sessionUpdateListener)");
             this.currentMediaSession = null;
 
-// continue to play media locally
+            // continue to play media locally
             this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
             this.updateMediaControlUI();
         }
@@ -296,7 +296,7 @@
         console.log(this.castPlayerState + " (onStopAppSuccess)");
         this.currentMediaSession = null;
 
-// continue to play media locally
+        // continue to play media locally
         this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
         this.updateMediaControlUI();
     };
@@ -323,7 +323,7 @@
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska'; // TODO
-// TODO: Add metadata.
+        // TODO: Add metadata.
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = this.autoplay;
         request.currentTime = 0;
@@ -350,7 +350,7 @@
         }
 
         if (how == 'activeSession') {
-// TODO: Use currentMediaSession?
+            // TODO: Use currentMediaSession?
             this.castPlayerState = this.session.media[0].playerState;
             console.log(this.castPlayerState + " (onMediaDiscovered-activeSession)");
             this.currentMediaTime = Math.round(this.session.media[0].currentTime);
@@ -358,7 +358,7 @@
 
         this.currentMediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
 
-// update UI
+        // update UI
         this.updateMediaControlUI();
     };
 
@@ -664,7 +664,7 @@
 
         document.getElementById("progress_slider").max = DURATION;
 
-// add event handlers to UI components
+        // add event handlers to UI components
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
         document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
