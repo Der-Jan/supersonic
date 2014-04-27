@@ -7,7 +7,7 @@
 // TODO: Make it look ok in safari.
 // TODO: Simplify states
 // TODO: Initial volume, both local and remote.
-// TODO: Use jquery
+// TODO: Autoplay locally?
 // TODO: Smaller play/pause buttons
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
@@ -16,8 +16,6 @@
 
 (function () {
     'use strict';
-
-    var DURATION = ${model.duration};
 
     /**
      * Constants of states for Chromecast device
@@ -95,7 +93,7 @@
         this.currentMediaTime = 0;
 
         // @type {Number} A number for current media duration
-        this.currentMediaDuration = DURATION;
+        this.currentMediaDuration = ${model.duration};
 
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
         this.seekInProgress = false;
@@ -665,7 +663,7 @@
      */
     CastPlayer.prototype.initializeUI = function () {
 
-        document.getElementById("progress_slider").max = DURATION;
+        document.getElementById("progress_slider").max = this.currentMediaDuration;
 
         // add event handlers to UI components
         $("#casticonidle").on('click', this.launchApp.bind(this));
