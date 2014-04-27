@@ -1,11 +1,11 @@
 <script type="text/javascript">
 
+// TODO: Set bitrate. Make selectable?
 // TODO: Make it look ok in safari.
 // TODO: Simplify states
 // TODO: Initial volume, both local and remote.
 // TODO: Use jquery
 // TODO: Smaller play/pause buttons
-// TODO: Fonts
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
@@ -14,8 +14,7 @@
 (function () {
     'use strict';
 
-    var MEDIA_SOURCE_URL = "http://192.168.10.140:4040/stream?player=1&id=6&maxBitRate=2000";
-    var DURATION = 137; // TODO
+    var DURATION = ${model.duration};
 
     /**
      * Constants of states for Chromecast device
@@ -314,7 +313,13 @@
         this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
 
-        var url = MEDIA_SOURCE_URL + "&format=mkv&timeOffset=" + offset;  // TODO: mkv
+        <sub:url value="/stream" var="streamUrl">
+        <sub:param name="id" value="${model.video.id}"/>
+        <sub:param name="maxBitRate" value="${model.maxBitRate}"/>
+        <sub:param name="format" value="mkv"/>
+        </sub:url>
+
+        var url = "${streamUrl}" + "&timeOffset=" + offset;
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska'; // TODO
@@ -464,7 +469,11 @@
      */
     CastPlayer.prototype.playMediaLocally = function (offset) {
 
-// Resume?
+        <sub:url value="/stream" var="streamUrl">
+        <sub:param name="id" value="${model.video.id}"/>
+        <sub:param name="maxBitRate" value="${model.maxBitRate}"/>
+        </sub:url>
+
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayer.play();
         } else {
@@ -472,7 +481,7 @@
             this.currentMediaTime = 0;
 
             this.localPlayer.load({
-                file: MEDIA_SOURCE_URL + "&timeOffset=" + offset,
+                file: "${streamUrl}" + "&timeOffset=" + offset,
                 duration: this.currentMediaDuration,
                 provider: "video"
             });

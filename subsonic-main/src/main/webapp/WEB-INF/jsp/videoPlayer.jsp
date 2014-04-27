@@ -44,10 +44,6 @@
 <div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
 <div style="clear: both"></div>
 
-<sub:url value="/stream" var="streamUrl">
-    <sub:param name="id" value="${model.video.id}"/>
-</sub:url>
-
 <script type="text/javascript">
     var CastPlayer = new CastPlayer();
 </script>
