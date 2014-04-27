@@ -60,14 +60,16 @@ public class VideoPlayerController extends ParameterizableViewController {
         Integer duration = file.getDurationSeconds();
         String playerId = playerService.getPlayer(request, response).getId();
         String url = request.getRequestURL().toString();
-        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId());
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
         String host = new URL(streamUrl).getHost();
         String ip = settingsService.getLocalIpAddress();
         String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
+        String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + file.getId());
+        String remoteCoverArtUrl = coverArtUrl.replaceFirst(host, ip);
 
         map.put("video", file);
-        map.put("player", playerId);
         map.put("remoteStreamUrl", remoteStreamUrl);
+        map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));
         map.put("duration", duration);
         map.put("bitRates", BIT_RATES);

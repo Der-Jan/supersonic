@@ -1,7 +1,8 @@
 <script type="text/javascript">
 
+// TODO: (Remote) skipping doesn't always work
+// TODO: Getting "undefined" when toggling remote mute.
 // TODO: Reduce logging
-// TODO: Metadata
 // TODO: Set bitrate. Make selectable?
 // TODO: Make it look ok in safari.
 // TODO: Simplify states
@@ -309,17 +310,17 @@
         this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
 
-        <sub:url value="/stream" var="streamUrl">
-        <sub:param name="id" value="${model.video.id}"/>
-        <sub:param name="maxBitRate" value="${model.maxBitRate}"/>
-        <sub:param name="format" value="mkv"/>
-        </sub:url>
-
-        var url = "${streamUrl}" + "&timeOffset=" + offset;
+        var url = "${model.remoteStreamUrl}" + "&maxBitRate=" + ${model.maxBitRate} + "&format=mkv&timeOffset=" + offset;
         console.log("loading..." + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
-        mediaInfo.contentType = 'video/x-matroska'; // TODO
-        // TODO: Add metadata.
+        mediaInfo.contentType = 'video/x-matroska';
+        mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
+        mediaInfo.duration = this.currentMediaDuration;
+        mediaInfo.metadata = new chrome.cast.media.MovieMediaMetadata();
+        mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+        mediaInfo.metadata.title = "${model.video.title}";
+        mediaInfo.metadata.images = [new chrome.cast.Image("${model.remoteCoverArtUrl}&size=384")];
+
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = this.autoplay;
         request.currentTime = 0;
