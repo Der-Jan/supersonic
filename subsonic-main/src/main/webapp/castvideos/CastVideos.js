@@ -609,25 +609,26 @@
      */
     CastPlayer.prototype.updateMediaControlUI = function () {
 
+        var playerState = this.localPlayerState;
+
         if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'none';
             document.getElementById("overlay_text").style.display = 'none';
-            document.getElementById("overlay").style.display = 'none';
-            var playerState = this.localPlayerState;
+            var loaded = this.localPlayer.getPlaylist().length > 0;
+            document.getElementById("overlay").style.display = loaded ? 'none' : 'block';
         } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
             document.getElementById("casticonactive").style.display = 'block';
             document.getElementById("casticonidle").style.display = 'none';
             document.getElementById("overlay_text").style.display = 'block';
             document.getElementById("overlay").style.display = 'block';
-            var playerState = this.castPlayerState;
+            playerState = this.castPlayerState;
         } else {
             document.getElementById("casticonactive").style.display = 'none';
             document.getElementById("casticonidle").style.display = 'block';
             document.getElementById("overlay_text").style.display = 'none';
             var loaded = this.localPlayer.getPlaylist().length > 0;
             document.getElementById("overlay").style.display = loaded ? 'none' : 'block';
-            var playerState = this.localPlayerState;
         }
 
         switch (playerState) {
