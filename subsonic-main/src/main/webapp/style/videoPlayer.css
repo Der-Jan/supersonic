@@ -1,3 +1,22 @@
+/*
+ * This file is part of Subsonic.
+ *
+ *  Subsonic is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Subsonic is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Copyright 2014 (C) Sindre Mehus
+ */
+
 body {
     background-color: #F2F2F2;
 }
@@ -40,16 +59,16 @@ body {
     float: left;
     width: 65px;
     height: 40px;
-    background-image: url('../imagefiles/play.png');
+    background-image: url('../icons/video/play.png');
     cursor: pointer;
 }
 
 #play:hover {
-    background-image: url('../imagefiles/play-hover.png');
+    background-image: url('../icons/video/play-hover.png');
 }
 
 #play:press {
-    background-image: url('../imagefiles/play-press.png');
+    background-image: url('../icons/video/play-press.png');
 }
 
 #pause {
@@ -58,12 +77,12 @@ body {
     float: left;
     width: 65px;
     height: 40px;
-    background-image: url('../imagefiles/pause.png');
+    background-image: url('../icons/video/pause.png');
     cursor: pointer;
 }
 
 #pause:hover {
-    background-image: url('../imagefiles/pause-hover.png');
+    background-image: url('../icons/video/pause-hover.png');
 }
 
 #casticonactive {
@@ -73,7 +92,7 @@ body {
     margin-right: 10px;
     margin-top: 0;
     display: none;
-    background-image: url('../imagefiles/ic_media_route_on_custom.png');
+    background-image: url('../icons/video/ic_media_route_on_custom.png');
     cursor: pointer;
 }
 
@@ -84,7 +103,7 @@ body {
     margin-right: 10px;
     margin-top: 0;
     display: none;
-    background-image: url('../imagefiles/ic_media_route_off_custom.png');
+    background-image: url('../icons/video/ic_media_route_off_custom.png');
     cursor: pointer;
 }
 
@@ -95,7 +114,7 @@ body {
     margin-left: 10px;
     margin-top: 3px;
     display: none;
-    background-image: url('../imagefiles/audio_off.png');
+    background-image: url('../icons/video/audio_off.png');
     cursor: pointer;
 }
 
@@ -106,7 +125,7 @@ body {
     margin-left: 10px;
     margin-top: 3px;
     display: block;
-    background-image: url('../imagefiles/audio_on.png');
+    background-image: url('../icons/video/audio_on.png');
     cursor: pointer;
 }
 
