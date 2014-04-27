@@ -1,6 +1,5 @@
 <script type="text/javascript">
 
-// TODO: Create separate app id for video.
 // TODO: Reduce logging
 // TODO: Metadata
 // TODO: Set bitrate. Make selectable?
@@ -12,6 +11,7 @@
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
 // TODO: Sometimes playing both locally and remote.
+// TODO: Test with unlicensed and trial
 
 (function () {
     'use strict';
@@ -161,12 +161,8 @@
             setTimeout(this.initializeCastPlayer.bind(this), 1000);
             return;
         }
-        // default set to the default media receiver app ID
-        // optional: you may change it to point to your own
- //        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
-        var applicationID = "644BA8AC"; // Custom receiver
-
         // request session
+        var applicationID = "9EAA0B71";
         var sessionRequest = new chrome.cast.SessionRequest(applicationID);
         var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
                 this.sessionListener.bind(this),
