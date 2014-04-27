@@ -21,11 +21,7 @@ body {
 #media_control {
     width: 640px;
     height: 60px;
-    background-color: #000;
-}
-
-#media_control:hover {
-    /*opacity: 0.7;*/
+    background-color: #444;
 }
 
 #progress_slider {
