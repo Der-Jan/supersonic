@@ -1,5 +1,8 @@
 <script type="text/javascript">
 
+// TODO: Create separate app id for video.
+// TODO: Reduce logging
+// TODO: Metadata
 // TODO: Set bitrate. Make selectable?
 // TODO: Make it look ok in safari.
 // TODO: Simplify states
@@ -161,9 +164,9 @@
             setTimeout(this.initializeCastPlayer.bind(this), 1000);
             return;
         }
-// default set to the default media receiver app ID
-// optional: you may change it to point to your own
-//        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
+        // default set to the default media receiver app ID
+        // optional: you may change it to point to your own
+ //        var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID; // TODO
         var applicationID = "644BA8AC"; // Custom receiver
 
         // request session
@@ -406,7 +409,7 @@
      * Updates the duration label.
      */
     CastPlayer.prototype.updateDurationLabel = function () {
-        document.getElementById("duration").innerHTML = this.formatDuration(this.currentMediaDuration);
+        $("#duration").html(this.formatDuration(this.currentMediaDuration));
     };
 
     CastPlayer.prototype.formatDuration = function (duration) {
@@ -559,8 +562,8 @@
     CastPlayer.prototype.muteMedia = function () {
         this.muted = !this.muted;
         this.setVolume(this.muted);
-        document.getElementById('audio_on').style.display = this.muted ? 'none' : 'block';
-        document.getElementById('audio_off').style.display = this.muted ? 'block' : 'none';
+        $('#audio_on').toggle(!this.muted);
+        $('#audio_off').toggle(this.muted);
         this.updateMediaControlUI();
     };
 
@@ -602,7 +605,7 @@
      */
     CastPlayer.prototype.updateProgressBar = function () {
         document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
-        document.getElementById("progress").innerHTML = this.formatDuration(this.currentMediaOffset + this.currentMediaTime);
+        $("#progress").html(this.formatDuration(this.currentMediaOffset + this.currentMediaTime));
     };
 
     CastPlayer.prototype.updateDebug = function () {
@@ -610,7 +613,7 @@
                 + "currentMediaTime: " + this.currentMediaTime + "<br>"
                 + "localPlayerState: " + this.localPlayerState + "<br>"
                 + "castPlayerState: " + this.castPlayerState;
-        document.getElementById("debug").innerHTML = debug;
+        $("#debug").html(debug);
     };
 
     /**
@@ -621,36 +624,36 @@
         var playerState = this.localPlayerState;
 
         if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
-            document.getElementById("casticonactive").style.display = 'none';
-            document.getElementById("casticonidle").style.display = 'none';
-            document.getElementById("overlay_text").style.display = 'none';
+            $("#casticonactive").hide();
+            $("#casticonidle").hide();
+            $("#overlay_text").hide();
             var loaded = this.localPlayer.getPlaylist().length > 0;
-            document.getElementById("overlay").style.display = loaded ? 'none' : 'block';
+            $("#overlay").toggle(!loaded);
         } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
-            document.getElementById("casticonactive").style.display = 'block';
-            document.getElementById("casticonidle").style.display = 'none';
-            document.getElementById("overlay_text").style.display = 'block';
-            document.getElementById("overlay").style.display = 'block';
+            $("#casticonactive").show();
+            $("#casticonidle").hide();
+            $("#overlay_text").show();
+            $("#overlay").show();
             playerState = this.castPlayerState;
         } else {
-            document.getElementById("casticonactive").style.display = 'none';
-            document.getElementById("casticonidle").style.display = 'block';
-            document.getElementById("overlay_text").style.display = 'none';
+            $("#casticonactive").hide();
+            $("#casticonidle").show();
+            $("#overlay_text").hide();
             var loaded = this.localPlayer.getPlaylist().length > 0;
-            document.getElementById("overlay").style.display = loaded ? 'none' : 'block';
+            $("#overlay").toggle(!loaded);
         }
 
         switch (playerState) {
             case PLAYER_STATE.LOADED:
             case PLAYER_STATE.PLAYING:
-                document.getElementById("play").style.display = 'none';
-                document.getElementById("pause").style.display = 'block';
+                $("#play").hide();
+                $("#pause").show();
                 break;
             case PLAYER_STATE.PAUSED:
             case PLAYER_STATE.IDLE:
             case PLAYER_STATE.LOADING:
-                document.getElementById("play").style.display = 'block';
-                document.getElementById("pause").style.display = 'none';
+                $("#play").show();
+                $("#pause").hide();
                 break;
             default:
                 break;
@@ -665,14 +668,14 @@
         document.getElementById("progress_slider").max = DURATION;
 
         // add event handlers to UI components
-        document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
-        document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
-        document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
-        document.getElementById("volume_slider").addEventListener('change', this.setVolume.bind(this, false));
-        document.getElementById("audio_on").addEventListener('click', this.muteMedia.bind(this));
-        document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
-        document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
-        document.getElementById("pause").addEventListener('click', this.pauseMedia.bind(this));
+        $("#casticonidle").on('click', this.launchApp.bind(this));
+        $("#casticonactive").on('click', this.stopApp.bind(this));
+        $("#progress_slider").on('mouseup', this.seekMedia.bind(this));
+        $("#volume_slider").on('change', this.setVolume.bind(this, false));
+        $("#audio_on").on('click', this.muteMedia.bind(this));
+        $("#audio_off").on('click', this.muteMedia.bind(this));
+        $("#play").on('click', this.playMedia.bind(this));
+        $("#pause").on('click', this.pauseMedia.bind(this));
 
         setInterval(this.updateDebug.bind(this), 100);
     };
