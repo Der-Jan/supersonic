@@ -22,6 +22,8 @@ var muted = false;
   TODO: Test with https
  */
 
+
+// TODO: This should be done with retries, like for video.
 if (!chrome.cast || !chrome.cast.isAvailable) {
     setTimeout(initializeCastApi, 1000);
 }

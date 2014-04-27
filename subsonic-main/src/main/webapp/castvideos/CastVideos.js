@@ -1,6 +1,7 @@
 
+// TODO: Make it look ok in safari.
 // TODO: Simplify states
-// TODO: Initial volume
+// TODO: Initial volume, both local and remote.
 // TODO: Use jquery
 // TODO: Integrate with videoPlayer.jsp
 // TODO: Smaller play/pause buttons
@@ -60,8 +61,8 @@
         // @type {Object} a chrome.cast.media.Media object
         this.currentMediaSession = null;
 
-        // @type {Number} volume between 0.0 and 1.0
-        this.currentVolume = 0.5;
+        // @type {Number} volume between 0 and 100
+        this.currentVolume = 50;
 
         // @type {Boolean} A flag for autoplay after load
         this.autoplay = true;
@@ -124,7 +125,10 @@
                 onIdle: this.updateLocalState.bind(this)
             }
         });
+
         this.localPlayer = jwplayer();
+        this.localPlayer.setMute(false);
+        this.localPlayer.setVolume(this.currentVolume);
     };
 
     CastPlayer.prototype.updateLocalProgress = function (event) {
@@ -517,7 +521,7 @@
      * Set media volume in local or Cast mode
      * @param {Boolean} mute A boolean
      */
-    CastPlayer.prototype.setReceiverVolume = function (mute) {
+    CastPlayer.prototype.setVolume = function (mute) {
         this.currentVolume = parseInt(document.getElementById("volume_slider").value);
 
         if (!this.currentMediaSession) {
@@ -545,7 +549,7 @@
      */
     CastPlayer.prototype.muteMedia = function () {
         this.muted = !this.muted;
-        this.setReceiverVolume(this.muted);
+        this.setVolume(this.muted);
         document.getElementById('audio_on').style.display = this.muted ? 'none' : 'block';
         document.getElementById('audio_off').style.display = this.muted ? 'block' : 'none';
         this.updateMediaControlUI();
@@ -654,7 +658,7 @@
         document.getElementById("casticonidle").addEventListener('click', this.launchApp.bind(this));
         document.getElementById("casticonactive").addEventListener('click', this.stopApp.bind(this));
         document.getElementById("progress_slider").addEventListener('mouseup', this.seekMedia.bind(this));
-        document.getElementById("volume_slider").addEventListener('change', this.setReceiverVolume.bind(this, false));
+        document.getElementById("volume_slider").addEventListener('change', this.setVolume.bind(this, false));
         document.getElementById("audio_on").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("audio_off").addEventListener('click', this.muteMedia.bind(this));
         document.getElementById("play").addEventListener('click', this.playMedia.bind(this));
