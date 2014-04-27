@@ -8,7 +8,6 @@
 // TODO: Simplify states
 // TODO: Initial volume, both local and remote.
 // TODO: Autoplay locally?
-// TODO: Smaller play/pause buttons
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
