@@ -656,9 +656,4 @@
     <div id="dialog-select-playlist-list"></div>
 </div>
 
-<div style="margin:10px;">
-    <textarea rows="20" cols="180" id="debugmessage">
-    </textarea>
-</div>
-
 </body></html>

@@ -268,10 +268,6 @@
 
     CastPlayer.prototype.log = function (message) {
         console.log(message);
-        var debug = $("#debugmessage");
-        if (debug) {
-            debug.html(debug.html() + "\n" + JSON.stringify(message));
-        }
     };
 
     window.CastPlayer = CastPlayer;
