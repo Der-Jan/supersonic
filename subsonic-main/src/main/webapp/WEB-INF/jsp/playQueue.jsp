@@ -26,6 +26,7 @@
     var currentStreamUrl = null;
     var repeatEnabled = false;
     var slider = null;
+    var CastPlayer = new CastPlayer();
 
     function init() {
         dwr.engine.setErrorHandler(null);
@@ -335,10 +336,10 @@
         currentStreamUrl = song.streamUrl;
         updateCurrentImage();
 
-        if (castSession) {
-            loadCastMedia(song, position);
+        // TODO
+        if (CastPlayer.castSession) {
+            CastPlayer.loadCastMedia(song, position);
         } else {
-
             jwplayer().load({
                 file: song.streamUrl,
                 provider: song.format == "aac" || song.format == "m4a" ? "video" : "sound",
@@ -488,16 +489,18 @@
                     </div>
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">
-                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
-                            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+                            <%--TODO--%>
+                            <a href="#" onclick="CastPlayer.playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
+                            <a href="#" onclick="CastPlayer.toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
                         </div>
                         <div style="float:left">
                             <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
-                                   onchange="setCastVolume(this.value/100, false);">
+                                   onchange="CastPlayer.setCastVolume(this.value/100, false);">
                         </div>
                     </div>
                 </td>
-                <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>
+                <%--TODO--%>
+                <td><a href="#" onclick="CastPlayer.launchCastApp(); return false;"><img id="castIcon"></a></td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">

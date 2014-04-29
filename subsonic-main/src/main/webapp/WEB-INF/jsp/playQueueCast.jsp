@@ -1,269 +1,279 @@
 <script type="text/javascript">
+(function () {
+    'use strict';
 
-var castSession = null;
-var mediaSession = null;
-var playing = true;
-var volume = 1.0;
-var muted = false;
+    var CastPlayer = function () {
 
-/*
-  TODO: Factor out common cast code.
-  TODO: Premium feature
-  TODO: Fix mute icon
-  TODO: Darker icons
-  TODO: Only init if player type is "web".
-  TODO: Use similar graphics for next/prev buttons.
-  TODO: Nicer cast icons
-  TODO: HLS with Media Player Library
-  TODO: Debug: http://192.168.10.185:9222
-  TODO: Debug: http://192.168.10.180:9222
-  TODO: window.location.reload(true);
-  TODO: Use play/pause icons also in jukebox mode.
-  TODO: Test with https
- */
+        this.castSession = null;
+        this.mediaSession = null;
+        this.playing = true;
+        this.volume = 1.0;
+        this.muted = false;
 
+        this.initializeCastPlayer();
+    };
 
-// TODO: This should be done with retries, like for video.
-if (!chrome.cast || !chrome.cast.isAvailable) {
-    setTimeout(initializeCastApi, 1000);
-}
+    /*
+     TODO: Premium feature
+     TODO: Fix mute icon
+     TODO: Only init if player type is "web".
+     TODO: Use similar graphics for next/prev buttons.
+     TODO: Nicer cast icons
+     TODO: HLS with Media Player Library
+     TODO: Debug: http://192.168.10.185:9222
+     TODO: Debug: http://192.168.10.180:9222
+     TODO: window.location.reload(true);
+     TODO: Use play/pause icons also in jukebox mode.
+     TODO: Test with https
+     */
 
-function initializeCastApi() {
-//    var applicationID = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-    var applicationID = "4FBFE470";  // Styled receiver
-//    var applicationID = "644BA8AC"; // Custom receiver
-    var sessionRequest = new chrome.cast.SessionRequest(applicationID);
-    var apiConfig = new chrome.cast.ApiConfig(sessionRequest, sessionListener, receiverListener);
+    CastPlayer.prototype.initializeCastPlayer = function () {
+        if (!chrome.cast || !chrome.cast.isAvailable) {
+            setTimeout(this.initializeCastPlayer.bind(this), 1000);
+            return;
+        }
+        var applicationID = "4FBFE470";
+        var sessionRequest = new chrome.cast.SessionRequest(applicationID);
+        var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
+                this.sessionListener.bind(this),
+                this.receiverListener.bind(this));
+        chrome.cast.initialize(apiConfig, this.onInitSuccess.bind(this), this.onError.bind(this));
+    };
 
-    chrome.cast.initialize(apiConfig, onInitSuccess, onError);
-}
+    /**
+     * session listener during initialization
+     */
+    CastPlayer.prototype.sessionListener = function (s) {
+        this.log('New session ID:' + s.sessionId);
+        this.castSession = s;
+        this.setCastControlsVisible(true);
+        if (this.castSession.media.length > 0) {
+            this.log('Found ' + this.castSession.media.length + ' existing media sessions.');
+            this.onMediaDiscovered('onRequestSessionSuccess_', this.castSession.media[0]);
+        }
+        this.castSession.addMediaListener(this.onMediaDiscovered.bind(this, 'addMediaListener'));
+        this.castSession.addUpdateListener(this.sessionUpdateListener.bind(this));
+        this.syncControls();
+    };
 
-/**
- * session listener during initialization
- */
-function sessionListener(s) {
-    log('New session ID:' + s.sessionId);
-    castSession = s;
-    setCastControlsVisible(true);
-    if (castSession.media.length > 0) {
-        log('Found ' + castSession.media.length + ' existing media sessions.');
-        onMediaDiscovered('onRequestSessionSuccess_', castSession.media[0]);
-    }
-    castSession.addMediaListener(onMediaDiscovered.bind(this, 'addMediaListener'));
-    castSession.addUpdateListener(sessionUpdateListener.bind(this));
-    syncControls();
-}
+    /**
+     * receiver listener during initialization
+     */
+    CastPlayer.prototype.receiverListener = function (e) {
+        if (e === 'available') {
+            this.log("receiver found");
+            this.setImage("castIcon", "<spring:theme code="castOffImage"/>");
+        }
+        else {
+            this.log("receiver list empty");
+            this.setImage("castIcon", "");
+        }
+    };
 
-/**
- * receiver listener during initialization
- */
-function receiverListener(e) {
-    if (e === 'available') {
-        log("receiver found");
-        setImage("castIcon", "<spring:theme code="castOffImage"/>");
-    }
-    else {
-        log("receiver list empty");
-        setImage("castIcon", "");
-    }
-}
+    /**
+     * session update listener
+     */
+    CastPlayer.prototype.sessionUpdateListener = function (isAlive) {
+        var message = isAlive ? 'Session Updated' : 'Session Removed';
+        message += ': ' + this.castSession.sessionId;
+        this.log(message);
+        if (!isAlive) {
+            this.castSession = null;
+            this.setCastControlsVisible(false);
+        }
+    };
 
-/**
- * session update listener
- */
-function sessionUpdateListener(isAlive) {
-    var message = isAlive ? 'Session Updated' : 'Session Removed';
-    message += ': ' + castSession.sessionId;
-    log(message);
-    if (!isAlive) {
-        castSession = null;
-        setCastControlsVisible(false);
-    }
-}
+    CastPlayer.prototype.onInitSuccess = function () {
+        this.log("init success");
+    };
 
-function onInitSuccess() {
-    log("init success");
-}
+    CastPlayer.prototype.onError = function () {
+        this.log("error");
+    };
 
-function onError() {
-    log("error");
-}
+    CastPlayer.prototype.setCastControlsVisible = function (visible) {
+        if (visible) {
+            $("#flashPlayer").hide();
+            $("#castPlayer").show();
+            this.setImage("castIcon", "<spring:theme code="castOnImage"/>");
+        } else {
+            $("#castPlayer").hide();
+            $("#flashPlayer").show();
+            this.setImage("castIcon", "<spring:theme code="castOffImage"/>");
+        }
+    };
 
-function setCastControlsVisible(visible) {
-    if (visible) {
-        $("#flashPlayer").hide();
-        $("#castPlayer").show();
-        setImage("castIcon", "<spring:theme code="castOnImage"/>");
-    } else {
-        $("#castPlayer").hide();
-        $("#flashPlayer").show();
-        setImage("castIcon", "<spring:theme code="castOffImage"/>");
-    }
-}
+    /**
+     * launch app and request session
+     */
+    CastPlayer.prototype.launchCastApp = function () {
+        this.log("launching app...");
+        chrome.cast.requestSession(this.onRequestSessionSuccess.bind(this), this.onLaunchError.bind(this));
+    };
 
-/**
- * launch app and request session
- */
-function launchCastApp() {
-    log("launching app...");
-    chrome.cast.requestSession(onRequestSessionSuccess, onLaunchError);
-}
+    /**
+     * callback on success for requestSession call
+     * @param {Object} s A non-null new session.
+     */
+    CastPlayer.prototype.onRequestSessionSuccess = function (s) {
+        this.log("session success: " + s.sessionId);
+        this.castSession = s;
 
-/**
- * callback on success for requestSession call
- * @param {Object} s A non-null new session.
- */
-function onRequestSessionSuccess(s) {
-    log("session success: " + s.sessionId);
-    castSession = s;
+        var position = -1;
+        if (jwplayer().getState() == "PLAYING") {
+            position = jwplayer().getPosition();
+        }
 
-    var position = -1;
-    if (jwplayer().getState() == "PLAYING") {
-        position = jwplayer().getPosition();
-    }
+        this.setCastControlsVisible(true);
+        this.castSession.addUpdateListener(this.sessionUpdateListener.bind(this));
+        this.syncControls();
 
-    setCastControlsVisible(true);
-    castSession.addUpdateListener(sessionUpdateListener.bind(this));
-    syncControls();
+        // Continue song at same position?
+        if (position != -1) {
+            skip(getCurrentSongIndex(), position);
+        }
+    };
 
-    // Continue song at same position?
-    if (position != -1) {
-        skip(getCurrentSongIndex(), position);
-    }
-}
+    CastPlayer.prototype.onLaunchError = function () {
+        this.log("launch error");
+    };
 
-function onLaunchError() {
-    log("launch error");
-}
+    CastPlayer.prototype.loadCastMedia = function (song, position) {
+        if (!this.castSession) {
+            this.log("no session");
+            return;
+        }
+        this.log("loading..." + song.remoteStreamUrl);
+        var mediaInfo = new chrome.cast.media.MediaInfo(song.remoteStreamUrl);
+        mediaInfo.contentType = song.contentType;
+        mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
+        mediaInfo.duration = song.duration;
+        mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+        mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+        mediaInfo.metadata.songName = song.title;
+        mediaInfo.metadata.title = song.title;
+        mediaInfo.metadata.albumName = song.album;
+        mediaInfo.metadata.artist = song.artist;
+        mediaInfo.metadata.trackNumber = song.trackNumber;
+        mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl + "&size=384")];
+        mediaInfo.metadata.releaseYear = song.year;
 
-function loadCastMedia(song, position) {
-    if (!castSession) {
-        log("no session");
-        return;
-    }
-    log("loading..." + song.remoteStreamUrl);
-    var mediaInfo = new chrome.cast.media.MediaInfo(song.remoteStreamUrl);
-    mediaInfo.contentType = song.contentType;
-    mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
-    mediaInfo.duration = song.duration;
-    mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-    mediaInfo.metadata.songName = song.title;
-    mediaInfo.metadata.title = song.title;
-    mediaInfo.metadata.albumName = song.album;
-    mediaInfo.metadata.artist = song.artist;
-    mediaInfo.metadata.trackNumber = song.trackNumber;
-    mediaInfo.metadata.images = [new chrome.cast.Image(song.remoteCoverArtUrl + "&size=384")];
-    mediaInfo.metadata.releaseYear = song.year;
+        var request = new chrome.cast.media.LoadRequest(mediaInfo);
+        request.autoplay = true;
+        request.currentTime = position;
 
-    var request = new chrome.cast.media.LoadRequest(mediaInfo);
-    request.autoplay = true;
-    request.currentTime = position;
+        this.castSession.loadMedia(request,
+                this.onMediaDiscovered.bind(this, 'loadMedia'),
+                this.onMediaError.bind(this));
+    };
 
-    castSession.loadMedia(request,
-            onMediaDiscovered.bind(this, 'loadMedia'),
-            onMediaError);
-}
+    /**
+     * callback on success for loading media
+     */
+    CastPlayer.prototype.onMediaDiscovered = function (how, ms) {
+        this.mediaSession = ms;
+        this.log("new media session ID:" + this.mediaSession.mediaSessionId + ' (' + how + ')');
+        this.log(ms);
+        this.mediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
+    };
 
-/**
- * callback on success for loading media
- */
-function onMediaDiscovered(how, ms) {
-    mediaSession = ms;
-    log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
-    log(ms);
-    mediaSession.addUpdateListener(onMediaStatusUpdate);
-}
-
-/**
- * callback on media loading error
- * @param {Object} e A non-null media object
- */
-function onMediaError(e) {
-    log("media error");
+    /**
+     * callback on media loading error
+     * @param {Object} e A non-null media object
+     */
+    CastPlayer.prototype.onMediaError = function (e) {
+        this.log("media error");
 //    TODO: icon
-    setImage("castIcon", "<c:url value="/icons/cast/cast_icon_warning.png"/>");
-}
+        this.setImage("castIcon", "<c:url value="/icons/cast/cast_icon_warning.png"/>");
+    };
 
-/**
- * callback for media status event
- */
-function onMediaStatusUpdate(isAlive) {
-    log(mediaSession.playerState);
-    if (mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && mediaSession.idleReason === "FINISHED") {
-        onNext(repeatEnabled);
-    }
-    syncControls();
-}
+    /**
+     * callback for media status event
+     */
+    CastPlayer.prototype.onMediaStatusUpdate = function () {
+        this.log(this.mediaSession.playerState);
+        if (this.mediaSession.playerState === chrome.cast.media.PlayerState.IDLE && this.mediaSession.idleReason === "FINISHED") {
+            onNext(repeatEnabled);
+        }
+        this.syncControls();
+    };
 
-function playPauseCast() {
-    if (!mediaSession) {
-        return;
-    }
-    if (playing) {
-        mediaSession.pause(null, mediaCommandSuccessCallback.bind(this, "paused " + mediaSession.sessionId), onError);
-        setImage("castPlayPause", "<spring:theme code="castPlayImage"/>");
-    } else {
-        mediaSession.play(null, mediaCommandSuccessCallback.bind(this, "playing started for " + mediaSession.sessionId), onError);
-        setImage("castPlayPause", "<spring:theme code="castPauseImage"/>");
-    }
-    playing = !playing;
-}
+    CastPlayer.prototype.playPauseCast = function () {
+        if (!this.mediaSession) {
+            return;
+        }
+        if (this.playing) {
+            this.mediaSession.pause(null, this.mediaCommandSuccessCallback.bind(this, "paused " + this.mediaSession.sessionId),
+                    this.onError.bind(this));
+            this.setImage("castPlayPause", "<spring:theme code="castPlayImage"/>");
+        } else {
+            this.mediaSession.play(null, this.mediaCommandSuccessCallback.bind(this, "playing started for " + this.mediaSession.sessionId),
+                    this.onError.bind(this));
+            this.setImage("castPlayPause", "<spring:theme code="castPauseImage"/>");
+        }
+        this.playing = !this.playing;
+    };
 
-/**
- * set receiver volume
- * @param {Number} level A number for volume level
- * @param {Boolean} mute A true/false for mute/unmute
- */
-function setCastVolume(level, mute) {
-    if (!castSession)
-        return;
+    /**
+     * set receiver volume
+     * @param {Number} level A number for volume level
+     * @param {Boolean} mute A true/false for mute/unmute
+     */
+    CastPlayer.prototype.setCastVolume = function (level, mute) {
+        if (!this.castSession)
+            return;
 
-    muted = mute;
+        this.muted = mute;
 
-    if (!mute) {
-        castSession.setReceiverVolumeLevel(level, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
-        volume = level;
-        setImage("castMute", "<spring:theme code="volumeImage"/>");
-    }
-    else {
-        castSession.setReceiverMuted(true, mediaCommandSuccessCallback.bind(this, 'media set-volume done'), onError);
-        setImage("castMute", "<spring:theme code="muteImage"/>");
-    }
-}
+        if (!mute) {
+            this.castSession.setReceiverVolumeLevel(level, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
+                    this.onError.bind(this));
+            this.volume = level;
+            this.setImage("castMute", "<spring:theme code="volumeImage"/>");
+        }
+        else {
+            this.castSession.setReceiverMuted(true, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
+                    this.onError.bind(this));
+            this.setImage("castMute", "<spring:theme code="muteImage"/>");
+        }
+    };
 
-function toggleCastMute() {
-    setCastVolume(volume, !muted);
-}
+    CastPlayer.prototype.toggleCastMute = function () {
+        this.setCastVolume(this.volume, !this.muted);
+    };
 
-/**
- * callback on success for media commands
- * @param {string} info A message string
- */
-function mediaCommandSuccessCallback(info) {
-    log(info);
-}
+    /**
+     * callback on success for media commands
+     * @param {string} info A message string
+     */
+    CastPlayer.prototype.mediaCommandSuccessCallback = function (info) {
+        this.log(info);
+    };
 
-function syncControls() {
-    if (castSession.receiver.volume) {
-        volume = castSession.receiver.volume.level;
-        muted = castSession.receiver.volume.muted;
-        setImage("castMute", muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
-        document.getElementById("castVolume").value = volume * 100;
-    }
-    playing = castSession.media.length > 0 && castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
-    setImage("castPlayPause", playing ? "<spring:theme code="castPauseImage"/>" : "<spring:theme code="castPlayImage"/>");
-}
+    CastPlayer.prototype.syncControls = function () {
+        if (this.castSession.receiver.volume) {
+            this.volume = this.castSession.receiver.volume.level;
+            this.muted = this.castSession.receiver.volume.muted;
+            this.setImage("castMute", this.muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
+            document.getElementById("castVolume").value = this.volume * 100;
+        }
+        this.playing = this.castSession.media.length > 0 && this.castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
+        this.setImage("castPlayPause", this.playing ? "<spring:theme code="castPauseImage"/>" : "<spring:theme code="castPlayImage"/>");
+    };
 
-function setImage(id, image) {
-    document.getElementById(id).src = image;
-}
+    CastPlayer.prototype.setImage = function (id, image) {
+        document.getElementById(id).src = image;
+    };
 
-function log(message) {
-    console.log(message);
-    var debug = $("#debugmessage");
-    if (debug) {
-        debug.html(debug.html() + "\n" + JSON.stringify(message));
-    }
-}
+    CastPlayer.prototype.log = function (message) {
+        console.log(message);
+        var debug = $("#debugmessage");
+        if (debug) {
+            debug.html(debug.html() + "\n" + JSON.stringify(message));
+        }
+    };
+
+    window.CastPlayer = CastPlayer;
+})();
+
 </script>
