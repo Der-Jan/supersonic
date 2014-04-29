@@ -60,11 +60,13 @@
     CastPlayer.prototype.receiverListener = function (e) {
         if (e === 'available') {
             this.log("receiver found");
-            this.setImage("castIcon", "<spring:theme code="castOffImage"/>");
+            $("#castOn").show();
+            $("#castOff").hide();
         }
         else {
             this.log("receiver list empty");
-            this.setImage("castIcon", "");
+            $("#castOn").hide();
+            $("#castOff").hide();
         }
     };
 
@@ -90,15 +92,10 @@
     };
 
     CastPlayer.prototype.setCastControlsVisible = function (visible) {
-        if (visible) {
-            $("#flashPlayer").hide();
-            $("#castPlayer").show();
-            this.setImage("castIcon", "<spring:theme code="castOnImage"/>");
-        } else {
-            $("#castPlayer").hide();
-            $("#flashPlayer").show();
-            this.setImage("castIcon", "<spring:theme code="castOffImage"/>");
-        }
+        $("#flashPlayer").toggle(!visible);
+        $("#castPlayer").toggle(visible);
+        $("#castOff").toggle(visible);
+        $("#castOn").toggle(!visible);
     };
 
     /**
@@ -181,8 +178,6 @@
      */
     CastPlayer.prototype.onMediaError = function (e) {
         this.log("media error");
-//    TODO: icon
-        this.setImage("castIcon", "<c:url value="/icons/cast/cast_icon_warning.png"/>");
     };
 
     /**
@@ -262,13 +257,13 @@
             $("#castMuteOff").toggle(muted);
             document.getElementById("castVolume").value = this.volume * 100;
         }
+
+        // TODO: Use mediaSession.
+        // TODO: Also consider BUFFERING
+
         var playing = this.castSession.media.length > 0 && this.castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
         $("#castPause").toggle(playing);
         $("#castPlay").toggle(!playing);
-    };
-
-    CastPlayer.prototype.setImage = function (id, image) {
-        document.getElementById(id).src = image;
     };
 
     CastPlayer.prototype.log = function (message) {

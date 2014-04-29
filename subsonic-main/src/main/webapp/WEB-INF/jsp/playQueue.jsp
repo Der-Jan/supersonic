@@ -336,7 +336,6 @@
         currentStreamUrl = song.streamUrl;
         updateCurrentImage();
 
-        // TODO
         if (CastPlayer.castSession) {
             CastPlayer.loadCastMedia(song, position);
         } else {
@@ -500,8 +499,10 @@
                         </div>
                     </div>
                 </td>
-                <%--TODO--%>
-                <td><a href="#" onclick="CastPlayer.launchCastApp(); return false;"><img id="castIcon"></a></td>
+                <td>
+                    <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="CastPlayer.launchCastApp()" style="cursor:pointer; display:none">
+                    <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="CastPlayer.launchCastApp()" style="cursor:pointer; display:none">
+                </td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
