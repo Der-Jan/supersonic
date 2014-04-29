@@ -258,10 +258,7 @@
             document.getElementById("castVolume").value = this.volume * 100;
         }
 
-        // TODO: Use mediaSession.
-        // TODO: Also consider BUFFERING
-
-        var playing = this.castSession.media.length > 0 && this.castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
+        var playing = this.mediaSession && this.mediaSession.playerState === chrome.cast.media.PlayerState.PLAYING;
         $("#castPause").toggle(playing);
         $("#castPlay").toggle(!playing);
     };
