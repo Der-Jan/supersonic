@@ -489,9 +489,10 @@
                     </div>
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">
-                            <%--TODO--%>
-                            <a href="#" onclick="CastPlayer.playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
-                            <a href="#" onclick="CastPlayer.toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+                            <img id="castPlay" src="<spring:theme code="castPlayImage"/>" onclick="CastPlayer.playCast()" style="cursor:pointer">
+                            <img id="castPause" src="<spring:theme code="castPauseImage"/>" onclick="CastPlayer.pauseCast()" style="cursor:pointer; display:none">
+                            <img id="castMuteOn" src="<spring:theme code="volumeImage"/>" onclick="CastPlayer.castMuteOn()" style="cursor:pointer">
+                            <img id="castMuteOff" src="<spring:theme code="muteImage"/>" onclick="CastPlayer.castMuteOff()" style="cursor:pointer; display:none">
                         </div>
                         <div style="float:left">
                             <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"

@@ -6,9 +6,7 @@
 
         this.castSession = null;
         this.mediaSession = null;
-        this.playing = true;
         this.volume = 1.0;
-        this.muted = false;
 
         this.initializeCastPlayer();
     };
@@ -198,20 +196,24 @@
         this.syncControls();
     };
 
-    CastPlayer.prototype.playPauseCast = function () {
+    CastPlayer.prototype.playCast = function () {
         if (!this.mediaSession) {
             return;
         }
-        if (this.playing) {
-            this.mediaSession.pause(null, this.mediaCommandSuccessCallback.bind(this, "paused " + this.mediaSession.sessionId),
-                    this.onError.bind(this));
-            this.setImage("castPlayPause", "<spring:theme code="castPlayImage"/>");
-        } else {
-            this.mediaSession.play(null, this.mediaCommandSuccessCallback.bind(this, "playing started for " + this.mediaSession.sessionId),
-                    this.onError.bind(this));
-            this.setImage("castPlayPause", "<spring:theme code="castPauseImage"/>");
+        this.mediaSession.play(null, this.mediaCommandSuccessCallback.bind(this, "playing started for " + this.mediaSession.sessionId),
+                this.onError.bind(this));
+        $("#castPlay").hide();
+        $("#castPause").show();
+    };
+
+    CastPlayer.prototype.pauseCast = function () {
+        if (!this.mediaSession) {
+            return;
         }
-        this.playing = !this.playing;
+        this.mediaSession.pause(null, this.mediaCommandSuccessCallback.bind(this, "paused " + this.mediaSession.sessionId),
+                this.onError.bind(this));
+        $("#castPlay").show();
+        $("#castPause").hide();
     };
 
     /**
@@ -223,23 +225,25 @@
         if (!this.castSession)
             return;
 
-        this.muted = mute;
-
         if (!mute) {
             this.castSession.setReceiverVolumeLevel(level, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
                     this.onError.bind(this));
             this.volume = level;
-            this.setImage("castMute", "<spring:theme code="volumeImage"/>");
         }
         else {
             this.castSession.setReceiverMuted(true, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
                     this.onError.bind(this));
-            this.setImage("castMute", "<spring:theme code="muteImage"/>");
         }
+        $("#castMuteOn").toggle(!mute);
+        $("#castMuteOff").toggle(mute);
     };
 
-    CastPlayer.prototype.toggleCastMute = function () {
-        this.setCastVolume(this.volume, !this.muted);
+    CastPlayer.prototype.castMuteOn = function () {
+        this.setCastVolume(this.volume, true);
+    };
+
+    CastPlayer.prototype.castMuteOff = function () {
+        this.setCastVolume(this.volume, false);
     };
 
     /**
@@ -253,12 +257,14 @@
     CastPlayer.prototype.syncControls = function () {
         if (this.castSession.receiver.volume) {
             this.volume = this.castSession.receiver.volume.level;
-            this.muted = this.castSession.receiver.volume.muted;
-            this.setImage("castMute", this.muted ? "<spring:theme code="muteImage"/>" : "<spring:theme code="volumeImage"/>");
+            var muted = this.castSession.receiver.volume.muted;
+            $("#castMuteOn").toggle(!muted);
+            $("#castMuteOff").toggle(muted);
             document.getElementById("castVolume").value = this.volume * 100;
         }
-        this.playing = this.castSession.media.length > 0 && this.castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
-        this.setImage("castPlayPause", this.playing ? "<spring:theme code="castPauseImage"/>" : "<spring:theme code="castPlayImage"/>");
+        var playing = this.castSession.media.length > 0 && this.castSession.media[0].playerState === chrome.cast.media.PlayerState.PLAYING;
+        $("#castPause").toggle(playing);
+        $("#castPlay").toggle(!playing);
     };
 
     CastPlayer.prototype.setImage = function (id, image) {
