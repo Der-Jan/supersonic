@@ -1,18 +1,19 @@
 <script type="text/javascript">
 
+// TODO: Initial volume, both local and remote.
 // TODO: (Remote) skipping doesn't always work
+// TODO: Autoplay locally?
 // TODO: Getting "undefined" when toggling remote mute.
 // TODO: Reduce logging
 // TODO: Set bitrate. Make selectable?
 // TODO: Make it look ok in safari.
 // TODO: Simplify states
-// TODO: Initial volume, both local and remote.
-// TODO: Autoplay locally?
 // TODO: Proper handling of EOM
 // TODO: Test on other browsers
 // TODO: Starts playing locally when session times out.
 // TODO: Sometimes playing both locally and remote.
-// TODO: Test with unlicensed and trial
+// TODO: Make premium
+// TODO: Remove debug html
 
 (function () {
     'use strict';

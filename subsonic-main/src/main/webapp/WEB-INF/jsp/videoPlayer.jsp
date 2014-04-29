@@ -35,6 +35,10 @@
         </div>
     </div>
     <div id="debug"></div>
+
+    <script type="text/javascript">
+        var CastPlayer = new CastPlayer();
+    </script>
 </c:if>
 
 <h1>${model.video.title}</h1>
@@ -44,8 +48,5 @@
 <div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
 <div style="clear: both"></div>
 
-<script type="text/javascript">
-    var CastPlayer = new CastPlayer();
-</script>
 </body>
 </html>
