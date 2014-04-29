@@ -23,15 +23,12 @@ Update doc of recommended transcode settings.
 Consider scrobble when calculating "now playing".
   https://mail.google.com/mail/ca/u/0/#inbox/13f532a5e871a675
 Cast:
-  Use separate appId for video.
   Can JWPlayer be controlled without control bar? Full screen, seeking, etc
   Create custom jwplayer skin with black background and only a full screen button.
   Don't show play icon when buffering
-  Use 2000 kbps as default?
   Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
   Stop casting when clicking cast icon.
   Invisible Flash player for audio? Refactor.
-Use same slider for jukebox volume.
 Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
 LyricsService error with special characters

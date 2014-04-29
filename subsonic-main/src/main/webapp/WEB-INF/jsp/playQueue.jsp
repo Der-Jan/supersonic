@@ -10,9 +10,6 @@
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/range.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/timer.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/slider.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
@@ -25,7 +22,6 @@
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
-    var slider = null;
     var CastPlayer = new CastPlayer();
 
     function init() {
@@ -305,8 +301,9 @@
             parent.frames.main.location.href="play.m3u?";
         }
 
+        var slider = document.getElementById("jukeboxVolume");
         if (slider) {
-            slider.setValue(playQueue.gain * 100);
+            slider.value = Math.floor(playQueue.gain * 100);
         }
 
     <c:if test="${model.player.web}">
@@ -515,23 +512,8 @@
                     <img src="<spring:theme code="volumeImage"/>" alt="">
                 </td>
                 <td style="white-space:nowrap;">
-                    <div class="slider bgcolor2" id="slider-1" style="width:90px">
-                        <input class="slider-input" id="slider-input-1" name="slider-input-1">
-                    </div>
-                    <script type="text/javascript">
-
-                        var updateGainTimeoutId = 0;
-                        slider = new Slider(document.getElementById("slider-1"), document.getElementById("slider-input-1"));
-                        slider.onchange = function () {
-                            clearTimeout(updateGainTimeoutId);
-                            updateGainTimeoutId = setTimeout("updateGain()", 250);
-                        };
-
-                        function updateGain() {
-                            var gain = slider.getValue() / 100.0;
-                            onGain(gain);
-                        }
-                    </script>
+                    <input id="jukeboxVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
+                           onchange="onGain(this.value/100);">
                 </td>
             </c:if>
 
