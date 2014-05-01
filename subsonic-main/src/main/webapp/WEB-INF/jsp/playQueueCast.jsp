@@ -12,6 +12,7 @@
     };
 
     /*
+     TODO: Stop casting when clicking on button
      TODO: Premium feature
      TODO: Fix mute icon
      TODO: Only init if player type is "web".
@@ -21,7 +22,6 @@
      TODO: Debug: http://192.168.10.185:9222
      TODO: Debug: http://192.168.10.180:9222
      TODO: window.location.reload(true);
-     TODO: Use play/pause icons also in jukebox mode.
      TODO: Test with https
      */
 

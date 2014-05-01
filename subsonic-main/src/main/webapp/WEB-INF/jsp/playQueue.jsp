@@ -213,13 +213,8 @@
         songs = playQueue.entries;
         repeatEnabled = playQueue.repeatEnabled;
         if ($("#start")) {
-            if (playQueue.stopEnabled) {
-                $("#start").hide();
-                $("#stop").show();
-            } else {
-                $("#start").show();
-                $("#stop").hide();
-            }
+            $("#start").toggle(!playQueue.stopEnabled);
+            $("#stop").toggle(playQueue.stopEnabled);
         }
 
         if ($("#toggleRepeat")) {
@@ -503,8 +498,10 @@
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
-                <td style="white-space:nowrap;" id="stop"><span class="header"><b><a href="javascript:void(0)" onclick="onStop()"><fmt:message key="playlist.stop"/></a></b></span>  | </td>
-                <td style="white-space:nowrap;" id="start"><span class="header"><b><a href="javascript:void(0)" onclick="onStart()"><fmt:message key="playlist.start"/></a></b></span>  | </td>
+                <td>
+                    <img id="start" src="<spring:theme code="castPlayImage"/>" onclick="onStart()" style="cursor:pointer">
+                    <img id="stop" src="<spring:theme code="castPauseImage"/>" onclick="onStop()" style="cursor:pointer; display:none">
+                </td>
             </c:if>
 
             <c:if test="${model.player.jukebox}">
