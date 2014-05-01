@@ -14,9 +14,7 @@
     /*
      TODO: Use same app id for video and audio?
      TODO: Fix mute icon
-     TODO: Only init if player type is "web".
      TODO: Use similar graphics for next/prev buttons.
-     TODO: Nicer cast icons
      TODO: Test with https
      */
 

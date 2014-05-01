@@ -31,6 +31,7 @@ body {
 }
 
 #overlay_text {
+    font-size: 19px;
     text-align: center;
     margin-top: 170px;
     color: white;
