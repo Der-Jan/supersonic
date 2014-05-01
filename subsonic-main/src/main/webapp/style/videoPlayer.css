@@ -58,7 +58,7 @@ body {
     float: left;
     width: 24px;
     height: 24px;
-    background-image: url('../icons/default_dark/cast_play.png');
+    background-image: url('../icons/video/play.png');
     cursor: pointer;
 }
 
@@ -68,7 +68,7 @@ body {
     float: left;
     width: 24px;
     height: 24px;
-    background-image: url('../icons/default_dark/cast_pause.png');
+    background-image: url('../icons/video/pause.png');
     cursor: pointer;
 }
 
@@ -83,7 +83,7 @@ body {
     margin-right: 10px;
     margin-top: -5px;
     display: none;
-    background-image: url('../icons/video/ic_media_route_on_custom.png');
+    background-image: url('../icons/video/cast_active.png');
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@ body {
     margin-right: 10px;
     margin-top: -5px;
     display: none;
-    background-image: url('../icons/video/ic_media_route_off_custom.png');
+    background-image: url('../icons/video/cast_idle.png');
     cursor: pointer;
 }
 

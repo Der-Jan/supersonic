@@ -12,6 +12,7 @@
     };
 
     /*
+     TODO: Use same app id for video and audio
      TODO: Premium feature
      TODO: Fix mute icon
      TODO: Only init if player type is "web".
