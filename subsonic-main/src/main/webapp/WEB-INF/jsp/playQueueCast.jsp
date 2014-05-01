@@ -12,16 +12,11 @@
     };
 
     /*
-     TODO: Stop casting when clicking on button
      TODO: Premium feature
      TODO: Fix mute icon
      TODO: Only init if player type is "web".
      TODO: Use similar graphics for next/prev buttons.
      TODO: Nicer cast icons
-     TODO: HLS with Media Player Library
-     TODO: Debug: http://192.168.10.185:9222
-     TODO: Debug: http://192.168.10.180:9222
-     TODO: window.location.reload(true);
      TODO: Test with https
      */
 
@@ -104,6 +99,23 @@
     CastPlayer.prototype.launchCastApp = function () {
         this.log("launching app...");
         chrome.cast.requestSession(this.onRequestSessionSuccess.bind(this), this.onLaunchError.bind(this));
+    };
+
+    /**
+     * Stops the running receiver application associated with the session.
+     */
+    CastPlayer.prototype.stopCastApp = function () {
+        this.castSession.stop(this.onStopAppSuccess.bind(this, 'Session stopped'),
+                this.onError.bind(this));
+    };
+
+    /**
+     * Callback function for stop app success
+     */
+    CastPlayer.prototype.onStopAppSuccess = function (message) {
+        console.log(message);
+        this.currentMediaSession = null;
+        this.syncControls();
     };
 
     /**
@@ -250,7 +262,7 @@
     };
 
     CastPlayer.prototype.syncControls = function () {
-        if (this.castSession.receiver.volume) {
+        if (this.castSession && this.castSession.receiver.volume) {
             this.volume = this.castSession.receiver.volume.level;
             var muted = this.castSession.receiver.volume.muted;
             $("#castMuteOn").toggle(!muted);
