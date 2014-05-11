@@ -11,13 +11,6 @@
         this.initializeCastPlayer();
     };
 
-    /*
-     TODO: Use same app id for video and audio?
-     TODO: Fix mute icon
-     TODO: Use similar graphics for next/prev buttons.
-     TODO: Test with https
-     */
-
     CastPlayer.prototype.initializeCastPlayer = function () {
         if (!chrome.cast || !chrome.cast.isAvailable) {
             setTimeout(this.initializeCastPlayer.bind(this), 1000);

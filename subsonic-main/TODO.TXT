@@ -16,7 +16,13 @@ Improved support for https in UPnP.
 
 TODO IN 5.0
 --------------
-Test UPnP with HTTPS (use StringUtil.toHttpUrl)
+Cast
+  Initial volume, both local and remote.
+  (Remote) skipping doesn't always work
+  Autoplay locally?
+  Proper handling of EOM
+  Test on other browsers
+
 Help icon.
 Button backgrounds.
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)

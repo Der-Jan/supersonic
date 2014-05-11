@@ -1,20 +1,5 @@
 <script type="text/javascript">
 
-// TODO: Initial volume, both local and remote.
-// TODO: (Remote) skipping doesn't always work
-// TODO: Autoplay locally?
-// TODO: Getting "undefined" when toggling remote mute.
-// TODO: Reduce logging
-// TODO: Set bitrate. Make selectable?
-// TODO: Make it look ok in safari.
-// TODO: Simplify states
-// TODO: Proper handling of EOM
-// TODO: Test on other browsers
-// TODO: Starts playing locally when session times out.
-// TODO: Sometimes playing both locally and remote.
-// TODO: Make premium
-// TODO: Remove debug html
-
 (function () {
     'use strict';
 
@@ -592,7 +577,9 @@
      */
     CastPlayer.prototype.mediaCommandSuccessCallback = function (info, e) {
         this.currentMediaTime = Math.round(this.session.media[0].currentTime);
-        console.log(info);
+        if (info) {
+            console.log(info);
+        }
     };
 
     /**
@@ -672,7 +659,7 @@
         $("#play").on('click', this.playMedia.bind(this));
         $("#pause").on('click', this.pauseMedia.bind(this));
 
-        setInterval(this.updateDebug.bind(this), 100);
+//        setInterval(this.updateDebug.bind(this), 100);
     };
 
     window.CastPlayer = CastPlayer;

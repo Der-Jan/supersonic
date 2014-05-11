@@ -41,7 +41,7 @@
     </script>
 </c:if>
 
-<h1>${model.video.title}</h1>
+<h1 style="padding-top: 1em; padding-bottom: 0.5em">${model.video.title}</h1>
 
 <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
 
