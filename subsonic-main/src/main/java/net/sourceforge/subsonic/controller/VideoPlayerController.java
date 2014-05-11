@@ -63,9 +63,9 @@ public class VideoPlayerController extends ParameterizableViewController {
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
         String host = new URL(streamUrl).getHost();
         String ip = settingsService.getLocalIpAddress();
-        String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
-        String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + file.getId());
-        String remoteCoverArtUrl = coverArtUrl.replaceFirst(host, ip);
+        String remoteStreamUrl = StringUtil.toHttpUrl(streamUrl.replaceFirst(host, ip), settingsService.getPort());
+        String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
+        String remoteCoverArtUrl = StringUtil.toHttpUrl(coverArtUrl.replaceFirst(host, ip), settingsService.getPort());
 
         map.put("video", file);
         map.put("remoteStreamUrl", remoteStreamUrl);

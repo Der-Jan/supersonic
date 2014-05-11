@@ -15,6 +15,7 @@ Fixed broken Mac installer
 
 TODO IN 5.0
 --------------
+Test UPnP with HTTPS (use StringUtil.toHttpUrl)
 Help icon.
 Button backgrounds.
 Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)

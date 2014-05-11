@@ -392,8 +392,8 @@ public class PlayQueueService {
             String streamUrl = url.replaceFirst("/dwr/.*", "/stream?player=" + player.getId() + "&id=" + file.getId());
             String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?id=" + file.getId());
             String host = new URL(streamUrl).getHost();
-            String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
-            String remoteCoverArtUrl = coverArtUrl.replaceFirst(host, ip);
+            String remoteStreamUrl = StringUtil.toHttpUrl(streamUrl.replaceFirst(host, ip), settingsService.getPort());
+            String remoteCoverArtUrl = StringUtil.toHttpUrl(coverArtUrl.replaceFirst(host, ip), settingsService.getPort());
 
             // Rewrite URLs in case we're behind a proxy.
             if (settingsService.isRewriteUrlEnabled()) {

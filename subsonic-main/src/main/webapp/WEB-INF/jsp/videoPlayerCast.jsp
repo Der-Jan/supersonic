@@ -110,10 +110,10 @@
      */
     CastPlayer.prototype.initializeLocalPlayer = function () {
         jwplayer("jwplayer").setup({
-            flashplayer: "/flash/jw-player-5.10.swf",
+            flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
             height: 360,
             width: 640,
-            skin: "/flash/jw-player-subsonic-skin.zip",
+            skin: "<c:url value="/flash/jw-player-subsonic-skin.zip"/>",
             screencolor: "000000",
             controlbar: "over",
             autostart: "false",
