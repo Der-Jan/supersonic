@@ -93,14 +93,13 @@ public abstract class SubsonicContentDirectory extends AbstractContentDirectoryS
 
     protected String getBaseUrl() {
         int port = settingsService.getPort();
-        int httpsPort = settingsService.getHttpsPort();
-        boolean isHttps = httpsPort != 0;
         String contextPath = settingsService.getUrlRedirectContextPath();
 
-        StringBuilder url = new StringBuilder(isHttps ? "https://" : "http://")
+        // Note: Serving media and cover art with http (as opposed to https) works when using jetty and SubsonicDeployer.
+        StringBuilder url = new StringBuilder("http://")
                 .append(settingsService.getLocalIpAddress())
                 .append(":")
-                .append(isHttps ? httpsPort : port)
+                .append(port)
                 .append("/");
 
         if (StringUtils.isNotEmpty(contextPath)) {

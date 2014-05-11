@@ -12,6 +12,7 @@ Added Korean translation, courtesy of Rhetor Choi
 Link to Jamstash
   https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
 Fixed broken Mac installer
+Improved support for https in UPnP.
 
 TODO IN 5.0
 --------------
