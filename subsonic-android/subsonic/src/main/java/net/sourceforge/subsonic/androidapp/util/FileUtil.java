@@ -141,7 +141,11 @@ public class FileUtil {
         }
 
         //.. otherwise, use the app-private dir that is now recommended by Android.
-        return new File(context.getExternalFilesDir(null), "subsonic");
+        // Note that we select the second directory (if available) as the first one
+        // is typically an emulated external directory not physically located on the SD card.
+        File[] externalDirs = context.getExternalFilesDirs(null);
+        File externalDir = externalDirs.length == 1 ? externalDirs[0] : externalDirs[1];
+        return new File(externalDir, "subsonic");
     }
 
     public static File getMusicDirectory(Context context) {
