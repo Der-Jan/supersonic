@@ -122,6 +122,8 @@
     <string name="settings.cache_title">Cache musicale</string>
     <string name="settings.preload">Pièces à pré-charger</string>
     <string name="settings.cache_size">Taille de la cache</string>
+    <string name="settings.cache_location">Emplacement de la cache</string>
+    <string name="settings.cache_location_error">Emplacement de la cache invalide. Emplacement par défaut utilisé.</string>
     <string name="settings.testing_connection">Connexion en cours de test…</string>
     <string name="settings.testing_ok">Connexion correcte</string>
     <string name="settings.testing_unlicensed">Connection correcte. Serveur sans licence.</string>

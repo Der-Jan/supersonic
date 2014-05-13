@@ -59,7 +59,7 @@ public class FileUtil {
             fileName.append(track).append("-");
         }
 
-        fileName.append(fileSystemSafe(song.getTitle())).append("");
+        fileName.append(fileSystemSafe(song.getTitle())).append(".");
 
         if (song.getTranscodedSuffix() != null) {
             fileName.append(song.getTranscodedSuffix());
@@ -132,20 +132,27 @@ public class FileUtil {
 
     public static File getSubsonicDirectory(Context context) {
 
-        // Starting with Kitkat, write access is not always allowed outside the app's private directory.
-        // Earlier versions of the app stored files in Environment.getExternalStorageDirectory(). Keep using it if
-        // pre-Kitkat, or if the directory exists and is writable.
-        File dir = new File(Environment.getExternalStorageDirectory(), "subsonic");
-        if (Build.VERSION.SDK_INT < 19 || dir.exists() && dir.canWrite()) {
-            return dir;
-        }
-
-        //.. otherwise, use the app-private dir that is now recommended by Android.
+        // Starting with KitKat, write access is not always allowed outside the app's private directory.
+        // Use the app-private dir that is now recommended by Android.
         // Note that we select the second directory (if available) as the first one
         // is typically an emulated external directory not physically located on the SD card.
-        File[] externalDirs = context.getExternalFilesDirs(null);
-        File externalDir = externalDirs.length == 1 ? externalDirs[0] : externalDirs[1];
-        return new File(externalDir, "subsonic");
+        if (Build.VERSION.SDK_INT >= 19) {
+            File[] externalDirs = context.getExternalFilesDirs(null);
+            File externalDir = externalDirs.length == 1 ? externalDirs[0] : externalDirs[1];
+            return new File(externalDir, "subsonic");
+        }
+
+        // Otherwise, use the directory specified in the settings if we can.
+        String path = Util.getPreferences(context).getString(Constants.PREFERENCES_KEY_CACHE_LOCATION, null);
+        if (path != null) {
+            File dir = new File(path);
+            if (ensureDirectoryExistsAndIsReadWritable(dir)) {
+                return dir;
+            }
+        }
+
+        // Pre-KitKat and user hasn't specified anything.
+        return new File(Environment.getExternalStorageDirectory(), "subsonic");
     }
 
     public static File getMusicDirectory(Context context) {

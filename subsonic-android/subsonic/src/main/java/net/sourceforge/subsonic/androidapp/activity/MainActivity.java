@@ -19,6 +19,7 @@
 
 package net.sourceforge.subsonic.androidapp.activity;
 
+import java.io.File;
 import java.util.Arrays;
 
 import android.app.AlertDialog;
@@ -39,6 +40,7 @@ import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
 import net.sourceforge.subsonic.androidapp.util.Constants;
+import net.sourceforge.subsonic.androidapp.util.FileUtil;
 import net.sourceforge.subsonic.androidapp.util.MergeAdapter;
 import net.sourceforge.subsonic.androidapp.util.PopupMenuHelper;
 import net.sourceforge.subsonic.androidapp.util.ServerSettingsManager;
@@ -186,6 +188,20 @@ public class MainActivity extends SubsonicTabActivity {
     private void loadSettings() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         SharedPreferences prefs = Util.getPreferences(this);
+
+        if (!prefs.contains(Constants.PREFERENCES_KEY_CACHE_LOCATION)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, FileUtil.getSubsonicDirectory(this).getPath());
+            editor.commit();
+        } else {
+            File cacheLocation = new File(prefs.getString(Constants.PREFERENCES_KEY_CACHE_LOCATION, null));
+            if ("music".equals(cacheLocation.getName())) {
+                // Remove the "/music" part of the path used by previous versions.
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(Constants.PREFERENCES_KEY_CACHE_LOCATION, cacheLocation.getParent());
+                editor.commit();
+            }
+        }
         if (!prefs.contains(Constants.PREFERENCES_KEY_OFFLINE)) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(Constants.PREFERENCES_KEY_OFFLINE, false);
