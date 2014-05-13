@@ -1,22 +1,10 @@
 DONE IN 5.0
 -------------
-Added play overlay button in cover art images.
-Nicer scrollbar (in Webkit browsers)
-Fix build errors on Debian/RPM.
-Bugfix: External player doesn't auto-advance.
-Add browser notification
-Add settings for enabling notifications.
-Nicer styling of input fields and buttons.
-Added Estonian translation, courtesy of Olav M&auml;gi
-Added Korean translation, courtesy of Rhetor Choi
-Link to Jamstash
-  https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
-Fixed broken Mac installer
-Improved support for https in UPnP.
 
 TODO IN 5.0
 --------------
 Cast
+  Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
   Autoplay locally?
@@ -25,18 +13,10 @@ Cast
 
 Help icon.
 Button backgrounds.
-Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?
 Update doc of recommended transcode settings.
 Consider scrobble when calculating "now playing".
   https://mail.google.com/mail/ca/u/0/#inbox/13f532a5e871a675
-Cast:
-  Can JWPlayer be controlled without control bar? Full screen, seeking, etc
-  Create custom jwplayer skin with black background and only a full screen button.
-  Don't show play icon when buffering
-  Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
-  Stop casting when clicking cast icon.
-  Invisible Flash player for audio? Refactor.
 Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
 LyricsService error with special characters
@@ -975,15 +955,15 @@ service tomcat6 start
 
 HOW TO RELEASE TO ANDROID MARKET
 ================================
-Update versionCode and versionName in AndroidManifest.xml
+Update versionCode and versionName in build.gradle
 Commit
 cd subsonic-android
-ant clean
-ant release
+./gradlew clean
+./gradlew assembleRelease
 ### keytool -genkey -v -keystore subsonic.keystore -alias subsonic -keyalg RSA -validity 100000 -dname "CN=Active Objects"
 ### jarsigner -verbose -keystore subsonic.keystore -signedjar bin/subsonic.apk bin/SubsonicActivity-unsigned.apk subsonic
 Upload to market
-http://market.android.com/publish/Home
+https://play.google.com/apps/publish
 https://developer.amazon.com/welcome.html
 Update
     http://appoke.com
