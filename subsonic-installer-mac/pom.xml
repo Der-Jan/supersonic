@@ -85,7 +85,7 @@
                                             <arg value="--sign"/>
                                             <arg value="Sindre Mehus"/>
                                             <arg value="${project.build.directory}/subsonic.pkg"/>
-                                            <arg value="${project.build.directory}/subsonic-signed.pkg"/>
+                                            <arg value="${project.build.directory}/subsonic-${project.version}.pkg"/>
                                         </exec>
                                     </target>
                                 </configuration>
