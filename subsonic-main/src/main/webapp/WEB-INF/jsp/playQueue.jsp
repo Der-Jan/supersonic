@@ -570,20 +570,20 @@
 <table style="border-collapse:collapse;white-space:nowrap;">
     <tbody id="playlistBody">
         <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">
                 <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>"
                      alt="" title=""></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
                      alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
                      alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
                      alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></a></td>
 
-            <td class="bgcolor2" style="padding-left: 0.1em"><input type="checkbox" class="checkbox" id="songIndex"></td>
+            <td style="padding-left: 0.5em"><input type="checkbox" class="checkbox" id="songIndex"></td>
             <td style="padding-right:0.25em"></td>
 
             <c:if test="${model.visibility.trackNumberVisible}">
