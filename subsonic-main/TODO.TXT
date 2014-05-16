@@ -1,6 +1,6 @@
 DONE IN 5.0
 -------------
-Nicer back/forward/up/down icons
+Nicer back/forward/up/down/remove icons
 
 TODO IN 5.0
 --------------
