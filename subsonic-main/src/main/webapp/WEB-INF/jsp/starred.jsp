@@ -86,7 +86,7 @@
                 <sub:param name="path" value="${artist.path}"/>
             </sub:url>
 
-            <tr>
+            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${artist.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
@@ -95,7 +95,7 @@
                     <c:param name="starred" value="${not empty artist.starredDate}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
+                <td style="padding-left:0.25em;padding-right:1.25em">
                     <a href="${mainUrl}">${artist.name}</a>
                 </td>
             </tr>
@@ -112,7 +112,7 @@
                 <sub:param name="path" value="${song.parentPath}"/>
             </sub:url>
 
-            <tr>
+            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${song.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
@@ -123,15 +123,15 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
+                <td style="padding-left:0.25em;padding-right:1.25em">
                         ${song.title}
                 </td>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:1.25em">
+                <td style="padding-right:1.25em">
                     <a href="${mainUrl}"><span class="detail">${song.albumName}</span></a>
                 </td>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:0.25em">
+                <td style="padding-right:0.25em">
                     <span class="detail">${song.artist}</span>
                 </td>
             </tr>

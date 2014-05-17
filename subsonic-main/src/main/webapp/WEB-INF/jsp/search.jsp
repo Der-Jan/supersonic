@@ -40,14 +40,14 @@
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="artistRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="${loopStatus.count % 2 == 1 ? "artistRow bgcolor2" : "artistRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
+                <td style="padding-left:0.25em;padding-right:1.25em">
                     <a href="${mainUrl}">${match.name}</a>
                 </td>
             </tr>
@@ -68,7 +68,7 @@
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="albumRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="${loopStatus.count % 2 == 1 ? "albumRow bgcolor2" : "albumRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -76,11 +76,11 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
+                <td style="padding-left:0.25em;padding-right:1.25em">
                     <a href="${mainUrl}">${match.albumName}</a>
                 </td>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:0.25em">
+                <td style="padding-right:0.25em">
                     <span class="detail">${match.artist}</span>
                 </td>
             </tr>
@@ -102,7 +102,7 @@
                 <sub:param name="path" value="${match.parentPath}"/>
             </sub:url>
 
-            <tr class="songRow" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
+            <tr class="${loopStatus.count % 2 == 1 ? "songRow bgcolor2" : "songRow"}" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -111,15 +111,15 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-left:0.25em;padding-right:1.25em">
+                <td style="padding-left:0.25em;padding-right:1.25em">
                         <span class="songTitle">${match.title}</span>
                 </td>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:1.25em">
+                <td style="padding-right:1.25em">
                     <a href="${mainUrl}"><span class="detail">${match.albumName}</span></a>
                 </td>
 
-                <td ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""} style="padding-right:0.25em">
+                <td style="padding-right:0.25em">
                     <span class="detail">${match.artist}</span>
                 </td>
             </tr>
