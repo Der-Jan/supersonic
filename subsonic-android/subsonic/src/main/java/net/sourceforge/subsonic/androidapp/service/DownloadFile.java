@@ -229,6 +229,10 @@ public class DownloadFile {
                     return;
                 }
 
+                if (!FileUtil.canWriteOrCreate(partialFile)) {
+                    throw new Exception("Can't write to " + partialFile);
+                }
+
                 MusicService musicService = MusicServiceFactory.getMusicService(context);
 
                 // Attempt partial HTTP GET, appending to the file if it exists.

@@ -138,8 +138,8 @@ public class FileUtil {
         // is typically an emulated external directory not physically located on the SD card.
         if (Build.VERSION.SDK_INT >= 19) {
             File[] externalDirs = context.getExternalFilesDirs(null);
-            File externalDir = externalDirs.length == 1 ? externalDirs[0] : externalDirs[1];
-            return new File(externalDir, "subsonic");
+            File externalDir = externalDirs.length == 1 ? externalDirs[0] : externalDirs[1]; // TODO: May be null
+            return new File(externalDir, "subsonic");            // TODO: Use ensureDirectoryExistsAndIsReadWritable() ?
         }
 
         // Otherwise, use the directory specified in the settings if we can.
@@ -317,5 +317,13 @@ public class FileUtil {
         } finally {
             Util.close(in);
         }
+    }
+
+    public static boolean canWriteOrCreate(File file) {
+        if (file.exists()) {
+            return file.canWrite();
+        }
+        File parent = file.getParentFile();
+        return parent != null && parent.exists() && parent.canWrite();
     }
 }

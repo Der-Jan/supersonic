@@ -274,6 +274,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             Util.toast(this, R.string.settings_cache_location_error, false);
 
             // Reset it to the default.
+            // TODO: Should clear PREFERENCES_KEY_CACHE_LOCATION first?
             String defaultPath = FileUtil.getSubsonicDirectory(this).getPath();
             if (!defaultPath.equals(path)) {
                 SharedPreferences prefs = Util.getPreferences(this);
