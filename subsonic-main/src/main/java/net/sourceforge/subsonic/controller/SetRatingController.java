@@ -18,16 +18,18 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.domain.*;
-import net.sourceforge.subsonic.service.*;
-import net.sourceforge.subsonic.util.*;
-import net.sourceforge.subsonic.filter.ParameterDecodingFilter;
-import org.springframework.web.bind.*;
-import org.springframework.web.servlet.*;
-import org.springframework.web.servlet.mvc.*;
-import org.springframework.web.servlet.view.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.*;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.RatingService;
+import net.sourceforge.subsonic.service.SecurityService;
 
 /**
  * Controller for updating music file ratings.
@@ -41,18 +43,17 @@ public class SetRatingController extends AbstractController {
     private MediaFileService mediaFileService;
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String path = request.getParameter("path");
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         Integer rating = ServletRequestUtils.getIntParameter(request, "rating");
         if (rating == 0) {
             rating = null;
         }
 
-        MediaFile mediaFile = mediaFileService.getMediaFile(path);
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
         String username = securityService.getCurrentUsername(request);
         ratingService.setRatingForUser(username, mediaFile, rating);
 
-        String url = "main.view?path" + ParameterDecodingFilter.PARAM_SUFFIX  + "=" + StringUtil.utf8HexEncode(path);
-        return new ModelAndView(new RedirectView(url));
+        return new ModelAndView(new RedirectView("main.view?id=" + id));
     }
 
     public void setRatingService(RatingService ratingService) {

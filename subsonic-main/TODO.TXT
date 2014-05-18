@@ -4,10 +4,10 @@ Nicer back/forward/up/down/remove icons
 
 TODO IN 5.0
 --------------
+Stop using ParameterDecodingFilter.PARAM_SUFFIX
 Video player controls invisible in IE.
 Icons:
   Add space to the left in podcast, search, starred
-setRating can use id rather than path
 Cast
   Update site (premium feature)
   Initial volume, both local and remote.

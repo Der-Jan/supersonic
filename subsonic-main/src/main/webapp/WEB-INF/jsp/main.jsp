@@ -157,7 +157,6 @@
     <c:if test="${model.dir.album and model.averageRating gt 0}">
         &nbsp;&nbsp;
         <c:import url="rating.jsp">
-            <c:param name="path" value="${model.dir.path}"/>
             <c:param name="readonly" value="true"/>
             <c:param name="rating" value="${model.averageRating}"/>
         </c:import>
@@ -213,7 +212,7 @@
 <div class="detail">
     <c:if test="${model.user.commentRole}">
         <c:import url="rating.jsp">
-            <c:param name="path" value="${model.dir.path}"/>
+            <c:param name="id" value="${model.dir.id}"/>
             <c:param name="readonly" value="false"/>
             <c:param name="rating" value="${model.userRating}"/>
         </c:import>
