@@ -4,6 +4,7 @@ Nicer back/forward/up/down/remove icons
 
 TODO IN 5.0
 --------------
+Video player controls invisible in IE.
 Icons:
   Add space to the left in podcast, search, starred
 setRating can use id rather than path
@@ -975,11 +976,11 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.3 -m "Tagging Android 4.3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.3.1 -m "Tagging Android 4.3.1"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/subsonic/build/apk/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/4.3/subsonic-4.3.apk
+  rsync -avP -e ssh subsonic-android/subsonic/build/apk/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/4.3.1/subsonic-4.3.1.apk
 
 HOW TO RELEASE BLACKBERRY
 ===============================
