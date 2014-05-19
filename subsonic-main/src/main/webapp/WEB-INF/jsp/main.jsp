@@ -260,7 +260,7 @@
 <div id="commentForm" style="display:none">
     <form method="post" action="setMusicFileInfo.view">
         <input type="hidden" name="action" value="comment">
-        <input type="hidden" name="path" value="${model.dir.path}">
+        <input type="hidden" name="id" value="${model.dir.id}">
         <textarea name="comment" rows="6" cols="70">${model.dir.comment}</textarea>
         <input type="submit" value="<fmt:message key="common.save"/>">
     </form>

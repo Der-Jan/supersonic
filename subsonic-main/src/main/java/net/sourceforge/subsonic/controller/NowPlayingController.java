@@ -18,21 +18,21 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Player;
-import net.sourceforge.subsonic.domain.TransferStatus;
-import net.sourceforge.subsonic.filter.ParameterDecodingFilter;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.PlayerService;
-import net.sourceforge.subsonic.service.StatusService;
-import net.sourceforge.subsonic.util.StringUtil;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.TransferStatus;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.StatusService;
 
 /**
  * Controller for showing what's currently playing.
@@ -56,8 +56,7 @@ public class NowPlayingController extends AbstractController {
 
         String url;
         if (dir != null && !mediaFileService.isRoot(dir)) {
-            url = "main.view?path" + ParameterDecodingFilter.PARAM_SUFFIX + "=" +
-                    StringUtil.utf8HexEncode(dir.getPath()) + "&updateNowPlaying=true";
+            url = "main.view?id=" + dir.getId() + "&updateNowPlaying=true";
         } else {
             url = "home.view";
         }
