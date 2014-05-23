@@ -514,7 +514,7 @@
      * @param {Boolean} mute A boolean
      */
     CastPlayer.prototype.setVolume = function (mute) {
-        this.currentVolume = parseInt(document.getElementById("volume_slider").value);
+        this.currentVolume = parseInt($("#volume_slider").slider("option", "value"));
 
         if (!this.currentMediaSession) {
             this.localPlayer.setMute(mute);
@@ -552,7 +552,7 @@
      */
     CastPlayer.prototype.seekMedia = function () {
 
-        var offset = parseInt(document.getElementById("progress_slider").value);
+        var offset = parseInt($("#progress_slider").slider("option", "value"));
         this.seekInProgress = true;
         this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
@@ -586,7 +586,7 @@
      * Update progress bar with the current media time.
      */
     CastPlayer.prototype.updateProgressBar = function () {
-        document.getElementById("progress_slider").value = this.currentMediaOffset + this.currentMediaTime;
+        $("#progress_slider").slider("option", "value", this.currentMediaOffset + this.currentMediaTime);
         $("#progress").html(this.formatDuration(this.currentMediaOffset + this.currentMediaTime));
     };
 
@@ -647,13 +647,14 @@
      */
     CastPlayer.prototype.initializeUI = function () {
 
-        document.getElementById("progress_slider").max = this.currentMediaDuration;
+        $("#progress_slider").slider({max: this.currentMediaDuration});
+        $("#volume_slider").slider({max: 100, value: 50});
 
         // add event handlers to UI components
         $("#casticonidle").on('click', this.launchApp.bind(this));
         $("#casticonactive").on('click', this.stopApp.bind(this));
-        $("#progress_slider").on('mouseup', this.seekMedia.bind(this));
-        $("#volume_slider").on('change', this.setVolume.bind(this, false));
+        $("#progress_slider").on('slidestop', this.seekMedia.bind(this));
+        $("#volume_slider").on('slidestop', this.setVolume.bind(this, false));
         $("#audio_on").on('click', this.muteMedia.bind(this));
         $("#audio_off").on('click', this.muteMedia.bind(this));
         $("#play").on('click', this.playMedia.bind(this));

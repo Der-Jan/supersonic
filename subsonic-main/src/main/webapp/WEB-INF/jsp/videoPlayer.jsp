@@ -22,14 +22,14 @@
         </div>
         <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank">Get Flash</a></div>
         <div id="media_control">
-            <input id="progress_slider" type="range" value="0">
+            <div id="progress_slider"></div>
             <div id="play"></div>
             <div id="pause"></div>
             <div id="progress">0:00</div>
             <div id="duration">0:00</div>
             <div id="audio_on"></div>
             <div id="audio_off"></div>
-            <input id="volume_slider" type="range" min="0" max="100" value="50">
+            <div id="volume_slider"></div>
             <div id="casticonactive"></div>
             <div id="casticonidle"></div>
         </div>

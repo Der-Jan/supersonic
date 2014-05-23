@@ -45,17 +45,18 @@ body {
 }
 
 #progress_slider {
+    margin-bottom: 8px;
     margin-left: 8px;
     width: 623px;
-    outline: 1px #444; /* To avoid ugly borders in Firefox */
-    border: 1px #444;
+    height: 4px;
 }
 
 #volume_slider {
-    margin-left: 5px;
+    float:left;
+    margin-top: 7px;
+    margin-left: 10px;
     width: 90px;
-    outline: 1px #444; /* To avoid ugly borders in Firefox */
-    border: 1px #444;
+    height: 4px;
 }
 
 #play {
@@ -143,3 +144,7 @@ body {
     display: block;
 }
 
+.ui-slider .ui-slider-handle {
+    width: 11px;
+    height: 11px;
+}
