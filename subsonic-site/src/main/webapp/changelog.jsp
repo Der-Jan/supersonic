@@ -24,6 +24,7 @@
                 <li><span class="bugid">New: </span>Added browser notification.</li>
                 <li><span class="bugid">New: </span>Nicer scrollbar (in Webkit browsers).</li>
                 <li><span class="bugid">New: </span>Nicer styling of input fields and buttons.</li>
+                <li><span class="bugid">New: </span>Nicer icons.</li>
                 <li><span class="bugid">New: </span>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
                 <li><span class="bugid">New: </span>Added Korean translation, courtesy of Rhetor Choi.</li>
                 <li><span class="bugid">New: </span>Added link to Jamstash.</li>
