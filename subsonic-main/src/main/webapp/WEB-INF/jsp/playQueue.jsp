@@ -13,6 +13,12 @@
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
+    <style type="text/css">
+        .ui-slider .ui-slider-handle {
+            width: 11px;
+            height: 11px;
+        }
+    </style>
 </head>
 
 <body class="bgcolor2 playlistframe" onload="init()">
@@ -93,6 +99,14 @@
     }
     function onGain(gain) {
         playQueueService.setGain(gain);
+    }
+    function onJukeboxVolumeChanged() {
+        var value = parseInt($("#jukeboxVolume").slider("option", "value"));
+        onGain(value / 100);
+    }
+    function onCastVolumeChanged() {
+        var value = parseInt($("#castVolume").slider("option", "value"));
+        CastPlayer.setCastVolume(value / 100, false);
     }
     function onSkip(index) {
     <c:choose>
@@ -296,9 +310,9 @@
             parent.frames.main.location.href="play.m3u?";
         }
 
-        var slider = document.getElementById("jukeboxVolume");
-        if (slider) {
-            slider.value = Math.floor(playQueue.gain * 100);
+        var jukeboxVolume = $("#jukeboxVolume");
+        if (jukeboxVolume) {
+            jukeboxVolume.slider("option", "value", Math.floor(playQueue.gain * 100));
         }
 
     <c:if test="${model.player.web}">
@@ -486,8 +500,11 @@
                             <img id="castMuteOff" src="<spring:theme code="muteImage"/>" onclick="CastPlayer.castMuteOff()" style="cursor:pointer; display:none">
                         </div>
                         <div style="float:left">
-                            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
-                                   onchange="CastPlayer.setCastVolume(this.value/100, false);">
+                            <div id="castVolume" style="width:80px;height:4px;margin-left:10px;margin-right:10px;margin-top:8px"></div>
+                            <script type="text/javascript">
+                                $("#castVolume").slider({max: 100, value: 50});
+                                $("#castVolume").on("slidestop", onCastVolumeChanged);
+                            </script>
                         </div>
                     </div>
                 </td>
@@ -509,8 +526,11 @@
                     <img src="<spring:theme code="volumeImage"/>" alt="">
                 </td>
                 <td style="white-space:nowrap;">
-                    <input id="jukeboxVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
-                           onchange="onGain(this.value/100);">
+                    <div id="jukeboxVolume" style="width:80px;height:4px"></div>
+                    <script type="text/javascript">
+                        $("#jukeboxVolume").slider({max: 100, value: 50});
+                        $("#jukeboxVolume").on("slidestop", onJukeboxVolumeChanged);
+                    </script>
                 </td>
             </c:if>
 
