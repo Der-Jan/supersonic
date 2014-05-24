@@ -17,7 +17,7 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
-            <a name="5.0.beta1"><h2 class="div">Subsonic 5.0.beta1 - May 13, 2014</h2></a>
+            <a name="5.0.beta1"><h2 class="div">Subsonic 5.0.beta1 - May 24, 2014</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Chromecast support.</li>
                 <li><span class="bugid">New: </span>Added play overlay button in cover art images.</li>

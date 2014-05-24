@@ -647,8 +647,8 @@
      */
     CastPlayer.prototype.initializeUI = function () {
 
-        $("#progress_slider").slider({max: this.currentMediaDuration});
-        $("#volume_slider").slider({max: 100, value: 50});
+        $("#progress_slider").slider({max: this.currentMediaDuration, animate: "fast"});
+        $("#volume_slider").slider({max: 100, value: 50, animate: "fast"});
 
         // add event handlers to UI components
         $("#casticonidle").on('click', this.launchApp.bind(this));

@@ -17,6 +17,13 @@
         .ui-slider .ui-slider-handle {
             width: 11px;
             height: 11px;
+            cursor: pointer;
+        }
+        .ui-slider a {
+            outline:none;
+        }
+        .ui-slider {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -502,7 +509,7 @@
                         <div style="float:left">
                             <div id="castVolume" style="width:80px;height:4px;margin-left:10px;margin-right:10px;margin-top:8px"></div>
                             <script type="text/javascript">
-                                $("#castVolume").slider({max: 100, value: 50});
+                                $("#castVolume").slider({max: 100, value: 50, animate: "fast"});
                                 $("#castVolume").on("slidestop", onCastVolumeChanged);
                             </script>
                         </div>
@@ -528,7 +535,7 @@
                 <td style="white-space:nowrap;">
                     <div id="jukeboxVolume" style="width:80px;height:4px"></div>
                     <script type="text/javascript">
-                        $("#jukeboxVolume").slider({max: 100, value: 50});
+                        $("#jukeboxVolume").slider({max: 100, value: 50, animate: "fast"});
                         $("#jukeboxVolume").on("slidestop", onJukeboxVolumeChanged);
                     </script>
                 </td>
