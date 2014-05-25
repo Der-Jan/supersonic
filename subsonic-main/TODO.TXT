@@ -1,6 +1,7 @@
 DONE IN 5.0
 -------------
 Slider cursor and animation.
+Bugfix: Access-Control-Allow-Origin header sometimes missing in REST responses.
 
 TODO IN 5.0
 --------------
