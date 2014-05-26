@@ -6,6 +6,7 @@ Updated Czech translation, courtesy of Trottel
 
 TODO IN 5.0
 --------------
+Fix icons in playlist view.
 Hide player combobox when only one player.
 Cast
   Update site (premium feature)
