@@ -84,9 +84,6 @@ public final class Util {
     private static DecimalFormat KILO_BYTE_LOCALIZED_FORMAT = null;
     private static DecimalFormat BYTE_LOCALIZED_FORMAT = null;
 
-    public static final String EVENT_META_CHANGED = "net.sourceforge.subsonic.androidapp.EVENT_META_CHANGED";
-    public static final String EVENT_PLAYSTATE_CHANGED = "net.sourceforge.subsonic.androidapp.EVENT_PLAYSTATE_CHANGED";
-
     private static final Map<Integer, Version> SERVER_REST_VERSIONS = new ConcurrentHashMap<Integer, Version>();
 
     // Used by hexEncode()
@@ -591,93 +588,16 @@ public final class Util {
         boolean enabled = prefs.getBoolean(Constants.PREFERENCES_KEY_MEDIA_BUTTONS, true);
 
         if (enabled) {
-
-            // AudioManager.registerMediaButtonEventReceiver() was introduced in Android 2.2.
-            // Use reflection to maintain compatibility with 1.5.
-            try {
-                AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                ComponentName componentName = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
-                Method method = AudioManager.class.getMethod("registerMediaButtonEventReceiver", ComponentName.class);
-                method.invoke(audioManager, componentName);
-            } catch (Throwable x) {
-                // Ignored.
-            }
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            ComponentName mediaButtonIntentReceiver = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
+            audioManager.registerMediaButtonEventReceiver(mediaButtonIntentReceiver);
         }
     }
 
     public static void unregisterMediaButtonEventReceiver(Context context) {
-        // AudioManager.unregisterMediaButtonEventReceiver() was introduced in Android 2.2.
-        // Use reflection to maintain compatibility with 1.5.
-        try {
-            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            ComponentName componentName = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
-            Method method = AudioManager.class.getMethod("unregisterMediaButtonEventReceiver", ComponentName.class);
-            method.invoke(audioManager, componentName);
-        } catch (Throwable x) {
-            // Ignored.
-        }
-    }
-
-    /**
-     * <p>Broadcasts the given song info as the new song being played.</p>
-     */
-    public static void broadcastNewTrackInfo(Context context, MusicDirectory.Entry song) {
-        Intent intent = new Intent(EVENT_META_CHANGED);
-        Intent avrcpIntent = new Intent("com.android.music.metachanged");
-
-        if (song != null) {
-            intent.putExtra("title", song.getTitle());
-            intent.putExtra("artist", song.getArtist());
-            intent.putExtra("album", song.getAlbum());
-
-            //avrcp intent
-            avrcpIntent.putExtra("id", song.getId());
-            avrcpIntent.putExtra("track", song.getTitle());
-            avrcpIntent.putExtra("artist", song.getArtist());
-            avrcpIntent.putExtra("album", song.getAlbum());
-
-            File albumArtFile = FileUtil.getAlbumArtFile(context, song);
-            intent.putExtra("coverart", albumArtFile.getAbsolutePath());
-        } else {
-            intent.putExtra("title", "");
-            intent.putExtra("artist", "");
-            intent.putExtra("album", "");
-            intent.putExtra("coverart", "");
-
-            avrcpIntent.putExtra("id", "");
-            avrcpIntent.putExtra("track", "");
-            avrcpIntent.putExtra("artist", "");
-            avrcpIntent.putExtra("album", "");
-        }
-
-        context.sendBroadcast(intent);
-        context.sendBroadcast(avrcpIntent);
-    }
-
-    /**
-     * <p>Broadcasts the given player state as the one being set.</p>
-     */
-    public static void broadcastPlaybackStatusChange(Context context, PlayerState state) {
-        Intent intent = new Intent(EVENT_PLAYSTATE_CHANGED);
-
-        switch (state) {
-            case STARTED:
-                intent.putExtra("state", "play");
-                break;
-            case STOPPED:
-                intent.putExtra("state", "stop");
-                break;
-            case PAUSED:
-                intent.putExtra("state", "pause");
-                break;
-            case COMPLETED:
-                intent.putExtra("state", "complete");
-                break;
-            default:
-                return; // No need to broadcast.
-        }
-
-        context.sendBroadcast(intent);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        ComponentName mediaButtonIntentReceiver = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
+        audioManager.unregisterMediaButtonEventReceiver(mediaButtonIntentReceiver);
     }
 
     public static WifiManager.WifiLock createWifiLock(Context context, String tag) {

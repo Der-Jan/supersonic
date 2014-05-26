@@ -140,9 +140,6 @@ public class DownloadServiceLifecycleSupport {
         ejectFilter.addDataScheme("file");
         downloadService.registerReceiver(ejectEventReceiver, ejectFilter);
 
-        // React to media buttons.
-        Util.registerMediaButtonEventReceiver(downloadService);
-
         // Pause temporarily on incoming phone calls.
         phoneStateListener = new MyPhoneStateListener();
         TelephonyManager telephonyManager = (TelephonyManager) downloadService.getSystemService(Context.TELEPHONY_SERVICE);

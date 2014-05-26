@@ -73,6 +73,8 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     private final List<DownloadFile> cleanupCandidates = new ArrayList<DownloadFile>();
     private final Scrobbler scrobbler = new Scrobbler();
     private final JukeboxService jukeboxService = new JukeboxService(this);
+    private AudioManagerHelper audioManagerHelper;
+
     private DownloadFile currentPlaying;
     private DownloadFile currentDownloading;
     private CancellableTask bufferTask;
@@ -113,6 +115,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         Util.setUncaughtExceptionHandler(this);
         super.onCreate();
 
+        audioManagerHelper = new AudioManagerHelper(this);
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setWakeMode(this, PowerManager.PARTIAL_WAKE_LOCK);
 
@@ -407,7 +410,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         this.currentPlaying = currentPlaying;
 
         MusicDirectory.Entry song = currentPlaying != null ? currentPlaying.getSong() : null;
-        Util.broadcastNewTrackInfo(this, song);
+        audioManagerHelper.onNewTrack(song);
         NotificationUtil.updateNotification(this, this, handler, song, song != null);
     }
 
@@ -622,7 +625,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
             lifecycleSupport.serializeDownloadQueue();
         }
 
-        Util.broadcastPlaybackStatusChange(this, playerState);
+        audioManagerHelper.onPlaybackStatusChange(playerState);
 
         this.playerState = playerState;
 
