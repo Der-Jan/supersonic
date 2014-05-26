@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation" >
 
     <string name="common.appname">Subsonic</string>
     <string name="common.ok">OK</string>
@@ -162,7 +163,6 @@
     <string name="settings.cache_size_10000">10 Go</string>
     <string name="settings.cache_size_20000">20 Go</string>
     <string name="settings.cache_size_unlimited">Illimité</string>
-    <string name="settings.search_history_cleared">Historique des recherches effacé</string>
     <string name="settings.other_title">Autres paramètres</string>
     <string name="settings.scrobble_title">Scrobbler sur Last.fm</string>
     <string name="settings.scrobble_summary">N\'oubliez pas de configurer votre identifiant et mot de passe Last.fm sur votre serveur Subsonic</string>

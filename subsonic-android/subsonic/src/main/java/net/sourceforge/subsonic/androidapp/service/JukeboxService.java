@@ -33,7 +33,7 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Toast;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.domain.JukeboxStatus;
@@ -335,21 +335,21 @@ public class JukeboxService {
 
     private static class VolumeToast extends Toast {
 
-        private final ProgressBar progressBar;
+        private final SeekBar seekBar;
 
         public VolumeToast(Context context) {
             super(context);
             setDuration(Toast.LENGTH_SHORT);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.jukebox_volume, null);
-            progressBar = (ProgressBar) view.findViewById(R.id.jukebox_volume_progress_bar);
+            seekBar = (SeekBar) view.findViewById(R.id.jukebox_volume_progress_bar);
 
             setView(view);
             setGravity(Gravity.TOP, 0, 0);
         }
 
         public void setVolume(float volume) {
-            progressBar.setProgress(Math.round(100 * volume));
+            seekBar.setProgress(Math.round(100 * volume));
             show();
         }
     }
