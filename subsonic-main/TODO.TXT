@@ -2,6 +2,7 @@ DONE IN 5.0
 -------------
 Slider cursor and animation.
 Bugfix: Access-Control-Allow-Origin header sometimes missing in REST responses.
+Updated Czech translation, courtesy of Trottel
 
 TODO IN 5.0
 --------------
@@ -241,6 +242,7 @@ TODO IN ANDROID 4.1
 --------------------
 
 BT metadata support
+  Don't duck etc when in jukebox mode.
   http://developer.android.com/reference/android/media/RemoteControlClient.html
   https://github.com/grimpy/Botifier/blob/master/src/com/github/grimpy/botifier/BotifierManager.java
 
