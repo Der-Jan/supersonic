@@ -509,7 +509,7 @@
                         <div style="float:left">
                             <div id="castVolume" style="width:80px;height:4px;margin-left:10px;margin-right:10px;margin-top:8px"></div>
                             <script type="text/javascript">
-                                $("#castVolume").slider({max: 100, value: 50, animate: "fast"});
+                                $("#castVolume").slider({max: 100, value: 50, animate: "fast", range: "min"});
                                 $("#castVolume").on("slidestop", onCastVolumeChanged);
                             </script>
                         </div>
@@ -535,7 +535,7 @@
                 <td style="white-space:nowrap;">
                     <div id="jukeboxVolume" style="width:80px;height:4px"></div>
                     <script type="text/javascript">
-                        $("#jukeboxVolume").slider({max: 100, value: 50, animate: "fast"});
+                        $("#jukeboxVolume").slider({max: 100, value: 50, animate: "fast", range: "min"});
                         $("#jukeboxVolume").on("slidestop", onJukeboxVolumeChanged);
                     </script>
                 </td>

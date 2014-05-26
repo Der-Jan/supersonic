@@ -239,6 +239,11 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+
+BT metadata support
+  http://developer.android.com/reference/android/media/RemoteControlClient.html
+  https://github.com/grimpy/Botifier/blob/master/src/com/github/grimpy/botifier/BotifierManager.java
+
 Disable RC if connected to Bluetooth.
   https://mail.google.com/mail/ca/u/0/#inbox/1446ffa5fca92812
 Subsonic Android Not Pausing for Google Voice Typing
