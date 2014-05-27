@@ -13,7 +13,6 @@ Hide player combobox when only one player.
 TODO IN 5.0
 --------------
 Cast
-  Make icon smaller.
   Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
@@ -21,6 +20,7 @@ Cast
   Proper handling of EOM
   Test on other browsers
 
+Nicer desktop notification icon on windows.
 Help icon.
 Button backgrounds.
 Remove lame?
