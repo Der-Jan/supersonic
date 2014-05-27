@@ -192,17 +192,17 @@
 <table style="border-collapse:collapse;white-space:nowrap">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
-        <td class="bgcolor1"><a href="javascript:void(0)">
+        <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">
             <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>" alt="" title=""></a></td>
-        <td class="bgcolor1"><a href="javascript:void(0)">
+        <td><a href="javascript:void(0)">
             <img id="play" src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"
-                 onclick="onPlay(this.id.substring(4) - 1)"></a></td>
-        <td class="bgcolor1"><a href="javascript:void(0)">
+                 style="padding-right: 0.1em" onclick="onPlay(this.id.substring(4) - 1)"></a></td>
+        <td><a href="javascript:void(0)">
             <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
-                 onclick="onAdd(this.id.substring(3) - 1)"></a></td>
-        <td class="bgcolor1"><a href="javascript:void(0)">
+                 style="padding-right: 0.1em" onclick="onAdd(this.id.substring(3) - 1)"></a></td>
+        <td><a href="javascript:void(0)">
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
-                 onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
+                 style="padding-right: 0.1em" onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
 
         <td style="padding-right:0.25em"></td>
         <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
@@ -211,13 +211,13 @@
         <td style="padding-right:1.25em;text-align:right;"><span id="songDuration" class="detail">Duration</span></td>
 
         <c:if test="${model.editAllowed}">
-            <td class="bgcolor1"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
                      alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></a></td>
-            <td class="bgcolor1"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
                      alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></a></td>
-            <td class="bgcolor1"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
                      alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></a></td>
         </c:if>
