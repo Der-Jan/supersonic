@@ -487,8 +487,8 @@
 <div class="bgcolor2" style="position:fixed; top:0; width:100%;padding-top:0.5em">
     <table style="white-space:nowrap;">
         <tr style="white-space:nowrap;">
-            <c:if test="${model.user.settingsRole}">
-                <td><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
+            <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
+                <td style="padding-right: 5px"><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
                     <c:forEach items="${model.players}" var="player">
                         <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
                     </c:forEach>
@@ -496,7 +496,7 @@
             </c:if>
             <c:if test="${model.player.web}">
                 <td>
-                    <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
+                    <div id="flashPlayer" style="width:340px; height:24px;padding-right:10px">
                         <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
                     </div>
                     <div id="castPlayer" style="display: none">
