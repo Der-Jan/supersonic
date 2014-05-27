@@ -18,16 +18,19 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.UPnPService;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.UPnPService;
 
 /**
  * Controller for the page used to administrate the UPnP/DLNA server settings.
@@ -51,6 +54,7 @@ public class DLNASettingsController extends ParameterizableViewController {
 
         ModelAndView result = super.handleRequestInternal(request, response);
         map.put("dlnaEnabled", settingsService.isDlnaEnabled());
+        map.put("dlnaServerName", settingsService.getDlnaServerName());
         map.put("licenseInfo", settingsService.getLicenseInfo());
 
         result.addObject("model", map);
@@ -69,11 +73,16 @@ public class DLNASettingsController extends ParameterizableViewController {
 
     private void handleParameters(HttpServletRequest request) {
         boolean dlnaEnabled = ServletRequestUtils.getBooleanParameter(request, "dlnaEnabled", false);
-        if (dlnaEnabled != settingsService.isDlnaEnabled()) {
-            settingsService.setDlnaEnabled(dlnaEnabled);
-            settingsService.save();
-            upnpService.setMediaServerEnabled(dlnaEnabled);
+        String dlnaServerName = StringUtils.trimToNull(request.getParameter("dlnaServerName"));
+        if (dlnaServerName == null) {
+            dlnaServerName = "Subsonic";
         }
+
+        upnpService.setMediaServerEnabled(false);
+        settingsService.setDlnaEnabled(dlnaEnabled);
+        settingsService.setDlnaServerName(dlnaServerName);
+        settingsService.save();
+        upnpService.setMediaServerEnabled(dlnaEnabled);
     }
 
     public void setSettingsService(SettingsService settingsService) {

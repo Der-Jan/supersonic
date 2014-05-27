@@ -18,11 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.Version;
-import net.sourceforge.subsonic.service.upnp.ApacheUpnpServiceConfiguration;
-import net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory;
-import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -42,6 +37,12 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.fourthline.cling.support.model.ProtocolInfos;
 import org.fourthline.cling.support.model.dlna.DLNAProfiles;
 import org.fourthline.cling.support.model.dlna.DLNAProtocolInfo;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.upnp.ApacheUpnpServiceConfiguration;
+import net.sourceforge.subsonic.service.upnp.FolderBasedContentDirectory;
+import net.sourceforge.subsonic.service.upnp.MSMediaReceiverRegistrarService;
 
 /**
  * @author Sindre Mehus
@@ -110,7 +111,8 @@ public class UPnPService {
 
     private LocalDevice createMediaServerDevice() throws Exception {
 
-        DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Subsonic"));
+        String serverName = settingsService.getDlnaServerName();
+        DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier(serverName));
         DeviceType type = new UDADeviceType("MediaServer", 1);
 
         // TODO: DLNACaps
@@ -119,8 +121,8 @@ public class UPnPService {
         String licenseEmail = settingsService.getLicenseEmail();
         String licenseString = licenseEmail == null ? "Unlicensed" : ("Licensed to " + licenseEmail);
 
-        DeviceDetails details = new DeviceDetails("Subsonic", new ManufacturerDetails("Subsonic"),
-                new ModelDetails("Subsonic", licenseString, versionString),
+        DeviceDetails details = new DeviceDetails(serverName, new ManufacturerDetails(serverName),
+                new ModelDetails(serverName, licenseString, versionString),
                 new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5)}, null);
 
         Icon icon = new Icon("image/png", 512, 512, 32, getClass().getResource("subsonic-512.png"));

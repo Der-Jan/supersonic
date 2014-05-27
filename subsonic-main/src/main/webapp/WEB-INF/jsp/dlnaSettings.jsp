@@ -35,12 +35,22 @@
 
 <form method="post" action="dlnaSettings.view">
 
-    <input type="checkbox" name="dlnaEnabled" id="dlnaEnabled" class="checkbox"
-           <c:if test="${model.dlnaEnabled}">checked="checked"</c:if>/>
-    <label for="dlnaEnabled"><fmt:message key="dlnasettings.enabled"/></label>
+    <div>
+        <input type="checkbox" name="dlnaEnabled" id="dlnaEnabled" class="checkbox"
+               <c:if test="${model.dlnaEnabled}">checked="checked"</c:if>/>
+        <label for="dlnaEnabled"><fmt:message key="dlnasettings.enabled"/></label>
+    </div>
 
-    <p class="detail" style="width:60%;white-space:normal;padding-top: 1em">
+    <p class="detail" style="width:60%;white-space:normal">
         <fmt:message key="dlnasettings.description"/>
+    </p>
+    <div>
+        <fmt:message key="dlnasettings.servername"/>
+        <input name="dlnaServerName" id="dlnaServerName" size="40"
+               value="<c:out value="${model.dlnaServerName}" escapeXml="true"/>"/>
+    </div>
+    <p class="detail" style="width:60%;white-space:normal;padding-top:0">
+        <fmt:message key="dlnasettings.servername.description"/>
     </p>
 
     <c:set var="licenseInfo" value="${model.licenseInfo}"/>
