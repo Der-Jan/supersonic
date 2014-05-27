@@ -6,6 +6,10 @@ Updated Czech translation, courtesy of Trottel
 
 TODO IN 5.0
 --------------
+Fix DLNA recursion
+  https://github.com/daneren2005/Subsonic-Plus/commit/ca8a5345e9819d041f3cc32325dc83d455e2aa6d
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
+Make DLNA server name configurable.]
 Fix icons in playlist view.
 Hide player combobox when only one player.
 Cast
