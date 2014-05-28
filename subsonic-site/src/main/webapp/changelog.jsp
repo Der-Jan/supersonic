@@ -17,6 +17,22 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
+            <a name="5.0.beta1"><h2 class="div">Subsonic 5.0.beta1 - May 24, 2014</h2></a>
+            <ul>
+                <li><span class="bugid">New: </span>Chromecast support.</li>
+                <li><span class="bugid">New: </span>Added play overlay button in cover art images.</li>
+                <li><span class="bugid">New: </span>Added browser notification.</li>
+                <li><span class="bugid">New: </span>Nicer scrollbar (in Webkit browsers).</li>
+                <li><span class="bugid">New: </span>Nicer styling of input fields and buttons.</li>
+                <li><span class="bugid">New: </span>Nicer icons.</li>
+                <li><span class="bugid">New: </span>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
+                <li><span class="bugid">New: </span>Added Korean translation, courtesy of Rhetor Choi.</li>
+                <li><span class="bugid">New: </span>Added link to Jamstash.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed broken Mac installer.</li>
+                <li><span class="bugid">Bugfix: </span>External player doesn't auto-advance.</li>
+                <li><span class="bugid">Bugfix: </span>Improved support for https in UPnP.</li>
+            </ul>
+
             <a name="4.9"><h2 class="div">Subsonic 4.9 - Jan 25, 2014</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Rename "Download" to "Download all"</li>
@@ -152,6 +168,7 @@
             <div class="sidebox">
                 <h2>Releases</h2>
                 <ul class="list">
+                    <li><a href="#5.0.beta1">Subsonic 5.0.beta1</a></li>
                     <li><a href="#4.9">Subsonic 4.9</a></li>
                     <li><a href="#4.9.beta4">Subsonic 4.9.beta4</a></li>
                     <li><a href="#4.9.beta3">Subsonic 4.9.beta3</a></li>

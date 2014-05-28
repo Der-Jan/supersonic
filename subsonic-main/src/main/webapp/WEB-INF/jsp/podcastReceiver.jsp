@@ -158,13 +158,13 @@
                     <c:set var="cssClass" value=""/>
                 </c:otherwise>
             </c:choose>
-            <tr title="channel${i.index}" id="episodeRow${episodeCount}" style="margin:0;padding:0;border:0;display:${channelExpanded ? "table-row" : "none"}">
+            <tr ${cssClass} title="channel${i.index}" id="episodeRow${episodeCount}" style="margin:0;padding:0;border:0;display:${channelExpanded ? "table-row" : "none"}">
 
                 <td><input type="checkbox" class="checkbox" id="episode${episodeCount}" value="${episode.id}"/></td>
 
                 <c:choose>
                     <c:when test="${empty episode.path}">
-                        <td ${cssClass} colspan="4"></td>
+                        <td colspan="4"></td>
                     </c:when>
                     <c:otherwise>
                         <c:import url="playButtons.jsp">
@@ -184,7 +184,7 @@
                 </sub:url>
 
 
-                <td ${cssClass} style="padding-left:0.6em">
+                <td style="padding-left:0.6em">
                     <span title="${episode.title}" class="songTitle">
                         <c:choose>
                             <c:when test="${empty episode.path}">
@@ -197,15 +197,15 @@
                     </span>
                 </td>
 
-                <td ${cssClass} style="padding-left:1.5em">
+                <td style="padding-left:1.5em">
                     <span class="detail">${episode.duration}</span>
                 </td>
 
-                <td ${cssClass} style="padding-left:1.5em">
+                <td style="padding-left:1.5em">
                     <span class="detail"><fmt:formatDate value="${episode.publishDate}" dateStyle="medium"/></span>
                 </td>
 
-                <td ${cssClass} style="padding-left:1.5em;text-align:center">
+                <td style="padding-left:1.5em;text-align:center">
                     <span class="detail">
                     <c:choose>
                         <c:when test="${episode.status eq 'DOWNLOADING'}">
@@ -218,7 +218,7 @@
                     </span>
                 </td>
 
-                <td ${cssClass} style="padding-left:1.5em">
+                <td style="padding-left:1.5em">
                     <c:choose>
                         <c:when test="${episode.status eq 'ERROR'}">
                             <span class="detail warning" title="${episode.errorMessage}"><str:truncateNicely upper="100">${episode.errorMessage}</str:truncateNicely></span>

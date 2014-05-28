@@ -1,45 +1,36 @@
 DONE IN 5.0
 -------------
-Added play overlay button in cover art images.
-Nicer scrollbar (in Webkit browsers)
-Fix build errors on Debian/RPM.
-Bugfix: External player doesn't auto-advance.
-Add browser notification
-Add settings for enabling notifications.
-Nicer styling of input fields and buttons.
-Added Estonian translation, courtesy of Olav M&auml;gi
-Link to Jamstash
-  https://mail.google.com/mail/u/0/?ui=2#inbox/14533101f2d8f6a0
+Slider cursor and animation.
+Bugfix: Access-Control-Allow-Origin header sometimes missing in REST responses.
+Updated Czech translation, courtesy of Trottel
+Make DLNA media server name configurable.
+Fix DLNA recursion
+  https://github.com/daneren2005/Subsonic-Plus/commit/ca8a5345e9819d041f3cc32325dc83d455e2aa6d
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
+Fix icons in playlist view.
+Hide player combobox when only one player.
 
 TODO IN 5.0
 --------------
+Cast
+  Update site (premium feature)
+  Initial volume, both local and remote.
+  (Remote) skipping doesn't always work
+  Autoplay locally?
+  Proper handling of EOM
+  Test on other browsers
+
+Nicer desktop notification icon on windows.
 Help icon.
 Button backgrounds.
-JAXB
-  Simplify date format.
-  Inject JAXBWriter.
-Make mac installer work (ensure ffmpeg is included) (wrong icon displayed)
 Remove lame?
 Update doc of recommended transcode settings.
 Consider scrobble when calculating "now playing".
   https://mail.google.com/mail/ca/u/0/#inbox/13f532a5e871a675
-Cast:
-  Use separate appId for video.
-  Can JWPlayer be controlled without control bar? Full screen, seeking, etc
-  Create custom jwplayer skin with black background and only a full screen button.
-  Don't show play icon when buffering
-  Use 2000 kbps as default?
-  Use same controls (play/pause/volume/position/fullscreen) for flash and cast video.
-  Stop casting when clicking cast icon.
-  Invisible Flash player for audio? Refactor.
-Use same slider for jukebox volume.
 Test aac playback in jwplayer.  Use provider "video" if necessary.
 Use javascript embedding of jwplayer everywhere?
 LyricsService error with special characters
   https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1449b103acad6d60
-XML-encoding in JSON
-  https://mail.google.com/mail/ca/u/0/?ui=2#inbox/13d17ec1fdfb80bc
-  Use JAXB, Jettison, ...?
 Problem with Content-Range for transcoded audio
   https://mail.google.com/mail/ca/u/0/?ui=2#inbox/1447f4b647387e8b
 
@@ -255,16 +246,20 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+
+BT metadata support
+  Don't duck etc when in jukebox mode.
+  http://developer.android.com/reference/android/media/RemoteControlClient.html
+  https://github.com/grimpy/Botifier/blob/master/src/com/github/grimpy/botifier/BotifierManager.java
+
 Disable RC if connected to Bluetooth.
   https://mail.google.com/mail/ca/u/0/#inbox/1446ffa5fca92812
-Upgrade to KitKat
 Subsonic Android Not Pausing for Google Voice Typing
   https://mail.google.com/mail/u/0/?ui=2&shva=1#inbox/142be82a12741b2ba
 Make older version available. Debug problem with connection errors:
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1428e52284bfc9d2
 Make it easier to add server URL.
 Support add to playlist
-Gradle
 Star status not updated in DownloadActivity.
 Slow song switching?
   https://mail.google.com/mail/u/0/#inbox/1424e3567ded0b6d
@@ -896,23 +891,23 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
 
 On Windows
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
 
 On VirtualBox Ubuntu
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
   sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/4.9/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
   sudo shutdown -h now
 
 Modify FRS properties
@@ -921,21 +916,20 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-4.9 -m "Tagging 4.9"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0.beta1 -m "Tagging 5.0.beta1"
 Post message on forum.
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-01-25/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-01-25/pages
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-05-24/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/ROOT.war
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-01-25 webapps
+ln -s webapps-2014-05-24 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -943,13 +937,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-01-25/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-01-25/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-05-24/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-05-24/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-01-25 webapps
+ln -s webapps-2014-05-24 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
@@ -976,15 +970,15 @@ service tomcat6 start
 
 HOW TO RELEASE TO ANDROID MARKET
 ================================
-Update versionCode and versionName in AndroidManifest.xml
+Update versionCode and versionName in build.gradle
 Commit
 cd subsonic-android
-ant clean
-ant release
+./gradlew clean
+./gradlew assembleRelease
 ### keytool -genkey -v -keystore subsonic.keystore -alias subsonic -keyalg RSA -validity 100000 -dname "CN=Active Objects"
 ### jarsigner -verbose -keystore subsonic.keystore -signedjar bin/subsonic.apk bin/SubsonicActivity-unsigned.apk subsonic
 Upload to market
-http://market.android.com/publish/Home
+https://play.google.com/apps/publish
 https://developer.amazon.com/welcome.html
 Update
     http://appoke.com
@@ -992,11 +986,11 @@ Update
     https://myapps.developer.motorola.com/
     https://slideme.org/application/subsonic
     http://www.camangimarket.com/index.html
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.1 -m "Tagging Android 4.1"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk/subsonic-android svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/android-release-4.3.1 -m "Tagging Android 4.3.1"
 Create new directory in FRS
   https://sourceforge.net/projects/subsonic/files/android/
 Upload files to SourceForge (REMEMBER TO CHANGE VERSION BELOW).
-  rsync -avP -e ssh subsonic-android/bin/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/4.1/subsonic-4.1.apk
+  rsync -avP -e ssh subsonic-android/subsonic/build/apk/subsonic-release.apk  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/android/4.3.1/subsonic-4.3.1.apk
 
 HOW TO RELEASE BLACKBERRY
 ===============================

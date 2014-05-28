@@ -132,6 +132,7 @@ public class SettingsService {
     private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
     private static final String KEY_SUBSONIC_URL = "SubsonicUrl";
     private static final String KEY_DLNA_ENABLED = "DlnaEnabled";
+    private static final String KEY_DLNA_SERVER_NAME = "DlnaServerName";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -195,6 +196,7 @@ public class SettingsService {
     private static final String DEFAULT_TRIAL_EXPIRES = null;
     private static final String DEFAULT_SUBSONIC_URL = "http://www.yourdomain.com";
     private static final boolean DEFAULT_DLNA_ENABLED = true;
+    private static final String DEFAULT_DLNA_SERVER_NAME = "Subsonic";
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
@@ -1237,6 +1239,14 @@ public class SettingsService {
 
     public void setDlnaEnabled(boolean dlnaEnabled) {
         setBoolean(KEY_DLNA_ENABLED, dlnaEnabled);
+    }
+
+    public String getDlnaServerName() {
+        return getString(KEY_DLNA_SERVER_NAME, DEFAULT_DLNA_SERVER_NAME);
+    }
+
+    public void setDlnaServerName(String dlnaServerName) {
+        setString(KEY_DLNA_SERVER_NAME, dlnaServerName);
     }
 
     public String getLocalIpAddress() {

@@ -157,7 +157,6 @@
     <c:if test="${model.dir.album and model.averageRating gt 0}">
         &nbsp;&nbsp;
         <c:import url="rating.jsp">
-            <c:param name="path" value="${model.dir.path}"/>
             <c:param name="readonly" value="true"/>
             <c:param name="rating" value="${model.averageRating}"/>
         </c:import>
@@ -213,7 +212,7 @@
 <div class="detail">
     <c:if test="${model.user.commentRole}">
         <c:import url="rating.jsp">
-            <c:param name="path" value="${model.dir.path}"/>
+            <c:param name="id" value="${model.dir.id}"/>
             <c:param name="readonly" value="false"/>
             <c:param name="rating" value="${model.userRating}"/>
         </c:import>
@@ -261,7 +260,7 @@
 <div id="commentForm" style="display:none">
     <form method="post" action="setMusicFileInfo.view">
         <input type="hidden" name="action" value="comment">
-        <input type="hidden" name="path" value="${model.dir.path}">
+        <input type="hidden" name="id" value="${model.dir.id}">
         <textarea name="comment" rows="6" cols="70">${model.dir.comment}</textarea>
         <input type="submit" value="<fmt:message key="common.save"/>">
     </form>
@@ -292,7 +291,7 @@
                         </c:otherwise>
                     </c:choose>
 
-                    <tr style="margin:0;padding:0;border:0">
+                    <tr ${cssClass} style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
                             <c:param name="id" value="${child.id}"/>
                             <c:param name="video" value="${child.video and model.player.web}"/>
@@ -315,63 +314,63 @@
                             </c:when>
 
                             <c:otherwise>
-                                <td ${cssClass} style="padding-left:0.25em"><input type="checkbox" class="checkbox" id="songIndex${loopStatus.count - 1}">
+                                <td style="padding-left:0.25em"><input type="checkbox" class="checkbox" id="songIndex${loopStatus.count - 1}">
                                     <span id="songId${loopStatus.count - 1}" style="display: none">${child.id}</span></td>
 
                                 <c:if test="${model.visibility.trackNumberVisible}">
-                                    <td ${cssClass} style="padding-right:0.5em;text-align:right">
+                                    <td style="padding-right:0.5em;text-align:right">
                                         <span class="detail">${child.trackNumber}</span>
                                     </td>
                                 </c:if>
 
-                                <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
+                                <td style="padding-right:1.25em;white-space:nowrap">
                                     <span class="songTitle" title="${child.title}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.title)}</str:truncateNicely></span>
                                 </td>
 
                                 <c:if test="${model.visibility.albumVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
+                                    <td style="padding-right:1.25em;white-space:nowrap">
                                         <span class="detail" title="${child.albumName}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.albumName)}</str:truncateNicely></span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.artistVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
+                                    <td style="padding-right:1.25em;white-space:nowrap">
                                         <span class="detail" title="${child.artist}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.artist)}</str:truncateNicely></span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.genreVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em;white-space:nowrap">
+                                    <td style="padding-right:1.25em;white-space:nowrap">
                                         <span class="detail">${child.genre}</span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.yearVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em">
+                                    <td style="padding-right:1.25em">
                                         <span class="detail">${child.year}</span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.formatVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em">
+                                    <td style="padding-right:1.25em">
                                         <span class="detail">${fn:toLowerCase(child.format)}</span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.fileSizeVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em;text-align:right">
+                                    <td style="padding-right:1.25em;text-align:right">
                                         <span class="detail"><sub:formatBytes bytes="${child.fileSize}"/></span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.durationVisible}">
-                                    <td ${cssClass} style="padding-right:1.25em;text-align:right">
+                                    <td style="padding-right:1.25em;text-align:right">
                                         <span class="detail">${child.durationString}</span>
                                     </td>
                                 </c:if>
 
                                 <c:if test="${model.visibility.bitRateVisible}">
-                                    <td ${cssClass} style="padding-right:0.25em">
+                                    <td style="padding-right:0.25em">
                                         <span class="detail">
                                             <c:if test="${not empty child.bitRate}">
                                                 ${child.bitRate} Kbps ${child.variableBitRate ? "vbr" : ""}

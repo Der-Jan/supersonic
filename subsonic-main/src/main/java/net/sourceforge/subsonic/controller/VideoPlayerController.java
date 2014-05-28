@@ -43,7 +43,7 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class VideoPlayerController extends ParameterizableViewController {
 
-    public static final int DEFAULT_BIT_RATE = 1000;
+    public static final int DEFAULT_BIT_RATE = 2000;
     public static final int[] BIT_RATES = {200, 300, 400, 500, 700, 1000, 1200, 1500, 2000, 3000, 5000};
 
     private MediaFileService mediaFileService;
@@ -57,29 +57,21 @@ public class VideoPlayerController extends ParameterizableViewController {
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile file = mediaFileService.getMediaFile(id);
 
-        int timeOffset = ServletRequestUtils.getIntParameter(request, "timeOffset", 0);
-        timeOffset = Math.max(0, timeOffset);
         Integer duration = file.getDurationSeconds();
-        if (duration != null) {
-            map.put("skipOffsets", createSkipOffsets(duration));
-            timeOffset = Math.min(duration, timeOffset);
-            duration -= timeOffset;
-        }
-
         String playerId = playerService.getPlayer(request, response).getId();
         String url = request.getRequestURL().toString();
-        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId());
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
         String host = new URL(streamUrl).getHost();
         String ip = settingsService.getLocalIpAddress();
-        String remoteStreamUrl = streamUrl.replaceFirst(host, ip);
+        String remoteStreamUrl = StringUtil.toHttpUrl(streamUrl.replaceFirst(host, ip), settingsService.getPort());
+        String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
+        String remoteCoverArtUrl = StringUtil.toHttpUrl(coverArtUrl.replaceFirst(host, ip), settingsService.getPort());
 
         map.put("video", file);
-        map.put("player", playerId);
         map.put("remoteStreamUrl", remoteStreamUrl);
+        map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));
-        map.put("popout", ServletRequestUtils.getBooleanParameter(request, "popout", false));
         map.put("duration", duration);
-        map.put("timeOffset", timeOffset);
         map.put("bitRates", BIT_RATES);
         map.put("licenseInfo", settingsService.getLicenseInfo());
 

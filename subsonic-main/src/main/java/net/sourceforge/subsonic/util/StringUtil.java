@@ -310,7 +310,7 @@ public final class StringUtil {
      * but not if the given URL is already "http".
      *
      * @param url  The original URL.
-     * @param port The port number to use, for instance 443.
+     * @param port The port number to use, for instance 4040.
      * @return The transformed URL.
      * @throws MalformedURLException If the original URL is invalid.
      */

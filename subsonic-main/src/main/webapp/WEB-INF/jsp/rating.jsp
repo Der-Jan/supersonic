@@ -4,7 +4,7 @@
 <%--
 Creates HTML for displaying the rating stars.
 PARAMETERS
-  path: Album path. May be null if readonly.
+  id: Album ID. May be null if readonly.
   readonly: Whether rating can be changed.
   rating: The rating, an integer from 0 (no rating), through 10 (lowest rating), to 50 (highest rating).
 --%>
@@ -12,7 +12,7 @@ PARAMETERS
 <c:forEach var="i" begin="1" end="5">
 
     <sub:url value="setRating.view" var="ratingUrl">
-        <sub:param name="path" value="${param.path}"/>
+        <sub:param name="id" value="${param.id}"/>
         <sub:param name="action" value="rating"/>
         <sub:param name="rating" value="${i}"/>
     </sub:url>
@@ -41,11 +41,11 @@ PARAMETERS
 </c:forEach>
 
 <sub:url value="setRating.view" var="clearRatingUrl">
-    <sub:param name="path" value="${param.path}"/>
+    <sub:param name="id" value="${param.id}"/>
     <sub:param name="action" value="rating"/>
     <sub:param name="rating" value="0"/>
 </sub:url>
 
 <c:if test="${not param.readonly}">
-    | <a href="${clearRatingUrl}"><img src="<spring:theme code="clearRatingImage"/>" alt="" title="<fmt:message key="rating.clearrating"/>" style="margin-left:-3px; margin-right:5px"></a>
+    &nbsp;| <a href="${clearRatingUrl}"><img src="<spring:theme code="clearRatingImage"/>" alt="" title="<fmt:message key="rating.clearrating"/>" style="margin-right:5px"></a>
 </c:if>

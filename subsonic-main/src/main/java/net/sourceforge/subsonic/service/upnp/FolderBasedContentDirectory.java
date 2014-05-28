@@ -57,6 +57,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     private static final Logger LOG = Logger.getLogger(FolderBasedContentDirectory.class);
     private static final String CONTAINER_ID_PLAYLIST_ROOT = "playlists";
     private static final String CONTAINER_ID_PLAYLIST_PREFIX = "playlist-";
+    private static final String CONTAINER_ID_FOLDER_PREFIX = "folder-";
     private MediaFileService mediaFileService;
     private PlaylistService playlistService;
 
@@ -90,7 +91,8 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
                 return browseFlag == BrowseFlag.METADATA ? browsePlaylistMetadata(playlist) : browsePlaylist(playlist, firstResult, maxResults);
             }
 
-            MediaFile mediaFile = mediaFileService.getMediaFile(Integer.parseInt(objectId));
+            int mediaFileId = Integer.parseInt(objectId.replace(CONTAINER_ID_FOLDER_PREFIX, ""));
+            MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
             return browseFlag == BrowseFlag.METADATA ? browseMediaFileMetadata(mediaFile) : browseMediaFile(mediaFile, firstResult, maxResults);
 
         } catch (Throwable x) {
@@ -225,7 +227,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private Container createContainer(MediaFile mediaFile) throws Exception {
         Container container = mediaFile.isAlbum() ? createAlbumContainer(mediaFile) : new MusicAlbum();
-        container.setId(String.valueOf(mediaFile.getId()));
+        container.setId(CONTAINER_ID_FOLDER_PREFIX + mediaFile.getId());
         container.setTitle(mediaFile.getName());
         List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, true, false);
         container.setChildCount(children.size());

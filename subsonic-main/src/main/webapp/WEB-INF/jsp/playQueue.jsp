@@ -10,12 +10,22 @@
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/range.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/timer.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/webfx/slider.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
+    <style type="text/css">
+        .ui-slider .ui-slider-handle {
+            width: 11px;
+            height: 11px;
+            cursor: pointer;
+        }
+        .ui-slider a {
+            outline:none;
+        }
+        .ui-slider {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="bgcolor2 playlistframe" onload="init()">
@@ -25,7 +35,7 @@
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
-    var slider = null;
+    var CastPlayer = new CastPlayer();
 
     function init() {
         dwr.engine.setErrorHandler(null);
@@ -96,6 +106,14 @@
     }
     function onGain(gain) {
         playQueueService.setGain(gain);
+    }
+    function onJukeboxVolumeChanged() {
+        var value = parseInt($("#jukeboxVolume").slider("option", "value"));
+        onGain(value / 100);
+    }
+    function onCastVolumeChanged() {
+        var value = parseInt($("#castVolume").slider("option", "value"));
+        CastPlayer.setCastVolume(value / 100, false);
     }
     function onSkip(index) {
     <c:choose>
@@ -216,13 +234,8 @@
         songs = playQueue.entries;
         repeatEnabled = playQueue.repeatEnabled;
         if ($("#start")) {
-            if (playQueue.stopEnabled) {
-                $("#start").hide();
-                $("#stop").show();
-            } else {
-                $("#start").show();
-                $("#stop").hide();
-            }
+            $("#start").toggle(!playQueue.stopEnabled);
+            $("#stop").toggle(playQueue.stopEnabled);
         }
 
         if ($("#toggleRepeat")) {
@@ -304,8 +317,9 @@
             parent.frames.main.location.href="play.m3u?";
         }
 
-        if (slider) {
-            slider.setValue(playQueue.gain * 100);
+        var jukeboxVolume = $("#jukeboxVolume");
+        if (jukeboxVolume) {
+            jukeboxVolume.slider("option", "value", Math.floor(playQueue.gain * 100));
         }
 
     <c:if test="${model.player.web}">
@@ -335,10 +349,9 @@
         currentStreamUrl = song.streamUrl;
         updateCurrentImage();
 
-        if (castSession) {
-            loadCastMedia(song, position);
+        if (CastPlayer.castSession) {
+            CastPlayer.loadCastMedia(song, position);
         } else {
-
             jwplayer().load({
                 file: song.streamUrl,
                 provider: song.format == "aac" || song.format == "m4a" ? "video" : "sound",
@@ -474,8 +487,8 @@
 <div class="bgcolor2" style="position:fixed; top:0; width:100%;padding-top:0.5em">
     <table style="white-space:nowrap;">
         <tr style="white-space:nowrap;">
-            <c:if test="${model.user.settingsRole}">
-                <td><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
+            <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
+                <td style="padding-right: 5px"><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
                     <c:forEach items="${model.players}" var="player">
                         <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
                     </c:forEach>
@@ -483,26 +496,36 @@
             </c:if>
             <c:if test="${model.player.web}">
                 <td>
-                    <div id="flashPlayer" style="width:340px; height:24px;padding-left:10px;padding-right:10px">
+                    <div id="flashPlayer" style="width:340px; height:24px;padding-right:10px">
                         <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank"><fmt:message key="playlist.getflash"/></a></div>
                     </div>
                     <div id="castPlayer" style="display: none">
                         <div style="float:left">
-                            <a href="#" onclick="playPauseCast(); return false;"><img id="castPlayPause" src="<spring:theme code="castPlayImage"/>"></a>
-                            <a href="#" onclick="toggleCastMute(); return false;"><img id="castMute" src="<spring:theme code="volumeImage"/>" alt=""></a>
+                            <img id="castPlay" src="<spring:theme code="castPlayImage"/>" onclick="CastPlayer.playCast()" style="cursor:pointer">
+                            <img id="castPause" src="<spring:theme code="castPauseImage"/>" onclick="CastPlayer.pauseCast()" style="cursor:pointer; display:none">
+                            <img id="castMuteOn" src="<spring:theme code="volumeImage"/>" onclick="CastPlayer.castMuteOn()" style="cursor:pointer">
+                            <img id="castMuteOff" src="<spring:theme code="muteImage"/>" onclick="CastPlayer.castMuteOff()" style="cursor:pointer; display:none">
                         </div>
                         <div style="float:left">
-                            <input id="castVolume" type="range" min="0" max="100" step="1" style="width: 80px; margin-left: 10px; margin-right: 10px"
-                                   onchange="setCastVolume(this.value/100, false);">
+                            <div id="castVolume" style="width:80px;height:4px;margin-left:10px;margin-right:10px;margin-top:8px"></div>
+                            <script type="text/javascript">
+                                $("#castVolume").slider({max: 100, value: 50, animate: "fast", range: "min"});
+                                $("#castVolume").on("slidestop", onCastVolumeChanged);
+                            </script>
                         </div>
                     </div>
                 </td>
-                <td><a href="#" onclick="launchCastApp(); return false;"><img id="castIcon"></a></td>
+                <td>
+                    <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="CastPlayer.launchCastApp()" style="cursor:pointer; display:none">
+                    <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="CastPlayer.stopCastApp()" style="cursor:pointer; display:none">
+                </td>
             </c:if>
 
             <c:if test="${model.user.streamRole and not model.player.web}">
-                <td style="white-space:nowrap;" id="stop"><span class="header"><b><a href="javascript:void(0)" onclick="onStop()"><fmt:message key="playlist.stop"/></a></b></span>  | </td>
-                <td style="white-space:nowrap;" id="start"><span class="header"><b><a href="javascript:void(0)" onclick="onStart()"><fmt:message key="playlist.start"/></a></b></span>  | </td>
+                <td>
+                    <img id="start" src="<spring:theme code="castPlayImage"/>" onclick="onStart()" style="cursor:pointer">
+                    <img id="stop" src="<spring:theme code="castPauseImage"/>" onclick="onStop()" style="cursor:pointer; display:none">
+                </td>
             </c:if>
 
             <c:if test="${model.player.jukebox}">
@@ -510,22 +533,10 @@
                     <img src="<spring:theme code="volumeImage"/>" alt="">
                 </td>
                 <td style="white-space:nowrap;">
-                    <div class="slider bgcolor2" id="slider-1" style="width:90px">
-                        <input class="slider-input" id="slider-input-1" name="slider-input-1">
-                    </div>
+                    <div id="jukeboxVolume" style="width:80px;height:4px"></div>
                     <script type="text/javascript">
-
-                        var updateGainTimeoutId = 0;
-                        slider = new Slider(document.getElementById("slider-1"), document.getElementById("slider-input-1"));
-                        slider.onchange = function () {
-                            clearTimeout(updateGainTimeoutId);
-                            updateGainTimeoutId = setTimeout("updateGain()", 250);
-                        };
-
-                        function updateGain() {
-                            var gain = slider.getValue() / 100.0;
-                            onGain(gain);
-                        }
+                        $("#jukeboxVolume").slider({max: 100, value: 50, animate: "fast", range: "min"});
+                        $("#jukeboxVolume").on("slidestop", onJukeboxVolumeChanged);
                     </script>
                 </td>
             </c:if>
@@ -586,20 +597,20 @@
 <table style="border-collapse:collapse;white-space:nowrap;">
     <tbody id="playlistBody">
         <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">
                 <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>"
                      alt="" title=""></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
                      alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
                      alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></a></td>
-            <td class="bgcolor2"><a href="javascript:void(0)">
+            <td><a href="javascript:void(0)">
                 <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
                      alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></a></td>
 
-            <td class="bgcolor2" style="padding-left: 0.1em"><input type="checkbox" class="checkbox" id="songIndex"></td>
+            <td style="padding-left: 0.5em"><input type="checkbox" class="checkbox" id="songIndex"></td>
             <td style="padding-right:0.25em"></td>
 
             <c:if test="${model.visibility.trackNumberVisible}">
@@ -649,11 +660,6 @@
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>
     <div id="dialog-select-playlist-list"></div>
-</div>
-
-<div style="margin:10px;">
-    <textarea rows="20" cols="180" id="debugmessage">
-    </textarea>
 </div>
 
 </body></html>
