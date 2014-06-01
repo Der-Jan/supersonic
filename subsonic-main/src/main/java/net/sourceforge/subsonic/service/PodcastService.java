@@ -18,29 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.PodcastDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.PodcastChannel;
-import net.sourceforge.subsonic.domain.PodcastEpisode;
-import net.sourceforge.subsonic.domain.PodcastStatus;
-import net.sourceforge.subsonic.service.metadata.MetaData;
-import net.sourceforge.subsonic.service.metadata.MetaDataParser;
-import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
-import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -60,6 +37,30 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.PodcastDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.PodcastChannel;
+import net.sourceforge.subsonic.domain.PodcastEpisode;
+import net.sourceforge.subsonic.domain.PodcastStatus;
+import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.MetaDataParser;
+import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Provides services for Podcast reception.
@@ -510,16 +511,20 @@ public class PodcastService {
     }
 
     private void updateTags(File file, PodcastEpisode episode) {
-        MediaFile mediaFile = mediaFileService.getMediaFile(file, false);
-        if (StringUtils.isNotBlank(episode.getTitle())) {
-            MetaDataParser parser = metaDataParserFactory.getParser(file);
-            if (!parser.isEditingSupported()) {
-                return;
+        try {
+            MediaFile mediaFile = mediaFileService.getMediaFile(file, false);
+            if (StringUtils.isNotBlank(episode.getTitle())) {
+                MetaDataParser parser = metaDataParserFactory.getParser(file);
+                if (!parser.isEditingSupported()) {
+                    return;
+                }
+                MetaData metaData = parser.getRawMetaData(file);
+                metaData.setTitle(episode.getTitle());
+                parser.setMetaData(mediaFile, metaData);
+                mediaFileService.refreshMediaFile(mediaFile);
             }
-            MetaData metaData = parser.getRawMetaData(file);
-            metaData.setTitle(episode.getTitle());
-            parser.setMetaData(mediaFile, metaData);
-            mediaFileService.refreshMediaFile(mediaFile);
+        } catch (Exception x) {
+            LOG.warn("Failed to update tags for podcast " + episode.getUrl(), x);
         }
     }
 

@@ -10,6 +10,7 @@ Fix DLNA recursion
 Fix icons in playlist view.
 Hide player combobox when only one player.
 Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
+Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
 
 TODO IN 5.0
 --------------
