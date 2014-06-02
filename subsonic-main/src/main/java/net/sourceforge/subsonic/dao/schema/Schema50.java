@@ -53,5 +53,12 @@ public class Schema50 extends Schema {
             template.execute("alter table user_settings add song_notification boolean default true not null");
             LOG.info("Database column 'user_settings.song_notification' was added successfully.");
         }
+
+        // Added after 5.0.beta1
+        if (template.queryForInt("select count(*) from version where version = 23") == 0) {
+            LOG.info("Updating database schema to version 23.");
+            template.execute("insert into version values (23)");
+            template.execute("update transcoding2 set step1='ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -' where name='mp3 audio'");
+        }
     }
 }

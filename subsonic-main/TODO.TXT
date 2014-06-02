@@ -11,12 +11,14 @@ Fix icons in playlist view.
 Hide player combobox when only one player.
 Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
 Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
+Bugfix: Updated ffmpeg commands to fix some transcoding issues.
 
 TODO IN 5.0
 --------------
 Use "-map 0:0" in audio transcode
 Add bitrate selector.
 Update recommended transcoding settings.
+
 
 ERROR JAXBWriter - Failed to marshal JAXB
 java.lang.IllegalStateException: STREAM
