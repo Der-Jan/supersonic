@@ -15,6 +15,8 @@ Fixed errors on certain podcast feeds where they were being incorrectly labeled 
 TODO IN 5.0
 --------------
 Use "-map 0:0" in audio transcode
+Add bitrate selector.
+Update recommended transcoding settings.
 
 ERROR JAXBWriter - Failed to marshal JAXB
 java.lang.IllegalStateException: STREAM

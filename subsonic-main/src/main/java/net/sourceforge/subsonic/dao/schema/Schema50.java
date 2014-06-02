@@ -18,8 +18,9 @@
  */
 package net.sourceforge.subsonic.dao.schema;
 
-import net.sourceforge.subsonic.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import net.sourceforge.subsonic.Logger;
 
 /**
  * Used for creating and evolving the database schema.
@@ -43,8 +44,8 @@ public class Schema50 extends Schema {
                     "'ffmpeg -ss %o -i %s -c:v libx264 -preset superfast -b:v %bk -c:a libvorbis -f matroska -threads 0 -', 'true')");
 
             template.execute("insert into player_transcoding2(player_id, transcoding_id) " +
-                    "select distinct p.id, t.id from player p, transcoding2 t where t.name='webm video'");
-            LOG.info("Added webm transcoding.");
+                    "select distinct p.id, t.id from player p, transcoding2 t where t.name='mkv video'");
+            LOG.info("Added mkv transcoding.");
         }
 
         if (!columnExists(template, "song_notification", "user_settings")) {
