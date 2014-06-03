@@ -9,9 +9,29 @@ Fix DLNA recursion
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
 Fix icons in playlist view.
 Hide player combobox when only one player.
+Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
+Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
+Bugfix: Updated ffmpeg commands to fix some transcoding issues.
 
 TODO IN 5.0
 --------------
+Use "-map 0:0" in audio transcode
+Add bitrate selector.
+Update recommended transcoding settings.
+
+
+ERROR JAXBWriter - Failed to marshal JAXB
+java.lang.IllegalStateException: STREAM
+	at org.mortbay.jetty.Response.getWriter(Response.java:583)
+	at net.sourceforge.subsonic.controller.JAXBWriter.writeResponse(JAXBWriter.java:140)
+	at net.sourceforge.subsonic.controller.JAXBWriter.writeErrorResponse(JAXBWriter.java:158)
+	at net.sourceforge.subsonic.filter.RESTFilter.handleException(RESTFilter.java:77)
+	at net.sourceforge.subsonic.filter.RESTFilter.doFilter(RESTFilter.java:63)
+	at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1084)
+	at net.sourceforge.subsonic.filter.ParameterDecodingFilter.doFilter(ParameterDecodingFilter.java:54)
+	at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1084)
+	at net.sourceforge.subsonic.filter.BootstrapVerificationFilter.doFilter(BootstrapVerificationFilter.java:54)
+
 Cast
   Update site (premium feature)
   Initial volume, both local and remote.

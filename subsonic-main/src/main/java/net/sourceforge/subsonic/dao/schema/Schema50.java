@@ -18,8 +18,9 @@
  */
 package net.sourceforge.subsonic.dao.schema;
 
-import net.sourceforge.subsonic.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import net.sourceforge.subsonic.Logger;
 
 /**
  * Used for creating and evolving the database schema.
@@ -43,14 +44,21 @@ public class Schema50 extends Schema {
                     "'ffmpeg -ss %o -i %s -c:v libx264 -preset superfast -b:v %bk -c:a libvorbis -f matroska -threads 0 -', 'true')");
 
             template.execute("insert into player_transcoding2(player_id, transcoding_id) " +
-                    "select distinct p.id, t.id from player p, transcoding2 t where t.name='webm video'");
-            LOG.info("Added webm transcoding.");
+                    "select distinct p.id, t.id from player p, transcoding2 t where t.name='mkv video'");
+            LOG.info("Added mkv transcoding.");
         }
 
         if (!columnExists(template, "song_notification", "user_settings")) {
             LOG.info("Database column 'user_settings.song_notification' not found.  Creating it.");
             template.execute("alter table user_settings add song_notification boolean default true not null");
             LOG.info("Database column 'user_settings.song_notification' was added successfully.");
+        }
+
+        // Added after 5.0.beta1
+        if (template.queryForInt("select count(*) from version where version = 23") == 0) {
+            LOG.info("Updating database schema to version 23.");
+            template.execute("insert into version values (23)");
+            template.execute("update transcoding2 set step1='ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -' where name='mp3 audio'");
         }
     }
 }
