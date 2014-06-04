@@ -12,13 +12,13 @@ Hide player combobox when only one player.
 Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
 Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
 Bugfix: Updated ffmpeg commands to fix some transcoding issues.
+Enable compression for XML, JSON and JSONP in the REST API
 
 TODO IN 5.0
 --------------
-Use "-map 0:0" in audio transcode
-Add bitrate selector.
+Add bitrate selector?
 Update recommended transcoding settings.
-
+Test transcoding with chromecast
 
 ERROR JAXBWriter - Failed to marshal JAXB
 java.lang.IllegalStateException: STREAM
@@ -44,7 +44,6 @@ Nicer desktop notification icon on windows.
 Help icon.
 Button backgrounds.
 Remove lame?
-Update doc of recommended transcode settings.
 Consider scrobble when calculating "now playing".
   https://mail.google.com/mail/ca/u/0/#inbox/13f532a5e871a675
 Test aac playback in jwplayer.  Use provider "video" if necessary.
