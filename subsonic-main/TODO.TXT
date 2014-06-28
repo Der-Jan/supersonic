@@ -13,24 +13,20 @@ Fixed mixed content errors when changing cover art, and using https (courtesy of
 Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
 Bugfix: Updated ffmpeg commands to fix some transcoding issues.
 Enable compression for XML, JSON and JSONP in the REST API
+Fixed bug in REST method changePassword
 
 TODO IN 5.0
 --------------
+Make chromecast work with *.subsonic.org
+Add new android app
+  https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
 Add bitrate selector?
 Update recommended transcoding settings.
 Test transcoding with chromecast
-
-ERROR JAXBWriter - Failed to marshal JAXB
-java.lang.IllegalStateException: STREAM
-	at org.mortbay.jetty.Response.getWriter(Response.java:583)
-	at net.sourceforge.subsonic.controller.JAXBWriter.writeResponse(JAXBWriter.java:140)
-	at net.sourceforge.subsonic.controller.JAXBWriter.writeErrorResponse(JAXBWriter.java:158)
-	at net.sourceforge.subsonic.filter.RESTFilter.handleException(RESTFilter.java:77)
-	at net.sourceforge.subsonic.filter.RESTFilter.doFilter(RESTFilter.java:63)
-	at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1084)
-	at net.sourceforge.subsonic.filter.ParameterDecodingFilter.doFilter(ParameterDecodingFilter.java:54)
-	at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1084)
-	at net.sourceforge.subsonic.filter.BootstrapVerificationFilter.doFilter(BootstrapVerificationFilter.java:54)
+Error if unable to determine video duration, e.g., if ffmpeg is not installed.
+Avoid creating duplicate players when switching from cast to local.
+Shows extra "|" in movie dir.
+Make it possible to cast from remote server
 
 Cast
   Update site (premium feature)
@@ -79,8 +75,6 @@ Upgrade JWPlayer
 http://alxgbsn.co.uk/2013/02/20/notify-js-a-handy-wrapper-for-the-web-notifications-api/
 Revert to webkit notification? (Unstable in chrome)
 Chromecast
-DLNA just expands more and more, eg audio/audio/audio/audio
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
@@ -170,7 +164,6 @@ PS3 (3450) - Can browse albums
     https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
     http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
 
-Update ffmpeg?
 Go through forum feedback for 4.7
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
