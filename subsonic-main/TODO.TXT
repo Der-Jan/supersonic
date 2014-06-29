@@ -14,9 +14,12 @@ Fixed errors on certain podcast feeds where they were being incorrectly labeled 
 Bugfix: Updated ffmpeg commands to fix some transcoding issues.
 Enable compression for XML, JSON and JSONP in the REST API
 Fixed bug in REST method changePassword
+Avoid creating duplicate players when switching from cast to local.
 
 TODO IN 5.0
 --------------
+Set X-Content-Duration
+  https://sourceforge.net/p/subsonic/bugs/122/
 Make chromecast work with *.subsonic.org
 Add new android app
   https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
@@ -24,7 +27,6 @@ Add bitrate selector?
 Update recommended transcoding settings.
 Test transcoding with chromecast
 Error if unable to determine video duration, e.g., if ffmpeg is not installed.
-Avoid creating duplicate players when switching from cast to local.
 Shows extra "|" in movie dir.
 Make it possible to cast from remote server
 
@@ -949,13 +951,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-05-24/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-05-24/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-06-28/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-06-28/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-05-24 webapps
+ln -s webapps-2014-06-28 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

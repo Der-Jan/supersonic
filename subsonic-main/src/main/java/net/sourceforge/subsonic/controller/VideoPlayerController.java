@@ -68,6 +68,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         String remoteCoverArtUrl = StringUtil.toHttpUrl(coverArtUrl.replaceFirst(host, ip), settingsService.getPort());
 
         map.put("video", file);
+        map.put("streamUrl", streamUrl);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));

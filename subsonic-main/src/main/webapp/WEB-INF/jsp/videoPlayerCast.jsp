@@ -297,7 +297,7 @@
         this.currentMediaTime = 0;
 
         var url = "${model.remoteStreamUrl}" + "&maxBitRate=" + ${model.maxBitRate} + "&format=mkv&timeOffset=" + offset;
-        console.log("loading..." + url);
+        console.log("casting " + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska';
         mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
@@ -452,19 +452,17 @@
      */
     CastPlayer.prototype.playMediaLocally = function (offset) {
 
-        <sub:url value="/stream" var="streamUrl">
-        <sub:param name="id" value="${model.video.id}"/>
-        <sub:param name="maxBitRate" value="${model.maxBitRate}"/>
-        </sub:url>
-
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayer.play();
         } else {
             this.currentMediaOffset = offset;
             this.currentMediaTime = 0;
 
+            var url = "${model.streamUrl}" + "&maxBitRate=" + ${model.maxBitRate} + "&timeOffset=" + offset;
+            console.log("playing local: " + url);
+
             this.localPlayer.load({
-                file: "${streamUrl}" + "&timeOffset=" + offset,
+                file: url,
                 duration: this.currentMediaDuration,
                 provider: "video"
             });
