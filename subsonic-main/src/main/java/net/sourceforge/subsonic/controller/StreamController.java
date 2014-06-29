@@ -18,6 +18,22 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.awt.Dimension;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -40,20 +56,6 @@ import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
-import org.apache.commons.io.IOUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A controller which streams the content of a {@link net.sourceforge.subsonic.domain.PlayQueue} to a remote
@@ -153,6 +155,7 @@ public class StreamController implements Controller {
                 } else {
                     String transcodedSuffix = transcodingService.getSuffix(player, file, preferredTargetFormat);
                     response.setContentType(StringUtil.getMimeType(transcodedSuffix));
+                    setContentDuration(response, file);
                 }
 
                 if (file.isVideo() || isHls) {
@@ -230,6 +233,12 @@ public class StreamController implements Controller {
             IOUtils.closeQuietly(in);
         }
         return null;
+    }
+
+    private void setContentDuration(HttpServletResponse response, MediaFile file) {
+        if (file.getDurationSeconds() != null) {
+            response.setHeader("X-Content-Duration", String.format("%.1f", file.getDurationSeconds().doubleValue()));
+        }
     }
 
     private MediaFile getSingleFile(HttpServletRequest request) throws ServletRequestBindingException {

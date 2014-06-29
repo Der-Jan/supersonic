@@ -15,11 +15,11 @@ Bugfix: Updated ffmpeg commands to fix some transcoding issues.
 Enable compression for XML, JSON and JSONP in the REST API
 Fixed bug in REST method changePassword
 Avoid creating duplicate players when switching from cast to local.
+Set X-Content-Duration to support opus encoding
+  https://sourceforge.net/p/subsonic/bugs/122/
 
 TODO IN 5.0
 --------------
-Set X-Content-Duration
-  https://sourceforge.net/p/subsonic/bugs/122/
 Make chromecast work with *.subsonic.org
 Add new android app
   https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b

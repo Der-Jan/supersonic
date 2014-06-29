@@ -67,6 +67,7 @@ public final class StringUtil {
             {"mp3", "audio/mpeg"},
             {"ogg", "audio/ogg"},
             {"oga", "audio/ogg"},
+            {"opus", "audio/ogg"},
             {"ogx", "application/ogg"},
             {"aac", "audio/mp4"},
             {"m4a", "audio/mp4"},
