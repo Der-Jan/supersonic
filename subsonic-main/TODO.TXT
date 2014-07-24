@@ -17,6 +17,7 @@ Fixed bug in REST method changePassword
 Avoid creating duplicate players when switching from cast to local.
 Set X-Content-Duration to support opus encoding
   https://sourceforge.net/p/subsonic/bugs/122/
+Error if unable to determine video duration, e.g., if ffmpeg is not installed.
 
 TODO IN 5.0
 --------------
@@ -26,7 +27,6 @@ Add new android app
 Add bitrate selector?
 Update recommended transcoding settings.
 Test transcoding with chromecast
-Error if unable to determine video duration, e.g., if ffmpeg is not installed.
 Shows extra "|" in movie dir.
 Make it possible to cast from remote server
 

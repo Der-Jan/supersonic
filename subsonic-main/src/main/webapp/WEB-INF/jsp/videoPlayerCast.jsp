@@ -79,7 +79,7 @@
         this.currentMediaTime = 0;
 
         // @type {Number} A number for current media duration
-        this.currentMediaDuration = ${model.duration};
+        this.currentMediaDuration = ${empty model.duration ? 0: model.duration};
 
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
         this.seekInProgress = false;
