@@ -475,6 +475,30 @@ public final class StringUtil {
     }
 
     /**
+     * Rewrites an URL to make it accessible from remote clients.
+     */
+    public static String rewriteRemoteUrl(String localUrl, boolean urlRedirectionEnabled, String urlRedirectFrom,
+            String urlRedirectContextPath, String localIp, int localPort) throws MalformedURLException {
+
+        URLBuilder urlBuilder = new URLBuilder(localUrl);
+        if (urlRedirectionEnabled) {
+            String subsonicHost = urlRedirectFrom + ".subsonic.org";
+            urlBuilder.setProtocol(URLBuilder.HTTP);
+            urlBuilder.setHost(subsonicHost);
+            urlBuilder.setPort(80);
+            if (StringUtils.isNotBlank(urlRedirectContextPath)) {
+                urlBuilder.setFile(urlBuilder.getFile().replaceFirst("^/" + urlRedirectContextPath, ""));
+            }
+
+        } else {
+            urlBuilder.setProtocol(URLBuilder.HTTP);
+            urlBuilder.setHost(localIp);
+            urlBuilder.setPort(localPort);
+        }
+        return urlBuilder.getURLAsString();
+    }
+
+    /**
      * Makes a given filename safe by replacing special characters like slashes ("/" and "\")
      * with dashes ("-").
      *
