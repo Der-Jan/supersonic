@@ -49,7 +49,7 @@
         <td><code>settingsRole</code></td>
         <td>No</td>
         <td></td>
-        <td>Whether the user is allowed to change settings and password.</td>
+        <td>Whether the user is allowed to change personal settings and password.</td>
     </tr>
     <tr class="table-altrow">
         <td><code>streamRole</code></td>
