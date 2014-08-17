@@ -28,9 +28,8 @@ Add new android app
   https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
 Add bitrate selector?
 Update recommended transcoding settings.
-Test transcoding with chromecast
 Shows extra "|" in movie dir.
-Make it possible to cast from remote server
+Test: Make it possible to cast from remote server
 
 Cast
   BUG: Casting as tab, rather than "native" (probably because there are two player instances)
