@@ -19,6 +19,7 @@ Set X-Content-Duration to support opus encoding
   https://sourceforge.net/p/subsonic/bugs/122/
 Support casting to remote Chromecasts (requires *.subsonic.org address)
 Error if unable to determine video duration, e.g., if ffmpeg is not installed.
+Bugfix: Open video player in new window if play queue if receiver found.
 
 TODO IN 5.0
 --------------
@@ -32,13 +33,12 @@ Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
 Cast
-  BUG: Casting as tab, rather than "native" (probably because there are two player instances)
+  Bitrate selector
   Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
   Autoplay locally?
   Proper handling of EOM
-  Test on other browsers
 
 Nicer desktop notification icon on windows.
 Help icon.
