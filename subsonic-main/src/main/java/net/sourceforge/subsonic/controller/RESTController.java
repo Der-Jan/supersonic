@@ -1721,7 +1721,11 @@ public class RESTController extends MultiActionController {
         String password = decrypt(getRequiredStringParameter(request, "password"));
 
         User authUser = securityService.getCurrentUser(request);
-        if (!authUser.isAdminRole() && !username.equals(authUser.getUsername())) {
+
+        boolean allowed = authUser.isAdminRole()
+                || username.equals(authUser.getUsername()) && authUser.isSettingsRole();
+
+        if (!allowed) {
             error(request, response, ErrorCode.NOT_AUTHORIZED, authUser.getUsername() + " is not authorized to change password for " + username);
             return;
         }

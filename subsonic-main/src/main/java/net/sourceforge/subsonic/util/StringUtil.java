@@ -67,6 +67,7 @@ public final class StringUtil {
             {"mp3", "audio/mpeg"},
             {"ogg", "audio/ogg"},
             {"oga", "audio/ogg"},
+            {"opus", "audio/ogg"},
             {"ogx", "application/ogg"},
             {"aac", "audio/mp4"},
             {"m4a", "audio/mp4"},
@@ -471,6 +472,30 @@ public final class StringUtil {
         } catch (MalformedURLException x) {
             return urlToRewrite;
         }
+    }
+
+    /**
+     * Rewrites an URL to make it accessible from remote clients.
+     */
+    public static String rewriteRemoteUrl(String localUrl, boolean urlRedirectionEnabled, String urlRedirectFrom,
+            String urlRedirectContextPath, String localIp, int localPort) throws MalformedURLException {
+
+        URLBuilder urlBuilder = new URLBuilder(localUrl);
+        if (urlRedirectionEnabled) {
+            String subsonicHost = urlRedirectFrom + ".subsonic.org";
+            urlBuilder.setProtocol(URLBuilder.HTTP);
+            urlBuilder.setHost(subsonicHost);
+            urlBuilder.setPort(80);
+            if (StringUtils.isNotBlank(urlRedirectContextPath)) {
+                urlBuilder.setFile(urlBuilder.getFile().replaceFirst("^/" + urlRedirectContextPath, ""));
+            }
+
+        } else {
+            urlBuilder.setProtocol(URLBuilder.HTTP);
+            urlBuilder.setHost(localIp);
+            urlBuilder.setPort(localPort);
+        }
+        return urlBuilder.getURLAsString();
     }
 
     /**

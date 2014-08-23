@@ -117,6 +117,7 @@ public class SubsonicDeployer implements SubsonicDeployerService {
             context.setTempDirectory(getJettyDirectory());
             context.setContextPath(getContextPath());
             context.setWar(getWar());
+            context.setOverrideDescriptor("/web-jetty.xml");
 
             if (isHttpsEnabled()) {
 

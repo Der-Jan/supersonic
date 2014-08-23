@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -61,13 +60,21 @@ public class VideoPlayerController extends ParameterizableViewController {
         String playerId = playerService.getPlayer(request, response).getId();
         String url = request.getRequestURL().toString();
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
-        String host = new URL(streamUrl).getHost();
-        String ip = settingsService.getLocalIpAddress();
-        String remoteStreamUrl = StringUtil.toHttpUrl(streamUrl.replaceFirst(host, ip), settingsService.getPort());
         String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
-        String remoteCoverArtUrl = StringUtil.toHttpUrl(coverArtUrl.replaceFirst(host, ip), settingsService.getPort());
+
+        boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
+        String urlRedirectFrom = settingsService.getUrlRedirectFrom();
+        String urlRedirectContextPath = settingsService.getUrlRedirectContextPath();
+
+        String localIp = settingsService.getLocalIpAddress();
+        int localPort = settingsService.getPort();
+        String remoteStreamUrl = StringUtil.rewriteRemoteUrl(streamUrl, urlRedirectionEnabled, urlRedirectFrom,
+                urlRedirectContextPath, localIp, localPort);
+        String remoteCoverArtUrl = StringUtil.rewriteRemoteUrl(coverArtUrl, urlRedirectionEnabled, urlRedirectFrom,
+                urlRedirectContextPath, localIp, localPort);
 
         map.put("video", file);
+        map.put("streamUrl", streamUrl);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));

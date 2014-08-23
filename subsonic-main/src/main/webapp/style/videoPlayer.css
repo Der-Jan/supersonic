@@ -150,10 +150,10 @@ body {
     cursor: pointer;
 }
 
-.ui-slider a {
-    outline:none;
-}
-
 .ui-slider {
     cursor: pointer;
+}
+
+.ui-slider-handle:focus {
+    outline:none;
 }

@@ -144,22 +144,22 @@
             <table class="indent">
                 <tr>
                     <td><fmt:message key="usersettings.username"/></td>
-                    <td><form:input path="username"/></td>
-                    <td class="warning"><form:errors path="username"/></td>
+                    <td><form:input path="username" cssStyle="width:15em"/></td>
+                    <td class="warning"><form:errors path="username" cssStyle="width:15em"/></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="usersettings.email"/></td>
-                    <td><form:input path="email"/></td>
+                    <td><form:input path="email" cssStyle="width:15em"/></td>
                     <td class="warning"><form:errors path="email"/></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="usersettings.password"/></td>
-                    <td><form:password path="password"/></td>
+                    <td><form:password path="password" cssStyle="width:15em"/></td>
                     <td class="warning"><form:errors path="password"/></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="usersettings.confirmpassword"/></td>
-                    <td><form:password path="confirmPassword"/></td>
+                    <td><form:password path="confirmPassword" cssStyle="width:15em"/></td>
                     <td/>
                 </tr>
             </table>
@@ -189,7 +189,7 @@
             <table>
                 <tr>
                     <td><fmt:message key="usersettings.email"/></td>
-                    <td><form:input path="email"/></td>
+                    <td><form:input path="email" cssStyle="width:20em"/></td>
                     <td class="warning"><form:errors path="email"/></td>
                 </tr>
             </table>
