@@ -30,6 +30,18 @@
             <div id="audio_on"></div>
             <div id="audio_off"></div>
             <div id="volume_slider"></div>
+            <select name="bitrate_menu" id="bitrate_menu">
+                <c:forEach items="${model.bitRates}" var="bitRate">
+                    <c:choose>
+                        <c:when test="${bitRate eq model.maxBitRate}">
+                            <option selected="selected" value="${bitRate}">${bitRate} Kbps</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${bitRate}">${bitRate} Kbps</option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </select>
             <div id="casticonactive"></div>
             <div id="casticonidle"></div>
         </div>

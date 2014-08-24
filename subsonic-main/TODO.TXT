@@ -20,21 +20,29 @@ Set X-Content-Duration to support opus encoding
 Support casting to remote Chromecasts (requires *.subsonic.org address)
 Error if unable to determine video duration, e.g., if ffmpeg is not installed.
 Bugfix: Open video player in new window if play queue if receiver found.
+Video: Added bitrate selector
 
 TODO IN 5.0
 --------------
-Correct order for multi-disc
-  https://mail.google.com/mail/ca/u/0/#inbox/147d8bec906412d5
 Add new android app
   https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
-Add bitrate selector?
 Update recommended transcoding settings.
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
-Hide focus for slider
+
+Use optgroup for <select>
+ <select name="files" id="files">
+      <optgroup label="Scripts">
+        <option value="jquery">jQuery.js</option>
+        <option value="jqueryui">ui.jQuery.js</option>
+      </optgroup>
+      <optgroup label="Other files">
+        <option value="somefile">Some unknown file</option>
+        <option value="someotherfile">Some other file with a very long option text</option>
+      </optgroup>
+    </select>
 
 Cast
-  Bitrate selector
   Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work

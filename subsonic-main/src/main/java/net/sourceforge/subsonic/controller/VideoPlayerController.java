@@ -77,7 +77,6 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("streamUrl", streamUrl);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
-        map.put("maxBitRate", ServletRequestUtils.getIntParameter(request, "maxBitRate", DEFAULT_BIT_RATE));
         map.put("duration", duration);
         map.put("bitRates", BIT_RATES);
         map.put("licenseInfo", settingsService.getLicenseInfo());
