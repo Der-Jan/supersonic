@@ -1,26 +1,5 @@
 DONE IN 5.0
 -------------
-Slider cursor and animation.
-Bugfix: Access-Control-Allow-Origin header sometimes missing in REST responses.
-Updated Czech translation, courtesy of Trottel
-Make DLNA media server name configurable.
-Fix DLNA recursion
-  https://github.com/daneren2005/Subsonic-Plus/commit/ca8a5345e9819d041f3cc32325dc83d455e2aa6d
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
-Fix icons in playlist view.
-Hide player combobox when only one player.
-Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
-Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
-Bugfix: Updated ffmpeg commands to fix some transcoding issues.
-Enable compression for XML, JSON and JSONP in the REST API
-Fixed bug in REST method changePassword
-Avoid creating duplicate players when switching from cast to local.
-Set X-Content-Duration to support opus encoding
-  https://sourceforge.net/p/subsonic/bugs/122/
-Support casting to remote Chromecasts (requires *.subsonic.org address)
-Error if unable to determine video duration, e.g., if ffmpeg is not installed.
-Bugfix: Open video player in new window if play queue if receiver found.
-Video: Added bitrate selector
 
 TODO IN 5.0
 --------------
@@ -30,17 +9,6 @@ Update recommended transcoding settings.
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
-Use optgroup for <select>
- <select name="files" id="files">
-      <optgroup label="Scripts">
-        <option value="jquery">jQuery.js</option>
-        <option value="jqueryui">ui.jQuery.js</option>
-      </optgroup>
-      <optgroup label="Other files">
-        <option value="somefile">Some unknown file</option>
-        <option value="someotherfile">Some other file with a very long option text</option>
-      </optgroup>
-    </select>
 
 Cast
   Update site (premium feature)
