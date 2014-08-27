@@ -3,8 +3,6 @@ DONE IN 5.0
 
 TODO IN 5.0
 --------------
-Add new android app
-  https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
 Update recommended transcoding settings.
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
