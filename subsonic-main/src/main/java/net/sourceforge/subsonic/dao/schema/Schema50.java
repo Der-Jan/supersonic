@@ -54,7 +54,7 @@ public class Schema50 extends Schema {
             LOG.info("Database column 'user_settings.song_notification' was added successfully.");
         }
 
-        // Added after 5.0.beta1
+        // Added in 5.0.beta2
         if (template.queryForInt("select count(*) from version where version = 23") == 0) {
             LOG.info("Updating database schema to version 23.");
             template.execute("insert into version values (23)");
