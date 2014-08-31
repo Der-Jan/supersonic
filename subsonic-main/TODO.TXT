@@ -6,7 +6,8 @@ TODO IN 5.0
 --------------
 Sort playlists alphabetically
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660
-
+Sort genres alphabetically
+Playlist edit/delete broken
 
 Site
   Change image of myself
