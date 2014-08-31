@@ -27,7 +27,7 @@
                 <li><span class="bugid">New: </span>Set X-Content-Duration to support opus encoding.</li>
                 <li><span class="bugid">Bugfix: </span>Fixed problem with whole tab being sent to Chromecast rather than just the video.</li>
                 <li><span class="bugid">Bugfix: </span>Access-Control-Allow-Origin header sometimes missing in REST responses.</li>
-                <li><span class="bugid">Bugfix: </span>Fix DLNA recursion bug.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed DLNA recursion bug.</li>
                 <li><span class="bugid">Bugfix: </span>Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)</li>
                 <li><span class="bugid">Bugfix: </span>Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)</li>
                 <li><span class="bugid">Bugfix: </span>Updated ffmpeg commands to fix some transcoding issues.</li>

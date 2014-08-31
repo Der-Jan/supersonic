@@ -1,8 +1,24 @@
 DONE IN 5.0
 -------------
+Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
 
 TODO IN 5.0
 --------------
+Sort playlists alphabetically
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660
+
+
+Site
+  Change image of myself
+  Change intro text
+  Change highlights on intro page
+  Remove link to Chartlyrics
+  Change references to Java 5 (in installation instructions)
+  Rename "Some apps must be purchased separately." to "Some apps are sold separately".
+  Add chromecast
+
+Remove references to lame
+Make password recovery work with https
 Update recommended transcoding settings.
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
@@ -882,10 +898,11 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
 
 On Windows
+  svn update
+  mvn clean install -Pfull
   rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
 
 On VirtualBox Ubuntu
@@ -912,15 +929,15 @@ Post message on forum.
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-05-24/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-08-27/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/ROOT.war
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-05-24 webapps
+ln -s webapps-2014-08-27 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -928,13 +945,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-06-28/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-06-28/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-08-27/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-08-27/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-06-28 webapps
+ln -s webapps-2014-08-27 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
