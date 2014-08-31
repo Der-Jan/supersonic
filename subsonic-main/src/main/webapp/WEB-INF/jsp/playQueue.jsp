@@ -41,7 +41,7 @@
         dwr.engine.setErrorHandler(null);
         startTimer();
 
-        $("#dialog-select-playlist").dialog({resizable: true, height: 220, position: 'top', modal: true, autoOpen: false,
+        $("#dialog-select-playlist").dialog({resizable: true, height: 220, autoOpen: false,
             buttons: {
                 "<fmt:message key="common.cancel"/>": function() {
                     $(this).dialog("close");

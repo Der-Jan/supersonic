@@ -1,13 +1,13 @@
 DONE IN 5.0
 -------------
 Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
+Fixed problem with unresponsive dialogs.
 
 TODO IN 5.0
 --------------
 Sort playlists alphabetically
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660
 Sort genres alphabetically
-Playlist edit/delete broken
 
 Site
   Change image of myself
