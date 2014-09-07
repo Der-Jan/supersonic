@@ -5,14 +5,18 @@ Fixed problem with unresponsive dialogs.
 Use 2000 kbps as default video bitrate.
 Sort playlists alphabetically
 Bugfix: Fixed some sorting issues (e.g., for same artist found in multiple media folders)
+Make password recovery work with https
 
 TODO IN 5.0
 --------------
 Sort genres alphabetically
 Chromecast doesn't auto-advance?
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
-ABBA not merged with Abba
-Sort not maintained when same artist available on several media folders.
+
+Remove references to lame
+Update recommended transcoding settings.
+Shows extra "|" in movie dir.
+Test: Make it possible to cast from remote server
 
 Site
   Change image of myself
@@ -23,11 +27,6 @@ Site
   Rename "Some apps must be purchased separately." to "Some apps are sold separately".
   Add chromecast
 
-Remove references to lame
-Make password recovery work with https
-Update recommended transcoding settings.
-Shows extra "|" in movie dir.
-Test: Make it possible to cast from remote server
 
 
 Cast
