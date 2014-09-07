@@ -18,8 +18,26 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.view.RedirectView;
+
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MediaFileComparator;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.AdService;
@@ -28,19 +46,6 @@ import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.view.RedirectView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controller for the main page.
@@ -194,14 +199,14 @@ public class MainController extends ParameterizableViewController {
     }
 
     private List<MediaFile> getMultiFolderChildren(List<MediaFile> mediaFiles) throws IOException {
-        List<MediaFile> result = new ArrayList<MediaFile>();
+        SortedSet<MediaFile> result = new TreeSet<MediaFile>(new MediaFileComparator(settingsService.isSortAlbumsByYear()));
         for (MediaFile mediaFile : mediaFiles) {
             if (mediaFile.isFile()) {
                 mediaFile = mediaFileService.getParentOf(mediaFile);
             }
             result.addAll(mediaFileService.getChildrenOf(mediaFile, true, true, true));
         }
-        return result;
+        return new ArrayList<MediaFile>(result);
     }
 
     private List<MediaFile> getAncestors(MediaFile dir) throws IOException {

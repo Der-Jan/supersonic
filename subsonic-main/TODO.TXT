@@ -3,12 +3,16 @@ DONE IN 5.0
 Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
 Fixed problem with unresponsive dialogs.
 Use 2000 kbps as default video bitrate.
+Sort playlists alphabetically
+Bugfix: Fixed some sorting issues (e.g., for same artist found in multiple media folders)
 
 TODO IN 5.0
 --------------
-Sort playlists alphabetically
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660
 Sort genres alphabetically
+Chromecast doesn't auto-advance?
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
+ABBA not merged with Abba
+Sort not maintained when same artist available on several media folders.
 
 Site
   Change image of myself
