@@ -33,7 +33,7 @@
             <select name="bitrate_menu" id="bitrate_menu">
                 <c:forEach items="${model.bitRates}" var="bitRate">
                     <c:choose>
-                        <c:when test="${bitRate eq model.maxBitRate}">
+                        <c:when test="${bitRate eq model.defaultBitRate}">
                             <option selected="selected" value="${bitRate}">${bitRate} Kbps</option>
                         </c:when>
                         <c:otherwise>

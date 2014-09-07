@@ -2,6 +2,7 @@ DONE IN 5.0
 -------------
 Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
 Fixed problem with unresponsive dialogs.
+Use 2000 kbps as default video bitrate.
 
 TODO IN 5.0
 --------------
@@ -254,6 +255,8 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+android client will not shuffle offline content immediately after switching to offline mode
+  https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
 
 BT metadata support
   Don't duck etc when in jukebox mode.
