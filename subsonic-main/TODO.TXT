@@ -14,7 +14,6 @@ Chromecast doesn't auto-advance?
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
 
 Remove references to lame
-Update recommended transcoding settings.
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
