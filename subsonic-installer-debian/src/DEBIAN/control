@@ -2,7 +2,7 @@ Package: subsonic
 Version: @VERSION@
 Section: Multimedia
 Priority: optional
-Recommends: lame, ffmpeg
+Recommends: ffmpeg
 Architecture: all
 Maintainer: Sindre Mehus <sindre@activeobjects.no>
 Description: A web-based music streamer, jukebox and Podcast receiver

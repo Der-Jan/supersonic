@@ -433,7 +433,7 @@ public class TranscodingService {
     }
 
     /**
-     * Returns whether downsampling is supported (i.e., whether LAME is installed or not.)
+     * Returns whether downsampling is supported (i.e., whether ffmpeg is installed or not.)
      *
      * @param mediaFile If not null, returns whether downsampling is supported for this file.
      * @return Whether downsampling is supported.

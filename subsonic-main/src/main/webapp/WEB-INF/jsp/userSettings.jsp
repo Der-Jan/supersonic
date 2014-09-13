@@ -114,7 +114,7 @@
             </td>
             <td><c:import url="helpToolTip.jsp"><c:param name="topic" value="transcode"/></c:import></td>
             <c:if test="${not command.transcodingSupported}">
-                <td class="warning"><fmt:message key="playersettings.nolame"/></td>
+                <td class="warning"><fmt:message key="playersettings.notranscoder"/></td>
             </c:if>
         </tr>
     </table>
