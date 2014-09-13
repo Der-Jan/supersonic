@@ -260,6 +260,8 @@ TODO IN ANDROID 4.1
 --------------------
 android client will not shuffle offline content immediately after switching to offline mode
   https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
+Password shown in clear text
+  https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/1485aae9b208349f
 
 BT metadata support
   Don't duck etc when in jukebox mode.
