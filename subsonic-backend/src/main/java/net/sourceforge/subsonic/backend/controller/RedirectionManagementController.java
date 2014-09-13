@@ -18,8 +18,19 @@
  */
 package net.sourceforge.subsonic.backend.controller;
 
-import net.sourceforge.subsonic.backend.dao.RedirectionDao;
-import net.sourceforge.subsonic.backend.domain.Redirection;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -33,17 +44,8 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.sourceforge.subsonic.backend.dao.RedirectionDao;
+import net.sourceforge.subsonic.backend.domain.Redirection;
 
 /**
  * @author Sindre Mehus
@@ -57,6 +59,8 @@ public class RedirectionManagementController extends MultiActionController {
     static {
         RESERVED_REDIRECTS.put("forum", "http://www.subsonic.org/pages/forum.jsp");
         RESERVED_REDIRECTS.put("premium", "http://www.subsonic.org/pages/premium.jsp");
+        RESERVED_REDIRECTS.put("faq", "http://www.subsonic.org/pages/faq.jsp");
+        RESERVED_REDIRECTS.put("api", "http://www.subsonic.org/pages/api.jsp");
         RESERVED_REDIRECTS.put("www", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("web", "http://www.subsonic.org/pages/index.jsp");
         RESERVED_REDIRECTS.put("ftp", "http://www.subsonic.org/pages/index.jsp");
