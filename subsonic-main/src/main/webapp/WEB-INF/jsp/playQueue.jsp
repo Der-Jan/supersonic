@@ -41,7 +41,7 @@
         dwr.engine.setErrorHandler(null);
         startTimer();
 
-        $("#dialog-select-playlist").dialog({resizable: true, height: 220, position: 'top', modal: true, autoOpen: false,
+        $("#dialog-select-playlist").dialog({resizable: true, height: 220, autoOpen: false,
             buttons: {
                 "<fmt:message key="common.cancel"/>": function() {
                     $(this).dialog("close");
@@ -565,25 +565,27 @@
 
             <td style="white-space:nowrap;"><select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
                 <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
-                <option style="color:blue;"><fmt:message key="playlist.more.playlist"/></option>
-                <option id="savePlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.save"/></option>
-                <c:if test="${model.user.downloadRole}">
-                    <option id="downloadPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-                </c:if>
-                <c:if test="${model.user.shareRole}">
-                    <option id="sharePlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
-                </c:if>
-                <option id="sortByTrack">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.sortbytrack"/></option>
-                <option id="sortByAlbum">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.sortbyalbum"/></option>
-                <option id="sortByArtist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.sortbyartist"/></option>
-                <option style="color:blue;"><fmt:message key="playlist.more.selection"/></option>
-                <option id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
-                <option id="selectNone">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
-                <option id="removeSelected">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.remove"/></option>
-                <c:if test="${model.user.downloadRole}">
-                    <option id="download">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-                </c:if>
-                <option id="appendPlaylist">&nbsp;&nbsp;&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
+                <optgroup label="<fmt:message key="playlist.more.playlist"/>">
+                    <option id="savePlaylist"><fmt:message key="playlist.save"/></option>
+                    <c:if test="${model.user.downloadRole}">
+                    <option id="downloadPlaylist"><fmt:message key="common.download"/></option>
+                    </c:if>
+                    <c:if test="${model.user.shareRole}">
+                    <option id="sharePlaylist"><fmt:message key="main.more.share"/></option>
+                    </c:if>
+                    <option id="sortByTrack"><fmt:message key="playlist.more.sortbytrack"/></option>
+                    <option id="sortByAlbum"><fmt:message key="playlist.more.sortbyalbum"/></option>
+                    <option id="sortByArtist"><fmt:message key="playlist.more.sortbyartist"/></option>
+                </optgroup>
+                <optgroup label="<fmt:message key="playlist.more.selection"/>">
+                    <option id="selectAll"><fmt:message key="playlist.more.selectall"/></option>
+                    <option id="selectNone"><fmt:message key="playlist.more.selectnone"/></option>
+                    <option id="removeSelected"><fmt:message key="playlist.remove"/></option>
+                    <c:if test="${model.user.downloadRole}">
+                        <option id="download"><fmt:message key="common.download"/></option>
+                    </c:if>
+                    <option id="appendPlaylist"><fmt:message key="playlist.append"/></option>
+                </optgroup>
             </select>
             </td>
 

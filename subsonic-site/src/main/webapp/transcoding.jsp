@@ -39,27 +39,28 @@
                 The recommended settings for audio transcoding is:
             </p>
             <p>
-                <b>Step 1</b>&nbsp;&nbsp;<code>ffmpeg -i %s -ab %bk -v 0 -f mp3 -</code><br/>
+                <b>mp3 audio</b>&nbsp;&nbsp;<code>ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -</code><br/>
             </p>
 
             <p>
                 The recommended settings for video transcoding is:
             </p>
             <p>
-                <b>Step 1</b>&nbsp;&nbsp;<code>ffmpeg -ss %o -i %s -async 1 -b %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f flv -vcodec libx264 -preset superfast -threads 0 -</code><br/>
+                <b>flv/h264 video</b>&nbsp;&nbsp;<code>ffmpeg -ss %o -i %s -async 1 -b %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f flv -c:v libx264 -preset superfast -threads 0 -</code><br/>
+                <b>mkv video</b>&nbsp;&nbsp;<code>ffmpeg -ss %o -i %s -c:v libx264 -preset superfast -b:v %bk -c:a libvorbis -f matroska -threads 0 -</code>
             </p>
 
             <p>
                 The recommended <b>downsample</b> command is:
             </p>
             <p>
-                <code>ffmpeg -i %s -ab %bk -v 0 -f mp3 -</code>
+                <code>ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -</code>
             </p>
             <p>
                 The recommended <b>HTTP Live Streaming</b> (HLS) command is:
             </p>
             <p>
-                <code>ffmpeg -ss %o -t %d -i %s -async 1 -b %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f mpegts -vcodec libx264 -preset superfast -acodec libmp3lame -threads 0 -</code>
+                <code>ffmpeg -ss %o -t %d -i %s -async 1 -b:v %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f mpegts -c:v libx264 -preset superfast -c:a libmp3lame -threads 0 -</code>
             </p>
 
             <p>

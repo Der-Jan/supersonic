@@ -123,7 +123,7 @@
                     </td>
                     <td class="warning">
                         <c:if test="${not command.transcodingSupported}">
-                            <fmt:message key="playersettings.nolame"/>
+                            <fmt:message key="playersettings.notranscoder"/>
                         </c:if>
                     </td>
                 </tr>

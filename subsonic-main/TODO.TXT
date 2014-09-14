@@ -1,40 +1,33 @@
 DONE IN 5.0
 -------------
-Slider cursor and animation.
-Bugfix: Access-Control-Allow-Origin header sometimes missing in REST responses.
-Updated Czech translation, courtesy of Trottel
-Make DLNA media server name configurable.
-Fix DLNA recursion
-  https://github.com/daneren2005/Subsonic-Plus/commit/ca8a5345e9819d041f3cc32325dc83d455e2aa6d
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14045
-Fix icons in playlist view.
-Hide player combobox when only one player.
-Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)
-Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)
-Bugfix: Updated ffmpeg commands to fix some transcoding issues.
-Enable compression for XML, JSON and JSONP in the REST API
-Fixed bug in REST method changePassword
-Avoid creating duplicate players when switching from cast to local.
-Set X-Content-Duration to support opus encoding
-  https://sourceforge.net/p/subsonic/bugs/122/
-Support casting to remote Chromecasts (requires *.subsonic.org address)
-Error if unable to determine video duration, e.g., if ffmpeg is not installed.
-Bugfix: Open video player in new window if play queue if receiver found.
+Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
+Fixed problem with unresponsive dialogs.
+Use 2000 kbps as default video bitrate.
+Sort playlists alphabetically
+Bugfix: Fixed some sorting issues (e.g., for same artist found in multiple media folders)
+Make password recovery work with https
 
 TODO IN 5.0
 --------------
-Correct order for multi-disc
-  https://mail.google.com/mail/ca/u/0/#inbox/147d8bec906412d5
-Add new android app
-  https://mail.google.com/mail/ca/u/0/#inbox/146cf3a07a298b6b
-Add bitrate selector?
-Update recommended transcoding settings.
+Sort genres alphabetically
+Chromecast doesn't auto-advance?
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
+
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
-Hide focus for slider
+
+Site
+  Change image of myself
+  Change intro text
+  Change highlights on intro page
+  Remove link to Chartlyrics
+  Change references to Java 5 (in installation instructions)
+  Rename "Some apps must be purchased separately." to "Some apps are sold separately".
+  Add chromecast
+
+
 
 Cast
-  Bitrate selector
   Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
@@ -263,6 +256,10 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+android client will not shuffle offline content immediately after switching to offline mode
+  https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
+Password shown in clear text
+  https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/1485aae9b208349f
 
 BT metadata support
   Don't duck etc when in jukebox mode.
@@ -908,23 +905,24 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
 
 On Windows
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
+  svn update
+  mvn clean install -Pfull
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
 
 On VirtualBox Ubuntu
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
   sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta1/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
   sudo shutdown -h now
 
 Modify FRS properties
@@ -933,20 +931,20 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0.beta1 -m "Tagging 5.0.beta1"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0.beta2 -m "Tagging 5.0.beta2"
 Post message on forum.
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-05-24/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-05-24/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-08-27/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/ROOT.war
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-05-24 webapps
+ln -s webapps-2014-08-27 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -954,13 +952,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-06-28/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-06-28/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-08-27/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-08-27/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-06-28 webapps
+ln -s webapps-2014-08-27 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

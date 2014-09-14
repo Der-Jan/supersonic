@@ -14,7 +14,7 @@
 
         function init() {
             dwr.engine.setErrorHandler(null);
-            $("#dialog-edit").dialog({resizable: true, width:400, position: 'top', modal: true, autoOpen: false,
+            $("#dialog-edit").dialog({resizable: true, width:400, autoOpen: false,
                 buttons: {
                     "<fmt:message key="common.save"/>": function() {
                         $(this).dialog("close");
@@ -30,7 +30,7 @@
                     }
                 }});
 
-            $("#dialog-delete").dialog({resizable: false, height: 170, position: 'top', modal: true, autoOpen: false,
+            $("#dialog-delete").dialog({resizable: false, height: 170, autoOpen: false,
                 buttons: {
                     "<fmt:message key="common.delete"/>": function() {
                         $(this).dialog("close");

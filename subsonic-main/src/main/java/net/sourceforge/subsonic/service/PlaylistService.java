@@ -18,25 +18,6 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.dao.PlaylistDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.Playlist;
-import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.util.Pair;
-import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,10 +30,32 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.dao.PlaylistDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.util.Pair;
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * Provides services for loading and saving playlists to and from persistent storage.
@@ -70,11 +73,11 @@ public class PlaylistService {
     private SettingsService settingsService;
 
     public List<Playlist> getAllPlaylists() {
-        return playlistDao.getAllPlaylists();
+        return sort(playlistDao.getAllPlaylists());
     }
 
     public List<Playlist> getReadablePlaylistsForUser(String username) {
-        return playlistDao.getReadablePlaylistsForUser(username);
+        return sort(playlistDao.getReadablePlaylistsForUser(username));
     }
 
     public List<Playlist> getWritablePlaylistsForUser(String username) {
@@ -84,7 +87,12 @@ public class PlaylistService {
             return getReadablePlaylistsForUser(username);
         }
 
-        return playlistDao.getWritablePlaylistsForUser(username);
+        return sort(playlistDao.getWritablePlaylistsForUser(username));
+    }
+
+    private List<Playlist> sort(List<Playlist> playlists) {
+        Collections.sort(playlists, new PlaylistComparator());
+        return playlists;
     }
 
     public Playlist getPlaylist(int id) {
@@ -496,6 +504,13 @@ public class PlaylistService {
             if (writer.checkError()) {
                 throw new IOException("Error when writing playlist.");
             }
+        }
+    }
+
+    private static class PlaylistComparator implements Comparator<Playlist> {
+        @Override
+        public int compare(Playlist p1, Playlist p2) {
+            return p1.getName().compareTo(p2.getName());
         }
     }
 }

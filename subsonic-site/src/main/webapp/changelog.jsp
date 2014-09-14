@@ -17,6 +17,24 @@
         <div id="main-col">
             <h1 class="bottomspace">Subsonic Change Log</h1>
 
+            <a name="5.0.beta2"><h2 class="div">Subsonic 5.0.beta2 - Aug 26, 2014</h2></a>
+            <ul>
+                <li><span class="bugid">New: </span>Support casting to remote Chromecasts (requires *.subsonic.org address)</li>
+                <li><span class="bugid">New: </span>Added video bitrate selector.</li>
+                <li><span class="bugid">New: </span>Make DLNA media server name configurable.</li>
+                <li><span class="bugid">New: </span>Updated Czech translation, courtesy of Trottel.</li>
+                <li><span class="bugid">New: </span>Enable compression for XML, JSON and JSONP in the REST API</li>
+                <li><span class="bugid">New: </span>Set X-Content-Duration to support opus encoding.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed problem with whole tab being sent to Chromecast rather than just the video.</li>
+                <li><span class="bugid">Bugfix: </span>Access-Control-Allow-Origin header sometimes missing in REST responses.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed DLNA recursion bug.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed mixed content errors when changing cover art, and using https (courtesy of daneren2005)</li>
+                <li><span class="bugid">Bugfix: </span>Fixed errors on certain podcast feeds where they were being incorrectly labeled as video files (courtesy of daneren2005)</li>
+                <li><span class="bugid">Bugfix: </span>Updated ffmpeg commands to fix some transcoding issues.</li>
+                <li><span class="bugid">Bugfix: </span>Fixed bug in REST method changePassword</li>
+                <li><span class="bugid">Bugfix: </span>Avoid creating duplicate players when switching from Chromecast to local.</li>
+            </ul>
+
             <a name="5.0.beta1"><h2 class="div">Subsonic 5.0.beta1 - May 24, 2014</h2></a>
             <ul>
                 <li><span class="bugid">New: </span>Chromecast support.</li>
@@ -168,6 +186,7 @@
             <div class="sidebox">
                 <h2>Releases</h2>
                 <ul class="list">
+                    <li><a href="#5.0.beta2">Subsonic 5.0.beta2</a></li>
                     <li><a href="#5.0.beta1">Subsonic 5.0.beta1</a></li>
                     <li><a href="#4.9">Subsonic 4.9</a></li>
                     <li><a href="#4.9.beta4">Subsonic 4.9.beta4</a></li>
