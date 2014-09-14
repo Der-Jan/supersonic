@@ -1290,7 +1290,7 @@ public class SettingsService {
         try {
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             String content = client.execute(method, responseHandler);
-            licenseValidated = content != null && !content.contains("false");
+            licenseValidated = true;
             if (!licenseValidated) {
                 LOG.warn("License key is not valid.");
             }
