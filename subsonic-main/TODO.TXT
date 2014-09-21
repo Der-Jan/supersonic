@@ -9,6 +9,7 @@ Make password recovery work with https
 
 TODO IN 5.0
 --------------
+Open video in popup rather than new window?
 Sort genres alphabetically
 Chromecast doesn't auto-advance?
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
@@ -260,7 +261,8 @@ android client will not shuffle offline content immediately after switching to o
   https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
 Password shown in clear text
   https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/1485aae9b208349f
-
+Pause instead of ducking
+  https://mail.google.com/mail/ca/u/0/#inbox/148911d28b1805b4
 BT metadata support
   Don't duck etc when in jukebox mode.
   http://developer.android.com/reference/android/media/RemoteControlClient.html
@@ -905,24 +907,24 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
 
 On Windows
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
 
 On VirtualBox Ubuntu
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
   sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0.beta2/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
   sudo shutdown -h now
 
 Modify FRS properties
@@ -931,7 +933,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0.beta2 -m "Tagging 5.0.beta2"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0 -m "Tagging 5.0"
 Post message on forum.
 
 Update subsonic.org (66.49.215.227)
