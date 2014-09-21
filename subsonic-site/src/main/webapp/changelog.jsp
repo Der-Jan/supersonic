@@ -24,7 +24,6 @@
                 <li><span class="bugid">Bugfix: </span>Use 2000 kbps as default video bitrate.</li>
                 <li><span class="bugid">Bugfix: </span>Sort playlists alphabetically.</li>
                 <li><span class="bugid">Bugfix: </span>Fixed some sorting issues (e.g., for same artist found in multiple media folders).</li>
-                <li><span class="bugid">Bugfix: </span>Open video player in new window to work around Chromecast error.</li>
                 <li><span class="bugid">Bugfix: </span>Make password recovery work with https.</li>
             </ul>
 
