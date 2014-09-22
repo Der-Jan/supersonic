@@ -35,11 +35,9 @@ PARAMETERS
             <sub:url value="/videoPlayer.view" var="videoUrl">
                 <sub:param name="id" value="${param.id}"/>
             </sub:url>
-            <%-- Open video in new window if Chromecast is already initialized in play queue. --%>
-            <a href="#" onclick="window.open('${videoUrl}', top.playQueue.CastPlayer.receiverFound ? '_blank' : 'main'); return false;">
-                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
-                     style="padding-right: 0.1em" title="<fmt:message key="common.play"/>">
-            </a>
+            <a href="${videoUrl}" target="main">
+                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="padding-right: 0.1em"
+                     title="<fmt:message key="common.play"/>"></a>
         </c:when>
         <c:otherwise>
             <a href="#" onclick="top.playQueue.onPlay(${param.id}); return false;">

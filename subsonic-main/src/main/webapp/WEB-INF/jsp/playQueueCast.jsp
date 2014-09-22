@@ -7,7 +7,6 @@
         this.castSession = null;
         this.mediaSession = null;
         this.volume = 1.0;
-        this.receiverFound = false;
 
         this.initializeCastPlayer();
     };
@@ -47,13 +46,11 @@
     CastPlayer.prototype.receiverListener = function (e) {
         if (e === 'available') {
             this.log("receiver found");
-            this.receiverFound = true;
             $("#castOn").show();
             $("#castOff").hide();
         }
         else {
             this.log("receiver list empty");
-            this.receiverFound = false;
             $("#castOn").hide();
             $("#castOff").hide();
         }

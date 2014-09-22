@@ -57,13 +57,8 @@
 
 <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
 
-<div id="back" class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
+<div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
 <div style="clear: both"></div>
-
-<script type="text/javascript">
-    var showBackButton = top.playQueue != null && !top.playQueue.CastPlayer.receiverFound;
-    $("#back").toggle(showBackButton);
-</script>
 
 </body>
 </html>
