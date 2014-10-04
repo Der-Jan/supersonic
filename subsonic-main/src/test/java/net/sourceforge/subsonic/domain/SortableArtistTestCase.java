@@ -34,7 +34,6 @@ public class SortableArtistTestCase extends TestCase {
     @Override
     public void setUp() throws Exception {
         collator = Collator.getInstance(Locale.US);
-        collator.setStrength(Collator.PRIMARY);
     }
 
     public void testSorting() throws Exception {
@@ -50,7 +49,7 @@ public class SortableArtistTestCase extends TestCase {
         artists.add(new TestSortableArtist("ABC"));
 
         Collections.sort(artists);
-        assertEquals("[ABBA, Abba, abba, ABC, abc, ACDC, ACDC, acdc]", artists.toString());
+        assertEquals("[abba, Abba, ABBA, abc, ABC, acdc, ACDC, ACDC]", artists.toString());
     }
 
     public void testSortingWithAccents() throws Exception {
@@ -92,7 +91,7 @@ public class SortableArtistTestCase extends TestCase {
 
         Collections.shuffle(artists);
         Collections.sort(artists);
-        assertEquals("[Sea, SEB, Seb, S\u00e9b, Sed, See]", artists.toString());
+        assertEquals("[Sea, Seb, SEB, S\u00e9b, Sed, See]", artists.toString());
     }
 
     public void testCollation() throws Exception {

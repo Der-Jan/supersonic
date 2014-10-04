@@ -139,8 +139,7 @@ public class MusicIndex implements Serializable {
         }
 
         public int compareTo(SortableArtist other) {
-            int n = collationKey.compareTo(other.collationKey);
-            return n == 0 ? sortableName.compareTo(other.sortableName) : n;
+            return collationKey.compareTo(other.collationKey);
         }
     }
 

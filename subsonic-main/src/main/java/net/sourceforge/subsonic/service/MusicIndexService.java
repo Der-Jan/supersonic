@@ -182,9 +182,7 @@ public class MusicIndexService {
      * Returns a collator to be used when sorting artists.
      */
     private Collator createCollator() {
-        Collator result = Collator.getInstance(settingsService.getLocale());
-        result.setStrength(Collator.PRIMARY);
-        return result;
+        return Collator.getInstance(settingsService.getLocale());
     }
 
     private String createSortableName(String name, String[] ignoredArticles) {
