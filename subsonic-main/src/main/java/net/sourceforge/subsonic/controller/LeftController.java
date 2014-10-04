@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -217,7 +216,7 @@ public class LeftController extends ParameterizableViewController {
     }
 
     public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
-        SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
         List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
         return new MusicFolderContent(indexedArtists, singleSongs);
     }
@@ -248,15 +247,15 @@ public class LeftController extends ParameterizableViewController {
 
     public static class MusicFolderContent {
 
-        private final SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
+        private final SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
         private final List<MediaFile> singleSongs;
 
-        public MusicFolderContent(SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
+        public MusicFolderContent(SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
             this.indexedArtists = indexedArtists;
             this.singleSongs = singleSongs;
         }
 
-        public SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
+        public SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
             return indexedArtists;
         }
 

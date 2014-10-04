@@ -264,10 +264,10 @@ public class RESTController extends MultiActionController {
             indexes.getShortcut().add(createJaxbArtist(shortcut, username));
         }
 
-        SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists =
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists =
                 leftController.getMusicFolderContent(musicFolders, false).getIndexedArtists();
 
-        for (Map.Entry<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> entry : indexedArtists.entrySet()) {
+        for (Map.Entry<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> entry : indexedArtists.entrySet()) {
             Index index = new Index();
             indexes.getIndex().add(index);
             index.setName(entry.getKey().getIndex());
@@ -345,8 +345,8 @@ public class RESTController extends MultiActionController {
         result.setIgnoredArticles(settingsService.getIgnoredArticles());
 
         List<Artist> artists = artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE);
-        SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithArtist>> indexedArtists = musicIndexService.getIndexedArtists(artists);
-        for (Map.Entry<MusicIndex, SortedSet<MusicIndex.SortableArtistWithArtist>> entry : indexedArtists.entrySet()) {
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> indexedArtists = musicIndexService.getIndexedArtists(artists);
+        for (Map.Entry<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> entry : indexedArtists.entrySet()) {
             IndexID3 index = new IndexID3();
             result.getIndex().add(index);
             index.setName(entry.getKey().getIndex());

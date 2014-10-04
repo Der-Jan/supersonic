@@ -1,19 +1,22 @@
-DONE IN 5.0
+DONE IN 5.1
 -------------
-Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
-Fixed problem with unresponsive dialogs.
-Use 2000 kbps as default video bitrate.
-Sort playlists alphabetically
-Bugfix: Fixed some sorting issues (e.g., for same artist found in multiple media folders)
-Make password recovery work with https
+Sort artists using locale-specific collation.
 
-TODO IN 5.0
+TODO IN 5.1
 --------------
-Open video in popup rather than new window?
-Sort genres alphabetically
-Chromecast doesn't auto-advance?
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
-
+Sort folders using locale-specific collation.
+Backend: Disallow non-trial redirection if license holder not valid.
+Video thumbnail.
+Cast: Update site (premium feature)
+Don't differentiate between albums and dirs when sorting?
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64555#p64555
+Sort genres alphabetically?
+Keep Playlists Regardless if Media Found
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14737
+Subtitle support
+  http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
+  http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14665
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
@@ -26,10 +29,7 @@ Site
   Rename "Some apps must be purchased separately." to "Some apps are sold separately".
   Add chromecast
 
-
-
 Cast
-  Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
   Autoplay locally?
@@ -257,6 +257,8 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+"Exit" button not always working?
+  https://mail.google.com/mail/ca/u/0/#inbox/148b913b924e6218
 android client will not shuffle offline content immediately after switching to offline mode
   https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
 Password shown in clear text
@@ -936,17 +938,22 @@ Upload site (OLD):
 svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0 -m "Tagging 5.0"
 Post message on forum.
 
+Checking for license abuse:
+select count(*) as n, license_holder from redirection
+where license_holder is not null and license_holder <> '' group by license_holder
+order by n desc
+
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-08-27/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-09-21/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-09-21/ROOT.war
+rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-09-21/pages
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-08-27 webapps
+ln -s webapps-2014-09-21 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -954,13 +961,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-08-27/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-08-27/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-09-21/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-09-21/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-08-27 webapps
+ln -s webapps-2014-09-21 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
