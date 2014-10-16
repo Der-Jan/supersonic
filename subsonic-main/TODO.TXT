@@ -2,9 +2,12 @@ DONE IN 5.1
 -------------
 Sort artists using locale-specific collation.
 Updated Estonian translation, courtesy of Olav M&auml;gi.
+Instant search (show search results while typing)
 
 TODO IN 5.1
 --------------
+Instant search
+  - test other browsers
 Video playback broken behind proxies.
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64820&e=64820
 Sort folders using locale-specific collation.
