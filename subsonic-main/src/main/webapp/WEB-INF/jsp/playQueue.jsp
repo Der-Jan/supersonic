@@ -361,9 +361,15 @@
             console.log(song.streamUrl);
         }
 
+        updateWindowTitle(song);
+
         <c:if test="${model.notify}">
         showNotification(song);
         </c:if>
+    }
+
+    function updateWindowTitle(song) {
+        top.document.title = song.title + " - " + song.artist + " - Subsonic";
     }
 
     function showNotification(song) {

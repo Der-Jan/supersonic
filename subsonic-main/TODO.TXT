@@ -3,9 +3,11 @@ DONE IN 5.1
 Sort artists using locale-specific collation.
 Updated Estonian translation, courtesy of Olav M&auml;gi.
 Instant search (show search results while typing)
+Show song title in browser window title.
 
 TODO IN 5.1
 --------------
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14821
 DB: Delete redirection where trial is false and license holder is null.
 Instant search
   - test other browsers
