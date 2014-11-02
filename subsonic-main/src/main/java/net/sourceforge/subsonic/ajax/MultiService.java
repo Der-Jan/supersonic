@@ -18,7 +18,12 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.NetworkService;
 
 /**
@@ -31,7 +36,9 @@ import net.sourceforge.subsonic.service.NetworkService;
 public class MultiService {
 
     private static final Logger LOG = Logger.getLogger(MultiService.class);
+
     private NetworkService networkService;
+    private MediaFileService mediaFileService;
 
     /**
      * Returns status for port forwarding and URL redirection.
@@ -45,7 +52,22 @@ public class MultiService {
                                  urlRedirectionStatus.getDate());
     }
 
+    public List<SimilarArtist> getSimilarArtists(int mediaFileId, int limit) {
+        MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
+        List<MediaFile> similarArtists = mediaFileService.getSimilarArtists(artist, limit);
+        SimilarArtist[] result = new SimilarArtist[similarArtists.size()];
+        for (int i = 0; i < result.length; i++) {
+            MediaFile similarArtist = similarArtists.get(i);
+            result[i] = new SimilarArtist(similarArtist.getId(), similarArtist.getName());
+        }
+        return Arrays.asList(result);
+    }
+
     public void setNetworkService(NetworkService networkService) {
         this.networkService = networkService;
+    }
+
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
     }
 }

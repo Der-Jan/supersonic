@@ -18,8 +18,10 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.Caller;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -56,11 +60,21 @@ public class AudioScrobblerService {
 
     private static final Logger LOG = Logger.getLogger(AudioScrobblerService.class);
     private static final int MAX_PENDING_REGISTRATION = 2000;
+    private static final String LAST_FM_KEY = "ece4499898a9440896dfdce5dab26bbf";
+    private static final long CACHE_TIME_TO_LIVE_MILLIS = 3 * 30 * 24 * 3600 * 1000L; // 3 months
 
     private RegistrationThread thread;
     private final LinkedBlockingQueue<RegistrationData> queue = new LinkedBlockingQueue<RegistrationData>();
 
     private SettingsService settingsService;
+
+    public void init() {
+        Caller caller = Caller.getInstance();
+        caller.setUserAgent("Subsonic");
+
+        File cacheDir = new File(SettingsService.getSubsonicHome(), "lastfmcache");
+        caller.setCache(new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS));
+    }
 
     /**
      * Registers the given media file at www.last.fm. This method returns immediately, the actual registration is done
@@ -93,6 +107,18 @@ public class AudioScrobblerService {
         } catch (InterruptedException x) {
             LOG.warn("Interrupted while queuing Last.fm scrobble.", x);
         }
+    }
+
+    /**
+     * Returns similar artists, using the last.fm REST API.
+     */
+    public List<String> getSimilarArtists(String artistName) {
+        List<String> result = new ArrayList<String>();
+        Collection<Artist> similarArtists = Artist.getSimilar(artistName, LAST_FM_KEY);
+        for (Artist similarArtist : similarArtists) {
+            result.add(similarArtist.getName());
+        }
+        return result;
     }
 
     /**

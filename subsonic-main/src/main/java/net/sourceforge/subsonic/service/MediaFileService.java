@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,6 +69,7 @@ public class MediaFileService {
     private AlbumDao albumDao;
     private MetaDataParserFactory metaDataParserFactory;
     private boolean memoryCacheEnabled = true;
+    private AudioScrobblerService audioScrobblerService;
 
     /**
      * Returns a media file instance for the given file.  If possible, a cached value is returned.
@@ -126,7 +128,7 @@ public class MediaFileService {
         }
         mediaFile = createMediaFile(mediaFile.getFile());
         mediaFileDao.createOrUpdateMediaFile(mediaFile);
-        return  mediaFile;
+        return mediaFile;
     }
 
     /**
@@ -232,8 +234,8 @@ public class MediaFileService {
     /**
      * Returns all genres in the music collection.
      *
-     * @return Sorted list of genres.
      * @param sortByAlbum Whether to sort by album count, rather than song count.
+     * @return Sorted list of genres.
      */
     public List<Genre> getGenres(boolean sortByAlbum) {
         return mediaFileDao.getGenres(sortByAlbum);
@@ -287,8 +289,8 @@ public class MediaFileService {
     /**
      * Returns albums in alphabetical order.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset   Number of albums to skip.
+     * @param count    Maximum number of albums to return.
      * @param byArtist Whether to sort by artist name
      * @return Albums in alphabetical order.
      */
@@ -299,10 +301,10 @@ public class MediaFileService {
     /**
      * Returns albums within a year range.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset   Number of albums to skip.
+     * @param count    Maximum number of albums to return.
      * @param fromYear The first year in the range.
-     * @param toYear The last year in the range.
+     * @param toYear   The last year in the range.
      * @return Albums in the year range.
      */
     public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear) {
@@ -314,11 +316,85 @@ public class MediaFileService {
      *
      * @param offset Number of albums to skip.
      * @param count  Maximum number of albums to return.
-     * @param genre The genre name.
+     * @param genre  The genre name.
      * @return Albums in the genre.
      */
     public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
         return mediaFileDao.getAlbumsByGenre(offset, count, genre);
+    }
+
+    /**
+     * Returns similar artists, using last.fm REST API.
+     *
+     * @param artist The artist.
+     * @param limit  Max number of similar artists to return.
+     * @return Similar artists, ordred by similarity.
+     */
+    public List<MediaFile> getSimilarArtists(MediaFile artist, int limit) {
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        if (artist == null) {
+            return result;
+        }
+        String artistName = artist.getAlbumArtist() != null ? artist.getAlbumArtist() : artist.getArtist();
+        List<String> similarArtistNames = audioScrobblerService.getSimilarArtists(artistName);
+        for (String name : similarArtistNames) {
+            MediaFile similarArtist = mediaFileDao.getArtistByName(name);
+            if (similarArtist != null) {
+                result.add(similarArtist);
+                if (result.size() == limit) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
+     *
+     * @param artist The artist.
+     * @param count  Max number of songs to return.
+     * @return Songs from similar artists;
+     */
+    public List<MediaFile> getSimilarSongsForArtist(MediaFile artist, int count) throws IOException {
+        List<MediaFile> similarSongs = new ArrayList<MediaFile>();
+        similarSongs.addAll(getRandomSongsForParent(artist, count));
+        for (MediaFile similarArtist : getSimilarArtists(artist, 100)) {
+            similarSongs.addAll(getRandomSongsForParent(similarArtist, count));
+        }
+        Collections.shuffle(similarSongs);
+        return similarSongs.subList(0, Math.min(count, similarSongs.size()));
+    }
+
+    /**
+     * Returns random songs for the give parent.
+     *
+     * @param parent The parent.
+     * @param count  Max number of songs to return.
+     * @return Random songs.
+     */
+    public List<MediaFile> getRandomSongsForParent(MediaFile parent, int count) throws IOException {
+        List<MediaFile> children = getDescendantsOf(parent, false);
+        removeVideoFiles(children);
+
+        if (children.isEmpty()) {
+            return children;
+        }
+        Collections.shuffle(children);
+        return children.subList(0, Math.min(count, children.size()));
+    }
+
+    /**
+     * Removes video files from the given list.
+     */
+    public void removeVideoFiles(List<MediaFile> files) {
+        Iterator<MediaFile> iterator = files.iterator();
+        while (iterator.hasNext()) {
+            MediaFile file = iterator.next();
+            if (file.isVideo()) {
+                iterator.remove();
+            }
+        }
     }
 
     public Date getMediaFileStarredDate(int id, String username) {
@@ -512,7 +588,7 @@ public class MediaFileService {
         }
         return MUSIC;
     }
-    
+
     public void refreshMediaFile(MediaFile mediaFile) {
         mediaFile = createMediaFile(mediaFile.getFile());
         mediaFileDao.createOrUpdateMediaFile(mediaFile);
@@ -657,5 +733,9 @@ public class MediaFileService {
 
     public void setAlbumDao(AlbumDao albumDao) {
         this.albumDao = albumDao;
+    }
+
+    public void setAudioScrobblerService(AudioScrobblerService audioScrobblerService) {
+        this.audioScrobblerService = audioScrobblerService;
     }
 }

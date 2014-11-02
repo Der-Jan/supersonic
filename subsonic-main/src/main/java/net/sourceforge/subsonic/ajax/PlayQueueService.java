@@ -18,10 +18,7 @@
  */
 package net.sourceforge.subsonic.ajax;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +47,7 @@ import net.sourceforge.subsonic.util.StringUtil;
  *
  * @author Sindre Mehus
  */
+@SuppressWarnings("UnusedDeclaration")
 public class PlayQueueService {
 
     private PlayerService playerService;
@@ -155,7 +153,7 @@ public class PlayQueueService {
 
     private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
         if (player.isWeb()) {
-            removeVideoFiles(files);
+            mediaFileService.removeVideoFiles(files);
         }
         player.getPlayQueue().addFiles(false, files);
         player.getPlayQueue().setRandomSearchCriteria(null);
@@ -167,10 +165,20 @@ public class PlayQueueService {
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
         MediaFile file = mediaFileService.getMediaFile(id);
-        List<MediaFile> randomFiles = getRandomChildren(file, count);
+        List<MediaFile> randomFiles = mediaFileService.getRandomSongsForParent(file, count);
         Player player = getCurrentPlayer(request, response);
         player.getPlayQueue().addFiles(false, randomFiles);
         player.getPlayQueue().setRandomSearchCriteria(null);
+        return convert(request, player, true).setStartPlayerAt(0);
+    }
+
+    public PlayQueueInfo playSimilar(int id, int count) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        MediaFile artist = mediaFileService.getMediaFile(id);
+        List<MediaFile> similarSongs = mediaFileService.getSimilarSongsForArtist(artist, count);
+        Player player = getCurrentPlayer(request, response);
+        player.getPlayQueue().addFiles(false, similarSongs);
         return convert(request, player, true).setStartPlayerAt(0);
     }
 
@@ -194,7 +202,7 @@ public class PlayQueueService {
             files.addAll(mediaFileService.getDescendantsOf(ancestor, true));
         }
         if (player.isWeb()) {
-            removeVideoFiles(files);
+            mediaFileService.removeVideoFiles(files);
         }
         if (index != null) {
             player.getPlayQueue().addFilesAt(files, index);
@@ -342,27 +350,6 @@ public class PlayQueueService {
 
     public void setGain(float gain) {
         jukeboxService.setGain(gain);
-    }
-
-    private List<MediaFile> getRandomChildren(MediaFile file, int count) throws IOException {
-        List<MediaFile> children = mediaFileService.getDescendantsOf(file, false);
-        removeVideoFiles(children);
-
-        if (children.isEmpty()) {
-            return children;
-        }
-        Collections.shuffle(children);
-        return children.subList(0, Math.min(count, children.size()));
-    }
-
-    private void removeVideoFiles(List<MediaFile> files) {
-        Iterator<MediaFile> iterator = files.iterator();
-        while (iterator.hasNext()) {
-            MediaFile file = iterator.next();
-            if (file.isVideo()) {
-                iterator.remove();
-            }
-        }
     }
 
     private PlayQueueInfo convert(HttpServletRequest request, Player player, boolean sendM3U) throws Exception {

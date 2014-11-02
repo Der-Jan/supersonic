@@ -149,6 +149,9 @@
     function onPlayRandom(id, count) {
         playQueueService.playRandom(id, count, playQueueCallback);
     }
+    function onPlaySimilar(id, count) {
+        playQueueService.playSimilar(id, count, playQueueCallback);
+    }
     function onAdd(id) {
         playQueueService.add(id, playQueueCallback);
     }

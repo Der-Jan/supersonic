@@ -74,6 +74,7 @@
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="albumDao" ref="albumDao"/>
         <property name="metaDataParserFactory" ref="metaDataParserFactory"/>
+        <property name="audioScrobblerService" ref="audioScrobblerService"/>
     </bean>
 
     <bean id="securityService" class="net.sourceforge.subsonic.service.SecurityService">
@@ -142,7 +143,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
 
-    <bean id="audioScrobblerService" class="net.sourceforge.subsonic.service.AudioScrobblerService">
+    <bean id="audioScrobblerService" class="net.sourceforge.subsonic.service.AudioScrobblerService" init-method="init">
         <property name="settingsService" ref="settingsService"/>
     </bean>
 
@@ -210,6 +211,7 @@
 
     <bean id="ajaxMultiService" class="net.sourceforge.subsonic.ajax.MultiService">
         <property name="networkService" ref="networkService"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
 
     <bean id="ajaxNowPlayingService" class="net.sourceforge.subsonic.ajax.NowPlayingService">

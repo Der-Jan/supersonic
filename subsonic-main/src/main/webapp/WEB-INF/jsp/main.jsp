@@ -12,6 +12,7 @@
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
@@ -38,6 +39,27 @@
                     $(this).dialog("close");
                 }
             }});
+
+        loadSimilarArtists();
+    }
+
+    function loadSimilarArtists() {
+        console.log(${model.dir.id});
+        multiService.getSimilarArtists(${model.dir.id}, 8, function (similarArtists) {
+            if (similarArtists.length == 0) {
+                return;
+            }
+            var html = "";
+            for (var i = 0; i < similarArtists.length; i++) {
+                html += "<a href='main.view?id=" + similarArtists[i].mediaFileId + "' target='main'>" +
+                        similarArtists[i].artistName + "</a>";
+                if (i < similarArtists.length - 1) {
+                    html += " | ";
+                }
+            }
+            $("#similarArtists").append(html);
+            $("#similarArtistsParent").show();
+        });
     }
 
     <!-- actionSelected() is invoked when the users selects from the "More actions..." combo box. -->
@@ -474,6 +496,14 @@
         </td>
     </tr>
 </table>
+
+<div id="similarArtistsParent" class="detail" style="display: none; white-space: normal">
+    <div>
+        <span style="padding-right: 0.3em"><fmt:message key="main.similarartists"/>:</span>
+        <span id="similarArtists"></span>
+    </div>
+    <div class="forward"><a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a></div>
+</div>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>

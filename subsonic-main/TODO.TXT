@@ -7,7 +7,30 @@ Show song title in browser window title.
 
 TODO IN 5.1
 --------------
-  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14821
+Find similar tracks / artists
+  "Start Radio", playing tracks from similar artists.
+  Configure cache and agent.  Should cache as long as possible.
+  Add link to last.fm
+  How many similar artists to display?
+  Move to bottom of page?
+  Use java binding for scrobbling?
+  Handle exceptions from api
+  Use minium similarity
+  Make it optional to show similar artists
+  Chris Rea has "Unknown Artist"
+  Add REST service
+Change icon for now playing (use headset), also favicon.
+Artist cover art collage (or use last.fm api)
+CarSub
+  https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3
+Subtitle support
+  https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
+  http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
+  http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14665
+Patch to enable init.d script to handle 0 byte PIDFILE
+  https://mail.google.com/mail/ca/u/0/?zx=fu6g1tfaa3i0#inbox/1492f9f3e57dd8ee
+Show song play count?
 DB: Delete redirection where trial is false and license holder is null.
 Instant search
   - test other browsers
@@ -22,10 +45,6 @@ Don't differentiate between albums and dirs when sorting?
 Sort genres alphabetically?
 Keep Playlists Regardless if Media Found
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14737
-Subtitle support
-  http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
-  http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
-  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14665
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
@@ -266,6 +285,9 @@ Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later
 
 TODO IN ANDROID 4.1
 --------------------
+Wrong cache location in Android 5?
+SSL problems with Android 5?
+  https://mail.google.com/mail/ca/u/0/?zx=fu6g1tfaa3i0#inbox/1493402cdb7393f1
 "Exit" button not always working?
   https://mail.google.com/mail/ca/u/0/#inbox/148b913b924e6218
 android client will not shuffle offline content immediately after switching to offline mode
