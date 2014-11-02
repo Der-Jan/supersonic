@@ -15,7 +15,6 @@ Find similar tracks / artists
   Use minium similarity
   Chris Rea has "Unknown Artist"
   Add REST service, also for ID3
-Change icon for now playing (use headset), also favicon.
 Artist cover art collage (or use last.fm api)
 CarSub
   https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3
