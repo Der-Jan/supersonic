@@ -40,7 +40,9 @@
                 }
             }});
 
+        <c:if test="${model.showSimilarArtists}">
         loadSimilarArtists();
+        </c:if>
     }
 
     function loadSimilarArtists() {

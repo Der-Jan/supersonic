@@ -4,19 +4,15 @@ Sort artists using locale-specific collation.
 Updated Estonian translation, courtesy of Olav M&auml;gi.
 Instant search (show search results while typing)
 Show song title in browser window title.
+Show similar artists, with radio feature
 
 TODO IN 5.1
 --------------
 Find similar tracks / artists
-  "Start Radio", playing tracks from similar artists.
-  Configure cache and agent.  Should cache as long as possible.
   Add link to last.fm
-  How many similar artists to display?
   Move to bottom of page?
   Use java binding for scrobbling?
-  Handle exceptions from api
   Use minium similarity
-  Make it optional to show similar artists
   Chris Rea has "Unknown Artist"
   Add REST service
 Change icon for now playing (use headset), also favicon.

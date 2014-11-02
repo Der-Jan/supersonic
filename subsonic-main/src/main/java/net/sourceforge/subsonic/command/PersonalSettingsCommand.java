@@ -45,6 +45,7 @@ public class PersonalSettingsCommand {
     private boolean partyModeEnabled;
     private boolean showNowPlayingEnabled;
     private boolean showChatEnabled;
+    private boolean showSimilarArtistsEnabled;
     private boolean nowPlayingAllowed;
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
@@ -156,6 +157,14 @@ public class PersonalSettingsCommand {
 
     public void setShowChatEnabled(boolean showChatEnabled) {
         this.showChatEnabled = showChatEnabled;
+    }
+
+    public boolean isShowSimilarArtistsEnabled() {
+        return showSimilarArtistsEnabled;
+    }
+
+    public void setShowSimilarArtistsEnabled(boolean showSimilarArtistsEnabled) {
+        this.showSimilarArtistsEnabled = showSimilarArtistsEnabled;
     }
 
     public boolean isNowPlayingAllowed() {

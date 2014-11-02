@@ -33,6 +33,7 @@ public class UserSettings {
     private String themeId;
     private boolean showNowPlayingEnabled;
     private boolean showChatEnabled;
+    private boolean showSimilarArtistsEnabled;
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
@@ -91,6 +92,14 @@ public class UserSettings {
 
     public void setShowChatEnabled(boolean showChatEnabled) {
         this.showChatEnabled = showChatEnabled;
+    }
+
+    public boolean isShowSimilarArtistsEnabled() {
+        return showSimilarArtistsEnabled;
+    }
+
+    public void setShowSimilarArtistsEnabled(boolean showSimilarArtistsEnabled) {
+        this.showSimilarArtistsEnabled = showSimilarArtistsEnabled;
     }
 
     public boolean isFinalVersionNotificationEnabled() {

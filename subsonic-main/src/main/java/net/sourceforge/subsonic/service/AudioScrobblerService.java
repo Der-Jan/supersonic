@@ -114,9 +114,13 @@ public class AudioScrobblerService {
      */
     public List<String> getSimilarArtists(String artistName) {
         List<String> result = new ArrayList<String>();
-        Collection<Artist> similarArtists = Artist.getSimilar(artistName, LAST_FM_KEY);
-        for (Artist similarArtist : similarArtists) {
-            result.add(similarArtist.getName());
+        try {
+            Collection<Artist> similarArtists = Artist.getSimilar(artistName, LAST_FM_KEY);
+            for (Artist similarArtist : similarArtists) {
+                result.add(similarArtist.getName());
+            }
+        } catch (Throwable x) {
+            LOG.warn("Failed to find similar artist for " + artistName, x);
         }
         return result;
     }
