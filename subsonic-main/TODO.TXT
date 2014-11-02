@@ -14,7 +14,7 @@ Find similar tracks / artists
   Use java binding for scrobbling?
   Use minium similarity
   Chris Rea has "Unknown Artist"
-  Add REST service
+  Add REST service, also for ID3
 Change icon for now playing (use headset), also favicon.
 Artist cover art collage (or use last.fm api)
 CarSub
