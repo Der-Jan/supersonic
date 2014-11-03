@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.10.2">
+           version="1.11.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -42,6 +42,8 @@
             <xs:element name="shares" type="sub:Shares" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred" type="sub:Starred" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred2" type="sub:Starred2" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="similarArtists" type="sub:SimilarArtists" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="similarSongs" type="sub:SimilarSongs" minOccurs="1" maxOccurs="1"/>
             <xs:element name="error" type="sub:Error" minOccurs="1" maxOccurs="1"/>
         </xs:choice>
         <xs:attribute name="status" type="sub:ResponseStatus" use="required"/>
@@ -450,6 +452,18 @@
         <xs:sequence>
             <xs:element name="artist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="album" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="song" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SimilarArtists">
+        <xs:sequence>
+            <xs:element name="artist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SimilarSongs">
+        <xs:sequence>
             <xs:element name="song" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>

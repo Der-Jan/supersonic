@@ -72,6 +72,8 @@ import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
 import org.subsonic.restapi.Shares;
+import org.subsonic.restapi.SimilarArtists;
+import org.subsonic.restapi.SimilarSongs;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
@@ -357,6 +359,57 @@ public class RESTController extends MultiActionController {
 
         Response res = jaxbWriter.createResponse(true);
         res.setArtists(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getSimilarArtists(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        int count = getIntParameter(request, "count", 20);
+
+        SimilarArtists result = new SimilarArtists();
+
+        MediaFile artist = mediaFileService.getMediaFile(id);
+        if (artist == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
+            return;
+        }
+        List<MediaFile> similarArtists = mediaFileService.getSimilarArtists(artist, count);
+        for (MediaFile similarArtist : similarArtists) {
+            result.getArtist().add(createJaxbArtist(similarArtist, username));
+        }
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setSimilarArtists(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getSimilarSongs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        int count = getIntParameter(request, "count", 50);
+
+        SimilarSongs result = new SimilarSongs();
+
+        MediaFile artist = mediaFileService.getMediaFile(id);
+        if (artist == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
+            return;
+        }
+        List<MediaFile> similarSongs = mediaFileService.getSimilarSongsForArtist(artist, count);
+        Player player = playerService.getPlayer(request, response);
+        for (MediaFile similarSong : similarSongs) {
+            result.getSong().add(createJaxbChild(player, similarSong, username));
+        }
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setSimilarSongs(result);
         jaxbWriter.writeResponse(request, response, res);
     }
 
