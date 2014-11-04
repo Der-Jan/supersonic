@@ -121,6 +121,24 @@ public class LastFmService {
     /**
      * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
      *
+     * @param artist The artist.
+     * @param count     Max number of songs to return.
+     * @return Songs from similar artists;
+     */
+    public List<MediaFile> getSimilarSongs(net.sourceforge.subsonic.domain.Artist artist, int count) throws IOException {
+        List<MediaFile> similarSongs = new ArrayList<MediaFile>();
+
+        similarSongs.addAll(mediaFileDao.getSongsByArtist(artist.getName(), 0, 1000));
+        for (net.sourceforge.subsonic.domain.Artist similarArtist : getSimilarArtists(artist, 100)) {
+            similarSongs.addAll(mediaFileDao.getSongsByArtist(similarArtist.getName(), 0, 1000));
+        }
+        Collections.shuffle(similarSongs);
+        return similarSongs.subList(0, Math.min(count, similarSongs.size()));
+    }
+
+    /**
+     * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
+     *
      * @param mediaFile The media file (song, album or artist).
      * @param count     Max number of songs to return.
      * @return Songs from similar artists;

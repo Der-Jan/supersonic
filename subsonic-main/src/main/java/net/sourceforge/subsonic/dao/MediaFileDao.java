@@ -273,6 +273,11 @@ public class MediaFileDao extends AbstractDao {
                      rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), genre, count, offset);
     }
 
+    public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {
+        return query("select " + COLUMNS + " from media_file where type in (?,?,?) and artist=? and present limit ? offset ?",
+                     rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), artist, count, offset);
+    }
+
     /**
      * Returns the most recently starred albums.
      *

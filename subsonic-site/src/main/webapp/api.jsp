@@ -271,7 +271,8 @@
             <code><a href="#getVideos">getVideos</a></code>,
             <code><a href="#getArtistInfo">getArtistInfo</a></code>,
             <code><a href="#getArtistInfo2">getArtistInfo2</a></code>,
-            <code><a href="#getSimilarSongs">getSimilarSongs</a></code>
+            <code><a href="#getSimilarSongs">getSimilarSongs</a></code>,
+            <code><a href="#getSimilarSongs2">getSimilarSongs2</a></code>
         </td>
     </tr>
     <tr class="table-altrow">
@@ -399,6 +400,7 @@
 <%@ include file="api-getArtistInfo.jsp" %>
 <%@ include file="api-getArtistInfo2.jsp" %>
 <%@ include file="api-getSimilarSongs.jsp" %>
+<%@ include file="api-getSimilarSongs2.jsp" %>
 
 <%@ include file="api-getAlbumList.jsp" %>
 <%@ include file="api-getAlbumList2.jsp" %>
