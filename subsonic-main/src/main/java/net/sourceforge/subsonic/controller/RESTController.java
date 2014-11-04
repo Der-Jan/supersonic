@@ -114,6 +114,7 @@ import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
 import net.sourceforge.subsonic.service.JukeboxService;
+import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -149,6 +150,7 @@ public class RESTController extends MultiActionController {
     private SecurityService securityService;
     private PlayerService playerService;
     private MediaFileService mediaFileService;
+    private LastFmService lastFmService;
     private MusicIndexService musicIndexService;
     private TranscodingService transcodingService;
     private DownloadController downloadController;
@@ -372,12 +374,12 @@ public class RESTController extends MultiActionController {
 
         SimilarArtists result = new SimilarArtists();
 
-        MediaFile artist = mediaFileService.getMediaFile(id);
-        if (artist == null) {
-            error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        if (mediaFile == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
             return;
         }
-        List<MediaFile> similarArtists = mediaFileService.getSimilarArtists(artist, count);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count);
         for (MediaFile similarArtist : similarArtists) {
             result.getArtist().add(createJaxbArtist(similarArtist, username));
         }
@@ -397,12 +399,12 @@ public class RESTController extends MultiActionController {
 
         SimilarSongs result = new SimilarSongs();
 
-        MediaFile artist = mediaFileService.getMediaFile(id);
-        if (artist == null) {
-            error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        if (mediaFile == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
             return;
         }
-        List<MediaFile> similarSongs = mediaFileService.getSimilarSongsForArtist(artist, count);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(mediaFile, count);
         Player player = playerService.getPlayer(request, response);
         for (MediaFile similarSong : similarSongs) {
             result.getSong().add(createJaxbChild(player, similarSong, username));
@@ -2197,6 +2199,10 @@ public class RESTController extends MultiActionController {
 
     public void setBookmarkDao(BookmarkDao bookmarkDao) {
         this.bookmarkDao = bookmarkDao;
+    }
+
+    public void setLastFmService(LastFmService lastFmService) {
+        this.lastFmService = lastFmService;
     }
 
     public static enum ErrorCode {

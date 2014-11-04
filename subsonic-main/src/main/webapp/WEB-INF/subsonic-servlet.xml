@@ -350,6 +350,7 @@
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="statusService" ref="statusService"/>

@@ -69,7 +69,6 @@ public class MediaFileService {
     private AlbumDao albumDao;
     private MetaDataParserFactory metaDataParserFactory;
     private boolean memoryCacheEnabled = true;
-    private AudioScrobblerService audioScrobblerService;
 
     /**
      * Returns a media file instance for the given file.  If possible, a cached value is returned.
@@ -321,49 +320,6 @@ public class MediaFileService {
      */
     public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
         return mediaFileDao.getAlbumsByGenre(offset, count, genre);
-    }
-
-    /**
-     * Returns similar artists, using last.fm REST API.
-     *
-     * @param artist The artist.
-     * @param limit  Max number of similar artists to return.
-     * @return Similar artists, ordred by similarity.
-     */
-    public List<MediaFile> getSimilarArtists(MediaFile artist, int limit) {
-        List<MediaFile> result = new ArrayList<MediaFile>();
-        if (artist == null) {
-            return result;
-        }
-        String artistName = artist.getAlbumArtist() != null ? artist.getAlbumArtist() : artist.getArtist();
-        List<String> similarArtistNames = audioScrobblerService.getSimilarArtists(artistName);
-        for (String name : similarArtistNames) {
-            MediaFile similarArtist = mediaFileDao.getArtistByName(name);
-            if (similarArtist != null) {
-                result.add(similarArtist);
-                if (result.size() == limit) {
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
-     *
-     * @param artist The artist.
-     * @param count  Max number of songs to return.
-     * @return Songs from similar artists;
-     */
-    public List<MediaFile> getSimilarSongsForArtist(MediaFile artist, int count) throws IOException {
-        List<MediaFile> similarSongs = new ArrayList<MediaFile>();
-        similarSongs.addAll(getRandomSongsForParent(artist, count));
-        for (MediaFile similarArtist : getSimilarArtists(artist, 100)) {
-            similarSongs.addAll(getRandomSongsForParent(similarArtist, count));
-        }
-        Collections.shuffle(similarSongs);
-        return similarSongs.subList(0, Math.min(count, similarSongs.size()));
     }
 
     /**
@@ -733,9 +689,5 @@ public class MediaFileService {
 
     public void setAlbumDao(AlbumDao albumDao) {
         this.albumDao = albumDao;
-    }
-
-    public void setAudioScrobblerService(AudioScrobblerService audioScrobblerService) {
-        this.audioScrobblerService = audioScrobblerService;
     }
 }

@@ -33,6 +33,7 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.service.JukeboxService;
+import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
@@ -55,6 +56,7 @@ public class PlayQueueService {
     private TranscodingService transcodingService;
     private SettingsService settingsService;
     private MediaFileService mediaFileService;
+    private LastFmService lastFmService;
     private SecurityService securityService;
     private MediaFileDao mediaFileDao;
     private net.sourceforge.subsonic.service.PlaylistService playlistService;
@@ -176,7 +178,7 @@ public class PlayQueueService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         MediaFile artist = mediaFileService.getMediaFile(id);
-        List<MediaFile> similarSongs = mediaFileService.getSimilarSongsForArtist(artist, count);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count);
         Player player = getCurrentPlayer(request, response);
         player.getPlayQueue().addFiles(false, similarSongs);
         return convert(request, player, true).setStartPlayerAt(0);
@@ -444,6 +446,10 @@ public class PlayQueueService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setLastFmService(LastFmService lastFmService) {
+        this.lastFmService = lastFmService;
     }
 
     public void setJukeboxService(JukeboxService jukeboxService) {

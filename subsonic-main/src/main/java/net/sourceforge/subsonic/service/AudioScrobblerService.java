@@ -18,10 +18,8 @@
  */
 package net.sourceforge.subsonic.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +39,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 
-import de.umass.lastfm.Artist;
-import de.umass.lastfm.Caller;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -60,21 +56,12 @@ public class AudioScrobblerService {
 
     private static final Logger LOG = Logger.getLogger(AudioScrobblerService.class);
     private static final int MAX_PENDING_REGISTRATION = 2000;
-    private static final String LAST_FM_KEY = "ece4499898a9440896dfdce5dab26bbf";
-    private static final long CACHE_TIME_TO_LIVE_MILLIS = 3 * 30 * 24 * 3600 * 1000L; // 3 months
 
     private RegistrationThread thread;
     private final LinkedBlockingQueue<RegistrationData> queue = new LinkedBlockingQueue<RegistrationData>();
 
     private SettingsService settingsService;
 
-    public void init() {
-        Caller caller = Caller.getInstance();
-        caller.setUserAgent("Subsonic");
-
-        File cacheDir = new File(SettingsService.getSubsonicHome(), "lastfmcache");
-        caller.setCache(new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS));
-    }
 
     /**
      * Registers the given media file at www.last.fm. This method returns immediately, the actual registration is done
@@ -83,7 +70,7 @@ public class AudioScrobblerService {
      * @param mediaFile  The media file to register.
      * @param username   The user which played the music file.
      * @param submission Whether this is a submission or a now playing notification.
-     * @param time Event time, or {@code null} to use current time.
+     * @param time       Event time, or {@code null} to use current time.
      */
     public synchronized void register(MediaFile mediaFile, String username, boolean submission, Date time) {
 
@@ -109,25 +96,6 @@ public class AudioScrobblerService {
         }
     }
 
-    /**
-     * Returns similar artists, using the last.fm REST API.
-     */
-    public List<String> getSimilarArtists(String artistName) {
-        List<String> result = new ArrayList<String>();
-        try {
-            Collection<Artist> similarArtists = Artist.getSimilar(artistName, LAST_FM_KEY);
-            for (Artist similarArtist : similarArtists) {
-                result.add(similarArtist.getName());
-            }
-        } catch (Throwable x) {
-            LOG.warn("Failed to find similar artist for " + artistName, x);
-        }
-        return result;
-    }
-
-    /**
-     * Returns registration details, or <code>null</code> if not eligible for registration.
-     */
     private RegistrationData createRegistrationData(MediaFile mediaFile, String username, boolean submission, Date time) {
 
         if (mediaFile == null || mediaFile.isVideo()) {
@@ -183,7 +151,7 @@ public class AudioScrobblerService {
             LOG.warn("Failed to scrobble song '" + registrationData.title + "' at Last.fm.  Invalid session.");
         } else if (lines[0].startsWith("OK")) {
             LOG.debug("Successfully registered " + (registrationData.submission ? "submission" : "now playing") +
-                    " for song '" + registrationData.title + "' for user " + registrationData.username + " at Last.fm: " + registrationData.time);
+                      " for song '" + registrationData.title + "' for user " + registrationData.username + " at Last.fm: " + registrationData.time);
         }
     }
 
@@ -203,7 +171,7 @@ public class AudioScrobblerService {
         long timestamp = System.currentTimeMillis() / 1000L;
         String authToken = calculateAuthenticationToken(registrationData.password, timestamp);
         String[] lines = executeGetRequest("http://post.audioscrobbler.com/?hs=true&p=1.2.1&c=" + clientId + "&v=" +
-                clientVersion + "&u=" + registrationData.username + "&t=" + timestamp + "&a=" + authToken);
+                                           clientVersion + "&u=" + registrationData.username + "&t=" + timestamp + "&a=" + authToken);
 
         if (lines[0].startsWith("BANNED")) {
             LOG.warn("Failed to scrobble song '" + registrationData.title + "' at Last.fm. Client version is banned.");
@@ -323,7 +291,7 @@ public class AudioScrobblerService {
             try {
                 queue.put(registrationData);
                 LOG.info("Last.fm registration for " + registrationData.title +
-                        " encountered network error.  Will try again later. In queue: " + queue.size(), x);
+                         " encountered network error.  Will try again later. In queue: " + queue.size(), x);
             } catch (InterruptedException e) {
                 LOG.error("Failed to reschedule Last.fm registration for " + registrationData.title, e);
             }

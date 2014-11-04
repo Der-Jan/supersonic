@@ -74,7 +74,6 @@
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="albumDao" ref="albumDao"/>
         <property name="metaDataParserFactory" ref="metaDataParserFactory"/>
-        <property name="audioScrobblerService" ref="audioScrobblerService"/>
     </bean>
 
     <bean id="securityService" class="net.sourceforge.subsonic.service.SecurityService">
@@ -143,7 +142,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
 
-    <bean id="audioScrobblerService" class="net.sourceforge.subsonic.service.AudioScrobblerService" init-method="init">
+    <bean id="audioScrobblerService" class="net.sourceforge.subsonic.service.AudioScrobblerService">
         <property name="settingsService" ref="settingsService"/>
     </bean>
 
@@ -195,6 +194,11 @@
         <property name="folderBasedContentDirectory" ref="folderBasedContentDirectory"/>
     </bean>
 
+    <bean id="lastFmService" class="net.sourceforge.subsonic.service.LastFmService" init-method="init">
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
+    </bean>
+
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">
             <list>
@@ -212,6 +216,7 @@
     <bean id="ajaxMultiService" class="net.sourceforge.subsonic.ajax.MultiService">
         <property name="networkService" ref="networkService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
     </bean>
 
     <bean id="ajaxNowPlayingService" class="net.sourceforge.subsonic.ajax.NowPlayingService">
@@ -226,6 +231,7 @@
         <property name="playerService" ref="playerService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="jukeboxService" ref="jukeboxService"/>
         <property name="transcodingService" ref="transcodingService"/>

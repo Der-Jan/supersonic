@@ -38,7 +38,7 @@
         <td><code>id</code></td>
         <td>Yes</td>
         <td></td>
-        <td>The artist ID.</td>
+        <td>The artist, album or song ID.</td>
     </tr>
     <tr>
         <td><code>count</code></td>

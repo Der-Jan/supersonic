@@ -41,26 +41,35 @@
             }});
 
         <c:if test="${model.showSimilarArtists}">
-        loadSimilarArtists();
+        loadArtistInfo();
         </c:if>
     }
 
-    function loadSimilarArtists() {
-        console.log(${model.dir.id});
-        multiService.getSimilarArtists(${model.dir.id}, 8, function (similarArtists) {
-            if (similarArtists.length == 0) {
+    function loadArtistInfo() {
+        console.log(multiService.getArtistInfo);
+        multiService.getArtistInfo(${model.dir.id}, 8, function (artistInfo) {
+            if (artistInfo.similarArtists.length == 0) {
                 return;
             }
             var html = "";
-            for (var i = 0; i < similarArtists.length; i++) {
-                html += "<a href='main.view?id=" + similarArtists[i].mediaFileId + "' target='main'>" +
-                        similarArtists[i].artistName + "</a>";
-                if (i < similarArtists.length - 1) {
+            for (var i = 0; i < artistInfo.similarArtists.length; i++) {
+                html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
+                        artistInfo.similarArtists[i].artistName + "</a>";
+                if (i < artistInfo.similarArtists.length - 1) {
                     html += " | ";
                 }
             }
             $("#similarArtists").append(html);
-            $("#similarArtistsParent").show();
+            $("#artistInfo").show();
+
+            <c:if test="${model.dir.directory and not model.dir.album}">
+            if (artistInfo.artistBio && artistInfo.artistBio.biography) {
+                $("#artistBio").append(artistInfo.artistBio.biography);
+                if (artistInfo.artistBio.imageURL) {
+                    $("#artistImage").attr("src", artistInfo.artistBio.imageURL);
+                }
+            }
+            </c:if>
         });
     }
 
@@ -499,13 +508,20 @@
     </tr>
 </table>
 
-<div id="similarArtistsParent" class="detail" style="display: none; white-space: normal">
-    <div>
+<table id="artistInfo" class="detail" style="width: 75%;display: none; white-space: normal">
+    <tr>
+        <td rowspan="4" style="vertical-align: top"><img id="artistImage" alt="" style="padding-right: 0.5em"></td>
+        <td id="artistBio"></td>
+    </tr>
+    <tr><td>
         <span style="padding-right: 0.3em"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
-    </div>
-    <div class="forward"><a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a></div>
-</div>
+    </td></tr>
+    <tr><td>
+        <div class="forward"><a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a></div>
+    </td></tr>
+    <tr><td style="height: 100%"></td></tr>
+</table>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>

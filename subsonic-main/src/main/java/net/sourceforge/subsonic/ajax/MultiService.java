@@ -22,7 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.NetworkService;
 
@@ -39,6 +41,7 @@ public class MultiService {
 
     private NetworkService networkService;
     private MediaFileService mediaFileService;
+    private LastFmService lastFmService;
 
     /**
      * Returns status for port forwarding and URL redirection.
@@ -52,9 +55,16 @@ public class MultiService {
                                  urlRedirectionStatus.getDate());
     }
 
-    public List<SimilarArtist> getSimilarArtists(int mediaFileId, int limit) {
+    public ArtistInfo getArtistInfo(int mediaFileId, int maxSimilarArtists) {
+        MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
+        List<SimilarArtist> similarArtists = getSimilarArtists(mediaFileId, maxSimilarArtists);
+        ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
+        return new ArtistInfo(similarArtists, artistBio);
+    }
+
+    private List<SimilarArtist> getSimilarArtists(int mediaFileId, int limit) {
         MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
-        List<MediaFile> similarArtists = mediaFileService.getSimilarArtists(artist, limit);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(artist, limit);
         SimilarArtist[] result = new SimilarArtist[similarArtists.size()];
         for (int i = 0; i < result.length; i++) {
             MediaFile similarArtist = similarArtists.get(i);
@@ -69,5 +79,9 @@ public class MultiService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setLastFmService(LastFmService lastFmService) {
+        this.lastFmService = lastFmService;
     }
 }
