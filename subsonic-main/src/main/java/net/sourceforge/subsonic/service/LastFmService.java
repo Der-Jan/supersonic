@@ -31,6 +31,7 @@ import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -49,6 +50,7 @@ public class LastFmService {
 
     private MediaFileDao mediaFileDao;
     private MediaFileService mediaFileService;
+    private ArtistDao artistDao;
 
     public void init() {
         Caller caller = Caller.getInstance();
@@ -62,10 +64,10 @@ public class LastFmService {
      * Returns similar artists, using last.fm REST API.
      *
      * @param mediaFile The media file (song, album or artist).
-     * @param limit     Max number of similar artists to return.
+     * @param count     Max number of similar artists to return.
      * @return Similar artists, ordred by similarity.
      */
-    public List<MediaFile> getSimilarArtists(MediaFile mediaFile, int limit) {
+    public List<MediaFile> getSimilarArtists(MediaFile mediaFile, int count) {
         List<MediaFile> result = new ArrayList<MediaFile>();
         if (mediaFile == null) {
             return result;
@@ -77,7 +79,7 @@ public class LastFmService {
                 MediaFile similarArtist = mediaFileDao.getArtistByName(lastFmArtist.getName());
                 if (similarArtist != null) {
                     result.add(similarArtist);
-                    if (result.size() == limit) {
+                    if (result.size() == count) {
                         break;
                     }
                 }
@@ -85,6 +87,33 @@ public class LastFmService {
 
         } catch (Throwable x) {
             LOG.warn("Failed to find similar artists for " + artistName, x);
+        }
+        return result;
+    }
+
+    /**
+     * Returns similar artists, using last.fm REST API.
+     *
+     * @param artist The artist.
+     * @param count  Max number of similar artists to return.
+     * @return Similar artists, ordred by similarity.
+     */
+    public List<net.sourceforge.subsonic.domain.Artist> getSimilarArtists(net.sourceforge.subsonic.domain.Artist artist, int count) {
+        List<net.sourceforge.subsonic.domain.Artist> result = new ArrayList<net.sourceforge.subsonic.domain.Artist>();
+
+        try {
+            for (Artist lastFmArtist : Artist.getSimilar(artist.getName(), LAST_FM_KEY)) {
+                net.sourceforge.subsonic.domain.Artist similarArtist = artistDao.getArtist(lastFmArtist.getName());
+                if (similarArtist != null) {
+                    result.add(similarArtist);
+                    if (result.size() == count) {
+                        break;
+                    }
+                }
+            }
+
+        } catch (Throwable x) {
+            LOG.warn("Failed to find similar artists for " + artist.getName(), x);
         }
         return result;
     }
@@ -119,8 +148,25 @@ public class LastFmService {
      * @return Artist bio.
      */
     public ArtistBio getArtistBio(MediaFile mediaFile) {
-        String artistName = getArtistName(mediaFile);
+        return getArtistBio(getArtistName(mediaFile));
+    }
+
+    /**
+     * Returns artist bio and images.
+     *
+     * @param artist The artist.
+     * @return Artist bio.
+     */
+    public ArtistBio getArtistBio(net.sourceforge.subsonic.domain.Artist artist) {
+        return getArtistBio(artist.getName());
+    }
+
+    private ArtistBio getArtistBio(String artistName) {
         try {
+            if (artistName == null) {
+                return null;
+            }
+
             Artist info = Artist.getInfo(artistName, LAST_FM_KEY);
             if (info == null) {
                 return null;
@@ -167,5 +213,9 @@ public class LastFmService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setArtistDao(ArtistDao artistDao) {
+        this.artistDao = artistDao;
     }
 }

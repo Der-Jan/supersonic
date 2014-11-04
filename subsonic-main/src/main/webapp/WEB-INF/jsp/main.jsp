@@ -47,7 +47,6 @@
 
     function loadArtistInfo() {
         multiService.getArtistInfo(${model.dir.id}, 8, function (artistInfo) {
-            console.log(artistInfo);
             if (artistInfo.similarArtists.length == 0) {
                 return;
             }
@@ -66,7 +65,7 @@
             if (artistInfo.artistBio && artistInfo.artistBio.biography) {
                 $("#artistBio").append(artistInfo.artistBio.biography);
                 if (artistInfo.artistBio.mediumImageUrl) {
-                    $("#artistImage").attr("src", artistInfo.artistBio.imageURL);
+                    $("#artistImage").attr("src", artistInfo.artistBio.mediumImageUrl);
                 }
             }
             </c:if>

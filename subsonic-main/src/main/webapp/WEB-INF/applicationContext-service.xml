@@ -197,6 +197,7 @@
     <bean id="lastFmService" class="net.sourceforge.subsonic.service.LastFmService" init-method="init">
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
+        <property name="artistDao" ref="artistDao"/>
     </bean>
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">

@@ -44,6 +44,7 @@ import org.subsonic.restapi.AlbumList2;
 import org.subsonic.restapi.AlbumWithSongsID3;
 import org.subsonic.restapi.ArtistID3;
 import org.subsonic.restapi.ArtistInfo;
+import org.subsonic.restapi.ArtistInfo2;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
 import org.subsonic.restapi.Bookmarks;
@@ -420,6 +421,39 @@ public class RESTController extends MultiActionController {
 
         Response res = jaxbWriter.createResponse(true);
         res.setArtistInfo(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getArtistInfo2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        int count = getIntParameter(request, "count", 20);
+
+        ArtistInfo2 result = new ArtistInfo2();
+
+        Artist artist = artistDao.getArtist(id);
+        if (artist == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
+            return;
+        }
+
+        List<Artist> similarArtists = lastFmService.getSimilarArtists(artist, count);
+        for (Artist similarArtist : similarArtists) {
+            result.getSimilarArtist().add(createJaxbArtist(new ArtistID3(), similarArtist, username));
+        }
+        ArtistBio artistBio = lastFmService.getArtistBio(artist);
+        if (artistBio != null) {
+            result.setBiography(artistBio.getBiography());
+            result.setSmallImageUrl(artistBio.getSmallImageUrl());
+            result.setMediumImageUrl(artistBio.getMediumImageUrl());
+            result.setLargeImageUrl(artistBio.getLargeImageUrl());
+        }
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setArtistInfo2(result);
         jaxbWriter.writeResponse(request, response, res);
     }
 
