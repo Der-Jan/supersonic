@@ -40,10 +40,10 @@ public class Schema51 extends Schema {
             template.execute("insert into version values (23)");
         }
 
-        if (!columnExists(template, "show_similar_artists", "user_settings")) {
-            LOG.info("Database column 'user_settings.show_similar_artists' not found.  Creating it.");
-            template.execute("alter table user_settings add show_similar_artists boolean default true not null");
-            LOG.info("Database column 'user_settings.show_similar_artists' was added successfully.");
+        if (!columnExists(template, "show_artist_info", "user_settings")) {
+            LOG.info("Database column 'user_settings.show_artist_info' not found.  Creating it.");
+            template.execute("alter table user_settings add show_artist_info boolean default true not null");
+            LOG.info("Database column 'user_settings.show_artist_info' was added successfully.");
         }
     }
 }

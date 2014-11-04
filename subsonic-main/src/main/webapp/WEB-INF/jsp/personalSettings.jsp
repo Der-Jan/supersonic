@@ -124,8 +124,8 @@
             <td><label for="nowPlaying"><fmt:message key="personalsettings.shownowplaying"/></label></td>
             <td style="padding-left:2em"><form:checkbox path="showChatEnabled" id="chat" cssClass="checkbox"/></td>
             <td><label for="chat"><fmt:message key="personalsettings.showchat"/></label></td>
-            <td style="padding-left:2em"><form:checkbox path="showSimilarArtistsEnabled" id="similar" cssClass="checkbox"/></td>
-            <td><label for="similar"><fmt:message key="personalsettings.showsimilarartists"/></label></td>
+            <td style="padding-left:2em"><form:checkbox path="showArtistInfoEnabled" id="artistInfo" cssClass="checkbox"/></td>
+            <td><label for="artistInfo"><fmt:message key="personalsettings.showartistinfo"/></label></td>
         </tr>
         <tr>
             <td><form:checkbox path="nowPlayingAllowed" id="nowPlayingAllowed" cssClass="checkbox"/></td>

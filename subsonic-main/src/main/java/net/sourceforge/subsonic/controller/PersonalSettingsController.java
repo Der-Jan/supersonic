@@ -60,7 +60,7 @@ public class PersonalSettingsController extends SimpleFormController {
         command.setPartyModeEnabled(userSettings.isPartyModeEnabled());
         command.setShowNowPlayingEnabled(userSettings.isShowNowPlayingEnabled());
         command.setShowChatEnabled(userSettings.isShowChatEnabled());
-        command.setShowSimilarArtistsEnabled(userSettings.isShowSimilarArtistsEnabled());
+        command.setShowArtistInfoEnabled(userSettings.isShowArtistInfoEnabled());
         command.setNowPlayingAllowed(userSettings.isNowPlayingAllowed());
         command.setMainVisibility(userSettings.getMainVisibility());
         command.setPlaylistVisibility(userSettings.getPlaylistVisibility());
@@ -119,7 +119,7 @@ public class PersonalSettingsController extends SimpleFormController {
         settings.setPartyModeEnabled(command.isPartyModeEnabled());
         settings.setShowNowPlayingEnabled(command.isShowNowPlayingEnabled());
         settings.setShowChatEnabled(command.isShowChatEnabled());
-        settings.setShowSimilarArtistsEnabled(command.isShowSimilarArtistsEnabled());
+        settings.setShowArtistInfoEnabled(command.isShowArtistInfoEnabled());
         settings.setNowPlayingAllowed(command.isNowPlayingAllowed());
         settings.setMainVisibility(command.getMainVisibility());
         settings.setPlaylistVisibility(command.getPlaylistVisibility());

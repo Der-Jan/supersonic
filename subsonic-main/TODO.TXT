@@ -17,7 +17,6 @@ Find similar tracks / artists
   Add REST service, also for ID3
   Test REST with album/artist/song
   Add REST method for bio, supporting multiple image sizes
-  Rename personal setting
   Test other browsers.
 Artist cover art collage (or use last.fm api)
 CarSub
