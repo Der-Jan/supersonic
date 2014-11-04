@@ -26,18 +26,30 @@ package net.sourceforge.subsonic.domain;
 public class ArtistBio {
 
     private final String biography;
-    private final String imageURL;
+    private final String smallImageUrl;
+    private final String mediumImageUrl;
+    private final String largeImageUrl;
 
-    public ArtistBio(String biography, String imageURL) {
+    public ArtistBio(String biography, String smallImageUrl, String mediumImageUrl, String largeImageUrl) {
         this.biography = biography;
-        this.imageURL = imageURL;
+        this.smallImageUrl = smallImageUrl;
+        this.mediumImageUrl = mediumImageUrl;
+        this.largeImageUrl = largeImageUrl;
     }
 
     public String getBiography() {
         return biography;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getSmallImageUrl() {
+        return smallImageUrl;
+    }
+
+    public String getMediumImageUrl() {
+        return mediumImageUrl;
+    }
+
+    public String getLargeImageUrl() {
+        return largeImageUrl;
     }
 }

@@ -42,7 +42,8 @@
             <xs:element name="shares" type="sub:Shares" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred" type="sub:Starred" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred2" type="sub:Starred2" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="similarArtists" type="sub:SimilarArtists" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="artistInfo" type="sub:ArtistInfo" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="artistInfo2" type="sub:ArtistInfo2" minOccurs="1" maxOccurs="1"/>
             <xs:element name="similarSongs" type="sub:SimilarSongs" minOccurs="1" maxOccurs="1"/>
             <xs:element name="error" type="sub:Error" minOccurs="1" maxOccurs="1"/>
         </xs:choice>
@@ -456,9 +457,23 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="SimilarArtists">
+    <xs:complexType name="ArtistInfo">
         <xs:sequence>
-            <xs:element name="artist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="similarArtist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="biography" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="smallImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="mediumImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="largeImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ArtistInfo2">
+        <xs:sequence>
+            <xs:element name="similarArtist" type="sub:ArtistID3" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="biography" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="smallImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="mediumImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="largeImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 

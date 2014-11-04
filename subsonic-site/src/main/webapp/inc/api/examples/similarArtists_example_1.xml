@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<subsonic-response xmlns="http://subsonic.org/restapi" status="ok" version="1.11.0">
-   <similarArtists>
-      <artist id="115" name="Cher"/>
-      <artist id="124" name="Christina Aguilera"/>
-      <artist id="65" name="Barbra Streisand"/>
-      <artist id="48" name="Annie Lennox"/>
-   </similarArtists>
-</subsonic-response>

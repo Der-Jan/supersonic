@@ -16,8 +16,9 @@ Find similar tracks / artists
   Chris Rea has "Unknown Artist"
   Add REST service, also for ID3
   Test REST with album/artist/song
-  Add REST method for bio, supporting multiple image sizes
+  Add REST method for bio, supporting multiple image sizes.  Integrate similar artists
   Test other browsers.
+  Fix ugly layout if no image found.
 Artist cover art collage (or use last.fm api)
 CarSub
   https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3

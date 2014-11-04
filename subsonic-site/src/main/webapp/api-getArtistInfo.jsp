@@ -17,15 +17,16 @@
   ~  Copyright 2014 (C) Sindre Mehus
   --%>
 
-<h2 class="div"><a name="getSimilarArtists"></a>getSimilarArtists</h2>
+<h2 class="div"><a name="getArtistInfo"></a>getArtistInfo</h2>
 
 <p>
-    <code>http://your-server/rest/getSimilarArtists.view</code>
+    <code>http://your-server/rest/getArtistInfo.view</code>
     <br>Since <a href="#versions">1.11.0</a>
 </p>
 
 <p>
-    Returns artists that are similar to the given artist, using data from <a href="http://last.fm" target="_blank">last.fm</a>.
+    Returns artist info with biography, image URLs and similar artists, using data
+    from <a href="http://last.fm" target="_blank">last.fm</a>.
 </p>
 <table width="100%" class="bottomspace">
     <tr>
@@ -48,7 +49,7 @@
     </tr>
 </table>
 <p>
-    Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;similarArtists&gt;</code>
+    Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;artistInfo&gt;</code>
     element on success.
-    <a href="inc/api/examples/similarArtists_example_1.xml">Example</a>.
+    <a href="inc/api/examples/artistInfo_example_1.xml">Example</a>.
 </p>

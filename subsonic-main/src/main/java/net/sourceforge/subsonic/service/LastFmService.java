@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
@@ -123,8 +125,10 @@ public class LastFmService {
             if (info == null) {
                 return null;
             }
-            // TODO: More images
-            return new ArtistBio(processWikiText(info.getWikiText()), info.getImageURL(ImageSize.LARGE));
+            return new ArtistBio(processWikiText(info.getWikiText()),
+                                 info.getImageURL(ImageSize.MEDIUM),
+                                 info.getImageURL(ImageSize.LARGE),
+                                 info.getImageURL(ImageSize.MEGA));
         } catch (Throwable x) {
             LOG.warn("Failed to find artist bio for " + artistName, x);
             return null;
@@ -146,8 +150,7 @@ public class LastFmService {
         text = text.replaceAll("User-contributed text.*", "");
         text = text.replaceAll("<a ", "<a target='_blank' ");
 
-        // TODO
-        return text;
+        return StringUtils.trimToNull(text);
     }
 
     private String getArtistName(MediaFile mediaFile) {

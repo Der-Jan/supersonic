@@ -43,6 +43,7 @@ import org.subsonic.restapi.AlbumList;
 import org.subsonic.restapi.AlbumList2;
 import org.subsonic.restapi.AlbumWithSongsID3;
 import org.subsonic.restapi.ArtistID3;
+import org.subsonic.restapi.ArtistInfo;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
 import org.subsonic.restapi.Bookmarks;
@@ -72,7 +73,6 @@ import org.subsonic.restapi.Response;
 import org.subsonic.restapi.SearchResult2;
 import org.subsonic.restapi.SearchResult3;
 import org.subsonic.restapi.Shares;
-import org.subsonic.restapi.SimilarArtists;
 import org.subsonic.restapi.SimilarSongs;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
@@ -92,6 +92,7 @@ import net.sourceforge.subsonic.dao.BookmarkDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.Bookmark;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.InternetRadio;
@@ -365,31 +366,6 @@ public class RESTController extends MultiActionController {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void getSimilarArtists(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request = wrapRequest(request);
-        String username = securityService.getCurrentUsername(request);
-
-        int id = getRequiredIntParameter(request, "id");
-        int count = getIntParameter(request, "count", 20);
-
-        SimilarArtists result = new SimilarArtists();
-
-        MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        if (mediaFile == null) {
-            error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
-            return;
-        }
-        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count);
-        for (MediaFile similarArtist : similarArtists) {
-            result.getArtist().add(createJaxbArtist(similarArtist, username));
-        }
-
-        Response res = jaxbWriter.createResponse(true);
-        res.setSimilarArtists(result);
-        jaxbWriter.writeResponse(request, response, res);
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
     public void getSimilarSongs(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         String username = securityService.getCurrentUsername(request);
@@ -412,6 +388,38 @@ public class RESTController extends MultiActionController {
 
         Response res = jaxbWriter.createResponse(true);
         res.setSimilarSongs(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getArtistInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        int count = getIntParameter(request, "count", 20);
+
+        ArtistInfo result = new ArtistInfo();
+
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        if (mediaFile == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
+            return;
+        }
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count);
+        for (MediaFile similarArtist : similarArtists) {
+            result.getSimilarArtist().add(createJaxbArtist(similarArtist, username));
+        }
+        ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
+        if (artistBio != null) {
+            result.setBiography(artistBio.getBiography());
+            result.setSmallImageUrl(artistBio.getSmallImageUrl());
+            result.setMediumImageUrl(artistBio.getMediumImageUrl());
+            result.setLargeImageUrl(artistBio.getLargeImageUrl());
+        }
+
+        Response res = jaxbWriter.createResponse(true);
+        res.setArtistInfo(result);
         jaxbWriter.writeResponse(request, response, res);
     }
 
