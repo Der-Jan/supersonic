@@ -11,14 +11,12 @@ TODO IN 5.1
 --------------
 Find similar tracks / artists
   Investigate why some artists don't show.
-  Remove artist bios like alanis morisette
   Add link to last.fm in artist bio
   Use java binding for scrobbling?
   Use minium similarity
   Chris Rea has "Unknown Artist"
   Test REST with album/artist/song
   Test other browsers.
-  Fix ugly layout if no image found.
 Artist cover art collage (or use last.fm api)
 CarSub
   https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3

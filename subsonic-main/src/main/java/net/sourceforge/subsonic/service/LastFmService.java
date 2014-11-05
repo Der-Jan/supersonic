@@ -210,11 +210,17 @@ public class LastFmService {
          User-contributed text is available under the Creative Commons By-SA License and may also be available under the GNU FDL.
          */
 
-        text = text.replaceAll("<a href.*>Read more about.*", "");
+        text = text.replaceAll("<a href.*?>Read more about.*?</a>", "");
         text = text.replaceAll("User-contributed text.*", "");
         text = text.replaceAll("<a ", "<a target='_blank' ");
+        text = text.replace("\n", " ");
+        text = StringUtils.trimToNull(text);
 
-        return StringUtils.trimToNull(text);
+        if (text != null && text.startsWith("This is an incorrect tag")) {
+            return null;
+        }
+
+        return text;
     }
 
     private String getArtistName(MediaFile mediaFile) {
