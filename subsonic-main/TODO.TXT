@@ -6,16 +6,18 @@ Instant search (show search results while typing)
 Show song title in browser window title.
 Show similar artists, with radio feature
 REST: Show similar artists, with radio feature
+Artist bio and images
 
 TODO IN 5.1
 --------------
+flexbox
+  http://css-tricks.com/snippets/css/a-guide-to-flexbox/
+Avoid scrolling album/artist title
 Find similar tracks / artists
   Investigate why some artists don't show.
   Add link to last.fm in artist bio
   Use java binding for scrobbling?
   Use minium similarity
-  Chris Rea has "Unknown Artist"
-  Test REST with album/artist/song
   Test other browsers.
 Artist cover art collage (or use last.fm api)
 CarSub

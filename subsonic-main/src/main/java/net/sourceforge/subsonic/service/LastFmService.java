@@ -190,6 +190,8 @@ public class LastFmService {
                 return null;
             }
             return new ArtistBio(processWikiText(info.getWikiText()),
+                                 info.getMbid(),
+                                 info.getUrl(),
                                  info.getImageURL(ImageSize.MEDIUM),
                                  info.getImageURL(ImageSize.LARGE),
                                  info.getImageURL(ImageSize.MEGA));
@@ -210,7 +212,6 @@ public class LastFmService {
          User-contributed text is available under the Creative Commons By-SA License and may also be available under the GNU FDL.
          */
 
-        text = text.replaceAll("<a href.*?>Read more about.*?</a>", "");
         text = text.replaceAll("User-contributed text.*", "");
         text = text.replaceAll("<a ", "<a target='_blank' ");
         text = text.replace("\n", " ");

@@ -441,6 +441,8 @@ public class RESTController extends MultiActionController {
         ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
         if (artistBio != null) {
             result.setBiography(artistBio.getBiography());
+            result.setMusicBrainzId(artistBio.getMusicBrainzId());
+            result.setLastFmUrl(artistBio.getLastFmUrl());
             result.setSmallImageUrl(artistBio.getSmallImageUrl());
             result.setMediumImageUrl(artistBio.getMediumImageUrl());
             result.setLargeImageUrl(artistBio.getLargeImageUrl());
@@ -474,6 +476,8 @@ public class RESTController extends MultiActionController {
         ArtistBio artistBio = lastFmService.getArtistBio(artist);
         if (artistBio != null) {
             result.setBiography(artistBio.getBiography());
+            result.setMusicBrainzId(artistBio.getMusicBrainzId());
+            result.setLastFmUrl(artistBio.getLastFmUrl());
             result.setSmallImageUrl(artistBio.getSmallImageUrl());
             result.setMediumImageUrl(artistBio.getMediumImageUrl());
             result.setLargeImageUrl(artistBio.getLargeImageUrl());

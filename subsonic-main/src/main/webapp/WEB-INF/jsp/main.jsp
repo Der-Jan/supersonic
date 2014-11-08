@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%--@elvariable id="model" type="java.util.Map"--%>
 
-<html><head>
+<html style="height: 100%"><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <link href="<c:url value="/style/shadow.css"/>" rel="stylesheet">
@@ -20,7 +20,7 @@
         .coverart { float: left; padding-left:10px; padding-right:10px; padding-bottom:20px }
     </style>
 
-</head><body class="mainframe bgcolor1" onload="init();">
+</head><body class="mainframe bgcolor1" style="height: 100%" onload="init();">
 
 <sub:url value="createShare.view" var="shareUrl">
     <sub:param name="id" value="${model.dir.id}"/>
@@ -166,7 +166,7 @@
     </script>
 </c:if>
 
-<h1>
+<h1 style="display:ftable-row;height: 1px">
     <a href="#" onclick="toggleStar(${model.dir.id}, '#starImage'); return false;">
         <c:choose>
             <c:when test="${not empty model.dir.starredDate}">

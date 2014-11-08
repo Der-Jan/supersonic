@@ -458,24 +458,35 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="ArtistInfo">
+    <xs:complexType name="ArtistInfoBase">
         <xs:sequence>
-            <xs:element name="similarArtist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="biography" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="musicBrainzId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="lastFmUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="smallImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="mediumImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="largeImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="ArtistInfo">
+        <xs:complexContent>
+            <xs:extension base="sub:ArtistInfoBase">
+                <xs:sequence>
+                    <xs:element name="similarArtist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="ArtistInfo2">
-        <xs:sequence>
-            <xs:element name="similarArtist" type="sub:ArtistID3" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="biography" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="smallImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="mediumImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="largeImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
+        <xs:complexContent>
+            <xs:extension base="sub:ArtistInfoBase">
+                <xs:sequence>
+                    <xs:element name="similarArtist" type="sub:ArtistID3" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="SimilarSongs">
@@ -513,7 +524,7 @@
 
     <xs:complexType name="User">
         <xs:attribute name="username" type="xs:string" use="required"/>
-        <xs:attribute name="email" type="xs:string" use="optional"/> <!-- Added in 1.6.0 --> 
+        <xs:attribute name="email" type="xs:string" use="optional"/> <!-- Added in 1.6.0 -->
         <xs:attribute name="scrobblingEnabled" type="xs:boolean" use="required"/> <!-- Added in 1.7.0 -->
         <xs:attribute name="adminRole" type="xs:boolean" use="required"/>
         <xs:attribute name="settingsRole" type="xs:boolean" use="required"/>
