@@ -10,12 +10,11 @@ Artist bio and images
 
 TODO IN 5.1
 --------------
+mention chromecast in site
 flexbox
   http://css-tricks.com/snippets/css/a-guide-to-flexbox/
 Avoid scrolling album/artist title
 Find similar tracks / artists
-  Investigate why some artists don't show.
-  Add link to last.fm in artist bio
   Use java binding for scrobbling?
   Use minium similarity
   Test other browsers.

@@ -64,7 +64,7 @@ import net.sourceforge.subsonic.backend.service.WhitelistGenerator;
  */
 public class MultiController extends MultiActionController {
 
-    private static final Logger LOG = Logger.getLogger(RedirectionController.class);
+    private static final Logger LOG = Logger.getLogger(MultiController.class);
 
     private static final String SUBSONIC_VERSION = "5.0";
     private static final String SUBSONIC_BETA_VERSION = "5.0.beta2";
