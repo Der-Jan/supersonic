@@ -88,6 +88,7 @@
         this.initializeUI();
         this.initializeLocalPlayer();
         this.initializeCastPlayer();
+        this.playMediaLocally(0);
     };
 
     /**

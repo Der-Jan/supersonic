@@ -7,20 +7,25 @@ Show song title in browser window title.
 Show similar artists, with radio feature
 REST: Show similar artists, with radio feature
 Artist bio and images
+Video autoplay
 
 TODO IN 5.1
 --------------
 Replace main.jsp when only video files are present.
 set window title when playing video
+some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
-  Ignore standalong cover art files for video files.
+  Add links for sharing, downloading etc
+  Add button to control video stretching
+  Test with chromecast (e.g., thumbnail)
+  Overlay
+  Ignore standalone cover art files for video files.
   Deal with previously cached files. (change size in right.jsp)
   Fix layout in right.jsp
-  Create proper fallback.
   Remove lyrics link in right.jsp
   h1 video icon
   show slideshow on hover?
-video autoplay
+
 mention chromecast in site
 flexbox
   http://css-tricks.com/snippets/css/a-guide-to-flexbox/

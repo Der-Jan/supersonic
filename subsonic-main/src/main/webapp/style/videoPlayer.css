@@ -27,7 +27,7 @@ body {
     position: absolute;
     z-index: 1;
     background-color: #000;
-    display: block;
+    display: none;
 }
 
 #overlay_text {
