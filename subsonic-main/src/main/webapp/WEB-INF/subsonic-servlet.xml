@@ -23,7 +23,6 @@
         <property name="statusService" ref="statusService"/>
     </bean>
     <bean id="mainController" class="net.sourceforge.subsonic.controller.MainController">
-        <property name="viewName" value="main"/>
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="settingsService" ref="settingsService"/>
@@ -269,6 +268,7 @@
     </bean>
     <bean id="coverArtController" class="net.sourceforge.subsonic.controller.CoverArtController">
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="transcodingService" ref="transcodingService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>

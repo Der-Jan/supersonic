@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import net.sourceforge.subsonic.domain.CoverArtScheme;
@@ -52,7 +52,7 @@ import net.sourceforge.subsonic.service.SettingsService;
  *
  * @author Sindre Mehus
  */
-public class MainController extends ParameterizableViewController {
+public class MainController extends AbstractController {
 
     private SecurityService securityService;
     private PlayerService playerService;
@@ -137,9 +137,22 @@ public class MainController extends ParameterizableViewController {
             setSieblingAlbums(dir, map);
         }
 
-        ModelAndView result = super.handleRequestInternal(request, response);
+        ModelAndView result = new ModelAndView(isVideoOnly(children) ? "videoMain" : "main");
         result.addObject("model", map);
         return result;
+    }
+
+    private boolean isVideoOnly(List<MediaFile> children) {
+        boolean videoFound = false;
+        for (MediaFile child : children) {
+            if (child.isAudio()) {
+                return false;
+            }
+            if (child.isVideo()) {
+                videoFound = true;
+            }
+        }
+        return videoFound;
     }
 
     private List<MediaFile> getMediaFiles(HttpServletRequest request) {

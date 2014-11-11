@@ -61,7 +61,7 @@
                         "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 430, 550)\">" +
                         "<fmt:message key="main.lyrics"/>" + "</a></span></td><td style='padding-top:1em'>" +
                         "<a title='" + nowPlaying[i].tooltip + "' target='main' href='" + nowPlaying[i].albumUrl + "'>" +
-                        "<img src='" + nowPlaying[i].coverArtUrl + "' width='60' height='60'></a>" +
+                        "<img src='" + nowPlaying[i].coverArtUrl + "' height='60'></a>" +
                         "</td></tr>";
 
                 var minutesAgo = nowPlaying[i].minutesAgo;

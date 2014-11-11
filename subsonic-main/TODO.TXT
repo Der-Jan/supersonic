@@ -10,6 +10,17 @@ Artist bio and images
 
 TODO IN 5.1
 --------------
+Replace main.jsp when only video files are present.
+set window title when playing video
+video thumbnails, using ffmpeg -> jpeg
+  Ignore standalong cover art files for video files.
+  Deal with previously cached files. (change size in right.jsp)
+  Fix layout in right.jsp
+  Create proper fallback.
+  Remove lyrics link in right.jsp
+  h1 video icon
+  show slideshow on hover?
+video autoplay
 mention chromecast in site
 flexbox
   http://css-tricks.com/snippets/css/a-guide-to-flexbox/
@@ -22,6 +33,7 @@ Artist cover art collage (or use last.fm api)
 CarSub
   https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3
 Subtitle support
+  Auto-start movie? At least auto-load
   https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
   http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
   http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
@@ -935,7 +947,7 @@ cd subsonic-backend;  mvn clean install; cd ..
 Deploy
 Check that correct local version is displayed.
 
-Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
+Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). Pwd available in correspondence from hosting provider.
 
 On Mac OS:
   rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/

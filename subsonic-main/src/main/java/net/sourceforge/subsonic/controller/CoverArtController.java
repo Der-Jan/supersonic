@@ -18,29 +18,11 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.AlbumDao;
-import net.sourceforge.subsonic.dao.ArtistDao;
-import net.sourceforge.subsonic.domain.Album;
-import net.sourceforge.subsonic.domain.Artist;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
-import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.mvc.LastModified;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,6 +31,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.LastModified;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.AlbumDao;
+import net.sourceforge.subsonic.dao.ArtistDao;
+import net.sourceforge.subsonic.domain.Album;
+import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.io.InputStreamReaderThread;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller which produces cover art images.
@@ -63,6 +72,7 @@ public class CoverArtController implements Controller, LastModified {
     private static final Logger LOG = Logger.getLogger(CoverArtController.class);
 
     private MediaFileService mediaFileService;
+    private TranscodingService transcodingService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -133,7 +143,10 @@ public class CoverArtController implements Controller, LastModified {
 
     private CoverArtRequest createMediaFileCoverArtRequest(int id) {
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        return mediaFile == null ? null : new MediaFileCoverArtRequest(mediaFile);
+        if (mediaFile == null) {
+            return null;
+        }
+        return mediaFile.isVideo() ? new VideoCoverArtRequest(mediaFile) : new MediaFileCoverArtRequest(mediaFile);
     }
 
     private void sendImage(File file, HttpServletResponse response) throws IOException {
@@ -229,6 +242,25 @@ public class CoverArtController implements Controller, LastModified {
         }
     }
 
+    private InputStream getImageInputStreamForVideo(MediaFile mediaFile, int width, int height) throws Exception {
+        File ffmpeg = new File(transcodingService.getTranscodeDirectory(), "ffmpeg");
+
+        // TODO: Make configurable?
+        String[] command = new String[]{ffmpeg.getAbsolutePath(), "-r", "1", "-ss", "0:01:00", "-t", "1",
+                                        "-i", mediaFile.getFile().getAbsolutePath(), "-s", width + "x" + height,
+                                        "-f", "mjpeg", "-"};
+
+        LOG.info("Executing " + StringUtils.join(command, " "));
+        Process process = Runtime.getRuntime().exec(command);
+        InputStream stdout = process.getInputStream();
+        InputStream stderr = process.getErrorStream();
+
+        // Consume stderr, we're not interested in that.
+        new InputStreamReaderThread(stderr, "ffmpeg", true).start();
+
+        return stdout;
+    }
+
     private synchronized File getImageCacheDirectory(int size) {
         File dir = new File(SettingsService.getSubsonicHome(), "thumbs");
         dir = new File(dir, String.valueOf(size));
@@ -284,6 +316,10 @@ public class CoverArtController implements Controller, LastModified {
         this.albumDao = albumDao;
     }
 
+    public void setTranscodingService(TranscodingService transcodingService) {
+        this.transcodingService = transcodingService;
+    }
+
     private abstract class CoverArtRequest {
 
         protected File coverArt;
@@ -315,13 +351,13 @@ public class CoverArtController implements Controller, LastModified {
                     IOUtils.closeQuietly(in);
                 }
             }
-            return createAutoCover(size);
+            return createAutoCover(size, size);
         }
 
-        protected BufferedImage createAutoCover(int size) {
-            BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+        protected BufferedImage createAutoCover(int width, int height) {
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = image.createGraphics();
-            AutoCover autoCover = new AutoCover(graphics, getKey(), getArtist(), getAlbum(), size);
+            AutoCover autoCover = new AutoCover(graphics, getKey(), getArtist(), getAlbum(), width, height);
             autoCover.paintCover();
             graphics.dispose();
             return image;
@@ -439,20 +475,76 @@ public class CoverArtController implements Controller, LastModified {
         }
     }
 
+    private class VideoCoverArtRequest extends CoverArtRequest {
+
+        private final MediaFile mediaFile;
+
+        private VideoCoverArtRequest(MediaFile mediaFile) {
+            this.mediaFile = mediaFile;
+        }
+
+        @Override
+        public BufferedImage createImage(int size) {
+            int height = size;
+            int width = height * 16 / 9;
+            InputStream in = null;
+            try {
+                in = getImageInputStreamForVideo(mediaFile, width, height);
+                BufferedImage result = ImageIO.read(in);
+                if (result == null) {
+                    throw new NullPointerException();
+                }
+                return result;
+            } catch (Throwable x) {
+                LOG.warn("Failed to process cover art for " + mediaFile + ": " + x, x);
+            } finally {
+                IOUtils.closeQuietly(in);
+            }
+            return createAutoCover(width, height);
+        }
+
+        @Override
+        public String getKey() {
+            return mediaFile.getPath();
+        }
+
+        @Override
+        public long lastModified() {
+            return mediaFile.getChanged().getTime();
+        }
+
+        @Override
+        public String getAlbum() {
+            return null;
+        }
+
+        @Override
+        public String getArtist() {
+            return mediaFile.getName();
+        }
+
+        @Override
+        public String toString() {
+            return "Video file " + mediaFile.getId() + " - " + mediaFile;
+        }
+    }
+
     static class AutoCover {
 
         private final static int[] COLORS = {0x33B5E5, 0xAA66CC, 0x99CC00, 0xFFBB33, 0xFF4444};
         private final Graphics2D graphics;
         private final String artist;
         private final String album;
-        private final int size;
+        private final int width;
+        private final int height;
         private final Color color;
 
-        public AutoCover(Graphics2D graphics, String key, String artist, String album, int size) {
+        public AutoCover(Graphics2D graphics, String key, String artist, String album, int width, int height) {
             this.graphics = graphics;
             this.artist = artist;
             this.album = album;
-            this.size = size;
+            this.width = width;
+            this.height = height;
 
             int hash = key.hashCode();
             int rgb = COLORS[Math.abs(hash) % COLORS.length];
@@ -464,32 +556,32 @@ public class CoverArtController implements Controller, LastModified {
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
             graphics.setPaint(color);
-            graphics.fillRect(0, 0, size, size);
+            graphics.fillRect(0, 0, width, height);
 
-            int y = size * 2 / 3;
-            graphics.setPaint(new GradientPaint(0, y, new Color(82, 82, 82), 0, size, Color.BLACK));
-            graphics.fillRect(0, y, size, size / 3);
+            int y = height * 2 / 3;
+            graphics.setPaint(new GradientPaint(0, y, new Color(82, 82, 82), 0, height, Color.BLACK));
+            graphics.fillRect(0, y, width, height / 3);
 
             graphics.setPaint(Color.WHITE);
-            float fontSize = 3.0f + size * 0.07f;
+            float fontSize = 3.0f + height * 0.07f;
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int) fontSize);
             graphics.setFont(font);
 
             if (album != null) {
-                graphics.drawString(album, size * 0.05f, size * 0.6f);
+                graphics.drawString(album, width * 0.05f, height * 0.6f);
             }
             if (artist != null) {
-                graphics.drawString(artist, size * 0.05f, size * 0.8f);
+                graphics.drawString(artist, width * 0.05f, height * 0.8f);
             }
 
-            int borderWidth = size / 50;
-            graphics.fillRect(0, 0, borderWidth, size);
-            graphics.fillRect(size - borderWidth, 0, size - borderWidth, size);
-            graphics.fillRect(0, 0, size, borderWidth);
-            graphics.fillRect(0, size - borderWidth, size, size);
+            int borderWidth = height / 50;
+            graphics.fillRect(0, 0, borderWidth, height);
+            graphics.fillRect(width - borderWidth, 0, height - borderWidth, height);
+            graphics.fillRect(0, 0, width, borderWidth);
+            graphics.fillRect(0, height - borderWidth, width, height);
 
             graphics.setColor(Color.BLACK);
-            graphics.drawRect(0, 0, size - 1, size - 1);
+            graphics.drawRect(0, 0, width - 1, height - 1);
         }
     }
 }
