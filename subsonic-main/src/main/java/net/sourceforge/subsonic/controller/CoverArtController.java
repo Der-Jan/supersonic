@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -52,7 +51,8 @@ import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.io.InputStreamReaderThread;
+import net.sourceforge.subsonic.domain.Transcoding;
+import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
@@ -73,6 +73,7 @@ public class CoverArtController implements Controller, LastModified {
 
     private MediaFileService mediaFileService;
     private TranscodingService transcodingService;
+    private SettingsService settingsService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -243,22 +244,11 @@ public class CoverArtController implements Controller, LastModified {
     }
 
     private InputStream getImageInputStreamForVideo(MediaFile mediaFile, int width, int height) throws Exception {
-        File ffmpeg = new File(transcodingService.getTranscodeDirectory(), "ffmpeg");
-
-        // TODO: Make configurable?
-        String[] command = new String[]{ffmpeg.getAbsolutePath(), "-r", "1", "-ss", "0:01:00", "-t", "1",
-                                        "-i", mediaFile.getFile().getAbsolutePath(), "-s", width + "x" + height,
-                                        "-f", "mjpeg", "-"};
-
-        LOG.info("Executing " + StringUtils.join(command, " "));
-        Process process = Runtime.getRuntime().exec(command);
-        InputStream stdout = process.getInputStream();
-        InputStream stderr = process.getErrorStream();
-
-        // Consume stderr, we're not interested in that.
-        new InputStreamReaderThread(stderr, "ffmpeg", true).start();
-
-        return stdout;
+        VideoTranscodingSettings videoSettings = new VideoTranscodingSettings(width, height, 60, 0, false);
+        TranscodingService.Parameters parameters = new TranscodingService.Parameters(mediaFile, videoSettings);
+        String command = settingsService.getVideoImageCommand();
+        parameters.setTranscoding(new Transcoding(null, null, null, null, command, null, null, false));
+        return transcodingService.getTranscodedInputStream(parameters);
     }
 
     private synchronized File getImageCacheDirectory(int size) {
@@ -318,6 +308,10 @@ public class CoverArtController implements Controller, LastModified {
 
     public void setTranscodingService(TranscodingService transcodingService) {
         this.transcodingService = transcodingService;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 
     private abstract class CoverArtRequest {

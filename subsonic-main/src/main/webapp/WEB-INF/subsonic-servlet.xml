@@ -269,6 +269,7 @@
     <bean id="coverArtController" class="net.sourceforge.subsonic.controller.CoverArtController">
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="transcodingService" ref="transcodingService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>
