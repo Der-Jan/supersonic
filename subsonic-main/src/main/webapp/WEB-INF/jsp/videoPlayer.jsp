@@ -42,6 +42,8 @@
                     </c:choose>
                 </c:forEach>
             </select>
+            <div id="share"></div>
+            <div id="download"></div>
             <div id="casticonactive"></div>
             <div id="casticonidle"></div>
         </div>

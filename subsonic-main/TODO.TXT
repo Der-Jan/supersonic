@@ -15,10 +15,8 @@ Replace main.jsp when only video files are present.
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
-  Add links for sharing, downloading etc
   Add button to control video stretching
   Test with chromecast (e.g., thumbnail)
-  Overlay
   Ignore standalone cover art files for video files.
   Deal with previously cached files. (change size in right.jsp)
   Fix layout in right.jsp
