@@ -129,7 +129,7 @@ public class CoverArtController implements Controller, LastModified {
         if (id.startsWith(ARTIST_COVERART_PREFIX)) {
             return createArtistCoverArtRequest(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
         }
-        return createMediaFileCoverArtRequest(Integer.valueOf(id));
+        return createMediaFileCoverArtRequest(Integer.valueOf(id), request);
     }
 
     private CoverArtRequest createAlbumCoverArtRequest(int id) {
@@ -142,12 +142,16 @@ public class CoverArtController implements Controller, LastModified {
         return artist == null ? null : new ArtistCoverArtRequest(artist);
     }
 
-    private CoverArtRequest createMediaFileCoverArtRequest(int id) {
+    private CoverArtRequest createMediaFileCoverArtRequest(int id, HttpServletRequest request) {
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
         if (mediaFile == null) {
             return null;
         }
-        return mediaFile.isVideo() ? new VideoCoverArtRequest(mediaFile) : new MediaFileCoverArtRequest(mediaFile);
+        if (mediaFile.isVideo()) {
+            int offset = ServletRequestUtils.getIntParameter(request, "offset", 60);
+            return new VideoCoverArtRequest(mediaFile, offset);
+        }
+        return new MediaFileCoverArtRequest(mediaFile);
     }
 
     private void sendImage(File file, HttpServletResponse response) throws IOException {
@@ -243,8 +247,8 @@ public class CoverArtController implements Controller, LastModified {
         }
     }
 
-    private InputStream getImageInputStreamForVideo(MediaFile mediaFile, int width, int height) throws Exception {
-        VideoTranscodingSettings videoSettings = new VideoTranscodingSettings(width, height, 60, 0, false);
+    private InputStream getImageInputStreamForVideo(MediaFile mediaFile, int width, int height, int offset) throws Exception {
+        VideoTranscodingSettings videoSettings = new VideoTranscodingSettings(width, height, offset, 0, false);
         TranscodingService.Parameters parameters = new TranscodingService.Parameters(mediaFile, videoSettings);
         String command = settingsService.getVideoImageCommand();
         parameters.setTranscoding(new Transcoding(null, null, null, null, command, null, null, false));
@@ -472,9 +476,11 @@ public class CoverArtController implements Controller, LastModified {
     private class VideoCoverArtRequest extends CoverArtRequest {
 
         private final MediaFile mediaFile;
+        private final int offset;
 
-        private VideoCoverArtRequest(MediaFile mediaFile) {
+        private VideoCoverArtRequest(MediaFile mediaFile, int offset) {
             this.mediaFile = mediaFile;
+            this.offset = offset;
         }
 
         @Override
@@ -483,7 +489,7 @@ public class CoverArtController implements Controller, LastModified {
             int width = height * 16 / 9;
             InputStream in = null;
             try {
-                in = getImageInputStreamForVideo(mediaFile, width, height);
+                in = getImageInputStreamForVideo(mediaFile, width, height, offset);
                 BufferedImage result = ImageIO.read(in);
                 if (result == null) {
                     throw new NullPointerException();
@@ -499,7 +505,7 @@ public class CoverArtController implements Controller, LastModified {
 
         @Override
         public String getKey() {
-            return mediaFile.getPath();
+            return mediaFile.getPath() + "/" + offset;
         }
 
         @Override

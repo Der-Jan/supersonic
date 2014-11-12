@@ -23,6 +23,48 @@
 
 <html><head>
     <%@ include file="head.jsp" %>
+    <%@ include file="jquery.jsp" %>
+
+    <script type="text/javascript">
+        var image;
+        var id;
+        var duration;
+        var timer;
+        var offset;
+        var step;
+        var size = 120;
+
+        function startPreview(img, id, duration) {
+            stopPreview();
+            image = $(img);
+            step = Math.max(5, Math.round(duration / 50));
+            offset = step;
+            this.id = id;
+            this.duration = duration;
+            updatePreview();
+            timer = window.setInterval(updatePreview, 1000);
+        }
+
+        function updatePreview() {
+            console.log(offset);
+            image.attr("src", "coverArt.view?id=" + id + "&size=" + size + "&offset=" + offset);
+            offset += step;
+            if (offset > duration) {
+                stopPreview();
+            }
+        }
+
+        function stopPreview() {
+            if (timer != null) {
+                window.clearInterval(timer);
+                timer = null;
+            }
+            if (image != null) {
+                image.attr("src", "coverArt.view?id=" + id + "&size=" + size);
+            }
+        }
+    </script>
+
 </head><body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
@@ -48,10 +90,12 @@
                 <sub:param name="size" value="120"/>
             </sub:url>
             <div style="padding-bottom: 3px">
-                <a href="${videoUrl}" title="${child.name}"><img src="${coverArtUrl}" alt="${child.name}"></a>
+                <a href="${videoUrl}"><img src="${coverArtUrl}" alt=""
+                                           onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                           onmouseout="stopPreview()"></a>
             </div>
             <div class="detail">
-                <div style="float:left;overflow:hidden;text-overflow: ellipsis;width:165px"><b>${child.name}</b></div>
+                <div style="float:left;overflow:hidden;text-overflow: ellipsis;width:165px" title="${child.name}"><b>${child.name}</b></div>
                 <div style="float: right">${child.durationString}</div>
             </div>
         </div>

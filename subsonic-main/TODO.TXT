@@ -8,10 +8,11 @@ Show similar artists, with radio feature
 REST: Show similar artists, with radio feature
 Artist bio and images
 Video autoplay
+New video page, show slideshow on hover
+
 
 TODO IN 5.1
 --------------
-Replace main.jsp when only video files are present.
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
@@ -21,8 +22,6 @@ video thumbnails, using ffmpeg -> jpeg
   Deal with previously cached files. (change size in right.jsp)
   Fix layout in right.jsp
   Remove lyrics link in right.jsp
-  h1 video icon
-  show slideshow on hover?
 
 mention chromecast in site
 flexbox
