@@ -80,25 +80,28 @@
 
 <c:forEach items="${model.children}" var="child">
     <c:if test="${child.video}">
+
+        <sub:url value="/videoPlayer.view" var="videoUrl">
+            <sub:param name="id" value="${child.id}"/>
+        </sub:url>
+        <sub:url value="/coverArt.view" var="coverArtUrl">
+            <sub:param name="id" value="${child.id}"/>
+            <sub:param name="size" value="120"/>
+        </sub:url>
+
         <div style="float:left;padding-right:14px; padding-bottom: 10px;width:213px">
-            <sub:url value="/videoPlayer.view" var="videoUrl">
-                <sub:param name="id" value="${child.id}"/>
-            </sub:url>
-            <sub:url value="/coverArt.view" var="coverArtUrl">
-                <sub:param name="id" value="${child.id}"/>
-                <sub:param name="size" value="120"/>
-            </sub:url>
-            <div style="padding-bottom: 3px">
-                <a href="${videoUrl}"><img src="${coverArtUrl}" alt=""
-                                           onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
-                                           onmouseout="stopPreview()"></a>
+            <div style="position: relative">
+                <div>
+                    <a href="${videoUrl}"><img src="${coverArtUrl}" alt=""
+                                               onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                               onmouseout="stopPreview()"></a>
+                </div>
+                <div class="detail" style="position:absolute;bottom:3px;right:3px;color: #d3d3d3;background-color: black; opacity: 0.8; padding-right:3px; padding-left:3px">${child.durationString}</div>
             </div>
-            <div class="detail">
-                <div style="float:left;overflow:hidden;text-overflow: ellipsis;width:165px" title="${child.name}"><b>${child.name}</b></div>
-                <div style="float: right">${child.durationString}</div>
-            </div>
+            <div class="detail" style="padding-top:3px;overflow:hidden;text-overflow: ellipsis;width:213px" title="${child.name}"><b>${child.name}</b></div>
         </div>
     </c:if>
+
 </c:forEach>
 
 <div style="clear:both;padding-top: 1em">
