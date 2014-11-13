@@ -15,7 +15,6 @@ TODO IN 5.1
 --------------
 right.jsp
   Test "Now scanning"
-extract css in videoMain.jsp
 show avatar in upper-right corner
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.

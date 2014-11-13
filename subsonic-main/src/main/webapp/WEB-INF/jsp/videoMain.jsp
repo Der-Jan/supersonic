@@ -64,6 +64,36 @@
         }
     </script>
 
+    <style type="text/css">
+        .videoContainer {
+            width: 213px;
+            float: left;
+            padding-right: 14px;
+            padding-bottom: 10px;
+        }
+        .duration {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            color: #d3d3d3;
+            background-color: black;
+            opacity: 0.8;
+            padding-right:3px;
+            padding-left:3px;
+        }
+        .title {
+            width:213px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 3px;
+        }
+        .directory {
+            width: 213px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+
 </head><body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
@@ -89,38 +119,38 @@
             <sub:param name="size" value="120"/>
         </sub:url>
 
-        <div style="float:left;padding-right:14px; padding-bottom: 10px;width:213px">
-            <div style="position: relative">
+        <div class="videoContainer">
+            <div style="position:relative">
                 <div>
                     <a href="${videoUrl}"><img src="${coverArtUrl}" alt=""
                                                onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
                                                onmouseout="stopPreview()"></a>
                 </div>
-                <div class="detail" style="position:absolute;bottom:3px;right:3px;color: #d3d3d3;background-color: black; opacity: 0.8; padding-right:3px; padding-left:3px">${child.durationString}</div>
+                <div class="detail duration">${child.durationString}</div>
             </div>
-            <div class="detail" style="padding-top:3px;overflow:hidden;text-overflow: ellipsis;width:213px" title="${child.name}"><b>${child.name}</b></div>
+            <div class="detail title" title="${child.name}"><b>${child.name}</b></div>
         </div>
     </c:if>
 
 </c:forEach>
 
 <div style="clear:both;padding-top: 1em">
-    <c:set var="cssClass" value=""/>
+    <c:set var="cssClass" value="directory"/>
     <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
         <c:if test="${child.directory}">
             <c:choose>
-                <c:when test="${empty cssClass}">
-                    <c:set var="cssClass" value="class='bgcolor2'"/>
+                <c:when test="${cssClass eq 'directory'}">
+                    <c:set var="cssClass" value="bgcolor2 directory"/>
                 </c:when>
                 <c:otherwise>
-                    <c:set var="cssClass" value=""/>
+                    <c:set var="cssClass" value="directory"/>
                 </c:otherwise>
             </c:choose>
             <sub:url value="main.view" var="childUrl">
                 <sub:param name="id" value="${child.id}"/>
             </sub:url>
 
-            <div ${cssClass} style="width:213px;overflow: hidden;text-overflow: ellipsis">
+            <div class="${cssClass}">
                 <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
             </div>
         </c:if>
