@@ -18,6 +18,17 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -30,15 +41,6 @@ import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.util.StringUtil;
-import org.apache.commons.lang.StringUtils;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Provides AJAX-enabled services for retrieving the currently playing file and directory.
@@ -114,8 +116,11 @@ public class NowPlayingService {
                 String title = mediaFile.getTitle();
                 String streamUrl = url.replaceFirst("/dwr/.*", "/stream?player=" + player.getId() + "&id=" + mediaFile.getId());
                 String albumUrl = url.replaceFirst("/dwr/.*", "/main.view?id=" + mediaFile.getId());
-                String lyricsUrl = url.replaceFirst("/dwr/.*", "/lyrics.view?artistUtf8Hex=" + StringUtil.utf8HexEncode(artist) +
-                        "&songUtf8Hex=" + StringUtil.utf8HexEncode(title));
+                String lyricsUrl = null;
+                if (!mediaFile.isVideo()) {
+                    lyricsUrl = url.replaceFirst("/dwr/.*", "/lyrics.view?artistUtf8Hex=" + StringUtil.utf8HexEncode(artist) +
+                                                            "&songUtf8Hex=" + StringUtil.utf8HexEncode(title));
+                }
                 String coverArtUrl = url.replaceFirst("/dwr/.*", "/coverArt.view?size=60&id=" + mediaFile.getId());
 
                 String avatarUrl = null;

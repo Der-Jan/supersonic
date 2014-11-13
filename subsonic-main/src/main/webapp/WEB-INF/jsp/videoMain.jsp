@@ -46,7 +46,6 @@
         }
 
         function updatePreview() {
-            console.log(offset);
             image.attr("src", "coverArt.view?id=" + id + "&size=" + size + "&offset=" + offset);
             offset += step;
             if (offset > duration) {

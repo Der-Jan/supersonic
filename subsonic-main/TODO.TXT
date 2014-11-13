@@ -13,9 +13,14 @@ New video page, show slideshow on hover
 
 TODO IN 5.1
 --------------
+right.jsp
+  Test "Now scanning"
+extract css in videoMain.jsp
+show avatar in upper-right corner
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
+  Show duration over preview image.
   Add button to control video stretching
   Test with chromecast (e.g., thumbnail)
   Ignore standalone cover art files for video files.
