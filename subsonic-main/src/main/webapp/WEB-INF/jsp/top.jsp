@@ -114,10 +114,22 @@
             </div>
         </td>
 
-        <td style="padding-left:15pt;padding-right:5pt;vertical-align: middle;width: 100%;text-align: right">
-            <span class="detail">
+        <td style="padding-left:15pt;padding-right:5pt;vertical-align: middle;width: 100%;text-align: center">
+
+            <c:if test="${model.showAvatar}">
+            <sub:url value="avatar.view" var="avatarUrl">
+                <sub:param name="username" value="${model.user.username}"/>
+            </sub:url>
+                <div style="padding-bottom: 4px">
+                    <c:if test="${model.user.settingsRole}"><a href="personalSettings.view" target="main"></c:if>
+                        <img src="${avatarUrl}" alt="" width="30" height="30">
+                        <c:if test="${model.user.settingsRole}"></a></c:if>
+                </div>
+            </c:if>
+
+            <div class="detail">
                 <a href="j_acegi_logout" target="_top"><fmt:message key="top.logout"><fmt:param value="${model.user.username}"/></fmt:message></a>
-            </span>
+            </div>
         </td>
 
     </tr></table>

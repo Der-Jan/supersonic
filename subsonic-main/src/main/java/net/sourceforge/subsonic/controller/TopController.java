@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -51,13 +52,14 @@ public class TopController extends ParameterizableViewController {
 
         List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
         User user = securityService.getCurrentUser(request);
+        UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
 
         map.put("user", user);
         map.put("musicFoldersExist", !allMusicFolders.isEmpty());
         map.put("brand", settingsService.getBrand());
         map.put("licenseInfo", settingsService.getLicenseInfo());
+        map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
 
-        UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
         if (userSettings.isFinalVersionNotificationEnabled() && versionService.isNewFinalVersionAvailable()) {
             map.put("newVersionAvailable", true);
             map.put("latestVersion", versionService.getLatestFinalVersion());

@@ -9,23 +9,16 @@ REST: Show similar artists, with radio feature
 Artist bio and images
 Video autoplay
 New video page, show slideshow on hover
-
+Show avatar in upper-right corner
 
 TODO IN 5.1
 --------------
-right.jsp
-  Test "Now scanning"
-show avatar in upper-right corner
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
-  Show duration over preview image.
   Add button to control video stretching
   Test with chromecast (e.g., thumbnail)
-  Ignore standalone cover art files for video files.
-  Deal with previously cached files. (change size in right.jsp)
   Fix layout in right.jsp
-  Remove lyrics link in right.jsp
 
 mention chromecast in site
 flexbox

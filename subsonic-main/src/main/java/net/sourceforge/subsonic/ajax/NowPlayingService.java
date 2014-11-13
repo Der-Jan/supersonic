@@ -127,7 +127,7 @@ public class NowPlayingService {
                 if (userSettings.getAvatarScheme() == AvatarScheme.SYSTEM) {
                     avatarUrl = url.replaceFirst("/dwr/.*", "/avatar.view?id=" + userSettings.getSystemAvatarId());
                 } else if (userSettings.getAvatarScheme() == AvatarScheme.CUSTOM && settingsService.getCustomAvatar(username) != null) {
-                    avatarUrl = url.replaceFirst("/dwr/.*", "/avatar.view?username=" + username);
+                    avatarUrl = url.replaceFirst("/dwr/.*", "/avatar.view?usernameUtf8Hex=" + StringUtil.utf8HexEncode(username));
                 }
 
                 // Rewrite URLs in case we're behind a proxy.

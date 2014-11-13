@@ -200,6 +200,7 @@
             <c:if test="${not empty command.customAvatar}">
                 <sub:url value="avatar.view" var="avatarUrl">
                     <sub:param name="username" value="${command.user.username}"/>
+                    <sub:param name="forceCustom" value="true"/>
                 </sub:url>
                 <img src="${avatarUrl}" alt="${command.customAvatar.name}" width="${command.customAvatar.width}" height="${command.customAvatar.height}" style="padding-right:2em"/>
             </c:if>
