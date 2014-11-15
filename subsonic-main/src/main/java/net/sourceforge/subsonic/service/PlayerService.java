@@ -228,7 +228,7 @@ public class PlayerService {
         String cookieName = COOKIE_NAME + "-" + StringUtil.utf8HexEncode(username);
         for (Cookie cookie : cookies) {
             if (cookieName.equals(cookie.getName())) {
-                return cookie.getValue();
+                return StringUtils.trimToNull(cookie.getValue());
             }
         }
         return null;

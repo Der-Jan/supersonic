@@ -30,14 +30,29 @@
 
 <body class="bgcolor2 playlistframe" onload="init()">
 
+<span id="dummy-animation-target" style="max-width:50px;display: none"></span>
+
 <script type="text/javascript" language="javascript">
     var songs = null;
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
     var CastPlayer = new CastPlayer();
+    var ignore = false;
 
     function init() {
+        $(window).mouseleave(function (event) {
+            if (event.clientY < 30) {
+                setFrameHeight(50);
+            }
+        });
+
+        $(window).mouseenter(function () {
+            var height = $("body").height() + 20;
+            height = Math.min(height, window.top.innerHeight * 0.8);
+            setFrameHeight(height);
+        });
+
         dwr.engine.setErrorHandler(null);
         startTimer();
 
@@ -50,6 +65,14 @@
 
         <c:if test="${model.player.web}">createPlayer();</c:if>
         getPlayQueue();
+    }
+
+    function setFrameHeight(height) {
+        $("#dummy-animation-target").animate({"max-width": height}, {
+            step: function (now, fx) {
+                top.document.getElementById("playQueueFrameset").rows = "*," + now;
+            }
+        });
     }
 
     function startTimer() {
@@ -493,7 +516,7 @@
 
 </script>
 
-<div class="bgcolor2" style="position:fixed; top:0; width:100%;padding-top:0.5em">
+<div class="bgcolor2" style="position:fixed; bottom:0; width:100%;padding-top:10px;padding-bottom: 5px">
     <table style="white-space:nowrap;">
         <tr style="white-space:nowrap;">
             <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
@@ -601,8 +624,6 @@
         </tr></table>
 </div>
 
-<div style="height:3.2em"></div>
-
 <p id="empty"><em><fmt:message key="playlist.empty"/></em></p>
 
 <table style="border-collapse:collapse;white-space:nowrap;">
@@ -667,6 +688,8 @@
         </tr>
     </tbody>
 </table>
+
+<div style="height:3.2em"></div>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>

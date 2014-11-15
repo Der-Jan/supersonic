@@ -10,29 +10,37 @@ Artist bio and images
 Video autoplay
 New video page, show slideshow on hover
 Show avatar in upper-right corner
+Automatically show/hide play queue.
 
 TODO IN 5.1
 --------------
+hostingvideo.com
+  https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505
+Make it possible to minimize playQueue.jsp
+  Test all browsers
+  Move jw player to bottom
+  animate
+  change bg colors
+  avoid minimizing if leaving from bottom
+    doesn't work if scroll bar
+  make it just big enough to show whole playlist
+  show current playing song
+  add "play queue" title
 set window title when playing video
 some files (tingeling) playing with wrong aspect rate.
 video thumbnails, using ffmpeg -> jpeg
   Add button to control video stretching
   Test with chromecast (e.g., thumbnail)
-  Fix layout in right.jsp
+video autoplay broken on safari
 
 mention chromecast in site
-flexbox
-  http://css-tricks.com/snippets/css/a-guide-to-flexbox/
 Avoid scrolling album/artist title
 Find similar tracks / artists
   Use java binding for scrobbling?
   Use minium similarity
   Test other browsers.
 Artist cover art collage (or use last.fm api)
-CarSub
-  https://mail.google.com/mail/ca/u/0/#inbox/14946dd63ba984d3
 Subtitle support
-  Auto-start movie? At least auto-load
   https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
   http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
   http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
