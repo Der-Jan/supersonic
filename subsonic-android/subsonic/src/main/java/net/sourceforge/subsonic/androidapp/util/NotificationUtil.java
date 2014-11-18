@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.androidapp.util;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -142,6 +143,7 @@ public final class NotificationUtil {
                 .build();
     }
 
+    @TargetApi(16)
     private static Notification createCustomNotification(Context context, MusicDirectory.Entry song, boolean playing) {
 
         Bitmap albumArt;

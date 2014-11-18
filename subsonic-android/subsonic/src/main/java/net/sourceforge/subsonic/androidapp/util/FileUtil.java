@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -130,6 +131,7 @@ public class FileUtil {
         return dir;
     }
 
+    @TargetApi(19)
     public static File getSubsonicDirectory(Context context) {
 
         // Starting with KitKat, write access is not always allowed outside the app's private directory.

@@ -236,7 +236,6 @@
     <string name="util.bytes_format.byte">0 B</string>
 
     <plurals name="select_album_n_songs">
-        <item quantity="zero">No songs</item>
         <item quantity="one">One song</item>
         <item quantity="other">%d songs</item>
     </plurals>

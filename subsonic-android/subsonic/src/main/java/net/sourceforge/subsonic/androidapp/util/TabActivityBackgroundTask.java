@@ -52,7 +52,7 @@ public abstract class TabActivityBackgroundTask<T> extends BackgroundTask<T> {
     }
 
     private boolean isCancelled() {
-        return tabActivity.isDestroyed();
+        return tabActivity.hasBeenDestroyed();
     }
 
     @Override
