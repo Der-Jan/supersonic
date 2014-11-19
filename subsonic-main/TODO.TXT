@@ -14,23 +14,15 @@ Automatically show/hide play queue.
 
 TODO IN 5.1
 --------------
+Site: Require Java 7
+FAQ: Mention Lollipop/Java 6 SSL incompatibility
+OAuth
 some files (tingeling) playing with wrong aspect rate.
 hostingvideo.com
   https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505
 Make it possible to minimize playQueue.jsp
   Test all browsers
-  Move jw player to bottom
-  animate
-  change bg colors
-  avoid minimizing if leaving from bottom
-    doesn't work if scroll bar
-  make it just big enough to show whole playlist
-  show current playing song
-  add "play queue" title
 set window title when playing video
-video thumbnails, using ffmpeg -> jpeg
-  Add button to control video stretching
-  Test with chromecast (e.g., thumbnail)
 
 mention chromecast in site
 Avoid scrolling album/artist title
@@ -51,7 +43,6 @@ DB: Delete redirection where trial is false and license holder is null.
 Instant search
   - test other browsers
   - test remote
-Video thumbnail.
 Video playback broken behind proxies.
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64820&e=64820
 Sort folders using locale-specific collation.
@@ -100,24 +91,6 @@ Update ffmpeg
   Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
   Support ISO
 
-Upgrade JWPlayer
-  Use html5
-  Fix format in playQueue.jsp
-  http://www.longtailvideo.com/support/jw-player/28842/working-with-playlists
-  JWPlayer key
-  Don't use hosted.
-  Custom colors
-  Video
-  (Re)Move player dropdown (hide if only one player)
-  Create option to select flash or html5
-  video
-  externalplayer
-  Use ogg for firefox, mp3 for other.
-  http://modernizr.com/docs/#features-html5
-
-http://alxgbsn.co.uk/2013/02/20/notify-js-a-handy-wrapper-for-the-web-notifications-api/
-Revert to webkit notification? (Unstable in chrome)
-Chromecast
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
@@ -127,9 +100,6 @@ Gzip REST / Jetty
   https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
   Jetty GzipFilter? Remember it should work on Tomcat etc as well.
 Monitoring with JavaMelody
-Artist art
-  Create collage of album covers?
-  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
@@ -154,16 +124,6 @@ TODO IN SITE
 ------------
 Create mosaic of apps, put on slideshow.
 
-java.lang.SecurityException: Access denied to file /Users/sindre
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:139)
-	at net.sourceforge.subsonic.service.MediaFileService.getParentOf(MediaFileService.java:160)
-	at net.sourceforge.subsonic.service.MediaFileService.getCoverArt(MediaFileService.java:527)
-	at net.sourceforge.subsonic.controller.CoverArtController.getMediaFileImage(CoverArtController.java:155)
-	at net.sourceforge.subsonic.controller.CoverArtController.getImageFile(CoverArtController.java:136)
-	at net.sourceforge.subsonic.controller.CoverArtController.handleRequest(CoverArtController.java:90)
-
 DLNA
   Make sure sublist works
   Make sure top-level single files work.
@@ -171,8 +131,6 @@ DLNA
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
 
-Make more space available on forum server.
-Deal with backup server. Document procedure for swapping over. Invoice notice.
 Update screenshots
 Publish on Mac app store
 Shuffle play
@@ -186,8 +144,6 @@ REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 Clean up podcasts in demo
 Update backup server (after a couple of days)
-Publish blackberry app.
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
 Improve video support
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
   https://sourceforge.net/p/subsonic/feature-requests/15/
@@ -295,12 +251,13 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 4.1
+DONE IN ANDROID 4.2
 --------------------
-Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later?)
+Don't show passwords in settings.
 
-TODO IN ANDROID 4.1
+TODO IN ANDROID 4.2
 --------------------
+Fix lint errors
 Wrong cache location in Android 5?
 SSL problems with Android 5?
   https://mail.google.com/mail/ca/u/0/?zx=fu6g1tfaa3i0#inbox/1493402cdb7393f1

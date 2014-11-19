@@ -45,5 +45,11 @@ public class Schema51 extends Schema {
             template.execute("alter table user_settings add show_artist_info boolean default true not null");
             LOG.info("Database column 'user_settings.show_artist_info' was added successfully.");
         }
+
+        if (!columnExists(template, "auto_hide_play_queue", "user_settings")) {
+            LOG.info("Database column 'user_settings.auto_hide_play_queue' not found.  Creating it.");
+            template.execute("alter table user_settings add auto_hide_play_queue boolean default true not null");
+            LOG.info("Database column 'user_settings.auto_hide_play_queue' was added successfully.");
+        }
     }
 }

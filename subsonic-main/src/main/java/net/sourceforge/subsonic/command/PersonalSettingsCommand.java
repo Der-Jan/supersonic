@@ -47,6 +47,7 @@ public class PersonalSettingsCommand {
     private boolean showChatEnabled;
     private boolean showArtistInfoEnabled;
     private boolean nowPlayingAllowed;
+    private boolean autoHidePlayQueue;
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
@@ -197,6 +198,14 @@ public class PersonalSettingsCommand {
 
     public boolean isSongNotificationEnabled() {
         return songNotificationEnabled;
+    }
+
+    public boolean isAutoHidePlayQueue() {
+        return autoHidePlayQueue;
+    }
+
+    public void setAutoHidePlayQueue(boolean autoHidePlayQueue) {
+        this.autoHidePlayQueue = autoHidePlayQueue;
     }
 
     public boolean isLastFmEnabled() {

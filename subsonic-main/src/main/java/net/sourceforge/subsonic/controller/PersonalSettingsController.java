@@ -67,6 +67,7 @@ public class PersonalSettingsController extends SimpleFormController {
         command.setFinalVersionNotificationEnabled(userSettings.isFinalVersionNotificationEnabled());
         command.setBetaVersionNotificationEnabled(userSettings.isBetaVersionNotificationEnabled());
         command.setSongNotificationEnabled(userSettings.isSongNotificationEnabled());
+        command.setAutoHidePlayQueue(userSettings.isAutoHidePlayQueue());
         command.setLastFmEnabled(userSettings.isLastFmEnabled());
         command.setLastFmUsername(userSettings.getLastFmUsername());
         command.setLastFmPassword(userSettings.getLastFmPassword());
@@ -126,6 +127,7 @@ public class PersonalSettingsController extends SimpleFormController {
         settings.setFinalVersionNotificationEnabled(command.isFinalVersionNotificationEnabled());
         settings.setBetaVersionNotificationEnabled(command.isBetaVersionNotificationEnabled());
         settings.setSongNotificationEnabled(command.isSongNotificationEnabled());
+        settings.setAutoHidePlayQueue(command.isAutoHidePlayQueue());
         settings.setLastFmEnabled(command.isLastFmEnabled());
         settings.setLastFmUsername(command.getLastFmUsername());
         settings.setSystemAvatarId(getSystemAvatarId(command));

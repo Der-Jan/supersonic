@@ -41,17 +41,7 @@
     var ignore = false;
 
     function init() {
-        $(window).mouseleave(function (event) {
-            if (event.clientY < 30) {
-                setFrameHeight(50);
-            }
-        });
-
-        $(window).mouseenter(function () {
-            var height = $("body").height() + 20;
-            height = Math.min(height, window.top.innerHeight * 0.8);
-            setFrameHeight(height);
-        });
+        <c:if test="${model.autoHide}">initAutoHide();</c:if>
 
         dwr.engine.setErrorHandler(null);
         startTimer();
@@ -65,6 +55,20 @@
 
         <c:if test="${model.player.web}">createPlayer();</c:if>
         getPlayQueue();
+    }
+
+    function initAutoHide() {
+        $(window).mouseleave(function (event) {
+            if (event.clientY < 30) {
+                setFrameHeight(50);
+            }
+        });
+
+        $(window).mouseenter(function () {
+            var height = $("body").height() + 20;
+            height = Math.min(height, window.top.innerHeight * 0.8);
+            setFrameHeight(height);
+        });
     }
 
     function setFrameHeight(height) {

@@ -37,6 +37,7 @@ public class UserSettings {
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
+    private boolean autoHidePlayQueue;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
@@ -196,6 +197,14 @@ public class UserSettings {
 
     public void setNowPlayingAllowed(boolean nowPlayingAllowed) {
         this.nowPlayingAllowed = nowPlayingAllowed;
+    }
+
+    public boolean isAutoHidePlayQueue() {
+        return autoHidePlayQueue;
+    }
+
+    public void setAutoHidePlayQueue(boolean autoHidePlayQueue) {
+        this.autoHidePlayQueue = autoHidePlayQueue;
     }
 
     public AvatarScheme getAvatarScheme() {

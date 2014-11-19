@@ -59,6 +59,7 @@ public class PlayQueueController extends ParameterizableViewController {
         map.put("visibility", userSettings.getPlaylistVisibility());
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("notify", userSettings.isSongNotificationEnabled());
+        map.put("autoHide", userSettings.isAutoHidePlayQueue());
         map.put("licenseInfo", settingsService.getLicenseInfo());
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

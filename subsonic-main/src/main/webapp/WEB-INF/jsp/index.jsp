@@ -11,7 +11,7 @@
     <frameset cols="15%,85%" border="0" framespacing="0" frameborder="0">
         <frame name="left" src="left.view?" marginwidth="0" marginheight="0" class="bgcolor2">
 
-        <frameset id="playQueueFrameset" rows="*,50" border="0" framespacing="0" frameborder="0">
+        <frameset id="playQueueFrameset" rows=${model.autoHide ? "*,50" : "75%,25%"} border="0" framespacing="0" frameborder="0">
             <frameset cols="*,${model.showRight ? 235 : 0}" border="0" framespacing="0" frameborder="0">
                 <frame name="main" src="nowPlaying.view?" marginwidth="0" marginheight="0" class="bgcolor1">
                 <frame name="right" src="right.view?" class="bgcolor1">

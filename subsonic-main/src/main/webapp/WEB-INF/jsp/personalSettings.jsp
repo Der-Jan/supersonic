@@ -130,12 +130,12 @@
         <tr>
             <td><form:checkbox path="nowPlayingAllowed" id="nowPlayingAllowed" cssClass="checkbox"/></td>
             <td><label for="nowPlayingAllowed"><fmt:message key="personalsettings.nowplayingallowed"/></label></td>
+            <td style="padding-left:2em"><form:checkbox path="autoHidePlayQueue" id="autoHidePlayQueue" cssClass="checkbox"/></td>
+            <td><label for="autoHidePlayQueue"><fmt:message key="personalsettings.autohideplayqueue"/></label></td>
             <td style="padding-left:2em"><form:checkbox path="partyModeEnabled" id="partyModeEnabled" cssClass="checkbox"/></td>
             <td><label for="partyModeEnabled"><fmt:message key="personalsettings.partymode"/></label>
                 <c:import url="helpToolTip.jsp"><c:param name="topic" value="partymode"/></c:import>
             </td>
-            <td></td>
-            <td></td>
         </tr>
     </table>
 
