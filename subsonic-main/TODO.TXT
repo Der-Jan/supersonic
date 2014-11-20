@@ -15,6 +15,9 @@ Add "shuffle play" to categories in home page.
 
 TODO IN 5.1
 --------------
+Dim image when hovering
+Also include not-present artists.
+Improve uploader
 Rename "play random" to "Shuffle xxx"
 hostingvideo.com
   https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505

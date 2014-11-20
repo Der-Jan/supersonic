@@ -185,6 +185,10 @@ img {
     vertical-align: middle;
 }
 
+.dropshadow {
+    box-shadow: 3px 3px 5px #888888;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

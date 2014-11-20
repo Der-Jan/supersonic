@@ -18,7 +18,6 @@
   ~  Copyright 2014 (C) Sindre Mehus
   --%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%--@elvariable id="model" type="java.util.Map"--%>
 
 <html><head>
@@ -122,7 +121,7 @@
         <div class="videoContainer">
             <div style="position:relative">
                 <div>
-                    <a href="${videoUrl}"><img src="${coverArtUrl}" alt=""
+                    <a href="${videoUrl}"><img src="${coverArtUrl}" alt="" class="dropshadow"
                                                onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
                                                onmouseout="stopPreview()"></a>
                 </div>
