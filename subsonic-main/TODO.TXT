@@ -11,17 +11,16 @@ Video autoplay
 New video page, show slideshow on hover
 Show avatar in upper-right corner
 Automatically show/hide play queue.
+Add "shuffle play" to categories in home page.
 
 TODO IN 5.1
 --------------
+Rename "play random" to "Shuffle xxx"
+hostingvideo.com
+  https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505
 Site: Require Java 7
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
-some files (tingeling) playing with wrong aspect rate.
-hostingvideo.com
-  https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505
-Make it possible to minimize playQueue.jsp
-  Test all browsers
 set window title when playing video
 
 mention chromecast in site

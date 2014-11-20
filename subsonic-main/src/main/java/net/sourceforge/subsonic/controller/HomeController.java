@@ -191,7 +191,7 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private  List<Album> getByYear(int offset, int count, int fromYear, int toYear) {
+    private List<Album> getByYear(int offset, int count, int fromYear, int toYear) {
         List<Album> result = new ArrayList<Album>();
         for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear)) {
             Album album = createAlbum(file);

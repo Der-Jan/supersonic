@@ -167,6 +167,9 @@
     function onPlay(id) {
         playQueueService.play(id, playQueueCallback);
     }
+    function onPlayShuffle(albumListType, offset, size, genre, decade) {
+        playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
+    }
     function onPlayPlaylist(id, index) {
         index = index || 0;
         playQueueService.playPlaylist(id, index, playQueueCallback);

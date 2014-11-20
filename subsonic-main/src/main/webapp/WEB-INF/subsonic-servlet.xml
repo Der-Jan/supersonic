@@ -26,7 +26,7 @@
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="adService" ref="adService"/>
     </bean>
@@ -100,7 +100,7 @@
         <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="setRatingController" class="net.sourceforge.subsonic.controller.SetRatingController">
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
@@ -248,7 +248,7 @@
     </bean>
     <bean id="homeController" class="net.sourceforge.subsonic.controller.HomeController">
         <property name="viewName" value="home"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
@@ -361,7 +361,7 @@
         <property name="audioScrobblerService" ref="audioScrobblerService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="playQueueService" ref="ajaxPlayQueueService"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="chatService" ref="ajaxChatService"/>
         <property name="lyricsService" ref="ajaxLyricsService"/>
         <property name="podcastService" ref="podcastService"/>

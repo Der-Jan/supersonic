@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.ajax;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +38,8 @@ import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.RatingService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
@@ -58,8 +61,10 @@ public class PlayQueueService {
     private MediaFileService mediaFileService;
     private LastFmService lastFmService;
     private SecurityService securityService;
-    private MediaFileDao mediaFileDao;
+    private SearchService searchService;
+    private RatingService ratingService;
     private net.sourceforge.subsonic.service.PlaylistService playlistService;
+    private MediaFileDao mediaFileDao;
 
     /**
      * Returns the play queue for the player of the current user.
@@ -151,6 +156,47 @@ public class PlayQueueService {
         List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
         Player player = getCurrentPlayer(request, response);
         return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
+    public PlayQueueInfo playShuffle(String albumListType, int offset, int count, String genre, String decade) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        String username = securityService.getCurrentUsername(request);
+
+        List<MediaFile> albums;
+        if ("highest".equals(albumListType)) {
+            albums = ratingService.getHighestRatedAlbums(offset, count);
+        } else if ("frequent".equals(albumListType)) {
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count);
+        } else if ("recent".equals(albumListType)) {
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count);
+        } else if ("newest".equals(albumListType)) {
+            albums = mediaFileService.getNewestAlbums(offset, count);
+        } else if ("starred".equals(albumListType)) {
+            albums = mediaFileService.getStarredAlbums(offset, count, username);
+        } else if ("random".equals(albumListType)) {
+            albums = searchService.getRandomAlbums(count);
+        } else if ("alphabetical".equals(albumListType)) {
+            albums = mediaFileService.getAlphabeticalAlbums(offset, count, true);
+        } else if ("decade".equals(albumListType)) {
+            int fromYear = Integer.parseInt(decade);
+            int toYear = fromYear + 9;
+            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear);
+        } else if ("genre".equals(albumListType)) {
+            albums = mediaFileService.getAlbumsByGenre(offset, count, genre);
+        } else {
+            albums = Collections.emptyList();
+        }
+
+        List<MediaFile> songs = new ArrayList<MediaFile>();
+        for (MediaFile album : albums) {
+            songs.addAll(mediaFileService.getChildrenOf(album, true, false, false));
+        }
+        Collections.shuffle(songs);
+        songs = songs.subList(0, Math.min(40, songs.size()));
+
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, songs).setStartPlayerAt(0);
     }
 
     private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
@@ -462,6 +508,14 @@ public class PlayQueueService {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setSearchService(SearchService searchService) {
+        this.searchService = searchService;
+    }
+
+    public void setRatingService(RatingService ratingService) {
+        this.ratingService = ratingService;
     }
 
     public void setSecurityService(SecurityService securityService) {

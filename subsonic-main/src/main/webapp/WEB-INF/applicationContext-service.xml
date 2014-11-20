@@ -131,7 +131,7 @@
 
     <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService"/>
 
-    <bean id="musicInfoService" class="net.sourceforge.subsonic.service.RatingService">
+    <bean id="ratingService" class="net.sourceforge.subsonic.service.RatingService">
         <property name="ratingDao" ref="musicFileInfoDao"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
@@ -237,6 +237,8 @@
         <property name="jukeboxService" ref="jukeboxService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="searchService" ref="searchService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
 
