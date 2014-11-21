@@ -5,7 +5,6 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <link href="<c:url value="/style/shadow.css"/>" rel="stylesheet">
     <c:if test="${not model.updateNowPlaying}">
         <meta http-equiv="refresh" content="180;URL=nowPlaying.view?">
     </c:if>

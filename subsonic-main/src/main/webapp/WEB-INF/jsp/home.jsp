@@ -4,7 +4,6 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <link href="<c:url value="/style/shadow.css"/>" rel="stylesheet">
 
     <script type="text/javascript" language="javascript">
         function init() {
