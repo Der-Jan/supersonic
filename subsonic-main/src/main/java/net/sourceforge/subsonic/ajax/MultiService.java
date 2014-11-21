@@ -64,7 +64,7 @@ public class MultiService {
 
     private List<SimilarArtist> getSimilarArtists(int mediaFileId, int limit) {
         MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
-        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(artist, limit);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(artist, limit, false);
         SimilarArtist[] result = new SimilarArtist[similarArtists.size()];
         for (int i = 0; i < result.length; i++) {
             MediaFile similarArtist = similarArtists.get(i);

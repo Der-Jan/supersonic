@@ -511,7 +511,7 @@
 <table class="detail" style="width: 75%;white-space: normal">
     <tr>
         <td rowspan="4" style="vertical-align: top">
-            <img id="artistImage" alt="" style="padding-right: 0.5em; display: none">
+            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 0.5em; display: none">
         </td>
         <td id="artistBio"></td>
     </tr>

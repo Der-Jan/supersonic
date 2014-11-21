@@ -12,11 +12,11 @@ New video page, show slideshow on hover
 Show avatar in upper-right corner
 Automatically show/hide play queue.
 Add "shuffle play" to categories in home page.
+Dim image when hovering
+REST: Also include not-present artists.
 
 TODO IN 5.1
 --------------
-Dim image when hovering
-Also include not-present artists.
 Improve uploader
 Rename "play random" to "Shuffle xxx"
 hostingvideo.com

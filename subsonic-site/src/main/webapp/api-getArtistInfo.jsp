@@ -47,6 +47,12 @@
         <td>20</td>
         <td>Max number of similar artists to return.</td>
     </tr>
+    <tr class="table-altrow">
+        <td><code>includeNotPresent</code></td>
+        <td>No</td>
+        <td>false</td>
+        <td>Whether to return artists that are not present in the media library.</td>
+    </tr>
 </table>
 <p>
     Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;artistInfo&gt;</code>

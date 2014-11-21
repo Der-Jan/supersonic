@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.subsonic.restapi.AlbumID3;
@@ -426,6 +427,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         int count = getIntParameter(request, "count", 20);
+        boolean includeNotPresent = ServletRequestUtils.getBooleanParameter(request, "includeNotPresent", false);
 
         ArtistInfo result = new ArtistInfo();
 
@@ -434,7 +436,7 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
             return;
         }
-        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count, includeNotPresent);
         for (MediaFile similarArtist : similarArtists) {
             result.getSimilarArtist().add(createJaxbArtist(similarArtist, username));
         }
@@ -460,6 +462,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         int count = getIntParameter(request, "count", 20);
+        boolean includeNotPresent = ServletRequestUtils.getBooleanParameter(request, "includeNotPresent", false);
 
         ArtistInfo2 result = new ArtistInfo2();
 
@@ -469,7 +472,7 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        List<Artist> similarArtists = lastFmService.getSimilarArtists(artist, count);
+        List<Artist> similarArtists = lastFmService.getSimilarArtists(artist, count, includeNotPresent);
         for (Artist similarArtist : similarArtists) {
             result.getSimilarArtist().add(createJaxbArtist(new ArtistID3(), similarArtist, username));
         }
@@ -502,7 +505,7 @@ public class RESTController extends MultiActionController {
     private org.subsonic.restapi.Artist createJaxbArtist(MediaFile artist, String username) {
         org.subsonic.restapi.Artist result = new org.subsonic.restapi.Artist();
         result.setId(String.valueOf(artist.getId()));
-        result.setName(artist.getName());
+        result.setName(artist.getArtist());
         Date starred = mediaFileDao.getMediaFileStarredDate(artist.getId(), username);
         result.setStarred(jaxbWriter.convertDate(starred));
         return result;
