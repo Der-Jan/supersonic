@@ -64,6 +64,13 @@ public class VideoPlayerController extends ParameterizableViewController {
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
         String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
 
+        // Rewrite URLs in case we're behind a proxy.
+        if (settingsService.isRewriteUrlEnabled()) {
+            String referer = request.getHeader("referer");
+            streamUrl = StringUtil.rewriteUrl(streamUrl, referer);
+            coverArtUrl = StringUtil.rewriteUrl(coverArtUrl, referer);
+        }
+
         boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
         String urlRedirectFrom = settingsService.getUrlRedirectFrom();
         String urlRedirectContextPath = settingsService.getUrlRedirectContextPath();

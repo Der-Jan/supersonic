@@ -14,6 +14,7 @@ Automatically show/hide play queue.
 Add "shuffle play" to categories in home page.
 Dim image when hovering
 REST: Also include not-present artists.
+Video playback broken behind proxies.
 
 TODO IN 5.1
 --------------
@@ -45,8 +46,6 @@ DB: Delete redirection where trial is false and license holder is null.
 Instant search
   - test other browsers
   - test remote
-Video playback broken behind proxies.
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64820&e=64820
 Sort folders using locale-specific collation.
 Cast: Update site (premium feature)
 Don't differentiate between albums and dirs when sorting?
