@@ -20,7 +20,8 @@
 <%@ include file="include.jsp"%>
 
 <header id="header" class="${param.transparent ? 'alt' : 'skel-layers-fixed'}">
-    <h1><a href="index.html">Alpha</a> by Pixelarity</h1>
+    <h1><a href="index.html">Subsonic</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... easy listening</h1>
+
     <nav id="nav">
         <ul>
             <li><a href="index.html">Home</a></li>
