@@ -16,6 +16,13 @@ Dim image when hovering
 REST: Also include not-present artists.
 Video playback broken behind proxies.
 
+
+TODO IN SITE
+------------
+html5up.net
+  alpha
+unsplash.com
+
 TODO IN 5.1
 --------------
 Improve uploader
