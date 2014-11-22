@@ -22,6 +22,7 @@ TODO IN SITE
 html5up.net
   alpha
 unsplash.com
+http://fortawesome.github.io/Font-Awesome/
 
 TODO IN 5.1
 --------------
