@@ -43,6 +43,25 @@
                 </ul>
             </li>
             <li><a href="premium.jsp">Premium</a></li>
+
+            <li>
+                <a href="" class="icon fa-angle-down">Help</a>
+                <ul>
+                    <li><a href="faq.jsp">FAQ</a></li>
+                    <%--<li><a href="contact.html">Contact</a></li>--%>
+                    <%--<li><a href="elements.html">Elements</a></li>--%>
+                    <%--<li>--%>
+                        <%--<a href="">Submenu</a>--%>
+                        <%--<ul>--%>
+                            <%--<li><a href="#">Option One</a></li>--%>
+                            <%--<li><a href="#">Option Two</a></li>--%>
+                            <%--<li><a href="#">Option Three</a></li>--%>
+                            <%--<li><a href="#">Option Four</a></li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
+                </ul>
+            </li>
+
             <li><a href="api.jsp">API</a></li>
             <li><a href="download.jsp" class="button icon fa-download">Download</a></li>
         </ul>
