@@ -42,6 +42,7 @@
                     </li>
                 </ul>
             </li>
+            <li><a href="premium.jsp">Premium</a></li>
             <li><a href="api.jsp">API</a></li>
             <li><a href="download.jsp" class="button icon fa-download">Download</a></li>
         </ul>
