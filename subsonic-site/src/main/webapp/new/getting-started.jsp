@@ -44,12 +44,12 @@
                     on your installation options, but is typically <a href="http://localhost:4040" target="_blank">http://localhost:4040</a>.
                 </p>
 
-                <ol>
-                    <li><a href="#1">Setting up music folders</a></li>
-                    <li><a href="#2">Setting up remote access</a></li>
-                    <li><a href="#3">Registering your license key</a></li>
-                    <li><a href="#4">Using https</a></li>
-                </ol>
+                <ul class="actions fit small">
+                    <li><a class="button small alt fit" href="#1">Setting up music folders</a></li>
+                    <li><a class="button small alt fit" href="#2">Setting up remote access</a></li>
+                    <li><a class="button small alt fit" href="#3">Registering your license key</a></li>
+                    <li><a class="button small alt fit" href="#4">Using https</a></li>
+                </ul>
 
             </section>
 
