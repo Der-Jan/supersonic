@@ -31,3 +31,7 @@
         <li>&copy; Subsonic AS. All rights reserved.</li>
     </ul>
 </footer>
+
+<script type="text/javascript" language="javascript">
+    setupZoom();
+</script>

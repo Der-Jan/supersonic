@@ -23,6 +23,10 @@ html5up.net
   alpha
 unsplash.com
 http://fortawesome.github.io/Font-Awesome/
+Google Analytics
+Move <a> in api-xxx.jsp
+Change FancyZoom?
+Bigger images (in installation.jsp etc)
 
 TODO IN 5.1
 --------------

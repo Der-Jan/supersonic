@@ -1,5 +1,6 @@
+<a name="addChatMessage"></a>
 <section class="box">
-    <h3><a name="addChatMessage"></a>addChatMessage</h3>
+    <h3>addChatMessage</h3>
 
     <p>
         <code>http://your-server/rest/addChatMessage.view</code>

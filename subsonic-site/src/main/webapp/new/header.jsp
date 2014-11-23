@@ -47,8 +47,10 @@
             <li>
                 <a href="" class="icon fa-angle-down">Help</a>
                 <ul>
+                    <li><a href="installation.jsp">How to install</a></li>
                     <li><a href="faq.jsp">FAQ</a></li>
                     <li><a href="changelog.jsp">Change Log</a></li>
+                    <li><a href="http://forum.subsonic.org/forum/index.php">Forum</a></li>
                     <%--<li><a href="contact.html">Contact</a></li>--%>
                     <%--<li><a href="elements.html">Elements</a></li>--%>
                     <%--<li>--%>

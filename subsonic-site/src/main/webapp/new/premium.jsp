@@ -56,7 +56,6 @@
                     <li>Share your media on Facebook, Twitter, Google+.</li>
                     <li>Other features to be released later.</li>
                 </ul>
-
             </div>
         </div>
 
