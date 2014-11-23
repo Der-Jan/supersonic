@@ -38,7 +38,7 @@
     <h3>Are there other payment options than PayPal?</h3>
     <p>Yes, you can use any of the following alternatives:</p>
     <ul>
-        <li>Make a payment to mail@subsonic.org on <a href="http://www.skrill.com/" target="_blank">Skrill</a>.</li>
+        <li>Make a payment to <strong>mail@subsonic.org</strong> on <a href="http://www.skrill.com/" target="_blank">Skrill</a>.</li>
         <li>Bitcoins are welcome on <strong>16BzYq6HXPkCYdDaafpQWiaJqmqUfnYmFA</strong></li>
         <li>Transfer money to our bank account; please <a href="mailto:mail@subsonic.org">contact us</a> for bank details.</li>
     </ul>

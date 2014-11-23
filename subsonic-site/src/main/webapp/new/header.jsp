@@ -52,17 +52,13 @@
                     <li><a href="faq.jsp">FAQ</a></li>
                     <li><a href="changelog.jsp">Change Log</a></li>
                     <li><a href="http://forum.subsonic.org/forum/index.php">Forum</a></li>
-                    <%--<li><a href="contact.html">Contact</a></li>--%>
-                    <%--<li><a href="elements.html">Elements</a></li>--%>
-                    <%--<li>--%>
-                        <%--<a href="">Submenu</a>--%>
-                        <%--<ul>--%>
-                            <%--<li><a href="#">Option One</a></li>--%>
-                            <%--<li><a href="#">Option Two</a></li>--%>
-                            <%--<li><a href="#">Option Three</a></li>--%>
-                            <%--<li><a href="#">Option Four</a></li>--%>
-                        <%--</ul>--%>
-                    <%--</li>--%>
+                    <li>
+                        <a href="">More...</a>
+                        <ul>
+                            <li><a href="transcoding.jsp">Transcoding Settings</a></li>
+                            <li><a href="translate.jsp">How to Translate</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
