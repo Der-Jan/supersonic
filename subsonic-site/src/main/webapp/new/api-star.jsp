@@ -1,5 +1,6 @@
+<a name="star"></a>
 <section class="box">
-    <h3><a name="star"></a>star</h3>
+    <h3>star</h3>
 
     <p>
         <code>http://your-server/rest/star.view</code>

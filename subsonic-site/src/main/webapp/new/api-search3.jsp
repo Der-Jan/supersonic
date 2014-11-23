@@ -1,5 +1,6 @@
+<a name="search3"></a>
 <section class="box">
-    <h3><a name="search3"></a>search3</h3>
+    <h3>search3</h3>
 
     <p>
         <code>http://your-server/rest/search3.view</code>

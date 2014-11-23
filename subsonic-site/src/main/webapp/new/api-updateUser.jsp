@@ -1,5 +1,6 @@
+<a name="updateUser"></a>
 <section class="box">
-    <h3><a name="updateUser"></a>updateUser</h3>
+    <h3>updateUser</h3>
 
     <p>
         <code>http://your-server/rest/updateUser.view</code>

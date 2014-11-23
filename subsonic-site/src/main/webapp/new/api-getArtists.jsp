@@ -1,5 +1,6 @@
+<a name="getArtists"></a>
 <section class="box">
-    <h3><a name="getArtists"></a>getArtists</h3>
+    <h3>getArtists</h3>
 
     <p>
         <code>http://your-server/rest/getArtists.view</code>

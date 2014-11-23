@@ -1,5 +1,6 @@
+<a name="getAlbum"></a>
 <section class="box">
-    <h3><a name="getAlbum"></a>getAlbum</h3>
+    <h3>getAlbum</h3>
 
     <p>
         <code>http://your-server/rest/getAlbum.view</code>

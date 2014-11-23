@@ -1,5 +1,6 @@
+<a name="getSimilarSongs2"></a>
 <section class="box">
-    <h3><a name="getSimilarSongs2"></a>getSimilarSongs2</h3>
+    <h3>getSimilarSongs2</h3>
 
     <p>
         <code>http://your-server/rest/getSimilarSongs2.view</code>

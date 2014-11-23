@@ -1,5 +1,6 @@
+<a name="getGenres"></a>
 <section class="box">
-    <h3><a name="getGenres"></a>getGenres</h3>
+    <h3>getGenres</h3>
 
     <p>
         <code>http://your-server/rest/getGenres.view</code>

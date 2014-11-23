@@ -1,5 +1,6 @@
+<a name="getLyrics"></a>
 <section class="box">
-    <h3><a name="getLyrics"></a>getLyrics</h3>
+    <h3>getLyrics</h3>
 
     <p>
         <code>http://your-server/rest/getLyrics.view</code>

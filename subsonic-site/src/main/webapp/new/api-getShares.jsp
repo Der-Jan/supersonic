@@ -1,5 +1,6 @@
+<a name="getShares"></a>
 <section class="box">
-    <h3><a name="getShares"></a>getShares</h3>
+    <h3>getShares</h3>
 
     <p>
         <code>http://your-server/rest/getShares.view</code>

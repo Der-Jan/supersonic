@@ -1,5 +1,6 @@
+<a name="hls"></a>
 <section class="box">
-    <h3><a name="hls"></a>hls</h3>
+    <h3>hls</h3>
 
     <p>
         <code>http://your-server/rest/hls.m3u8</code>

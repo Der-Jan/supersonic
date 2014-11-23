@@ -1,5 +1,6 @@
+<a name="getSongsByGenre"></a>
 <section class="box">
-    <h3><a name="getSongsByGenre"></a>getSongsByGenre</h3>
+    <h3>getSongsByGenre</h3>
 
     <p>
         <code>http://your-server/rest/getSongsByGenre.view</code>

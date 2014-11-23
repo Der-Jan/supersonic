@@ -1,5 +1,6 @@
+<a name="getNowPlaying"></a>
 <section class="box">
-    <h3><a name="getNowPlaying"></a>getNowPlaying</h3>
+    <h3>getNowPlaying</h3>
 
     <p>
         <code>http://your-server/rest/getNowPlaying.view</code>

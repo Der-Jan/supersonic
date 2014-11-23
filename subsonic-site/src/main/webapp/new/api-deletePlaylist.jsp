@@ -1,5 +1,6 @@
+<a name="deletePlaylist"></a>
 <section class="box">
-    <h3><a name="deletePlaylist"></a>deletePlaylist</h3>
+    <h3>deletePlaylist</h3>
 
     <p>
         <code>http://your-server/rest/deletePlaylist.view</code>

@@ -1,5 +1,6 @@
+<a name="getArtistInfo"></a>
 <section class="box">
-    <h3><a name="getArtistInfo"></a>getArtistInfo</h3>
+    <h3>getArtistInfo</h3>
 
     <p>
         <code>http://your-server/rest/getArtistInfo.view</code>

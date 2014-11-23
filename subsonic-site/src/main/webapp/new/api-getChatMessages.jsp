@@ -1,5 +1,6 @@
+<a name="getChatMessages"></a>
 <section class="box">
-    <h3><a name="getChatMessages"></a>getChatMessages</h3>
+    <h3>getChatMessages</h3>
 
     <p>
         <code>http://your-server/rest/getChatMessages.view</code>

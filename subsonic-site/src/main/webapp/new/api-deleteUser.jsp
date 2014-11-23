@@ -1,5 +1,6 @@
+<a name="deleteUser"></a>
 <section class="box">
-    <h3><a name="deleteUser"></a>deleteUser</h3>
+    <h3>deleteUser</h3>
 
     <p>
         <code>http://your-server/rest/deleteUser.view</code>

@@ -43,6 +43,7 @@
                 </ul>
             </li>
             <li><a href="premium.jsp">Premium</a></li>
+            <li><a href="demo.jsp">Demo</a></li>
 
             <li>
                 <a href="" class="icon fa-angle-down">Help</a>

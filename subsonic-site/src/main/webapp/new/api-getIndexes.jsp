@@ -1,5 +1,6 @@
+<a name="getIndexes"></a>
 <section class="box">
-    <h3><a name="getIndexes"></a>getIndexes</h3>
+    <h3>getIndexes</h3>
 
     <p>
         <code>http://your-server/rest/getIndexes.view</code>

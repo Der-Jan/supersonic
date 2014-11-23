@@ -1,5 +1,6 @@
+<a name="updatePlaylist"></a>
 <section class="box">
-    <h3><a name="updatePlaylist"></a>updatePlaylist</h3>
+    <h3>updatePlaylist</h3>
 
     <p>
         <code>http://your-server/rest/updatePlaylist.view</code>

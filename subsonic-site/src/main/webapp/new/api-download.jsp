@@ -1,5 +1,6 @@
+<a name="download"></a>
 <section class="box">
-    <h3><a name="download"></a>download</h3>
+    <h3>download</h3>
 
     <p>
         <code>http://your-server/rest/download.view</code>

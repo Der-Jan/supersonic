@@ -1,5 +1,6 @@
+<a name="createBookmark"></a>
 <section class="box">
-    <h3><a name="createBookmark"></a>createBookmark</h3>
+    <h3>createBookmark</h3>
 
     <p>
         <code>http://your-server/rest/createBookmark.view</code>

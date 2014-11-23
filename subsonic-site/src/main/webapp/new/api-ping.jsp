@@ -1,5 +1,6 @@
+<a name="ping"></a>
 <section class="box">
-    <h3><a name="ping"></a>ping</h3>
+    <h3>ping</h3>
 
     <p>
         <code>http://your-server/rest/ping.view</code>

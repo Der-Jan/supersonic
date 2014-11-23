@@ -1,5 +1,6 @@
+<a name="changePassword"></a>
 <section class="box">
-    <h3><a name="changePassword"></a>changePassword</h3>
+    <h3>changePassword</h3>
 
     <p>
         <code>http://your-server/rest/changePassword.view</code>

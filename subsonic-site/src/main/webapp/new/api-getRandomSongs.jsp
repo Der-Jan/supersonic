@@ -1,5 +1,6 @@
+<a name="getRandomSongs"></a>
 <section class="box">
-    <h3><a name="getRandomSongs"></a>getRandomSongs</h3>
+    <h3>getRandomSongs</h3>
 
     <p>
         <code>http://your-server/rest/getRandomSongs.view</code>

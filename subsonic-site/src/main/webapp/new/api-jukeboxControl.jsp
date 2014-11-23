@@ -1,5 +1,6 @@
+<a name="jukeboxControl"></a>
 <section class="box">
-    <h3><a name="jukeboxControl"></a>jukeboxControl</h3>
+    <h3>jukeboxControl</h3>
 
     <p>
         <code>http://your-server/rest/jukeboxControl.view</code>

@@ -1,5 +1,6 @@
+<a name="getCoverArt"></a>
 <section class="box">
-    <h3><a name="getCoverArt"></a>getCoverArt</h3>
+    <h3>getCoverArt</h3>
 
     <p>
         <code>http://your-server/rest/getCoverArt.view</code>

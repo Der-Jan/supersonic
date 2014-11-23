@@ -1,5 +1,6 @@
+<a name="updateShare"></a>
 <section class="box">
-    <h3><a name="updateShare"></a>updateShare</h3>
+    <h3>updateShare</h3>
 
     <p>
         <code>http://your-server/rest/updateShare.view</code>

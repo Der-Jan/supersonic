@@ -1,5 +1,6 @@
+<a name="getMusicDirectory"></a>
 <section class="box">
-    <h3><a name="getMusicDirectory"></a>getMusicDirectory</h3>
+    <h3>getMusicDirectory</h3>
 
     <p>
         <code>http://your-server/rest/getMusicDirectory.view</code>

@@ -1,5 +1,6 @@
+<a name="scrobble"></a>
 <section class="box">
-    <h3><a name="scrobble"></a>scrobble</h3>
+    <h3>scrobble</h3>
 
     <p>
         <code>http://your-server/rest/scrobble.view</code>

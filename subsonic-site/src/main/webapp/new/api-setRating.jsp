@@ -1,5 +1,6 @@
+<a name="setRating"></a>
 <section class="box">
-    <h3><a name="setRating"></a>setRating</h3>
+    <h3>setRating</h3>
 
     <p>
         <code>http://your-server/rest/setRating.view</code>

@@ -1,5 +1,6 @@
+<a name="getStarred2"></a>
 <section class="box">
-    <h3><a name="getStarred2"></a>getStarred2</h3>
+    <h3>getStarred2</h3>
 
     <p>
         <code>http://your-server/rest/getStarred2.view</code>

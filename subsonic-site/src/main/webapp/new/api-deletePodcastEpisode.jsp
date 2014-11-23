@@ -1,5 +1,6 @@
+<a name="deletePodcastEpisode"></a>
 <section class="box">
-    <h3><a name="deletePodcastEpisode"></a>deletePodcastEpisode</h3>
+    <h3>deletePodcastEpisode</h3>
 
     <p>
         <code>http://your-server/rest/deletePodcastEpisode.view</code>

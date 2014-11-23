@@ -1,5 +1,6 @@
+<a name="getLicense"></a>
 <section class="box">
-    <h3><a name="getLicense"></a>getLicense</h3>
+    <h3>getLicense</h3>
 
     <p>
         <code>http://your-server/rest/getLicense.view</code>

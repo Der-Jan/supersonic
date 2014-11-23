@@ -1,5 +1,6 @@
+<a name="getPodcasts"></a>
 <section class="box">
-    <h3><a name="getPodcasts"></a>getPodcasts</h3>
+    <h3>getPodcasts</h3>
 
     <p>
         <code>http://your-server/rest/getPodcasts.view</code>

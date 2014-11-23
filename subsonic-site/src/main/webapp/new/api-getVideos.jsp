@@ -1,5 +1,6 @@
+<a name="getVideos"></a>
 <section class="box">
-    <h3><a name="getVideos"></a>getVideos</h3>
+    <h3>getVideos</h3>
 
     <p>
         <code>http://your-server/rest/getVideos.view</code>

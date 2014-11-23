@@ -1,5 +1,6 @@
+<a name="stream"></a>
 <section class="box">
-    <h3><a name="stream"></a>stream</h3>
+    <h3>stream</h3>
 
     <p>
         <code>http://your-server/rest/stream.view</code>

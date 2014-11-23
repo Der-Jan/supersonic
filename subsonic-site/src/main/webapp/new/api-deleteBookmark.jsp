@@ -1,5 +1,6 @@
+<a name="deleteBookmark"></a>
 <section class="box">
-    <h3><a name="deleteBookmark"></a>deleteBookmark</h3>
+    <h3>deleteBookmark</h3>
 
     <p>
         <code>http://your-server/rest/deleteBookmark.view</code>

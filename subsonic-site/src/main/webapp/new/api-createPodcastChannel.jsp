@@ -1,5 +1,6 @@
+<a name="createPodcastChannel"></a>
 <section class="box">
-    <h3><a name="createPodcastChannel"></a>createPodcastChannel</h3>
+    <h3>createPodcastChannel</h3>
 
     <p>
         <code>http://your-server/rest/createPodcastChannel.view</code>

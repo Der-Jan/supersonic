@@ -1,5 +1,6 @@
+<a name="deleteShare"></a>
 <section class="box">
-    <h3><a name="deleteShare"></a>deleteShare</h3>
+    <h3>deleteShare</h3>
 
     <p>
         <code>http://your-server/rest/deleteShare.view</code>

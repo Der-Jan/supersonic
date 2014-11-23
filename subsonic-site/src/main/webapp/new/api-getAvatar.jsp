@@ -1,5 +1,6 @@
+<a name="getAvatar"></a>
 <section class="box">
-    <h3><a name="getAvatar"></a>getAvatar</h3>
+    <h3>getAvatar</h3>
 
     <p>
         <code>http://your-server/rest/getAvatar.view</code>

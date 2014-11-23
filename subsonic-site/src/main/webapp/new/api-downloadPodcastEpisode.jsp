@@ -1,5 +1,6 @@
+<a name="downloadPodcastEpisode"></a>
 <section class="box">
-    <h3><a name="downloadPodcastEpisode"></a>downloadPodcastEpisode</h3>
+    <h3>downloadPodcastEpisode</h3>
 
     <p>
         <code>http://your-server/rest/downloadPodcastEpisode.view</code>

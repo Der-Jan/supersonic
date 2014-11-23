@@ -1,5 +1,6 @@
+<a name="createUser"></a>
 <section class="box">
-    <h3><a name="createUser"></a>createUser</h3>
+    <h3>createUser</h3>
 
     <p>
         <code>http://your-server/rest/createUser.view</code>

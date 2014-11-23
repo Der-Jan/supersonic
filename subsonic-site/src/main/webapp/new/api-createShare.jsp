@@ -1,5 +1,6 @@
+<a name="createShare"></a>
 <section class="box">
-    <h3><a name="createShare"></a>createShare</h3>
+    <h3>createShare</h3>
 
     <p>
         <code>http://your-server/rest/createShare.view</code>

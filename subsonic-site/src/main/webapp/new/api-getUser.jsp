@@ -1,5 +1,6 @@
+<a name="getUser"></a>
 <section class="box">
-    <h3><a name="getUser"></a>getUser</h3>
+    <h3>getUser</h3>
 
     <p>
         <code>http://your-server/rest/getUser.view</code>

@@ -1,5 +1,6 @@
+<a name="getInternetRadioStations"></a>
 <section class="box">
-    <h3><a name="getInternetRadioStations"></a>getInternetRadioStations</h3>
+    <h3>getInternetRadioStations</h3>
 
     <p>
         <code>http://your-server/rest/getInternetRadioStations.view</code>

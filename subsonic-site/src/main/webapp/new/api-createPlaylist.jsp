@@ -1,5 +1,6 @@
+<a name="createPlaylist"></a>
 <section class="box">
-    <h3><a name="createPlaylist"></a>createPlaylist</h3>
+    <h3>createPlaylist</h3>
 
     <p>
         <code>http://your-server/rest/createPlaylist.view</code>

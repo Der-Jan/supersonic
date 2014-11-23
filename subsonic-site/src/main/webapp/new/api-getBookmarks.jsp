@@ -1,5 +1,6 @@
+<a name="getBookmarks"></a>
 <section class="box">
-    <h3><a name="getBookmarks"></a>getBookmarks</h3>
+    <h3>getBookmarks</h3>
 
     <p>
         <code>http://your-server/rest/getBookmarks.view</code>

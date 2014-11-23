@@ -1,5 +1,6 @@
+<a name="unstar"></a>
 <section class="box">
-    <h3><a name="unstar"></a>unstar</h3>
+    <h3>unstar</h3>
 
     <p>
         <code>http://your-server/rest/unstar.view</code>
