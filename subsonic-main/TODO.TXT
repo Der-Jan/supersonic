@@ -28,6 +28,8 @@ Change FancyZoom?
 Bigger images (in installation.jsp etc)
 Change image in demo.jsp
 Ads
+Apps
+Open external links in new window
 
 TODO IN 5.1
 --------------

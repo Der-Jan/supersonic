@@ -43,6 +43,7 @@
                 </ul>
             </li>
             <li><a href="premium.jsp">Premium</a></li>
+            <li><a href="apps.jsp">Apps</a></li>
             <li><a href="demo.jsp">Demo</a></li>
 
             <li>

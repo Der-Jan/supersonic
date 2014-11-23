@@ -40,7 +40,7 @@
             <section class="box">
 
                 <div class="table-wrapper">
-                    <table class="alt">
+                    <table>
                         <tbody>
                         <tr>
                             <td class="icon fa-windows">&nbsp;&nbsp;Windows</td>
@@ -104,6 +104,12 @@
                             <td><a href="installation.jsp#war" class="button small">Instructions</a></td>
                         </tr>
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>&nbsp;&nbsp;<a href="changelog.jsp">What's new?</a></td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
 
