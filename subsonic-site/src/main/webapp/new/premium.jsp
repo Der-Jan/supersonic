@@ -126,12 +126,16 @@
     </section>
 
     <section class="box">
-        <p>Includes free upgrades to future Subsonic releases. Note: The Subsonic Premium license is valid for personal, non-commercial use.
-            For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options. </p>
+        <ul>
+            <li>Includes free upgrades to future Subsonic releases.</li>
 
-        <p><a href="faq.jsp">Other payment alternatives</a> are also available.</p>
+            <li> The Subsonic Premium license is valid for personal, non-commercial use.
+                For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options. </li>
 
-        <p>If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a></p>
+            <li><a href="faq.jsp">Other payment alternatives</a> are also available.</li>
+
+            <li>If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a></li>
+        </ul>
     </section>
 
 </section>

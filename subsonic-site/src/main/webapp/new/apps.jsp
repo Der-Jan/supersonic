@@ -48,7 +48,6 @@
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
-                    <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                 </ul>
             </div>
 
@@ -58,7 +57,8 @@
                     <li><a href="#audiophone">Audiophone</a> for iPhone/iPad</li>
                     <li><a href="#zsubsonic">Z-Subsonic</a> for iPhone/iPad</li>
                     <li><a href="#substream">SubStream</a> for iPhone/iPad</li>
-                    <li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>
+                    <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
+                    <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                     <li><a href="#carsub">CarSub</a> for iPhone/iPad</li>
                 </ul>
             </div>
@@ -127,7 +127,7 @@
             the Subsonic project. Some apps are commercial, while some are available for free.
         </p>
         <p>Also note that after a 30-day trial period you need to upgrade to <a href="premium.jsp">Subsonic Premium</a> to use the apps.
-            By upgrading you also get other benefits; see info box on the right.
+            By upgrading you also get <a href="premium.jsp">other benefits</a>.
         </p>
         <p>
             Interested in making your own Subsonic app? Check out the <a href="api.jsp">API</a>.
@@ -138,22 +138,25 @@
     <%@ include file="apps-android.jsp" %>
     <%@ include file="apps-dsub.jsp" %>
     <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-winphone.jsp" %>
+    <%@ include file="apps-silversonic.jsp" %>
+
     <%@ include file="apps-isub.jsp" %>
     <%@ include file="apps-audiophone.jsp" %>
     <%@ include file="apps-zsubsonic.jsp" %>
     <%@ include file="apps-substream.jsp" %>
-    <%--<%@ include file="apps-hypersonic.jsp" %>--%>
-    <%--<%@ include file="apps-carsub.jsp" %>--%>
-    <%--<%@ include file="apps-winphone.jsp" %>--%>
-    <%--<%@ include file="apps-silversonic.jsp" %>--%>
-    <%--<%@ include file="apps-subhub.jsp" %>--%>
-    <%--<%@ include file="apps-subair.jsp" %>--%>
-    <%--<%@ include file="apps-sonicair.jsp" %>--%>
+    <%@ include file="apps-subhub.jsp" %>
+    <%@ include file="apps-carsub.jsp" %>
+
+    <%@ include file="apps-sonicair.jsp" %>
     <%--<%@ include file="apps-mmtm.jsp" %>--%>
+    <%--<%@ include file="apps-subair.jsp" %>--%>
     <%--<%@ include file="apps-chumby.jsp" %>--%>
     <%--<%@ include file="apps-subsonictv.jsp" %>--%>
     <%--<%@ include file="apps-subsonicchannel.jsp" %>--%>
     <%--<%@ include file="apps-xo.jsp" %>--%>
+
+    <%--todo: rearrange--%>
     <%--<%@ include file="apps-submariner.jsp" %>--%>
     <%--<%@ include file="apps-thumper.jsp" %>--%>
     <%--<%@ include file="apps-subgadget.jsp" %>--%>
