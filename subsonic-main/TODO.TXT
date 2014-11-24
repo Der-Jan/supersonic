@@ -30,7 +30,8 @@ Change image in demo.jsp
 Ads
 Apps
 Open external links in new window
-subgadget icon / text
+larger app store logo
+fancyzoom icon missing
 
 TODO IN 5.1
 --------------

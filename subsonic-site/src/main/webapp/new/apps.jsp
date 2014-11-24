@@ -98,7 +98,6 @@
 
             <div class="6u 12u(3)">
                 <ul>
-                    <li><a href="#periscope">Periscope</a> for Windows</li>
                     <li><a href="#subwiji">SubWiji</a> for Windows</li>
                     <li><a href="#supersonic">Supersonic</a> for Windows 8</li>
                     <li><a href="#subsonic8">Subsonic8</a> for Windows 8</li>
@@ -158,13 +157,12 @@
     <%@ include file="apps-thumper.jsp" %>
     <%@ include file="apps-subclient.jsp" %>
     <%@ include file="apps-subgadget.jsp" %>
-    <%--<%@ include file="apps-periscope.jsp" %>--%>
-    <%--<%@ include file="apps-subwiji.jsp" %>--%>
-    <%--<%@ include file="apps-supersonic.jsp" %>--%>
-    <%--<%@ include file="apps-subsonic8.jsp" %>--%>
+    <%@ include file="apps-subwiji.jsp" %>
+    <%@ include file="apps-supersonic.jsp" %>
+    <%@ include file="apps-subsonic8.jsp" %>
 
-    <%--<%@ include file="apps-perisonic.jsp" %>--%>
-    <%--<%@ include file="apps-jamstash.jsp" %>--%>
+    <%@ include file="apps-perisonic.jsp" %>
+    <%@ include file="apps-jamstash.jsp" %>
 
 </section>
 

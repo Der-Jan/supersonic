@@ -17,18 +17,21 @@
   ~  Copyright 2014 (C) Sindre Mehus
   --%>
 
-<a name="subgadget"></a>
+<a name="perisonic"></a>
 <section class="box">
 
-    <span class="image right"><img src="inc/img/screenshots/subgadget/subgadget-1.png" alt=""/></span>
-    <h3>SubGadget</h3>
+    <span class="image right"><img src="inc/img/screenshots/perisonic/perisonic-1.png" alt=""/></span>
+    <h3>Perisonic</h3>
 
     <p>
-        <a href="http://code.google.com/p/subgadget/">SubGadget</a> is a Windows Sidebar Gadget for Subsonic. Works with Windows 7 and Vista.
-    </p>
-    <p>
-        Developed and maintained by Scott Mark, and <a href="http://code.google.com/p/subgadget/">provided free of charge</a>.
+        <a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn">Perisonic</a> is a simple
+        Chrome app for playing random music from Subsonic.
     </p>
 
-    <p style="height:4em"></p>
+    <p>
+        Perisonic is developed by Robin Bakker and is available free of charge.
+    </p>
+
+    <p style="height: 1em"></p>
+    <span class="image"><a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
 </section>
