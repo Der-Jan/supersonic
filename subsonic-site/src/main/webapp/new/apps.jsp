@@ -30,11 +30,11 @@
     <header>
         <h2>Subsonic Apps</h2>
 
-        <p>For Android, iPhone, Windows Phone, Roku, Mac, Chrome and more</p>
+        <p>For Android, iPhone, Windows Phone, Mac, Chrome and more</p>
     </header>
 
     <section class="box">
-        <span class="image featured"><img src="inc/img/premium.jpg" alt="" /></span>
+        <span class="image featured"><img src="inc/img/apps.jpg" alt="" /></span>
         <h3>Subsonic App Gallery</h3>
 
         <p>A variety of Subsonic apps provide fun and alternative ways to enjoy your media collection &ndash; no matter where you are.</p>
@@ -129,7 +129,7 @@
             By upgrading you also get <a href="premium.jsp">other benefits</a>.
         </p>
         <p>
-            Interested in making your own Subsonic app? Check out the <a href="api.jsp">API</a>.
+           Want to make your own Subsonic app? Check out the <a href="api.jsp">API</a>.
         </p>
 
     </section>
