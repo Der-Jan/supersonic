@@ -70,13 +70,13 @@
                 <ul>
                     <li><a href="#sonicair">SonicAir</a> for BlackBerry PlayBook</li>
                     <li><a href="#mmtm">My Music To Me</a> for Sonos</li>
-                    <li><a href="#chumby">Subsonic</a> for Chumby</li>
+                    <%--<li><a href="#chumby">Subsonic</a> for Chumby</li>--%>
+                    <%--<li><a href="#subsonictv">SubsonicTV</a> for Roku</li>--%>
                 </ul>
             </div>
 
             <div class="6u 12u(3)">
                 <ul>
-                    <li><a href="#subsonictv">SubsonicTV</a> for Roku</li>
                     <li><a href="#subsonicchannel">Subsonic Channel</a> for Roku</li>
                     <li><a href="#xo">XO</a> for webOS and BlackBerry PlayBook</li>
                 </ul>
@@ -149,22 +149,20 @@
     <%@ include file="apps-carsub.jsp" %>
 
     <%@ include file="apps-sonicair.jsp" %>
-    <%--<%@ include file="apps-mmtm.jsp" %>--%>
-    <%--<%@ include file="apps-subair.jsp" %>--%>
-    <%--<%@ include file="apps-chumby.jsp" %>--%>
-    <%--<%@ include file="apps-subsonictv.jsp" %>--%>
-    <%--<%@ include file="apps-subsonicchannel.jsp" %>--%>
-    <%--<%@ include file="apps-xo.jsp" %>--%>
+    <%@ include file="apps-mmtm.jsp" %>
+    <%@ include file="apps-subsonicchannel.jsp" %>
+    <%@ include file="apps-xo.jsp" %>
 
-    <%--todo: rearrange--%>
-    <%--<%@ include file="apps-submariner.jsp" %>--%>
-    <%--<%@ include file="apps-thumper.jsp" %>--%>
-    <%--<%@ include file="apps-subgadget.jsp" %>--%>
+    <%@ include file="apps-subair.jsp" %>
+    <%@ include file="apps-submariner.jsp" %>
+    <%@ include file="apps-thumper.jsp" %>
+    <%@ include file="apps-subclient.jsp" %>
+    <%@ include file="apps-subgadget.jsp" %>
     <%--<%@ include file="apps-periscope.jsp" %>--%>
     <%--<%@ include file="apps-subwiji.jsp" %>--%>
     <%--<%@ include file="apps-supersonic.jsp" %>--%>
     <%--<%@ include file="apps-subsonic8.jsp" %>--%>
-    <%--<%@ include file="apps-subclient.jsp" %>--%>
+
     <%--<%@ include file="apps-perisonic.jsp" %>--%>
     <%--<%@ include file="apps-jamstash.jsp" %>--%>
 

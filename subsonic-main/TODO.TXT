@@ -30,6 +30,7 @@ Change image in demo.jsp
 Ads
 Apps
 Open external links in new window
+subgadget icon / text
 
 TODO IN 5.1
 --------------
