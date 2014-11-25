@@ -19,23 +19,18 @@ Video playback broken behind proxies.
 
 TODO IN SITE
 ------------
-html5up.net
-  alpha
 unsplash.com
 http://fortawesome.github.io/Font-Awesome/
 Change FancyZoom?
 Bigger images (in installation.jsp etc)
 Change image in demo.jsp, apps.jsp
-Ads
 Open external links in new window
-larger app store logo
 footer
 main page
 Help > How it works?
 Integrate with backend?
 favicon
 Search
-libraries.jsp
 tutorial.jsp
 
 TODO IN 5.1
