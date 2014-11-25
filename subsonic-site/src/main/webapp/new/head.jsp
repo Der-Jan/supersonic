@@ -34,6 +34,7 @@
     <script src="js/init.js"></script>
     <script src="inc/js/FancyZoom.js"></script>
     <script src="inc/js/FancyZoomHTML.js"></script>
+    <%@ include file="tracking.jsp" %>
     <noscript>
         <link rel="stylesheet" href="css/skel.css"/>
         <link rel="stylesheet" href="css/style.css"/>

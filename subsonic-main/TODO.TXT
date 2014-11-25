@@ -23,12 +23,10 @@ html5up.net
   alpha
 unsplash.com
 http://fortawesome.github.io/Font-Awesome/
-Google Analytics
 Change FancyZoom?
 Bigger images (in installation.jsp etc)
 Change image in demo.jsp, apps.jsp
 Ads
-Apps
 Open external links in new window
 larger app store logo
 fancyzoom icon missing
