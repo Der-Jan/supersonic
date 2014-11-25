@@ -25,29 +25,12 @@
     <nav id="nav">
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li>
-                <a href="" class="icon fa-angle-down">Layouts</a>
-                <ul>
-                    <li><a href="generic.html">Generic</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="elements.html">Elements</a></li>
-                    <li>
-                        <a href="">Submenu</a>
-                        <ul>
-                            <li><a href="#">Option One</a></li>
-                            <li><a href="#">Option Two</a></li>
-                            <li><a href="#">Option Three</a></li>
-                            <li><a href="#">Option Four</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
             <li><a href="premium.jsp">Premium</a></li>
             <li><a href="apps.jsp">Apps</a></li>
             <li><a href="demo.jsp">Demo</a></li>
 
             <li>
-                <a href="" class="icon fa-angle-down">Help</a>
+                <a href="help.jsp" class="icon fa-angle-down">Help</a>
                 <ul>
                     <li><a href="installation.jsp">How to Install</a></li>
                     <li><a href="getting-started.jsp">Getting Started</a></li>

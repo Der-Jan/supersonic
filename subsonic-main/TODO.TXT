@@ -31,6 +31,8 @@ Open external links in new window
 larger app store logo
 footer
 main page
+Help > How it works?
+Integrate with backend?
 
 TODO IN 5.1
 --------------
