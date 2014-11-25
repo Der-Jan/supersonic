@@ -29,7 +29,6 @@ Change image in demo.jsp, apps.jsp
 Ads
 Open external links in new window
 larger app store logo
-fancyzoom icon missing
 footer
 main page
 
