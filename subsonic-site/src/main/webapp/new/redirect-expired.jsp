@@ -60,8 +60,9 @@
         <p style="text-align: center"><a href="premium.jsp" class="button special icon fa-arrow-right">Get Subsonic Premium</a></p>
 
     </section>
+</section>
 
-    <%@ include file="footer.jsp" %>
+<%@ include file="footer.jsp" %>
 
 </body>
 </html>
