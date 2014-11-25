@@ -33,6 +33,11 @@ footer
 main page
 Help > How it works?
 Integrate with backend?
+favicon
+Search
+libraries.jsp
+redirect-expired.jsp
+tutorial.jsp
 
 TODO IN 5.1
 --------------
