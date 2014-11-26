@@ -27,14 +27,40 @@ Change image in demo.jsp, apps.jsp
 Open external links in new window
 footer
 main page
-Help > How it works?
+Help > How does it work.
 Integrate with backend?
 favicon
 Search
 tutorial.jsp
+Create complete feature list (specify premium features)
+
+Subsonic
+Your complete personal media streamer
+Download  -  Learn more
+Change image for apps
+Dim image
+
+1. web interface
+
+2. apps
+
+3. tons of features
+
+4. Premium
+
+
+How does it work?
+1. Install the Subsonic server on the computer you keep your media.
+2. Use a browser on any computer to play music and movies.
+3. (Optional) Get an app for your phone.
+
+
 
 TODO IN 5.1
 --------------
+Upgrade Cling
+  Look into mem leak
+     https://sourceforge.net/p/subsonic/bugs/115/
 Improve uploader
 Rename "play random" to "Shuffle xxx"
 hostingvideo.com

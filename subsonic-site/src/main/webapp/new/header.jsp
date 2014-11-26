@@ -20,11 +20,14 @@
 <%@ include file="include.jsp"%>
 
 <header id="header" class="${param.transparent ? 'alt' : 'skel-layers-fixed'}">
-    <h1><a href="index.html">Subsonic</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... easy listening</h1>
+    <h1>
+
+        <a href="index.jsp"><span class="image left"><img src="inc/img/subsonic_logo.png" alt="" style="height: 50px"/></span>
+            Subsonic</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... easy listening</h1>
 
     <nav id="nav">
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.jsp">Home</a></li>
             <li><a href="premium.jsp">Premium</a></li>
             <li><a href="apps.jsp">Apps</a></li>
             <li><a href="demo.jsp">Demo</a></li>
