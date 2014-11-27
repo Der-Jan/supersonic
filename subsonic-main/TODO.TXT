@@ -32,6 +32,8 @@ Search
 tutorial.jsp
 Create complete feature list (specify premium features)
 Reduce image sizes
+  use jpeg?
+Go thru all images
 
 576x256
 
