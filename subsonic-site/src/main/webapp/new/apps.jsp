@@ -34,7 +34,7 @@
     </header>
 
     <section class="box">
-        <span class="image featured"><img src="inc/img/apps.jpg" alt="" /></span>
+        <span class="image featured"><img src="inc/img/desk.jpg" alt="" /></span>
         <h3>Subsonic App Gallery</h3>
 
         <p>A variety of Subsonic apps provide fun and alternative ways to enjoy your media collection &ndash; no matter where you are.</p>

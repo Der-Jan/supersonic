@@ -26,13 +26,14 @@ Bigger images (in installation.jsp etc)
 Change image in demo.jsp, apps.jsp
 Open external links in new window
 footer
-main page
-Help > How does it work.
 Integrate with backend?
 favicon
 Search
 tutorial.jsp
 Create complete feature list (specify premium features)
+Reduce image sizes
+
+576x256
 
 Subsonic
 Your complete personal media streamer
@@ -40,20 +41,14 @@ Download  -  Learn more
 Change image for apps
 Dim image
 
-1. web interface
+Packed with features
+  Cropped screenshot
 
-2. apps
+Don't leave home
+  Apps on grass.  Or car
 
-3. tons of features
-
-4. Premium
-
-
-How does it work?
-1. Install the Subsonic server on the computer you keep your media.
-2. Use a browser on any computer to play music and movies.
-3. (Optional) Get an app for your phone.
-
+How does it work
+  Scaled-down screenshot
 
 
 TODO IN 5.1

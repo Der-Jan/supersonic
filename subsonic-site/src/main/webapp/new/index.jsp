@@ -34,7 +34,7 @@
     <p>Your complete, personal media streamer.</p>
     <ul class="actions">
         <li><a href="download.jsp" class="button special">Download</a></li>
-        <li><a href="#learnmore" class="button">Learn More</a></li>
+        <li><a href="#learnmore" class="button">Learn more</a></li>
     </ul>
 </section>
 
@@ -81,7 +81,7 @@
 
         <div class="6u 12u(2)">
             <section class="box special">
-                <span class="image featured"><img src="images/pic03.jpg" alt="" /></span>
+                <span class="image featured"><img src="inc/img/video.png" alt="" /></span>
                 <h3>Packed with features</h3>
                 <p>Podcast receiver, Chromecast, jukebox mode, on-the-fly downsampling and conversion,
                     multiple frontends, highly customizable, full support for tags, lyrics and album art, DLNA,
@@ -95,7 +95,7 @@
 
         <div class="6u 12u(2)">
             <section class="box special">
-                <span class="image featured"><img src="inc/img/car.png" alt="" /></span>
+                <span class="image featured"><img src="inc/img/road.jpg" alt="" /></span>
                 <h3>Don't leave home without it</h3>
                 <p>Apps available for Android, iPhone, Windows Phone, Chrome and many more.</p>
 
@@ -115,12 +115,19 @@
             <div class="6u 12u(3)">
 
                 <%--<span class="image featured"><img src="images/pic03.jpg" alt="" /></span>--%>
-                <h3>How does it work?</h3>
+
+                    <h3 class="align-center">How does it work?</h3>
                     <ol>
                         <li>Install the Subsonic server app where you keep your media.</li>
                         <li>Use a browser on any computer to play music and movies.</li>
                         <li>(Optional) Get an app for your phone.</li>
                     </ol>
+                    <ul class="actions align-center">
+                        <li><a href="help.jsp" class="button alt">Learn more</a></li>
+                    </ul>
+            </div>
+            <div class="6u 12u(3)">
+                <span class="image right"><a href="inc/img/screenshot.png"><img src="inc/img/screenshot.png" height="230px" alt=""/></a></span>
             </div>
         </div>
 
