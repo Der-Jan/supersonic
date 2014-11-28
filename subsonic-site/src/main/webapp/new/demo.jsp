@@ -39,7 +39,7 @@
     </header>
 
     <section class="box">
-        <span class="image featured"><img src="inc/img/premium.jpg" alt="" /></span>
+        <span class="image featured"><img src="inc/img/demo.jpg" alt="" /></span>
         <p> Not all Subsonic's features are available in the demo version. For instance, application settings can not be viewed
             or changed, and video streaming is not available.</p>
 
