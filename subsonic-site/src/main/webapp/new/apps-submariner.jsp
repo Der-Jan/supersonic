@@ -24,7 +24,7 @@
     <h3>Submariner</h3>
 
     <p>
-        <a href="http://www.read-write.fr/subapp/index.php">Submariner</a> is a free Subsonic desktop application for Mac.
+        <a target="_blank" href="http://www.read-write.fr/subapp/index.php">Submariner</a> is a free Subsonic desktop application for Mac.
     </p>
 
     <p>

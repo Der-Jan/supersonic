@@ -43,8 +43,8 @@
 
     <p>
         Developed and maintained by Sindre Mehus, the author of Subsonic. Available free of charge
-        on <a href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>.
+        on <a target="_blank" href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp">Google Play</a>.
     </p>
-    <span class="image"><a href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://play.google.com/store/apps/details?id=net.sourceforge.subsonic.androidapp"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
 
 </section>

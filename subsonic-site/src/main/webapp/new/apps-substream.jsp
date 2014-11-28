@@ -27,8 +27,8 @@
     <span class="image right"><a href="inc/img/screenshots/substream/substream-3.png"><img src="inc/img/screenshots/substream/substream-thumb-3.png" alt=""/></a></span>
 
     <p>
-        <a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">SubStream</a> is developed by Figment Inc., and is
-        available free of charge on the <a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">App Store</a>.
+        <a target="_blank" href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">SubStream</a> is developed by Figment Inc., and is
+        available free of charge on the <a target="_blank" href="http://itunes.apple.com/us/app/substream/id389906706?mt=8">App Store</a>.
     </p>
 
     <ul>
@@ -38,6 +38,6 @@
         <li>Streams at 64k</li>
     </ul>
 
-    <span class="image"><a href="http://itunes.apple.com/us/app/substream/id389906706?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://itunes.apple.com/us/app/substream/id389906706?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>

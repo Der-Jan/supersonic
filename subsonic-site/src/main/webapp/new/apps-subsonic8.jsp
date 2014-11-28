@@ -23,7 +23,7 @@
     <h3>Subsonic8</h3>
     <span class="image right"><a href="inc/img/screenshots/subsonic8/subsonic8-1.png"><img src="inc/img/screenshots/subsonic8/subsonic8-thumb-1.png" alt=""/></a></span>
     <p>
-        <a href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717">Subsonic8</a>
+        <a target="_blank" href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717">Subsonic8</a>
         is an open-source Windows&nbsp;8 app developed by Cristi Badila.
     </p>
 
@@ -35,10 +35,10 @@
         <li>Save/restore state</li>
     </ul>
     <p>
-        Subsonic8 can be downloaded for free from <a href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717">Windows Store</a>.
-        The source code is available on <a href="https://github.com/Agilefreaks/SubSonic8">GitHub</a>
+        Subsonic8 can be downloaded for free from <a target="_blank" href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717">Windows Store</a>.
+        The source code is available on <a target="_blank" href="https://github.com/Agilefreaks/SubSonic8">GitHub</a>
     </p>
 
-    <span class="image"><a href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717"><img alt="" src="inc/img/windows_store.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://apps.microsoft.com/windows/app/subsonic8/1b8ef98c-8e57-48ea-b55b-57e70355a717"><img alt="" src="inc/img/windows_store.png"/></a></span>
 
 </section>

@@ -24,10 +24,10 @@
     <h3>SubGadget</h3>
 
     <p>
-        <a href="http://code.google.com/p/subgadget/">SubGadget</a> is a Windows Sidebar Gadget for Subsonic. Works with Windows 7 and Vista.
+        <a target="_blank" href="http://code.google.com/p/subgadget/">SubGadget</a> is a Windows Sidebar Gadget for Subsonic. Works with Windows 7 and Vista.
     </p>
     <p>
-        Developed and maintained by Scott Mark, and <a href="http://code.google.com/p/subgadget/">provided free of charge</a>.
+        Developed and maintained by Scott Mark, and <a target="_blank" href="http://code.google.com/p/subgadget/">provided free of charge</a>.
     </p>
 
     <p style="height:4em"></p>

@@ -24,8 +24,8 @@
 
     <p>
         Jamstash is an HTML5 player for Subsonic that is available as a
-        <a href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc">Chrome app</a> and an
-        <a href="http://jamstash.com/">HTML5 app</a>.
+        <a target="_blank" href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc">Chrome app</a> and an
+        <a target="_blank" href="http://jamstash.com/">HTML5 app</a>.
     </p>
 
     <span class="image right"><a href="inc/img/screenshots/jamstash/jamstash-1.png"><img src="inc/img/screenshots/jamstash/jamstash-thumb-1.png" alt=""/></a></span>
@@ -47,9 +47,9 @@
     </ul>
 
     <p>
-        Jamstash is developed by <a href="https://twitter.com/tsquillario">tsquillario</a> and is
+        Jamstash is developed by <a target="_blank" href="https://twitter.com/tsquillario">tsquillario</a> and is
         available free of charge.
     </p>
 
-    <span class="image"><a href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
 </section>

@@ -24,13 +24,13 @@
     <h3>My Music To Me</h3>
 
     <p>
-        <a href="http://www.mymusicto.me/">My Music To Me</a> (MMTM) allows Subsonic users to enjoy their entire collection by streaming over a Sonos music system.
+        <a target="_blank" href="http://www.mymusicto.me/">My Music To Me</a> (MMTM) allows Subsonic users to enjoy their entire collection by streaming over a Sonos music system.
     </p>
 
     <p>
         MMTM is a translation service (or proxy) that sits between your Sonos music system and your Subsonic streaming server.
     </p>
     <p>
-        It's developed by <a href="http://www.nerdyhearn.com/">NerdyHearn</a>.
+        It's developed by <a target="_blank" href="http://www.nerdyhearn.com/">NerdyHearn</a>.
     </p>
 </section>

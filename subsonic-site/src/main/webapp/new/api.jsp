@@ -46,7 +46,7 @@
 </p>
 
 <p>
-    Feel free to join the <a href="http://groups.google.com/group/subsonic-app-developers">Subsonic App
+    Feel free to join the <a target="_blank" href="http://groups.google.com/group/subsonic-app-developers">Subsonic App
     Developers</a> group for discussions, suggestions and questions.
 </p>
 
@@ -54,7 +54,7 @@
 
 <p>
     The Subsonic API allows you to call methods that respond in
-    <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST</a> style xml.
+    <a target="_blank" href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST</a> style xml.
     Individual methods are detailed below.
 </p>
 
@@ -124,8 +124,8 @@
 
 <p>
     Starting with API version <a href="#versions">1.2.0</a> it is no longer necessary to send the
-    username and password as part of the URL. Instead, HTTP <a
-        href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>
+    username and password as part of the URL. Instead, HTTP <a target="_blank"
+                                                               href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>
     authentication could be used. (Only <em>preemptive</em> authentication is supported, meaning that
     the credentials should be supplied by the client without being challenged for it.)
 </p>

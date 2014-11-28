@@ -24,12 +24,12 @@
     <h3>SubAir</h3>
 
     <p>
-        <a href="http://www.nonpixel.com/subair/">SubAir</a> is a rich desktop application for Subsonic implemented with Adobe&copy; AIR.
+        <a target="_blank" href="http://www.nonpixel.com/subair/">SubAir</a> is a rich desktop application for Subsonic implemented with Adobe&copy; AIR.
         Works with Windows, Mac and Linux.
     </p>
     <p>
-        Developed and maintained by <a href="http://www.nonpixel.com/">Jim Resnowski</a>, and
-        <a href="http://www.nonpixel.com/subair/">provided free of charge</a>.
+        Developed and maintained by <a target="_blank" href="http://www.nonpixel.com/">Jim Resnowski</a>, and
+        <a target="_blank" href="http://www.nonpixel.com/subair/">provided free of charge</a>.
     </p>
 
 </section>

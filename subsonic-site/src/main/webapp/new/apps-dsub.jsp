@@ -22,8 +22,8 @@
 
     <h3>DSub for Android</h3>
     <p>
-        <a href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub">DSub</a> is an Android app developed by Scott Jackson,
-        and is available for purchase on <a href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub">Google Play</a>.
+        <a target="_blank" href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub">DSub</a> is an Android app developed by Scott Jackson,
+        and is available for purchase on <a target="_blank" href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub">Google Play</a>.
     </p>
     <span class="image right"><a href="inc/img/screenshots/dsub/dsub-1.png"><img src="inc/img/screenshots/dsub/dsub-thumb-1.png" alt=""/></a></span>
     <span class="image right"><a href="inc/img/screenshots/dsub/dsub-3.png"><img src="inc/img/screenshots/dsub/dsub-thumb-3.png" alt=""/></a></span>
@@ -42,6 +42,6 @@
         <li>Pause and lower playback when maps read directions.</li>
         <li>Drag and Drop to rearrange the now playing list.</li>
     </ul>
-    <span class="image"><a href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://play.google.com/store/apps/details?id=github.daneren2005.dsub"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
 
 </section>

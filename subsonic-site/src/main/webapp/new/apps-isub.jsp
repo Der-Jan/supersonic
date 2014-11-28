@@ -22,8 +22,8 @@
 
     <h3>iSub for iPhone/iPad</h3>
     <p>
-        <a href="http://isubapp.com/">iSub</a> is an iPhone/iPad app developed by Ben Baron, and is
-        available for purchase on the <a href="http://itunes.apple.com/us/app/isub-music-streamer/id362920532?mt=8">App&nbsp;Store</a>.
+        <a target="_blank" href="http://isubapp.com/">iSub</a> is an iPhone/iPad app developed by Ben Baron, and is
+        available for purchase on the <a target="_blank" href="http://itunes.apple.com/us/app/isub-music-streamer/id362920532?mt=8">App&nbsp;Store</a>.
     </p>
     <span class="image right"><a href="inc/img/screenshots/isub/isub-1.png"><img src="inc/img/screenshots/isub/isub-thumb-1.png" alt=""/></a></span>
     <span class="image right"><a href="inc/img/screenshots/isub/isub-2.png"><img src="inc/img/screenshots/isub/isub-thumb-2.png" alt=""/></a></span>
@@ -43,6 +43,6 @@
         <li>Jukebox mode to use your device as a remote control for Subsonic for listening to music around the house.</li>
     </ul>
 
-    <span class="image"><a href="http://itunes.apple.com/us/app/isub-music-streamer/id362920532?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://itunes.apple.com/us/app/isub-music-streamer/id362920532?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>

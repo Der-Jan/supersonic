@@ -22,8 +22,8 @@
 
     <h3>XenoAmp for Android</h3>
     <p>
-        <a href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp">XenoAmp</a> is an Android app developed by ssuukk,
-        and is available for free on <a href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp">Google Play</a>.
+        <a target="_blank" href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp">XenoAmp</a> is an Android app developed by ssuukk,
+        and is available for free on <a target="_blank" href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp">Google Play</a>.
     </p>
 
     <span class="image right"><a href="inc/img/screenshots/xenoamp/xenoamp-1.png"><img src="inc/img/screenshots/xenoamp/xenoamp-thumb-1.png" alt=""/></a></span>
@@ -45,6 +45,6 @@
         <li>Replay gain support.</li>
         <li>Gapless playback.</li>
     </ul>
-    <span class="image"><a href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://play.google.com/store/apps/details?id=pl.qus.xenoamp"><img alt="" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png"/></a></span>
 
 </section>

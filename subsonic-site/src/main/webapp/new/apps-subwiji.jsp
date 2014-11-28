@@ -23,9 +23,9 @@
     <span class="image right"><a href="inc/img/screenshots/subwiji/subwiji-1.png"><img src="inc/img/screenshots/subwiji/subwiji-thumb-1.png" alt=""/></a></span>
     <h3>SubWiji</h3>
     <p>
-        <a href="http://forum.subsonic.org/forum/viewtopic.php?f=8&t=8772">SubWiji</a> is a Windows desktop application for Subsonic.
+        <a target="_blank" href="http://forum.subsonic.org/forum/viewtopic.php?f=8&t=8772">SubWiji</a> is a Windows desktop application for Subsonic.
     </p>
     <p>Supports docking, auto-hiding, keyboard shortcuts, now playing popup, album grid viewer and much more.</p>
-    <p>SubWiji is made by <a href="http://www.paulodell.co.uk/">Paul O'Dell</a>. Free of charge, but accepts donations.</p>
+    <p>SubWiji is made by <a target="_blank" href="http://www.paulodell.co.uk/">Paul O'Dell</a>. Free of charge, but accepts donations.</p>
 
 </section>

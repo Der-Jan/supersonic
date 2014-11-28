@@ -23,7 +23,7 @@
     <h3>Supersonic</h3>
     <span class="image right"><a href="inc/img/screenshots/supersonic/supersonic-1.png"><img src="inc/img/screenshots/supersonic/supersonic-thumb-1.png" alt=""/></a></span>
     <p>
-        <a href="http://apps.microsoft.com/windows/app/supersonic/a9d84a47-d160-40a9-a36a-6d0ec65da735">Supersonic</a> is a Windows&nbsp;app for Subsonic.
+        <a target="_blank" href="http://apps.microsoft.com/windows/app/supersonic/a9d84a47-d160-40a9-a36a-6d0ec65da735">Supersonic</a> is a Windows&nbsp;app for Subsonic.
     </p>
 
     <p>Browse and play your personal collection of music directly in Windows&nbsp;8.</p>
@@ -37,6 +37,6 @@
     </ul>
     <p>Supersonic is made by <a href="mailto:SupersonicDev@live.com">Andre Carvalho</a> and is free of charge.</p>
 
-    <span class="image"><a href="http://apps.microsoft.com/windows/app/supersonic/a9d84a47-d160-40a9-a36a-6d0ec65da735"><img alt="" src="inc/img/windows_store.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://apps.microsoft.com/windows/app/supersonic/a9d84a47-d160-40a9-a36a-6d0ec65da735"><img alt="" src="inc/img/windows_store.png"/></a></span>
 
 </section>

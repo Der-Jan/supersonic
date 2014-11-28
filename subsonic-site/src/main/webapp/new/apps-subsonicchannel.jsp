@@ -24,7 +24,7 @@
     <span class="image right"><a href="inc/img/screenshots/subsonicchannel/subsonicchannel-1.png"><img src="inc/img/screenshots/subsonicchannel/subsonicchannel-thumb-1.png" alt=""/></a></span>
 
     <p>
-        <a href="http://www.randomwalking.com/project.php?project=roku_subsonic">Subsonic Channel</a> is an open-source Roku frontend to Subsonic.
+        <a target="_blank" href="http://www.randomwalking.com/project.php?project=roku_subsonic">Subsonic Channel</a> is an open-source Roku frontend to Subsonic.
     </p>
 
     <ul>

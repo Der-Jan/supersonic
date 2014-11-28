@@ -24,7 +24,7 @@
     <h3>XO</h3>
 
     <p>
-        <a href="https://developer.palm.com/appredirect/?packageid=com.ericblade.xo">XO</a> is a Subsonic app for webOS.
+        <a target="_blank" href="https://developer.palm.com/appredirect/?packageid=com.ericblade.xo">XO</a> is a Subsonic app for webOS.
     </p>
 
     <p>
@@ -33,7 +33,7 @@
     </p>
 
     <p>
-        It is also available for <a href="http://appworld.blackberry.com/webstore/content/88097/">BlackBerry PlayBook</a>.
+        It is also available for <a target="_blank" href="http://appworld.blackberry.com/webstore/content/88097/">BlackBerry PlayBook</a>.
     </p>
     <p>
         XO is developed by Eric Blade.

@@ -24,8 +24,7 @@ http://fortawesome.github.io/Font-Awesome/
 Change FancyZoom?
 Bigger images (in installation.jsp etc)
 Change image in demo.jsp, apps.jsp
-Open external links in new window
-footer
+footer - long image of coverarts?
 Integrate with backend?
 favicon
 Search
@@ -35,7 +34,6 @@ Reduce image sizes
   use jpeg?
 Go thru all images
 
-576x256
 
 Subsonic
 Your complete personal media streamer

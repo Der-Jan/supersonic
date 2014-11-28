@@ -24,7 +24,7 @@
 
     <span class="image right"><img src="inc/img/screenshots/sonicair/sonicair-1.png" alt=""/></span>
     <p>
-        <a href="http://appworld.blackberry.com/webstore/content/55137?lang=en">SonicAir</a> is a Subsonic app for the BlackBerry PlayBook.
+        <a target="_blank" href="http://appworld.blackberry.com/webstore/content/55137?lang=en">SonicAir</a> is a Subsonic app for the BlackBerry PlayBook.
         Play all sorts of video and audio, even high definition 720P MKV files.
     </p>
 
@@ -38,9 +38,9 @@
     </ul>
     <p>
         Developed and maintained by Mir &amp; Windsor Design, it's sold for $2.99
-        on <a href="http://appworld.blackberry.com/webstore/content/55137?lang=en">BlackBerry App World</a>.
+        on <a target="_blank" href="http://appworld.blackberry.com/webstore/content/55137?lang=en">BlackBerry App World</a>.
     </p>
 
-    <span class="image"><a href="http://appworld.blackberry.com/webstore/content/55137?lang=en"><img alt="" src="inc/img/black_berry_world.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://appworld.blackberry.com/webstore/content/55137?lang=en"><img alt="" src="inc/img/black_berry_world.png"/></a></span>
 
 </section>

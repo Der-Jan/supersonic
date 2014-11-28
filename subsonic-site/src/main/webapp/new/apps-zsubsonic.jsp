@@ -22,8 +22,8 @@
 
     <h3>Z-Subsonic for iPhone/iPad</h3>
     <p>
-        Z-Subsonic is developed by <a href="http://intulon.com" target="_blank">Intulon</a>, and is
-        available for purchase on the <a href="http://itunes.apple.com/us/app/z-subsonic/id358344265?mt=8">App Store</a>.
+        Z-Subsonic is developed by <a target="_blank" href="http://intulon.com">Intulon</a>, and is
+        available for purchase on the <a target="_blank" href="http://itunes.apple.com/us/app/z-subsonic/id358344265?mt=8">App Store</a>.
     </p>
     <span class="image right"><a href="inc/img/screenshots/zsubsonic/zsubsonic-1.png"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-1.png" alt=""/></a></span>
     <span class="image right"><a href="inc/img/screenshots/zsubsonic/zsubsonic-2.png"><img src="inc/img/screenshots/zsubsonic/zsubsonic-thumb-2.png" alt=""/></a></span>
@@ -46,6 +46,6 @@
         <li> Favorites.
     </ul>
 
-    <span class="image"><a href="http://itunes.apple.com/us/app/z-subsonic/id358344265?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://itunes.apple.com/us/app/z-subsonic/id358344265?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>

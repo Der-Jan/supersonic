@@ -25,7 +25,7 @@
     <span class="image right"><a href="inc/img/screenshots/subclient/subclient-1.png"><img src="inc/img/screenshots/subclient/subclient-thumb-1.png" alt=""/></a></span>
 
     <p>
-        <a href="http://www.subclient.net/">Subclient</a> is Java desktop client for Subsonic.
+        <a target="_blank" href="http://www.subclient.net/">Subclient</a> is Java desktop client for Subsonic.
     </p>
 
     <ul>

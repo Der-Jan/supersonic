@@ -57,11 +57,11 @@
     </p>
 
     <div style="text-align: center;">
-        <a href="http://taps.io/KeIQ">audiophoneapp.com</a>
+        <a target="_blank" href="http://taps.io/KeIQ">audiophoneapp.com</a>
         / <a href="mailto:support@audiophoneapp.com">support@audiophoneapp.com</a>
-        / &copy; <a href="http://invokedcode.net/">Invoked Code</a>
+        / &copy; <a target="_blank" href="http://invokedcode.net/">Invoked Code</a>
     </div>
 
-    <span class="image"><a href="http://taps.io/MTM5NDEz"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://taps.io/MTM5NDEz"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>

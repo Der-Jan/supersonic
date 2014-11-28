@@ -26,8 +26,8 @@
     <span class="image right"><a href="inc/img/screenshots/winphone/winphone-2.png"><img src="inc/img/screenshots/winphone/winphone-thumb-2.png" alt=""/></a></span>
     <span class="image right"><a href="inc/img/screenshots/winphone/winphone-3.png"><img src="inc/img/screenshots/winphone/winphone-thumb-3.png" alt=""/></a></span>
     <p>
-        <a href="http://www.avzuylen.com/subsonic-music-streamer.aspx">Subsonic Music Streamer</a> is a Windows Phone 7 &amp; 8 app developed by Anton Van Zuylen, and is
-        available for purchase in the <a href="http://windowsphone.com/s?appid=2eb445a5-ca04-e011-9264-00237de2db9e">Windows Phone Store</a>.
+        <a target="_blank" href="http://www.avzuylen.com/subsonic-music-streamer.aspx">Subsonic Music Streamer</a> is a Windows Phone 7 &amp; 8 app developed by Anton Van Zuylen, and is
+        available for purchase in the <a target="_blank" href="http://windowsphone.com/s?appid=2eb445a5-ca04-e011-9264-00237de2db9e">Windows Phone Store</a>.
     </p>
 
     <ul>
@@ -53,6 +53,6 @@
         Start the application and the music is playing (just one click)!
     </p>
 
-    <span class="image"><a href="http://windowsphone.com/s?appid=2eb445a5-ca04-e011-9264-00237de2db9e"><img alt="" src="inc/img/windows_phone.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://windowsphone.com/s?appid=2eb445a5-ca04-e011-9264-00237de2db9e"><img alt="" src="inc/img/windows_phone.png"/></a></span>
 
 </section>

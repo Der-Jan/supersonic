@@ -24,7 +24,7 @@
     <h3>Perisonic</h3>
 
     <p>
-        <a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn">Perisonic</a> is a simple
+        <a target="_blank" href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn">Perisonic</a> is a simple
         Chrome app for playing random music from Subsonic.
     </p>
 
@@ -33,5 +33,5 @@
     </p>
 
     <p style="height: 1em"></p>
-    <span class="image"><a href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://chrome.google.com/webstore/detail/bkdipjpecphmbijlckkkmabnabhbpjbn"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
 </section>

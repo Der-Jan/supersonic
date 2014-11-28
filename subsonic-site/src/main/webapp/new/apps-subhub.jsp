@@ -25,7 +25,7 @@
     <span class="image right"><a href="inc/img/screenshots/subhub/subhub-1.png"><img src="inc/img/screenshots/subhub/subhub-thumb-1.png" alt=""/></a></span>
     <span class="image right"><a href="inc/img/screenshots/subhub/subhub-2.png"><img src="inc/img/screenshots/subhub/subhub-thumb-2.png" alt=""/></a></span>
     <p>
-        <a href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8">SubHub</a>
+        <a target="_blank" href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8">SubHub</a>
         allows you to stream and cache music and podcasts in your favorite audio formats thanks to Subsonic's
         transcoding plugins. Compatible with Subsonic 4.7 and higher.
     </p>
@@ -41,9 +41,9 @@
         <li>Create personal playlists and enjoy playlists shared on the server.</li>
     </ul>
     <p>
-        SubHub is developed by Voodoo77 Studios and is available on <a href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8">App Store</a>.
+        SubHub is developed by Voodoo77 Studios and is available on <a target="_blank" href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8">App Store</a>.
     </p>
 
-    <span class="image"><a href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://itunes.apple.com/us/app/subhub/id665005634?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>

@@ -28,7 +28,7 @@
 
     <p>
         SilverSonic is a Windows Phone 7 &amp; 8 app developed by Gabriele Cannata, and is
-        available for purchase in the <a href="http://windowsphone.com/s?appid=71c26f34-eb3f-4377-986e-865fc0c8805c">Windows Phone Store</a>.
+        available for purchase in the <a target="_blank" href="http://windowsphone.com/s?appid=71c26f34-eb3f-4377-986e-865fc0c8805c">Windows Phone Store</a>.
     </p>
 
     <ul>
@@ -42,6 +42,6 @@
         <li>Both ID3 tags and folder-based browsing</li>
     </ul>
 
-    <span class="image"><a href="http://windowsphone.com/s?appid=71c26f34-eb3f-4377-986e-865fc0c8805c"><img alt="" src="inc/img/windows_phone.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://windowsphone.com/s?appid=71c26f34-eb3f-4377-986e-865fc0c8805c"><img alt="" src="inc/img/windows_phone.png"/></a></span>
 
 </section>

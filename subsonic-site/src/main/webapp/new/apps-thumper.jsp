@@ -46,7 +46,7 @@
         <li>Video streaming (requires proper codec to be installed, see FAQ).</li>
     </ul>
     <p>
-        Thumper is open-source and available on <a href="https://github.com/danielwestendorf/Thumper">GitHub</a>.
+        Thumper is open-source and available on <a target="_blank" href="https://github.com/danielwestendorf/Thumper">GitHub</a>.
     </p>
 
 </section>
