@@ -114,8 +114,6 @@
         <div class="row">
             <div class="6u 12u(3)">
 
-                <%--<span class="image featured"><img src="images/pic03.jpg" alt="" /></span>--%>
-
                     <h3 class="align-center">How does it work?</h3>
                     <ol>
                         <li>Install the Subsonic server app where you keep your media.</li>

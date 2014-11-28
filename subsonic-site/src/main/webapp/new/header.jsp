@@ -37,12 +37,13 @@
                 <ul>
                     <li><a href="installation.jsp">How to Install</a></li>
                     <li><a href="getting-started.jsp">Getting Started</a></li>
+                    <li><a href="features.jsp">Features</a></li>
                     <li><a href="faq.jsp">FAQ</a></li>
-                    <li><a href="changelog.jsp">Change Log</a></li>
                     <li><a href="http://forum.subsonic.org/forum/index.php">Forum</a></li>
                     <li>
                         <a href="">More...</a>
                         <ul>
+                            <li><a href="changelog.jsp">Change Log</a></li>
                             <li><a href="transcoding.jsp">Transcoding Settings</a></li>
                             <li><a href="translate.jsp">How to Translate</a></li>
                         </ul>
