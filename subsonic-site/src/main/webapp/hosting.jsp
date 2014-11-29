@@ -1,92 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
+<%--
+  ~ This file is part of Subsonic.
+  ~
+  ~  Subsonic is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Subsonic is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~  Copyright 2014 (C) Sindre Mehus
+  --%>
 
-<%!
-    String gigaProsUrl = "http://www.gigapros.com/affiliate/scripts/click.php?a_aid=subsonic&desturl=http://www.gigapros.com/portal/index.php/products-a-services/specialty-hosting/subsonic-server.html";
-    String zazeenUrl = "https://www.zazeen.com/OnlinePC.html";
-%>
-<%@ include file="header.jsp" %>
+<!DOCTYPE HTML>
+<html>
+<%@ include file="head.jsp" %>
 
 <body>
 
-<a name="top"/>
+<c:import url="header.jsp"/>
 
-<div id="container">
-    <jsp:include page="menu.jsp">
-        <jsp:param name="current" value="documentation"/>
-    </jsp:include>
+<section id="main" class="container">
+    <header>
+        <h2>Subsonic Hosting</h2>
+    </header>
 
-    <div id="content">
-        <div id="main-col">
-            <h1 class="bottomspace">Subsonic Hosting</h1>
+    <section class="box special features">
 
-            <p>
-                An alternative to running the Subsonic on your own computer is to get a pre-installed Subsonic server from
-                one of our hosting partners.
-            </p>
+        <div class="features-row">
+            <section>
+                <span class="icon major fa-cloud accent4"></span>
 
-            <div class="featureitem">
-                <div class="heading">Zazeen</div>
-                <div class="content">
-                    <div class="wide-content">
+                <h3>HostingVideo</h3>
 
-                        <a href="<%=zazeenUrl%>" target="_blank"><img src="inc/img/zazeen.gif" alt="Zazeen" class="img-left"/></a>
-                        <p>
-                            Zazeen's <em>Online PC</em> comes with Ubuntu and a full range of applications and services, including
-                            a ready-to-use Subsonic server.
-                        </p>
-                        <p>
-                            Zazeen provides multiple 10Gbit fiber optic backbone and
-                            peering arrangements to most ISPs in North America and Europe.
-                        </p>
+                <p>Store all of your media, music and video files in the cloud and stream via the web or to any mobile phone.</p>
 
-                        <p>
-                            <b><a href="<%=zazeenUrl%>" target="_blank">Check out Zazeen's server plans and prices.</a></b>
-                        </p>
-                    </div>
-                </div>
-            </div>
+                <p>Storage options from 50 GB to 500 GB, all with unlimited bandwidth. Try Video Hosting for 30 days free.</p>
 
-            <div class="featureitem">
-                <div class="heading">GigaPros</div>
-                <div class="content">
-                    <div class="wide-content">
+                <a href="https://hostingvideo.com/" target="_blank" class="button special icon fa-arrow-right">Continue</a>
 
-                        <a href="<%=gigaProsUrl%>" target="_blank"><img src="inc/img/gigapros.png" alt="GigaPros" class="img-left"/></a>
-                        <p>
-                            GigaPros' Subsonic hosting servers are actually powerful Virtual Private Servers (VPS), which are highly optimized to run Subsonic.
-                        </p>
-                        <p>
-                            These VPS'es have fully functional pre-installed Subsonic server and they behave exactly like your own Dedicated Server
-                            with full root access.
-                        </p>
+            </section>
+            <section>
+                <span class="icon major fa-cloud accent3"></span>
 
-                        <a href="http://www.trialpay.com/productpage/?c=ee8eacd&tid=RHyuuKT" target="_blank">
-                            <img class="img-right" src="http://www.trialpay.com/mi/?rc=v&ri=1368898&p=VtA3333j&t=RHyuuKT&type=img" alt=""/>
-                        </a>
-                        <p>
-                            <b><a href="<%=gigaProsUrl%>" target="_blank">Check out GigaPros' server plans and prices.</a></b>
-                        </p>
+                <h3>GigaPros</h3>
 
+                <p>GigaPros' Subsonic hosting servers are powerful Virtual Private Servers (VPS), which are highly optimized to run Subsonic.</p>
 
-                    </div>
-                </div>
-            </div> 
+                <p>Servers come with pre-installed Subsonic and behave exactly like your own Dedicated Server with full root access.</p>
 
+                <a href="https://www.gigapros.com/portal/subsonic-server/" target="_blank" class="button special icon fa-arrow-right">Continue</a>
+
+            </section>
         </div>
+    </section>
 
-        <div id="side-col">
-            <%@ include file="google-translate.jsp" %>
-        </div>
 
-        <div class="clear">
-        </div>
-    </div>
-    <hr/>
-    <%@ include file="footer.jsp" %>
-</div>
+</section>
 
+
+<%@ include file="footer.jsp" %>
 
 </body>
 </html>

@@ -1,22 +1,35 @@
-<div class="featureitem">
-    <a name="submariner"></a>
+<%--
+  ~ This file is part of Subsonic.
+  ~
+  ~  Subsonic is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Subsonic is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~  Copyright 2014 (C) Sindre Mehus
+  --%>
 
-    <div class="heading">Submariner <a href="#top" class="backtotop" title="Top"><img src="inc/img/top.gif" alt="" height="16" width="16"/></a></div>
-    <div class="content">
-        <div class="wide-content">
-            <p>
-                <a href="http://www.read-write.fr/subapp/index.php">Submariner</a> is a Subsonic desktop application for Mac.
-            </p>
-            <a href="inc/img/screenshots/submariner/submariner-1.png"><img src="inc/img/screenshots/submariner/submariner-thumb-1.png" alt="" class="img-center"/></a>
+<a name="submariner"></a>
+<section class="box">
 
-            <p>
-                It provides a clean user interface to manage your remote libraries and to listen your music with simplicity.
-                With the cache streaming and download features, you can also listen to your favorite tracks offline.
-            </p>
-            <p>
-                <a href="http://itunes.apple.com/us/app/submariner/id463444563?ls=1&mt=12"><img class="img-center"
-                                                                                                src="inc/img/mac-appstore.jpg" alt="Submariner"/></a>
-            </p>
-        </div>
-    </div>
-</div>
+    <span class="image right"><a href="inc/img/screenshots/submariner/submariner-1.png"><img src="inc/img/screenshots/submariner/submariner-thumb-1.png" alt=""/></a></span>
+    <h3>Submariner</h3>
+
+    <p>
+        <a target="_blank" href="http://www.read-write.fr/subapp/index.php">Submariner</a> is a free Subsonic desktop application for Mac.
+    </p>
+
+    <p>
+        It provides a clean user interface to manage your remote libraries and to listen your music with simplicity.
+        With the cache streaming and download features, you can also listen to your favorite tracks offline.
+    </p>
+
+</section>

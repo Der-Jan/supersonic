@@ -1,143 +1,173 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
+<%--
+  ~ This file is part of Subsonic.
+  ~
+  ~  Subsonic is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Subsonic is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~  Copyright 2014 (C) Sindre Mehus
+  --%>
 
-<%@ include file="header.jsp" %>
+<!DOCTYPE HTML>
+<html>
+<%@ include file="head.jsp" %>
 
 <body>
 
-<a name="top"/>
+<c:import url="header.jsp"/>
 
-<div id="container">
-    <jsp:include page="menu.jsp">
-        <jsp:param name="current" value="apps"/>
-    </jsp:include>
+<section id="main" class="container">
+    <header>
+        <h2>Subsonic Apps</h2>
 
-    <div id="content">
-        <div id="main-col">
-            <h1 class="bottomspace">Subsonic Apps</h1>
+        <p>For Android, iPhone, Windows Phone, Mac, Chrome and more</p>
+    </header>
 
-            <p>Check out the steadily growing list of Subsonic apps. These provide fun and alternative ways to
-                enjoy your media collection &ndash; no matter where you are.</p>
+    <section class="box">
+        <span class="image featured"><img src="inc/img/desk.jpg" alt="" /></span>
+        <h3>Subsonic App Gallery</h3>
 
-            <h2>On your phone</h2>
+        <p>A variety of Subsonic apps provide fun and alternative ways to enjoy your media collection &ndash; no matter where you are.</p>
 
-            <div class="floatcontainer margin10-t margin10-b">
-                <ul class="stars column-left">
+        <h4 class="icon fa-mobile-phone">&nbsp;&nbsp;On your phone</h4>
+        <div class="row">
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
-                    <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                 </ul>
-                <ul class="stars column-right">
+            </div>
+
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#isub">iSub</a> for iPhone/iPad</li>
                     <li><a href="#audiophone">Audiophone</a> for iPhone/iPad</li>
                     <li><a href="#zsubsonic">Z-Subsonic</a> for iPhone/iPad</li>
                     <li><a href="#substream">SubStream</a> for iPhone/iPad</li>
-                    <li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>
+                    <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
+                    <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                     <li><a href="#carsub">CarSub</a> for iPhone/iPad</li>
                 </ul>
             </div>
+        </div>
 
-            <h2>On your device</h2>
-
-            <div class="floatcontainer margin10-t margin10-b">
-                <ul class="stars column-left">
+        <h4 class="icon fa-tablet">&nbsp;&nbsp;On your device</h4>
+        <div class="row">
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#sonicair">SonicAir</a> for BlackBerry PlayBook</li>
                     <li><a href="#mmtm">My Music To Me</a> for Sonos</li>
-                    <li><a href="#chumby">Subsonic</a> for Chumby</li>
+                    <%--<li><a href="#chumby">Subsonic</a> for Chumby</li>--%>
+                    <%--<li><a href="#subsonictv">SubsonicTV</a> for Roku</li>--%>
                 </ul>
-                <ul class="stars column-right">
-                    <li><a href="#subsonictv">SubsonicTV</a> for Roku</li>
+            </div>
+
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#subsonicchannel">Subsonic Channel</a> for Roku</li>
                     <li><a href="#xo">XO</a> for webOS and BlackBerry PlayBook</li>
                 </ul>
             </div>
+        </div>
 
-            <h2>On your desktop</h2>
+        <h4 class="icon fa-desktop">&nbsp;&nbsp;On your desktop</h4>
 
-            <div class="floatcontainer margin10-t margin10-b">
-                <ul class="stars column-left">
+        <div class="row">
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#subair">SubAir</a> for desktops</li>
                     <li><a href="#submariner">Submariner</a> for Mac</li>
                     <li><a href="#thumper">Thumper</a> for Mac</li>
                     <li><a href="#subclient">Subclient</a> for Windows</li>
                     <li><a href="#subgadget">SubGadget</a> for Windows</li>
                 </ul>
-                <ul class="stars column-right"> 
-                    <li><a href="#periscope">Periscope</a> for Windows</li>
+            </div>
+
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#subwiji">SubWiji</a> for Windows</li>
                     <li><a href="#supersonic">Supersonic</a> for Windows 8</li>
                     <li><a href="#subsonic8">Subsonic8</a> for Windows 8</li>
                 </ul>
             </div>
+        </div>
 
-            <h2>In your browser</h2>
+        <h4 class="icon fa-html5">&nbsp;&nbsp;In your browser</h4>
 
-            <div class="floatcontainer margin10-t margin10-b">
-                <ul class="stars column-left">
+        <div class="row">
+            <div class="6u 12u(3)">
+                <ul>
                     <li><a href="#perisonic">Perisonic</a> for Google Chrome</li>
-                </ul>
-                <ul class="stars column-right">
-                    <li><a href="#jamstash">Jamstash</a> for HTML5</li>
                 </ul>
             </div>
 
+            <div class="6u 12u(3)">
+                <ul>
+                    <li><a href="#jamstash">Jamstash</a> for HTML5</li>
+                </ul>
+            </div>
+        </div>
+
             <p>
                 Please note that most of the apps are made by third-party developers, and are not maintained by
-                the Subsonic project. Some apps are commercial, while some are available for free.
-            </p>
-            <p>Also note that after a 30-day trial period you need to upgrade to <a href="premium.jsp">Subsonic Premium</a> to use the apps.
-                By upgrading you also get other benefits; see info box on the right.
-            </p>
-            <p>
-                Interested in making your own Subsonic app? Check out the <a href="api.jsp">API</a>.
-            </p>
+            the Subsonic project. Some apps are commercial, while some are available for free.
+        </p>
+        <p>Also note that after a 30-day trial period you need to upgrade to <a href="premium.jsp">Subsonic Premium</a> to use the apps.
+            By upgrading you also get <a href="premium.jsp">other benefits</a>.
+        </p>
+        <p>
+           Want to make your own Subsonic app? Check out the <a href="api.jsp">API</a>.
+        </p>
 
-            <%@ include file="apps-android.jsp" %>
-            <%@ include file="apps-dsub.jsp" %>
-            <%@ include file="apps-xenoamp.jsp" %>
-            <%@ include file="apps-isub.jsp" %>
-            <%@ include file="apps-audiophone.jsp" %>
-            <%@ include file="apps-zsubsonic.jsp" %>
-            <%@ include file="apps-substream.jsp" %>
-            <%@ include file="apps-hypersonic.jsp" %>
-            <%@ include file="apps-carsub.jsp" %>
-            <%@ include file="apps-winphone.jsp" %>
-            <%@ include file="apps-silversonic.jsp" %>
-            <%@ include file="apps-subhub.jsp" %>
-            <%@ include file="apps-subair.jsp" %>
-            <%@ include file="apps-sonicair.jsp" %>
-            <%@ include file="apps-mmtm.jsp" %>
-            <%@ include file="apps-chumby.jsp" %>
-            <%@ include file="apps-subsonictv.jsp" %>
-            <%@ include file="apps-subsonicchannel.jsp" %>
-            <%@ include file="apps-xo.jsp" %>
-            <%@ include file="apps-submariner.jsp" %>
-            <%@ include file="apps-thumper.jsp" %>
-            <%@ include file="apps-subgadget.jsp" %>
-            <%@ include file="apps-periscope.jsp" %>
-            <%@ include file="apps-subwiji.jsp" %>
-            <%@ include file="apps-supersonic.jsp" %>
-            <%@ include file="apps-subsonic8.jsp" %>
-            <%@ include file="apps-subclient.jsp" %>
-            <%@ include file="apps-perisonic.jsp" %>
-            <%@ include file="apps-jamstash.jsp" %>
+    </section>
 
-        </div>
+    <%@ include file="apps-android.jsp" %>
+    <%@ include file="apps-dsub.jsp" %>
+    <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-winphone.jsp" %>
+    <%@ include file="apps-silversonic.jsp" %>
 
-        <div id="side-col">
-            <%@ include file="google-translate.jsp" %>
-            <%@ include file="premium-column.jsp" %>
-        </div>
+    <%@ include file="apps-isub.jsp" %>
+    <%@ include file="apps-audiophone.jsp" %>
+    <%@ include file="apps-zsubsonic.jsp" %>
+    <%@ include file="apps-substream.jsp" %>
+    <%@ include file="apps-subhub.jsp" %>
+    <%@ include file="apps-carsub.jsp" %>
 
-        <div class="clear">
-        </div>
-    </div>
-    <hr/>
-    <%@ include file="footer.jsp" %>
-</div>
+    <%@ include file="apps-sonicair.jsp" %>
+    <%@ include file="apps-mmtm.jsp" %>
+    <%@ include file="apps-subsonicchannel.jsp" %>
+    <%@ include file="apps-xo.jsp" %>
+
+    <%@ include file="apps-subair.jsp" %>
+    <%@ include file="apps-submariner.jsp" %>
+    <%@ include file="apps-thumper.jsp" %>
+    <%@ include file="apps-subclient.jsp" %>
+    <%@ include file="apps-subgadget.jsp" %>
+    <%@ include file="apps-subwiji.jsp" %>
+    <%@ include file="apps-supersonic.jsp" %>
+    <%@ include file="apps-subsonic8.jsp" %>
+
+    <%@ include file="apps-perisonic.jsp" %>
+    <%@ include file="apps-jamstash.jsp" %>
+
+</section>
+
+
+<%@ include file="footer.jsp" %>
 
 </body>
 </html>
