@@ -107,7 +107,7 @@
                         <tfoot>
                         <tr>
                             <td colspan="2"></td>
-                            <td>&nbsp;&nbsp;<a href="changelog.jsp">What's new?</a></td>
+                            <td><a href="changelog.jsp">What's new?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://sourceforge.net/projects/subsonic/files/subsonic/">Older versions</a></td>
                         </tr>
                         </tfoot>
                     </table>

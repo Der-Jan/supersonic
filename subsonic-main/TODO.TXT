@@ -19,19 +19,12 @@ Video playback broken behind proxies.
 
 TODO IN SITE
 ------------
-unsplash.com
-http://fortawesome.github.io/Font-Awesome/
-Change FancyZoom?
-Bigger images (in installation.jsp etc)
 Integrate with backend?
 favicon
 Search
 tutorial.jsp
 Reduce image sizes
   use jpeg?
-Go thru all images, especially in getting-started.jsp
-index.html
-go thru all old files
 
 TODO IN 5.1
 --------------
@@ -48,7 +41,7 @@ FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
 
-mention chromecast in site
+mention chromecast in premium
 Avoid scrolling album/artist title
 Find similar tracks / artists
   Use java binding for scrobbling?

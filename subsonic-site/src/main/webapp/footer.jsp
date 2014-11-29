@@ -21,7 +21,7 @@
 <footer id="footer">
     <span class="image fit"><img src="inc/img/footer.jpg" alt=""/></span>
     <ul class="copyright">
-        <li>&copy; Subsonic AS. All rights reserved.</li>
+        <li>&copy; Subsonic AS &ndash; All rights reserved</li>
         <li><a target="_blank" href="mailto:mail@subsonic.org" class="icon fa-envelope-o"><span class="label">Mail</span></a></li>
         <li>Made in Norway</li>
         <li>Sindre Mehus</li>
