@@ -964,15 +964,16 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-09-21/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-09-21/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-09-21/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-11-29/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/pages.war
+
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-09-21 webapps
+ln -s webapps-2014-11-29 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat

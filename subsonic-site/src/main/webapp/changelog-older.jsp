@@ -1,3 +1,144 @@
+<a name="5.0.beta1"><h3>Subsonic 5.0.beta1 - May 24, 2014</h3></a>
+<ul>
+    <li><strong>New: </strong>Chromecast support.</li>
+    <li><strong>New: </strong>Added play overlay button in cover art images.</li>
+    <li><strong>New: </strong>Added browser notification.</li>
+    <li><strong>New: </strong>Nicer scrollbar (in Webkit browsers).</li>
+    <li><strong>New: </strong>Nicer styling of input fields and buttons.</li>
+    <li><strong>New: </strong>Nicer icons.</li>
+    <li><strong>New: </strong>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
+    <li><strong>New: </strong>Added Korean translation, courtesy of Rhetor Choi.</li>
+    <li><strong>New: </strong>Added link to Jamstash.</li>
+    <li><strong>Bugfix: </strong>Fixed broken Mac installer.</li>
+    <li><strong>Bugfix: </strong>External player doesn't auto-advance.</li>
+    <li><strong>Bugfix: </strong>Improved support for https in UPnP.</li>
+</ul>
+
+<a name="4.9"><h3>Subsonic 4.9 - Jan 25, 2014</h3></a>
+<ul>
+    <li><strong>New: </strong>Rename "Download" to "Download all"</li>
+    <li><strong>New: </strong>Rename "More actions..." to "Selected songs..."</li>
+    <li><strong>New: </strong>When playing a song, queue only later songs (not earlier).</li>
+    <li><strong>New: </strong>Added button for downloading single files in left frame.</li>
+    <li><strong>New: </strong>Updated Japanese translation, courtesy of Kenji Maekawa.</li>
+    <li><strong>Bugfix: </strong>Changing artist for files with ID3v1 tags was broken.</li>
+    <li><strong>Bugfix: </strong>Play/add buttons for single files in left frame didn't work.</li>
+    <li><strong>Bugfix: </strong>Thumbs in external player was sometimes missing.</li>
+    <li><strong>Bugfix: </strong>Fixed layout bug in podcast page.</li>
+    <li><strong>Bugfix: </strong>Trim podcast urls.</li>
+</ul>
+
+<a name="4.9.beta4"><h3>Subsonic 4.9.beta4 - Jan 04, 2014</h3></a>
+<ul>
+    <li><strong>New: </strong>Support playlist sharing on Facebook etc.</li>
+    <li><strong>New: </strong>Added "Play next" button to playlist view.</li>
+    <li><strong>New: </strong>Added "Play all" to starred songs.</li>
+    <li><strong>New: </strong>Added "Save as playlist" to starred songs.</li>
+    <li><strong>New: </strong>Show cover art for starred albums.</li>
+    <li><strong>New: </strong>Show album/song count in genre list.</li>
+    <li><strong>New: </strong>When playing a song from a playlist, queue other songs in that playlist.</li>
+    <li><strong>New: </strong>When clicking the play icon for a song, add whole album to play queue.</li>
+    <li><strong>New: </strong>Clicking on album thumb in "Now playing" now opens album page.</li>
+    <li><strong>New: </strong>Cache generated album art.</li>
+    <li><strong>Bugfix: </strong>Don't create zip file when downloading a single song.</li>
+    <li><strong>Bugfix: </strong>Show cover art in the right order.</li>
+    <li><strong>Bugfix: </strong>Hande genres names with special characters (e.g., "R&amp;B").</li>
+    <li><strong>Bugfix: </strong>Fixed character encoding problems in some translations.</li>
+    <li><strong>Bugfix: </strong>Use locale-specific names for automatically created playlists.</li>
+    <li><strong>REST: </strong>Added album/song count in getGenres.</li>
+</ul>
+
+<a name="4.9.beta3"><h3>Subsonic 4.9.beta3 - Dec 09, 2013</h3></a>
+<ul>
+    <li><strong>New: </strong>Modernized web interface. Nicer fonts, colors and layout. Larger album art.</li>
+    <li><strong>New: </strong>Show thumbnails for "siebling" albums.</li>
+    <li><strong>New: </strong>Generate automatic album art.</li>
+    <li><strong>New: </strong>Replace Download button with Play next.</li>
+    <li><strong>New: </strong>Use max gain 0 dB in jukebox mode to avoid distortion caused by clipping.</li>
+    <li><strong>New: </strong>When playing a song, queue rest of album.</li>
+    <li><strong>New: </strong>Added album lists "By decade" and "By genre".</li>
+    <li><strong>New: </strong>Support playlists in DLNA.</li>
+    <li><strong>New: </strong>DLNA now browses by folder, not tags.</li>
+    <li><strong>New: </strong>Updated Dutch translation, courtesy of Toolman.</li>
+    <li><strong>Bugfix: </strong>Fixed DLNA song duration and album art.</li>
+    <li><strong>Bugfix: </strong>Newly added media was sometimes not picked up when scanning libraries.</li>
+    <li><strong>Bugfix: </strong>Fixed font problem when using https.</li>
+    <li><strong>Bugfix: </strong>Validate input in Settings &gt; Internet TV/radio.</li>
+    <li><strong>Bugfix: </strong>Honor "subsonic.host" system property when resolving local IP address.</li>
+    <li><strong>Bugfix: </strong>Playlist management was broken on Tomcat 7.</li>
+    <li><strong>Bugfix: </strong>Settings &gt; Users was broken on Tomcat 7.</li>
+    <li><strong>Bugfix: </strong>Settings &gt; Personal was broken on Tomcat 7.</li>
+    <li><strong>Bugfix: </strong>When clicking "Create new playlist", automatically expand list of playlists.</li>
+    <li><strong>REST: </strong>Add year and genre to albums.</li>
+    <li><strong>REST: </strong>Added "byYear" and "byGenre" to getAlbumList and getAlbumList2.</li>
+    <li><strong>REST: </strong>Add "bookmarkPosition" to songs.</li>
+    <li><strong>Performance: </strong>Fixed slow queries on large media collections (&gt;100,000 files): get starred, get files in playlist, get genres.</li>
+</ul>
+
+<a name="4.9.beta2"><h3>Subsonic 4.9.beta2 - Nov 16, 2013</h3></a>
+<ul>
+    <li><strong>New: </strong>Use modern icons and fonts.</li>
+    <li><strong>New: </strong>Added light icons for dark themes.</li>
+    <li><strong>New: </strong>Added Estonian translation, courtesy of Olav M&auml;gi.</li>
+    <li><strong>Bugfix: </strong>Proper support for album artist.</li>
+    <li><strong>Bugfix: </strong>Remember DLNA settings when restarting server.</li>
+    <li><strong>Bugfix: </strong>Play next/last popup menu was unreadable in some themes.</li>
+    <li><strong>Bugfix: </strong>Created signed installer for Mac OS.</li>
+    <li><strong>Bugfix: </strong>Set ID3 title tag based on Podcast episode name.</li>
+    <li><strong>REST: </strong>Created updateUser method.</li>
+    <li><strong>REST: </strong>Added "starred" to "Directory" and "Artist" in xsd.</li>
+</ul>
+
+<a name="4.9.beta1"><h3>Subsonic 4.9.beta1 - Oct 12, 2013</h3></a>
+<ul>
+    <li><strong>New: </strong>Added a DLNA/UPnP Media Server. This feature is experimental and might not work with all DLNA clients.</li>
+    <li><strong>New: </strong>Added "Play next" option.</li>
+    <li><strong>New: </strong>Updated Estonian translation, courtesy of Olav M&auml;gi.</li>
+    <li><strong>REST: </strong>Escape special characters in XML for getGenres.</li>
+    <li><strong>REST: </strong>Added ignoredArticles to getIndexes.</li>
+    <li><strong>Bugfix: </strong>Improved lyrics search.</li>
+    <li><strong>Bugfix: </strong>Trim license key when registering.</li>
+    <li><strong>Bugfix: </strong>Fix download file names with special characters.</li>
+    <li><strong>Bugfix: </strong>Don't create a new player for each download.</li>
+    <li><strong>Tech: </strong>Make Subsonic work on Tomcat 7.</li>
+    <li><strong>Tech: </strong>Increased limit of internal database from 2 to 8 GB (fresh installs only).</li>
+    <li><strong>Tech: </strong>Set MIME type for cover arts.</li>
+    <li><strong>Security: </strong>Added CAPTCHA to password recovery page.</li>
+</ul>
+
+<a name="4.8"><h3>Subsonic 4.8 - Apr 20, 2013</h3></a>
+<ul>
+    <li><strong>New: </strong>Introduced <a href="premium.jsp">Subsonic Premium</a>. (Note: Existing licenses will remain valid)</li>
+    <li><strong>New: </strong>Re-import playlists if file timestamp has changed.</li>
+    <li><strong>New: </strong>Make playlist folder setting visible again.</li>
+    <li><strong>New: </strong>Changed bitrate to video resolution mapping.</li>
+    <li><strong>New: </strong>Added Norwegion Nynorsk translation, courtesy of Kevin Brubeck Unhammer.</li>
+    <li><strong>New: </strong>Updated Dutch translation, courtesy of W. van der Heijden.</li>
+    <li><strong>New: </strong>Updated German translation, courtesy of deejay2302.</li>
+    <li><strong>New: </strong>Updated French translation, courtesy of Yoann Spicher.</li>
+    <li><strong>New: </strong>Updated Simplified Chinese translation, courtesy of Zhenghao Zhu.</li>
+    <li><strong>Bugfix: </strong>Settings &gt; Network doesn't show error if a subsonic.org address is in use.</li>
+    <li><strong>Bugfix: </strong>Improved speed of tag editing.</li>
+    <li><strong>Bugfix: </strong>Ogg dates not always parsed properly.</li>
+    <li><strong>Bugfix: </strong>Sort songs by filename if track number is missing.</li>
+    <li><strong>Bugfix: </strong>Fix init exception in podcast bean.</li>
+    <li><strong>Bugfix: </strong>Links to minisub and apps icons doesn't honor context path.</li>
+    <li><strong>Bugfix: </strong>Less aggressive removal of track number from title.</li>
+    <li><strong>Bugfix: </strong>HLS broken with context path.</li>
+    <li><strong>Bugfix: </strong>Video player didn't require authentication.</li>
+    <li><strong>Bugfix: </strong>Download cover to replace in-metadata image results in renaming music file (".old").</li>
+    <li><strong>REST: </strong>Added Podcast methods.</li>
+    <li><strong>REST: </strong>Added bookmark methods.</li>
+    <li><strong>REST: </strong>Added getInternetRadioStations.</li>
+    <li><strong>REST: </strong>Added getGenres.</li>
+    <li><strong>REST: </strong>Added getSongsByGenre.</li>
+    <li><strong>REST: </strong>Added option to disable transcoding when streaming.</li>
+    <li><strong>REST: </strong>Fixed a bug in getAlbumList which caused it to return non-albums in some cases.</li>
+    <li><strong>REST: </strong>Support CORS.</li>
+    <li><strong>REST: </strong>Support "parent" attribute in getMusicDirectory.</li>
+    <li><strong>Tech: </strong>Install Java 7 rather than Java 6.</li>
+</ul>
+
 <a name="4.7"><h3>Subsonic 4.7 - Sep 13, 2012</h3></a>
 <ul>
     <li><strong>New:</strong> Auto-import playlists and update playlist statistics after scan.</li>

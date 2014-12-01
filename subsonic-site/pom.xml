@@ -50,4 +50,8 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>pages</finalName>
+    </build>
+
 </project>
