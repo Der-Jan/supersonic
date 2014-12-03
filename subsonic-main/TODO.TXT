@@ -19,16 +19,12 @@ Video playback broken behind proxies.
 
 TODO IN SITE
 ------------
-Integrate with backend?
-favicon
-Search
-tutorial.jsp
-Reduce image sizes
-  use jpeg?
+FAQ for network disks & firewall
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
 
 TODO IN 5.1
 --------------
-Remove ads?
+Remove ads? Only show internal ad.
 Upgrade Cling
   Look into mem leak
      https://sourceforge.net/p/subsonic/bugs/115/
