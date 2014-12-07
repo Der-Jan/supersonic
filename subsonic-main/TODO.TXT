@@ -16,6 +16,7 @@ Dim image when hovering
 REST: Also include not-present artists.
 Video playback broken behind proxies.
 Wrong aspect rate for shared videos.
+Upgrade Cling
 
 TODO IN SITE
 ------------
@@ -33,9 +34,6 @@ Reuse videoPlayer.jsp for shared videos?
 Remove ads? Only show internal ad.
 Fix internal ad.
 IntelliJ plugin
-Upgrade Cling
-  Look into mem leak
-     https://sourceforge.net/p/subsonic/bugs/115/
 Improve uploader
 Rename "play random" to "Shuffle xxx"
 hostingvideo.com
