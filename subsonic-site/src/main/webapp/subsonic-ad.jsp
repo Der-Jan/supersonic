@@ -12,7 +12,7 @@
         a:hover { text-decoration: underline; }
     </style>
 </head>
-<body>
+<body style="border:0;margin:0;padding:0">
 <div style="background-color: white;
      margin: 0;
 	 width: 178px;

@@ -72,7 +72,7 @@
 
         <div class="features-row">
             <section>
-                <span class="icon major fa-cc-paypal accent2"></span>
+                <%--<span class="icon major fa-cc-paypal accent2"></span>--%>
 
                 <h3>Recurring payment</h3>
                 <h5>$1 per month</h5>
@@ -86,15 +86,15 @@
                     <input type="hidden" name="lc" value="US">
                 </form>
                 <a onclick="document.subscriptionForm.submit()" class="button special icon fa-arrow-right">Continue to PayPal</a>
-
             </section>
+
             <section>
-                <span class="icon major fa-cc-paypal accent3"></span>
+                <%--<span class="icon major fa-cc-paypal accent3"></span>--%>
 
                 <h3>One-time payment</h3>
                 <h5>$1 per month</h5>
 
-                <p>Select this option to buy a Subsonic Premium subscription for <span style="white-space: nowrap">1 - 10</span>
+                <p>Select this option to buy a Subsonic Premium subscription for <span style="white-space: nowrap">1 - 8</span>
                     years.</p>
 
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" name="paymentForm">
@@ -114,29 +114,44 @@
                             <option value="6 years">6 years of Subsonic Premium &ndash; $72</option>
                             <option value="7 years">7 years of Subsonic Premium &ndash; $84</option>
                             <option value="8 years">8 years of Subsonic Premium &ndash; $96</option>
-                            <option value="9 years">9 years of Subsonic Premium &ndash; $108</option>
-                            <option value="10 years">10 years of Subsonic Premium &ndash; $120</option>
                         </select>
                     </div>
                 </form>
                 <a onclick="document.paymentForm.submit()" class="button special icon fa-arrow-right">Continue to PayPal</a>
-
             </section>
+        </div>
+
+        <div class="features-row">
+
+            <section>
+                <%--<span class="icon major fa-cc-paypal accent3"></span>--%>
+
+                <h3>Lifetime subscription</h3>
+                <h5>$99</h5>
+
+                <p>Select this option to buy a Subsonic Premium subscription that is valid for all eternity.</p>
+
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" name="lifetimeForm">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="RDHD4QKYSAYK8">
+                </form>
+                <a onclick="document.lifetimeForm.submit()" class="button special icon fa-arrow-right">Continue to PayPal</a>
+            </section>
+
+            <section class="align-left">
+                <p>All payment options include free upgrades to future Subsonic releases.</p>
+
+                <p> The Subsonic Premium license is valid for personal, non-commercial use.
+                    For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options. </p>
+
+                <p><a href="faq.jsp">Other payment alternatives</a> are also available.</p>
+
+                <p>If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a></p>
+            </section>
+
         </div>
     </section>
 
-    <section class="box">
-        <ul>
-            <li>Includes free upgrades to future Subsonic releases.</li>
-
-            <li> The Subsonic Premium license is valid for personal, non-commercial use.
-                For commercial use, please <a href="mailto:mail@subsonic.org">contact us</a> for licensing options. </li>
-
-            <li><a href="faq.jsp">Other payment alternatives</a> are also available.</li>
-
-            <li>If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a></li>
-        </ul>
-    </section>
 
 </section>
 

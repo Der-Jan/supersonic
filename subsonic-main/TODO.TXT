@@ -17,6 +17,7 @@ REST: Also include not-present artists.
 Video playback broken behind proxies.
 Wrong aspect rate for shared videos.
 Upgrade Cling
+Lifetime license.
 
 TODO IN SITE
 ------------
