@@ -88,7 +88,7 @@
             <span class="image right"><a href="inc/img/mac-installer.png"><img src="inc/img/mac-installer-small.png" alt="" /></a></span>
             Download the installation package and run it. This installs Subsonic.app in Applications. Start it by opening Applications and
             click the Subsonic icon.  A small headset icon will appear in the menu bar. If you want Subsonic to start automatically when you log in,
-            open <strong>System Preferences &gt; Accounts</strong> and add Subsonic to the list of <strong>Login Items</strong>.
+            open <strong>System Preferences &gt; Users &amp; Groups</strong> and add Subsonic to the list of <strong>Login Items</strong>.
         </p>
         <p>
             After installing and starting Subsonic, open the Subsonic web page on <a href="http://localhost:4040">http://localhost:4040</a>.

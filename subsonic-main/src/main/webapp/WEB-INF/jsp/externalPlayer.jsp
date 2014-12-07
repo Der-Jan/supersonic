@@ -25,7 +25,6 @@
                 screencolor:"000000",
                 frontcolor:"<spring:theme code="textColor"/>",
                 backcolor:"<spring:theme code="backgroundColor"/>",
-                stretching: "fill",
                 "playlist.position": "bottom",
                 "playlist.size": 300,
                 repeat: "list"
@@ -50,6 +49,7 @@
         <sub:url value="/stream" var="streamUrl">
             <sub:param name="id" value="${song.id}"/>
             <sub:param name="player" value="${model.player}"/>
+            <sub:param name="maxBitRate" value="1200"/>
         </sub:url>
         <sub:url value="/coverArt.view" var="coverUrl">
             <sub:param name="id" value="${song.id}"/>

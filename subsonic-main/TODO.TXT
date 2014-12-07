@@ -15,7 +15,7 @@ Add "shuffle play" to categories in home page.
 Dim image when hovering
 REST: Also include not-present artists.
 Video playback broken behind proxies.
-
+Wrong aspect rate for shared videos.
 
 TODO IN SITE
 ------------
@@ -24,7 +24,15 @@ FAQ for network disks & firewall
 
 TODO IN 5.1
 --------------
+Submuxic
+  https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
+Write terms of use.
+Support tags
+  https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
+Reuse videoPlayer.jsp for shared videos?
 Remove ads? Only show internal ad.
+Fix internal ad.
+IntelliJ plugin
 Upgrade Cling
   Look into mem leak
      https://sourceforge.net/p/subsonic/bugs/115/
