@@ -96,18 +96,18 @@ public class StreamControllerTestCase extends TestCase {
         doTestGetSuitableVideoSize(1000, 100, 100, 1000, 100);
 
         // Unknown original size.
-        doTestGetSuitableVideoSize(720, null, 200, 400, 300);
-        doTestGetSuitableVideoSize(null, 540, 300, 400, 300);
-        doTestGetSuitableVideoSize(null, null, 400, 480, 360);
-        doTestGetSuitableVideoSize(720, null, 500, 480, 360);
-        doTestGetSuitableVideoSize(null, 540, 600, 640, 480);
-        doTestGetSuitableVideoSize(null, null, 700, 640, 480);
-        doTestGetSuitableVideoSize(720, null, 1200, 640, 480);
-        doTestGetSuitableVideoSize(null, 540, 1500, 640, 480);
-        doTestGetSuitableVideoSize(null, null, 2000, 960, 720);
+        doTestGetSuitableVideoSize(720, null, 200, 400, 226);
+        doTestGetSuitableVideoSize(null, 540, 300, 400, 226);
+        doTestGetSuitableVideoSize(null, null, 400, 480, 270);
+        doTestGetSuitableVideoSize(720, null, 500, 480, 270);
+        doTestGetSuitableVideoSize(null, 540, 600, 640, 360);
+        doTestGetSuitableVideoSize(null, null, 700, 640, 360);
+        doTestGetSuitableVideoSize(720, null, 1200, 640, 360);
+        doTestGetSuitableVideoSize(null, 540, 1500, 640, 360);
+        doTestGetSuitableVideoSize(null, null, 2000, 960, 540);
 
         // Odd original size.
-        doTestGetSuitableVideoSize(853, 464, 1500, 854, 464);
+        doTestGetSuitableVideoSize(203, 101, 1500, 204, 102);
         doTestGetSuitableVideoSize(464, 853, 1500, 464, 854);
     }
 
