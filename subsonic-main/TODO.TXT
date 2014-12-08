@@ -36,15 +36,10 @@ Remove ads? Only show internal ad.
 Fix internal ad.
 IntelliJ plugin
 Improve uploader
-Rename "play random" to "Shuffle xxx"
-hostingvideo.com
-  https://mail.google.com/mail/u/0/?pli=1#inbox/148a314030a38505
-Site: Require Java 7
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
 
-mention chromecast in premium
 Avoid scrolling album/artist title
 Find similar tracks / artists
   Use java binding for scrobbling?

@@ -48,7 +48,7 @@
 
 <c:if test="${model.user.streamRole}">
     <h2>
-        <img src="<spring:theme code="randomImage"/>" alt=""/>
+        <img src="<spring:theme code="shuffleImage"/>" alt=""/>
         <span style="vertical-align: middle"><fmt:message key="more.random.title"/></span>
     </h2>
 
