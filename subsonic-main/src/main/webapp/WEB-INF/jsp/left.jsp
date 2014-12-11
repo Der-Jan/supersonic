@@ -51,7 +51,18 @@
 <body class="bgcolor2 leftframe" onload="init()">
 <a name="top"></a>
 
-<div style="padding-bottom:0.5em">
+<c:if test="${fn:length(model.musicFolders) > 1}">
+    <div style="padding-bottom:1.0em">
+    <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;">
+            <option value="-1"><fmt:message key="left.allfolders"/></option>
+            <c:forEach items="${model.musicFolders}" var="musicFolder">
+                <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${musicFolder.name}</option>
+            </c:forEach>
+        </select>
+    </div>
+</c:if>
+
+<div style="margin-bottom:0.5em;padding-left: 2px" class="bgcolor1">
     <c:forEach items="${model.indexes}" var="index">
         <a href="#${index.index}" accesskey="${index.index}">${index.index}</a>
     </c:forEach>
@@ -69,17 +80,6 @@
         </c:choose>
     </div>
 </div>
-
-<c:if test="${fn:length(model.musicFolders) > 1}">
-    <div style="padding-top:0.3em">
-        <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;" >
-            <option value="-1"><fmt:message key="left.allfolders"/></option>
-            <c:forEach items="${model.musicFolders}" var="musicFolder">
-                <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${musicFolder.name}</option>
-            </c:forEach>
-        </select>
-    </div>
-</c:if>
 
 <c:if test="${not empty model.shortcuts}">
     <h2 class="bgcolor1" style="padding-left: 2px"><fmt:message key="left.shortcut"/></h2>

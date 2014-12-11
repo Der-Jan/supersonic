@@ -23,17 +23,16 @@ TODO IN SITE
 ------------
 FAQ for network disks & firewall
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
+Submuxic
+  https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
 
 TODO IN 5.1
 --------------
-Submuxic
-  https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
 Write terms of use.
-Support tags
+Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
 Reuse videoPlayer.jsp for shared videos?
 Remove ads? Only show internal ad.
-Fix internal ad.
 IntelliJ plugin
 Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
