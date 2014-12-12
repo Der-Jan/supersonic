@@ -24,6 +24,7 @@ import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.ALBUM;
 
@@ -37,20 +38,21 @@ public class RatingDao extends AbstractDao {
     /**
      * Returns paths for the highest rated albums.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param mediaFolder Only return albums in this media folder.
      * @return Paths for the highest rated albums.
      */
-    public List<String> getHighestRatedAlbums(int offset, int count) {
+    public List<String> getHighestRatedAlbums(int offset, int count, MusicFolder mediaFolder) {
         if (count < 1) {
             return new ArrayList<String>();
         }
 
         String sql = "select user_rating.path from user_rating, media_file " +
-                "where user_rating.path=media_file.path and media_file.present and media_file.type=?" +
-                "group by path " +
-                "order by avg(rating) desc limit ? offset ?";
-        return queryForStrings(sql, ALBUM.name(), count, offset);
+                     "where user_rating.path=media_file.path and media_file.present and media_file.type=? and media_file.folder like ? " +
+                     "group by path " +
+                     "order by avg(rating) desc limit ? offset ?";
+        return queryForStrings(sql, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
     }
 
     /**

@@ -31,8 +31,10 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.JukeboxService;
 import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
@@ -162,28 +164,30 @@ public class PlayQueueService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         String username = securityService.getCurrentUsername(request);
+        UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+        MusicFolder mediaFolder =  settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
 
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
-            albums = ratingService.getHighestRatedAlbums(offset, count);
+            albums = ratingService.getHighestRatedAlbums(offset, count, mediaFolder);
         } else if ("frequent".equals(albumListType)) {
-            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count);
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder);
         } else if ("recent".equals(albumListType)) {
-            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count);
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, mediaFolder);
         } else if ("newest".equals(albumListType)) {
-            albums = mediaFileService.getNewestAlbums(offset, count);
+            albums = mediaFileService.getNewestAlbums(offset, count, mediaFolder);
         } else if ("starred".equals(albumListType)) {
-            albums = mediaFileService.getStarredAlbums(offset, count, username);
+            albums = mediaFileService.getStarredAlbums(offset, count, username, mediaFolder);
         } else if ("random".equals(albumListType)) {
-            albums = searchService.getRandomAlbums(count);
+            albums = searchService.getRandomAlbums(count, mediaFolder);
         } else if ("alphabetical".equals(albumListType)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, count, true);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, mediaFolder);
         } else if ("decade".equals(albumListType)) {
             int fromYear = Integer.parseInt(decade);
             int toYear = fromYear + 9;
-            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear);
+            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
         } else if ("genre".equals(albumListType)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, count, genre);
+            albums = mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder);
         } else {
             albums = Collections.emptyList();
         }

@@ -34,11 +34,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.RatingService;
@@ -55,8 +56,6 @@ import static org.springframework.web.bind.ServletRequestUtils.getStringParamete
  * @author Sindre Mehus
  */
 public class HomeController extends ParameterizableViewController {
-
-    private static final Logger LOG = Logger.getLogger(HomeController.class);
 
     private static final int LIST_SIZE = 40;
 
@@ -76,35 +75,38 @@ public class HomeController extends ParameterizableViewController {
         int listOffset = getIntParameter(request, "listOffset", 0);
         String listType = getStringParameter(request, "listType", "random");
 
+        UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+        MusicFolder mediaFolder = settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
+
         Map<String, Object> map = new HashMap<String, Object>();
         List<Album> albums = Collections.emptyList();
         if ("highest".equals(listType)) {
-            albums = getHighestRated(listOffset, LIST_SIZE);
+            albums = getHighestRated(listOffset, LIST_SIZE, mediaFolder);
         } else if ("frequent".equals(listType)) {
-            albums = getMostFrequent(listOffset, LIST_SIZE);
+            albums = getMostFrequent(listOffset, LIST_SIZE, mediaFolder);
         } else if ("recent".equals(listType)) {
-            albums = getMostRecent(listOffset, LIST_SIZE);
+            albums = getMostRecent(listOffset, LIST_SIZE, mediaFolder);
         } else if ("newest".equals(listType)) {
-            albums = getNewest(listOffset, LIST_SIZE);
+            albums = getNewest(listOffset, LIST_SIZE, mediaFolder);
         } else if ("starred".equals(listType)) {
-            albums = getStarred(listOffset, LIST_SIZE, user.getUsername());
+            albums = getStarred(listOffset, LIST_SIZE, user.getUsername(), mediaFolder);
         } else if ("random".equals(listType)) {
-            albums = getRandom(LIST_SIZE);
+            albums = getRandom(LIST_SIZE, mediaFolder);
         } else if ("alphabetical".equals(listType)) {
-            albums = getAlphabetical(listOffset, LIST_SIZE, true);
+            albums = getAlphabetical(listOffset, LIST_SIZE, true, mediaFolder);
         } else if ("decade".equals(listType)) {
             List<Integer> decades = createDecades();
             map.put("decades", decades);
             int decade = getIntParameter(request, "decade", decades.get(0));
             map.put("decade", decade);
-            albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9);
+            albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9, mediaFolder);
         } else if ("genre".equals(listType)) {
             List<Genre> genres = mediaFileService.getGenres(true);
             map.put("genres", genres);
             if (!genres.isEmpty()) {
                 String genre = getStringParameter(request, "genre", genres.get(0).getName());
                 map.put("genre", genre);
-                albums = getByGenre(listOffset, LIST_SIZE, genre);
+                albums = getByGenre(listOffset, LIST_SIZE, genre, mediaFolder);
             }
         }
 
@@ -123,9 +125,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getHighestRated(int offset, int count) {
+    private List<Album> getHighestRated(int offset, int count, MusicFolder mediaFolder) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count)) {
+        for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count, mediaFolder)) {
             Album album = createAlbum(mediaFile);
             album.setRating((int) Math.round(ratingService.getAverageRating(mediaFile) * 10.0D));
             result.add(album);
@@ -133,9 +135,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getMostFrequent(int offset, int count) {
+    private List<Album> getMostFrequent(int offset, int count, MusicFolder mediaFolder) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count)) {
+        for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder)) {
             Album album = createAlbum(mediaFile);
             album.setPlayCount(mediaFile.getPlayCount());
             result.add(album);
@@ -143,9 +145,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getMostRecent(int offset, int count) {
+    private List<Album> getMostRecent(int offset, int count, MusicFolder mediaFolder) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : mediaFileService.getMostRecentlyPlayedAlbums(offset, count)) {
+        for (MediaFile mediaFile : mediaFileService.getMostRecentlyPlayedAlbums(offset, count, mediaFolder)) {
             Album album = createAlbum(mediaFile);
             album.setLastPlayed(mediaFile.getLastPlayed());
             result.add(album);
@@ -153,9 +155,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getNewest(int offset, int count) throws IOException {
+    private List<Album> getNewest(int offset, int count, MusicFolder mediaFolder) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getNewestAlbums(offset, count)) {
+        for (MediaFile file : mediaFileService.getNewestAlbums(offset, count, mediaFolder)) {
             Album album = createAlbum(file);
             Date created = file.getCreated();
             if (created == null) {
@@ -167,33 +169,33 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getStarred(int offset, int count, String username) throws IOException {
+    private List<Album> getStarred(int offset, int count, String username, MusicFolder mediaFolder) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getStarredAlbums(offset, count, username)) {
+        for (MediaFile file : mediaFileService.getStarredAlbums(offset, count, username, mediaFolder)) {
             result.add(createAlbum(file));
         }
         return result;
     }
 
-    private List<Album> getRandom(int count) throws IOException {
+    private List<Album> getRandom(int count, MusicFolder mediaFolder) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : searchService.getRandomAlbums(count)) {
+        for (MediaFile file : searchService.getRandomAlbums(count, mediaFolder)) {
             result.add(createAlbum(file));
         }
         return result;
     }
 
-    private List<Album> getAlphabetical(int offset, int count, boolean byArtist) throws IOException {
+    private List<Album> getAlphabetical(int offset, int count, boolean byArtist, MusicFolder mediaFolder) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlphabeticalAlbums(offset, count, byArtist)) {
+        for (MediaFile file : mediaFileService.getAlphabeticalAlbums(offset, count, byArtist, mediaFolder)) {
             result.add(createAlbum(file));
         }
         return result;
     }
 
-    private List<Album> getByYear(int offset, int count, int fromYear, int toYear) {
+    private List<Album> getByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear)) {
+        for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder)) {
             Album album = createAlbum(file);
             album.setYear(file.getYear());
             result.add(album);
@@ -210,9 +212,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private  List<Album> getByGenre(int offset, int count, String genre) {
+    private List<Album> getByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre)) {
+        for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder)) {
             result.add(createAlbum(file));
         }
         return result;

@@ -1036,26 +1036,26 @@ public class RESTController extends MultiActionController {
 
         List<MediaFile> albums;
         if ("highest".equals(type)) {
-            albums = ratingService.getHighestRatedAlbums(offset, size);
+            albums = ratingService.getHighestRatedAlbums(offset, size, null);
         } else if ("frequent".equals(type)) {
-            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size);
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size, null);
         } else if ("recent".equals(type)) {
-            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, size);
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, size, null);
         } else if ("newest".equals(type)) {
-            albums = mediaFileService.getNewestAlbums(offset, size);
+            albums = mediaFileService.getNewestAlbums(offset, size, null);
         } else if ("starred".equals(type)) {
-            albums = mediaFileService.getStarredAlbums(offset, size, username);
+            albums = mediaFileService.getStarredAlbums(offset, size, username, null);
         } else if ("alphabeticalByArtist".equals(type)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, size, true);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, true, null);
         } else if ("alphabeticalByName".equals(type)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, size, false);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, false, null);
         } else if ("byGenre".equals(type)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"));
+            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"), null);
         } else if ("byYear".equals(type)) {
             albums = mediaFileService.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
-                    getRequiredIntParameter(request, "toYear"));
+                    getRequiredIntParameter(request, "toYear"), null);
         } else if ("random".equals(type)) {
-            albums = searchService.getRandomAlbums(size);
+            albums = searchService.getRandomAlbums(size, null);
         } else {
             throw new Exception("Invalid list type: " + type);
         }
@@ -1446,7 +1446,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
             result.getArtist().add(createJaxbArtist(artist, username));
         }
-        for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username)) {
+        for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, null)) {
             result.getAlbum().add(createJaxbChild(player, album, username));
         }
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {

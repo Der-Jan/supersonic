@@ -25,10 +25,17 @@ FAQ for network disks & firewall
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
 Submuxic
   https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
+Write terms of use.
 
 TODO IN 5.1
 --------------
-Write terms of use.
+Filter home screen on selected music folder
+  REST support
+  Rename MusicFolder -> MediaFolder
+  Show selected media folder in home.jsp
+  Refresh home.jsp when changing media folder
+  Test performance
+Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
 Reuse videoPlayer.jsp for shared videos?

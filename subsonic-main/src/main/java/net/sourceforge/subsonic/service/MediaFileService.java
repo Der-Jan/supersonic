@@ -243,83 +243,90 @@ public class MediaFileService {
     /**
      * Returns the most frequently played albums.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param mediaFolder Only return albums in this media folder.
      * @return The most frequently played albums.
      */
-    public List<MediaFile> getMostFrequentlyPlayedAlbums(int offset, int count) {
-        return mediaFileDao.getMostFrequentlyPlayedAlbums(offset, count);
+    public List<MediaFile> getMostFrequentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
+        return mediaFileDao.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder);
     }
 
     /**
      * Returns the most recently played albums.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param mediaFolder Only return albums in this media folder.
      * @return The most recently played albums.
      */
-    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count) {
-        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count);
+    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
+        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count, mediaFolder);
     }
 
     /**
      * Returns the most recently added albums.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param mediaFolder Only return albums in this media folder.
      * @return The most recently added albums.
      */
-    public List<MediaFile> getNewestAlbums(int offset, int count) {
-        return mediaFileDao.getNewestAlbums(offset, count);
+    public List<MediaFile> getNewestAlbums(int offset, int count, MusicFolder mediaFolder) {
+        return mediaFileDao.getNewestAlbums(offset, count, mediaFolder);
     }
 
     /**
      * Returns the most recently starred albums.
      *
-     * @param offset   Number of albums to skip.
-     * @param count    Maximum number of albums to return.
-     * @param username Returns albums starred by this user.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param username    Returns albums starred by this user.
+     * @param mediaFolder Only return albums in this media folder.
      * @return The most recently starred albums for this user.
      */
-    public List<MediaFile> getStarredAlbums(int offset, int count, String username) {
-        return mediaFileDao.getStarredAlbums(offset, count, username);
+    public List<MediaFile> getStarredAlbums(int offset, int count, String username, MusicFolder mediaFolder) {
+        return mediaFileDao.getStarredAlbums(offset, count, username, mediaFolder);
     }
 
     /**
      * Returns albums in alphabetical order.
      *
-     * @param offset   Number of albums to skip.
-     * @param count    Maximum number of albums to return.
-     * @param byArtist Whether to sort by artist name
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param byArtist    Whether to sort by artist name
+     * @param mediaFolder Only return albums in this media folder.
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist) {
-        return mediaFileDao.getAlphabeticalAlbums(offset, count, byArtist);
+    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist, MusicFolder mediaFolder) {
+        return mediaFileDao.getAlphabeticalAlbums(offset, count, byArtist, mediaFolder);
     }
 
     /**
      * Returns albums within a year range.
      *
-     * @param offset   Number of albums to skip.
-     * @param count    Maximum number of albums to return.
-     * @param fromYear The first year in the range.
-     * @param toYear   The last year in the range.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param fromYear    The first year in the range.
+     * @param toYear      The last year in the range.
+     * @param mediaFolder Only return albums in this media folder.
      * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear) {
-        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear);
+    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
+        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
     }
 
     /**
      * Returns albums in a genre.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
-     * @param genre  The genre name.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param genre       The genre name.
+     * @param mediaFolder Only return albums in this media folder.
      * @return Albums in the genre.
      */
-    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre) {
-        return mediaFileDao.getAlbumsByGenre(offset, count, genre);
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
+        return mediaFileDao.getAlbumsByGenre(offset, count, genre, mediaFolder);
     }
 
     /**
