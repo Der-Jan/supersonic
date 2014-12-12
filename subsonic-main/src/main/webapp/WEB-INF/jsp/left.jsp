@@ -13,6 +13,13 @@
         function init() {
             dwr.engine.setErrorHandler(null);
             updatePlaylists();
+
+            var mainLocation = top.frames["main"].location.href;
+            if (${model.mediaFolderChanged}) {
+                if (mainLocation.indexOf("/home.view") != -1) {
+                    top.frames["main"].location.href = mainLocation;
+                }
+            }
         }
 
         function updatePlaylists() {
