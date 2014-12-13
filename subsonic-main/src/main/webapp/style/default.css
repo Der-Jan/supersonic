@@ -154,6 +154,10 @@ input, select, textarea {
     border: 1px solid lightgray;
 }
 
+input {
+    padding: 3px;
+}
+
 label {
     font-size: 100%;
     line-height: 140%;
