@@ -33,7 +33,6 @@ Filter home screen on selected music folder
   REST support
   Rename MusicFolder -> MediaFolder
   Show selected media folder in home.jsp
-  Refresh home.jsp when changing media folder
   Test performance
 Now playing broken?
 Support tags/labels
