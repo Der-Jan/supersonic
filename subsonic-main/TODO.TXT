@@ -26,13 +26,13 @@ FAQ for network disks & firewall
 Submuxic
   https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
 Write terms of use.
+Filter home screen on selected music folder
+REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
 Filter home screen on selected music folder
-  REST support
   Rename MusicFolder -> MediaFolder
-  Show selected media folder in home.jsp
   Test performance
 Now playing broken?
 Support tags/labels

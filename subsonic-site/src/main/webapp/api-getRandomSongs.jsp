@@ -45,7 +45,7 @@
             <td><code>musicFolderId</code></td>
             <td>No</td>
             <td></td>
-            <td>Only return songs in the music folder with the given ID. See getMusicFolders.</td>
+            <td>Only return songs in the music folder with the given ID. See <code>getMusicFolders</code>.</td>
         </tr>
     </table>
     <p>

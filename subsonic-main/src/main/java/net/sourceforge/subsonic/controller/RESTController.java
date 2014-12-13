@@ -1031,31 +1031,34 @@ public class RESTController extends MultiActionController {
 
         int size = getIntParameter(request, "size", 10);
         int offset = getIntParameter(request, "offset", 0);
+        Integer musicFolderId = getIntParameter(request, "musicFolderId");
+        MusicFolder musicFolder = musicFolderId == null ? null : settingsService.getMusicFolderById(musicFolderId);
+
         size = Math.max(0, Math.min(size, 500));
         String type = getRequiredStringParameter(request, "type");
 
         List<MediaFile> albums;
         if ("highest".equals(type)) {
-            albums = ratingService.getHighestRatedAlbums(offset, size, null);
+            albums = ratingService.getHighestRatedAlbums(offset, size, musicFolder);
         } else if ("frequent".equals(type)) {
-            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size, null);
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size, musicFolder);
         } else if ("recent".equals(type)) {
-            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, size, null);
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, size, musicFolder);
         } else if ("newest".equals(type)) {
-            albums = mediaFileService.getNewestAlbums(offset, size, null);
+            albums = mediaFileService.getNewestAlbums(offset, size, musicFolder);
         } else if ("starred".equals(type)) {
-            albums = mediaFileService.getStarredAlbums(offset, size, username, null);
+            albums = mediaFileService.getStarredAlbums(offset, size, username, musicFolder);
         } else if ("alphabeticalByArtist".equals(type)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, size, true, null);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, true, musicFolder);
         } else if ("alphabeticalByName".equals(type)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, size, false, null);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, size, false, musicFolder);
         } else if ("byGenre".equals(type)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"), null);
+            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"), musicFolder);
         } else if ("byYear".equals(type)) {
             albums = mediaFileService.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
-                    getRequiredIntParameter(request, "toYear"), null);
+                    getRequiredIntParameter(request, "toYear"), musicFolder);
         } else if ("random".equals(type)) {
-            albums = searchService.getRandomAlbums(size, null);
+            albums = searchService.getRandomAlbums(size, musicFolder);
         } else {
             throw new Exception("Invalid list type: " + type);
         }
