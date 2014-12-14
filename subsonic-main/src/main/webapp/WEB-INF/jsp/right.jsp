@@ -9,14 +9,11 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 </head>
 <body class="bgcolor1 rightframe" style="padding-top:2em" onload="init()">
 
 <script type="text/javascript">
     function init() {
-        setupZoom('<c:url value="/"/>');
         dwr.engine.setErrorHandler(null);
     <c:if test="${model.showChat}">
         chatService.addMessage(null);
@@ -41,14 +38,14 @@
         }
 
         function getNowPlayingCallback(nowPlaying) {
-            var html = nowPlaying.length == 0 ? "" : "<h2><fmt:message key="main.nowplaying"/></h2><table>";
+            var html = nowPlaying.length == 0 ? "" : "<h2><fmt:message key="main.nowplaying"/></h2><table style='width:100%'>";
             for (var i = 0; i < nowPlaying.length; i++) {
                 html += "<tr><td colspan='2' class='detail' style='padding-top:1em;white-space:nowrap'>";
 
                 if (nowPlaying[i].avatarUrl != null) {
-                    html += "<img src='" + nowPlaying[i].avatarUrl + "' style='padding-right:5pt'>";
+                    html += "<img src='" + nowPlaying[i].avatarUrl + "' style='padding-right:5pt;width:30px;height:30px'>";
                 }
-                html += "<b>" + nowPlaying[i].username + "</b></td></tr>"
+                html += "<b>" + nowPlaying[i].username + "</b></td></tr>";
 
                 html += "<tr><td class='detail' style='padding-right:1em'>" +
                         "<a title='" + nowPlaying[i].tooltip + "' target='main' href='" + nowPlaying[i].albumUrl + "'>";
@@ -57,11 +54,14 @@
                     html += nowPlaying[i].artist + "<br/>";
                 }
 
-                html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>" +
-                        "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 430, 550)\">" +
-                        "<fmt:message key="main.lyrics"/>" + "</a></span></td><td style='padding-top:1em'>" +
+                html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>";
+                if (nowPlaying[i].lyricsUrl != null) {
+                    html += "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 430, 550)\">" +
+                            "<fmt:message key="main.lyrics"/>" + "</a></span>";
+                }
+                html += "</td><td>" +
                         "<a title='" + nowPlaying[i].tooltip + "' target='main' href='" + nowPlaying[i].albumUrl + "'>" +
-                        "<img src='" + nowPlaying[i].coverArtUrl + "' width='60' height='60'></a>" +
+                        "<img src='" + nowPlaying[i].coverArtUrl + "' class='dropshadow' height='60' width='60'></a>" +
                         "</td></tr>";
 
                 var minutesAgo = nowPlaying[i].minutesAgo;
@@ -71,7 +71,6 @@
             }
             html += "</table>";
             $('nowPlaying').innerHTML = html;
-            prepZooms();
         }
     </script>
 
@@ -168,7 +167,7 @@
 
     <h2><fmt:message key="main.chat"/></h2>
     <div style="padding-top:0.3em;padding-bottom:0.3em">
-        <input id="message" value=" <fmt:message key="main.message"/>" style="width:90%" onclick="dwr.util.setValue('message', null);" onkeypress="dwr.util.onReturn(event, addMessage)"/>
+        <input id="message" value=" <fmt:message key="main.message"/>" style="width:100%" onclick="dwr.util.setValue('message', null);" onkeypress="dwr.util.onReturn(event, addMessage)"/>
     </div>
 
     <table>

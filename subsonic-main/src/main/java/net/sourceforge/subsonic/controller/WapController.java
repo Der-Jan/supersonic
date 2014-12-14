@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,17 +36,17 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicIndex;
-import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PlayQueue;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.RandomSearchCriteria;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -78,12 +77,12 @@ public class WapController extends MultiActionController {
             map.put("noMusic", true);
         } else {
 
-            SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> allArtists = musicIndexService.getIndexedArtists(folders, false);
+            SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> allArtists = musicIndexService.getIndexedArtists(folders, false);
 
             // If an index is given as parameter, only show music files for this index.
             String index = request.getParameter("index");
             if (index != null) {
-                SortedSet<MusicIndex.SortableArtistWithMediaFiles> artists = allArtists.get(new MusicIndex(index));
+                List<MusicIndex.SortableArtistWithMediaFiles> artists = allArtists.get(new MusicIndex(index));
                 if (artists == null) {
                     map.put("noMusic", true);
                 } else {

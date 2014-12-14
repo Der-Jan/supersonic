@@ -88,6 +88,7 @@
         this.initializeUI();
         this.initializeLocalPlayer();
         this.initializeCastPlayer();
+        this.playMediaLocally(0);
     };
 
     /**
@@ -143,6 +144,10 @@
      * receiverListener may be invoked at any time afterwards, and possibly more than once.
      */
     CastPlayer.prototype.initializeCastPlayer = function () {
+
+        if (!window.chrome) {
+            return;
+        }
 
         if (!chrome.cast || !chrome.cast.isAvailable) {
             setTimeout(this.initializeCastPlayer.bind(this), 1000);
@@ -504,6 +509,20 @@
     };
 
     /**
+     * Share the video.
+     */
+    CastPlayer.prototype.share = function () {
+        location.href = "createShare.view?id=${model.video.id}";
+    };
+
+    /**
+     * Download the video.
+     */
+    CastPlayer.prototype.download = function () {
+        location.href = "download.view?id=${model.video.id}";
+    };
+
+    /**
      * Pause media playback in local player
      */
     CastPlayer.prototype.pauseMediaLocally = function () {
@@ -670,6 +689,15 @@
         $("#play").on('click', this.playMedia.bind(this));
         $("#pause").on('click', this.pauseMedia.bind(this));
         $("#bitrate_menu").on('change', this.changeBitRate.bind(this));
+        $("#share").on('click', this.share.bind(this));
+        $("#download").on('click', this.download.bind(this));
+
+        <c:if test="${not model.user.shareRole}">
+        $("#share").hide();
+        </c:if>
+        <c:if test="${not model.user.downloadRole}">
+        $("#download").hide();
+        </c:if>
 
 //        setInterval(this.updateDebug.bind(this), 100);
     };

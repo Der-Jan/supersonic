@@ -124,10 +124,14 @@
             <td><label for="nowPlaying"><fmt:message key="personalsettings.shownowplaying"/></label></td>
             <td style="padding-left:2em"><form:checkbox path="showChatEnabled" id="chat" cssClass="checkbox"/></td>
             <td><label for="chat"><fmt:message key="personalsettings.showchat"/></label></td>
+            <td style="padding-left:2em"><form:checkbox path="showArtistInfoEnabled" id="artistInfo" cssClass="checkbox"/></td>
+            <td><label for="artistInfo"><fmt:message key="personalsettings.showartistinfo"/></label></td>
         </tr>
         <tr>
             <td><form:checkbox path="nowPlayingAllowed" id="nowPlayingAllowed" cssClass="checkbox"/></td>
             <td><label for="nowPlayingAllowed"><fmt:message key="personalsettings.nowplayingallowed"/></label></td>
+            <td style="padding-left:2em"><form:checkbox path="autoHidePlayQueue" id="autoHidePlayQueue" cssClass="checkbox"/></td>
+            <td><label for="autoHidePlayQueue"><fmt:message key="personalsettings.autohideplayqueue"/></label></td>
             <td style="padding-left:2em"><form:checkbox path="partyModeEnabled" id="partyModeEnabled" cssClass="checkbox"/></td>
             <td><label for="partyModeEnabled"><fmt:message key="personalsettings.partymode"/></label>
                 <c:import url="helpToolTip.jsp"><c:param name="topic" value="partymode"/></c:import>
@@ -196,6 +200,7 @@
             <c:if test="${not empty command.customAvatar}">
                 <sub:url value="avatar.view" var="avatarUrl">
                     <sub:param name="username" value="${command.user.username}"/>
+                    <sub:param name="forceCustom" value="true"/>
                 </sub:url>
                 <img src="${avatarUrl}" alt="${command.customAvatar.name}" width="${command.customAvatar.width}" height="${command.customAvatar.height}" style="padding-right:2em"/>
             </c:if>

@@ -198,7 +198,7 @@ public class IPNController implements Controller {
         }
         else {
             Payment paymentForEmail = paymentDao.getPaymentByEmail(payerEmail);
-            Date validTo = computeValidTo(paymentForEmail, request);
+            Date validTo = computeValidTo(paymentForEmail, request, item);
 
             Payment newPayment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
@@ -207,9 +207,14 @@ public class IPNController implements Controller {
         }
     }
 
-    private Date computeValidTo(Payment existingPayment, HttpServletRequest request) {
+    private Date computeValidTo(Payment existingPayment, HttpServletRequest request, String item) {
+        if ("sub-pre-lifetime".equals(item)) {
+            return null;
+        }
+
         String duration = request.getParameter("option_selection1");
         if (duration == null) {
+            // TODO: Consider amount
             return null; // Old-school donation. Use no end date.
         }
         Matcher matcher = SUBSCRIPTION_DURATION_PATTERN.matcher(duration);

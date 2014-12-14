@@ -12,17 +12,6 @@
     <span style="vertical-align: middle"><fmt:message key="search.title"/></span>
 </h1>
 
-<form:form commandName="command" method="post" action="search.view" name="searchForm">
-    <table>
-        <tr>
-            <td><fmt:message key="search.query"/></td>
-            <td style="padding-left:0.25em"><form:input path="query" size="35"/></td>
-            <td style="padding-left:0.25em"><input type="submit" onclick="search(0)" value="<fmt:message key="search.search"/>"/></td>
-        </tr>
-    </table>
-
-</form:form>
-
 <c:if test="${command.indexBeingCreated}">
     <p class="warning"><fmt:message key="search.index"/></p>
 </c:if>

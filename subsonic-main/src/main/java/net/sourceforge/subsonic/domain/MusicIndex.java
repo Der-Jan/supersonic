@@ -19,6 +19,8 @@
 package net.sourceforge.subsonic.domain;
 
 import java.io.Serializable;
+import java.text.CollationKey;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,10 +122,12 @@ public class MusicIndex implements Serializable {
 
         private final String name;
         private final String sortableName;
+        private final CollationKey collationKey;
 
-        public SortableArtist(String name, String sortableName) {
+        public SortableArtist(String name, String sortableName, Collator collator) {
             this.name = name;
             this.sortableName = sortableName;
+            collationKey = collator.getCollationKey(sortableName);
         }
 
         public String getName() {
@@ -134,25 +138,8 @@ public class MusicIndex implements Serializable {
             return sortableName;
         }
 
-        public int compareTo(SortableArtist artist) {
-            int n = sortableName.compareToIgnoreCase(artist.sortableName);
-            return n == 0 ? sortableName.compareTo(artist.sortableName) : n;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            return compareTo((SortableArtist) o) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            return sortableName.hashCode();
+        public int compareTo(SortableArtist other) {
+            return collationKey.compareTo(other.collationKey);
         }
     }
 
@@ -160,8 +147,8 @@ public class MusicIndex implements Serializable {
 
         private final List<MediaFile> mediaFiles = new ArrayList<MediaFile>();
 
-        public SortableArtistWithMediaFiles(String name, String sortableName) {
-            super(name, sortableName);
+        public SortableArtistWithMediaFiles(String name, String sortableName, Collator collator) {
+            super(name, sortableName, collator);
         }
 
         public void addMediaFile(MediaFile mediaFile) {
@@ -177,8 +164,8 @@ public class MusicIndex implements Serializable {
 
         private final Artist artist;
 
-        public SortableArtistWithArtist(String name, String sortableName, Artist artist) {
-            super(name, sortableName);
+        public SortableArtistWithArtist(String name, String sortableName, Artist artist, Collator collator) {
+            super(name, sortableName, collator);
             this.artist = artist;
         }
 

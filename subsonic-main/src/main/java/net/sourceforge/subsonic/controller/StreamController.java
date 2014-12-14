@@ -352,19 +352,20 @@ public class StreamController implements Controller {
 
     protected Dimension getSuitableVideoSize(Integer existingWidth, Integer existingHeight, Integer maxBitRate) {
         if (maxBitRate == null) {
-            return new Dimension(400, 300);
+            return new Dimension(400, 224);
         }
 
-        int w, h;
+        int w;
         if (maxBitRate < 400) {
-            w = 400; h = 300;
+            w = 400;
         } else if (maxBitRate < 600) {
-            w = 480; h = 360;
+            w = 480;
         } else if (maxBitRate < 1800) {
-            w = 640; h = 480;
+            w = 640;
         } else {
-            w = 960; h = 720;
+            w = 960;
         }
+        int h = even(w * 9 / 16);
 
         if (existingWidth == null || existingHeight == null) {
             return new Dimension(w, h);

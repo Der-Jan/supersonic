@@ -29,6 +29,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.text.InputType;
 import net.sourceforge.subsonic.androidapp.R;
 import net.sourceforge.subsonic.androidapp.service.DownloadService;
 import net.sourceforge.subsonic.androidapp.service.DownloadServiceImpl;
@@ -96,17 +97,21 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             final EditTextPreference name = new EditTextPreference(this);
             name.setKey(server.getNameKey());
             name.setTitle(R.string.settings_server_name);
+            name.setDialogTitle(R.string.settings_server_name);
             name.setText(server.getName());
             name.setSummary(server.getName());
 
             final EditTextPreference url = new EditTextPreference(this);
             url.setKey(server.getUrlKey());
             url.setTitle(R.string.settings_server_address);
+            url.setDialogTitle(R.string.settings_server_address);
             url.setText(server.getUrl());
             url.setSummary(server.getUrl());
+            url.getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
 
             final EditTextPreference username = new EditTextPreference(this);
             username.setKey(server.getUsernameKey());
+            username.setDialogTitle(R.string.settings_server_username);
             username.setTitle(R.string.settings_server_username);
             username.setText(server.getUsername());
             username.setSummary(server.getUsername());
@@ -114,8 +119,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             EditTextPreference password = new EditTextPreference(this);
             password.setKey(server.getPasswordKey());
             password.setTitle(R.string.settings_server_password);
+            password.setDialogTitle(R.string.settings_server_password);
             password.setText(server.getPassword());
             password.setSummary("****");
+            password.getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
             Preference testConnection = new Preference(this);
             testConnection.setPersistent(false);

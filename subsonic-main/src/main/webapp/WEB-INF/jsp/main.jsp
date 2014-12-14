@@ -5,13 +5,13 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <link href="<c:url value="/style/shadow.css"/>" rel="stylesheet">
     <c:if test="${not model.updateNowPlaying}">
         <meta http-equiv="refresh" content="180;URL=nowPlaying.view?">
     </c:if>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
@@ -38,6 +38,39 @@
                     $(this).dialog("close");
                 }
             }});
+
+        <c:if test="${model.showArtistInfo}">
+        loadArtistInfo();
+        </c:if>
+    }
+
+    function loadArtistInfo() {
+        multiService.getArtistInfo(${model.dir.id}, 8, function (artistInfo) {
+            if (artistInfo.similarArtists.length > 0) {
+                var html = "";
+                for (var i = 0; i < artistInfo.similarArtists.length; i++) {
+                    html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
+                            artistInfo.similarArtists[i].artistName + "</a>";
+                    if (i < artistInfo.similarArtists.length - 1) {
+                        html += " | ";
+                    }
+                }
+                $("#similarArtists").append(html);
+                $("#similarArtists").show();
+                $("#similarArtistsTitle").show();
+                $("#similarArtistsRadio").show();
+            }
+
+            <c:if test="${model.dir.directory and not model.dir.album}">
+            if (artistInfo.artistBio && artistInfo.artistBio.biography) {
+                $("#artistBio").append(artistInfo.artistBio.biography);
+                if (artistInfo.artistBio.mediumImageUrl) {
+                    $("#artistImage").attr("src", artistInfo.artistBio.mediumImageUrl);
+                    $("#artistImage").show();
+                }
+            }
+            </c:if>
+        });
     }
 
     <!-- actionSelected() is invoked when the users selects from the "More actions..." combo box. -->
@@ -473,6 +506,25 @@
             </div>
         </td>
     </tr>
+</table>
+
+<table class="detail" style="width: 75%;white-space: normal">
+    <tr>
+        <td rowspan="4" style="vertical-align: top">
+            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 0.5em; display: none">
+        </td>
+        <td id="artistBio"></td>
+    </tr>
+    <tr><td>
+        <span id="similarArtistsTitle" style="padding-right: 0.3em; display: none"><fmt:message key="main.similarartists"/>:</span>
+        <span id="similarArtists"></span>
+    </td></tr>
+    <tr><td>
+        <div id="similarArtistsRadio" class="forward" style="display: none">
+            <a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a>
+        </div>
+    </td></tr>
+    <tr><td style="height: 100%"></td></tr>
 </table>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">

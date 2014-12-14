@@ -1,19 +1,75 @@
-DONE IN 5.0
+DONE IN 5.1
 -------------
-Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)
-Fixed problem with unresponsive dialogs.
-Use 2000 kbps as default video bitrate.
-Sort playlists alphabetically
-Bugfix: Fixed some sorting issues (e.g., for same artist found in multiple media folders)
-Make password recovery work with https
+Sort artists using locale-specific collation.
+Updated Estonian translation, courtesy of Olav M&auml;gi.
+Instant search (show search results while typing)
+Show song title in browser window title.
+Show similar artists, with radio feature
+REST: Show similar artists, with radio feature
+Artist bio and images
+Video autoplay
+New video page, show slideshow on hover
+Show avatar in upper-right corner
+Automatically show/hide play queue.
+Add "shuffle play" to categories in home page.
+Dim image when hovering
+REST: Also include not-present artists.
+Video playback broken behind proxies.
+Wrong aspect rate for shared videos.
+Upgrade Cling
+Lifetime license.
 
-TODO IN 5.0
+TODO IN SITE
+------------
+FAQ for network disks & firewall
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
+Submuxic
+  https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
+Write terms of use.
+Filter home screen on selected music folder
+REST: Added musicFolderId to getAlbumList
+
+TODO IN 5.1
 --------------
-Open video in popup rather than new window?
-Sort genres alphabetically
-Chromecast doesn't auto-advance?
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14660&start=15#p64207
+Filter home screen on selected music folder
+  Rename MusicFolder -> MediaFolder
+  Test performance
+Now playing broken?
+Support tags/labels
+  https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
+Reuse videoPlayer.jsp for shared videos?
+Remove ads? Only show internal ad.
+IntelliJ plugin
+Improve uploader
+FAQ: Mention Lollipop/Java 6 SSL incompatibility
+OAuth
+set window title when playing video
 
+Avoid scrolling album/artist title
+Find similar tracks / artists
+  Use java binding for scrobbling?
+  Use minium similarity
+  Test other browsers.
+Artist cover art collage (or use last.fm api)
+Subtitle support
+  https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
+  http://support.jwplayer.com/customer/portal/articles/1407438-adding-closed-captions
+  http://support.jwplayer.com/customer/portal/articles/1404037-migrating-from-jw5-to-jw6
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14665
+Patch to enable init.d script to handle 0 byte PIDFILE
+  https://mail.google.com/mail/ca/u/0/?zx=fu6g1tfaa3i0#inbox/1492f9f3e57dd8ee
+Show song play count?
+DB: Delete redirection where trial is false and license holder is null.
+Instant search
+  - test other browsers
+  - test remote
+Sort folders using locale-specific collation.
+Cast: Update site (premium feature)
+Don't differentiate between albums and dirs when sorting?
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64555#p64555
+Sort genres alphabetically?
+Keep Playlists Regardless if Media Found
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14737
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
@@ -26,10 +82,7 @@ Site
   Rename "Some apps must be purchased separately." to "Some apps are sold separately".
   Add chromecast
 
-
-
 Cast
-  Update site (premium feature)
   Initial volume, both local and remote.
   (Remote) skipping doesn't always work
   Autoplay locally?
@@ -56,24 +109,6 @@ Update ffmpeg
   Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
   Support ISO
 
-Upgrade JWPlayer
-  Use html5
-  Fix format in playQueue.jsp
-  http://www.longtailvideo.com/support/jw-player/28842/working-with-playlists
-  JWPlayer key
-  Don't use hosted.
-  Custom colors
-  Video
-  (Re)Move player dropdown (hide if only one player)
-  Create option to select flash or html5
-  video
-  externalplayer
-  Use ogg for firefox, mp3 for other.
-  http://modernizr.com/docs/#features-html5
-
-http://alxgbsn.co.uk/2013/02/20/notify-js-a-handy-wrapper-for-the-web-notifications-api/
-Revert to webkit notification? (Unstable in chrome)
-Chromecast
 Bundle JRE?
 Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
@@ -83,9 +118,6 @@ Gzip REST / Jetty
   https://mail.google.com/mail/u/0/?shva=1#inbox/14332aa25d587135
   Jetty GzipFilter? Remember it should work on Tomcat etc as well.
 Monitoring with JavaMelody
-Artist art
-  Create collage of album covers?
-  https://mail.google.com/mail/u/0/#inbox/142fa023ce5c40f5
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
 Figure out problem with lots of stream requests swamping server.
@@ -110,16 +142,6 @@ TODO IN SITE
 ------------
 Create mosaic of apps, put on slideshow.
 
-java.lang.SecurityException: Access denied to file /Users/sindre
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:98)
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:78)
-	at net.sourceforge.subsonic.service.MediaFileService.getMediaFile(MediaFileService.java:139)
-	at net.sourceforge.subsonic.service.MediaFileService.getParentOf(MediaFileService.java:160)
-	at net.sourceforge.subsonic.service.MediaFileService.getCoverArt(MediaFileService.java:527)
-	at net.sourceforge.subsonic.controller.CoverArtController.getMediaFileImage(CoverArtController.java:155)
-	at net.sourceforge.subsonic.controller.CoverArtController.getImageFile(CoverArtController.java:136)
-	at net.sourceforge.subsonic.controller.CoverArtController.handleRequest(CoverArtController.java:90)
-
 DLNA
   Make sure sublist works
   Make sure top-level single files work.
@@ -127,8 +149,6 @@ DLNA
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
 
-Make more space available on forum server.
-Deal with backup server. Document procedure for swapping over. Invoice notice.
 Update screenshots
 Publish on Mac app store
 Shuffle play
@@ -142,8 +162,6 @@ REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 Clean up podcasts in demo
 Update backup server (after a couple of days)
-Publish blackberry app.
-  https://mail.google.com/mail/u/0/?tab=cm#inbox/13e171b39779127c
 Improve video support
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
   https://sourceforge.net/p/subsonic/feature-requests/15/
@@ -251,12 +269,18 @@ Subsonic for Boxee
 Linux locale issue
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=22386#22386
 
-DONE IN ANDROID 4.1
+DONE IN ANDROID 4.2
 --------------------
-Caching problems on Android 4.4 (use getExternalCacheDir if Android 4.4 or later?)
+Don't show passwords in settings.
 
-TODO IN ANDROID 4.1
+TODO IN ANDROID 4.2
 --------------------
+Fix lint errors
+Wrong cache location in Android 5?
+SSL problems with Android 5?
+  https://mail.google.com/mail/ca/u/0/?zx=fu6g1tfaa3i0#inbox/1493402cdb7393f1
+"Exit" button not always working?
+  https://mail.google.com/mail/ca/u/0/#inbox/148b913b924e6218
 android client will not shuffle offline content immediately after switching to offline mode
   https://mail.google.com/mail/ca/u/0/?zx=czl1dhi5aac3#inbox/148372910b0669b8
 Password shown in clear text
@@ -904,7 +928,7 @@ cd subsonic-backend;  mvn clean install; cd ..
 Deploy
 Check that correct local version is displayed.
 
-Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW).
+Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). Pwd available in correspondence from hosting provider.
 
 On Mac OS:
   rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
@@ -936,17 +960,23 @@ Upload site (OLD):
 svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0 -m "Tagging 5.0"
 Post message on forum.
 
+Checking for license abuse:
+select count(*) as n, license_holder from redirection
+where license_holder is not null and license_holder <> '' group by license_holder
+order by n desc
+
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-08-27/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/ROOT.war
-rsync -rlptDvP -e ssh --exclude .svn subsonic-site/src/main/webapp/  root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-08-27/pages
+mkdir /usr/local/jakarta/tomcat/webapps-2014-11-29/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/pages.war
+
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-08-27 webapps
+ln -s webapps-2014-11-29 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -954,13 +984,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-08-27/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-08-27/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-09-21/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-09-21/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-08-27 webapps
+ln -s webapps-2014-09-21 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

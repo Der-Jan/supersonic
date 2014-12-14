@@ -30,14 +30,19 @@
 
 <body class="bgcolor2 playlistframe" onload="init()">
 
+<span id="dummy-animation-target" style="max-width:50px;display: none"></span>
+
 <script type="text/javascript" language="javascript">
     var songs = null;
     var currentAlbumUrl = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
     var CastPlayer = new CastPlayer();
+    var ignore = false;
 
     function init() {
+        <c:if test="${model.autoHide}">initAutoHide();</c:if>
+
         dwr.engine.setErrorHandler(null);
         startTimer();
 
@@ -50,6 +55,29 @@
 
         <c:if test="${model.player.web}">createPlayer();</c:if>
         getPlayQueue();
+    }
+
+    function initAutoHide() {
+        $(window).mouseleave(function (event) {
+            if (event.clientY < 30) {
+                setFrameHeight(50);
+            }
+        });
+
+        $(window).mouseenter(function () {
+            var height = $("body").height() + 20;
+            height = Math.min(height, window.top.innerHeight * 0.8);
+            setFrameHeight(height);
+        });
+    }
+
+    function setFrameHeight(height) {
+        $("#dummy-animation-target").stop();
+        $("#dummy-animation-target").animate({"max-width": height}, {
+            step: function (now, fx) {
+                top.document.getElementById("playQueueFrameset").rows = "*," + now;
+            }
+        });
     }
 
     function startTimer() {
@@ -139,6 +167,9 @@
     function onPlay(id) {
         playQueueService.play(id, playQueueCallback);
     }
+    function onPlayShuffle(albumListType, offset, size, genre, decade) {
+        playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
+    }
     function onPlayPlaylist(id, index) {
         index = index || 0;
         playQueueService.playPlaylist(id, index, playQueueCallback);
@@ -148,6 +179,9 @@
     }
     function onPlayRandom(id, count) {
         playQueueService.playRandom(id, count, playQueueCallback);
+    }
+    function onPlaySimilar(id, count) {
+        playQueueService.playSimilar(id, count, playQueueCallback);
     }
     function onAdd(id) {
         playQueueService.add(id, playQueueCallback);
@@ -361,9 +395,15 @@
             console.log(song.streamUrl);
         }
 
+        updateWindowTitle(song);
+
         <c:if test="${model.notify}">
         showNotification(song);
         </c:if>
+    }
+
+    function updateWindowTitle(song) {
+        top.document.title = song.title + " - " + song.artist + " - Subsonic";
     }
 
     function showNotification(song) {
@@ -484,7 +524,7 @@
 
 </script>
 
-<div class="bgcolor2" style="position:fixed; top:0; width:100%;padding-top:0.5em">
+<div class="bgcolor2" style="position:fixed; bottom:0; width:100%;padding-top:10px;padding-bottom: 5px">
     <table style="white-space:nowrap;">
         <tr style="white-space:nowrap;">
             <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
@@ -592,8 +632,6 @@
         </tr></table>
 </div>
 
-<div style="height:3.2em"></div>
-
 <p id="empty"><em><fmt:message key="playlist.empty"/></em></p>
 
 <table style="border-collapse:collapse;white-space:nowrap;">
@@ -658,6 +696,8 @@
         </tr>
     </tbody>
 </table>
+
+<div style="height:3.2em"></div>
 
 <div id="dialog-select-playlist" title="<fmt:message key="main.addtoplaylist.title"/>" style="display: none;">
     <p><fmt:message key="main.addtoplaylist.text"/></p>

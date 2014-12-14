@@ -131,7 +131,7 @@
 
     <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService"/>
 
-    <bean id="musicInfoService" class="net.sourceforge.subsonic.service.RatingService">
+    <bean id="ratingService" class="net.sourceforge.subsonic.service.RatingService">
         <property name="ratingDao" ref="musicFileInfoDao"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
@@ -194,6 +194,12 @@
         <property name="folderBasedContentDirectory" ref="folderBasedContentDirectory"/>
     </bean>
 
+    <bean id="lastFmService" class="net.sourceforge.subsonic.service.LastFmService" init-method="init">
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
+        <property name="artistDao" ref="artistDao"/>
+    </bean>
+
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">
             <list>
@@ -210,6 +216,8 @@
 
     <bean id="ajaxMultiService" class="net.sourceforge.subsonic.ajax.MultiService">
         <property name="networkService" ref="networkService"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
     </bean>
 
     <bean id="ajaxNowPlayingService" class="net.sourceforge.subsonic.ajax.NowPlayingService">
@@ -224,10 +232,13 @@
         <property name="playerService" ref="playerService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="jukeboxService" ref="jukeboxService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="searchService" ref="searchService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
 

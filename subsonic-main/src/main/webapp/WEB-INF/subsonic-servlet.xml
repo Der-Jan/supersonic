@@ -23,11 +23,10 @@
         <property name="statusService" ref="statusService"/>
     </bean>
     <bean id="mainController" class="net.sourceforge.subsonic.controller.MainController">
-        <property name="viewName" value="main"/>
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="adService" ref="adService"/>
     </bean>
@@ -101,7 +100,7 @@
         <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="setRatingController" class="net.sourceforge.subsonic.controller.SetRatingController">
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
@@ -249,7 +248,7 @@
     </bean>
     <bean id="homeController" class="net.sourceforge.subsonic.controller.HomeController">
         <property name="viewName" value="home"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
@@ -269,6 +268,8 @@
     </bean>
     <bean id="coverArtController" class="net.sourceforge.subsonic.controller.CoverArtController">
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="transcodingService" ref="transcodingService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>
@@ -307,6 +308,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="playerService" ref="playerService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="externalPlayerController" class="net.sourceforge.subsonic.controller.ExternalPlayerController">
         <property name="viewName" value="externalPlayer"/>
@@ -350,6 +352,7 @@
         <property name="securityService" ref="securityService"/>
         <property name="playerService" ref="playerService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="statusService" ref="statusService"/>
@@ -358,7 +361,7 @@
         <property name="audioScrobblerService" ref="audioScrobblerService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="playQueueService" ref="ajaxPlayQueueService"/>
-        <property name="ratingService" ref="musicInfoService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="chatService" ref="ajaxChatService"/>
         <property name="lyricsService" ref="ajaxLyricsService"/>
         <property name="podcastService" ref="podcastService"/>

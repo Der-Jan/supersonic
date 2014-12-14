@@ -18,16 +18,18 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.domain.Avatar;
-import net.sourceforge.subsonic.domain.AvatarScheme;
-import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.service.SettingsService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.LastModified;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import net.sourceforge.subsonic.domain.Avatar;
+import net.sourceforge.subsonic.domain.AvatarScheme;
+import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Controller which produces avatar images.
@@ -40,7 +42,15 @@ public class AvatarController implements Controller, LastModified {
 
     public long getLastModified(HttpServletRequest request) {
         Avatar avatar = getAvatar(request);
-        return avatar == null ? -1L : avatar.getCreatedDate().getTime();
+        long result = avatar == null ? -1L : avatar.getCreatedDate().getTime();
+
+        String username = request.getParameter("username");
+        if (username != null) {
+            UserSettings userSettings = settingsService.getUserSettings(username);
+            result = Math.max(result, userSettings.getChanged().getTime());
+        }
+
+        return result;
     }
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -51,8 +61,6 @@ public class AvatarController implements Controller, LastModified {
             return null;
         }
 
-        // TODO: specify caching filter.
-
         response.setContentType(avatar.getMimeType());
         response.getOutputStream().write(avatar.getData());
         return null;
@@ -60,6 +68,8 @@ public class AvatarController implements Controller, LastModified {
 
     private Avatar getAvatar(HttpServletRequest request) {
         String id = request.getParameter("id");
+        boolean forceCustom = ServletRequestUtils.getBooleanParameter(request, "forceCustom", false);
+
         if (id != null) {
             return settingsService.getSystemAvatar(Integer.parseInt(id));
         }
@@ -70,10 +80,10 @@ public class AvatarController implements Controller, LastModified {
         }
 
         UserSettings userSettings = settingsService.getUserSettings(username);
-        if (userSettings.getAvatarScheme() == AvatarScheme.SYSTEM) {
-            return settingsService.getSystemAvatar(userSettings.getSystemAvatarId());
+        if (userSettings.getAvatarScheme() == AvatarScheme.CUSTOM || forceCustom) {
+            return settingsService.getCustomAvatar(username);
         }
-        return settingsService.getCustomAvatar(username);
+        return settingsService.getSystemAvatar(userSettings.getSystemAvatarId());
     }
 
     public void setSettingsService(SettingsService settingsService) {

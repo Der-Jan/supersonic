@@ -17,6 +17,7 @@
             <fmt:message key="avataruploadresult.success"><fmt:param value="${model.avatar.name}"/></fmt:message>
             <sub:url value="avatar.view" var="avatarUrl">
                 <sub:param name="username" value="${model.username}"/>
+                <sub:param name="forceCustom" value="true"/>
             </sub:url>
             <img src="${avatarUrl}" alt="${model.avatar.name}" width="${model.avatar.width}"
                  height="${model.avatar.height}" style="padding-left:2em"/>

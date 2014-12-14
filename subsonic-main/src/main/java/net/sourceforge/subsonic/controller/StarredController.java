@@ -58,7 +58,7 @@ public class StarredController extends ParameterizableViewController {
         UserSettings userSettings = settingsService.getUserSettings(username);
 
         List<MediaFile> artists = mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username);
-        List<MediaFile> albums = mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username);
+        List<MediaFile> albums = mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, null);
         List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
         mediaFileService.populateStarredDate(artists, username);
         mediaFileService.populateStarredDate(albums, username);

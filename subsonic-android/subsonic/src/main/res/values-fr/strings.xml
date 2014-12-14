@@ -212,16 +212,15 @@
     <string name="util.bytes_format.byte">0 o</string>
 
     <plurals name="select_album_n_songs">
-        <item quantity="zero">Aucun morceau</item>
-        <item quantity="one">Un morceau</item>
+        <item quantity="one">%d morceau</item>
         <item quantity="other">%d morceaux</item>
     </plurals>
     <plurals name="select_album_n_songs_downloading">
-        <item quantity="one">Un morceau prévu à télécharger.</item>
+        <item quantity="one">%d morceau prévu à télécharger.</item>
         <item quantity="other">%d morceaux prévus à télécharger.</item>
     </plurals>
     <plurals name="select_album_n_songs_added">
-        <item quantity="one">Un morceau ajouté à la liste de lecture.</item>
+        <item quantity="one">%d morceau ajouté à la liste de lecture.</item>
         <item quantity="other">%d morceaux ajoutés à la liste de lecture.</item>
     </plurals>
 

@@ -29,6 +29,7 @@ import net.sourceforge.subsonic.domain.RandomSearchCriteria;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.util.FileUtil;
+
 import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
@@ -226,12 +227,6 @@ public class SearchService {
     public List<MediaFile> getRandomSongs(RandomSearchCriteria criteria) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
-        String musicFolderPath = null;
-        if (criteria.getMusicFolderId() != null) {
-            MusicFolder musicFolder = settingsService.getMusicFolderById(criteria.getMusicFolderId());
-            musicFolderPath = musicFolder.getPath().getPath();
-        }
-
         IndexReader reader = null;
         try {
             reader = createIndexReader(SONG);
@@ -247,8 +242,8 @@ public class SearchService {
                 NumericRangeQuery<Integer> rangeQuery = NumericRangeQuery.newIntRange(FIELD_YEAR, criteria.getFromYear(), criteria.getToYear(), true, true);
                 query.add(rangeQuery, BooleanClause.Occur.MUST);
             }
-            if (musicFolderPath != null) {
-                query.add(new TermQuery(new Term(FIELD_FOLDER, musicFolderPath)), BooleanClause.Occur.MUST);
+            if (criteria.getMusicFolderId() != null) {
+                query.add(new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(criteria.getMusicFolderId()))), BooleanClause.Occur.MUST);
             }
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
@@ -273,6 +268,11 @@ public class SearchService {
         return result;
     }
 
+    private String getMediaFolderPath(int mediaFolderId) {
+        MusicFolder mediaFolder = settingsService.getMusicFolderById(mediaFolderId);
+        return mediaFolder.getPath().getPath();
+    }
+
     private static String normalizeGenre(String genre) {
         return genre.toLowerCase().replace(" ", "").replace("-", "");
     }
@@ -280,10 +280,11 @@ public class SearchService {
     /**
      * Returns a number of random albums.
      *
-     * @param count Number of albums to return.
+     * @param count         Number of albums to return.
+     * @param mediaFolder   Only return albums from this media folder, may be {@code null}.
      * @return List of random albums.
      */
-    public List<MediaFile> getRandomAlbums(int count) {
+    public List<MediaFile> getRandomAlbums(int count, MusicFolder mediaFolder) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
         IndexReader reader = null;
@@ -291,7 +292,10 @@ public class SearchService {
             reader = createIndexReader(ALBUM);
             Searcher searcher = new IndexSearcher(reader);
 
-            Query query = new MatchAllDocsQuery();
+            Query query = mediaFolder == null ?
+                          new MatchAllDocsQuery() :
+                          new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(mediaFolder.getId())));
+
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());
 
@@ -356,6 +360,7 @@ public class SearchService {
             list.add(value);
         }
     }
+
     private IndexWriter createIndexWriter(IndexType indexType) throws IOException {
         File dir = getIndexDirectory(indexType);
         return new IndexWriter(FSDirectory.open(dir), new SubsonicAnalyzer(), true, new IndexWriter.MaxFieldLength(10));
@@ -436,7 +441,7 @@ public class SearchService {
             }
         },
 
-        ALBUM(new String[]{FIELD_ALBUM, FIELD_ARTIST}, FIELD_ALBUM) {
+        ALBUM(new String[]{FIELD_ALBUM, FIELD_ARTIST, FIELD_FOLDER}, FIELD_ALBUM) {
             @Override
             public Document createDocument(MediaFile mediaFile) {
                 Document doc = new Document();
@@ -447,6 +452,9 @@ public class SearchService {
                 }
                 if (mediaFile.getAlbumName() != null) {
                     doc.add(new Field(FIELD_ALBUM, mediaFile.getAlbumName(), Field.Store.YES, Field.Index.ANALYZED));
+                }
+                if (mediaFile.getFolder() != null) {
+                    doc.add(new Field(FIELD_FOLDER, mediaFile.getFolder(), Field.Store.NO, Field.Index.NOT_ANALYZED_NO_NORMS));
                 }
 
                 return doc;

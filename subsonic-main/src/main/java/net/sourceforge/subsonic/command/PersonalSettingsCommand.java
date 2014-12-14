@@ -45,7 +45,9 @@ public class PersonalSettingsCommand {
     private boolean partyModeEnabled;
     private boolean showNowPlayingEnabled;
     private boolean showChatEnabled;
+    private boolean showArtistInfoEnabled;
     private boolean nowPlayingAllowed;
+    private boolean autoHidePlayQueue;
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
@@ -158,6 +160,14 @@ public class PersonalSettingsCommand {
         this.showChatEnabled = showChatEnabled;
     }
 
+    public boolean isShowArtistInfoEnabled() {
+        return showArtistInfoEnabled;
+    }
+
+    public void setShowArtistInfoEnabled(boolean showArtistInfoEnabled) {
+        this.showArtistInfoEnabled = showArtistInfoEnabled;
+    }
+
     public boolean isNowPlayingAllowed() {
         return nowPlayingAllowed;
     }
@@ -188,6 +198,14 @@ public class PersonalSettingsCommand {
 
     public boolean isSongNotificationEnabled() {
         return songNotificationEnabled;
+    }
+
+    public boolean isAutoHidePlayQueue() {
+        return autoHidePlayQueue;
+    }
+
+    public void setAutoHidePlayQueue(boolean autoHidePlayQueue) {
+        this.autoHidePlayQueue = autoHidePlayQueue;
     }
 
     public boolean isLastFmEnabled() {

@@ -201,7 +201,7 @@ public class SubsonicTabActivity extends Activity {
         setTitle(getString(titleId));
     }
 
-    public boolean isDestroyed() {
+    public boolean hasBeenDestroyed() {
         return destroyed;
     }
 

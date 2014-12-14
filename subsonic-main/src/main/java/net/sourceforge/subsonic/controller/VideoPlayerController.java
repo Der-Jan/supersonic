@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
 
@@ -48,6 +49,7 @@ public class VideoPlayerController extends ParameterizableViewController {
     private MediaFileService mediaFileService;
     private SettingsService settingsService;
     private PlayerService playerService;
+    private SecurityService securityService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -61,6 +63,13 @@ public class VideoPlayerController extends ParameterizableViewController {
         String url = request.getRequestURL().toString();
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
         String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
+
+        // Rewrite URLs in case we're behind a proxy.
+        if (settingsService.isRewriteUrlEnabled()) {
+            String referer = request.getHeader("referer");
+            streamUrl = StringUtil.rewriteUrl(streamUrl, referer);
+            coverArtUrl = StringUtil.rewriteUrl(coverArtUrl, referer);
+        }
 
         boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
         String urlRedirectFrom = settingsService.getUrlRedirectFrom();
@@ -81,6 +90,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("bitRates", BIT_RATES);
         map.put("defaultBitRate", DEFAULT_BIT_RATE);
         map.put("licenseInfo", settingsService.getLicenseInfo());
+        map.put("user", securityService.getCurrentUser(request));
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -105,5 +115,9 @@ public class VideoPlayerController extends ParameterizableViewController {
 
     public void setPlayerService(PlayerService playerService) {
         this.playerService = playerService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

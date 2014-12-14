@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -126,7 +125,7 @@ public class LeftController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        saveSelectedMusicFolder(request);
+        boolean mediaFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
         MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
@@ -150,6 +149,7 @@ public class LeftController extends ParameterizableViewController {
         map.put("captionCutoff", userSettings.getMainVisibility().getCaptionCutoff());
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
+        map.put("mediaFolderChanged", mediaFolderChanged);
 
         if (statistics != null) {
             map.put("statistics", statistics);
@@ -169,9 +169,9 @@ public class LeftController extends ParameterizableViewController {
         return result;
     }
 
-    private void saveSelectedMusicFolder(HttpServletRequest request) {
+    private boolean saveSelectedMusicFolder(HttpServletRequest request) {
         if (request.getParameter("musicFolderId") == null) {
-            return;
+            return false;
         }
         int musicFolderId = Integer.parseInt(request.getParameter("musicFolderId"));
 
@@ -180,6 +180,8 @@ public class LeftController extends ParameterizableViewController {
         UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
         settings.setSelectedMusicFolderId(musicFolderId);
         settingsService.updateUserSettings(settings);
+
+        return true;
     }
 
     /**
@@ -217,7 +219,7 @@ public class LeftController extends ParameterizableViewController {
     }
 
     public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
-        SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
         List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
         return new MusicFolderContent(indexedArtists, singleSongs);
     }
@@ -248,15 +250,15 @@ public class LeftController extends ParameterizableViewController {
 
     public static class MusicFolderContent {
 
-        private final SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
+        private final SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
         private final List<MediaFile> singleSongs;
 
-        public MusicFolderContent(SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
+        public MusicFolderContent(SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
             this.indexedArtists = indexedArtists;
             this.singleSongs = singleSongs;
         }
 
-        public SortedMap<MusicIndex, SortedSet<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
+        public SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
             return indexedArtists;
         }
 

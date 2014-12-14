@@ -90,7 +90,7 @@ public class RedirectionManagementController extends MultiActionController {
     public void register(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String redirectFrom = StringUtils.lowerCase(ServletRequestUtils.getRequiredStringParameter(request, "redirectFrom"));
-        String licenseHolder = ServletRequestUtils.getStringParameter(request, "licenseHolder");
+        String licenseHolder = StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "licenseHolder"));
         String serverId = ServletRequestUtils.getRequiredStringParameter(request, "serverId");
         int port = ServletRequestUtils.getRequiredIntParameter(request, "port");
         Integer localPort = ServletRequestUtils.getIntParameter(request, "localPort");
@@ -102,6 +102,8 @@ public class RedirectionManagementController extends MultiActionController {
         Date trialExpires = null;
         if (trial) {
             trialExpires = new Date(ServletRequestUtils.getRequiredLongParameter(request, "trialExpires"));
+        } else if (licenseHolder == null) {
+            sendError(response, "Invalid license.");
         }
 
         if (RESERVED_REDIRECTS.containsKey(redirectFrom)) {

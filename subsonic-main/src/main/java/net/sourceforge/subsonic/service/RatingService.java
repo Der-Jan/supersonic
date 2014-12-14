@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sourceforge.subsonic.dao.RatingDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.util.FileUtil;
 
 /**
@@ -40,12 +41,13 @@ public class RatingService {
     /**
      * Returns the highest rated albums.
      *
-     * @param offset Number of albums to skip.
-     * @param count  Maximum number of albums to return.
+     * @param offset      Number of albums to skip.
+     * @param count       Maximum number of albums to return.
+     * @param mediaFolder Only return albums in this media folder.
      * @return The highest rated albums.
      */
-    public List<MediaFile> getHighestRatedAlbums(int offset, int count) {
-        List<String> highestRated = ratingDao.getHighestRatedAlbums(offset, count);
+    public List<MediaFile> getHighestRatedAlbums(int offset, int count, MusicFolder mediaFolder) {
+        List<String> highestRated = ratingDao.getHighestRatedAlbums(offset, count, mediaFolder);
         List<MediaFile> result = new ArrayList<MediaFile>();
         for (String path : highestRated) {
             File file = new File(path);

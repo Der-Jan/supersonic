@@ -12,6 +12,9 @@
     };
 
     CastPlayer.prototype.initializeCastPlayer = function () {
+        if (!window.chrome) {
+            return;
+        }
         if (!chrome.cast || !chrome.cast.isAvailable) {
             setTimeout(this.initializeCastPlayer.bind(this), 1000);
             return;

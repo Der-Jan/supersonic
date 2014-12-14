@@ -32,9 +32,9 @@ import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.SearchService;
 
 /**
  * Controller for the search page.
@@ -65,13 +65,17 @@ public class SearchController extends SimpleFormController {
         command.setUser(user);
         command.setPartyModeEnabled(userSettings.isPartyModeEnabled());
 
-        String any = StringUtils.trimToNull(command.getQuery());
+        String query = StringUtils.trimToNull(command.getQuery());
 
-        if (any != null) {
+        if (query != null) {
+
+            if (!query.endsWith("*")) {
+                query += "*";
+            }
 
             SearchCriteria criteria = new SearchCriteria();
             criteria.setCount(MATCH_COUNT);
-            criteria.setQuery(any);
+            criteria.setQuery(query);
 
             SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
             command.setArtists(artists.getMediaFiles());

@@ -19,43 +19,96 @@
 
 package net.sourceforge.subsonic.domain;
 
-import java.util.Arrays;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 
 public class SortableArtistTestCase extends TestCase {
 
-    public void testGetName() throws Exception {
+    private Collator collator;
 
-        TestSortableArtist a = new TestSortableArtist("ABBA");
-        TestSortableArtist b = new TestSortableArtist("Abba");
-        TestSortableArtist c = new TestSortableArtist("abba");
-        TestSortableArtist d = new TestSortableArtist("ACDC");
-        TestSortableArtist e = new TestSortableArtist("acdc");
-        TestSortableArtist f = new TestSortableArtist("ACDC");
-        TestSortableArtist g = new TestSortableArtist("abc");
-        TestSortableArtist h = new TestSortableArtist("ABC");
-
-        assertFalse(a.equals(b));
-        assertFalse(b.equals(c));
-        assertTrue(d.equals(f));
-
-        assertFalse(a.hashCode() == b.hashCode());
-        assertFalse(b.hashCode() == c.hashCode());
-        assertTrue(d.hashCode() == f.hashCode());
-
-        SortedSet<TestSortableArtist> artists = new TreeSet<TestSortableArtist>();
-        artists.addAll(Arrays.asList(a, b, c, d, e, f, g, h));
-
-        assertEquals("[ABBA, Abba, abba, ABC, abc, ACDC, acdc]", artists.toString());
+    @Override
+    public void setUp() throws Exception {
+        collator = Collator.getInstance(Locale.US);
     }
 
-    public static class TestSortableArtist extends MusicIndex.SortableArtist {
+    public void testSorting() throws Exception {
+        List<TestSortableArtist> artists = new ArrayList<TestSortableArtist>();
+
+        artists.add(new TestSortableArtist("ABBA"));
+        artists.add(new TestSortableArtist("Abba"));
+        artists.add(new TestSortableArtist("abba"));
+        artists.add(new TestSortableArtist("ACDC"));
+        artists.add(new TestSortableArtist("acdc"));
+        artists.add(new TestSortableArtist("ACDC"));
+        artists.add(new TestSortableArtist("abc"));
+        artists.add(new TestSortableArtist("ABC"));
+
+        Collections.sort(artists);
+        assertEquals("[abba, Abba, ABBA, abc, ABC, acdc, ACDC, ACDC]", artists.toString());
+    }
+
+    public void testSortingWithAccents() throws Exception {
+        List<TestSortableArtist> artists = new ArrayList<TestSortableArtist>();
+
+        TestSortableArtist a1 = new TestSortableArtist("Sea");
+        TestSortableArtist a2 = new TestSortableArtist("SEB");
+        TestSortableArtist a3 = new TestSortableArtist("Seb");
+        TestSortableArtist a4 = new TestSortableArtist("S\u00e9b");
+        TestSortableArtist a5 = new TestSortableArtist("Sed");
+        TestSortableArtist a6 = new TestSortableArtist("See");
+
+        assertTrue(a1.compareTo(a1) == 0);
+        assertTrue(a1.compareTo(a2) < 0);
+        assertTrue(a1.compareTo(a3) < 0);
+        assertTrue(a1.compareTo(a4) < 0);
+        assertTrue(a1.compareTo(a5) < 0);
+        assertTrue(a1.compareTo(a6) < 0);
+
+        assertTrue(a2.compareTo(a1) > 0);
+        assertTrue(a3.compareTo(a1) > 0);
+        assertTrue(a4.compareTo(a1) > 0);
+        assertTrue(a5.compareTo(a1) > 0);
+        assertTrue(a6.compareTo(a1) > 0);
+
+        assertTrue(a4.compareTo(a1) > 0);
+        assertTrue(a4.compareTo(a2) > 0);
+        assertTrue(a4.compareTo(a3) > 0);
+        assertTrue(a4.compareTo(a4) == 0);
+        assertTrue(a4.compareTo(a5) < 0);
+        assertTrue(a4.compareTo(a6) < 0);
+
+        artists.add(a1);
+        artists.add(a2);
+        artists.add(a3);
+        artists.add(a4);
+        artists.add(a5);
+        artists.add(a6);
+
+        Collections.shuffle(artists);
+        Collections.sort(artists);
+        assertEquals("[Sea, Seb, SEB, S\u00e9b, Sed, See]", artists.toString());
+    }
+
+    public void testCollation() throws Exception {
+        List<TestSortableArtist> artists = new ArrayList<TestSortableArtist>();
+
+        artists.add(new TestSortableArtist("p\u00e9ch\u00e9"));
+        artists.add(new TestSortableArtist("peach"));
+        artists.add(new TestSortableArtist("p\u00eache"));
+
+        Collections.sort(artists);
+        assertEquals("[peach, p\u00e9ch\u00e9, p\u00eache]", artists.toString());
+    }
+
+    private class TestSortableArtist extends MusicIndex.SortableArtist {
 
         public TestSortableArtist(String sortableName) {
-            super(sortableName, sortableName);
+            super(sortableName, sortableName, collator);
         }
 
         @Override

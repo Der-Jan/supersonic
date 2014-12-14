@@ -154,6 +154,10 @@ input, select, textarea {
     border: 1px solid lightgray;
 }
 
+input {
+    padding: 3px;
+}
+
 label {
     font-size: 100%;
     line-height: 140%;
@@ -183,6 +187,10 @@ img {
     margin: 0;
     padding: 0;
     vertical-align: middle;
+}
+
+.dropshadow {
+    box-shadow: 3px 3px 5px #888888;
 }
 
 ::-webkit-scrollbar {
