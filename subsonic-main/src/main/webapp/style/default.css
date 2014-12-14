@@ -38,10 +38,6 @@
 input, select {
 }
 
-/* Hover color for form controls (use default). */
-input:hover, select:hover {
-}
-
 /* The primary foreground color (black). */
 body {
     color: black;
@@ -149,13 +145,25 @@ form {
     margin: 0;
 }
 
-input, select, textarea {
+input, textarea, select {
     font-size: 90%;
+    padding: 3px;
+    border-radius: 3px;
     border: 1px solid lightgray;
 }
 
-input {
-    padding: 3px;
+input[type=submit], input[type=button] {
+    background: white;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+input[type=submit]:active, input[type=button]:active {
+    background: #e9e9e9;
+}
+
+input:hover, textarea:hover, select:hover {
+    border: 1px solid darkgray;
 }
 
 label {
