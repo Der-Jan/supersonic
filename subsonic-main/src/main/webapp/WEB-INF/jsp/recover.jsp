@@ -8,7 +8,7 @@
 <body class="mainframe bgcolor1" onload="document.getElementById('usernameOrEmail').focus()">
 
 <form action="recover.view" method="POST">
-    <div class="bgcolor2" style="border:1px solid black; padding:20px 50px 20px 50px; margin-top:100px">
+    <div class="bgcolor2 shadow" style="padding:20px 50px 20px 50px; margin-top:100px;margin-left:50px;margin-right:50px">
 
         <div style="margin-left: auto; margin-right: auto; width: 45em">
 
