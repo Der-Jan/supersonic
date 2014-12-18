@@ -34,6 +34,7 @@ TODO IN 5.1
 Filter home screen on selected music folder
   Rename MusicFolder -> MediaFolder
   Test performance
+New player controls, a la Google Play.
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
