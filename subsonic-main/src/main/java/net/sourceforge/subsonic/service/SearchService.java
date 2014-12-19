@@ -38,6 +38,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.NumericField;
@@ -61,6 +62,7 @@ import org.apache.lucene.util.Version;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,7 +183,7 @@ public class SearchService {
             Analyzer analyzer = new SubsonicAnalyzer();
 
             MultiFieldQueryParser queryParser = new MultiFieldQueryParser(LUCENE_VERSION, indexType.getFields(), analyzer, indexType.getBoosts());
-            Query query = queryParser.parse(criteria.getQuery());
+            Query query = queryParser.parse(analyzeQuery(criteria.getQuery()));
 
             TopDocs topDocs = searcher.search(query, null, offset + count);
             result.setTotalHits(topDocs.totalHits);
@@ -216,6 +218,16 @@ public class SearchService {
             FileUtil.closeQuietly(reader);
         }
         return result;
+    }
+
+    private String analyzeQuery(String query) throws IOException {
+        StringBuilder result = new StringBuilder();
+        ASCIIFoldingFilter filter = new ASCIIFoldingFilter(new StandardTokenizer(LUCENE_VERSION, new StringReader(query)));
+        TermAttribute termAttribute = filter.getAttribute(TermAttribute.class);
+        while (filter.incrementToken()) {
+            result.append(termAttribute.term()).append("* ");
+        }
+        return result.toString();
     }
 
     /**

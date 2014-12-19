@@ -31,9 +31,6 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Filter home screen on selected music folder
-  Rename MusicFolder -> MediaFolder
-  Test performance
 New player controls, a la Google Play.
 Now playing broken?
 Support tags/labels
