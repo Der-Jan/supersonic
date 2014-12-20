@@ -311,7 +311,7 @@
 <table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
-            <table style="border-collapse:collapse;white-space:nowrap">
+            <table class="music">
             <c:set var="cutoff" value="${model.visibility.captionCutoff}"/>
                 <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
                     <%--@elvariable id="child" type="net.sourceforge.subsonic.domain.MediaFile"--%>

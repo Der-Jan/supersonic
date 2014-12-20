@@ -79,7 +79,7 @@
 
 <c:if test="${not empty model.artists}">
     <h2><fmt:message key="search.hits.artists"/></h2>
-    <table style="border-collapse:collapse">
+    <table class="music">
         <c:forEach items="${model.artists}" var="artist" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -105,7 +105,7 @@
 
 <c:if test="${not empty model.songs}">
     <h2><fmt:message key="search.hits.songs"/></h2>
-    <table style="border-collapse:collapse">
+    <table class="music">
         <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">

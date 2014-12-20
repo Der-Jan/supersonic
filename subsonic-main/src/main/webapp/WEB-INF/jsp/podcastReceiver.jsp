@@ -101,7 +101,7 @@
     <td style="padding-right:2em"><div class="forward"><a href="javascript:toggleAllEpisodes(false)"><fmt:message key="podcastreceiver.collapseall"/></a></div></td>
 </tr></table>
 
-<table style="border-collapse:collapse;white-space:nowrap">
+<table class="music">
 
     <c:set var="episodeCount" value="0"/>
 

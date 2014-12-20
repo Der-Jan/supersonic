@@ -201,7 +201,7 @@
 
 <p id="empty" style="display: none;"><em><fmt:message key="playlist2.empty"/></em></p>
 
-<table style="border-collapse:collapse;white-space:nowrap;width:100%">
+<table class="music" style="width:100%">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
         <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">

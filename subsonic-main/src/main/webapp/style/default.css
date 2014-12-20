@@ -179,6 +179,12 @@ table {
     margin: 0 0 0.4em 0;
 }
 
+table.music {
+    line-height: 190%;
+    border-collapse:collapse;
+    white-space:nowrap;
+}
+
 /* Table with some white space above it.*/
 table.indent {
     margin: 1em 0 0.4em 0;
