@@ -508,10 +508,10 @@
     </tr>
 </table>
 
-<table style="width: 100%">
+<table style="width: 90%">
     <tr>
         <td rowspan="4" style="vertical-align: top">
-            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 0.5em; display: none">
+            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 1em; display: none">
         </td>
         <td id="artistBio"></td>
     </tr>
