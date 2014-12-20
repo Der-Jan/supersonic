@@ -179,15 +179,37 @@ table {
     margin: 0 0 0.4em 0;
 }
 
-table.music {
-    line-height: 190%;
-    border-collapse:collapse;
-    white-space:nowrap;
-}
 
 /* Table with some white space above it.*/
 table.indent {
     margin: 1em 0 0.4em 0;
+}
+
+table.music {
+    line-height: 190%;
+    border-collapse:collapse;
+    white-space:nowrap;
+    width: 100%;
+}
+
+td.fit {
+    width:1px;
+    padding-left:4px;
+    padding-right:4px;
+}
+
+td.truncate {
+    max-width:50px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+td.rightalign {
+    text-align:right;
+    padding-right: 20px;
 }
 
 a {

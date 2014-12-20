@@ -79,7 +79,7 @@
 
 <c:if test="${not empty model.artists}">
     <h2><fmt:message key="search.hits.artists"/></h2>
-    <table class="music" style="width:100%">
+    <table class="music">
         <c:forEach items="${model.artists}" var="artist" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -95,10 +95,9 @@
                     <c:param name="starred" value="${not empty artist.starredDate}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td style="padding-left:0.25em;padding-right:1.25em">
+                <td class="truncate">
                     <a href="${mainUrl}">${artist.name}</a>
                 </td>
-                <td style="width:100%"></td>
             </tr>
         </c:forEach>
     </table>
@@ -106,7 +105,7 @@
 
 <c:if test="${not empty model.songs}">
     <h2><fmt:message key="search.hits.songs"/></h2>
-    <table class="music" style="width:100%">
+    <table class="music">
         <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -124,18 +123,17 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td style="padding-left:0.25em;padding-right:1.25em">
+                <td class="truncate">
                         ${song.title}
                 </td>
 
-                <td style="padding-right:1.25em">
+                <td class="truncate">
                     <a href="${mainUrl}"><span class="detail">${song.albumName}</span></a>
                 </td>
 
-                <td style="padding-right:0.25em">
+                <td class="truncate">
                     <span class="detail">${song.artist}</span>
                 </td>
-                <td style="width:100%"></td>
             </tr>
 
         </c:forEach>

@@ -120,21 +120,21 @@
         </c:forEach>
 
         <tr style="margin:0;padding:0;border:0">
-            <td style="padding-top:1em">
+            <td class="fit" style="padding-top:1em">
                 <input type="checkbox" class="checkbox" id="channel${i.index}" value="${channel.key.id}"/>
                 <input type="checkbox" class="checkbox" id="channelExpanded${i.index}" value="${channel.key.id}" style="display:none"
                        <c:if test="${channelExpanded}">checked="checked"</c:if>/>
             </td>
-            <td colspan="7" style="padding-left:0.25em;padding-top:1em">
+            <td class="truncate" colspan="7" style="padding-top:1em">
                 <a href="javascript:toggleEpisodes(${i.index})">
                     <span title="${title}"><b><str:truncateNicely upper="40">${title}</str:truncateNicely></b></span>
                     (${fn:length(channel.value)})
                 </a>
             </td>
-            <td style="padding-left:1.5em;padding-top:1em;text-align:center;">
+            <td class="fit" style="padding-top:1em;text-align:center;">
                 <span class="detail"><fmt:message key="podcastreceiver.status.${fn:toLowerCase(channel.key.status)}"/></span>
             </td>
-            <td style="padding-left:1.5em;padding-top:1em">
+            <td class="truncate" style="padding-top:1em">
                 <c:choose>
                     <c:when test="${channel.key.status eq 'ERROR'}">
                         <span class="detail warning" title="${channel.key.errorMessage}"><str:truncateNicely upper="100">${channel.key.errorMessage}</str:truncateNicely></span>
@@ -160,7 +160,7 @@
             </c:choose>
             <tr ${cssClass} title="channel${i.index}" id="episodeRow${episodeCount}" style="margin:0;padding:0;border:0;display:${channelExpanded ? "table-row" : "none"}">
 
-                <td><input type="checkbox" class="checkbox" id="episode${episodeCount}" value="${episode.id}"/></td>
+                <td class="fit"><input type="checkbox" class="checkbox" id="episode${episodeCount}" value="${episode.id}"/></td>
 
                 <c:choose>
                     <c:when test="${empty episode.path}">
@@ -184,28 +184,28 @@
                 </sub:url>
 
 
-                <td style="padding-left:0.6em">
+                <td class="truncate">
                     <span title="${episode.title}" class="songTitle">
                         <c:choose>
                             <c:when test="${empty episode.path}">
-                                <str:truncateNicely upper="40">${episode.title}</str:truncateNicely>
+                                ${episode.title}
                             </c:when>
                             <c:otherwise>
-                                <a target="main" href="${mainUrl}"><str:truncateNicely upper="40">${episode.title}</str:truncateNicely></a>
+                                <a target="main" href="${mainUrl}">${episode.title}</a>
                             </c:otherwise>
                         </c:choose>
                     </span>
                 </td>
 
-                <td style="padding-left:1.5em">
+                <td class="fit">
                     <span class="detail">${episode.duration}</span>
                 </td>
 
-                <td style="padding-left:1.5em">
+                <td class="fit">
                     <span class="detail"><fmt:formatDate value="${episode.publishDate}" dateStyle="medium"/></span>
                 </td>
 
-                <td style="padding-left:1.5em;text-align:center">
+                <td class="fit" style="text-align:center">
                     <span class="detail">
                     <c:choose>
                         <c:when test="${episode.status eq 'DOWNLOADING'}">
@@ -218,13 +218,13 @@
                     </span>
                 </td>
 
-                <td style="padding-left:1.5em">
+                <td class="truncate">
                     <c:choose>
                         <c:when test="${episode.status eq 'ERROR'}">
-                            <span class="detail warning" title="${episode.errorMessage}"><str:truncateNicely upper="100">${episode.errorMessage}</str:truncateNicely></span>
+                            <span class="detail warning" title="${episode.errorMessage}">${episode.errorMessage}</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="detail" title="${episode.description}"><str:truncateNicely upper="100">${episode.description}</str:truncateNicely></span>
+                            <span class="detail" title="${episode.description}">${episode.description}</span>
                         </c:otherwise>
                     </c:choose>
                 </td>

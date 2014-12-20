@@ -35,8 +35,12 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-More horizontal spacing in music tables
-Experiment with ellipses in tables.
+Layout improvements
+  Move coverart to top-left corner?
+  Only show cover art for artists?
+  Remove caption cutoff
+  Test with ads
+
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
@@ -50,15 +54,9 @@ set window title when playing video
 
 TODO IN 5.2
 ------------
-Make layout more similar to Google Play
-  Larger fonts
-  More line spacing
-  Move coverart to top-left corner
-  etc
-  Make cover art size no longer configurable?
-  Make tables stretch
-  New player controls
-  Auto-truncate long strings.
+Larger fonts?
+Make cover art size no longer configurable?
+New player controls
 
 Avoid scrolling album/artist title
 Find similar tracks / artists

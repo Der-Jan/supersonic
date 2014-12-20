@@ -14,7 +14,7 @@ PARAMETERS
 --%>
 
 <c:if test="${param.starEnabled}">
-    <c:if test="${param.asTable}"><td></c:if>
+    <c:if test="${param.asTable}"><td class="fit"></c:if>
     <a href="#" onclick="toggleStar(${param.id}, '#starImage${param.id}'); return false;">
         <c:choose>
             <c:when test="${param.starred}">
@@ -28,7 +28,7 @@ PARAMETERS
     <c:if test="${param.asTable}"></td></c:if>
 </c:if>
 
-<c:if test="${param.asTable}"><td></c:if>
+<c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${empty param.playEnabled or param.playEnabled}">
     <c:choose>
         <c:when test="${param.video}">
@@ -48,7 +48,7 @@ PARAMETERS
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
-<c:if test="${param.asTable}"><td></c:if>
+<c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <a href="#" onclick="top.playQueue.onAdd(${param.id}); return false;">
         <img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="main.addlast"/>" style="padding-right: 0.1em"
@@ -56,7 +56,7 @@ PARAMETERS
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
-<c:if test="${param.asTable}"><td></c:if>
+<c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <a href="#" onclick="top.playQueue.onAddNext(${param.id}); return false;">
         <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" style="padding-right: 0.1em"
@@ -64,7 +64,7 @@ PARAMETERS
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
-<c:if test="${param.asTable}"><td></c:if>
+<c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${param.downloadEnabled}">
     <sub:url value="/download.view" var="downloadUrl">
         <sub:param name="id" value="${param.id}"/>
