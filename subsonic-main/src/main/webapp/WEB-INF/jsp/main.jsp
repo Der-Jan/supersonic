@@ -508,7 +508,7 @@
     </tr>
 </table>
 
-<table class="detail" style="width: 75%;white-space: normal">
+<table style="width: 100%">
     <tr>
         <td rowspan="4" style="vertical-align: top">
             <img id="artistImage" class="dropshadow" alt="" style="margin-right: 0.5em; display: none">

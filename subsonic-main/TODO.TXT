@@ -35,10 +35,6 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Playlist cover art
-  REST support
-
-Use larger font in artist info.
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
