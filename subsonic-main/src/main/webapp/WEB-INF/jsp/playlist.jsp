@@ -153,6 +153,14 @@
 </head>
 <body class="mainframe bgcolor1" onload="init()">
 
+<div style="float:left;margin-right:1.5em;margin-bottom:1.5em">
+<c:import url="coverArt.jsp">
+    <c:param name="playlistId" value="${model.playlist.id}"/>
+    <c:param name="coverArtSize" value="200"/>
+    <c:param name="appearAfter" value="0"/>
+</c:import>
+</div>
+
 <h1 id="name">${model.playlist.name}</h1>
 <h2>
     <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
@@ -189,7 +197,7 @@
 
 <p id="empty" style="display: none;"><em><fmt:message key="playlist2.empty"/></em></p>
 
-<table style="border-collapse:collapse;white-space:nowrap">
+<table style="border-collapse:collapse;white-space:nowrap;width:100%">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
         <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">

@@ -35,6 +35,7 @@
         <property name="securityService" ref="securityService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="playerService" ref="playerService"/>
     </bean>
     <bean id="importPlaylistController" class="net.sourceforge.subsonic.controller.ImportPlaylistController">
         <property name="viewName" value="importPlaylist"/>
@@ -270,6 +271,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="playlistService" ref="playlistService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>

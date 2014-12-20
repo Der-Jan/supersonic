@@ -18,6 +18,7 @@ Video playback broken behind proxies.
 Wrong aspect rate for shared videos.
 Upgrade Cling
 Lifetime license.
+Playlist thumbnail image
 
 TODO IN SITE
 ------------
@@ -31,7 +32,13 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-New player controls, a la Google Play.
+Playlist thumbnail image
+  REST support
+  Fallback to autocover
+  Use representative albums
+  Use coverArt.jsp to get the play button.
+User larger font in artist info.
+Playlist home screen
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
@@ -42,6 +49,19 @@ Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
+
+TODO IN 5.2
+------------
+Make layout more similar to Google Play
+  Larger fonts
+  More line spacing
+  Move coverart to top-left corner
+  etc
+  Make cover art size no longer configurable?
+  Make tables stretch
+  New player controls
+  Auto-truncate long strings.
+
 
 Avoid scrolling album/artist title
 Find similar tracks / artists
