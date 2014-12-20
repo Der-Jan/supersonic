@@ -35,7 +35,6 @@ TODO IN 5.1
 Playlist cover art
   REST support
 Playlists screen
-  Open after deleting a playlist
   Move "Status" to "More"
 Playlist screen
   When importing/creating, open playlist in main.
