@@ -18,7 +18,7 @@ Video playback broken behind proxies.
 Wrong aspect rate for shared videos.
 Upgrade Cling
 Lifetime license.
-Playlist thumbnail image
+Playlist cover art.
 
 TODO IN SITE
 ------------
@@ -32,13 +32,16 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Playlist thumbnail image
+Playlist cover art
   REST support
-  Fallback to autocover
-  Use representative albums
-  Use coverArt.jsp to get the play button.
+Playlists screen
+  Open after deleting a playlist
+  Show "Playlists > Kramgoda låtar"
+Playlist screen
+  When importing/creating, open playlist in main.
+  Fix spacing problem in table
+
 User larger font in artist info.
-Playlist home screen
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
@@ -61,7 +64,6 @@ Make layout more similar to Google Play
   Make tables stretch
   New player controls
   Auto-truncate long strings.
-
 
 Avoid scrolling album/artist title
 Find similar tracks / artists

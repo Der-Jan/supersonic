@@ -94,7 +94,7 @@ public class PlaylistService {
         return getReadablePlaylists();
     }
 
-    public void createPlaylistForPlayQueue() {
+    public int createPlaylistForPlayQueue() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         Player player = playerService.getPlayer(request, response);
@@ -111,9 +111,11 @@ public class PlaylistService {
 
         playlistService.createPlaylist(playlist);
         playlistService.setFilesInPlaylist(playlist.getId(), player.getPlayQueue().getFiles());
+
+        return playlist.getId();
     }
 
-    public void createPlaylistForStarredSongs() {
+    public int createPlaylistForStarredSongs() {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         Locale locale = localeResolver.resolveLocale(request);
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
@@ -132,6 +134,8 @@ public class PlaylistService {
         playlistService.createPlaylist(playlist);
         List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
+
+        return playlist.getId();
     }
 
     public void appendToPlaylist(int playlistId, List<Integer> mediaFileIds) {
