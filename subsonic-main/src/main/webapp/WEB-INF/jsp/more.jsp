@@ -138,6 +138,12 @@
 <fmt:message key="more.jamstash.text"><fmt:param>${model.jamstashUrl}</fmt:param></fmt:message>
 
 <h2>
+    <img src="<spring:theme code="statusSmallImage"/>" alt=""/>
+    <span style="vertical-align: middle"><fmt:message key="more.status.title"/></span>
+</h2>
+<fmt:message key="more.status.text"/>
+
+<h2>
     <img src="<spring:theme code="podcastImage"/>" alt=""/>
     <span style="vertical-align: middle"><fmt:message key="more.podcast.title"/></span>
 </h2>

@@ -34,8 +34,6 @@ TODO IN 5.1
 --------------
 Playlist cover art
   REST support
-Playlists screen
-  Move "Status" to "More"
 
 User larger font in artist info.
 Now playing broken?
