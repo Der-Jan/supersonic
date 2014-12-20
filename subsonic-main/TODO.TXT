@@ -35,6 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+More horizontal spacing in music tables
+Experiment with ellipses in tables.
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
