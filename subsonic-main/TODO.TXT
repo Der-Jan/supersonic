@@ -37,6 +37,7 @@ Playlist cover art
 Playlists screen
   Open after deleting a playlist
   Show "Playlists > Kramgoda låtar"
+  Move "Status" to "More"
 Playlist screen
   When importing/creating, open playlist in main.
 

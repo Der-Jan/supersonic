@@ -37,6 +37,11 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="playerService" ref="playerService"/>
     </bean>
+    <bean id="playlistsController" class="net.sourceforge.subsonic.controller.PlaylistsController">
+        <property name="viewName" value="playlists"/>
+        <property name="securityService" ref="securityService"/>
+        <property name="playlistService" ref="playlistService"/>
+    </bean>
     <bean id="importPlaylistController" class="net.sourceforge.subsonic.controller.ImportPlaylistController">
         <property name="viewName" value="importPlaylist"/>
         <property name="securityService" ref="securityService"/>
@@ -399,6 +404,7 @@
             <props>
                 <prop key="/main.view">mainController</prop>
                 <prop key="/playlist.view">playlistController</prop>
+                <prop key="/playlists.view">playlistsController</prop>
                 <prop key="/help.view">helpController</prop>
                 <prop key="/lyrics.view">lyricsController</prop>
                 <prop key="/left.view">leftController</prop>

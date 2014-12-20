@@ -40,7 +40,7 @@
 
 <h1>
     <img src="<spring:theme code="starredImage"/>" alt="">
-    <fmt:message key="starred.title"/>
+    <span style="vertical-align: middle"><fmt:message key="starred.title"/></span>
 </h1>
 
 <c:if test="${empty model.artists and empty model.albums and empty model.songs}">

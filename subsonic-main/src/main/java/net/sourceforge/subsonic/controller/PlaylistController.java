@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Controller for the main page.
+ * Controller for the playlist page.
  *
  * @author Sindre Mehus
  */

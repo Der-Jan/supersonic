@@ -28,9 +28,19 @@ PARAMETERS
 <str:randomString count="5" type="alphabet" var="playId"/>
 
 <div style="width:${size}; max-width:${size}; height:${size}; max-height:${size};" title="${param.albumName}" id="${divId}">
-    <c:url value="main.view" var="mainUrl">
-        <c:param name="id" value="${param.albumId}"/>
-    </c:url>
+
+    <c:choose>
+        <c:when test="${not empty param.albumId}">
+            <c:url value="main.view" var="targetUrl">
+                <c:param name="id" value="${param.albumId}"/>
+            </c:url>
+        </c:when>
+        <c:otherwise>
+            <c:url value="playlist.view" var="targetUrl">
+                <c:param name="id" value="${param.playlistId}"/>
+            </c:url>
+        </c:otherwise>
+    </c:choose>
 
     <c:url value="/coverArt.view" var="coverArtUrl">
         <c:if test="${not empty param.coverArtSize}">
@@ -52,7 +62,7 @@ PARAMETERS
              style="position: relative; top: 8px; left: 8px; z-index: 2; display:none" >
     </div>
     <c:choose>
-    <c:when test="${param.showLink}"><a href="${mainUrl}" title="${param.albumName}"></c:when>
+    <c:when test="${param.showLink}"><a href="${targetUrl}" title="${param.albumName}"></c:when>
     <c:when test="${param.showZoom}"><a href="${zoomCoverArtUrl}" rel="zoom" title="${param.albumName}"></c:when>
         </c:choose>
         <img src="${coverArtUrl}" id="${imgId}" class="dropshadow" alt="${param.albumName}"
