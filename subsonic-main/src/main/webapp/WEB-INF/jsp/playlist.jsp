@@ -161,7 +161,7 @@
 </c:import>
 </div>
 
-<h1 id="name">${model.playlist.name}</h1>
+<h1 id="name"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; ${model.playlist.name}</h1>
 <h2>
     <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
