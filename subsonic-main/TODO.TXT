@@ -36,8 +36,6 @@ Playlist cover art
   REST support
 Playlists screen
   Move "Status" to "More"
-Playlist screen
-  When importing/creating, open playlist in main.
 
 User larger font in artist info.
 Now playing broken?
