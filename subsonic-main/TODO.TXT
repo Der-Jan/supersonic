@@ -13,12 +13,15 @@ Show avatar in upper-right corner
 Automatically show/hide play queue.
 Add "shuffle play" to categories in home page.
 Dim image when hovering
-REST: Also include not-present artists.
+REST: Also include not-present artists (optionally) in artist info.
+REST: Playlist cover art
 Video playback broken behind proxies.
 Wrong aspect rate for shared videos.
 Upgrade Cling
 Lifetime license.
 Playlist cover art.
+New playlists home screen
+
 
 TODO IN SITE
 ------------
@@ -35,7 +38,7 @@ TODO IN 5.1
 Playlist cover art
   REST support
 
-User larger font in artist info.
+Use larger font in artist info.
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
