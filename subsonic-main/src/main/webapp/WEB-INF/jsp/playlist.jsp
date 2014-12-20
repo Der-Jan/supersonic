@@ -185,12 +185,16 @@
 <div id="comment" class="detail" style="padding-top:0.2em">${model.playlist.comment}</div>
 
 <div class="detail" style="padding-top:0.2em">
+    <span id="songCount"></span> <fmt:message key="playlist2.songs"/> &ndash; <span id="duration"></span>
+</div>
+<div class="detail" style="padding-top:0.2em">
     <fmt:message key="playlist2.created">
         <fmt:param>${model.playlist.username}</fmt:param>
         <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.playlist.created}"/></fmt:param>
     </fmt:message>.
+</div>
+<div class="detail" style="padding-top:0.2em">
     <span id="shared"></span>.
-    <span id="songCount"></span> <fmt:message key="playlist2.songs"/> (<span id="duration"></span>)
 </div>
 
 <div style="height:0.7em"></div>
@@ -212,10 +216,10 @@
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
                  style="padding-right: 0.1em" onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
 
-        <td style="padding-right:0.25em"></td>
-        <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
-        <td style="padding-right:1.25em"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
-        <td style="padding-right:1.25em"><span id="artist" class="detail">Artist</span></td>
+        <td style="padding-right:1.25em"></td>
+        <td style="padding-right:1.25em;width:34%"><span id="title" class="songTitle">Title</span></td>
+        <td style="padding-right:1.25em;width:33%"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
+        <td style="padding-right:1.25em;width:33%"><span id="artist" class="detail">Artist</span></td>
         <td style="padding-right:1.25em;text-align:right;"><span id="songDuration" class="detail">Duration</span></td>
 
         <c:if test="${model.editAllowed}">

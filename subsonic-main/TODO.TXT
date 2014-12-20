@@ -39,7 +39,6 @@ Playlists screen
   Show "Playlists > Kramgoda låtar"
 Playlist screen
   When importing/creating, open playlist in main.
-  Fix spacing problem in table
 
 User larger font in artist info.
 Now playing broken?

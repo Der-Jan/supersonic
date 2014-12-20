@@ -14,10 +14,10 @@
             dwr.engine.setErrorHandler(null);
             updatePlaylists();
 
-            var mainLocation = top.frames["main"].location.href;
+            var mainLocation = top.main.location.href;
             if (${model.mediaFolderChanged}) {
                 if (mainLocation.indexOf("/home.view") != -1) {
-                    top.frames["main"].location.href = mainLocation;
+                    top.main.location.href = mainLocation;
                 }
             }
         }
