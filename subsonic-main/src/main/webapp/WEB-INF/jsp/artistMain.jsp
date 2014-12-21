@@ -151,11 +151,11 @@
 <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
 
 <div style="float: left;padding-top: 1.5em">
-    <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
+    <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
         <div class="coverart">
             <c:import url="coverArt.jsp">
-                <c:param name="albumId" value="${coverArt.id}"/>
-                <c:param name="albumName" value="${coverArt.name}"/>
+                <c:param name="albumId" value="${album.id}"/>
+                <c:param name="albumName" value="${album.name}"/>
                 <c:param name="coverArtSize" value="${coverArtSize}"/>
                 <c:param name="showLink" value="true"/>
                 <c:param name="showCaption" value="true"/>
