@@ -36,24 +36,6 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 
-artistMain
-  "dir"
-  "ancestors"
-  "parent"
-  "user"
-  "player"
-  maybe add "children" or "albums"?
-
-main
-  "dir"
-  "children"
-  "ancestors"
-  "parent"
-  "user"
-  "visibility"
-  "coverArts"
-  "sieblingAlbums"
-
 Test that menu options work (share, download, add to playlist, ...)
 Shouldn't be necessary to specify appearAfter=0
 Layout improvements

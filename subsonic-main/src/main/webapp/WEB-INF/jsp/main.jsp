@@ -177,7 +177,7 @@
             ${model.dir.name}
     </span>
 
-    <c:if test="${model.dir.album and model.averageRating gt 0}">
+    <c:if test="${model.averageRating gt 0}">
         &nbsp;&nbsp;
         <c:import url="rating.jsp">
             <c:param name="readonly" value="true"/>
@@ -204,23 +204,19 @@
         <c:set var="needSep" value="true"/>
     </c:if>
 
-    <c:if test="${model.dir.album}">
+    <c:if test="${model.user.downloadRole}">
+        <c:if test="${needSep}">|</c:if>
+        <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
+        <c:set var="needSep" value="true"/>
+    </c:if>
 
-        <c:if test="${model.user.downloadRole}">
-            <c:if test="${needSep}">|</c:if>
-            <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
-            <c:set var="needSep" value="true"/>
-        </c:if>
-
-        <c:if test="${model.user.coverArtRole}">
-            <sub:url value="editTags.view" var="editTagsUrl">
-                <sub:param name="id" value="${model.dir.id}"/>
-            </sub:url>
-            <c:if test="${needSep}">|</c:if>
-            <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
-            <c:set var="needSep" value="true"/>
-        </c:if>
-
+    <c:if test="${model.user.coverArtRole}">
+        <sub:url value="editTags.view" var="editTagsUrl">
+            <sub:param name="id" value="${model.dir.id}"/>
+        </sub:url>
+        <c:if test="${needSep}">|</c:if>
+        <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
+        <c:set var="needSep" value="true"/>
     </c:if>
 
     <c:if test="${model.user.commentRole}">
@@ -229,8 +225,6 @@
     </c:if>
 </h2>
 </c:if>
-
-<c:if test="${model.dir.album}">
 
 <div class="detail">
     <c:if test="${model.user.commentRole}">
@@ -276,7 +270,6 @@
 
     </c:if>
 </div>
-</c:if>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
 
@@ -397,57 +390,37 @@
             </table>
         </td>
 
-        <td style="vertical-align:top;" rowspan="2">
+        <td class="fit" style="vertical-align:top;" rowspan="2">
 
             <c:set var="coverArtSize" value="${model.player.coverArtScheme.size * 2}"/>
 
-            <div style="float: right">
-                <div class="coverart">
-                    <c:import url="coverArt.jsp">
-                        <c:param name="albumId" value="${model.dir.id}"/>
-                        <c:param name="coverArtSize" value="${coverArtSize}"/>
-                        <c:param name="showLink" value="false"/>
-                        <c:param name="showZoom" value="true"/>
-                        <c:param name="showChange" value="${model.user.coverArtRole}"/>
-                        <c:param name="appearAfter" value="0"/>
-                    </c:import>
-                </div>
-            </div>
-        </td>
-
-        <td style="vertical-align:top;" rowspan="2">
-            <div style="padding:0 1em 0 1em;">
-                <c:if test="${not empty model.ad}">
-                    <div class="detail" style="text-align:center">
-                            ${model.ad}
-                        <br/>
-                                <br/>
-                                <sub:url value="premium.view" var="premiumUrl">
-                                    <sub:param name="path" value="${model.dir.path}"/>
-                                </sub:url>
-                                <fmt:message key="main.premium"><fmt:param value="${premiumUrl}"/></fmt:message>
-                    </div>
-                </c:if>
+            <div class="coverart">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${model.dir.id}"/>
+                    <c:param name="coverArtSize" value="${coverArtSize}"/>
+                    <c:param name="showLink" value="false"/>
+                    <c:param name="showZoom" value="true"/>
+                    <c:param name="showChange" value="${model.user.coverArtRole}"/>
+                    <c:param name="appearAfter" value="0"/>
+                </c:import>
             </div>
         </td>
     </tr>
 
     <tr>
-        <td style="vertical-align: top">
-            <c:if test="${model.dir.album}">
-                <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
-                    <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
-                    <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
-                    <option id="selectNone">&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="download">&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-                    </c:if>
-                    <c:if test="${model.user.shareRole}">
-                        <option id="share">&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
-                    </c:if>
-                    <option id="appendPlaylist">&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
-                </select>
-            </c:if>
+        <td style="vertical-align:top;height: 100%">
+            <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
+                <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
+                <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
+                <option id="selectNone">&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="download">&nbsp;&nbsp;<fmt:message key="common.download"/></option>
+                </c:if>
+                <c:if test="${model.user.shareRole}">
+                    <option id="share">&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
+                </c:if>
+                <option id="appendPlaylist">&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
+            </select>
         </td>
     </tr>
 </table>
