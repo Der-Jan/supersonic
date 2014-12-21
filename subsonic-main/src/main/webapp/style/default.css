@@ -226,11 +226,11 @@ img {
 }
 
 .dropshadow {
-    box-shadow: 3px 3px 5px #888888;
+    box-shadow: 2px 2px 5px #333333;
 }
 
 .shadow {
-    box-shadow: 0 0 20px 3px #888888;
+    box-shadow: 0 0 20px 3px #555555;
 }
 
 ::-webkit-scrollbar {

@@ -36,11 +36,11 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 Layout improvements
+  Create separate jsp for album
   Move coverart to top-left corner?
   Only show cover art for artists?
   Remove caption cutoff
   Test with ads
-
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
