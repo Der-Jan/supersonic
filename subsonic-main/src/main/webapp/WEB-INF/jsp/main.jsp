@@ -308,7 +308,7 @@
 </script>
 
 
-<table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em" border="1">
+<table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table class="music" style="width: 100%">

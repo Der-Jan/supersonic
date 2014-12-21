@@ -36,6 +36,12 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 Layout improvements
+  Remove "nowPlaying"?
+  Show album year, perhaps as overlay
+  Ellipsize album title
+  More spacing in artist info
+  Nicer caption in cover art
+  Show ancestors in videoMain
   Create separate jsp for album
   Move coverart to top-left corner?
   Only show cover art for artists?

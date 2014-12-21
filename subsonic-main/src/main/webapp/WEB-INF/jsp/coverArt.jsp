@@ -11,7 +11,6 @@ PARAMETERS
   showZoom: Whether to display a link for zooming the cover art.
   showChange: Whether to display a link for changing the cover art.
   showCaption: Whether to display the album name as a caption below the image.
-  captionLength: Truncate caption after this many characters.
   appearAfter: Fade in after this many milliseconds, or nil if no fading in should happen.
 --%>
 <c:choose>
@@ -19,7 +18,7 @@ PARAMETERS
         <c:set var="size" value="auto"/>
     </c:when>
     <c:otherwise>
-        <c:set var="size" value="${param.coverArtSize + 8}px"/>
+        <c:set var="size" value="${param.coverArtSize + 6}px"/>
     </c:otherwise>
 </c:choose>
 
@@ -100,7 +99,7 @@ PARAMETERS
 
 </script>
 
-<div style="text-align:right; padding-right: 8px;">
+<div style="width:${size};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
     <c:if test="${param.showChange}">
         <c:url value="/changeCoverArt.view" var="changeCoverArtUrl">
             <c:param name="id" value="${param.albumId}"/>
@@ -117,6 +116,6 @@ PARAMETERS
     </c:if>
 
     <c:if test="${not param.showZoom and not param.showChange and param.showCaption}">
-        <span class="detail"><str:truncateNicely upper="${param.captionLength}">${param.albumName}</str:truncateNicely></span>
+        ${param.albumName}
     </c:if>
 </div>

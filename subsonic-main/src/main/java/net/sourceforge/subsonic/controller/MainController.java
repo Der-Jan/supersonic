@@ -137,7 +137,16 @@ public class MainController extends AbstractController {
             setSieblingAlbums(dir, map);
         }
 
-        ModelAndView result = new ModelAndView(isVideoOnly(children) ? "videoMain" : "main");
+        String view;
+        if (isVideoOnly(children)) {
+            view = "videoMain";
+        } else if (dir.isAlbum()) {
+            view = "main";
+        } else {
+            view = "artistMain";
+        }
+
+        ModelAndView result = new ModelAndView(view);
         result.addObject("model", map);
         return result;
     }
