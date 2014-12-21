@@ -36,23 +36,18 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 
+Clean-up use of cover art sizes
 Test that menu options work (share, download, add to playlist, ...)
-Shouldn't be necessary to specify appearAfter=0
 Layout improvements
-  Combine sieblingAlbums and sub-albums
   Don't use CoverArtScheme
-  Don't use "coverArts"
   Remove "nowPlaying"?
   Show album year, perhaps as overlay
-  Ellipsize album title
   More spacing in artist info
   Nicer caption in cover art
   Show ancestors in videoMain
-  Create separate jsp for album
   Move coverart to top-left corner?
-  Only show cover art for artists?
   Remove caption cutoff
-  Test with ads
+  Ellipsize in home.jsp
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5

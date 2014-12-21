@@ -145,7 +145,6 @@
 <c:import url="coverArt.jsp">
     <c:param name="playlistId" value="${model.playlist.id}"/>
     <c:param name="coverArtSize" value="200"/>
-    <c:param name="appearAfter" value="0"/>
 </c:import>
 </div>
 

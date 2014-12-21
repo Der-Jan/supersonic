@@ -70,11 +70,9 @@ PARAMETERS
 </div>
 
 <script type="text/javascript">
-    <c:if test="${not empty param.appearAfter}">
     $(document).ready(function () {
-        setTimeout("$('#${imgId}').fadeIn(500)", ${param.appearAfter});
+        setTimeout("$('#${imgId}').fadeIn(500)", ${empty param.appearAfter ? 0 : param.appearAfter});
     });
-    </c:if>
 
     $("#${divId}").mouseenter(function () {
         $("#${playId}").show();

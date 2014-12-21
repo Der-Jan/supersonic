@@ -401,7 +401,6 @@
                     <c:param name="showLink" value="false"/>
                     <c:param name="showZoom" value="true"/>
                     <c:param name="showChange" value="${model.user.coverArtRole}"/>
-                    <c:param name="appearAfter" value="0"/>
                 </c:import>
             </div>
         </td>
@@ -436,7 +435,7 @@
                 <c:param name="showZoom" value="false"/>
                 <c:param name="showChange" value="false"/>
                 <c:param name="showCaption" value="true"/>
-                <c:param name="appearAfter" value="0"/>
+                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>
         </div>
     </c:forEach>
