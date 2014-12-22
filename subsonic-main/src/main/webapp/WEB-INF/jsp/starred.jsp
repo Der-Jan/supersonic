@@ -53,7 +53,7 @@
 <div>
     <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
-        <c:set var="albumName">
+        <c:set var="albumTitle">
             <c:choose>
                 <c:when test="${empty album.name}">
                     <fmt:message key="common.unknown"/>
@@ -62,13 +62,12 @@
                     ${album.name}
                 </c:otherwise>
             </c:choose>
-
         </c:set>
 
         <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
-                <c:param name="caption1" value="${albumName}"/>
+                <c:param name="caption1" value="${albumTitle}"/>
                 <c:param name="caption2" value="${album.artist}"/>
                 <c:param name="captionCount" value="2"/>
                 <c:param name="coverArtSize" value="${model.coverArtSize}"/>

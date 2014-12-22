@@ -108,6 +108,9 @@ PARAMETERS
     <c:if test="${captionCount gt 1}">
         <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 6px 8px">${param.caption2}&nbsp;</div>
     </c:if>
+    <c:if test="${captionCount gt 2}">
+        <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 6px 8px">${param.caption3}&nbsp;</div>
+    </c:if>
 </div>
 
 <c:if test="${param.showChange or param.showZoom}">

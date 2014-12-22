@@ -82,49 +82,57 @@
                     <div>
                         <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
+                            <c:set var="albumTitle">
+                                <c:choose>
+                                    <c:when test="${empty album.albumTitle}">
+                                        <fmt:message key="common.unknown"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${album.albumTitle}
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:set>
+
+                            <c:set var="captionCount" value="2"/>
+
+                            <c:if test="${not empty album.playCount}">
+                                <c:set var="caption3"><fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message></c:set>
+                                <c:set var="captionCount" value="3"/>
+                            </c:if>
+                            <c:if test="${not empty album.lastPlayed}">
+                                <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
+                                <c:set var="caption3"><fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message></c:set>
+                                <c:set var="captionCount" value="3"/>
+                            </c:if>
+                            <c:if test="${not empty album.created}">
+                                <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
+                                <c:set var="caption3"><fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message></c:set>
+                                <c:set var="captionCount" value="3"/>
+                            </c:if>
+                            <c:if test="${not empty album.year}">
+                                <c:set var="caption3" value="${album.year}"/>
+                                <c:set var="captionCount" value="3"/>
+                            </c:if>
+
                             <div class="albumThumb">
                                 <c:import url="coverArt.jsp">
                                     <c:param name="albumId" value="${album.id}"/>
-                                    <c:param name="albumName" value="${album.albumTitle}"/>
+                                    <c:param name="caption1" value="${album.albumTitle}"/>
+                                    <c:param name="caption2" value="${album.artist}"/>
+                                    <c:param name="caption3" value="${caption3}"/>
+                                    <c:param name="captionCount" value="${captionCount}"/>
                                     <c:param name="coverArtSize" value="${model.coverArtSize}"/>
                                     <c:param name="showLink" value="true"/>
-                                    <c:param name="showZoom" value="false"/>
-                                    <c:param name="showChange" value="false"/>
                                     <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
                                 </c:import>
 
-                                <div class="detail">
-                                    <c:if test="${not empty album.playCount}">
-                                        <fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message>
-                                    </c:if>
-                                    <c:if test="${not empty album.lastPlayed}">
-                                        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
-                                        <fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message>
-                                    </c:if>
-                                    <c:if test="${not empty album.created}">
-                                        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
-                                        <fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message>
-                                    </c:if>
-                                    <c:if test="${not empty album.year}">
-                                        ${album.year}
-                                    </c:if>
-                                    <c:if test="${not empty album.rating}">
-                                        <c:import url="rating.jsp">
-                                            <c:param name="readonly" value="true"/>
-                                            <c:param name="rating" value="${album.rating}"/>
-                                        </c:import>
-                                    </c:if>
-                                </div>
+                                <c:if test="${not empty album.rating}">
+                                    <c:import url="rating.jsp">
+                                        <c:param name="readonly" value="true"/>
+                                        <c:param name="rating" value="${album.rating}"/>
+                                    </c:import>
+                                </c:if>
 
-                                <c:choose>
-                                    <c:when test="${empty album.artist and empty album.albumTitle}">
-                                        <div class="detail"><fmt:message key="common.unknown"/></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="detail"><b><str:truncateNicely lower="22" upper="22">${album.artist}</str:truncateNicely></b></div>
-                                        <div class="detail"><str:truncateNicely lower="22" upper="22">${album.albumTitle}</str:truncateNicely></div>
-                                    </c:otherwise>
-                                </c:choose>
                             </div>
                         </c:forEach>
                     </div>

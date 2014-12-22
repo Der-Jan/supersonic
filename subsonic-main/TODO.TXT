@@ -35,7 +35,9 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-
+Remove tables from main.jsp.  Move "Users" to "More"
+Change auto-cover?
+Use another bg color for coverart
 Clean-up use of cover art sizes
 Test that menu options work (share, download, add to playlist, ...)
 Layout improvements
