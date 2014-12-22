@@ -4,22 +4,6 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-
-    <style type="text/css">
-        .playlistContainer {
-            width: 200px;
-            float: left;
-            padding-right: 24px;
-            padding-bottom: 20px;
-        }
-        .title, .duration {
-            width:200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-top: 3px;
-        }
-    </style>
-
 </head><body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
@@ -29,19 +13,19 @@
 
 <c:forEach items="${model.playlists}" var="playlist" varStatus="loopStatus">
 
-    <div class="playlistContainer">
-        <div style="position:relative">
-            <div>
-                <c:import url="coverArt.jsp">
-                    <c:param name="playlistId" value="${playlist.id}"/>
-                    <c:param name="coverArtSize" value="200"/>
-                    <c:param name="showLink" value="true"/>
-                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                </c:import>
-                <div class="detail title" title="${playlist.name}"><b>${playlist.name}</b></div>
-            </div>
-        </div>
-        <div class="detail duration">${playlist.fileCount} <fmt:message key="playlist2.songs"/> &ndash; ${playlist.durationAsString}</div>
+    <c:set var="caption2">
+        <fmt:message key="playlist2.songs"/> &ndash; ${playlist.durationAsString}
+    </c:set>
+    <div class="albumThumb">
+        <c:import url="coverArt.jsp">
+            <c:param name="playlistId" value="${playlist.id}"/>
+            <c:param name="coverArtSize" value="200"/>
+            <c:param name="caption1" value="${playlist.name}"/>
+            <c:param name="caption2" value="${caption2}"/>
+            <c:param name="captionCount" value="2"/>
+            <c:param name="showLink" value="true"/>
+            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+        </c:import>
     </div>
 
 </c:forEach>

@@ -28,10 +28,6 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
 
-    <style type="text/css">
-        .coverart { float: left; padding-right:20px; padding-bottom:20px }
-    </style>
-
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <script type="text/javascript" language="javascript">
@@ -152,13 +148,14 @@
 
 <div style="float: left;padding-top: 1.5em">
     <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
-        <div class="coverart">
+        <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
-                <c:param name="albumName" value="${album.name}"/>
+                <c:param name="caption1" value="${album.name}"/>
+                <c:param name="caption2" value="${album.year}"/>
+                <c:param name="captionCount" value="2"/>
                 <c:param name="coverArtSize" value="${coverArtSize}"/>
                 <c:param name="showLink" value="true"/>
-                <c:param name="showCaption" value="true"/>
                 <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>
         </div>

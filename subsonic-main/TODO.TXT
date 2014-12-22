@@ -39,13 +39,15 @@ TODO IN 5.1
 Clean-up use of cover art sizes
 Test that menu options work (share, download, add to playlist, ...)
 Layout improvements
+  Generalize coverArt.jsp to take 3 captions
+    Use white background, with dropshadow?
+  Review use of "detail" in music tables.
   Don't use CoverArtScheme
   Remove "nowPlaying"?
   Show album year, perhaps as overlay
   More spacing in artist info
   Nicer caption in cover art
   Show ancestors in videoMain
-  Move coverart to top-left corner?
   Remove caption cutoff
   Ellipsize in home.jsp
 Now playing broken?

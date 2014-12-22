@@ -15,10 +15,6 @@
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
-    <style type="text/css">
-        .coverart { float: left; padding-left:10px; padding-right:10px; padding-bottom:20px }
-    </style>
-
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <sub:url value="createShare.view" var="shareUrl">
@@ -394,11 +390,10 @@
 
             <c:set var="coverArtSize" value="${model.player.coverArtScheme.size * 2}"/>
 
-            <div class="coverart">
+            <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
                     <c:param name="coverArtSize" value="${coverArtSize}"/>
-                    <c:param name="showLink" value="false"/>
                     <c:param name="showZoom" value="true"/>
                     <c:param name="showChange" value="${model.user.coverArtRole}"/>
                 </c:import>
@@ -426,15 +421,14 @@
 
 <div style="float: left">
     <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
-        <div class="coverart">
+        <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
-                <c:param name="albumName" value="${album.name}"/>
-                <c:param name="coverArtSize" value="${model.sieblingCoverArtScheme.size}"/>
+                <c:param name="caption1" value="${album.name}"/>
+                <c:param name="caption2" value="${album.year}"/>
+                <c:param name="captionCount" value="2"/>
+                <c:param name="coverArtSize" value="${model.player.coverArtScheme.size}"/>
                 <c:param name="showLink" value="true"/>
-                <c:param name="showZoom" value="false"/>
-                <c:param name="showChange" value="false"/>
-                <c:param name="showCaption" value="true"/>
                 <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>
         </div>
