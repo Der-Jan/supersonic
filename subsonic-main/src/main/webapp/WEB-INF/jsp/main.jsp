@@ -70,9 +70,9 @@
         } else if (id == "selectNone") {
             selectAll(false);
         } else if (id == "share" && selectedIndexes != "") {
-            parent.frames.main.location.href = "${shareUrl}&" + selectedIndexes;
+            location.href = "${shareUrl}&" + selectedIndexes;
         } else if (id == "download" && selectedIndexes != "") {
-            location.href = "${downloadUrl}&" + getSelectedIndexes();
+            location.href = "${downloadUrl}&" + selectedIndexes;
         } else if (id == "appendPlaylist" && selectedIndexes != "") {
             onAppendPlaylist();
         }

@@ -35,11 +35,11 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+Share expiration broken
 Adjust coverart sizes
 Change styling of h2
 Change auto-cover?
 Use another bg color for coverart
-Test that menu options work (share, download, add to playlist, ...)
 Layout improvements
   Use white background, with dropshadow?
   Review use of "detail" in music tables.
