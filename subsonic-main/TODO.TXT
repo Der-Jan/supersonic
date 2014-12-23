@@ -35,18 +35,15 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Share expiration broken
 Adjust coverart sizes
 Change styling of h2
 Change auto-cover?
 Use another bg color for coverart
 Layout improvements
-  Use white background, with dropshadow?
   Review use of "detail" in music tables.
   Remove "nowPlaying"?
   More spacing in artist info
   Show ancestors in videoMain
-  Review truncateNicely
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5

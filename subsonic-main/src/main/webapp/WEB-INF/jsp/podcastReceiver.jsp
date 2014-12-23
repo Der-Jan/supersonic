@@ -127,7 +127,7 @@
             </td>
             <td class="truncate" colspan="7" style="padding-top:1em">
                 <a href="javascript:toggleEpisodes(${i.index})">
-                    <span title="${title}"><b><str:truncateNicely upper="40">${title}</str:truncateNicely></b></span>
+                    <span title="${title}"><b>${title}</b></span>
                     (${fn:length(channel.value)})
                 </a>
             </td>
@@ -137,10 +137,10 @@
             <td class="truncate" style="padding-top:1em">
                 <c:choose>
                     <c:when test="${channel.key.status eq 'ERROR'}">
-                        <span class="detail warning" title="${channel.key.errorMessage}"><str:truncateNicely upper="100">${channel.key.errorMessage}</str:truncateNicely></span>
+                        <span class="detail warning" title="${channel.key.errorMessage}">${channel.key.errorMessage}</span>
                     </c:when>
                     <c:otherwise>
-                        <span class="detail" title="${channel.key.description}"><str:truncateNicely upper="100">${channel.key.description}</str:truncateNicely></span>
+                        <span class="detail" title="${channel.key.description}">${channel.key.description}</span>
                     </c:otherwise>
                 </c:choose>
             </td>
