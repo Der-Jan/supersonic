@@ -43,13 +43,13 @@ body {
     color: black;
 }
 
-/* The secondary foreground color used for h1, details etc (gray). */
-h1, .detail, .albumComment {
+/* The secondary foreground color used for h1, h2, details etc (gray). */
+h1, h2, .detail, .albumComment {
     color: #696969;
 }
 
-/* Foreground color used for h2, bold and tr. */
-h2, b, tr {
+/* Foreground color used for bold and tr. */
+b, tr {
     color: #333333;
 }
 
@@ -133,7 +133,7 @@ h1 {
 
 h2 {
     white-space: nowrap;
-    font-size: 102%;
+    font-size: 108%;
     margin: 0.8em 0 0.2em 0;
 }
 
