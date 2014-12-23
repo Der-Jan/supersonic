@@ -65,7 +65,7 @@
         });
 
         $(window).mouseenter(function () {
-            var height = $("body").height() + 20;
+            var height = $("body").height() + 25;
             height = Math.min(height, window.top.innerHeight * 0.8);
             setFrameHeight(height);
         });
@@ -622,9 +622,12 @@
         </tr></table>
 </div>
 
+<c:if test="${model.autoHide}">
+    <h2><fmt:message key="playlist.more.playlist"/></h2>
+</c:if>
 <p id="empty"><em><fmt:message key="playlist.empty"/></em></p>
 
-<table class="music">
+<table class="music indent">
     <tbody id="playlistBody">
         <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
             <td class="fit"><a href="javascript:void(0)">

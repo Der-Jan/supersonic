@@ -35,11 +35,9 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Add play queue header (if auto-hide enabled)
 Use CoverArtScheme instead of hardcoding sizes
   Test create/edit players
 More spacing in headers: aa | bb | cc
-Change styling of h2
 Layout improvements
   Review use of "detail" in music tables.
   Remove "nowPlaying"?
