@@ -35,12 +35,12 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+More spacing in headers: aa | bb | cc
 Make caption clickable
 Change styling of h2
 Layout improvements
   Review use of "detail" in music tables.
   Remove "nowPlaying"?
-  More spacing in artist info
   Show ancestors in videoMain
 Now playing broken?
 Support tags/labels

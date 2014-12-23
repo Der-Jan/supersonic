@@ -45,7 +45,7 @@
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
                             artistInfo.similarArtists[i].artistName + "</a>";
                     if (i < artistInfo.similarArtists.length - 1) {
-                        html += " | ";
+                        html += " <span class='similar-artist-divider'>|</span> ";
                     }
                 }
                 $("#similarArtists").append(html);
@@ -165,10 +165,10 @@
         <td rowspan="4" style="vertical-align: top">
             <img id="artistImage" class="dropshadow" alt="" style="margin-right: 1em; display: none">
         </td>
-        <td id="artistBio"></td>
+        <td id="artistBio" style="padding-bottom: 0.5em"></td>
     </tr>
-    <tr><td>
-        <span id="similarArtistsTitle" style="padding-right: 0.3em; display: none"><fmt:message key="main.similarartists"/>:</span>
+    <tr><td style="padding-bottom: 0.5em">
+        <span id="similarArtistsTitle" style="padding-right: 0.5em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
     </td></tr>
     <tr><td>

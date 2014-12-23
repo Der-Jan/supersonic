@@ -283,6 +283,11 @@ img {
     vertical-align: middle;
 }
 
+.similar-artist-divider {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
 .detail {
     white-space: nowrap;
     font-size: 90%;

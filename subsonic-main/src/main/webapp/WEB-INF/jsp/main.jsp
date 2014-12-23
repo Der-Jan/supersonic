@@ -48,7 +48,7 @@
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
                             artistInfo.similarArtists[i].artistName + "</a>";
                     if (i < artistInfo.similarArtists.length - 1) {
-                        html += " | ";
+                        html += " <span class='similar-artist-divider'>|</span> ";
                     }
                 }
                 $("#similarArtists").append(html);
@@ -433,10 +433,10 @@
 
 <table style="width: 90%">
     <tr><td>
-        <span id="similarArtistsTitle" style="padding-right: 0.3em; display: none"><fmt:message key="main.similarartists"/>:</span>
+        <span id="similarArtistsTitle" style="padding-right: 0.5em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
     </td></tr>
-    <tr><td>
+    <tr><td style="padding-bottom: 0.5em">
         <div id="similarArtistsRadio" class="forward" style="display: none">
             <a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a>
         </div>
