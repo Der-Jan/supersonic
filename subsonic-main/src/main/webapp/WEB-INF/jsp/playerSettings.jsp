@@ -95,21 +95,6 @@
                 </tr>
 
                 <tr>
-                    <td><fmt:message key="playersettings.coverartsize"/></td>
-                    <td>
-                        <form:select path="coverArtSchemeName" cssStyle="width:8em">
-                            <c:forEach items="${command.coverArtSchemeHolders}" var="coverArtSchemeHolder">
-                                <c:set var="coverArtSchemeName">
-                                    <fmt:message key="playersettings.coverart.${fn:toLowerCase(coverArtSchemeHolder.name)}"/>
-                                </c:set>
-                                <form:option value="${coverArtSchemeHolder.name}" label="${coverArtSchemeName}"/>
-                            </c:forEach>
-                        </form:select>
-                    </td>
-                    <td colspan="2"><c:import url="helpToolTip.jsp"><c:param name="topic" value="cover"/></c:import></td>
-                </tr>
-
-                <tr>
                     <td><fmt:message key="playersettings.maxbitrate"/></td>
                     <td>
                         <form:select path="transcodeSchemeName" cssStyle="width:8em">
