@@ -247,6 +247,10 @@ img {
     line-height: 100%;
 }
 
+.coverart .caption1 a:link, .coverart .caption1 a:visited  {
+    color: #323232;
+}
+
 .coverart .caption2 {
     overflow:hidden;
     text-overflow:ellipsis;
