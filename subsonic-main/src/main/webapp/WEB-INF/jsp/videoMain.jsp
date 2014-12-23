@@ -64,12 +64,6 @@
     </script>
 
     <style type="text/css">
-        .videoContainer {
-            width: 213px;
-            float: left;
-            padding-right: 14px;
-            padding-bottom: 10px;
-        }
         .duration {
             position: absolute;
             bottom: 3px;
@@ -79,12 +73,6 @@
             opacity: 0.8;
             padding-right:3px;
             padding-left:3px;
-        }
-        .title {
-            width:213px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-top: 3px;
         }
         .directory {
             width: 213px;
@@ -118,16 +106,18 @@
             <sub:param name="size" value="120"/>
         </sub:url>
 
-        <div class="videoContainer">
-            <div style="position:relative">
-                <div>
-                    <a href="${videoUrl}"><img src="${coverArtUrl}" alt="" class="dropshadow"
-                                               onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
-                                               onmouseout="stopPreview()"></a>
+        <div class="albumThumb">
+            <div class="coverart dropshadow" style="width:213px">
+                <div style="position:relative">
+                    <div>
+                        <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
+                                                   onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                                   onmouseout="stopPreview()"></a>
+                    </div>
+                    <div class="detail duration">${child.durationString}</div>
                 </div>
-                <div class="detail duration">${child.durationString}</div>
+                <div class="caption1" title="${child.name}">${child.name}</div>
             </div>
-            <div class="detail title" title="${child.name}"><b>${child.name}</b></div>
         </div>
     </c:if>
 

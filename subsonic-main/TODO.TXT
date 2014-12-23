@@ -36,7 +36,6 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 Add play queue header (if auto-hide enabled)
-Nicer styling of video previews
 Use CoverArtScheme instead of hardcoding sizes
   Test create/edit players
 More spacing in headers: aa | bb | cc
