@@ -291,7 +291,6 @@
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table class="music" style="width: 100%">
-            <c:set var="cutoff" value="${model.visibility.captionCutoff}"/>
                 <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <c:choose>

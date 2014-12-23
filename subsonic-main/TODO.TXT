@@ -35,10 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Remove "Caption cutoff" settings
 Adjust coverart sizes
 Change styling of h2
-Remove tables from main.jsp.
 Change auto-cover?
 Use another bg color for coverart
 Test that menu options work (share, download, add to playlist, ...)

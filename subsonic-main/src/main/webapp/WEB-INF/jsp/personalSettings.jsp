@@ -111,11 +111,6 @@
             <td style="text-align:center"><form:checkbox path="mainVisibility.fileSizeVisible" cssClass="checkbox"/></td>
             <td style="text-align:center"><form:checkbox path="playlistVisibility.fileSizeVisible" cssClass="checkbox"/></td>
         </tr>
-        <tr>
-            <td><fmt:message key="personalsettings.captioncutoff"/></td>
-            <td style="text-align:center"><form:input path="mainVisibility.captionCutoff" size="3"/></td>
-            <td style="text-align:center"><form:input path="playlistVisibility.captionCutoff" size="3"/></td>
-        </tr>
     </table>
 
     <table class="indent">
