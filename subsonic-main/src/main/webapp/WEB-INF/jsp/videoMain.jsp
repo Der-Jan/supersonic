@@ -107,7 +107,7 @@
     </span>
 </h1>
 
-<c:forEach items="${model.children}" var="child">
+<c:forEach items="${model.songs}" var="child">
     <c:if test="${child.video}">
 
         <sub:url value="/videoPlayer.view" var="videoUrl">
@@ -135,24 +135,22 @@
 
 <div style="clear:both;padding-top: 1em">
     <c:set var="cssClass" value="directory"/>
-    <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
-        <c:if test="${child.directory}">
-            <c:choose>
-                <c:when test="${cssClass eq 'directory'}">
-                    <c:set var="cssClass" value="bgcolor2 directory"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="cssClass" value="directory"/>
-                </c:otherwise>
-            </c:choose>
-            <sub:url value="main.view" var="childUrl">
-                <sub:param name="id" value="${child.id}"/>
-            </sub:url>
+    <c:forEach items="${model.relatedAlbums}" var="child" varStatus="loopStatus">
+        <c:choose>
+            <c:when test="${cssClass eq 'directory'}">
+                <c:set var="cssClass" value="bgcolor2 directory"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="cssClass" value="directory"/>
+            </c:otherwise>
+        </c:choose>
+        <sub:url value="main.view" var="childUrl">
+            <sub:param name="id" value="${child.id}"/>
+        </sub:url>
 
-            <div class="${cssClass}">
-                <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
-            </div>
-        </c:if>
+        <div class="${cssClass}">
+            <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
+        </div>
     </c:forEach>
 </div>
 

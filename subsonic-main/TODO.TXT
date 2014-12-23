@@ -36,12 +36,10 @@ REST: Added musicFolderId to getAlbumList
 TODO IN 5.1
 --------------
 More spacing in headers: aa | bb | cc
-Make caption clickable
 Change styling of h2
 Layout improvements
   Review use of "detail" in music tables.
   Remove "nowPlaying"?
-  Show ancestors in videoMain
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
@@ -52,11 +50,12 @@ Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
+Remove CoverArtScheme
+Nicer styling of video previews
 
 TODO IN 5.2
 ------------
 Larger fonts?
-Make cover art size no longer configurable?
 New player controls
 
 Avoid scrolling album/artist title

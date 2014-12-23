@@ -14,7 +14,7 @@
 <c:forEach items="${model.playlists}" var="playlist" varStatus="loopStatus">
 
     <c:set var="caption2">
-        <fmt:message key="playlist2.songs"/> &ndash; ${playlist.durationAsString}
+        ${playlist.fileCount} <fmt:message key="playlist2.songs"/> &ndash; ${playlist.durationAsString}
     </c:set>
     <div class="albumThumb">
         <c:import url="coverArt.jsp">
