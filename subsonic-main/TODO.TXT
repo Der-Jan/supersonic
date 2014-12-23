@@ -35,6 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+Add play queue header (if auto-hide enabled)
+Nicer styling of video previews
 Use CoverArtScheme instead of hardcoding sizes
   Test create/edit players
 More spacing in headers: aa | bb | cc
@@ -52,7 +54,6 @@ Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
-Nicer styling of video previews
 
 TODO IN 5.2
 ------------

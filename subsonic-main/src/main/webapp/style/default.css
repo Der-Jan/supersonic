@@ -245,6 +245,7 @@ img {
     white-space:nowrap;
     padding:6px 8px 4px 8px;
     line-height: 100%;
+    font-weight: 300;
 }
 
 .coverart .caption1 a:link, .coverart .caption1 a:visited  {
@@ -259,6 +260,7 @@ img {
     font-size: 90%;
     color: #aaaaaa;
     line-height: 100%;
+    font-weight: 300;
 }
 
 .coverart .caption3 {
@@ -269,6 +271,7 @@ img {
     font-size: 90%;
     color: #aaaaaa;
     line-height: 100%;
+    font-weight: 300;
 }
 
 ::-webkit-scrollbar {
