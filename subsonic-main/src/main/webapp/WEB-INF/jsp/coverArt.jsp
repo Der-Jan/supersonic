@@ -30,7 +30,7 @@ PARAMETERS
 <str:randomString count="5" type="alphabet" var="imgId"/>
 <str:randomString count="5" type="alphabet" var="playId"/>
 
-<div class="bgcolor2 dropshadow">
+<div class="bgcolor2 dropshadow" style="border-radius:2px;">
     <div style="width:${size}; max-width:${size}; height:${size}; max-height:${size};" title="${param.caption1}" id="${divId}">
 
         <c:choose>
@@ -106,7 +106,7 @@ PARAMETERS
         <div style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 8px 0px 8px">${param.caption1}</div>
     </c:if>
     <c:if test="${captionCount gt 1}">
-        <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 6px 8px">${param.caption2}&nbsp;</div>
+        <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 3px 8px">${param.caption2}&nbsp;</div>
     </c:if>
     <c:if test="${captionCount gt 2}">
         <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 6px 8px">${param.caption3}&nbsp;</div>
@@ -114,7 +114,7 @@ PARAMETERS
 </div>
 
 <c:if test="${param.showChange or param.showZoom}">
-    <div style="padding-top:6px">
+    <div style="padding-top:6px;text-align:right">
         <c:if test="${param.showChange}">
             <c:url value="/changeCoverArt.view" var="changeCoverArtUrl">
                 <c:param name="id" value="${param.albumId}"/>

@@ -667,9 +667,6 @@ public class CoverArtController implements Controller, LastModified {
             graphics.fillRect(width - borderWidth, 0, height - borderWidth, height);
             graphics.fillRect(0, 0, width, borderWidth);
             graphics.fillRect(0, height - borderWidth, width, height);
-
-            graphics.setColor(Color.BLACK);
-            graphics.drawRect(0, 0, width - 1, height - 1);
         }
     }
 }
