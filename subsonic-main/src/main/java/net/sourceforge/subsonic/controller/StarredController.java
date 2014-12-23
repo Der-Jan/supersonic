@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;

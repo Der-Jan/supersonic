@@ -35,6 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+Use CoverArtScheme instead of hardcoding sizes
+  Test create/edit players
 More spacing in headers: aa | bb | cc
 Change styling of h2
 Layout improvements
@@ -50,7 +52,6 @@ Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
-Remove CoverArtScheme
 Nicer styling of video previews
 
 TODO IN 5.2

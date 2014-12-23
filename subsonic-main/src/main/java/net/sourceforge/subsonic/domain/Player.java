@@ -40,7 +40,6 @@ public class Player {
     private boolean isDynamicIp = true;
     private boolean isAutoControlEnabled = true;
     private Date lastSeen;
-    private CoverArtScheme coverArtScheme = CoverArtScheme.MEDIUM;
     private TranscodeScheme transcodeScheme = TranscodeScheme.OFF;
     private PlayQueue playQueue;
 
@@ -204,24 +203,6 @@ public class Player {
      */
     public void setLastSeen(Date lastSeen) {
         this.lastSeen = lastSeen;
-    }
-
-    /**
-     * Returns the cover art scheme.
-     *
-     * @return The cover art scheme.
-     */
-    public CoverArtScheme getCoverArtScheme() {
-        return coverArtScheme;
-    }
-
-    /**
-     * Sets the cover art scheme.
-     *
-     * @param coverArtScheme The cover art scheme.
-     */
-    public void setCoverArtScheme(CoverArtScheme coverArtScheme) {
-        this.coverArtScheme = coverArtScheme;
     }
 
     /**

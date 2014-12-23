@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 
 import net.sourceforge.subsonic.controller.PlayerSettingsController;
-import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PlayerTechnology;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
