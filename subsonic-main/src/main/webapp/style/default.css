@@ -233,6 +233,40 @@ img {
     box-shadow: 0 0 20px 3px #555555;
 }
 
+.coverart {
+    background-color: white;
+    color: #323232;
+    border-radius:2px;
+}
+
+.coverart .caption1 {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding:6px 8px 4px 8px;
+    line-height: 100%;
+}
+
+.coverart .caption2 {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding:0px 8px 5px 8px;
+    font-size: 90%;
+    color: #aaaaaa;
+    line-height: 100%;
+}
+
+.coverart .caption3 {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding:0px 8px 5px 8px;
+    font-size: 90%;
+    color: #aaaaaa;
+    line-height: 100%;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

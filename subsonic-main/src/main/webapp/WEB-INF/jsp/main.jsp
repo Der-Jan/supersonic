@@ -432,12 +432,6 @@
 </div>
 
 <table style="width: 90%">
-    <tr>
-        <td rowspan="4" style="vertical-align: top">
-            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 1em; display: none">
-        </td>
-        <td id="artistBio"></td>
-    </tr>
     <tr><td>
         <span id="similarArtistsTitle" style="padding-right: 0.3em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>

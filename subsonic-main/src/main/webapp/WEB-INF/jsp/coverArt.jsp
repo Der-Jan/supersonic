@@ -30,7 +30,7 @@ PARAMETERS
 <str:randomString count="5" type="alphabet" var="imgId"/>
 <str:randomString count="5" type="alphabet" var="playId"/>
 
-<div class="bgcolor2 dropshadow" style="border-radius:2px;">
+<div class="coverart dropshadow">
     <div style="width:${size}; max-width:${size}; height:${size}; max-height:${size};" title="${param.caption1}" id="${divId}">
 
         <c:choose>
@@ -74,42 +74,14 @@ PARAMETERS
             <c:if test="${param.showLink or param.showZoom}"></a></c:if>
     </div>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            setTimeout("$('#${imgId}').fadeIn(500)", ${empty param.appearAfter ? 0 : param.appearAfter});
-        });
-
-        $("#${divId}").mouseenter(function () {
-            $("#${playId}").show();
-            $("#${imgId}").stop();
-            $("#${imgId}").animate({opacity: 0.7}, 150);
-        });
-        $("#${divId}").mouseleave(function () {
-            $("#${playId}").hide();
-            $("#${imgId}").stop();
-            $("#${imgId}").animate({opacity: 1.0}, 150);
-        });
-        $("#${playId}").click(function () {
-            <c:choose>
-            <c:when test="${not empty param.albumId}">
-            top.playQueue.onPlay(${param.albumId});
-            </c:when>
-            <c:otherwise>
-            top.playQueue.onPlayPlaylist(${param.playlistId});
-            </c:otherwise>
-            </c:choose>
-        });
-
-    </script>
-
     <c:if test="${captionCount gt 0}">
-        <div style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 8px 0px 8px">${param.caption1}</div>
+        <div class="caption1" style="width:${param.coverArtSize - 16}px">${param.caption1}</div>
     </c:if>
     <c:if test="${captionCount gt 1}">
-        <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 3px 8px">${param.caption2}&nbsp;</div>
+        <div class="caption2" style="width:${param.coverArtSize - 16}px">${param.caption2}&nbsp;</div>
     </c:if>
     <c:if test="${captionCount gt 2}">
-        <div class="detail" style="width:${param.coverArtSize - 16}px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0px 8px 6px 8px">${param.caption3}&nbsp;</div>
+        <div class="caption3" style="width:${param.coverArtSize - 16}px">${param.caption3}&nbsp;</div>
     </c:if>
 </div>
 
@@ -131,3 +103,32 @@ PARAMETERS
         </c:if>
     </div>
 </c:if>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout("$('#${imgId}').fadeIn(500)", ${empty param.appearAfter ? 0 : param.appearAfter});
+    });
+
+    $("#${divId}").mouseenter(function () {
+        $("#${playId}").show();
+        $("#${imgId}").stop();
+        $("#${imgId}").animate({opacity: 0.7}, 150);
+    });
+    $("#${divId}").mouseleave(function () {
+        $("#${playId}").hide();
+        $("#${imgId}").stop();
+        $("#${imgId}").animate({opacity: 1.0}, 150);
+    });
+    $("#${playId}").click(function () {
+        <c:choose>
+        <c:when test="${not empty param.albumId}">
+        top.playQueue.onPlay(${param.albumId});
+        </c:when>
+        <c:otherwise>
+        top.playQueue.onPlayPlaylist(${param.playlistId});
+        </c:otherwise>
+        </c:choose>
+    });
+
+</script>
+

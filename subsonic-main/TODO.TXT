@@ -35,9 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
+Make caption clickable
 Change styling of h2
-Change auto-cover?
-Use another bg color for coverart
 Layout improvements
   Review use of "detail" in music tables.
   Remove "nowPlaying"?
