@@ -52,76 +52,67 @@
 
 <%@ include file="homePager.jsp" %>
 
-<table style="width: 100%">
-    <tr>
-        <td style="vertical-align:top;">
-            <div>
-                <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
+<c:if test="${not empty model.welcomeMessage}">
+    <div style="width:15em;float:right;padding:0 1em 0 1em;border-left:1px solid #<spring:theme code="detailColor"/>">
+        <sub:wiki text="${model.welcomeMessage}"/>
+    </div>
+</c:if>
 
-                    <c:set var="albumTitle">
-                        <c:choose>
-                            <c:when test="${empty album.albumTitle}">
-                                <fmt:message key="common.unknown"/>
-                            </c:when>
-                            <c:otherwise>
-                                ${album.albumTitle}
-                            </c:otherwise>
-                        </c:choose>
-                    </c:set>
+<c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
-                    <c:set var="captionCount" value="2"/>
+    <c:set var="albumTitle">
+        <c:choose>
+            <c:when test="${empty album.albumTitle}">
+                <fmt:message key="common.unknown"/>
+            </c:when>
+            <c:otherwise>
+                ${album.albumTitle}
+            </c:otherwise>
+        </c:choose>
+    </c:set>
 
-                    <c:if test="${not empty album.playCount}">
-                        <c:set var="caption3"><fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message></c:set>
-                        <c:set var="captionCount" value="3"/>
-                    </c:if>
-                    <c:if test="${not empty album.lastPlayed}">
-                        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
-                        <c:set var="caption3"><fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message></c:set>
-                        <c:set var="captionCount" value="3"/>
-                    </c:if>
-                    <c:if test="${not empty album.created}">
-                        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
-                        <c:set var="caption3"><fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message></c:set>
-                        <c:set var="captionCount" value="3"/>
-                    </c:if>
-                    <c:if test="${not empty album.year}">
-                        <c:set var="caption3" value="${album.year}"/>
-                        <c:set var="captionCount" value="3"/>
-                    </c:if>
+    <c:set var="captionCount" value="2"/>
 
-                    <div class="albumThumb">
-                        <c:import url="coverArt.jsp">
-                            <c:param name="albumId" value="${album.id}"/>
-                            <c:param name="caption1" value="${album.albumTitle}"/>
-                            <c:param name="caption2" value="${album.artist}"/>
-                            <c:param name="caption3" value="${caption3}"/>
-                            <c:param name="captionCount" value="${captionCount}"/>
-                            <c:param name="coverArtSize" value="${model.coverArtSize}"/>
-                            <c:param name="showLink" value="true"/>
-                            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                        </c:import>
+    <c:if test="${not empty album.playCount}">
+        <c:set var="caption3"><fmt:message key="home.playcount"><fmt:param value="${album.playCount}"/></fmt:message></c:set>
+        <c:set var="captionCount" value="3"/>
+    </c:if>
+    <c:if test="${not empty album.lastPlayed}">
+        <fmt:formatDate value="${album.lastPlayed}" dateStyle="short" var="lastPlayedDate"/>
+        <c:set var="caption3"><fmt:message key="home.lastplayed"><fmt:param value="${lastPlayedDate}"/></fmt:message></c:set>
+        <c:set var="captionCount" value="3"/>
+    </c:if>
+    <c:if test="${not empty album.created}">
+        <fmt:formatDate value="${album.created}" dateStyle="short" var="creationDate"/>
+        <c:set var="caption3"><fmt:message key="home.created"><fmt:param value="${creationDate}"/></fmt:message></c:set>
+        <c:set var="captionCount" value="3"/>
+    </c:if>
+    <c:if test="${not empty album.year}">
+        <c:set var="caption3" value="${album.year}"/>
+        <c:set var="captionCount" value="3"/>
+    </c:if>
 
-                        <c:if test="${not empty album.rating}">
-                            <c:import url="rating.jsp">
-                                <c:param name="readonly" value="true"/>
-                                <c:param name="rating" value="${album.rating}"/>
-                            </c:import>
-                        </c:if>
+    <div class="albumThumb">
+        <c:import url="coverArt.jsp">
+            <c:param name="albumId" value="${album.id}"/>
+            <c:param name="caption1" value="${album.albumTitle}"/>
+            <c:param name="caption2" value="${album.artist}"/>
+            <c:param name="caption3" value="${caption3}"/>
+            <c:param name="captionCount" value="${captionCount}"/>
+            <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+            <c:param name="showLink" value="true"/>
+            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+        </c:import>
 
-                    </div>
-                </c:forEach>
-            </div>
-        </td>
-        <c:if test="${not empty model.welcomeMessage}">
-            <td style="vertical-align:top;width:15em">
-                <div style="padding:0 1em 0 1em;border-left:1px solid #<spring:theme code="detailColor"/>">
-                    <sub:wiki text="${model.welcomeMessage}"/>
-                </div>
-            </td>
+        <c:if test="${not empty album.rating}">
+            <c:import url="rating.jsp">
+                <c:param name="readonly" value="true"/>
+                <c:param name="rating" value="${album.rating}"/>
+            </c:import>
         </c:if>
-    </tr>
-</table>
+
+    </div>
+</c:forEach>
 
 <c:if test="${model.listSize eq fn:length(model.albums)}">
     <%@ include file="homePager.jsp" %>

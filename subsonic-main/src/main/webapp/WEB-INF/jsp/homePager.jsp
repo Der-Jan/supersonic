@@ -12,7 +12,7 @@
             <c:when test="${model.listType eq 'random'}">
                 <td><div class="forward"><a href="home.view?listType=random"><fmt:message key="common.more"/></a></div></td>
             </c:when>
-            <c:when test="${model.listType ne 'users'}">
+            <c:otherwise>
                 <sub:url value="home.view" var="previousUrl">
                     <sub:param name="listType" value="${model.listType}"/>
                     <sub:param name="listOffset" value="${model.listOffset - model.listSize}"/>
@@ -68,7 +68,7 @@
                         </select>
                     </td>
                 </c:if>
-            </c:when>
+            </c:otherwise>
         </c:choose>
 
         <c:if test="${not empty model.albums}">
