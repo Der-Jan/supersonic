@@ -70,7 +70,7 @@
                 <c:param name="caption1" value="${albumTitle}"/>
                 <c:param name="caption2" value="${album.artist}"/>
                 <c:param name="captionCount" value="2"/>
-                <c:param name="coverArtSize" value="${model.coverArtSize}"/>
+                <c:param name="coverArtSize" value="160"/>
                 <c:param name="showLink" value="true"/>
                 <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>

@@ -386,13 +386,10 @@
         </td>
 
         <td class="fit" style="vertical-align:top;" rowspan="2">
-
-            <c:set var="coverArtSize" value="${model.player.coverArtScheme.size * 2}"/>
-
             <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
-                    <c:param name="coverArtSize" value="${coverArtSize}"/>
+                    <c:param name="coverArtSize" value="300"/>
                     <c:param name="showZoom" value="true"/>
                     <c:param name="showChange" value="${model.user.coverArtRole}"/>
                 </c:import>
@@ -426,7 +423,7 @@
                 <c:param name="caption1" value="${album.name}"/>
                 <c:param name="caption2" value="${album.year}"/>
                 <c:param name="captionCount" value="2"/>
-                <c:param name="coverArtSize" value="${model.player.coverArtScheme.size}"/>
+                <c:param name="coverArtSize" value="160"/>
                 <c:param name="showLink" value="true"/>
                 <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>

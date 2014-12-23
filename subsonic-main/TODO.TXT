@@ -35,7 +35,7 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Adjust coverart sizes
+Adjust coverart sizes, remove setting
 Change styling of h2
 Change auto-cover?
 Use another bg color for coverart

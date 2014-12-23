@@ -144,8 +144,6 @@
     }
 </script>
 
-<c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
-
 <div style="float: left;padding-top: 1.5em">
     <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
         <div class="albumThumb">
@@ -154,7 +152,7 @@
                 <c:param name="caption1" value="${album.name}"/>
                 <c:param name="caption2" value="${album.year}"/>
                 <c:param name="captionCount" value="2"/>
-                <c:param name="coverArtSize" value="${coverArtSize}"/>
+                <c:param name="coverArtSize" value="160"/>
                 <c:param name="showLink" value="true"/>
                 <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
             </c:import>

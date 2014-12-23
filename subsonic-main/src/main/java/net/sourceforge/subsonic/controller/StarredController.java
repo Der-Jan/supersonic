@@ -70,7 +70,6 @@ public class StarredController extends ParameterizableViewController {
         map.put("artists", artists);
         map.put("albums", albums);
         map.put("songs", songs);
-        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
