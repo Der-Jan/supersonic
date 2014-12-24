@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaFileComparator;
 import net.sourceforge.subsonic.domain.Player;
@@ -107,6 +108,8 @@ public class MainController extends AbstractController {
         map.put("ancestors", getAncestors(dir));
         map.put("artist", guessArtist(children));
         map.put("album", guessAlbum(children));
+        map.put("coverArtSizeMedium", CoverArtScheme.MEDIUM.getSize());
+        map.put("coverArtSizeLarge", CoverArtScheme.LARGE.getSize());
         map.put("player", player);
         map.put("user", securityService.getCurrentUser(request));
         map.put("visibility", userSettings.getMainVisibility());

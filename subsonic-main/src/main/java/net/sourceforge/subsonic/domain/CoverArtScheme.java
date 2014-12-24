@@ -27,17 +27,15 @@ package net.sourceforge.subsonic.domain;
  */
 public enum CoverArtScheme {
 
-    OFF(0, 0),
-    SMALL(110, 16),
-    MEDIUM(150, 25),
-    LARGE(200, 30);
+    OFF(0),
+    SMALL(110),
+    MEDIUM(160),
+    LARGE(300);
 
     private int size;
-    private final int captionLength;
 
-    CoverArtScheme(int size, int captionLength) {
+    CoverArtScheme(int size) {
         this.size = size;
-        this.captionLength = captionLength;
     }
 
     /**
@@ -49,7 +47,4 @@ public enum CoverArtScheme {
         return size;
     }
 
-    public int getCaptionLength() {
-        return captionLength;
-    }
 }

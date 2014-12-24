@@ -35,8 +35,7 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Use CoverArtScheme instead of hardcoding sizes
-  Test create/edit players
+Test create/edit players
 More spacing in headers: aa | bb | cc
 Layout improvements
   Review use of "detail" in music tables.
