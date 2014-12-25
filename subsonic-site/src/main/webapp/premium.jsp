@@ -40,8 +40,7 @@
         <div class="row">
             <div class="6u 12u(3)">
                 <ul>
-                    <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, Mac, Chrome and more*.
-                    </li>
+                    <li><a href="apps.jsp">Apps</a> for Android, iPhone, Windows Phone, Mac, Chrome and more*.</li>
                     <li>Video streaming.</li>
                     <li>Your personal server address: <em>yourname</em>.subsonic.org</li>
                     <li>No ads in the web interface.</li>

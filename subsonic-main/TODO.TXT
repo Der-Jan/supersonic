@@ -21,7 +21,8 @@ Upgrade Cling
 Lifetime license.
 Playlist cover art.
 New playlists home screen
-
+Refreshed layout
+Removed external ads.
 
 TODO IN SITE
 ------------
@@ -41,7 +42,6 @@ Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
 Reuse videoPlayer.jsp for shared videos?
-Remove ads? Only show internal ad.
 IntelliJ plugin
 Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility

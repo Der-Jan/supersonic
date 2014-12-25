@@ -117,9 +117,7 @@ public class MainController extends AbstractController {
         map.put("showArtistInfo", userSettings.isShowArtistInfoEnabled());
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("brand", settingsService.getBrand());
-        if (!settingsService.isLicenseValid()) {
-            map.put("ad", adService.getAd());
-        }
+        map.put("showAd", !settingsService.isLicenseValid() && adService.showAd());
 
         try {
             MediaFile parent = mediaFileService.getParentOf(dir);

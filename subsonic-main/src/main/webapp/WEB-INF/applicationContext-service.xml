@@ -168,7 +168,7 @@
     </bean>
 
     <bean id="adService" class="net.sourceforge.subsonic.service.AdService">
-        <property name="adInterval" value="4"/>
+        <property name="adInterval" value="8"/>
     </bean>
 
     <bean id="jukeboxService" class="net.sourceforge.subsonic.service.JukeboxService">

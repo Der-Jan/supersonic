@@ -384,6 +384,25 @@
                 </c:import>
             </div>
         </td>
+        <c:if test="${model.showAd}">
+            <td style="vertical-align:top;width:160px" rowspan="2">
+                <h2>Subsonic Premium</h2>
+                <p style="font-size: 90%">
+                    Upgrade to Subsonic Premium and get:
+                </p>
+                <div style="font-size: 90%">
+                    <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
+                    <p>Video streaming.</p>
+                    <p>Chromecast support.</p>
+                    <p>DLNA/UPnP support</p>
+                    <p>Share on Facebook, Twitter, Google+</p>
+                    <p>No ads.</p>
+                    <p>Your personal server address: <em>you</em>.subsonic.org</p>
+                    <p>Podcast receiver.</p>
+                </div>
+                <p class="forward" style="white-space: nowrap"><a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
+            </td>
+        </c:if>
     </tr>
 
     <tr>
