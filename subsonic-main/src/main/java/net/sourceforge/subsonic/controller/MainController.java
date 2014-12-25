@@ -115,7 +115,6 @@ public class MainController extends AbstractController {
         map.put("visibility", userSettings.getMainVisibility());
         map.put("showAlbumYear", settingsService.isSortAlbumsByYear());
         map.put("showArtistInfo", userSettings.isShowArtistInfoEnabled());
-        map.put("updateNowPlaying", request.getParameter("updateNowPlaying") != null);
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("brand", settingsService.getBrand());
         if (!settingsService.isLicenseValid()) {

@@ -5,9 +5,6 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <c:if test="${not model.updateNowPlaying}">
-        <meta http-equiv="refresh" content="180;URL=nowPlaying.view?">
-    </c:if>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
@@ -142,14 +139,6 @@
     }
 
 </script>
-
-<c:if test="${model.updateNowPlaying}">
-
-    <script type="text/javascript" language="javascript">
-        // Variable used by javascript in playlist.jsp
-        var updateNowPlaying = true;
-    </script>
-</c:if>
 
 <h1>
     <a href="#" onclick="toggleStar(${model.dir.id}, '#starImage'); return false;">

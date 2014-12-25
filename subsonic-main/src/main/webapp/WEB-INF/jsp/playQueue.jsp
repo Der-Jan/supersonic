@@ -34,7 +34,6 @@
 
 <script type="text/javascript" language="javascript">
     var songs = null;
-    var currentAlbumUrl = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
     var CastPlayer = new CastPlayer();
@@ -89,10 +88,6 @@
     function nowPlayingCallback(nowPlayingInfo) {
         if (nowPlayingInfo != null && nowPlayingInfo.streamUrl != currentStreamUrl) {
             getPlayQueue();
-            if (currentAlbumUrl != nowPlayingInfo.albumUrl && top.main.updateNowPlaying) {
-                top.main.location.replace("nowPlaying.view?");
-                currentAlbumUrl = nowPlayingInfo.albumUrl;
-            }
         <c:if test="${not model.player.web}">
             currentStreamUrl = nowPlayingInfo.streamUrl;
             updateCurrentImage();

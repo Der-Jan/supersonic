@@ -35,11 +35,8 @@ REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Test create/edit players
-More spacing in headers: aa | bb | cc
 Layout improvements
   Review use of "detail" in music tables.
-  Remove "nowPlaying"?
 Now playing broken?
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
