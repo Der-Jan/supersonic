@@ -46,6 +46,7 @@
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
+                    <li><a href="#submuxic">Sub Muxic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
                 </ul>
@@ -137,6 +138,7 @@
     <%@ include file="apps-android.jsp" %>
     <%@ include file="apps-dsub.jsp" %>
     <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-submuxic.jsp" %>
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>
 
