@@ -71,6 +71,20 @@
                 <p>Consequently, it's recommended that the music folders you add to Subsonic are organized in an
                     <span style="white-space:nowrap;">"artist/album/song"</span> manner. There are music managers, like
                     <a href="http://www.mediamonkey.com/" target="_blank">MediaMonkey</a>, that can help you achieve this.</p>
+
+                <h4>Using network disks in Windows</h4>
+                <span class="image right"><a href="inc/img/gettingstarted/windows-service.png"><img src="inc/img/gettingstarted/windows-service.png" height="250" alt="" /></a></span>
+                <p>Subsonic runs as a <a href="http://en.wikipedia.org/wiki/Windows_service" target="_blank">service</a> on Windows. By default,
+                    mapped networks disks are not visible to services. To fix this you can change the Subsonic service to run as the
+                    <strong>logged-on</strong> user instead of the <strong>System</strong> user.</p>
+                <ol>
+                    <li>Open <strong>Services</strong> in Windows.</li>
+                    <li>Right-click the Subsonic service and select <strong>Properties</strong>.</li>
+                    <li>Click the <strong>Log On</strong> tab.</li>
+                    <li>Activate <strong>This account</strong> and enter your Windows username and password.</li>
+                    <li>Click OK and restart the service.</li>
+                </ol>
+
             </section>
 
             <a name="2"></a>

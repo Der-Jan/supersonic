@@ -1,15 +1,9 @@
 DONE IN 5.1
 -------------
 
-TODO IN SITE
-------------
-FAQ for network disks & firewall
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
-Write terms of use.
 
 TODO IN 5.1
 --------------
-Windows firewall: Only opened for private networks.
 Layout improvements
   Review use of "detail" in music tables.
 Support tags/labels
