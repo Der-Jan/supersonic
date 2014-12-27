@@ -34,6 +34,30 @@
 <div class="12u">
 
 <section class="box">
+    <a name="5.1.beta1"><h3>Subsonic 5.1.beta1 - Dec 29, 2014</h3></a>
+    <ul>
+        <li><strong>New:</strong> New video page, with preview thumbs.</li>
+        <li><strong>New:</strong> New playlists page, with cover art.</li>
+        <li><strong>New:</strong> Automatically show/hide play queue.</li>
+        <li><strong>New:</strong> Show artist image and bio.</li>
+        <li><strong>New:</strong> Show similar artists, with radio feature.</li>
+        <li><strong>New:</strong> Instant search (show search results while typing)</li>
+        <li><strong>New:</strong> Refreshed design.</li>
+        <li><strong>New:</strong> Added "shuffle play" to album lists in home page.</li>
+        <li><strong>New:</strong> Show song title in browser window title.</li>
+        <li><strong>New:</strong> Filter home screen by selected music folder</li>
+        <li><strong>New:</strong> Auto-start videos.</li>
+        <li><strong>New:</strong> Sort artists using locale-specific collation.</li>
+        <li><strong>New:</strong> Updated Estonian translation, courtesy of Olav M&auml;gi.</li>
+        <li><strong>New:</strong> Show avatar in upper-right corner.</li>
+        <li><strong>New:</strong> Removed external ads.</li>
+        <li><strong>Bugfix:</strong> Video playback broken behind proxies.</li>
+        <li><strong>Bugfix:</strong> Wrong aspect rate for shared videos.</li>
+        <li><strong>REST:</strong> Added getSimilarSongs and getArtistInfo.</li>
+        <li><strong>REST:</strong> Support playlist cover art</li>
+        <li><strong>REST:</strong> Added musicFolderId parameter to getAlbumList</li>
+    </ul>
+
     <a name="5.0"><h3>Subsonic 5.0 - Sep 21, 2014</h3></a>
     <ul>
         <li><strong>Bugfix:</strong> Use UTF-8 encoding for filenames in ZIP archives. (Requires Java 7+)</li>
