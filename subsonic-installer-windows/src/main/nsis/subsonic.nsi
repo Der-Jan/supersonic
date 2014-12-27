@@ -101,9 +101,13 @@ Section "Subsonic"
   # Add Windows Firewall exception.
   # (Requires NSIS plugin found on http://nsis.sourceforge.net/NSIS_Simple_Firewall_Plugin to be installed
   # as NSIS_HOME/Plugins/SimpleFC.dll)
-  SimpleFC::AddApplication "Subsonic Service" "$INSTDIR\subsonic-service.exe" 0 2 "" 1
-  SimpleFC::AddApplication "Subsonic Agent" "$INSTDIR\subsonic-agent.exe" 0 2 "" 1
-  SimpleFC::AddApplication "Subsonic Agent (Elevated)" "$INSTDIR\subsonic-agent-elevated.exe" 0 2 "" 1
+
+  SimpleFC::AdvAddRule "Subsonic Service (TCP)" "" "6" "1" "1" "7" "1" "$INSTDIR\subsonic-service.exe" "" "" "Subsonic" "" "" "" ""
+  SimpleFC::AdvAddRule "Subsonic Service (UDP)" "" "17" "1" "1" "7" "1" "$INSTDIR\subsonic-service.exe" "" "" "Subsonic" "" "" "" ""
+  SimpleFC::AdvAddRule "Subsonic Agent (TCP)" "" "6" "1" "1" "7" "1" "$INSTDIR\subsonic-agent.exe" "" "" "Subsonic" "" "" "" ""
+  SimpleFC::AdvAddRule "Subsonic Agent (UDP)" "" "17" "1" "1" "7" "1" "$INSTDIR\subsonic-agent.exe" "" "" "Subsonic" "" "" "" ""
+  SimpleFC::AdvAddRule "Subsonic Agent Elevated (TCP)" "" "6" "1" "1" "7" "1" "$INSTDIR\subsonic-agent-elevated.exe" "" "" "Subsonic" "" "" "" ""
+  SimpleFC::AdvAddRule "Subsonic Agent Elevated (UDP)" "" "17" "1" "1" "7" "1" "$INSTDIR\subsonic-agent-elevated.exe" "" "" "Subsonic" "" "" "" ""
 
   # Install and start service.
   ExecWait '"$INSTDIR\subsonic-service.exe" -install'
@@ -177,10 +181,12 @@ Section "Uninstall"
   # Remove Windows Firewall exception.
   # (Requires NSIS plugin found on http://nsis.sourceforge.net/NSIS_Simple_Firewall_Plugin to be installed
   # as NSIS_HOME/Plugins/SimpleFC.dll)
-  SimpleFC::RemoveApplication "$INSTDIR\elevate.exe"
-  SimpleFC::RemoveApplication "$INSTDIR\subsonic-service.exe"
-  SimpleFC::RemoveApplication "$INSTDIR\subsonic-agent.exe"
-  SimpleFC::RemoveApplication "$INSTDIR\subsonic-agent-elevated.exe"
+  SimpleFC::AdvRemoveRule "Subsonic Service (TCP)"
+  SimpleFC::AdvRemoveRule "Subsonic Service (UDP)"
+  SimpleFC::AdvRemoveRule "Subsonic Agent (TCP)"
+  SimpleFC::AdvRemoveRule "Subsonic Agent (UDP)"
+  SimpleFC::AdvRemoveRule "Subsonic Agent Elevated (TCP)"
+  SimpleFC::AdvRemoveRule "Subsonic Agent Elevated (UDP)"
 
 SectionEnd
 

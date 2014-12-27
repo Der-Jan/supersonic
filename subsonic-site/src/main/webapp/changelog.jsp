@@ -53,6 +53,7 @@
         <li><strong>New:</strong> Removed external ads.</li>
         <li><strong>Bugfix:</strong> Video playback broken behind proxies.</li>
         <li><strong>Bugfix:</strong> Wrong aspect rate for shared videos.</li>
+        <li><strong>Bugfix:</strong> Configure Windows firewall for all network profiles.</li>
         <li><strong>REST:</strong> Added getSimilarSongs and getArtistInfo.</li>
         <li><strong>REST:</strong> Support playlist cover art</li>
         <li><strong>REST:</strong> Added musicFolderId parameter to getAlbumList</li>
