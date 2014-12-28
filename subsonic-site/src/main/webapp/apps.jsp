@@ -72,7 +72,7 @@
                     <li><a href="#sonicair">SonicAir</a> for BlackBerry PlayBook</li>
                     <li><a href="#mmtm">My Music To Me</a> for Sonos</li>
                     <%--<li><a href="#chumby">Subsonic</a> for Chumby</li>--%>
-                    <%--<li><a href="#subsonictv">SubsonicTV</a> for Roku</li>--%>
+                    <li><a href="#subsonictv">SubsonicTV</a> for Roku</li>
                 </ul>
             </div>
 
@@ -151,6 +151,7 @@
 
     <%@ include file="apps-sonicair.jsp" %>
     <%@ include file="apps-mmtm.jsp" %>
+    <%@ include file="apps-subsonictv.jsp" %>
     <%@ include file="apps-subsonicchannel.jsp" %>
     <%@ include file="apps-xo.jsp" %>
 
