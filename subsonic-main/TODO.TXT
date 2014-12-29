@@ -4,6 +4,7 @@ DONE IN 5.1
 
 TODO IN 5.1
 --------------
+Show toast when adding files to queue.
 Layout improvements
   Review use of "detail" in music tables.
 Support tags/labels
