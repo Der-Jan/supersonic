@@ -50,14 +50,16 @@ PARAMETERS
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="main.addlast"/>"
-         style="cursor:pointer" onclick="top.playQueue.onAdd(${param.id}); return false;" title="<fmt:message key="main.addlast"/>">
+         onclick="top.playQueue.onAdd(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>'); return false;"
+         style="cursor:pointer" title="<fmt:message key="main.addlast"/>">
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>"
-         onclick="top.playQueue.onAddNext(${param.id}); return false;" style="cursor:pointer" title="<fmt:message key="main.addnext"/>">
+         onclick="top.playQueue.onAddNext(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>'); return false;"
+         style="cursor:pointer" title="<fmt:message key="main.addnext"/>">
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 

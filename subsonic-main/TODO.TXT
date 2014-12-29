@@ -1,10 +1,12 @@
 DONE IN 5.1
 -------------
+Show toast when adding songs to queue.
 
 
 TODO IN 5.1
 --------------
-Show toast when adding files to queue.
+Lazy create upnp
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements
   Review use of "detail" in music tables.
 Support tags/labels
