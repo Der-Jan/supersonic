@@ -31,7 +31,7 @@ PARAMETERS
 <str:randomString count="5" type="alphabet" var="playId"/>
 
 <div class="coverart dropshadow">
-    <div style="width:${size}; max-width:${size}; height:${size}; max-height:${size};" title="${param.caption1}" id="${divId}">
+    <div style="width:${size};max-width:${size};height:${size};max-height:${size};cursor:pointer" title="${param.caption1}" id="${divId}">
 
         <c:choose>
             <c:when test="${not empty param.albumId}">

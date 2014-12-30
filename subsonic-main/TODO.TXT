@@ -5,14 +5,14 @@ Nicer display of "No media folders found" and "Media folder is being scanned"
 Nicer display of "Get Subsonic Premium".
 Nicer display of "New version available"
 Use img.onclick in playlist.jsp
-
+Use img.onclick in playqueue.jsp
 
 TODO IN 5.1
 --------------
+Make title clickable in video thumb
 Playlist files deleted when rescanning and folders disabled.  Use "present" flag instead of deleting entries.
   Also when appending.
   Show all files in playlist view, indicate missing ones.
-Use img.onclick in playqueue.jsp
 Lazy create upnp
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements
