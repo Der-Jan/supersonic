@@ -10,8 +10,6 @@ TODO IN 5.1
 --------------
 Playlist files deleted when rescanning and folders disabled.  Use "present" flag instead of deleting entries.
   Also when appending.
-
-More spacing after header in ad.
 Lazy create upnp
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements

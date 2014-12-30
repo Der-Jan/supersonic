@@ -386,11 +386,11 @@
         </td>
         <c:if test="${model.showAd}">
             <td style="vertical-align:top;width:160px" rowspan="2">
-                <h2>Subsonic Premium</h2>
+                <h2 style="padding-bottom: 1em">Subsonic Premium</h2>
                 <p style="font-size: 90%">
                     Upgrade to Subsonic Premium and get:
                 </p>
-                <div style="font-size: 90%">
+                <div style="font-size: 90%;padding-bottom: 1em">
                     <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
                     <p>Video streaming.</p>
                     <p>Chromecast support.</p>
