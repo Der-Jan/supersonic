@@ -191,17 +191,18 @@
 <table class="music">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
-        <td class="fit"><a href="javascript:void(0)">
-            <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>" alt="" title=""></a></td>
-        <td class="fit"><a href="javascript:void(0)">
+        <td class="fit">
+            <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>"
+                 style="cursor:pointer" alt="" title=""></td>
+        <td class="fit">
             <img id="play" src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"
-                 style="padding-right: 0.1em" onclick="onPlay(this.id.substring(4) - 1)"></a></td>
-        <td class="fit"><a href="javascript:void(0)">
+                 style="padding-right:0.1em;cursor:pointer" onclick="onPlay(this.id.substring(4) - 1)"></td>
+        <td class="fit">
             <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
-                 style="padding-right: 0.1em" onclick="onAdd(this.id.substring(3) - 1)"></a></td>
-        <td class="fit" style="padding-right:30px"><a href="javascript:void(0)">
+                 style="padding-right:0.1em;cursor:pointer" onclick="onAdd(this.id.substring(3) - 1)"></td>
+        <td class="fit" style="padding-right:30px">
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
-                 style="padding-right: 0.1em" onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
+                 style="padding-right:0.1em;cursor:pointer" onclick="onAddNext(this.id.substring(7) - 1)"></td>
 
         <td class="truncate"><span id="title" class="songTitle">Title</span></td>
         <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
@@ -209,15 +210,15 @@
         <td class="fit rightalign"><span id="songDuration" class="detail">Duration</span></td>
 
         <c:if test="${model.editAllowed}">
-            <td class="fit"><a href="javascript:void(0)">
+            <td class="fit">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
-                     alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></a></td>
-            <td class="fit"><a href="javascript:void(0)">
+                     style="cursor:pointer" alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></td>
+            <td class="fit">
                 <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
-                     alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></a></td>
-            <td class="fit"><a href="javascript:void(0)">
+                     style="cursor:pointer" alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></td>
+            <td class="fit">
                 <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
-                     alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></a></td>
+                     style="cursor:pointer" alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></td>
         </c:if>
     </tr>
     </tbody>
