@@ -32,6 +32,12 @@
     </div>
 </c:if>
 
+<c:if test="${model.newVersionAvailable}">
+    <div class="warning" style="padding-bottom: 1em">
+        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
+    </div>
+</c:if>
+
 <div id="scanningStatus" style="display: none;" class="warning">
     <img src="<spring:theme code="scanningImage"/>" title="" alt=""> <fmt:message key="main.scanning"/> <span id="scanCount"></span>
 </div>

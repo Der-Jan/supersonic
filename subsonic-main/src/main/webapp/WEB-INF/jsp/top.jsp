@@ -38,19 +38,7 @@
 <fmt:message key="top.help" var="help"/>
 <fmt:message key="top.search" var="search"/>
 
-<table style="margin:0;">
-    <tr>
-        <td></td>
-        <td colspan="13" style="padding:0;margin:0">
-            <c:choose>
-                <c:when test="${model.newVersionAvailable}">
-                    <span class="warning">
-                        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
-                    </span>
-                </c:when>
-            </c:choose>
-        </td>
-    </tr>
+<table style="margin:0;padding-top:5px">
     <tr>
         <td style="padding-right:3.5em;">
             <a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a>

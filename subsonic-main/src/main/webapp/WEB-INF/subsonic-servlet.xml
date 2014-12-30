@@ -17,6 +17,7 @@
         <property name="viewName" value="right"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="versionService" ref="versionService"/>
     </bean>
     <bean id="statusController" class="net.sourceforge.subsonic.controller.StatusController">
         <property name="viewName" value="status"/>
@@ -50,7 +51,6 @@
     <bean id="topController" class="net.sourceforge.subsonic.controller.TopController">
         <property name="viewName" value="top"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="versionService" ref="versionService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="helpController" class="net.sourceforge.subsonic.controller.HelpController">
