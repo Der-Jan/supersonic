@@ -116,7 +116,7 @@
                     </div>
                     <div class="detail duration">${child.durationString}</div>
                 </div>
-                <div class="caption1" title="${child.name}">${child.name}</div>
+                <div class="caption1" title="${child.name}"><a href="${videoUrl}" title="${child.name}">${child.name}</a></div>
             </div>
         </div>
     </c:if>
