@@ -7,12 +7,11 @@ Nicer display of "New version available"
 Use img.onclick in playlist.jsp
 Use img.onclick in playqueue.jsp
 Make title clickable in video thumb
+Don't remove songs from playlists if they become unavailable.
+New favicon
 
 TODO IN 5.1
 --------------
-Playlist files deleted when rescanning and folders disabled.  Use "present" flag instead of deleting entries.
-  Also when appending.
-  Show all files in playlist view, indicate missing ones.
 Lazy create upnp
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements

@@ -146,7 +146,6 @@ public class MediaScannerService {
             public void run() {
                 doScanLibrary();
                 playlistService.importPlaylists();
-                playlistService.updatePlaylistStatistics();
             }
         };
 

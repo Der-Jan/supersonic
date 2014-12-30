@@ -82,22 +82,17 @@
                 } else {
                     $("#starSong" + id).attr("src", "<spring:theme code='ratingOffImage'/>");
                 }
-                if ($("#title" + id)) {
-                    $("#title" + id).html(song.title);
-                    $("#title" + id).attr("title", song.title);
+                if (!song.present) {
+                    $("#missing" + id).show();
                 }
-                if ($("#album" + id)) {
-                    $("#album" + id).html(song.album);
-                    $("#album" + id).attr("title", song.album);
-                    $("#albumUrl" + id).attr("href", "main.view?id=" + song.id);
-                }
-                if ($("#artist" + id)) {
-                    $("#artist" + id).html(song.artist);
-                    $("#artist" + id).attr("title", song.artist);
-                }
-                if ($("#songDuration" + id)) {
-                    $("#songDuration" + id).html(song.durationAsString);
-                }
+                $("#title" + id).html(song.title);
+                $("#title" + id).attr("title", song.title);
+                $("#album" + id).html(song.album);
+                $("#album" + id).attr("title", song.album);
+                $("#albumUrl" + id).attr("href", "main.view?id=" + song.id);
+                $("#artist" + id).html(song.artist);
+                $("#artist" + id).attr("title", song.artist);
+                $("#songDuration" + id).html(song.durationAsString);
 
                 $("#pattern" + id).addClass((i % 2 == 0) ? "bgcolor2" : "bgcolor1");
 
@@ -138,6 +133,19 @@
         }
 
     </script>
+
+    <style type="text/css">
+        .playlist-missing {
+            color: red;
+            border: 1px solid red;
+            display: none;
+            font-size: 90%;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-right: 5px;
+        }
+    </style>
+
 </head>
 <body class="mainframe bgcolor1" onload="init()">
 
@@ -204,6 +212,7 @@
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
                  style="padding-right:0.1em;cursor:pointer" onclick="onAddNext(this.id.substring(7) - 1)"></td>
 
+        <td class="fit"><span id="missing" class="playlist-missing"><fmt:message key="playlist.missing"/></span></td>
         <td class="truncate"><span id="title" class="songTitle">Title</span></td>
         <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
         <td class="truncate"><span id="artist" class="detail">Artist</span></td>
