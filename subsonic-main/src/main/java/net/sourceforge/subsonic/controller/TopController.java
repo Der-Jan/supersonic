@@ -55,7 +55,6 @@ public class TopController extends ParameterizableViewController {
 
         map.put("user", user);
         map.put("brand", settingsService.getBrand());
-        map.put("licenseInfo", settingsService.getLicenseInfo());
         map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
 
         if (userSettings.isFinalVersionNotificationEnabled() && versionService.isNewFinalVersionAvailable()) {

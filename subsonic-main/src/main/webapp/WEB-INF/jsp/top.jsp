@@ -98,19 +98,6 @@
             </form>
         </td>
 
-        <td style="padding-left:15pt;vertical-align:middle;text-align: center;">
-            <div class="detail">
-                <c:if test="${not model.licenseInfo.licenseValid}">
-                    <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
-                        <fmt:message key="top.getpremium"/></a>
-                    <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
-                        <br>
-                        <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
-                    </c:if>
-                </c:if>
-            </div>
-        </td>
-
         <td style="padding-left:15pt;padding-right:5pt;vertical-align: middle;width: 100%;text-align: center">
 
             <c:if test="${model.showAvatar}">

@@ -2,12 +2,12 @@ DONE IN 5.1
 -------------
 Show toast when adding songs to queue.
 Nicer display of "No media folders found" and "Media folder is being scanned"
+Nicer display of "Get Subsonic Premium".
 
 
 TODO IN 5.1
 --------------
 Nicer display of "New version available"
-Nicer display of "Get Subsonic Premium".
 Playlist files deleted when rescanning and folders disabled.  Use "present" flag instead of deleting entries.
   Also when appending.
 
