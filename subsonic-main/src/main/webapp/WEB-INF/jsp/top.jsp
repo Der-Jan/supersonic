@@ -43,9 +43,6 @@
         <td></td>
         <td colspan="13" style="padding:0;margin:0">
             <c:choose>
-                <c:when test="${not model.musicFoldersExist}">
-                    <span class="warning"><fmt:message key="top.missing"/></span>
-                </c:when>
                 <c:when test="${model.newVersionAvailable}">
                     <span class="warning">
                         <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>

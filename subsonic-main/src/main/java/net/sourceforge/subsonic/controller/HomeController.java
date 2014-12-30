@@ -115,6 +115,7 @@ public class HomeController extends ParameterizableViewController {
         map.put("welcomeSubtitle", settingsService.getWelcomeSubtitle());
         map.put("welcomeMessage", settingsService.getWelcomeMessage());
         map.put("isIndexBeingCreated", mediaScannerService.isScanning());
+        map.put("musicFoldersExist", !settingsService.getAllMusicFolders().isEmpty());
         map.put("listType", listType);
         map.put("listSize", LIST_SIZE);
         map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());

@@ -50,12 +50,10 @@ public class TopController extends ParameterizableViewController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
         User user = securityService.getCurrentUser(request);
         UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
 
         map.put("user", user);
-        map.put("musicFoldersExist", !allMusicFolders.isEmpty());
         map.put("brand", settingsService.getBrand());
         map.put("licenseInfo", settingsService.getLicenseInfo());
         map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
