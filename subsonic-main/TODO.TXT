@@ -10,6 +10,7 @@ Make title clickable in video thumb
 Don't remove songs from playlists if they become unavailable.
 New favicon
 Support starring/unstarring videos.
+Added video category in "Starred".
 
 TODO IN 5.1
 --------------

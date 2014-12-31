@@ -32,6 +32,8 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +61,16 @@ public class StarredController extends ParameterizableViewController {
 
         List<MediaFile> artists = mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username);
         List<MediaFile> albums = mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, null);
-        List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
         mediaFileService.populateStarredDate(artists, username);
         mediaFileService.populateStarredDate(albums, username);
-        mediaFileService.populateStarredDate(songs, username);
+        mediaFileService.populateStarredDate(files, username);
+
+        List<MediaFile> songs = new ArrayList<MediaFile>();
+        List<MediaFile> videos = new ArrayList<MediaFile>();
+        for (MediaFile file : files) {
+            (file.isVideo() ? videos : songs).add(file);
+        }
 
         map.put("user", user);
         map.put("partyModeEnabled", userSettings.isPartyModeEnabled());
@@ -71,6 +79,7 @@ public class StarredController extends ParameterizableViewController {
         map.put("artists", artists);
         map.put("albums", albums);
         map.put("songs", songs);
+        map.put("videos", videos);
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
