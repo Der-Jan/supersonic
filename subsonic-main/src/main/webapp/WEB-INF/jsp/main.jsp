@@ -141,16 +141,8 @@
 </script>
 
 <h1>
-    <a href="#" onclick="toggleStar(${model.dir.id}, '#starImage'); return false;">
-        <c:choose>
-            <c:when test="${not empty model.dir.starredDate}">
-                <img id="starImage" src="<spring:theme code="ratingOnImage"/>" alt="">
-            </c:when>
-            <c:otherwise>
-                <img id="starImage" src="<spring:theme code="ratingOffImage"/>" alt="">
-            </c:otherwise>
-        </c:choose>
-    </a>
+    <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
+         onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
 
     <span style="vertical-align: middle">
         <c:forEach items="${model.ancestors}" var="ancestor">

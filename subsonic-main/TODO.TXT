@@ -14,7 +14,6 @@ Support starring/unstarring videos.
 TODO IN 5.1
 --------------
 Show video preview in Starred
-Simplify starImage onclick
 "Add to playlist" submenu
   http://behigh.github.io/bootstrap_dropdowns_enhancement/
 Lazy create upnp
