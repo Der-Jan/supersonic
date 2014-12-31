@@ -9,9 +9,14 @@ Use img.onclick in playqueue.jsp
 Make title clickable in video thumb
 Don't remove songs from playlists if they become unavailable.
 New favicon
+Support starring/unstarring videos.
 
 TODO IN 5.1
 --------------
+Show video preview in Starred
+Simplify starImage onclick
+"Add to playlist" submenu
+  http://behigh.github.io/bootstrap_dropdowns_enhancement/
 Lazy create upnp
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements
@@ -22,7 +27,6 @@ IntelliJ plugin
 Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
-set window title when playing video
 
 TODO IN 5.2
 ------------
