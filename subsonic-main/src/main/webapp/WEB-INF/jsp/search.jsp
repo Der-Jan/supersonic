@@ -22,7 +22,7 @@
 
 <c:if test="${not empty command.artists}">
     <h2><b><fmt:message key="search.hits.artists"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -48,7 +48,7 @@
 
 <c:if test="${not empty command.albums}">
     <h2><b><fmt:message key="search.hits.albums"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -77,7 +77,7 @@
 
 <c:if test="${not empty command.songs}">
     <h2><b><fmt:message key="search.hits.songs"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">

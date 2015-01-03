@@ -17,7 +17,6 @@ TODO IN 5.1
 --------------
 Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
-"Previous" button should restart current song
 REST: Register play / scrobble
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15030&start=15
 Add SubSonar
@@ -48,7 +47,7 @@ New player controls
   Support with web player / cast / jukebox
   Create screen mocks
   Use html5 audio
-  Drag & drop (play queue and playlists)
+  "Previous" button should restart current song
 
 Avoid scrolling album/artist title
 Find similar tracks / artists
