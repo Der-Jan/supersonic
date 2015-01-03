@@ -82,13 +82,13 @@
 <c:if test="${not empty model.artists}">
     <h2><fmt:message key="search.hits.artists"/></h2>
     <table class="music indent">
-        <c:forEach items="${model.artists}" var="artist" varStatus="loopStatus">
+        <c:forEach items="${model.artists}" var="artist">
 
             <c:url value="/main.view" var="mainUrl">
                 <c:param name="id" value="${artist.id}"/>
             </c:url>
 
-            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
+            <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${artist.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
@@ -108,13 +108,13 @@
 <c:if test="${not empty model.songs}">
     <h2><fmt:message key="search.hits.songs"/></h2>
     <table class="music indent">
-        <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
+        <c:forEach items="${model.songs}" var="song">
 
             <sub:url value="/main.view" var="mainUrl">
                 <sub:param name="path" value="${song.parentPath}"/>
             </sub:url>
 
-            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
+            <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${song.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
@@ -154,13 +154,13 @@
 <c:if test="${not empty model.videos}">
     <h2><fmt:message key="search.hits.videos"/></h2>
     <table class="music indent">
-        <c:forEach items="${model.videos}" var="video" varStatus="loopStatus">
+        <c:forEach items="${model.videos}" var="video">
 
             <c:url value="/videoPlayer.view" var="videoUrl">
                 <c:param name="id" value="${video.id}"/>
             </c:url>
 
-            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
+            <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${video.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>

@@ -7,12 +7,12 @@
 @import "default.css";
 
 /* The primary background color. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-color: #F5F5D0
 }
 
 /* The secondary background color. */
-.bgcolor2, .ruleTableHeader, .log  {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd)  {
     background-color: #CCCC99
 }
 

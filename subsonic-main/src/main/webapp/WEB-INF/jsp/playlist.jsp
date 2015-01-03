@@ -40,6 +40,33 @@
                         $(this).dialog("close");
                     } 
                 }});
+
+            $("#playlistBody").sortable({
+                stop: function(event, ui) {
+                    var indexes = [];
+                    $("#playlistBody").children().each(function() {
+                        var id = $(this).attr("id").replace("pattern", "");
+                        if (id.length > 0) {
+                            indexes.push(parseInt(id) - 1);
+                        }
+                    });
+                    onRearrange(indexes);
+                },
+                cursor: "move",
+                axis: "y",
+                containment: "parent",
+                helper: function(e, tr) {
+                    var originals = tr.children();
+                    var trclone = tr.clone();
+                    trclone.children().each(function(index) {
+                        // Set cloned cell sizes to match the original sizes
+                        $(this).width(originals.eq(index).width());
+                        $(this).css("maxWidth", originals.eq(index).width());
+                    });
+                    return trclone;
+                }
+            });
+
             getPlaylist();
         }
 
@@ -56,7 +83,6 @@
             } else {
                 $("#empty").hide();
             }
-
 
             $("#songCount").html(playlist.fileCount);
             $("#duration").html(playlist.durationAsString);
@@ -94,8 +120,6 @@
                 $("#artist" + id).attr("title", song.artist);
                 $("#songDuration" + id).html(song.durationAsString);
 
-                $("#pattern" + id).addClass((i % 2 == 0) ? "bgcolor2" : "bgcolor1");
-
                 // Note: show() method causes page to scroll to top.
                 $("#pattern" + id).css("display", "table-row");
             }
@@ -119,11 +143,8 @@
         function onRemove(index) {
             playlistService.remove(playlist.id, index, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
         }
-        function onUp(index) {
-            playlistService.up(playlist.id, index, playlistCallback);
-        }
-        function onDown(index) {
-            playlistService.down(playlist.id, index, playlistCallback);
+        function onRearrange(indexes) {
+            playlistService.rearrange(playlist.id, indexes, playlistCallback);
         }
         function onEditPlaylist() {
             $("#dialog-edit").dialog("open");
@@ -192,11 +213,11 @@
     <span id="shared"></span>.
 </div>
 
-<div style="height:0.7em"></div>
+<div style="height:0.7em;clear:both"></div>
 
 <p id="empty" style="display: none;"><em><fmt:message key="playlist2.empty"/></em></p>
 
-<table class="music">
+<table class="music" style="cursor:pointer">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
         <td class="fit">
@@ -222,12 +243,6 @@
             <td class="fit">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
                      style="cursor:pointer" alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></td>
-            <td class="fit">
-                <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
-                     style="cursor:pointer" alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></td>
-            <td class="fit">
-                <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
-                     style="cursor:pointer" alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></td>
         </c:if>
     </tr>
     </tbody>

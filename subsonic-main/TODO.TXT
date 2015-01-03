@@ -14,6 +14,14 @@ Added video category in "Starred".
 
 TODO IN 5.1
 --------------
+Change bg when dragging.
+Clicking "more" in search result makes page scroll to top.
+Make separate category for videos in search.
+"Previous" button should restart current song
+REST: Register play / scrobble
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15030&start=15
+Add SubSonar
+  https://mail.google.com/mail/ca/u/0/#inbox/14aa01ae789743f1
 Show video preview in Starred
 "Add to playlist" submenu
   http://behigh.github.io/bootstrap_dropdowns_enhancement/
@@ -32,6 +40,15 @@ TODO IN 5.2
 ------------
 Larger fonts?
 New player controls
+  Keyboard shortcuts (media buttons / space / arrows, ..)
+  Remove "External player" feature?
+  Remove "Player has dynamic IP address"?
+  Remove "Control player automatically"?
+  Fix bug with multiple current track images.
+  Support with web player / cast / jukebox
+  Create screen mocks
+  Use html5 audio
+  Drag & drop (play queue and playlists)
 
 Avoid scrolling album/artist title
 Find similar tracks / artists

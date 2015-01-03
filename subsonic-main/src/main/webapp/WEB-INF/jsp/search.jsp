@@ -29,7 +29,7 @@
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "artistRow bgcolor2" : "artistRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="artistRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -55,7 +55,7 @@
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "albumRow bgcolor2" : "albumRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="albumRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -84,7 +84,7 @@
                 <sub:param name="path" value="${match.parentPath}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "songRow bgcolor2" : "songRow"}" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
+            <tr class="songRow" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>

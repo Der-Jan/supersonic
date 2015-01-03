@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -188,6 +189,16 @@ public class PlaylistService {
             files.add(index - 1, file);
             playlistService.setFilesInPlaylist(id, files);
         }
+        return getPlaylist(id);
+    }
+
+    public PlaylistInfo rearrange(int id, int[] indexes) {
+        List<MediaFile> files = playlistService.getFilesInPlaylist(id, true);
+        MediaFile[] newFiles = new MediaFile[files.size()];
+        for (int i = 0; i < indexes.length; i++) {
+            newFiles[i] = files.get(indexes[i]);
+        }
+        playlistService.setFilesInPlaylist(id, Arrays.asList(newFiles));
         return getPlaylist(id);
     }
 

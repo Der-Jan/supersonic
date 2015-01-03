@@ -11,12 +11,12 @@ table {
 }
 
 /* The primary background color. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-color: white;
 }
 
 /* The secondary background color. */
-.bgcolor2, .ruleTableHeader, .log {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd) {
     background-color: white;
 }
 

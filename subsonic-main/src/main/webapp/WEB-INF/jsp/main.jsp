@@ -274,16 +274,7 @@
             <table class="music" style="width: 100%">
                 <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
-                    <c:choose>
-                        <c:when test="${loopStatus.count % 2 == 1}">
-                            <c:set var="cssClass" value="class='bgcolor2'"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="cssClass" value=""/>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <tr ${cssClass} style="margin:0;padding:0;border:0">
+                    <tr style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
                             <c:param name="id" value="${song.id}"/>
                             <c:param name="video" value="${song.video and model.player.web}"/>
