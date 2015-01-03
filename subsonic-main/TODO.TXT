@@ -11,6 +11,7 @@ Don't remove songs from playlists if they become unavailable.
 New favicon
 Support starring/unstarring videos.
 Added video category in "Starred".
+Drag and drop to rearrange playlists and play queue.
 
 TODO IN 5.1
 --------------

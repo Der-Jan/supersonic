@@ -353,6 +353,14 @@ public class PlayQueueService {
         return convert(request, player, false);
     }
 
+    public PlayQueueInfo rearrange(int[] indexes) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        Player player = getCurrentPlayer(request, response);
+        player.getPlayQueue().rearrange(indexes);
+        return convert(request, player, false);
+    }
+
     public PlayQueueInfo up(int index) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();

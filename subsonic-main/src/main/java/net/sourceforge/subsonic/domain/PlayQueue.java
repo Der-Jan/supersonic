@@ -287,6 +287,30 @@ public class PlayQueue {
     }
 
     /**
+     * Rearranges the playlist using the provided indexes.
+     */
+    public synchronized void rearrange(int[] indexes) {
+        makeBackup();
+        if (indexes == null || indexes.length != size()) {
+            return;
+        }
+
+        MediaFile[] newFiles = new MediaFile[files.size()];
+        for (int i = 0; i < indexes.length; i++) {
+            newFiles[i] = files.get(indexes[i]);
+        }
+        for (int i = 0; i < indexes.length; i++) {
+            if (index == indexes[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        files.clear();
+        files.addAll(Arrays.asList(newFiles));
+    }
+
+    /**
      * Moves the song at the given index one step up.
      *
      * @param index The playlist index.
