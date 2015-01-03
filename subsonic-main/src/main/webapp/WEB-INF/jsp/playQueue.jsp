@@ -75,6 +75,8 @@
                     // Set cloned cell sizes to match the original sizes
                     $(this).width(originals.eq(index).width());
                     $(this).css("maxWidth", originals.eq(index).width());
+                    $(this).css("border-top", "1px solid black");
+                    $(this).css("border-bottom", "1px solid black");
                 });
                 return trclone;
             }

@@ -15,7 +15,6 @@ Drag and drop to rearrange playlists and play queue.
 
 TODO IN 5.1
 --------------
-Change bg when dragging.
 Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
 "Previous" button should restart current song
