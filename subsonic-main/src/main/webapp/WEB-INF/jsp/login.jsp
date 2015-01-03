@@ -13,7 +13,7 @@
 <body class="mainframe bgcolor1" onload="document.getElementById('j_username').focus()">
 
 <form action="<c:url value="/j_acegi_security_check"/>" method="POST">
-    <div class="bgcolor2" align="center" style="border:1px solid black; padding:20px 50px 20px 50px; margin-top:100px">
+    <div class="bgcolor2 shadow" align="center" style="padding:20px 50px 20px 50px; margin-top:100px;margin-left:50px;margin-right:50px">
 
         <div style="margin-bottom:1em;max-width:50em;text-align:left;"><sub:wiki text="${model.loginMessage}"/></div>
 

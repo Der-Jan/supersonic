@@ -1,23 +1,5 @@
 DONE IN 5.1
 -------------
-Sort artists using locale-specific collation.
-Updated Estonian translation, courtesy of Olav M&auml;gi.
-Instant search (show search results while typing)
-Show song title in browser window title.
-Show similar artists, with radio feature
-REST: Show similar artists, with radio feature
-Artist bio and images
-Video autoplay
-New video page, show slideshow on hover
-Show avatar in upper-right corner
-Automatically show/hide play queue.
-Add "shuffle play" to categories in home page.
-Dim image when hovering
-REST: Also include not-present artists.
-Video playback broken behind proxies.
-Wrong aspect rate for shared videos.
-Upgrade Cling
-Lifetime license.
 
 TODO IN SITE
 ------------
@@ -26,24 +8,24 @@ FAQ for network disks & firewall
 Submuxic
   https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
 Write terms of use.
-Filter home screen on selected music folder
-REST: Added musicFolderId to getAlbumList
 
 TODO IN 5.1
 --------------
-Filter home screen on selected music folder
-  Rename MusicFolder -> MediaFolder
-  Test performance
-Now playing broken?
+Windows firewall: Only opened for private networks.
+Layout improvements
+  Review use of "detail" in music tables.
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
-Reuse videoPlayer.jsp for shared videos?
-Remove ads? Only show internal ad.
 IntelliJ plugin
 Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 set window title when playing video
+
+TODO IN 5.2
+------------
+Larger fonts?
+New player controls
 
 Avoid scrolling album/artist title
 Find similar tracks / artists

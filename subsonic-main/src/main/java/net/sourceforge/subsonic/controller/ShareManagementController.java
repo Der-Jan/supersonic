@@ -104,7 +104,7 @@ public class ShareManagementController extends MultiActionController {
             if (indexes.length == 0) {
                 return Arrays.asList(album);
             }
-            List<MediaFile> children = mediaFileService.getChildrenOf(album, true, true, true);
+            List<MediaFile> children = mediaFileService.getChildrenOf(album, true, false, true);
             for (int index : indexes) {
                 result.add(children.get(index));
             }

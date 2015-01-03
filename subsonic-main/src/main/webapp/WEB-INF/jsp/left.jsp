@@ -14,10 +14,10 @@
             dwr.engine.setErrorHandler(null);
             updatePlaylists();
 
-            var mainLocation = top.frames["main"].location.href;
+            var mainLocation = top.main.location.href;
             if (${model.mediaFolderChanged}) {
                 if (mainLocation.indexOf("/home.view") != -1) {
-                    top.frames["main"].location.href = mainLocation;
+                    top.main.location.href = mainLocation;
                 }
             }
         }
@@ -150,7 +150,7 @@
                         <sub:param name="id" value="${mediaFile.id}"/>
                     </c:forEach>
                 </sub:url>
-                <a target="main" href="${mainUrl}"><str:truncateNicely upper="${model.captionCutoff}">${artist.name}</str:truncateNicely></a>
+                <a target="main" href="${mainUrl}"><str:truncateNicely upper="${35}">${artist.name}</str:truncateNicely></a>
             </span>
         </p>
     </c:forEach>
@@ -168,7 +168,7 @@
                 <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
                 <c:param name="video" value="${song.video and model.player.web}"/>
             </c:import>
-            <str:truncateNicely upper="${model.captionCutoff}">${song.title}</str:truncateNicely>
+            <str:truncateNicely upper="${35}">${song.title}</str:truncateNicely>
         </span>
     </p>
 </c:forEach>

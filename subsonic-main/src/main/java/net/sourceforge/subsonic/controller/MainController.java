@@ -83,6 +83,19 @@ public class MainController extends AbstractController {
         }
 
         List<MediaFile> children = mediaFiles.size() == 1 ? mediaFileService.getChildrenOf(dir, true, true, true) : getMultiFolderChildren(mediaFiles);
+        List<MediaFile> songs = new ArrayList<MediaFile>();
+        List<MediaFile> relatedAlbums = new ArrayList<MediaFile>();
+        for (MediaFile child : children) {
+            if (child.isFile()) {
+                songs.add(child);
+            } else {
+                relatedAlbums.add(child);
+            }
+        }
+        if (dir.isAlbum()) {
+            relatedAlbums.addAll(getSieblingAlbums(dir));
+        }
+
         String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(username);
 
@@ -90,22 +103,21 @@ public class MainController extends AbstractController {
         mediaFileService.populateStarredDate(children, username);
 
         map.put("dir", dir);
+        map.put("songs", songs);
+        map.put("relatedAlbums", relatedAlbums);
         map.put("ancestors", getAncestors(dir));
-        map.put("children", children);
         map.put("artist", guessArtist(children));
         map.put("album", guessAlbum(children));
+        map.put("coverArtSizeMedium", CoverArtScheme.MEDIUM.getSize());
+        map.put("coverArtSizeLarge", CoverArtScheme.LARGE.getSize());
         map.put("player", player);
-        map.put("sieblingCoverArtScheme", CoverArtScheme.SMALL);
         map.put("user", securityService.getCurrentUser(request));
         map.put("visibility", userSettings.getMainVisibility());
         map.put("showAlbumYear", settingsService.isSortAlbumsByYear());
         map.put("showArtistInfo", userSettings.isShowArtistInfoEnabled());
-        map.put("updateNowPlaying", request.getParameter("updateNowPlaying") != null);
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("brand", settingsService.getBrand());
-        if (!settingsService.isLicenseValid()) {
-            map.put("ad", adService.getAd());
-        }
+        map.put("showAd", !settingsService.isLicenseValid() && adService.showAd());
 
         try {
             MediaFile parent = mediaFileService.getParentOf(dir);
@@ -130,14 +142,16 @@ public class MainController extends AbstractController {
         map.put("averageRating", Math.round(10.0D * averageRating));
         map.put("starred", mediaFileService.getMediaFileStarredDate(dir.getId(), username) != null);
 
-        CoverArtScheme scheme = player.getCoverArtScheme();
-        if (scheme != CoverArtScheme.OFF) {
-            List<MediaFile> coverArts = getCoverArts(dir, children);
-            map.put("coverArts", coverArts);
-            setSieblingAlbums(dir, map);
+        String view;
+        if (isVideoOnly(children)) {
+            view = "videoMain";
+        } else if (dir.isAlbum()) {
+            view = "main";
+        } else {
+            view = "artistMain";
         }
 
-        ModelAndView result = new ModelAndView(isVideoOnly(children) ? "videoMain" : "main");
+        ModelAndView result = new ModelAndView(view);
         result.addObject("model", map);
         return result;
     }
@@ -190,28 +204,6 @@ public class MainController extends AbstractController {
         return null;
     }
 
-    private List<MediaFile> getCoverArts(MediaFile dir, List<MediaFile> children) throws IOException {
-        int limit = settingsService.getCoverArtLimit();
-        if (limit == 0) {
-            limit = Integer.MAX_VALUE;
-        }
-
-        List<MediaFile> coverArts = new ArrayList<MediaFile>();
-        if (dir.isAlbum()) {
-            coverArts.add(dir);
-        } else {
-            for (MediaFile child : children) {
-                if (child.isAlbum()) {
-                    coverArts.add(child);
-                    if (coverArts.size() >= limit) {
-                        break;
-                    }
-                }
-            }
-        }
-        return coverArts;
-    }
-
     private List<MediaFile> getMultiFolderChildren(List<MediaFile> mediaFiles) throws IOException {
         SortedSet<MediaFile> result = new TreeSet<MediaFile>(new MediaFileComparator(settingsService.isSortAlbumsByYear()));
         for (MediaFile mediaFile : mediaFiles) {
@@ -238,22 +230,16 @@ public class MainController extends AbstractController {
         return result;
     }
 
-    private void setSieblingAlbums(MediaFile dir, Map<String, Object> map) throws IOException {
-        MediaFile parent = mediaFileService.getParentOf(dir);
+    private List<MediaFile> getSieblingAlbums(MediaFile dir) {
+        List<MediaFile> result = new ArrayList<MediaFile>();
 
-        if (dir.isAlbum() && !mediaFileService.isRoot(parent)) {
+        MediaFile parent = mediaFileService.getParentOf(dir);
+        if (!mediaFileService.isRoot(parent)) {
             List<MediaFile> sieblings = mediaFileService.getChildrenOf(parent, false, true, true);
             sieblings.remove(dir);
-
-            int limit = settingsService.getCoverArtLimit();
-            if (limit == 0) {
-                limit = Integer.MAX_VALUE;
-            }
-            if (sieblings.size() > limit) {
-                sieblings = sieblings.subList(0, limit);
-            }
-            map.put("sieblingAlbums", sieblings);
+            result.addAll(sieblings);
         }
+        return result;
     }
 
     public void setSecurityService(SecurityService securityService) {

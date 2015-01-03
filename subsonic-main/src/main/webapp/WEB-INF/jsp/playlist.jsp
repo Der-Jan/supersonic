@@ -34,7 +34,7 @@
                 buttons: {
                     "<fmt:message key="common.delete"/>": function() {
                         $(this).dialog("close");
-                        playlistService.deletePlaylist(playlist.id, function (){top.left.updatePlaylists(); location = "home.view";});
+                        playlistService.deletePlaylist(playlist.id, function (){top.left.updatePlaylists(); location = "playlists.view";});
                     },
                     "<fmt:message key="common.cancel"/>": function() {
                         $(this).dialog("close");
@@ -83,16 +83,16 @@
                     $("#starSong" + id).attr("src", "<spring:theme code='ratingOffImage'/>");
                 }
                 if ($("#title" + id)) {
-                    $("#title" + id).html(truncate(song.title));
+                    $("#title" + id).html(song.title);
                     $("#title" + id).attr("title", song.title);
                 }
                 if ($("#album" + id)) {
-                    $("#album" + id).html(truncate(song.album));
+                    $("#album" + id).html(song.album);
                     $("#album" + id).attr("title", song.album);
                     $("#albumUrl" + id).attr("href", "main.view?id=" + song.id);
                 }
                 if ($("#artist" + id)) {
-                    $("#artist" + id).html(truncate(song.artist));
+                    $("#artist" + id).html(song.artist);
                     $("#artist" + id).attr("title", song.artist);
                 }
                 if ($("#songDuration" + id)) {
@@ -104,18 +104,6 @@
                 // Note: show() method causes page to scroll to top.
                 $("#pattern" + id).css("display", "table-row");
             }
-        }
-
-        function truncate(s) {
-            if (s == null) {
-                return s;
-            }
-            var cutoff = 30;
-
-            if (s.length > cutoff) {
-                return s.substring(0, cutoff) + "...";
-            }
-            return s;
         }
 
         function onPlay(index) {
@@ -153,7 +141,14 @@
 </head>
 <body class="mainframe bgcolor1" onload="init()">
 
-<h1 id="name">${model.playlist.name}</h1>
+<div style="float:left;margin-right:1.5em;margin-bottom:1.5em">
+<c:import url="coverArt.jsp">
+    <c:param name="playlistId" value="${model.playlist.id}"/>
+    <c:param name="coverArtSize" value="200"/>
+</c:import>
+</div>
+
+<h1 id="name"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; ${model.playlist.name}</h1>
 <h2>
     <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
@@ -177,51 +172,53 @@
 <div id="comment" class="detail" style="padding-top:0.2em">${model.playlist.comment}</div>
 
 <div class="detail" style="padding-top:0.2em">
+    <span id="songCount"></span> <fmt:message key="playlist2.songs"/> &ndash; <span id="duration"></span>
+</div>
+<div class="detail" style="padding-top:0.2em">
     <fmt:message key="playlist2.created">
         <fmt:param>${model.playlist.username}</fmt:param>
         <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.playlist.created}"/></fmt:param>
     </fmt:message>.
+</div>
+<div class="detail" style="padding-top:0.2em">
     <span id="shared"></span>.
-    <span id="songCount"></span> <fmt:message key="playlist2.songs"/> (<span id="duration"></span>)
 </div>
 
 <div style="height:0.7em"></div>
 
 <p id="empty" style="display: none;"><em><fmt:message key="playlist2.empty"/></em></p>
 
-<table style="border-collapse:collapse;white-space:nowrap">
+<table class="music">
     <tbody id="playlistBody">
     <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
-        <td style="padding-left:0.5em;padding-right:0.5em"><a href="javascript:void(0)">
+        <td class="fit"><a href="javascript:void(0)">
             <img id="starSong" onclick="onStar(this.id.substring(8) - 1)" src="<spring:theme code="ratingOffImage"/>" alt="" title=""></a></td>
-        <td><a href="javascript:void(0)">
+        <td class="fit"><a href="javascript:void(0)">
             <img id="play" src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"
                  style="padding-right: 0.1em" onclick="onPlay(this.id.substring(4) - 1)"></a></td>
-        <td><a href="javascript:void(0)">
+        <td class="fit"><a href="javascript:void(0)">
             <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
                  style="padding-right: 0.1em" onclick="onAdd(this.id.substring(3) - 1)"></a></td>
-        <td><a href="javascript:void(0)">
+        <td class="fit" style="padding-right:30px"><a href="javascript:void(0)">
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
                  style="padding-right: 0.1em" onclick="onAddNext(this.id.substring(7) - 1)"></a></td>
 
-        <td style="padding-right:0.25em"></td>
-        <td style="padding-right:1.25em"><span id="title" class="songTitle">Title</span></td>
-        <td style="padding-right:1.25em"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
-        <td style="padding-right:1.25em"><span id="artist" class="detail">Artist</span></td>
-        <td style="padding-right:1.25em;text-align:right;"><span id="songDuration" class="detail">Duration</span></td>
+        <td class="truncate"><span id="title" class="songTitle">Title</span></td>
+        <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
+        <td class="truncate"><span id="artist" class="detail">Artist</span></td>
+        <td class="fit rightalign"><span id="songDuration" class="detail">Duration</span></td>
 
         <c:if test="${model.editAllowed}">
-            <td><a href="javascript:void(0)">
+            <td class="fit"><a href="javascript:void(0)">
                 <img id="removeSong" onclick="onRemove(this.id.substring(10) - 1)" src="<spring:theme code="removeImage"/>"
                      alt="<fmt:message key="playlist.remove"/>" title="<fmt:message key="playlist.remove"/>"></a></td>
-            <td><a href="javascript:void(0)">
+            <td class="fit"><a href="javascript:void(0)">
                 <img id="up" onclick="onUp(this.id.substring(2) - 1)" src="<spring:theme code="upImage"/>"
                      alt="<fmt:message key="playlist.up"/>" title="<fmt:message key="playlist.up"/>"></a></td>
-            <td><a href="javascript:void(0)">
+            <td class="fit"><a href="javascript:void(0)">
                 <img id="down" onclick="onDown(this.id.substring(4) - 1)" src="<spring:theme code="downImage"/>"
                      alt="<fmt:message key="playlist.down"/>" title="<fmt:message key="playlist.down"/>"></a></td>
         </c:if>
-
     </tr>
     </tbody>
 </table>

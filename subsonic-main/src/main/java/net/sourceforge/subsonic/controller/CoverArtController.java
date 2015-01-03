@@ -31,6 +31,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -51,9 +55,11 @@ import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.Transcoding;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlaylistService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
@@ -68,12 +74,14 @@ public class CoverArtController implements Controller, LastModified {
 
     public static final String ALBUM_COVERART_PREFIX = "al-";
     public static final String ARTIST_COVERART_PREFIX = "ar-";
+    public static final String PLAYLIST_COVERART_PREFIX = "pl-";
 
     private static final Logger LOG = Logger.getLogger(CoverArtController.class);
 
     private MediaFileService mediaFileService;
     private TranscodingService transcodingService;
     private SettingsService settingsService;
+    private PlaylistService playlistService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -129,6 +137,9 @@ public class CoverArtController implements Controller, LastModified {
         if (id.startsWith(ARTIST_COVERART_PREFIX)) {
             return createArtistCoverArtRequest(Integer.valueOf(id.replace(ARTIST_COVERART_PREFIX, "")));
         }
+        if (id.startsWith(PLAYLIST_COVERART_PREFIX)) {
+            return createPlaylistCoverArtRequest(Integer.valueOf(id.replace(PLAYLIST_COVERART_PREFIX, "")));
+        }
         return createMediaFileCoverArtRequest(Integer.valueOf(id), request);
     }
 
@@ -140,6 +151,11 @@ public class CoverArtController implements Controller, LastModified {
     private CoverArtRequest createArtistCoverArtRequest(int id) {
         Artist artist = artistDao.getArtist(id);
         return artist == null ? null : new ArtistCoverArtRequest(artist);
+    }
+
+    private PlaylistCoverArtRequest createPlaylistCoverArtRequest(int id) {
+        Playlist playlist = playlistService.getPlaylist(id);
+        return playlist == null ? null : new PlaylistCoverArtRequest(playlist);
     }
 
     private CoverArtRequest createMediaFileCoverArtRequest(int id, HttpServletRequest request) {
@@ -318,6 +334,10 @@ public class CoverArtController implements Controller, LastModified {
         this.settingsService = settingsService;
     }
 
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
+
     private abstract class CoverArtRequest {
 
         protected File coverArt;
@@ -433,6 +453,74 @@ public class CoverArtController implements Controller, LastModified {
         @Override
         public String toString() {
             return "Album " + album.getId() + " - " + album.getName();
+        }
+    }
+
+    private class PlaylistCoverArtRequest extends CoverArtRequest {
+
+        private final Playlist playlist;
+
+        private PlaylistCoverArtRequest(Playlist playlist) {
+            super(null);
+            this.playlist = playlist;
+        }
+
+        @Override
+        public String getKey() {
+            return PLAYLIST_COVERART_PREFIX + playlist.getId();
+        }
+
+        @Override
+        public long lastModified() {
+            return playlist.getChanged().getTime();
+        }
+
+        @Override
+        public String getAlbum() {
+            return null;
+        }
+
+        @Override
+        public String getArtist() {
+            return playlist.getName();
+        }
+
+        @Override
+        public String toString() {
+            return "Playlist " + playlist.getId() + " - " + playlist.getName();
+        }
+
+        @Override
+        public BufferedImage createImage(int size) {
+            List<MediaFile> albums = getRepresentativeAlbums();
+            if (albums.isEmpty()) {
+                return createAutoCover(size, size);
+            }
+            if (albums.size() < 4) {
+                return new MediaFileCoverArtRequest(albums.get(0)).createImage(size);
+            }
+
+            BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = image.createGraphics();
+
+            int half = size / 2;
+            graphics.drawImage(new MediaFileCoverArtRequest(albums.get(0)).createImage(half), null, 0, 0);
+            graphics.drawImage(new MediaFileCoverArtRequest(albums.get(1)).createImage(half), null, half, 0);
+            graphics.drawImage(new MediaFileCoverArtRequest(albums.get(2)).createImage(half), null, 0, half);
+            graphics.drawImage(new MediaFileCoverArtRequest(albums.get(3)).createImage(half), null, half, half);
+            graphics.dispose();
+            return image;
+        }
+
+        private List<MediaFile> getRepresentativeAlbums() {
+            Set<MediaFile> albums = new LinkedHashSet<MediaFile>();
+            for (MediaFile song : playlistService.getFilesInPlaylist(playlist.getId())) {
+                MediaFile album = mediaFileService.getParentOf(song);
+                if (album != null && !mediaFileService.isRoot(album)) {
+                    albums.add(album);
+                }
+            }
+            return new ArrayList<MediaFile>(albums);
         }
     }
 
@@ -579,9 +667,6 @@ public class CoverArtController implements Controller, LastModified {
             graphics.fillRect(width - borderWidth, 0, height - borderWidth, height);
             graphics.fillRect(0, 0, width, borderWidth);
             graphics.fillRect(0, height - borderWidth, width, height);
-
-            graphics.setColor(Color.BLACK);
-            graphics.drawRect(0, 0, width - 1, height - 1);
         }
     }
 }

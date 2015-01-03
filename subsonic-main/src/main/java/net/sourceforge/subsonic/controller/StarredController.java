@@ -67,10 +67,10 @@ public class StarredController extends ParameterizableViewController {
         map.put("user", user);
         map.put("partyModeEnabled", userSettings.isPartyModeEnabled());
         map.put("player", playerService.getPlayer(request, response));
+        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         map.put("artists", artists);
         map.put("albums", albums);
         map.put("songs", songs);
-        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;

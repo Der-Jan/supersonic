@@ -1172,7 +1172,6 @@ public class SettingsService {
         settings.setChanged(new Date());
 
         UserSettings.Visibility playlist = settings.getPlaylistVisibility();
-        playlist.setCaptionCutoff(35);
         playlist.setArtistVisible(true);
         playlist.setAlbumVisible(true);
         playlist.setYearVisible(true);
@@ -1182,7 +1181,6 @@ public class SettingsService {
         playlist.setFileSizeVisible(true);
 
         UserSettings.Visibility main = settings.getMainVisibility();
-        main.setCaptionCutoff(35);
         main.setTrackNumberVisible(true);
         main.setArtistVisible(true);
         main.setDurationVisible(true);

@@ -88,6 +88,25 @@
     </c:forEach>
 </table>
 
+<table style="width:100%;padding-top:3em">
+    <tr>
+        <th><fmt:message key="home.chart.total"/></th>
+        <th><fmt:message key="home.chart.stream"/></th>
+    </tr>
+    <tr>
+        <td><img src="<c:url value="/userChart.view"><c:param name="type" value="total"/></c:url>" alt=""></td>
+        <td><img src="<c:url value="/userChart.view"><c:param name="type" value="stream"/></c:url>" alt=""></td>
+    </tr>
+    <tr>
+        <th><fmt:message key="home.chart.download"/></th>
+        <th><fmt:message key="home.chart.upload"/></th>
+    </tr>
+    <tr>
+        <td><img src="<c:url value="/userChart.view"><c:param name="type" value="download"/></c:url>" alt=""></td>
+        <td><img src="<c:url value="/userChart.view"><c:param name="type" value="upload"/></c:url>" alt=""></td>
+    </tr>
+</table>
+
 <div class="forward"><a href="status.view?"><fmt:message key="common.refresh"/></a></div>
 
 </body></html>

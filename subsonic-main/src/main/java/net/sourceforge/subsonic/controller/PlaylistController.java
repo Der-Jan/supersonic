@@ -18,9 +18,11 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
@@ -35,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Controller for the main page.
+ * Controller for the playlist page.
  *
  * @author Sindre Mehus
  */
@@ -44,6 +46,7 @@ public class PlaylistController extends ParameterizableViewController {
     private SecurityService securityService;
     private PlaylistService playlistService;
     private SettingsService settingsService;
+    private PlayerService playerService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -53,6 +56,7 @@ public class PlaylistController extends ParameterizableViewController {
         User user = securityService.getCurrentUser(request);
         String username = user.getUsername();
         UserSettings userSettings = settingsService.getUserSettings(username);
+        Player player = playerService.getPlayer(request, response);
         Playlist playlist = playlistService.getPlaylist(id);
         if (playlist == null) {
             return new ModelAndView(new RedirectView("notFound.view"));
@@ -60,6 +64,7 @@ public class PlaylistController extends ParameterizableViewController {
 
         map.put("playlist", playlist);
         map.put("user", user);
+        map.put("player", player);
         map.put("editAllowed", username.equals(playlist.getUsername()) || securityService.isAdmin(username));
         map.put("partyMode", userSettings.isPartyModeEnabled());
 
@@ -78,5 +83,9 @@ public class PlaylistController extends ParameterizableViewController {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
     }
 }

@@ -245,7 +245,6 @@ public class UserSettings {
      * Configuration of what information to display about a song.
      */
     public static class Visibility {
-        private int captionCutoff;
         private boolean isTrackNumberVisible;
         private boolean isArtistVisible;
         private boolean isAlbumVisible;
@@ -258,10 +257,9 @@ public class UserSettings {
 
         public Visibility() {}
 
-        public Visibility(int captionCutoff, boolean trackNumberVisible, boolean artistVisible, boolean albumVisible,
+        public Visibility(boolean trackNumberVisible, boolean artistVisible, boolean albumVisible,
                           boolean genreVisible, boolean yearVisible, boolean bitRateVisible,
                           boolean durationVisible, boolean formatVisible, boolean fileSizeVisible) {
-            this.captionCutoff = captionCutoff;
             isTrackNumberVisible = trackNumberVisible;
             isArtistVisible = artistVisible;
             isAlbumVisible = albumVisible;
@@ -271,14 +269,6 @@ public class UserSettings {
             isDurationVisible = durationVisible;
             isFormatVisible = formatVisible;
             isFileSizeVisible = fileSizeVisible;
-        }
-
-        public int getCaptionCutoff() {
-            return captionCutoff;
-        }
-
-        public void setCaptionCutoff(int captionCutoff) {
-            this.captionCutoff = captionCutoff;
         }
 
         public boolean isTrackNumberVisible() {

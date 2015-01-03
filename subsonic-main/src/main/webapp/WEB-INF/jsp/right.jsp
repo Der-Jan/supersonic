@@ -167,7 +167,7 @@
 
     <h2><fmt:message key="main.chat"/></h2>
     <div style="padding-top:0.3em;padding-bottom:0.3em">
-        <input id="message" value=" <fmt:message key="main.message"/>" style="width:100%" onclick="dwr.util.setValue('message', null);" onkeypress="dwr.util.onReturn(event, addMessage)"/>
+        <input type="text" id="message" value=" <fmt:message key="main.message"/>" style="width:100%" onclick="dwr.util.setValue('message', null);" onkeypress="dwr.util.onReturn(event, addMessage)"/>
     </div>
 
     <table>

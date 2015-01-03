@@ -22,7 +22,7 @@
 
 <c:if test="${not empty command.artists}">
     <h2><b><fmt:message key="search.hits.artists"/></b></h2>
-    <table style="border-collapse:collapse">
+    <table class="music">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -36,9 +36,7 @@
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td style="padding-left:0.25em;padding-right:1.25em">
-                    <a href="${mainUrl}">${match.name}</a>
-                </td>
+                <td class="truncate"><a href="${mainUrl}">${match.name}</a></td>
             </tr>
 
             </c:forEach>
@@ -50,7 +48,7 @@
 
 <c:if test="${not empty command.albums}">
     <h2><b><fmt:message key="search.hits.albums"/></b></h2>
-    <table style="border-collapse:collapse">
+    <table class="music">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -65,13 +63,8 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td style="padding-left:0.25em;padding-right:1.25em">
-                    <a href="${mainUrl}">${match.albumName}</a>
-                </td>
-
-                <td style="padding-right:0.25em">
-                    <span class="detail">${match.artist}</span>
-                </td>
+                <td class="truncate"><a href="${mainUrl}">${match.albumName}</a></td>
+                <td class="truncate"><span class="detail">${match.artist}</span></td>
             </tr>
 
             </c:forEach>
@@ -84,7 +77,7 @@
 
 <c:if test="${not empty command.songs}">
     <h2><b><fmt:message key="search.hits.songs"/></b></h2>
-    <table style="border-collapse:collapse">
+    <table class="music">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
@@ -100,17 +93,9 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td style="padding-left:0.25em;padding-right:1.25em">
-                        <span class="songTitle">${match.title}</span>
-                </td>
-
-                <td style="padding-right:1.25em">
-                    <a href="${mainUrl}"><span class="detail">${match.albumName}</span></a>
-                </td>
-
-                <td style="padding-right:0.25em">
-                    <span class="detail">${match.artist}</span>
-                </td>
+                <td class="truncate"><span class="songTitle">${match.title}</span></td>
+                <td class="truncate"><a href="${mainUrl}"><span class="detail">${match.albumName}</span></a></td>
+                <td class="truncate"><span class="detail">${match.artist}</span></td>
             </tr>
 
             </c:forEach>

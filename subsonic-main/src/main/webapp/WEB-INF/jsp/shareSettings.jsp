@@ -15,7 +15,7 @@
 
 <form method="post" action="shareSettings.view">
 
-    <table class="indent" style="border-collapse:collapse;white-space:nowrap">
+    <table class="music indent">
         <tr>
             <th style="padding-left:1em"><fmt:message key="sharesettings.name"/></th>
             <th style="padding-left:1em"><fmt:message key="sharesettings.owner"/></th>

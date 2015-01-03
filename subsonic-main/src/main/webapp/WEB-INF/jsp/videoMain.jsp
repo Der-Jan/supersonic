@@ -64,12 +64,6 @@
     </script>
 
     <style type="text/css">
-        .videoContainer {
-            width: 213px;
-            float: left;
-            padding-right: 14px;
-            padding-bottom: 10px;
-        }
         .duration {
             position: absolute;
             bottom: 3px;
@@ -79,12 +73,6 @@
             opacity: 0.8;
             padding-right:3px;
             padding-left:3px;
-        }
-        .title {
-            width:213px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-top: 3px;
         }
         .directory {
             width: 213px;
@@ -107,7 +95,7 @@
     </span>
 </h1>
 
-<c:forEach items="${model.children}" var="child">
+<c:forEach items="${model.songs}" var="child">
     <c:if test="${child.video}">
 
         <sub:url value="/videoPlayer.view" var="videoUrl">
@@ -118,16 +106,18 @@
             <sub:param name="size" value="120"/>
         </sub:url>
 
-        <div class="videoContainer">
-            <div style="position:relative">
-                <div>
-                    <a href="${videoUrl}"><img src="${coverArtUrl}" alt="" class="dropshadow"
-                                               onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
-                                               onmouseout="stopPreview()"></a>
+        <div class="albumThumb">
+            <div class="coverart dropshadow" style="width:213px">
+                <div style="position:relative">
+                    <div>
+                        <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
+                                                   onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                                   onmouseout="stopPreview()"></a>
+                    </div>
+                    <div class="detail duration">${child.durationString}</div>
                 </div>
-                <div class="detail duration">${child.durationString}</div>
+                <div class="caption1" title="${child.name}">${child.name}</div>
             </div>
-            <div class="detail title" title="${child.name}"><b>${child.name}</b></div>
         </div>
     </c:if>
 
@@ -135,24 +125,22 @@
 
 <div style="clear:both;padding-top: 1em">
     <c:set var="cssClass" value="directory"/>
-    <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
-        <c:if test="${child.directory}">
-            <c:choose>
-                <c:when test="${cssClass eq 'directory'}">
-                    <c:set var="cssClass" value="bgcolor2 directory"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="cssClass" value="directory"/>
-                </c:otherwise>
-            </c:choose>
-            <sub:url value="main.view" var="childUrl">
-                <sub:param name="id" value="${child.id}"/>
-            </sub:url>
+    <c:forEach items="${model.relatedAlbums}" var="child" varStatus="loopStatus">
+        <c:choose>
+            <c:when test="${cssClass eq 'directory'}">
+                <c:set var="cssClass" value="bgcolor2 directory"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="cssClass" value="directory"/>
+            </c:otherwise>
+        </c:choose>
+        <sub:url value="main.view" var="childUrl">
+            <sub:param name="id" value="${child.id}"/>
+        </sub:url>
 
-            <div class="${cssClass}">
-                <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
-            </div>
-        </c:if>
+        <div class="${cssClass}">
+            <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
+        </div>
     </c:forEach>
 </div>
 

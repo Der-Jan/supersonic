@@ -117,9 +117,9 @@ public class HomeController extends ParameterizableViewController {
         map.put("isIndexBeingCreated", mediaScannerService.isScanning());
         map.put("listType", listType);
         map.put("listSize", LIST_SIZE);
+        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         map.put("listOffset", listOffset);
         map.put("mediaFolder", mediaFolder);
-        map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

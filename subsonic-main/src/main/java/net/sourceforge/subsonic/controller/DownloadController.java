@@ -118,7 +118,7 @@ public class DownloadController implements Controller, LastModified {
                 if (mediaFile.isFile()) {
                     downloadFile(response, status, mediaFile.getFile(), range);
                 } else {
-                    List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, true, true);
+                    List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, false, true);
                     String zipFileName = FilenameUtils.getBaseName(mediaFile.getPath()) + ".zip";
                     downloadFiles(response, status, children, indexes, range, zipFileName);
                 }

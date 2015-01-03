@@ -69,10 +69,6 @@ public class SearchController extends SimpleFormController {
 
         if (query != null) {
 
-            if (!query.endsWith("*")) {
-                query += "*";
-            }
-
             SearchCriteria criteria = new SearchCriteria();
             criteria.setCount(MATCH_COUNT);
             criteria.setQuery(query);

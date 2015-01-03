@@ -3,7 +3,6 @@ package net.sourceforge.subsonic.dao;
 import java.util.Date;
 import java.util.List;
 
-import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PlayerTechnology;
 import net.sourceforge.subsonic.domain.PlayQueue;
@@ -32,7 +31,6 @@ public class PlayerDaoTestCase extends DaoTestCaseBase {
         player.setTechnology(PlayerTechnology.EXTERNAL_WITH_PLAYLIST);
         player.setClientId("android");
         player.setLastSeen(new Date());
-        player.setCoverArtScheme(CoverArtScheme.LARGE);
         player.setTranscodeScheme(TranscodeScheme.MAX_160);
 
         playerDao.createPlayer(player);
@@ -124,7 +122,6 @@ public class PlayerDaoTestCase extends DaoTestCaseBase {
         player.setDynamicIp(true);
         player.setAutoControlEnabled(false);
         player.setLastSeen(new Date());
-        player.setCoverArtScheme(CoverArtScheme.LARGE);
         player.setTranscodeScheme(TranscodeScheme.MAX_160);
 
         playerDao.updatePlayer(player);
@@ -159,7 +156,6 @@ public class PlayerDaoTestCase extends DaoTestCaseBase {
         assertEquals("Wrong dynamic IP.", expected.isDynamicIp(), actual.isDynamicIp());
         assertEquals("Wrong auto control enabled.", expected.isAutoControlEnabled(), actual.isAutoControlEnabled());
         assertEquals("Wrong last seen.", expected.getLastSeen(), actual.getLastSeen());
-        assertEquals("Wrong cover art scheme.", expected.getCoverArtScheme(), actual.getCoverArtScheme());
         assertEquals("Wrong transcode scheme.", expected.getTranscodeScheme(), actual.getTranscodeScheme());
     }
 }

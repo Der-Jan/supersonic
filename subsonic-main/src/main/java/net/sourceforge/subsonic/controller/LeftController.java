@@ -146,7 +146,6 @@ public class LeftController extends ParameterizableViewController {
         map.put("selectedMusicFolder", selectedMusicFolder);
         map.put("radios", settingsService.getAllInternetRadios());
         map.put("shortcuts", getShortcuts(musicFoldersToUse, shortcuts));
-        map.put("captionCutoff", userSettings.getMainVisibility().getCaptionCutoff());
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
         map.put("mediaFolderChanged", mediaFolderChanged);

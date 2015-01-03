@@ -563,6 +563,7 @@ public class RESTController extends MultiActionController {
         jaxbPlaylist.setSongCount(playlist.getFileCount());
         jaxbPlaylist.setDuration(playlist.getDurationSeconds());
         jaxbPlaylist.setCreated(jaxbWriter.convertDate(playlist.getCreated()));
+        jaxbPlaylist.setCoverArt(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId());
 
         for (String username : playlistService.getPlaylistUsers(playlist.getId())) {
             jaxbPlaylist.getAllowedUser().add(username);

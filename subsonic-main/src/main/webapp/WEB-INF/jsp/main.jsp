@@ -5,19 +5,12 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <c:if test="${not model.updateNowPlaying}">
-        <meta http-equiv="refresh" content="180;URL=nowPlaying.view?">
-    </c:if>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
-
-    <style type="text/css">
-        .coverart { float: left; padding-left:10px; padding-right:10px; padding-bottom:20px }
-    </style>
 
 </head><body class="mainframe bgcolor1" onload="init();">
 
@@ -52,7 +45,7 @@
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
                             artistInfo.similarArtists[i].artistName + "</a>";
                     if (i < artistInfo.similarArtists.length - 1) {
-                        html += " | ";
+                        html += " <span class='similar-artist-divider'>|</span> ";
                     }
                 }
                 $("#similarArtists").append(html);
@@ -60,16 +53,6 @@
                 $("#similarArtistsTitle").show();
                 $("#similarArtistsRadio").show();
             }
-
-            <c:if test="${model.dir.directory and not model.dir.album}">
-            if (artistInfo.artistBio && artistInfo.artistBio.biography) {
-                $("#artistBio").append(artistInfo.artistBio.biography);
-                if (artistInfo.artistBio.mediumImageUrl) {
-                    $("#artistImage").attr("src", artistInfo.artistBio.mediumImageUrl);
-                    $("#artistImage").show();
-                }
-            }
-            </c:if>
         });
     }
 
@@ -84,9 +67,9 @@
         } else if (id == "selectNone") {
             selectAll(false);
         } else if (id == "share" && selectedIndexes != "") {
-            parent.frames.main.location.href = "${shareUrl}&" + selectedIndexes;
+            location.href = "${shareUrl}&" + selectedIndexes;
         } else if (id == "download" && selectedIndexes != "") {
-            location.href = "${downloadUrl}&" + getSelectedIndexes();
+            location.href = "${downloadUrl}&" + selectedIndexes;
         } else if (id == "appendPlaylist" && selectedIndexes != "") {
             onAppendPlaylist();
         }
@@ -95,7 +78,7 @@
 
     function getSelectedIndexes() {
         var result = "";
-        for (var i = 0; i < ${fn:length(model.children)}; i++) {
+        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null  && checkbox.is(":checked")) {
                 result += "i=" + i + "&";
@@ -105,7 +88,7 @@
     }
 
     function selectAll(b) {
-        for (var i = 0; i < ${fn:length(model.children)}; i++) {
+        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null) {
                 if (b) {
@@ -143,7 +126,7 @@
         $("#dialog-select-playlist").dialog("close");
 
         var mediaFileIds = new Array();
-        for (var i = 0; i < ${fn:length(model.children)}; i++) {
+        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox && checkbox.is(":checked")) {
                 mediaFileIds.push($("#songId" + i).html());
@@ -156,14 +139,6 @@
     }
 
 </script>
-
-<c:if test="${model.updateNowPlaying}">
-
-    <script type="text/javascript" language="javascript">
-        // Variable used by javascript in playlist.jsp
-        var updateNowPlaying = true;
-    </script>
-</c:if>
 
 <h1>
     <a href="#" onclick="toggleStar(${model.dir.id}, '#starImage'); return false;">
@@ -187,7 +162,7 @@
             ${model.dir.name}
     </span>
 
-    <c:if test="${model.dir.album and model.averageRating gt 0}">
+    <c:if test="${model.averageRating gt 0}">
         &nbsp;&nbsp;
         <c:import url="rating.jsp">
             <c:param name="readonly" value="true"/>
@@ -209,28 +184,24 @@
     <c:if test="${model.user.streamRole}">
         <c:if test="${needSep}">|</c:if>
         <span class="header"><a href="#" onclick="top.playQueue.onPlay(${model.dir.id});"><fmt:message key="main.playall"/></a></span> |
-        <span class="header"><a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 10);"><fmt:message key="main.playrandom"/></a></span> |
+        <span class="header"><a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 40);"><fmt:message key="main.playrandom"/></a></span> |
         <span class="header"><a href="#" onclick="top.playQueue.onAdd(${model.dir.id});"><fmt:message key="main.addall"/></a></span>
         <c:set var="needSep" value="true"/>
     </c:if>
 
-    <c:if test="${model.dir.album}">
+    <c:if test="${model.user.downloadRole}">
+        <c:if test="${needSep}">|</c:if>
+        <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
+        <c:set var="needSep" value="true"/>
+    </c:if>
 
-        <c:if test="${model.user.downloadRole}">
-            <c:if test="${needSep}">|</c:if>
-            <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
-            <c:set var="needSep" value="true"/>
-        </c:if>
-
-        <c:if test="${model.user.coverArtRole}">
-            <sub:url value="editTags.view" var="editTagsUrl">
-                <sub:param name="id" value="${model.dir.id}"/>
-            </sub:url>
-            <c:if test="${needSep}">|</c:if>
-            <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
-            <c:set var="needSep" value="true"/>
-        </c:if>
-
+    <c:if test="${model.user.coverArtRole}">
+        <sub:url value="editTags.view" var="editTagsUrl">
+            <sub:param name="id" value="${model.dir.id}"/>
+        </sub:url>
+        <c:if test="${needSep}">|</c:if>
+        <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
+        <c:set var="needSep" value="true"/>
     </c:if>
 
     <c:if test="${model.user.commentRole}">
@@ -239,8 +210,6 @@
     </c:if>
 </h2>
 </c:if>
-
-<c:if test="${model.dir.album}">
 
 <div class="detail">
     <c:if test="${model.user.commentRole}">
@@ -286,7 +255,6 @@
 
     </c:if>
 </div>
-</c:if>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
 
@@ -311,10 +279,9 @@
 <table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
-            <table style="border-collapse:collapse;white-space:nowrap">
-            <c:set var="cutoff" value="${model.visibility.captionCutoff}"/>
-                <c:forEach items="${model.children}" var="child" varStatus="loopStatus">
-                    <%--@elvariable id="child" type="net.sourceforge.subsonic.domain.MediaFile"--%>
+            <table class="music" style="width: 100%">
+                <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
+                    <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <c:choose>
                         <c:when test="${loopStatus.count % 2 == 1}">
                             <c:set var="cssClass" value="class='bgcolor2'"/>
@@ -326,200 +293,158 @@
 
                     <tr ${cssClass} style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
-                            <c:param name="id" value="${child.id}"/>
-                            <c:param name="video" value="${child.video and model.player.web}"/>
+                            <c:param name="id" value="${song.id}"/>
+                            <c:param name="video" value="${song.video and model.player.web}"/>
                             <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
-                            <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyMode or not child.directory)}"/>
+                            <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyMode or not song.directory)}"/>
                             <c:param name="starEnabled" value="true"/>
-                            <c:param name="starred" value="${not empty child.starredDate}"/>
+                            <c:param name="starred" value="${not empty song.starredDate}"/>
                             <c:param name="asTable" value="true"/>
                         </c:import>
 
-                        <c:choose>
-                            <c:when test="${child.directory}">
-                                <sub:url value="main.view" var="childUrl">
-                                    <sub:param name="id" value="${child.id}"/>
-                                </sub:url>
-                                <td style="padding-left:0.25em" colspan="3">
-                                    <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;"><str:truncateNicely upper="${cutoff}">${child.name}</str:truncateNicely></span></a>
-                                </td>
-                                <td style="padding-left:1.25em"><c:if test="${model.showAlbumYear and not empty child.year}"><span class="detail">${child.year}</span></c:if></td>
-                            </c:when>
+                        <td class="fit"><input type="checkbox" class="checkbox" id="songIndex${loopStatus.count - 1}">
+                            <span id="songId${loopStatus.count - 1}" style="display: none">${song.id}</span></td>
 
-                            <c:otherwise>
-                                <td style="padding-left:0.25em"><input type="checkbox" class="checkbox" id="songIndex${loopStatus.count - 1}">
-                                    <span id="songId${loopStatus.count - 1}" style="display: none">${child.id}</span></td>
+                        <c:if test="${model.visibility.trackNumberVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">${song.trackNumber}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.trackNumberVisible}">
-                                    <td style="padding-right:0.5em;text-align:right">
-                                        <span class="detail">${child.trackNumber}</span>
-                                    </td>
-                                </c:if>
+                        <td class="truncate">
+                            <span class="songTitle" title="${song.title}">${fn:escapeXml(song.title)}</span>
+                        </td>
 
-                                <td style="padding-right:1.25em;white-space:nowrap">
-                                    <span class="songTitle" title="${child.title}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.title)}</str:truncateNicely></span>
-                                </td>
+                        <c:if test="${model.visibility.albumVisible}">
+                            <td class="truncate">
+                                <span class="detail" title="${song.albumName}">${fn:escapeXml(song.albumName)}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.albumVisible}">
-                                    <td style="padding-right:1.25em;white-space:nowrap">
-                                        <span class="detail" title="${child.albumName}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.albumName)}</str:truncateNicely></span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.artistVisible}">
+                            <td class="truncate">
+                                <span class="detail" title="${song.artist}">${fn:escapeXml(song.artist)}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.artistVisible}">
-                                    <td style="padding-right:1.25em;white-space:nowrap">
-                                        <span class="detail" title="${child.artist}"><str:truncateNicely upper="${cutoff}">${fn:escapeXml(child.artist)}</str:truncateNicely></span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.genreVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">${song.genre}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.genreVisible}">
-                                    <td style="padding-right:1.25em;white-space:nowrap">
-                                        <span class="detail">${child.genre}</span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.yearVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">${song.year}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.yearVisible}">
-                                    <td style="padding-right:1.25em">
-                                        <span class="detail">${child.year}</span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.formatVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">${fn:toLowerCase(song.format)}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.formatVisible}">
-                                    <td style="padding-right:1.25em">
-                                        <span class="detail">${fn:toLowerCase(child.format)}</span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.fileSizeVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail"><sub:formatBytes bytes="${song.fileSize}"/></span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.fileSizeVisible}">
-                                    <td style="padding-right:1.25em;text-align:right">
-                                        <span class="detail"><sub:formatBytes bytes="${child.fileSize}"/></span>
-                                    </td>
-                                </c:if>
+                        <c:if test="${model.visibility.durationVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">${song.durationString}</span>
+                            </td>
+                        </c:if>
 
-                                <c:if test="${model.visibility.durationVisible}">
-                                    <td style="padding-right:1.25em;text-align:right">
-                                        <span class="detail">${child.durationString}</span>
-                                    </td>
-                                </c:if>
-
-                                <c:if test="${model.visibility.bitRateVisible}">
-                                    <td style="padding-right:0.25em">
-                                        <span class="detail">
-                                            <c:if test="${not empty child.bitRate}">
-                                                ${child.bitRate} Kbps ${child.variableBitRate ? "vbr" : ""}
-                                            </c:if>
-                                            <c:if test="${child.video and not empty child.width and not empty child.height}">
-                                                (${child.width}x${child.height})
-                                            </c:if>
-                                        </span>
-                                    </td>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
+                        <c:if test="${model.visibility.bitRateVisible}">
+                            <td class="fit rightalign">
+                                <span class="detail">
+                                    <c:if test="${not empty song.bitRate}">
+                                        ${song.bitRate} Kbps ${song.variableBitRate ? "vbr" : ""}
+                                    </c:if>
+                                    <c:if test="${song.video and not empty song.width and not empty song.height}">
+                                        (${song.width}x${song.height})
+                                    </c:if>
+                                </span>
+                            </td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </table>
         </td>
 
-        <td style="vertical-align:top;width:100%" rowspan="2">
-
-            <c:set var="coverArtSize" value="${model.player.coverArtScheme.size}"/>
-            <c:set var="captionLength" value="${model.player.coverArtScheme.captionLength}"/>
-            <c:if test="${model.dir.album and fn:length(model.coverArts) eq 1}">
-                <c:set var="coverArtSize" value="${coverArtSize * 2}"/>
-                <c:set var="captionLength" value="${captionLength * 2}"/>
-            </c:if>
-
-            <div style="float: right">
-                <c:forEach items="${model.coverArts}" var="coverArt" varStatus="loopStatus">
-                    <div class="coverart">
-                        <c:import url="coverArt.jsp">
-                            <c:param name="albumId" value="${coverArt.id}"/>
-                            <c:param name="albumName" value="${coverArt.name}"/>
-                            <c:param name="coverArtSize" value="${coverArtSize}"/>
-                            <c:param name="showLink" value="${coverArt ne model.dir}"/>
-                            <c:param name="showZoom" value="${coverArt eq model.dir}"/>
-                            <c:param name="showChange" value="${(coverArt eq model.dir) and model.user.coverArtRole}"/>
-                            <c:param name="showCaption" value="true"/>
-                            <c:param name="captionLength" value="${captionLength}"/>
-                            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                        </c:import>
-                    </div>
-                </c:forEach>
+        <td class="fit" style="vertical-align:top;" rowspan="2">
+            <div class="albumThumb">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${model.dir.id}"/>
+                    <c:param name="coverArtSize" value="${model.coverArtSizeLarge}"/>
+                    <c:param name="showZoom" value="true"/>
+                    <c:param name="showChange" value="${model.user.coverArtRole}"/>
+                </c:import>
             </div>
         </td>
+        <c:if test="${model.showAd}">
+            <td style="vertical-align:top;width:160px" rowspan="2">
+                <h2>Subsonic Premium</h2>
+                <p style="font-size: 90%">
+                    Upgrade to Subsonic Premium and get:
+                </p>
+                <div style="font-size: 90%">
+                    <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
+                    <p>Video streaming.</p>
+                    <p>Chromecast support.</p>
+                    <p>DLNA/UPnP support</p>
+                    <p>Share on Facebook, Twitter, Google+</p>
+                    <p>No ads.</p>
+                    <p>Your personal server address: <em>you</em>.subsonic.org</p>
+                    <p>Podcast receiver.</p>
+                </div>
+                <p class="forward" style="white-space: nowrap"><a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
+            </td>
+        </c:if>
+    </tr>
 
-        <td style="vertical-align:top;" rowspan="2">
-            <div style="padding:0 1em 0 1em;">
-                <c:if test="${not empty model.ad}">
-                    <div class="detail" style="text-align:center">
-                            ${model.ad}
-                        <br/>
-                                <br/>
-                                <sub:url value="premium.view" var="premiumUrl">
-                                    <sub:param name="path" value="${model.dir.path}"/>
-                                </sub:url>
-                                <fmt:message key="main.premium"><fmt:param value="${premiumUrl}"/></fmt:message>
-                    </div>
+    <tr>
+        <td style="vertical-align:top;height: 100%">
+            <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
+                <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
+                <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
+                <option id="selectNone">&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="download">&nbsp;&nbsp;<fmt:message key="common.download"/></option>
                 </c:if>
-            </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td style="vertical-align: top">
-            <c:if test="${model.dir.album}">
-                <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
-                    <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
-                    <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
-                    <option id="selectNone">&nbsp;&nbsp;<fmt:message key="playlist.more.selectnone"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="download">&nbsp;&nbsp;<fmt:message key="common.download"/></option>
-                    </c:if>
-                    <c:if test="${model.user.shareRole}">
-                        <option id="share">&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
-                    </c:if>
-                    <option id="appendPlaylist">&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
-                </select>
-            </c:if>
-        </td>
-    </tr>
-
-    <tr>
-        <td colspan="2" style="padding-top: 1em">
-            <div style="float: right">
-                <c:forEach items="${model.sieblingAlbums}" var="sieblingAlbum" varStatus="loopStatus">
-                    <div class="coverart">
-                        <c:import url="coverArt.jsp">
-                            <c:param name="albumId" value="${sieblingAlbum.id}"/>
-                            <c:param name="albumName" value="${sieblingAlbum.name}"/>
-                            <c:param name="coverArtSize" value="${model.sieblingCoverArtScheme.size}"/>
-                            <c:param name="showLink" value="true"/>
-                            <c:param name="showZoom" value="false"/>
-                            <c:param name="showChange" value="false"/>
-                            <c:param name="showCaption" value="true"/>
-                            <c:param name="captionLength" value="${model.sieblingCoverArtScheme.captionLength}"/>
-                            <c:param name="appearAfter" value="0"/>
-                        </c:import>
-                    </div>
-                </c:forEach>
-            </div>
+                <c:if test="${model.user.shareRole}">
+                    <option id="share">&nbsp;&nbsp;<fmt:message key="main.more.share"/></option>
+                </c:if>
+                <option id="appendPlaylist">&nbsp;&nbsp;<fmt:message key="playlist.append"/></option>
+            </select>
         </td>
     </tr>
 </table>
 
-<table class="detail" style="width: 75%;white-space: normal">
-    <tr>
-        <td rowspan="4" style="vertical-align: top">
-            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 0.5em; display: none">
-        </td>
-        <td id="artistBio"></td>
-    </tr>
+<div style="float: left">
+    <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
+        <div class="albumThumb">
+            <c:import url="coverArt.jsp">
+                <c:param name="albumId" value="${album.id}"/>
+                <c:param name="caption1" value="${album.name}"/>
+                <c:param name="caption2" value="${album.year}"/>
+                <c:param name="captionCount" value="2"/>
+                <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
+                <c:param name="showLink" value="true"/>
+                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+            </c:import>
+        </div>
+    </c:forEach>
+</div>
+
+<table style="width: 90%">
     <tr><td>
-        <span id="similarArtistsTitle" style="padding-right: 0.3em; display: none"><fmt:message key="main.similarartists"/>:</span>
+        <span id="similarArtistsTitle" style="padding-right: 0.5em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
     </td></tr>
-    <tr><td>
+    <tr><td style="padding-bottom: 0.5em">
         <div id="similarArtistsRadio" class="forward" style="display: none">
             <a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a>
         </div>
