@@ -129,7 +129,9 @@
 
     <bean id="versionService" class="net.sourceforge.subsonic.service.VersionService"/>
 
-    <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService"/>
+    <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService">
+        <property name="mediaFileService" ref="mediaFileService"/>
+    </bean>
 
     <bean id="ratingService" class="net.sourceforge.subsonic.service.RatingService">
         <property name="ratingDao" ref="musicFileInfoDao"/>
@@ -223,7 +225,6 @@
     <bean id="ajaxNowPlayingService" class="net.sourceforge.subsonic.ajax.NowPlayingService">
         <property name="playerService" ref="playerService"/>
         <property name="statusService" ref="statusService"/>
-        <property name="mediaFileService" ref="mediaFileService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="mediaScannerService" ref="mediaScannerService"/>
     </bean>

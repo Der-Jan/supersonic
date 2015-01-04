@@ -14,9 +14,15 @@
 
     <p>
         Since <a href="#versions">1.8.0</a> you may specify multiple <code>id</code> (and optionally <code>time</code>)
-        parameters to
-        scrobble multiple files.
+        parameters to scrobble multiple files.
     </p>
+
+    <p>
+        Since <a href="#versions">1.11.0</a> this method will also update the play count and last played timestamp for
+        the song and album. It will also make the song appear in the "Now playing" page in the web app, and appear in the
+        list of songs returned by <code>getNowPlaying</code>.
+    </p>
+
     <table>
         <tr>
             <th>Parameter</th>

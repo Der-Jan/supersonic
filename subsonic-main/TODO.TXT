@@ -12,13 +12,15 @@ New favicon
 Support starring/unstarring videos.
 Added video category in "Starred".
 Drag and drop to rearrange playlists and play queue.
+REST: scrobble method now also updates play statistic and the list of "now playing" songs.
 
 TODO IN 5.1
 --------------
+Glitter
+Add "scrubber" for drag&drop
+Fix bug with multiple current track images.
 Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
-REST: Register play / scrobble
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15030&start=15
 Add SubSonar
   https://mail.google.com/mail/ca/u/0/#inbox/14aa01ae789743f1
 Show video preview in Starred

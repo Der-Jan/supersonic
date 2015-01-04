@@ -109,6 +109,7 @@ import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.RandomSearchCriteria;
+import net.sourceforge.subsonic.domain.PlayStatus;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.Share;
@@ -1161,29 +1162,28 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         NowPlaying result = new NowPlaying();
 
-        for (TransferStatus status : statusService.getAllStreamStatuses()) {
+        for (PlayStatus status : statusService.getPlayStatuses()) {
 
             Player player = status.getPlayer();
-            File file = status.getFile();
-            if (player != null && player.getUsername() != null && file != null) {
+            MediaFile mediaFile = status.getMediaFile();
+            String username = player.getUsername();
+            if (username == null) {
+                continue;
+            }
 
-                String username = player.getUsername();
-                UserSettings userSettings = settingsService.getUserSettings(username);
-                if (!userSettings.isNowPlayingAllowed()) {
-                    continue;
-                }
+            UserSettings userSettings = settingsService.getUserSettings(username);
+            if (!userSettings.isNowPlayingAllowed()) {
+                continue;
+            }
 
-                MediaFile mediaFile = mediaFileService.getMediaFile(file);
-
-                long minutesAgo = status.getMillisSinceLastUpdate() / 1000L / 60L;
-                if (minutesAgo < 60) {
-                    NowPlayingEntry entry = new NowPlayingEntry();
-                    entry.setUsername(username);
-                    entry.setPlayerId(Integer.parseInt(player.getId()));
-                    entry.setPlayerName(player.getName());
-                    entry.setMinutesAgo((int) minutesAgo);
-                    result.getEntry().add(createJaxbChild(entry, player, mediaFile, username));
-                }
+            long minutesAgo = status.getMinutesAgo();
+            if (minutesAgo < 60) {
+                NowPlayingEntry entry = new NowPlayingEntry();
+                entry.setUsername(username);
+                entry.setPlayerId(Integer.parseInt(player.getId()));
+                entry.setPlayerName(player.getName());
+                entry.setMinutesAgo((int) minutesAgo);
+                result.getEntry().add(createJaxbChild(entry, player, mediaFile, username));
             }
         }
 
@@ -1359,11 +1359,6 @@ public class RESTController extends MultiActionController {
 
         Player player = playerService.getPlayer(request, response);
 
-        if (!settingsService.getUserSettings(player.getUsername()).isLastFmEnabled()) {
-            error(request, response, ErrorCode.GENERIC, "Scrobbling is not enabled for " + player.getUsername() + ".");
-            return;
-        }
-
         boolean submission = getBooleanParameter(request, "submission", true);
         int[] ids = getRequiredIntParameters(request, "id");
         long[] times = getLongParameters(request, "time");
@@ -1380,7 +1375,12 @@ public class RESTController extends MultiActionController {
                 continue;
             }
             Date time = times.length == 0 ? null : new Date(times[i]);
-            audioScrobblerService.register(file, player.getUsername(), submission, time);
+
+            statusService.addRemotePlay(new PlayStatus(file, player, time == null ? new Date() : time));
+            mediaFileService.incrementPlayCount(file);
+            if (settingsService.getUserSettings(player.getUsername()).isLastFmEnabled()) {
+                audioScrobblerService.register(file, player.getUsername(), submission, time);
+            }
         }
 
         jaxbWriter.writeEmptyResponse(request, response);

@@ -18,11 +18,16 @@
  */
 package net.sourceforge.subsonic.service;
 
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.PlayStatus;
 import net.sourceforge.subsonic.domain.TransferStatus;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +43,12 @@ import java.util.Set;
  */
 public class StatusService {
 
+    private MediaFileService mediaFileService;
+
     private final List<TransferStatus> streamStatuses = new ArrayList<TransferStatus>();
     private final List<TransferStatus> downloadStatuses = new ArrayList<TransferStatus>();
     private final List<TransferStatus> uploadStatuses = new ArrayList<TransferStatus>();
+    private final List<PlayStatus> remotePlays = new ArrayList<PlayStatus>();
 
     // Maps from player ID to latest inactive stream status.
     private final Map<String, TransferStatus> inactiveStreamStatuses = new LinkedHashMap<String, TransferStatus>();
@@ -124,6 +132,45 @@ public class StatusService {
         return new ArrayList<TransferStatus>(uploadStatuses);
     }
 
+    public synchronized void addRemotePlay(PlayStatus playStatus) {
+        Iterator<PlayStatus> iterator = remotePlays.iterator();
+        while (iterator.hasNext()) {
+            PlayStatus rp = iterator.next();
+            if (rp.isExpired()) {
+                iterator.remove();
+            }
+        }
+        remotePlays.add(playStatus);
+    }
+
+    public synchronized List<PlayStatus> getPlayStatuses() {
+        Map<String, PlayStatus> result = new LinkedHashMap<String, PlayStatus>();
+        for (PlayStatus remotePlay : remotePlays) {
+            if (!remotePlay.isExpired()) {
+                result.put(remotePlay.getPlayer().getId(), remotePlay);
+            }
+        }
+
+        List<TransferStatus> statuses = new ArrayList<TransferStatus>();
+        statuses.addAll(inactiveStreamStatuses.values());
+        statuses.addAll(streamStatuses);
+
+        for (TransferStatus streamStatus : statuses) {
+            Player player = streamStatus.getPlayer();
+            File file = streamStatus.getFile();
+            if (file == null) {
+                continue;
+            }
+            MediaFile mediaFile = mediaFileService.getMediaFile(file);
+            if (player == null || mediaFile == null) {
+                continue;
+            }
+            Date time = new Date(System.currentTimeMillis() - streamStatus.getMillisSinceLastUpdate());
+            result.put(player.getId(), new PlayStatus(mediaFile, player, time));
+        }
+        return new ArrayList<PlayStatus>(result.values());
+    }
+
     private synchronized TransferStatus createStatus(Player player, List<TransferStatus> statusList) {
         TransferStatus status = new TransferStatus();
         status.setPlayer(player);
@@ -131,4 +178,7 @@ public class StatusService {
         return status;
     }
 
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
+    }
 }
