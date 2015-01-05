@@ -49,6 +49,7 @@
                     <li><a href="#submuxic">Sub Muxic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
+                    <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
                 </ul>
             </div>
 
@@ -141,6 +142,7 @@
     <%@ include file="apps-submuxic.jsp" %>
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>
+    <%@ include file="apps-subsonar.jsp" %>
 
     <%@ include file="apps-isub.jsp" %>
     <%@ include file="apps-audiophone.jsp" %>

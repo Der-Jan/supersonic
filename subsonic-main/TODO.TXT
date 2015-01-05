@@ -18,11 +18,8 @@ TODO IN 5.1
 --------------
 Glitter
 Add "scrubber" for drag&drop
-Fix bug with multiple current track images.
 Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
-Add SubSonar
-  https://mail.google.com/mail/ca/u/0/#inbox/14aa01ae789743f1
 Show video preview in Starred
 "Add to playlist" submenu
   http://behigh.github.io/bootstrap_dropdowns_enhancement/
