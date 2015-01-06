@@ -17,7 +17,7 @@ REST: scrobble method now also updates play statistic and the list of "now playi
 TODO IN 5.1
 --------------
 Glitter
-Add "scrubber" for drag&drop
+Add "handle" for drag&drop
 Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
 Show video preview in Starred
@@ -76,14 +76,6 @@ Keep Playlists Regardless if Media Found
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
-Site
-  Change image of myself
-  Change intro text
-  Change highlights on intro page
-  Remove link to Chartlyrics
-  Change references to Java 5 (in installation instructions)
-  Rename "Some apps must be purchased separately." to "Some apps are sold separately".
-  Add chromecast
 
 Cast
   Initial volume, both local and remote.
