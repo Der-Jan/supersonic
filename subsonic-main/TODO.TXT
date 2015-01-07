@@ -1,18 +1,5 @@
 DONE IN 5.1
 -------------
-Show toast when adding songs to queue.
-Nicer display of "No media folders found" and "Media folder is being scanned"
-Nicer display of "Get Subsonic Premium".
-Nicer display of "New version available"
-Use img.onclick in playlist.jsp
-Use img.onclick in playqueue.jsp
-Make title clickable in video thumb
-Don't remove songs from playlists if they become unavailable.
-New favicon
-Support starring/unstarring videos.
-Added video category in "Starred".
-Drag and drop to rearrange playlists and play queue.
-REST: scrobble method now also updates play statistic and the list of "now playing" songs.
 
 TODO IN 5.1
 --------------
@@ -926,24 +913,24 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta1/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
 On Windows
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta1/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
 On VirtualBox Ubuntu
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta1/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
   sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta1/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
   sudo shutdown -h now
 
 Modify FRS properties
@@ -952,7 +939,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.1.beta1 -m "Tagging 5.1.beta1"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.1.beta2 -m "Tagging 5.1.beta2"
 Post message on forum.
 
 Checking for license abuse:
