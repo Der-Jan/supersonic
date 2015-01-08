@@ -77,6 +77,9 @@ public class RedirectionController implements Controller {
         String redirectTo = requestUrl.replaceFirst("http://" + redirectFrom + "\\.subsonic\\.org", to);
         LOG.info("Redirecting from " + requestUrl + " to " + redirectTo);
 
+        // Add the CORS response header (http://enable-cors.org)
+        response.addHeader("Access-Control-Allow-Origin", "*");
+
         return new ModelAndView(new RedirectView(redirectTo));
     }
 

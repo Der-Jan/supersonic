@@ -3,6 +3,7 @@ DONE IN 5.1
 
 TODO IN 5.1
 --------------
+Show play queue count and duration.
 Glitter
 Add "handle" for drag&drop
 Make separate category for videos in search.
