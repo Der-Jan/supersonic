@@ -23,6 +23,11 @@
         function refresh() {
             top.main.location.href = top.main.location.href;
         }
+
+        function playShuffle() {
+            top.playQueue.onPlayShuffle('${model.listType}', ${model.listOffset}, ${model.listSize}, '${model.genre}', '${model.decade}')
+        }
+
     </script>
 </head>
 <body class="mainframe bgcolor1" onload="init();">

@@ -5,7 +5,6 @@ TODO IN 5.1
 --------------
 Glitter
 Add "handle" for drag&drop
-Clicking "more" in search result makes page scroll to top.
 Make separate category for videos in search.
 Show video preview in Starred
 "Add to playlist" submenu
@@ -918,20 +917,19 @@ On Mac OS:
 On Windows
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
+  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
-On VirtualBox Ubuntu
+On demo.subsonic.org (Ubuntu)
+  cd subsonic
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
-  sudo shutdown -h now
+  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
-On VirtualBox Fedora
+On subsonic.org (CentOS)
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
-  sudo shutdown -h now
+  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/

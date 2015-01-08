@@ -68,6 +68,8 @@
                                             <replacetoken>.beta4</replacetoken>
                                         </replace>
 
+                                        <mkdir dir="${project.build.directory}/rpm/RPMS/i386"/>
+
                                         <copy file="${basedir}/src/etc/init.d/subsonic"
                                               todir="${project.build.directory}/rpm/buildroot/etc/init.d"/>
                                         <copy file="${basedir}/src/etc/sysconfig/subsonic"

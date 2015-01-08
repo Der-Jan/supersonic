@@ -4,6 +4,22 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+
+    <script type="text/javascript" language="javascript">
+
+        function showMoreArtists() {
+            $('.artistRow').show(); $('#moreArtists').hide();
+        }
+
+        function showMoreAlbums() {
+            $('.albumRow').show(); $('#moreAlbums').hide();
+        }
+
+        function showMoreSongs() {
+            $('.songRow').show();$('#moreSongs').hide();
+        }
+
+    </script>
 </head>
 <body class="mainframe bgcolor1">
 
@@ -42,7 +58,7 @@
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.artists) gt 5}">
-        <div id="moreArtists" class="forward"><a href="#" onclick="$('.artistRow').show(); $('#moreArtists').hide();"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreArtists" class="forward"><a href="javascript:showMoreArtists()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -70,7 +86,7 @@
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.albums) gt 5}">
-        <div id="moreAlbums" class="forward"><a href="#" onclick="$('.albumRow').show(); $('#moreAlbums').hide();"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreAlbums" class="forward"><a href="javascript:showMoreAlbums()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -101,7 +117,7 @@
             </c:forEach>
     </table>
 <c:if test="${fn:length(command.songs) gt 15}">
-    <div id="moreSongs" class="forward"><a href="#" onclick="$('.songRow').show();$('#moreSongs').hide(); "><fmt:message key="search.hits.more"/></a></div>
+    <div id="moreSongs" class="forward"><a href="javascript:showMoreSongs()"><fmt:message key="search.hits.more"/></a></div>
 </c:if>
 </c:if>
 

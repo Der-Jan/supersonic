@@ -73,9 +73,7 @@
 
         <c:if test="${not empty model.albums}">
             <td style="padding-left: 2em">
-                <a href="#" onclick="top.playQueue.onPlayShuffle('${model.listType}', ${model.listOffset}, ${model.listSize},
-                        '${model.genre}', '${model.decade}'); return false;">
-                    <img src="<spring:theme code="shuffleImage"/>" alt="">&nbsp;<fmt:message key="home.shuffle"/></a></td>
+                <a href="javascript:playShuffle()"><img src="<spring:theme code="shuffleImage"/>" alt="">&nbsp;<fmt:message key="home.shuffle"/></a></td>
         </c:if>
     </tr>
 </table>

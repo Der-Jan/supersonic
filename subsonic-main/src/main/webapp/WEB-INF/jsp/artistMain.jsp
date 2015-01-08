@@ -75,6 +75,22 @@
         }
     }
 
+    function playAll() {
+        top.playQueue.onPlay(${model.dir.id});
+    }
+
+    function playRandom() {
+        top.playQueue.onPlayRandom(${model.dir.id}, 40);
+    }
+
+    function addAll() {
+        top.playQueue.onAdd(${model.dir.id});
+    }
+
+    function playSimilar() {
+        top.playQueue.onPlaySimilar(${model.dir.id}, 50);
+    }
+
 </script>
 
 <h1>
@@ -104,9 +120,9 @@
 
     <c:if test="${model.user.streamRole}">
         <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="#" onclick="top.playQueue.onPlay(${model.dir.id});"><fmt:message key="main.playall"/></a></span> |
-        <span class="header"><a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 40);"><fmt:message key="main.playrandom"/></a></span> |
-        <span class="header"><a href="#" onclick="top.playQueue.onAdd(${model.dir.id});"><fmt:message key="main.addall"/></a></span>
+        <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
+        <span class="header"><a href="javascript:playRandom(0)"><fmt:message key="main.playrandom"/></a></span> |
+        <span class="header"><a href="javascript:addAll(0)"><fmt:message key="main.addall"/></a></span>
         <c:set var="needSep" value="true"/>
     </c:if>
 
@@ -165,7 +181,7 @@
     </td></tr>
     <tr><td>
         <div id="similarArtistsRadio" class="forward" style="display: none">
-            <a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a>
+            <a href="javascript:playSimilar()"><fmt:message key="main.startradio"/></a>
         </div>
     </td></tr>
     <tr><td style="height: 100%"></td></tr>
