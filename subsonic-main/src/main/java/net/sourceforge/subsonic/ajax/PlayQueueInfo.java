@@ -20,6 +20,8 @@ package net.sourceforge.subsonic.ajax;
 
 import java.util.List;
 
+import net.sourceforge.subsonic.util.StringUtil;
+
 /**
  * The playlist of a player.
  *
@@ -46,6 +48,16 @@ public class PlayQueueInfo {
 
     public List<Entry> getEntries() {
         return entries;
+    }
+
+    public String getDurationAsString() {
+        int durationSeconds = 0;
+        for (Entry entry : entries) {
+            if (entry.getDuration() != null) {
+                durationSeconds += entry.getDuration();
+            }
+        }
+        return StringUtil.formatDuration(durationSeconds);
     }
 
     public int getIndex() {
