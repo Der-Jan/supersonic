@@ -45,7 +45,7 @@
                 var playlist = playlists[i];
                 var overflow = i > 9;
                 $("<p class='dense'><a target='main' href='playlist.view?id=" +
-                        playlist.id + "'>" + playlist.name + "&nbsp;(" + playlist.fileCount + ")</a></p>").appendTo(overflow ? "#playlistOverflow" : "#playlists");
+                        playlist.id + "'>" + escapeHtml(playlist.name) + "&nbsp;(" + playlist.fileCount + ")</a></p>").appendTo(overflow ? "#playlistOverflow" : "#playlists");
             }
 
             if (playlists.length > 10 && !$('#playlistOverflow').is(":visible")) {

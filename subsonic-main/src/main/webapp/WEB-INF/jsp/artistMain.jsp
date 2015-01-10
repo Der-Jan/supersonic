@@ -24,6 +24,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
@@ -43,7 +44,7 @@
                 var html = "";
                 for (var i = 0; i < artistInfo.similarArtists.length; i++) {
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
-                            artistInfo.similarArtists[i].artistName + "</a>";
+                            escapeHtml(artistInfo.similarArtists[i].artistName) + "</a>";
                     if (i < artistInfo.similarArtists.length - 1) {
                         html += " <span class='similar-artist-divider'>|</span> ";
                     }

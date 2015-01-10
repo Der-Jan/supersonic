@@ -11,10 +11,6 @@ Fade out text in auto cover art
 More space in left.jsp
 Add space between view toggles
 Edit/delete artist info.
-Use ${fn:escapeXml(song.title)}
-  Also in similarArtists
-  Also in left.jsp
-  Also musicFolder
 Add "handle" for drag&drop
 Make separate category for videos in search.
 Show video preview in Starred
