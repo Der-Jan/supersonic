@@ -6,8 +6,6 @@ Toggle between thumbnail and list mode.
 
 TODO IN 5.1
 --------------
-Support list mode for artistMain and videoMain
-  Indent first column (see "Demo" in list mode)
 Use ${fn:escapeXml(song.title)}
 Add "handle" for drag&drop
 Make separate category for videos in search.

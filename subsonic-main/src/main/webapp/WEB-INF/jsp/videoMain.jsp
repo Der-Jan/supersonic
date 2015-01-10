@@ -141,9 +141,11 @@
     </c:otherwise>
 </c:choose>
 
-<table class="music indent" style="clear:both">
+<div style="clear:both;height:1.5em"></div>
+
+<table class="music">
     <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
-        <tr><td class="fit"><a href="main.view?id=${child.id}" title="${child.name}">${child.name}</a></td></tr>
+        <tr><td class="truncate"><a href="main.view?id=${child.id}" title="${child.name}">${child.name}</a></td></tr>
     </c:forEach>
 </table>
 
