@@ -6,7 +6,9 @@ Toggle between thumbnail and list mode.
 
 TODO IN 5.1
 --------------
+Move media statistics to About page.
 Fade out text in auto cover art
+More space in left.jsp
 Add space between view toggles
 Edit/delete artist info.
 Use ${fn:escapeXml(song.title)}
