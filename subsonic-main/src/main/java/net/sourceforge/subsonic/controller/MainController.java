@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,6 +114,7 @@ public class MainController extends AbstractController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("brand", settingsService.getBrand());
         map.put("showAd", !settingsService.isLicenseValid() && adService.showAd());
+        map.put("viewAsList", isViewAsList(request, userSettings));
         if (dir.isAlbum()) {
             map.put("sieblingAlbums", getSieblingAlbums(dir));
             map.put("artist", guessArtist(children));
@@ -154,6 +156,16 @@ public class MainController extends AbstractController {
         ModelAndView result = new ModelAndView(view);
         result.addObject("model", map);
         return result;
+    }
+
+    private boolean isViewAsList(HttpServletRequest request, UserSettings userSettings) {
+        boolean viewAsList = ServletRequestUtils.getBooleanParameter(request, "viewAsList", userSettings.isViewAsList());
+        if (viewAsList != userSettings.isViewAsList()) {
+            userSettings.setViewAsList(viewAsList);
+            userSettings.setChanged(new Date());
+            settingsService.updateUserSettings(userSettings);
+        }
+        return viewAsList;
     }
 
     private boolean isVideoOnly(List<MediaFile> children) {

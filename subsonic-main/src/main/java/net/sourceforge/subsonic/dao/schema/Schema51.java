@@ -51,5 +51,11 @@ public class Schema51 extends Schema {
             template.execute("alter table user_settings add auto_hide_play_queue boolean default true not null");
             LOG.info("Database column 'user_settings.auto_hide_play_queue' was added successfully.");
         }
+
+        if (!columnExists(template, "view_as_list", "user_settings")) {
+            LOG.info("Database column 'user_settings.view_as_list' not found.  Creating it.");
+            template.execute("alter table user_settings add view_as_list boolean default false not null");
+            LOG.info("Database column 'user_settings.view_as_list' was added successfully.");
+        }
     }
 }

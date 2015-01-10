@@ -78,7 +78,7 @@
 
 </head><body class="mainframe bgcolor1">
 
-<h1 style="padding-bottom: 1em">
+<h1 style="float:left">
     <span style="vertical-align: middle;">
         <c:forEach items="${model.ancestors}" var="ancestor">
             <sub:url value="main.view" var="ancestorUrl">
@@ -90,40 +90,60 @@
     </span>
 </h1>
 
-<c:forEach items="${model.files}" var="child">
-    <c:if test="${child.video}">
+<%@ include file="viewSelector.jsp" %>
+<div style="clear:both;padding-bottom:2em"></div>
 
-        <sub:url value="/videoPlayer.view" var="videoUrl">
-            <sub:param name="id" value="${child.id}"/>
-        </sub:url>
-        <sub:url value="/coverArt.view" var="coverArtUrl">
-            <sub:param name="id" value="${child.id}"/>
-            <sub:param name="size" value="120"/>
-        </sub:url>
+<c:choose>
+    <c:when test="${model.viewAsList}">
+        <table class="music indent">
 
-        <div class="albumThumb">
-            <div class="coverart dropshadow" style="width:213px">
-                <div style="position:relative">
-                    <div>
-                        <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
-                                                   onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
-                                                   onmouseout="stopPreview()"></a>
+            <c:forEach items="${model.files}" var="child">
+                <c:url value="/videoPlayer.view" var="videoUrl">
+                    <c:param name="id" value="${child.id}"/>
+                </c:url>
+                <tr>
+                    <td class="truncate">
+                        <a href="${videoUrl}"><span class="songTitle" title="${child.name}">${fn:escapeXml(child.name)}</span></a>
+                    </td>
+                    <td class="fit rightalign detail">${child.year}</td>
+                    <td class="fit rightalign detail">${fn:toLowerCase(child.format)}</td>
+                    <td class="fit rightalign detail"><sub:formatBytes bytes="${child.fileSize}"/></td>
+                    <td class="fit rightalign detail">${child.durationString}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:when>
+
+    <c:otherwise>
+        <c:forEach items="${model.files}" var="child">
+            <c:url value="/videoPlayer.view" var="videoUrl">
+                <c:param name="id" value="${child.id}"/>
+            </c:url>
+            <c:url value="/coverArt.view" var="coverArtUrl">
+                <c:param name="id" value="${child.id}"/>
+                <c:param name="size" value="120"/>
+            </c:url>
+
+            <div class="albumThumb">
+                <div class="coverart dropshadow" style="width:213px">
+                    <div style="position:relative">
+                        <div>
+                            <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
+                                                       onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                                       onmouseout="stopPreview()"></a>
+                        </div>
+                        <div class="detail duration">${child.durationString}</div>
                     </div>
-                    <div class="detail duration">${child.durationString}</div>
+                    <div class="caption1" title="${child.name}"><a href="${videoUrl}" title="${child.name}">${child.name}</a></div>
                 </div>
-                <div class="caption1" title="${child.name}"><a href="${videoUrl}" title="${child.name}">${child.name}</a></div>
             </div>
-        </div>
-    </c:if>
-
-</c:forEach>
+        </c:forEach>
+    </c:otherwise>
+</c:choose>
 
 <table class="music indent" style="clear:both">
     <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
-        <sub:url value="main.view" var="childUrl">
-            <sub:param name="id" value="${child.id}"/>
-        </sub:url>
-        <tr><td class="fit"><a href="${childUrl}" title="${child.name}">${child.name}</a></td></tr>
+        <tr><td class="fit"><a href="main.view?id=${child.id}" title="${child.name}">${child.name}</a></td></tr>
     </c:forEach>
 </table>
 

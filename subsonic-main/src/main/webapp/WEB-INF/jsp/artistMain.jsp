@@ -93,45 +93,50 @@
 
 </script>
 
-<h1>
-    <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-         onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
+<div style="float:left">
+    <h1>
+        <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
+             onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
 
-    <span style="vertical-align: middle">
-        <c:forEach items="${model.ancestors}" var="ancestor">
-        <sub:url value="main.view" var="ancestorUrl">
-                <sub:param name="id" value="${ancestor.id}"/>
-            </sub:url>
-            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+        <span style="vertical-align: middle">
+            <c:forEach items="${model.ancestors}" var="ancestor">
+                <sub:url value="main.view" var="ancestorUrl">
+                    <sub:param name="id" value="${ancestor.id}"/>
+                </sub:url>
+                <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
             </c:forEach>
             ${model.dir.name}
-    </span>
-</h1>
+        </span>
+    </h1>
 
-<c:if test="${not model.partyMode}">
-<h2>
-    <c:if test="${model.navigateUpAllowed}">
-        <sub:url value="main.view" var="upUrl">
-            <sub:param name="id" value="${model.parent.id}"/>
-        </sub:url>
-        <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+    <c:if test="${not model.partyMode}">
+        <h2>
+            <c:if test="${model.navigateUpAllowed}">
+                <sub:url value="main.view" var="upUrl">
+                    <sub:param name="id" value="${model.parent.id}"/>
+                </sub:url>
+                <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.streamRole}">
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
-        <span class="header"><a href="javascript:playRandom(0)"><fmt:message key="main.playrandom"/></a></span> |
-        <span class="header"><a href="javascript:addAll(0)"><fmt:message key="main.addall"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+            <c:if test="${model.user.streamRole}">
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
+                <span class="header"><a href="javascript:playRandom(0)"><fmt:message key="main.playrandom"/></a></span> |
+                <span class="header"><a href="javascript:addAll(0)"><fmt:message key="main.addall"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.commentRole}">
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+            <c:if test="${model.user.commentRole}">
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+            </c:if>
+        </h2>
     </c:if>
-</h2>
-</c:if>
+</div>
+
+<%@ include file="viewSelector.jsp" %>
+<div style="clear:both"></div>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
 
@@ -152,23 +157,38 @@
     }
 </script>
 
-<div style="float: left;padding-top: 1.5em">
-    <c:forEach items="${model.subDirs}" var="album" varStatus="loopStatus">
-        <div class="albumThumb">
-            <c:import url="coverArt.jsp">
-                <c:param name="albumId" value="${album.id}"/>
-                <c:param name="caption1" value="${album.name}"/>
-                <c:param name="caption2" value="${album.year}"/>
-                <c:param name="captionCount" value="2"/>
-                <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
-                <c:param name="showLink" value="true"/>
-                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-            </c:import>
-        </div>
-    </c:forEach>
-</div>
+<c:choose>
+    <c:when test="${model.viewAsList}">
+        <table class="music indent">
+            <c:forEach items="${model.subDirs}" var="album">
+                <tr>
+                    <td class="fit"><a href="main.view?id=${album.id}" title="${album.name}">${album.name}</a></td>
+                    <td class="fit rightalign detail">${album.year}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:when>
 
-<table style="width: 90%;padding-top: 2em">
+    <c:otherwise>
+        <div style="float: left;padding-top: 1.5em">
+            <c:forEach items="${model.subDirs}" var="album" varStatus="loopStatus">
+                <div class="albumThumb">
+                    <c:import url="coverArt.jsp">
+                        <c:param name="albumId" value="${album.id}"/>
+                        <c:param name="caption1" value="${album.name}"/>
+                        <c:param name="caption2" value="${album.year}"/>
+                        <c:param name="captionCount" value="2"/>
+                        <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
+                        <c:param name="showLink" value="true"/>
+                        <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                    </c:import>
+                </div>
+            </c:forEach>
+        </div>
+    </c:otherwise>
+</c:choose>
+
+<table style="width:90%;padding-top:2em;clear:both">
     <tr>
         <td rowspan="4" style="vertical-align: top">
             <img id="artistImage" class="dropshadow" alt="" style="margin-right: 1em; display: none">

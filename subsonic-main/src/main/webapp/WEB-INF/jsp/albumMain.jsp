@@ -425,19 +425,15 @@
         <td style="vertical-align:top;height: 100%">
             <table class="music indent">
                 <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
-                    <sub:url value="main.view" var="childUrl">
+                    <sub:url value="main.view" var="albumUrl">
                         <sub:param name="id" value="${child.id}"/>
                     </sub:url>
-                    <tr><td class="fit"><a href="${childUrl}" title="${child.name}">${child.name}</a></td></tr>
+                    <tr><td class="fit"><a href="${albumUrl}" title="${child.name}">${child.name}</a></td></tr>
                 </c:forEach>
             </table>
         </td>
 
     </tr>
-
-
-
-
 </table>
 
 <div style="float: left">

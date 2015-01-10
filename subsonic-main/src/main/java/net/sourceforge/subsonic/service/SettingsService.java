@@ -1156,6 +1156,8 @@ public class SettingsService {
         settings.setShowChatEnabled(true);
         settings.setPartyModeEnabled(false);
         settings.setNowPlayingAllowed(true);
+        settings.setAutoHidePlayQueue(true);
+        settings.setViewAsList(false);
         settings.setLastFmEnabled(false);
         settings.setLastFmUsername(null);
         settings.setLastFmPassword(null);
