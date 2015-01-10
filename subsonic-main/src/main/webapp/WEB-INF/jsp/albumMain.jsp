@@ -78,7 +78,7 @@
 
     function getSelectedIndexes() {
         var result = "";
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null  && checkbox.is(":checked")) {
                 result += "i=" + i + "&";
@@ -88,7 +88,7 @@
     }
 
     function selectAll(b) {
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null) {
                 if (b) {
@@ -142,7 +142,7 @@
         $("#dialog-select-playlist").dialog("close");
 
         var mediaFileIds = new Array();
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox && checkbox.is(":checked")) {
                 mediaFileIds.push($("#songId" + i).html());
@@ -288,7 +288,7 @@
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table class="music" style="width: 100%">
-                <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
+                <c:forEach items="${model.files}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <tr style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
@@ -373,7 +373,7 @@
             </table>
         </td>
 
-        <td class="fit" style="vertical-align:top;" rowspan="2">
+        <td class="fit" style="vertical-align:top;" rowspan="3">
             <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
@@ -384,7 +384,7 @@
             </div>
         </td>
         <c:if test="${model.showAd}">
-            <td style="vertical-align:top;width:160px" rowspan="2">
+            <td style="vertical-align:top;width:160px" rowspan="3">
                 <h2 style="padding-bottom: 1em">Subsonic Premium</h2>
                 <p style="font-size: 90%">
                     Upgrade to Subsonic Premium and get:
@@ -405,7 +405,7 @@
     </tr>
 
     <tr>
-        <td style="vertical-align:top;height: 100%">
+        <td>
             <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
                 <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
                 <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
@@ -420,10 +420,28 @@
             </select>
         </td>
     </tr>
+
+    <tr>
+        <td style="vertical-align:top;height: 100%">
+            <table class="music indent">
+                <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
+                    <sub:url value="main.view" var="childUrl">
+                        <sub:param name="id" value="${child.id}"/>
+                    </sub:url>
+                    <tr><td class="fit"><a href="${childUrl}" title="${child.name}">${child.name}</a></td></tr>
+                </c:forEach>
+            </table>
+        </td>
+
+    </tr>
+
+
+
+
 </table>
 
 <div style="float: left">
-    <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
+    <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
         <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>

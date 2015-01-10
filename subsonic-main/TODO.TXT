@@ -1,12 +1,12 @@
 DONE IN 5.1
 -------------
 Show song count and duration in play queue.
+Bugfix: Show correct "siebling" albums.
 
 TODO IN 5.1
 --------------
 Glitter
 Support list mode for artistMain and videoMain
-Tune implementation of "related albums"
 Add "handle" for drag&drop
 Make separate category for videos in search.
 Show video preview in Starred

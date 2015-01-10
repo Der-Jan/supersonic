@@ -74,11 +74,6 @@
             padding-right:3px;
             padding-left:3px;
         }
-        .directory {
-            width: 213px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
     </style>
 
 </head><body class="mainframe bgcolor1">
@@ -95,7 +90,7 @@
     </span>
 </h1>
 
-<c:forEach items="${model.songs}" var="child">
+<c:forEach items="${model.files}" var="child">
     <c:if test="${child.video}">
 
         <sub:url value="/videoPlayer.view" var="videoUrl">
@@ -124,7 +119,7 @@
 </c:forEach>
 
 <table class="music indent" style="clear:both">
-    <c:forEach items="${model.relatedAlbums}" var="child" varStatus="loopStatus">
+    <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
         <sub:url value="main.view" var="childUrl">
             <sub:param name="id" value="${child.id}"/>
         </sub:url>

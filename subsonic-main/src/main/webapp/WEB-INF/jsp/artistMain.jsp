@@ -153,7 +153,7 @@
 </script>
 
 <div style="float: left;padding-top: 1.5em">
-    <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
+    <c:forEach items="${model.subDirs}" var="album" varStatus="loopStatus">
         <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>

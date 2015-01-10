@@ -83,17 +83,14 @@ public class MainController extends AbstractController {
         }
 
         List<MediaFile> children = mediaFiles.size() == 1 ? mediaFileService.getChildrenOf(dir, true, true, true) : getMultiFolderChildren(mediaFiles);
-        List<MediaFile> songs = new ArrayList<MediaFile>();
-        List<MediaFile> relatedAlbums = new ArrayList<MediaFile>();
+        List<MediaFile> files = new ArrayList<MediaFile>();
+        List<MediaFile> subDirs = new ArrayList<MediaFile>();
         for (MediaFile child : children) {
             if (child.isFile()) {
-                songs.add(child);
+                files.add(child);
             } else {
-                relatedAlbums.add(child);
+                subDirs.add(child);
             }
-        }
-        if (dir.isAlbum()) {
-            relatedAlbums.addAll(getSieblingAlbums(dir));
         }
 
         String username = securityService.getCurrentUsername(request);
@@ -103,11 +100,9 @@ public class MainController extends AbstractController {
         mediaFileService.populateStarredDate(children, username);
 
         map.put("dir", dir);
-        map.put("songs", songs);
-        map.put("relatedAlbums", relatedAlbums);
+        map.put("files", files);
+        map.put("subDirs", subDirs);
         map.put("ancestors", getAncestors(dir));
-        map.put("artist", guessArtist(children));
-        map.put("album", guessAlbum(children));
         map.put("coverArtSizeMedium", CoverArtScheme.MEDIUM.getSize());
         map.put("coverArtSizeLarge", CoverArtScheme.LARGE.getSize());
         map.put("player", player);
@@ -118,6 +113,11 @@ public class MainController extends AbstractController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("brand", settingsService.getBrand());
         map.put("showAd", !settingsService.isLicenseValid() && adService.showAd());
+        if (dir.isAlbum()) {
+            map.put("sieblingAlbums", getSieblingAlbums(dir));
+            map.put("artist", guessArtist(children));
+            map.put("album", guessAlbum(children));
+        }
 
         try {
             MediaFile parent = mediaFileService.getParentOf(dir);
@@ -146,7 +146,7 @@ public class MainController extends AbstractController {
         if (isVideoOnly(children)) {
             view = "videoMain";
         } else if (dir.isAlbum()) {
-            view = "main";
+            view = "albumMain";
         } else {
             view = "artistMain";
         }
