@@ -103,9 +103,9 @@
                 <sub:url value="main.view" var="ancestorUrl">
                     <sub:param name="id" value="${ancestor.id}"/>
                 </sub:url>
-                <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
             </c:forEach>
-            ${model.dir.name}
+            ${fn:escapeXml(model.dir.name)}
         </span>
     </h1>
 
@@ -162,7 +162,7 @@
         <table class="music indent">
             <c:forEach items="${model.subDirs}" var="album">
                 <tr>
-                    <td class="fit"><a href="main.view?id=${album.id}" title="${album.name}">${album.name}</a></td>
+                    <td class="fit"><a href="main.view?id=${album.id}" title="${fn:escapeXml(album.name)}">${fn:escapeXml(album.name)}</a></td>
                     <td class="fit rightalign detail">${album.year}</td>
                 </tr>
             </c:forEach>
@@ -175,7 +175,7 @@
                 <div class="albumThumb">
                     <c:import url="coverArt.jsp">
                         <c:param name="albumId" value="${album.id}"/>
-                        <c:param name="caption1" value="${album.name}"/>
+                        <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
                         <c:param name="caption2" value="${album.year}"/>
                         <c:param name="captionCount" value="2"/>
                         <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>

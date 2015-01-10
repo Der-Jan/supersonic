@@ -165,9 +165,9 @@
         <sub:url value="main.view" var="ancestorUrl">
                 <sub:param name="id" value="${ancestor.id}"/>
             </sub:url>
-            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
             </c:forEach>
-            ${model.dir.name}
+            ${fn:escapeXml(model.dir.name)}
     </span>
 
     <c:if test="${model.averageRating gt 0}">
@@ -311,24 +311,24 @@
                         </c:if>
 
                         <td class="truncate">
-                            <span class="songTitle" title="${song.title}">${fn:escapeXml(song.title)}</span>
+                            <span class="songTitle" title="${fn:escapeXml(song.title)}">${fn:escapeXml(song.title)}</span>
                         </td>
 
                         <c:if test="${model.visibility.albumVisible}">
                             <td class="truncate">
-                                <span class="detail" title="${song.albumName}">${fn:escapeXml(song.albumName)}</span>
+                                <span class="detail" title="${fn:escapeXml(song.albumName)}">${fn:escapeXml(song.albumName)}</span>
                             </td>
                         </c:if>
 
                         <c:if test="${model.visibility.artistVisible}">
                             <td class="truncate">
-                                <span class="detail" title="${song.artist}">${fn:escapeXml(song.artist)}</span>
+                                <span class="detail" title="${fn:escapeXml(song.artist)}">${fn:escapeXml(song.artist)}</span>
                             </td>
                         </c:if>
 
                         <c:if test="${model.visibility.genreVisible}">
                             <td class="fit rightalign">
-                                <span class="detail">${song.genre}</span>
+                                <span class="detail">${fn:escapeXml(song.genre)}</span>
                             </td>
                         </c:if>
 
@@ -428,7 +428,7 @@
                     <sub:url value="main.view" var="albumUrl">
                         <sub:param name="id" value="${child.id}"/>
                     </sub:url>
-                    <tr><td class="fit"><a href="${albumUrl}" title="${child.name}">${child.name}</a></td></tr>
+                    <tr><td class="fit"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td></tr>
                 </c:forEach>
             </table>
         </td>
@@ -441,7 +441,7 @@
         <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
-                <c:param name="caption1" value="${album.name}"/>
+                <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
                 <c:param name="caption2" value="${album.year}"/>
                 <c:param name="captionCount" value="2"/>
                 <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>

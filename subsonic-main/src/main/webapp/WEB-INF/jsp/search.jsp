@@ -52,7 +52,7 @@
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td class="truncate"><a href="${mainUrl}">${match.name}</a></td>
+                <td class="truncate"><a href="${mainUrl}">${fn:escapeXml(match.name)}</a></td>
             </tr>
 
             </c:forEach>
@@ -79,8 +79,8 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td class="truncate"><a href="${mainUrl}">${match.albumName}</a></td>
-                <td class="truncate"><span class="detail">${match.artist}</span></td>
+                <td class="truncate"><a href="${mainUrl}">${fn:escapeXml(match.albumName)}</a></td>
+                <td class="truncate"><span class="detail">${fn:escapeXml(match.artist)}</span></td>
             </tr>
 
             </c:forEach>
@@ -109,9 +109,9 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td class="truncate"><span class="songTitle">${match.title}</span></td>
-                <td class="truncate"><a href="${mainUrl}"><span class="detail">${match.albumName}</span></a></td>
-                <td class="truncate"><span class="detail">${match.artist}</span></td>
+                <td class="truncate"><span class="songTitle">${fn:escapeXml(match.title)}</span></td>
+                <td class="truncate"><a href="${mainUrl}"><span class="detail">${fn:escapeXml(match.albumName)}</span></a></td>
+                <td class="truncate"><span class="detail">${fn:escapeXml(match.artist)}</span></td>
             </tr>
 
             </c:forEach>

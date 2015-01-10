@@ -84,15 +84,14 @@
             <sub:url value="main.view" var="ancestorUrl">
                 <sub:param name="id" value="${ancestor.id}"/>
             </sub:url>
-            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
         </c:forEach>
-        ${model.dir.name}
+        ${fn:escapeXml(model.dir.name)}
     </span>
 </h1>
 
 <%@ include file="viewSelector.jsp" %>
 <div style="clear:both;padding-bottom:2em"></div>
-
 <c:choose>
     <c:when test="${model.viewAsList}">
         <table class="music indent">
@@ -103,7 +102,7 @@
                 </c:url>
                 <tr>
                     <td class="truncate">
-                        <a href="${videoUrl}"><span class="songTitle" title="${child.name}">${fn:escapeXml(child.name)}</span></a>
+                        <a href="${videoUrl}"><span class="songTitle" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</span></a>
                     </td>
                     <td class="fit rightalign detail">${child.year}</td>
                     <td class="fit rightalign detail">${fn:toLowerCase(child.format)}</td>
@@ -134,7 +133,7 @@
                         </div>
                         <div class="detail duration">${child.durationString}</div>
                     </div>
-                    <div class="caption1" title="${child.name}"><a href="${videoUrl}" title="${child.name}">${child.name}</a></div>
+                    <div class="caption1" title="${fn:escapeXml(child.name)}"><a href="${videoUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></div>
                 </div>
             </div>
         </c:forEach>
@@ -145,7 +144,7 @@
 
 <table class="music">
     <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
-        <tr><td class="truncate"><a href="main.view?id=${child.id}" title="${child.name}">${child.name}</a></td></tr>
+        <tr><td class="truncate"><a href="main.view?id=${child.id}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td></tr>
     </c:forEach>
 </table>
 

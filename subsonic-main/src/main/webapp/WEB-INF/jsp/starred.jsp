@@ -59,7 +59,7 @@
                     <fmt:message key="common.unknown"/>
                 </c:when>
                 <c:otherwise>
-                    ${album.name}
+                    ${fn:escapeXml(album.name)}
                 </c:otherwise>
             </c:choose>
         </c:set>
@@ -68,7 +68,7 @@
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
                 <c:param name="caption1" value="${albumTitle}"/>
-                <c:param name="caption2" value="${album.artist}"/>
+                <c:param name="caption2" value="${fn:escapeXml(album.artist)}"/>
                 <c:param name="captionCount" value="2"/>
                 <c:param name="coverArtSize" value="${model.coverArtSize}"/>
                 <c:param name="showLink" value="true"/>
@@ -98,7 +98,7 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
                 <td class="truncate">
-                    <a href="${mainUrl}">${artist.name}</a>
+                    <a href="${mainUrl}">${fn:escapeXml(artist.name)}</a>
                 </td>
             </tr>
         </c:forEach>
@@ -126,15 +126,15 @@
                 </c:import>
 
                 <td class="truncate">
-                        ${song.title}
+                        ${fn:escapeXml(song.title)}
                 </td>
 
                 <td class="truncate">
-                    <a href="${mainUrl}"><span class="detail">${song.albumName}</span></a>
+                    <a href="${mainUrl}"><span class="detail">${fn:escapeXml(song.albumName)}</span></a>
                 </td>
 
                 <td class="truncate">
-                    <span class="detail">${song.artist}</span>
+                    <span class="detail">${fn:escapeXml(song.artist)}</span>
                 </td>
             </tr>
 
@@ -171,7 +171,7 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
                 <td class="truncate">
-                    <a href="${videoUrl}">${video.name}</a>
+                    <a href="${videoUrl}">${fn:escapeXml(video.name)}</a>
                 </td>
             </tr>
         </c:forEach>
