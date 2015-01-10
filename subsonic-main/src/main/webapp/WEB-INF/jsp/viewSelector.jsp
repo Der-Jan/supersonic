@@ -26,11 +26,11 @@
     </c:url>
     <c:choose>
         <c:when test="${model.viewAsList}">
-            <img src="<spring:theme code="viewAsListImage"/>" alt="" class="headerSelected"/>
+            <img src="<spring:theme code="viewAsListImage"/>" alt="" class="headerSelected" style="margin-right:8px"/>
             <a href="${changeViewUrl}"><img src="<spring:theme code="viewAsGridImage"/>" alt=""/></a>
         </c:when>
         <c:otherwise>
-            <a href="${changeViewUrl}"><img src="<spring:theme code="viewAsListImage"/>" alt=""/></a>
+            <a href="${changeViewUrl}"><img src="<spring:theme code="viewAsListImage"/>" alt="" style="margin-right:8px"/></a>
             <img src="<spring:theme code="viewAsGridImage"/>" alt="" class="headerSelected"/>
         </c:otherwise>
     </c:choose>
