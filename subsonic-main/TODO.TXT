@@ -1,8 +1,5 @@
 DONE IN 5.1.beta2
 ------------------
-Show song count and duration in play queue.
-Bugfix: Show correct "siebling" albums.
-Toggle between thumbnail and list mode.
 
 TODO IN 5.1
 --------------

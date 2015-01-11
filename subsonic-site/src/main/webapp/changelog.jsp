@@ -35,16 +35,19 @@
 
 <section class="box">
 
-    <a name="5.1.beta2"><h3>Subsonic 5.1.beta2 - Jan 8, 2015</h3></a>
+    <a name="5.1.beta2"><h3>Subsonic 5.1.beta2 - Jan 11, 2015</h3></a>
     <ul>
         <li><strong>New:</strong> Drag and drop to rearrange playlists and play queue.</li>
+        <li><strong>New:</strong> Added buttons for toggling between thumbnail and list mode.</li>
+        <li><strong>New:</strong> Don't remove songs from playlists if they become unavailable.</li>
         <li><strong>New:</strong> Show toast when adding songs to queue.</li>
         <li><strong>New:</strong> Nicer display of "No media folders found", "New version available" etc</li>
         <li><strong>New:</strong> Make title clickable in video thumb</li>
-        <li><strong>New:</strong> Don't remove songs from playlists if they become unavailable.</li>
+        <li><strong>New:</strong> Show song count and duration in play queue.</li>
         <li><strong>New:</strong> New favicon</li>
         <li><strong>New:</strong> Support starring/unstarring videos.</li>
         <li><strong>New:</strong> Added video category in "Starred".</li>
+        <li><strong>Bugfix:</strong> Show correct "siebling" albums.</li>
         <li><strong>REST:</strong> scrobble method now also updates play statistic and the list of "now playing" songs.</li>
     </ul>
 
