@@ -87,22 +87,18 @@ public class SonosService implements SonosSoap {
 
         String id = parameters.getId();
         System.out.println("getMetadata: " + id);
-        MediaList mediaList = new MediaList();
-
+        List<? extends  AbstractMedia> mediaList = null;
         if (ID_ROOT.equals(id)) {
-            sonosHelper.populateMediaListForRoot(mediaList);
+            mediaList = sonosHelper.forRoot();
         } else if (ID_PLAYLISTS.equals(id)) {
-            populateMediaList(mediaList, parameters.getIndex(), parameters.getCount(),
-                              sonosHelper.forPlaylists());
+            mediaList = sonosHelper.forPlaylists();
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
-            populateMediaList(mediaList, parameters.getIndex(), parameters.getCount(),
-                              sonosHelper.forPlaylist(playlistId));
+            mediaList = sonosHelper.forPlaylist(playlistId);
         }
 
-
         GetMetadataResponse response = new GetMetadataResponse();
-        response.setGetMetadataResult(mediaList);
+        response.setGetMetadataResult(createSubList(parameters.getIndex(), parameters.getCount(), mediaList));
         return response;
     }
 
@@ -117,14 +113,17 @@ public class SonosService implements SonosSoap {
         this.sonosHelper = sonosHelper;
     }
 
-    private void populateMediaList(MediaList mediaList, int index, int count, List<? extends AbstractMedia> mediaCollections) {
+    private MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
+        MediaList result = new MediaList();
         List<? extends AbstractMedia> selectedMediaCollections = Util.subList(mediaCollections, index, count);
-        mediaList.setIndex(index);
-        mediaList.setCount(selectedMediaCollections.size());
-        mediaList.setTotal(mediaCollections.size());
-        mediaList.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
-    }
 
+        result.setIndex(index);
+        result.setCount(selectedMediaCollections.size());
+        result.setTotal(mediaCollections.size());
+        result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
+
+        return result;
+    }
 
     @Override
     public RateItemResponse rateItem(RateItem parameters) throws CustomFault {

@@ -20,6 +20,7 @@
 package net.sourceforge.subsonic.service.sonos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -50,13 +51,13 @@ public class SonosHelper {
     private PlayerService playerService;
     private TranscodingService transcodingService;
 
-    public void populateMediaListForRoot(MediaList mediaList) {
+    public List<MediaCollection> forRoot() {
         MediaCollection browse = new MediaCollection();
         browse.setCanPlay(false);
         browse.setCanEnumerate(true);
         browse.setItemType(ItemType.COLLECTION);
         browse.setId(SonosService.ID_BROWSE);
-        browse.setTitle("Browse");
+        browse.setTitle("Browse library");
 
         MediaCollection playlists = new MediaCollection();
         playlists.setCanPlay(false);
@@ -65,11 +66,7 @@ public class SonosHelper {
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
 
-        mediaList.setCount(2);
-        mediaList.setIndex(0);
-        mediaList.setTotal(2);
-        mediaList.getMediaCollectionOrMediaMetadata().add(browse);
-        mediaList.getMediaCollectionOrMediaMetadata().add(playlists);
+        return Arrays.asList(browse, playlists);
     }
 
     public List<MediaCollection> forPlaylists() {

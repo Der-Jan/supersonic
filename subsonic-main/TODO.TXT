@@ -27,8 +27,11 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
-  subsonic-sonos-api maven module
-  Browse by tags?
+  Cover art
+  Rating
+  Favorites
+  Streaming
+  Music service icon
   Automatically register music service in Sonos controller
   Test with Java 6
   Ensure src assembly builds
