@@ -2,7 +2,11 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
     <!-- DAO's -->
 
@@ -201,6 +205,18 @@
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="artistDao" ref="artistDao"/>
     </bean>
+
+    <bean id="sonosHelper" class="net.sourceforge.subsonic.service.sonos.SonosHelper">
+        <property name="playlistService" ref="playlistService"/>
+        <property name="playerService" ref="playerService"/>
+        <property name="transcodingService" ref="transcodingService"/>
+    </bean>
+
+    <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService">
+        <property name="sonosHelper" ref="sonosHelper"/>
+    </bean>
+
+    <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos"/>
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">

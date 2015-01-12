@@ -85,6 +85,7 @@
 
     <modules>
         <module>subsonic-rest-api</module>
+        <module>subsonic-sonos-api</module>
         <module>subsonic-main</module>
     </modules>
 

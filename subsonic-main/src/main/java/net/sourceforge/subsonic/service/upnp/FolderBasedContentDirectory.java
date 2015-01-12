@@ -47,6 +47,7 @@ import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -130,7 +131,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     private BrowseResult browsePlaylistRoot(long firstResult, long maxResults) throws Exception {
         DIDLContent didl = new DIDLContent();
         List<Playlist> allPlaylists = playlistService.getAllPlaylists();
-        List<Playlist> selectedPlaylists = subList(allPlaylists, firstResult, maxResults);
+        List<Playlist> selectedPlaylists = Util.subList(allPlaylists, firstResult, maxResults);
         for (Playlist playlist : selectedPlaylists) {
             didl.addContainer(createPlaylistContainer(playlist));
         }
@@ -146,7 +147,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private BrowseResult browsePlaylist(Playlist playlist, long firstResult, long maxResults) throws Exception {
         List<MediaFile> allChildren = playlistService.getFilesInPlaylist(playlist.getId());
-        List<MediaFile> selectedChildren = subList(allChildren, firstResult, maxResults);
+        List<MediaFile> selectedChildren = Util.subList(allChildren, firstResult, maxResults);
 
         DIDLContent didl = new DIDLContent();
         for (MediaFile child : selectedChildren) {
@@ -158,7 +159,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     private BrowseResult browseRoot(long firstResult, long maxResults) throws Exception {
         DIDLContent didl = new DIDLContent();
         List<MusicFolder> allFolders = settingsService.getAllMusicFolders();
-        List<MusicFolder> selectedFolders = subList(allFolders, firstResult, maxResults);
+        List<MusicFolder> selectedFolders = Util.subList(allFolders, firstResult, maxResults);
         for (MusicFolder folder : selectedFolders) {
             MediaFile mediaFile = mediaFileService.getMediaFile(folder.getPath());
             addContainerOrItem(didl, mediaFile);
@@ -179,17 +180,13 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
 
     private BrowseResult browseMediaFile(MediaFile mediaFile, long firstResult, long maxResults) throws Exception {
         List<MediaFile> allChildren = mediaFileService.getChildrenOf(mediaFile, true, true, true);
-        List<MediaFile> selectedChildren = subList(allChildren, firstResult, maxResults);
+        List<MediaFile> selectedChildren = Util.subList(allChildren, firstResult, maxResults);
 
         DIDLContent didl = new DIDLContent();
         for (MediaFile child : selectedChildren) {
             addContainerOrItem(didl, child);
         }
         return createBrowseResult(didl, selectedChildren.size(), allChildren.size());
-    }
-
-    private <T> List<T> subList(List<T> list, long offset, long max) {
-        return list.subList((int) offset, Math.min(list.size(), (int) (offset + max)));
     }
 
     private void addContainerOrItem(DIDLContent didl, MediaFile mediaFile) throws Exception {

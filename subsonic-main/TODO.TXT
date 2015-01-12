@@ -28,7 +28,11 @@ TODO IN 5.2
 ------------
 Sonos
   subsonic-sonos-api maven module
+  Browse by tags?
   Automatically register music service in Sonos controller
+  Test with Java 6
+  Ensure src assembly builds
+  SkatteFUNN
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?
