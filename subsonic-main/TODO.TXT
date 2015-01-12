@@ -32,6 +32,9 @@ Sonos
   Favorites
   Streaming
   Music service icon
+  Search
+  Test with https, if not working add createConstraintMapping("/stream", Constraint.DC_NONE) in SubsonicDeployer
+
   Automatically register music service in Sonos controller
   Test with Java 6
   Ensure src assembly builds
@@ -911,6 +914,7 @@ Vis "lignende" album.
 
 HOW TO RELEASE
 ===============================
+MAKE SURE YOU'RE ON TRUNK
 Update version number in pom.xml, version.html, MultiController.java, download.jsp
 Update changelog.jsp
 Commit

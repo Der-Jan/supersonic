@@ -23,20 +23,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.sonos.services._1.ItemType;
 import com.sonos.services._1.MediaCollection;
-import com.sonos.services._1.MediaList;
 import com.sonos.services._1.MediaMetadata;
-import com.sonos.services._1.StreamMetadata;
 import com.sonos.services._1.TrackMetadata;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.SonosService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -47,9 +47,11 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class SonosHelper {
 
+    private MediaFileService mediaFileService;
     private PlaylistService playlistService;
     private PlayerService playerService;
     private TranscodingService transcodingService;
+    private SettingsService settingsService;
 
     public List<MediaCollection> forRoot() {
         MediaCollection browse = new MediaCollection();
@@ -95,7 +97,7 @@ public class SonosHelper {
         return result;
     }
 
-    private MediaMetadata forSong(MediaFile song) {
+    public MediaMetadata forSong(MediaFile song) {
         Player player = playerService.getGuestPlayer(null);
         String suffix = transcodingService.getSuffix(player, song, null);
 
@@ -113,7 +115,7 @@ public class SonosHelper {
         trackMetadata.setAlbum(song.getAlbumName());
 //        trackMetadata.setAlbumArtURI(); // TODO
         trackMetadata.setDuration(song.getDurationSeconds());
-        trackMetadata.setCanSkip(false); // TODO
+        trackMetadata.setCanSkip(false); // TODO, but probably ok since the whole song is loaded?
 
         result.setTrackMetadata(trackMetadata);
 
@@ -130,5 +132,38 @@ public class SonosHelper {
 
     public void setTranscodingService(TranscodingService transcodingService) {
         this.transcodingService = transcodingService;
+    }
+
+    public String getMediaURI(int mediaFileId) {
+        MediaFile song = mediaFileService.getMediaFile(mediaFileId);
+        Player player = playerService.getGuestPlayer(null);
+
+        return getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
+    }
+
+    // TODO: Make it work with https?
+    private String getBaseUrl() {
+        int port = settingsService.getPort();
+        String contextPath = settingsService.getUrlRedirectContextPath();
+
+        // Note: Serving media and cover art with http (as opposed to https) works when using jetty and SubsonicDeployer.
+        StringBuilder url = new StringBuilder("http://")
+                .append(settingsService.getLocalIpAddress())
+                .append(":")
+                .append(port)
+                .append("/");
+
+        if (StringUtils.isNotEmpty(contextPath)) {
+            url.append(contextPath).append("/");
+        }
+        return url.toString();
+    }
+
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 }

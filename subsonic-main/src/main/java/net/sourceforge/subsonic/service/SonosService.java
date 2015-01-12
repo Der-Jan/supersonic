@@ -46,6 +46,7 @@ import com.sonos.services._1.GetSessionIdResponse;
 import com.sonos.services._1.HttpHeaders;
 import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaList;
+import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RemoveFromContainerResult;
@@ -58,6 +59,7 @@ import com.sonos.services._1.SegmentMetadataList;
 import com.sonos.services._1_1.CustomFault;
 import com.sonos.services._1_1.SonosSoap;
 
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.util.Util;
 
@@ -73,6 +75,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_PLAYLIST_PREFIX = "pl-";
 
     private SonosHelper sonosHelper;
+    private MediaFileService mediaFileService;
 
     @Override
     public LastUpdate getLastUpdate() throws CustomFault {
@@ -87,6 +90,7 @@ public class SonosService implements SonosSoap {
 
         String id = parameters.getId();
         System.out.println("getMetadata: " + id);
+
         List<? extends  AbstractMedia> mediaList = null;
         if (ID_ROOT.equals(id)) {
             mediaList = sonosHelper.forRoot();
@@ -109,8 +113,25 @@ public class SonosService implements SonosSoap {
         return result;
     }
 
-    public void setSonosHelper(SonosHelper sonosHelper) {
-        this.sonosHelper = sonosHelper;
+    @Override
+    public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) throws CustomFault {
+        System.out.println("getMediaMetadata: " + parameters.getId());
+
+        int id = Integer.parseInt(parameters.getId());
+        MediaFile song = mediaFileService.getMediaFile(id);
+
+        GetMediaMetadataResponse response = new GetMediaMetadataResponse();
+        GetMediaMetadataResponse.GetMediaMetadataResult result = new GetMediaMetadataResponse.GetMediaMetadataResult();
+        result.setMediaMetadata(sonosHelper.forSong(song));
+        response.setGetMediaMetadataResult(result);
+
+        return response;
+    }
+
+    @Override
+    public void getMediaURI(String id, Holder<String> getMediaURIResult, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) throws CustomFault {
+        System.out.println("getMediaURI " + id);
+        getMediaURIResult.value = sonosHelper.getMediaURI(Integer.parseInt(id));
     }
 
     private MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
@@ -123,6 +144,10 @@ public class SonosService implements SonosSoap {
         result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
 
         return result;
+    }
+
+    public void setSonosHelper(SonosHelper sonosHelper) {
+        this.sonosHelper = sonosHelper;
     }
 
     @Override
@@ -206,11 +231,6 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public void getMediaURI(String id, Holder<String> getMediaURIResult, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) throws CustomFault {
-
-    }
-
-    @Override
     public DeleteContainerResult deleteContainer(String id) throws CustomFault {
         return null;
     }
@@ -222,11 +242,6 @@ public class SonosService implements SonosSoap {
 
     @Override
     public ContentKey getContentKey(String id, String uri) throws CustomFault {
-        return null;
-    }
-
-    @Override
-    public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) throws CustomFault {
         return null;
     }
 
@@ -243,5 +258,9 @@ public class SonosService implements SonosSoap {
     @Override
     public String createItem(String favorite) throws CustomFault {
         return null;
+    }
+
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
     }
 }

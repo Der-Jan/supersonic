@@ -207,6 +207,8 @@
     </bean>
 
     <bean id="sonosHelper" class="net.sourceforge.subsonic.service.sonos.SonosHelper">
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="playerService" ref="playerService"/>
         <property name="transcodingService" ref="transcodingService"/>
@@ -214,6 +216,7 @@
 
     <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService">
         <property name="sonosHelper" ref="sonosHelper"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
 
     <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos"/>
