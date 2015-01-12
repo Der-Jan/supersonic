@@ -25,11 +25,14 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.sonos.services._1.AlbumArtUrl;
 import com.sonos.services._1.ItemType;
 import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.TrackMetadata;
 
+import net.sourceforge.subsonic.controller.CoverArtController;
+import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
@@ -75,13 +78,16 @@ public class SonosHelper {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (Playlist playlist : playlistService.getAllPlaylists()) {
             MediaCollection mediaCollection = new MediaCollection();
+            AlbumArtUrl albumArtURI = new AlbumArtUrl();
+            albumArtURI.setValue(getCoverArtUrl(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId()));
+
             mediaCollection.setId(SonosService.ID_PLAYLIST_PREFIX + playlist.getId());
             mediaCollection.setCanEnumerate(true);
             mediaCollection.setCanPlay(true);
             mediaCollection.setItemType(ItemType.PLAYLIST);
             mediaCollection.setArtist(playlist.getUsername());
             mediaCollection.setTitle(playlist.getName());
-//            mediaCollection.setAlbumArtURI();  TODO
+            mediaCollection.setAlbumArtURI(albumArtURI);
             result.add(mediaCollection);
         }
         return result;
@@ -109,17 +115,24 @@ public class SonosHelper {
         result.setGenre(song.getGenre());
 //        result.setDynamic();// TODO: For starred songs
 
+        AlbumArtUrl albumArtURI = new AlbumArtUrl();
+        albumArtURI.setValue(getCoverArtUrl(String.valueOf(song.getId())));
+
         TrackMetadata trackMetadata = new TrackMetadata();
         trackMetadata.setArtist(song.getArtist());
         trackMetadata.setAlbumArtist(song.getAlbumArtist());
         trackMetadata.setAlbum(song.getAlbumName());
-//        trackMetadata.setAlbumArtURI(); // TODO
+        trackMetadata.setAlbumArtURI(albumArtURI);
         trackMetadata.setDuration(song.getDurationSeconds());
         trackMetadata.setCanSkip(false); // TODO, but probably ok since the whole song is loaded?
 
         result.setTrackMetadata(trackMetadata);
 
         return result;
+    }
+
+    private String getCoverArtUrl(String id) {
+        return getBaseUrl() + "coverArt.view?id=" + id + "&size=" + CoverArtScheme.LARGE.getSize();
     }
 
     public void setPlaylistService(PlaylistService playlistService) {
