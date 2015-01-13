@@ -1,17 +1,17 @@
 DONE IN 5.1
 -------------
 
-TODO IN SITE
-------------
-FAQ for network disks & firewall
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14957&p=65344#p65344
-Submuxic
-  https://mail.google.com/mail/ca/u/0/#inbox/14a09bf66db6bb8f
-Write terms of use.
-
 TODO IN 5.1
 --------------
-Windows firewall: Only opened for private networks.
+Glitter
+Add "handle" for drag&drop
+Clicking "more" in search result makes page scroll to top.
+Make separate category for videos in search.
+Show video preview in Starred
+"Add to playlist" submenu
+  http://behigh.github.io/bootstrap_dropdowns_enhancement/
+Lazy create upnp
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
 Layout improvements
   Review use of "detail" in music tables.
 Support tags/labels
@@ -20,12 +20,20 @@ IntelliJ plugin
 Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
-set window title when playing video
 
 TODO IN 5.2
 ------------
 Larger fonts?
 New player controls
+  Keyboard shortcuts (media buttons / space / arrows, ..)
+  Remove "External player" feature?
+  Remove "Player has dynamic IP address"?
+  Remove "Control player automatically"?
+  Fix bug with multiple current track images.
+  Support with web player / cast / jukebox
+  Create screen mocks
+  Use html5 audio
+  "Previous" button should restart current song
 
 Avoid scrolling album/artist title
 Find similar tracks / artists
@@ -55,14 +63,6 @@ Keep Playlists Regardless if Media Found
 Shows extra "|" in movie dir.
 Test: Make it possible to cast from remote server
 
-Site
-  Change image of myself
-  Change intro text
-  Change highlights on intro page
-  Remove link to Chartlyrics
-  Change references to Java 5 (in installation instructions)
-  Rename "Some apps must be purchased separately." to "Some apps are sold separately".
-  Add chromecast
 
 Cast
   Initial volume, both local and remote.
@@ -910,27 +910,27 @@ cd subsonic-backend;  mvn clean install; cd ..
 Deploy
 Check that correct local version is displayed.
 
-Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). Pwd available in correspondence from hosting provider.
+Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
 On Windows
   svn update
   mvn clean install -Pfull
-  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
+  rsync -avP -e ssh subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
 
 On VirtualBox Ubuntu
   svn update
   # Ignore build error for subsonic-installer-rpm
   mvn clean install -Pfull,debian
-  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
+  rsync -avP -e ssh subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
   sudo shutdown -h now
 
 On VirtualBox Fedora
   svn update
   mvn clean install -Pfull,rpm
-  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.0/
+  rsync -avP -e ssh subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
   sudo shutdown -h now
 
 Modify FRS properties
@@ -939,7 +939,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.0 -m "Tagging 5.0"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.1.beta2 -m "Tagging 5.1.beta2"
 Post message on forum.
 
 Checking for license abuse:
@@ -949,16 +949,16 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2014-11-29/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-11-29/pages.war
+mkdir /usr/local/jakarta/tomcat/webapps-2014-12-28/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-12-28/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2014-12-28/pages.war
 
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2014-11-29 webapps
+ln -s webapps-2014-12-28 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -966,13 +966,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2014-09-21/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-09-21/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2014-12-28/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2014-12-28/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2014-09-21 webapps
+ln -s webapps-2014-12-28 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

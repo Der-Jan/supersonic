@@ -15,14 +15,14 @@
 @import "default.css";
 
 /* The primary background colour, light gray. Images used to force background on left frame headings and playlist. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-image:url( "../icons/buuftheme/list_heading.png" );
     background-repeat:repeat;
     background-color: #3C2D22;
 }
 
 /* The secondary background colour, light blue, primary theme colour. */
-.bgcolor2, .ruleTableHeader, .log {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd) {
     background-color: #4C4039;
 }
 

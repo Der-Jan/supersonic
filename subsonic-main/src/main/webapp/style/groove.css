@@ -16,12 +16,12 @@
 @import "default.css";
 
 /* The primary background colour. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-color: #222;
 }
 
 /* The secondary background colour, light blue, primary theme colour. */
-.bgcolor2, .ruleTableHeader, .log {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd) {
     background-color: #222;
     color: #FFFFFF;
 

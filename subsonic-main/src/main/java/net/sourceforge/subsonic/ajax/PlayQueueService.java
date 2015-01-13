@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.ajax;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -142,9 +143,18 @@ public class PlayQueueService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
-        List<MediaFile> files = playlistService.getFilesInPlaylist(id);
+        List<MediaFile> files = playlistService.getFilesInPlaylist(id, true);
         if (!files.isEmpty()) {
             files = files.subList(index, files.size());
+        }
+
+        // Remove non-present files
+        Iterator<MediaFile> iterator = files.iterator();
+        while (iterator.hasNext()) {
+            MediaFile file = iterator.next();
+            if (!file.isPresent()) {
+                iterator.remove();
+            }
         }
         Player player = getCurrentPlayer(request, response);
         return doPlay(request, player, files).setStartPlayerAt(0);
@@ -340,6 +350,14 @@ public class PlayQueueService {
         for (int i = indexes.length - 1; i >= 0; i--) {
             player.getPlayQueue().removeFileAt(indexes[i]);
         }
+        return convert(request, player, false);
+    }
+
+    public PlayQueueInfo rearrange(int[] indexes) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        Player player = getCurrentPlayer(request, response);
+        player.getPlayQueue().rearrange(indexes);
         return convert(request, player, false);
     }
 

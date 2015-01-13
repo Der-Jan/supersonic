@@ -104,7 +104,21 @@ public class PlaylistService {
     }
 
     public List<MediaFile> getFilesInPlaylist(int id) {
-        return mediaFileDao.getFilesInPlaylist(id);
+        return getFilesInPlaylist(id, false);
+    }
+
+    public List<MediaFile> getFilesInPlaylist(int id, boolean includeNotPresent) {
+        List<MediaFile> files = mediaFileDao.getFilesInPlaylist(id);
+        if (includeNotPresent) {
+            return files;
+        }
+        List<MediaFile> presentFiles = new ArrayList<MediaFile>(files.size());
+        for (MediaFile file : files) {
+            if (file.isPresent()) {
+                presentFiles.add(file);
+            }
+        }
+        return presentFiles;
     }
 
     public void setFilesInPlaylist(int id, List<MediaFile> files) {
@@ -202,7 +216,7 @@ public class PlaylistService {
 
     public void exportPlaylist(int id, OutputStream out) throws Exception {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, StringUtil.ENCODING_UTF8));
-        new M3UFormat().format(getFilesInPlaylist(id), writer);
+        new M3UFormat().format(getFilesInPlaylist(id, true), writer);
     }
 
     public void importPlaylists() {
@@ -232,23 +246,6 @@ public class PlaylistService {
             } catch (Exception x) {
                 LOG.warn("Failed to auto-import playlist " + file + ". " + x.getMessage());
             }
-        }
-    }
-
-    public void updatePlaylistStatistics() {
-        try {
-            LOG.info("Starting playlist statistics update.");
-            doUpdatePlaylistStatistics();
-            LOG.info("Completed playlist statistics update.");
-        } catch (Throwable x) {
-            LOG.warn("Failed to update playlist statistics: " + x, x);
-        }
-    }
-
-    private void doUpdatePlaylistStatistics() {
-        for (Playlist playlist : playlistDao.getAllPlaylists()) {
-            List<MediaFile> files = getFilesInPlaylist(playlist.getId());
-            setFilesInPlaylist(playlist.getId(), files);
         }
     }
 

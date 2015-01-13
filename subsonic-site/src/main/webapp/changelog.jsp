@@ -34,6 +34,20 @@
 <div class="12u">
 
 <section class="box">
+
+    <a name="5.1.beta2"><h3>Subsonic 5.1.beta2 - Jan 8, 2015</h3></a>
+    <ul>
+        <li><strong>New:</strong> Drag and drop to rearrange playlists and play queue.</li>
+        <li><strong>New:</strong> Show toast when adding songs to queue.</li>
+        <li><strong>New:</strong> Nicer display of "No media folders found", "New version available" etc</li>
+        <li><strong>New:</strong> Make title clickable in video thumb</li>
+        <li><strong>New:</strong> Don't remove songs from playlists if they become unavailable.</li>
+        <li><strong>New:</strong> New favicon</li>
+        <li><strong>New:</strong> Support starring/unstarring videos.</li>
+        <li><strong>New:</strong> Added video category in "Starred".</li>
+        <li><strong>REST:</strong> scrobble method now also updates play statistic and the list of "now playing" songs.</li>
+    </ul>
+
     <a name="5.1.beta1"><h3>Subsonic 5.1.beta1 - Dec 29, 2014</h3></a>
     <ul>
         <li><strong>New:</strong> New video page, with preview thumbs.</li>
@@ -53,6 +67,7 @@
         <li><strong>New:</strong> Removed external ads.</li>
         <li><strong>Bugfix:</strong> Video playback broken behind proxies.</li>
         <li><strong>Bugfix:</strong> Wrong aspect rate for shared videos.</li>
+        <li><strong>Bugfix:</strong> Configure Windows firewall for all network profiles.</li>
         <li><strong>REST:</strong> Added getSimilarSongs and getArtistInfo.</li>
         <li><strong>REST:</strong> Support playlist cover art</li>
         <li><strong>REST:</strong> Added musicFolderId parameter to getAlbumList</li>

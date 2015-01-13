@@ -141,16 +141,8 @@
 </script>
 
 <h1>
-    <a href="#" onclick="toggleStar(${model.dir.id}, '#starImage'); return false;">
-        <c:choose>
-            <c:when test="${not empty model.dir.starredDate}">
-                <img id="starImage" src="<spring:theme code="ratingOnImage"/>" alt="">
-            </c:when>
-            <c:otherwise>
-                <img id="starImage" src="<spring:theme code="ratingOffImage"/>" alt="">
-            </c:otherwise>
-        </c:choose>
-    </a>
+    <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
+         onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
 
     <span style="vertical-align: middle">
         <c:forEach items="${model.ancestors}" var="ancestor">
@@ -282,16 +274,7 @@
             <table class="music" style="width: 100%">
                 <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
-                    <c:choose>
-                        <c:when test="${loopStatus.count % 2 == 1}">
-                            <c:set var="cssClass" value="class='bgcolor2'"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="cssClass" value=""/>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <tr ${cssClass} style="margin:0;padding:0;border:0">
+                    <tr style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
                             <c:param name="id" value="${song.id}"/>
                             <c:param name="video" value="${song.video and model.player.web}"/>
@@ -386,11 +369,11 @@
         </td>
         <c:if test="${model.showAd}">
             <td style="vertical-align:top;width:160px" rowspan="2">
-                <h2>Subsonic Premium</h2>
+                <h2 style="padding-bottom: 1em">Subsonic Premium</h2>
                 <p style="font-size: 90%">
                     Upgrade to Subsonic Premium and get:
                 </p>
-                <div style="font-size: 90%">
+                <div style="font-size: 90%;padding-bottom: 1em">
                     <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
                     <p>Video streaming.</p>
                     <p>Chromecast support.</p>

@@ -10,6 +10,14 @@
             <c:if test="${model.listType eq 'random'}">
             setTimeout("refresh()", 20000);
             </c:if>
+
+            <c:if test="${not model.musicFoldersExist}">
+            $().toastmessage("showNoticeToast", "<fmt:message key="top.missing"/>");
+            </c:if>
+
+            <c:if test="${model.isIndexBeingCreated}">
+            $().toastmessage("showNoticeToast", "<fmt:message key="home.scan"/>");
+            </c:if>
         }
 
         function refresh() {
@@ -45,10 +53,6 @@
 
     </c:forTokens>
 </h2>
-
-<c:if test="${model.isIndexBeingCreated}">
-    <p class="warning"><fmt:message key="home.scan"/></p>
-</c:if>
 
 <%@ include file="homePager.jsp" %>
 

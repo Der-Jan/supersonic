@@ -28,9 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.dao.UserDao;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.VersionService;
 
 /**
  * Controller for the right frame.
@@ -41,6 +41,7 @@ public class RightController extends ParameterizableViewController {
 
     private SettingsService settingsService;
     private SecurityService securityService;
+    private VersionService versionService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -48,9 +49,20 @@ public class RightController extends ParameterizableViewController {
         ModelAndView result = super.handleRequestInternal(request, response);
 
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+        if (userSettings.isFinalVersionNotificationEnabled() && versionService.isNewFinalVersionAvailable()) {
+            map.put("newVersionAvailable", true);
+            map.put("latestVersion", versionService.getLatestFinalVersion());
+
+        } else if (userSettings.isBetaVersionNotificationEnabled() && versionService.isNewBetaVersionAvailable()) {
+            map.put("newVersionAvailable", true);
+            map.put("latestVersion", versionService.getLatestBetaVersion());
+        }
+
+        map.put("brand", settingsService.getBrand());
         map.put("showNowPlaying", userSettings.isShowNowPlayingEnabled());
         map.put("showChat", userSettings.isShowChatEnabled());
         map.put("user", securityService.getCurrentUser(request));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         result.addObject("model", map);
         return result;
@@ -62,5 +74,9 @@ public class RightController extends ParameterizableViewController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setVersionService(VersionService versionService) {
+        this.versionService = versionService;
     }
 }

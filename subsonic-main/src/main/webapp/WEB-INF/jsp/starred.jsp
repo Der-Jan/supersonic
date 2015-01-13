@@ -50,7 +50,7 @@
 <c:if test="${not empty model.albums}">
     <h2><fmt:message key="search.hits.albums"/></h2>
 
-<div>
+<div style="padding-top:0.5em">
     <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
 
         <c:set var="albumTitle">
@@ -81,14 +81,14 @@
 
 <c:if test="${not empty model.artists}">
     <h2><fmt:message key="search.hits.artists"/></h2>
-    <table class="music">
-        <c:forEach items="${model.artists}" var="artist" varStatus="loopStatus">
+    <table class="music indent">
+        <c:forEach items="${model.artists}" var="artist">
 
-            <sub:url value="/main.view" var="mainUrl">
-                <sub:param name="path" value="${artist.path}"/>
-            </sub:url>
+            <c:url value="/main.view" var="mainUrl">
+                <c:param name="id" value="${artist.id}"/>
+            </c:url>
 
-            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
+            <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${artist.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
@@ -107,21 +107,21 @@
 
 <c:if test="${not empty model.songs}">
     <h2><fmt:message key="search.hits.songs"/></h2>
-    <table class="music">
-        <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
+    <table class="music indent">
+        <c:forEach items="${model.songs}" var="song">
 
             <sub:url value="/main.view" var="mainUrl">
                 <sub:param name="path" value="${song.parentPath}"/>
             </sub:url>
 
-            <tr ${loopStatus.count % 2 == 1 ? "class='bgcolor2'" : ""}>
+            <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${song.id}"/>
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                    <c:param name="addEnabled" value="${model.user.streamRole and (not model.partyModeEnabled or not song.directory)}"/>
+                    <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                     <c:param name="starEnabled" value="true"/>
                     <c:param name="starred" value="${not empty song.starredDate}"/>
-                    <c:param name="video" value="${song.video and model.player.web}"/>
+                    <c:param name="video" value="false"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
@@ -149,6 +149,33 @@
     </div>
     <div style="clear: both"></div>
 
+</c:if>
+
+<c:if test="${not empty model.videos}">
+    <h2><fmt:message key="search.hits.videos"/></h2>
+    <table class="music indent">
+        <c:forEach items="${model.videos}" var="video">
+
+            <c:url value="/videoPlayer.view" var="videoUrl">
+                <c:param name="id" value="${video.id}"/>
+            </c:url>
+
+            <tr>
+                <c:import url="playButtons.jsp">
+                    <c:param name="id" value="${video.id}"/>
+                    <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                    <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                    <c:param name="starEnabled" value="true"/>
+                    <c:param name="starred" value="${not empty video.starredDate}"/>
+                    <c:param name="video" value="${model.player.web}"/>
+                    <c:param name="asTable" value="true"/>
+                </c:import>
+                <td class="truncate">
+                    <a href="${videoUrl}">${video.name}</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
 </c:if>
 
 </body></html>

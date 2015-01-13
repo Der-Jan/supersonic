@@ -15,16 +15,16 @@ PARAMETERS
 
 <c:if test="${param.starEnabled}">
     <c:if test="${param.asTable}"><td class="fit"></c:if>
-    <a href="#" onclick="toggleStar(${param.id}, '#starImage${param.id}'); return false;">
-        <c:choose>
-            <c:when test="${param.starred}">
-                <img id="starImage${param.id}" src="<spring:theme code="ratingOnImage"/>" alt="">
-            </c:when>
-            <c:otherwise>
-                <img id="starImage${param.id}" src="<spring:theme code="ratingOffImage"/>" alt="">
-            </c:otherwise>
-        </c:choose>
-    </a>
+    <c:choose>
+        <c:when test="${param.starred}">
+            <img id="starImage${param.id}" src="<spring:theme code="ratingOnImage"/>" alt="" style="cursor:pointer"
+                 onclick="toggleStar(${param.id}, '#starImage${param.id}'); return false;">
+        </c:when>
+        <c:otherwise>
+            <img id="starImage${param.id}" src="<spring:theme code="ratingOffImage"/>" alt="" style="cursor:pointer"
+                 onclick="toggleStar(${param.id}, '#starImage${param.id}'); return false;">
+        </c:otherwise>
+    </c:choose>
     <c:if test="${param.asTable}"></td></c:if>
 </c:if>
 
@@ -40,9 +40,8 @@ PARAMETERS
                      title="<fmt:message key="common.play"/>"></a>
         </c:when>
         <c:otherwise>
-            <a href="#" onclick="top.playQueue.onPlay(${param.id}); return false;">
-                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
-                     title="<fmt:message key="common.play"/>"></a>
+            <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"
+                 onclick="top.playQueue.onPlay(${param.id}); return false;" title="<fmt:message key="common.play"/>">
         </c:otherwise>
     </c:choose>
 </c:if>
@@ -50,17 +49,17 @@ PARAMETERS
 
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
-    <a href="#" onclick="top.playQueue.onAdd(${param.id}); return false;">
-        <img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="main.addlast"/>"
-             title="<fmt:message key="main.addlast"/>"></a>
+    <img id="add${param.id}" src="<spring:theme code="addImage"/>" alt="<fmt:message key="main.addlast"/>"
+         onclick="top.playQueue.onAdd(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>'); return false;"
+         style="cursor:pointer" title="<fmt:message key="main.addlast"/>">
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
-    <a href="#" onclick="top.playQueue.onAddNext(${param.id}); return false;">
-        <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>"
-             title="<fmt:message key="main.addnext"/>"></a>
+    <img id="add${param.id}" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>"
+         onclick="top.playQueue.onAddNext(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>'); return false;"
+         style="cursor:pointer" title="<fmt:message key="main.addnext"/>">
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 

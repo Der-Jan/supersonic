@@ -5,7 +5,6 @@
     <%@ include file="../include.jsp" %>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="../<spring:theme code="styleSheet"/>" type="text/css">
-    <link rel="shortcut icon" href="../<spring:theme code="faviconImage"/>">
 
     <c:url value="/rest/stream.view" var="streamUrl">
         <c:param name="c" value="${model.c}"/>

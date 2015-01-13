@@ -7,14 +7,14 @@
 @import "default.css";
 
 /* The primary background colour. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-image:url('../icons/midnightfun/midnightfun_text_back.jpg');
     background-repeat:repeat;
     background-color: #AAAAAA;
 }
 
 /* The secondary background colour. */
-.bgcolor2, .ruleTableHeader, .log {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd) {
     background-image:url('../icons/midnightfun/midnightfun_background.gif');
     background-repeat:repeat;
     background-attachment:fixed;

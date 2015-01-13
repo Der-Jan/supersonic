@@ -22,14 +22,14 @@
 
 <c:if test="${not empty command.artists}">
     <h2><b><fmt:message key="search.hits.artists"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "artistRow bgcolor2" : "artistRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="artistRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -48,14 +48,14 @@
 
 <c:if test="${not empty command.albums}">
     <h2><b><fmt:message key="search.hits.albums"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
                 <sub:param name="path" value="${match.path}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "albumRow bgcolor2" : "albumRow"}" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
+            <tr class="albumRow" ${loopStatus.count > 5 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>
@@ -77,14 +77,14 @@
 
 <c:if test="${not empty command.songs}">
     <h2><b><fmt:message key="search.hits.songs"/></b></h2>
-    <table class="music">
+    <table class="music indent">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 
             <sub:url value="/main.view" var="mainUrl">
                 <sub:param name="path" value="${match.parentPath}"/>
             </sub:url>
 
-            <tr class="${loopStatus.count % 2 == 1 ? "songRow bgcolor2" : "songRow"}" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
+            <tr class="songRow" ${loopStatus.count > 15 ? "style='display:none'" : ""}>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${match.id}"/>
                     <c:param name="playEnabled" value="${command.user.streamRole and not command.partyModeEnabled}"/>

@@ -59,6 +59,9 @@
     <h3>I can't access my Subsonic server from the internet or from my phone.</h3>
     <p>Please follow the guide in the <a href="getting-started.jsp#2">Getting Started</a> documentation.</p>
 
+    <h3>Why doesn't Subsonic find media on mapped network disks?</h3>
+    <p>You might have to configure the Subsonic Windows service, please see the <a href="getting-started.jsp#1">Getting Started</a> documentation.</p>
+
     <h3>I forgot my Subsonic password. Can it be retrieved?</h3>
     <p>Yes. Please read <a href="http://forum.subsonic.org/forum/viewtopic.php?t=3770">this forum post</a>.</p>
 

@@ -46,8 +46,10 @@
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
+                    <li><a href="#submuxic">Sub Muxic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
+                    <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
                 </ul>
             </div>
 
@@ -71,7 +73,7 @@
                     <li><a href="#sonicair">SonicAir</a> for BlackBerry PlayBook</li>
                     <li><a href="#mmtm">My Music To Me</a> for Sonos</li>
                     <%--<li><a href="#chumby">Subsonic</a> for Chumby</li>--%>
-                    <%--<li><a href="#subsonictv">SubsonicTV</a> for Roku</li>--%>
+                    <li><a href="#subsonictv">SubsonicTV</a> for Roku</li>
                 </ul>
             </div>
 
@@ -137,8 +139,10 @@
     <%@ include file="apps-android.jsp" %>
     <%@ include file="apps-dsub.jsp" %>
     <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-submuxic.jsp" %>
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>
+    <%@ include file="apps-subsonar.jsp" %>
 
     <%@ include file="apps-isub.jsp" %>
     <%@ include file="apps-audiophone.jsp" %>
@@ -149,6 +153,7 @@
 
     <%@ include file="apps-sonicair.jsp" %>
     <%@ include file="apps-mmtm.jsp" %>
+    <%@ include file="apps-subsonictv.jsp" %>
     <%@ include file="apps-subsonicchannel.jsp" %>
     <%@ include file="apps-xo.jsp" %>
 

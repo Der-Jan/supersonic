@@ -35,6 +35,7 @@
     <script src="inc/js/FancyZoom.js"></script>
     <script src="inc/js/FancyZoomHTML.js"></script>
     <%@ include file="tracking.jsp" %>
+    <link rel="icon" type="image/png" href="inc/img/favicon.png" />
     <noscript>
         <link rel="stylesheet" href="css/skel.css"/>
         <link rel="stylesheet" href="css/style.css"/>

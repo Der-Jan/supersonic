@@ -11,7 +11,7 @@
 
 
 /* Theme colour.*/
-.mainframe, .bgcolor1, .bgcolor2, .ruleTableHeader, .rightframe, .topframe, .leftframe, .playlistframe, .log {
+.mainframe, .bgcolor1, .bgcolor2, .ruleTableHeader, .rightframe, .topframe, .leftframe, .playlistframe, .log, table.music tr:nth-of-type(odd), table.music tr:nth-of-type(even) {
     background-color: #AEAEAE;
 }
 

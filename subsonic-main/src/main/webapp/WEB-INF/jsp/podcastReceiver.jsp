@@ -119,22 +119,22 @@
             </c:if>
         </c:forEach>
 
-        <tr style="margin:0;padding:0;border:0">
-            <td class="fit" style="padding-top:1em">
+        <tr style="margin:0;padding:0;border:0" class="bgcolor1">
+            <td class="fit bgcolor1" style="padding-top:1em">
                 <input type="checkbox" class="checkbox" id="channel${i.index}" value="${channel.key.id}"/>
                 <input type="checkbox" class="checkbox" id="channelExpanded${i.index}" value="${channel.key.id}" style="display:none"
                        <c:if test="${channelExpanded}">checked="checked"</c:if>/>
             </td>
-            <td class="truncate" colspan="7" style="padding-top:1em">
+            <td class="truncate bgcolor1" colspan="7" style="padding-top:1em">
                 <a href="javascript:toggleEpisodes(${i.index})">
                     <span title="${title}"><b>${title}</b></span>
                     (${fn:length(channel.value)})
                 </a>
             </td>
-            <td class="fit" style="padding-top:1em;text-align:center;">
+            <td class="fit bgcolor1" style="padding-top:1em;text-align:center;">
                 <span class="detail"><fmt:message key="podcastreceiver.status.${fn:toLowerCase(channel.key.status)}"/></span>
             </td>
-            <td class="truncate" style="padding-top:1em">
+            <td class="truncate bgcolor1" style="padding-top:1em">
                 <c:choose>
                     <c:when test="${channel.key.status eq 'ERROR'}">
                         <span class="detail warning" title="${channel.key.errorMessage}">${channel.key.errorMessage}</span>
@@ -146,19 +146,9 @@
             </td>
         </tr>
 
-        <c:set var="cssClass" value=""/>
-
         <c:forEach items="${channel.value}" var="episode" varStatus="j">
 
-            <c:choose>
-                <c:when test="${empty cssClass}">
-                    <c:set var="cssClass" value="class='bgcolor2'"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="cssClass" value=""/>
-                </c:otherwise>
-            </c:choose>
-            <tr ${cssClass} title="channel${i.index}" id="episodeRow${episodeCount}" style="margin:0;padding:0;border:0;display:${channelExpanded ? "table-row" : "none"}">
+            <tr title="channel${i.index}" id="episodeRow${episodeCount}" style="margin:0;padding:0;border:0;display:${channelExpanded ? "table-row" : "none"}">
 
                 <td class="fit"><input type="checkbox" class="checkbox" id="episode${episodeCount}" value="${episode.id}"/></td>
 

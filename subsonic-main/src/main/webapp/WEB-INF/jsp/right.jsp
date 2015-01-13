@@ -21,6 +21,23 @@
     }
 </script>
 
+<c:if test="${not model.licenseInfo.licenseValid}">
+    <div class="detail" style="text-align: center;padding-bottom: 1em">
+        <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
+            <fmt:message key="top.getpremium"/></a>
+        <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
+            <br>
+            <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
+        </c:if>
+    </div>
+</c:if>
+
+<c:if test="${model.newVersionAvailable}">
+    <div class="warning" style="padding-bottom: 1em">
+        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
+    </div>
+</c:if>
+
 <div id="scanningStatus" style="display: none;" class="warning">
     <img src="<spring:theme code="scanningImage"/>" title="" alt=""> <fmt:message key="main.scanning"/> <span id="scanCount"></span>
 </div>

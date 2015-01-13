@@ -116,33 +116,21 @@
                     </div>
                     <div class="detail duration">${child.durationString}</div>
                 </div>
-                <div class="caption1" title="${child.name}">${child.name}</div>
+                <div class="caption1" title="${child.name}"><a href="${videoUrl}" title="${child.name}">${child.name}</a></div>
             </div>
         </div>
     </c:if>
 
 </c:forEach>
 
-<div style="clear:both;padding-top: 1em">
-    <c:set var="cssClass" value="directory"/>
+<table class="music indent" style="clear:both">
     <c:forEach items="${model.relatedAlbums}" var="child" varStatus="loopStatus">
-        <c:choose>
-            <c:when test="${cssClass eq 'directory'}">
-                <c:set var="cssClass" value="bgcolor2 directory"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="cssClass" value="directory"/>
-            </c:otherwise>
-        </c:choose>
         <sub:url value="main.view" var="childUrl">
             <sub:param name="id" value="${child.id}"/>
         </sub:url>
-
-        <div class="${cssClass}">
-            <a href="${childUrl}" title="${child.name}"><span style="white-space:nowrap;">${child.name}</span></a>
-        </div>
+        <tr><td class="fit"><a href="${childUrl}" title="${child.name}">${child.name}</a></td></tr>
     </c:forEach>
-</div>
+</table>
 
 </body>
 </html>

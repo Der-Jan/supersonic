@@ -38,22 +38,7 @@
 <fmt:message key="top.help" var="help"/>
 <fmt:message key="top.search" var="search"/>
 
-<table style="margin:0;">
-    <tr>
-        <td></td>
-        <td colspan="13" style="padding:0;margin:0">
-            <c:choose>
-                <c:when test="${not model.musicFoldersExist}">
-                    <span class="warning"><fmt:message key="top.missing"/></span>
-                </c:when>
-                <c:when test="${model.newVersionAvailable}">
-                    <span class="warning">
-                        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
-                    </span>
-                </c:when>
-            </c:choose>
-        </td>
-    </tr>
+<table style="margin:0;padding-top:5px">
     <tr>
         <td style="padding-right:3.5em;">
             <a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a>
@@ -99,19 +84,6 @@
                            onkeyup="triggerInstantSearch();"></td>
                 <td><a href="javascript:document.searchForm.submit()"><img src="<spring:theme code="searchImage"/>" alt="${search}" title="${search}"></a></td>
             </form>
-        </td>
-
-        <td style="padding-left:15pt;vertical-align:middle;text-align: center;">
-            <div class="detail">
-                <c:if test="${not model.licenseInfo.licenseValid}">
-                    <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
-                        <fmt:message key="top.getpremium"/></a>
-                    <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
-                        <br>
-                        <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
-                    </c:if>
-                </c:if>
-            </div>
         </td>
 
         <td style="padding-left:15pt;padding-right:5pt;vertical-align: middle;width: 100%;text-align: center">

@@ -11,14 +11,14 @@
 @import "default.css";
 
 /* The primary background colour, light gray. Images used to force background on left frame headings and playlist. */
-.bgcolor1 {
+.bgcolor1, table.music tr:nth-of-type(even) {
     background-image:url( "../icons/coolandclean/list_heading.png" );
     background-repeat:repeat;
     background-color: #F7F7F7;
 }
 
 /* The secondary background colour, light blue, primary theme colour. */
-.bgcolor2, .ruleTableHeader, .log {
+.bgcolor2, .ruleTableHeader, .log, table.music tr:nth-of-type(odd) {
     background-color: #D1D9E1;
 }
 
