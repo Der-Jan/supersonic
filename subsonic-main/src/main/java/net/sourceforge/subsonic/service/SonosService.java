@@ -21,15 +21,29 @@ package net.sourceforge.subsonic.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Holder;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.cxf.headers.Header;
+import org.apache.cxf.helpers.CastUtils;
+import org.apache.cxf.jaxb.JAXBDataBinding;
+import org.apache.cxf.jaxws.context.WrappedMessageContext;
+import org.apache.cxf.message.Message;
+import org.w3c.dom.Node;
 
 import com.sonos.services._1.AbstractMedia;
 import com.sonos.services._1.AddToContainerResult;
 import com.sonos.services._1.ContentKey;
 import com.sonos.services._1.CreateContainerResult;
+import com.sonos.services._1.Credentials;
 import com.sonos.services._1.DeleteContainerResult;
 import com.sonos.services._1.DeviceAuthTokenResult;
 import com.sonos.services._1.DeviceLinkCodeResult;
@@ -58,7 +72,9 @@ import com.sonos.services._1.SegmentMetadataList;
 import com.sonos.services._1_1.CustomFault;
 import com.sonos.services._1_1.SonosSoap;
 
+import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.util.Util;
 
@@ -68,6 +84,8 @@ import net.sourceforge.subsonic.util.Util;
  */
 public class SonosService implements SonosSoap {
 
+    private static final Logger LOG = Logger.getLogger(SonosService.class);
+
     public static final String ID_ROOT = "root";
     public static final String ID_PLAYLISTS = "playlists";
     public static final String ID_LIBRARY = "library";
@@ -75,6 +93,15 @@ public class SonosService implements SonosSoap {
 
     private SonosHelper sonosHelper;
     private MediaFileService mediaFileService;
+    private SecurityService securityService;
+
+    /**
+     * The context for the request. This is used to get the Auth information
+     * form the headers as well as using the request url to build the correct
+     * media resource url.
+     */
+    @Resource
+    private WebServiceContext context;
 
     @Override
     public LastUpdate getLastUpdate() throws CustomFault {
@@ -86,13 +113,12 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetMetadataResponse getMetadata(GetMetadata parameters) throws CustomFault {
-
-        // TODO: Support recursive
+        String username = getUsernameFromHeaders();
         String id = parameters.getId();
         System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
                           id, parameters.getIndex(), parameters.getCount(), parameters.isRecursive());
 
-        List<? extends  AbstractMedia> mediaList = null;
+        List<? extends AbstractMedia> mediaList = null;
         if (ID_ROOT.equals(id)) {
             mediaList = sonosHelper.forRoot();
         } else if (ID_LIBRARY.equals(id)) {
@@ -114,8 +140,15 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetSessionIdResponse getSessionId(GetSessionId parameters) throws CustomFault {
+        System.out.println("getSessionId: " + parameters.getUsername());
+        User user = securityService.getUserByName(parameters.getUsername());
+        if (user == null || !StringUtils.equals(user.getPassword(), parameters.getPassword())) {
+            throw new RuntimeException("Wrong username or password"); // TODO: Different exception?
+        }
+
+        // Use username as session ID for easy access to it later.
         GetSessionIdResponse result = new GetSessionIdResponse();
-        result.setGetSessionIdResult("void");
+        result.setGetSessionIdResult(user.getUsername());
         return result;
     }
 
@@ -150,6 +183,51 @@ public class SonosService implements SonosSoap {
         result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
 
         return result;
+    }
+
+    private String getUsernameFromHeaders() {
+        MessageContext messageContext = context.getMessageContext();
+        if (messageContext == null || !(messageContext instanceof WrappedMessageContext)) {
+            LOG.error("Message context is null or not an instance of WrappedMessageContext.");
+            return null;
+        }
+
+        Message message = ((WrappedMessageContext) messageContext).getWrappedMessage();
+        List<Header> headers = CastUtils.cast((List<?>) message.get(Header.HEADER_LIST));
+        if (headers != null) {
+            for (Header h : headers) {
+                Object o = h.getObject();
+                // Unwrap the node using JAXB
+                if (o instanceof Node) {
+                    JAXBContext jaxbContext;
+                    try {
+                        // TODO: Check performance
+                        jaxbContext = new JAXBDataBinding(Credentials.class).getContext();
+                        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                        o = unmarshaller.unmarshal((Node) o);
+                    } catch (JAXBException e) {
+                        // failed to get the credentials object from the headers
+                        LOG.error("JAXB error trying to unwrap credentials", e);
+                    }
+                }
+                if (o instanceof Credentials) {
+                    Credentials c = (Credentials) o;
+
+                    // Note: We're using the username as session ID.
+                    String username = c.getSessionId();
+                    if (username == null) {
+                        LOG.debug("No session id in credentials object, get from login");
+                        username = c.getLogin().getUsername();
+                    }
+                    return username;
+                } else {
+                    LOG.error("No credentials object");
+                }
+            }
+        } else {
+            LOG.error("No headers found");
+        }
+        return null;
     }
 
     public void setSonosHelper(SonosHelper sonosHelper) {
@@ -268,5 +346,9 @@ public class SonosService implements SonosSoap {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

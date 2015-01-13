@@ -64,15 +64,11 @@ public class SonosHelper {
 
     public List<MediaCollection> forRoot() {
         MediaCollection library = new MediaCollection();
-        library.setCanPlay(false);
-        library.setCanEnumerate(true);
         library.setItemType(ItemType.COLLECTION);
         library.setId(SonosService.ID_LIBRARY);
         library.setTitle("Browse library");
 
         MediaCollection playlists = new MediaCollection();
-        playlists.setCanPlay(false);
-        playlists.setCanEnumerate(true);
         playlists.setItemType(ItemType.COLLECTION);
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
@@ -124,15 +120,11 @@ public class SonosHelper {
         MediaCollection mediaCollection = new MediaCollection();
 
         mediaCollection.setId(String.valueOf(dir.getId()));
-        mediaCollection.setCanEnumerate(true);
-        mediaCollection.setCanPlay(true);
         if (dir.isAlbum()) {
             mediaCollection.setItemType(ItemType.ALBUM);
             mediaCollection.setArtist(dir.getArtist());
             mediaCollection.setTitle(dir.getAlbumName());
-            if (dir.getAlbumName() == null) {
-                System.out.println(dir);
-            }
+            mediaCollection.setCanPlay(true);
 
             AlbumArtUrl albumArtURI = new AlbumArtUrl();
             albumArtURI.setValue(getCoverArtUrl(String.valueOf(dir.getId())));
@@ -140,9 +132,6 @@ public class SonosHelper {
         } else {
             mediaCollection.setItemType(ItemType.CONTAINER);
             mediaCollection.setTitle(dir.getName());
-            if (dir.getName() == null) {
-                System.out.println(dir);
-            }
         }
         return mediaCollection;
     }
@@ -155,7 +144,6 @@ public class SonosHelper {
             albumArtURI.setValue(getCoverArtUrl(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId()));
 
             mediaCollection.setId(SonosService.ID_PLAYLIST_PREFIX + playlist.getId());
-            mediaCollection.setCanEnumerate(true);
             mediaCollection.setCanPlay(true);
             mediaCollection.setItemType(ItemType.PLAYLIST);
             mediaCollection.setArtist(playlist.getUsername());

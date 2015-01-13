@@ -17,7 +17,7 @@
  *  Copyright 2015 (C) Sindre Mehus
  */
 
-package net.sourceforge.subsonic.util;
+package net.sourceforge.subsonic.service.sonos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +35,9 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
+
+import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
