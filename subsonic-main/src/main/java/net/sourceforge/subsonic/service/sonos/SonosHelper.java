@@ -33,6 +33,7 @@ import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.TrackMetadata;
 
 import net.sourceforge.subsonic.controller.CoverArtController;
+import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -61,19 +62,25 @@ public class SonosHelper {
     private TranscodingService transcodingService;
     private SettingsService settingsService;
     private MusicIndexService musicIndexService;
+    private MediaFileDao mediaFileDao;
 
     public List<MediaCollection> forRoot() {
         MediaCollection library = new MediaCollection();
         library.setItemType(ItemType.COLLECTION);
         library.setId(SonosService.ID_LIBRARY);
-        library.setTitle("Browse library");
+        library.setTitle("Browse Library");
 
         MediaCollection playlists = new MediaCollection();
         playlists.setItemType(ItemType.COLLECTION);
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
 
-        return Arrays.asList(library, playlists);
+        MediaCollection starred = new MediaCollection();
+        starred.setItemType(ItemType.FAVORITES);
+        starred.setId(SonosService.ID_STARRED);
+        starred.setTitle("Starred");
+
+        return Arrays.asList(library, playlists, starred);
     }
 
     public List<AbstractMedia> forLibrary() {
@@ -136,9 +143,9 @@ public class SonosHelper {
         return mediaCollection;
     }
 
-    public List<MediaCollection> forPlaylists() {
+    public List<MediaCollection> forPlaylists(String username) {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
-        for (Playlist playlist : playlistService.getAllPlaylists()) {
+        for (Playlist playlist : playlistService.getReadablePlaylistsForUser(username)) {
             MediaCollection mediaCollection = new MediaCollection();
             AlbumArtUrl albumArtURI = new AlbumArtUrl();
             albumArtURI.setValue(getCoverArtUrl(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId()));
@@ -157,6 +164,56 @@ public class SonosHelper {
     public List<MediaMetadata> forPlaylist(int playlistId) {
         List<MediaMetadata> result = new ArrayList<MediaMetadata>();
         for (MediaFile song : playlistService.getFilesInPlaylist(playlistId)) {
+            if (song.isAudio()) {
+                result.add(forSong(song));
+            }
+        }
+        return result;
+    }
+
+    public List<MediaCollection> forStarred() {
+        MediaCollection artists = new MediaCollection();
+        artists.setItemType(ItemType.FAVORITES);
+        artists.setId(SonosService.ID_STARRED_ARTISTS);
+        artists.setTitle("Starred Artists");
+
+        MediaCollection albums = new MediaCollection();
+        albums.setItemType(ItemType.FAVORITES);
+        albums.setId(SonosService.ID_STARRED_ALBUMS);
+        albums.setTitle("Starred Albums");
+
+        MediaCollection songs = new MediaCollection();
+        songs.setItemType(ItemType.FAVORITES);
+        songs.setId(SonosService.ID_STARRED_SONGS);
+        songs.setCanPlay(true);
+        songs.setTitle("Starred Songs");
+
+        return Arrays.asList(artists, albums, songs);
+    }
+
+    public List<MediaCollection> forStarredArtists(String username) {
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+        for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
+            MediaCollection mediaCollection = forDirectory(artist);
+            mediaCollection.setItemType(ItemType.ARTIST);
+            result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public List<MediaCollection> forStarredAlbums(String username) {
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+        for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, null)) {
+            MediaCollection mediaCollection = forDirectory(album);
+            mediaCollection.setItemType(ItemType.ALBUM);
+            result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public List<MediaMetadata> forStarredSongs(String username) {
+        List<MediaMetadata> result = new ArrayList<MediaMetadata>();
+        for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
             if (song.isAudio()) {
                 result.add(forSong(song));
             }
@@ -243,5 +300,9 @@ public class SonosHelper {
 
     public void setMusicIndexService(MusicIndexService musicIndexService) {
         this.musicIndexService = musicIndexService;
+    }
+
+    public void setMediaFileDao(MediaFileDao mediaFileDao) {
+        this.mediaFileDao = mediaFileDao;
     }
 }

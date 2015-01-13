@@ -89,6 +89,10 @@ public class SonosService implements SonosSoap {
     public static final String ID_ROOT = "root";
     public static final String ID_PLAYLISTS = "playlists";
     public static final String ID_LIBRARY = "library";
+    public static final String ID_STARRED = "starred";
+    public static final String ID_STARRED_ARTISTS = "starred-artists";
+    public static final String ID_STARRED_ALBUMS = "starred-albums";
+    public static final String ID_STARRED_SONGS = "starred-songs";
     public static final String ID_PLAYLIST_PREFIX = "pl-";
 
     private SonosHelper sonosHelper;
@@ -106,14 +110,13 @@ public class SonosService implements SonosSoap {
     @Override
     public LastUpdate getLastUpdate() throws CustomFault {
         LastUpdate result = new LastUpdate();
-        result.setCatalog(RandomStringUtils.random(5));
-        result.setFavorites(RandomStringUtils.random(5));
+        result.setCatalog(RandomStringUtils.randomAscii(5));
+        result.setFavorites(RandomStringUtils.randomAscii(5));
         return result;
     }
 
     @Override
     public GetMetadataResponse getMetadata(GetMetadata parameters) throws CustomFault {
-        String username = getUsernameFromHeaders();
         String id = parameters.getId();
         System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
                           id, parameters.getIndex(), parameters.getCount(), parameters.isRecursive());
@@ -124,14 +127,21 @@ public class SonosService implements SonosSoap {
         } else if (ID_LIBRARY.equals(id)) {
             mediaList = sonosHelper.forLibrary();
         } else if (ID_PLAYLISTS.equals(id)) {
-            mediaList = sonosHelper.forPlaylists();
+            mediaList = sonosHelper.forPlaylists(getUsername());
+        } else if (ID_STARRED.equals(id)) {
+            mediaList = sonosHelper.forStarred();
+        } else if (ID_STARRED_ARTISTS.equals(id)) {
+            mediaList = sonosHelper.forStarredArtists(getUsername());
+        } else if (ID_STARRED_ALBUMS.equals(id)) {
+            mediaList = sonosHelper.forStarredAlbums(getUsername());
+        } else if (ID_STARRED_SONGS.equals(id)) {
+            mediaList = sonosHelper.forStarredSongs(getUsername());
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
             mediaList = sonosHelper.forPlaylist(playlistId);
         } else {
             mediaList = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }
-
 
         GetMetadataResponse response = new GetMetadataResponse();
         response.setGetMetadataResult(createSubList(parameters.getIndex(), parameters.getCount(), mediaList));
@@ -185,7 +195,7 @@ public class SonosService implements SonosSoap {
         return result;
     }
 
-    private String getUsernameFromHeaders() {
+    private String getUsername() {
         MessageContext messageContext = context.getMessageContext();
         if (messageContext == null || !(messageContext instanceof WrappedMessageContext)) {
             LOG.error("Message context is null or not an instance of WrappedMessageContext.");

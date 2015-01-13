@@ -213,6 +213,7 @@
         <property name="playerService" ref="playerService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 
     <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService">

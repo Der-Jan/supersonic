@@ -27,15 +27,19 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
-  Play all for artist
   Cover art
   Rating
-  Favorites
-  Streaming
+  Favorites (createItem)
+  getLastUpdate
   Music service icon
   Search
-  Browse
+  Capabilities
+     Favorites: Adding/Removing Tracks
+     Favorites: Adding/Removing Albums
+     User Content Playlists
+  Radio feature
   By index
+  Test if the correct set of playlists are returned
   Read thru doc
   Test with https, if not working add createConstraintMapping("/stream", Constraint.DC_NONE) in SubsonicDeployer
 
