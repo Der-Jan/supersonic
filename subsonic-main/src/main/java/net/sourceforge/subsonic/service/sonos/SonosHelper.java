@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.sonos.services._1.AbstractMedia;
 import com.sonos.services._1.AlbumArtUrl;
 import com.sonos.services._1.ItemType;
 import com.sonos.services._1.MediaCollection;
@@ -34,9 +35,13 @@ import com.sonos.services._1.TrackMetadata;
 import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
+import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
 import net.sourceforge.subsonic.service.SettingsService;
@@ -55,14 +60,15 @@ public class SonosHelper {
     private PlayerService playerService;
     private TranscodingService transcodingService;
     private SettingsService settingsService;
+    private MusicIndexService musicIndexService;
 
     public List<MediaCollection> forRoot() {
-        MediaCollection browse = new MediaCollection();
-        browse.setCanPlay(false);
-        browse.setCanEnumerate(true);
-        browse.setItemType(ItemType.COLLECTION);
-        browse.setId(SonosService.ID_BROWSE);
-        browse.setTitle("Browse library");
+        MediaCollection library = new MediaCollection();
+        library.setCanPlay(false);
+        library.setCanEnumerate(true);
+        library.setItemType(ItemType.COLLECTION);
+        library.setId(SonosService.ID_LIBRARY);
+        library.setTitle("Browse library");
 
         MediaCollection playlists = new MediaCollection();
         playlists.setCanPlay(false);
@@ -71,7 +77,74 @@ public class SonosHelper {
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
 
-        return Arrays.asList(browse, playlists);
+        return Arrays.asList(library, playlists);
+    }
+
+    public List<AbstractMedia> forLibrary() {
+        try {
+            List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+            List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
+            MusicFolderContent musicFolderContent = null;
+            musicFolderContent = musicIndexService.getMusicFolderContent(musicFolders, false);
+
+            for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {
+                for (MusicIndex.SortableArtistWithMediaFiles artist : artists) {
+                    for (MediaFile artistMediaFile : artist.getMediaFiles()) {
+                        result.add(forDirectory(artistMediaFile));
+                    }
+                }
+            }
+            for (MediaFile song : musicFolderContent.getSingleSongs()) {
+                if (song.isAudio()) {
+                    result.add(forSong(song));
+                }
+            }
+            return result;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<AbstractMedia> forDirectoryContent(int mediaFileId) {
+        List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+        MediaFile dir = mediaFileService.getMediaFile(mediaFileId);
+        List<MediaFile> children = mediaFileService.getChildrenOf(dir, true, true, true);
+        for (MediaFile child : children) {
+            if (child.isDirectory()) {
+                result.add(forDirectory(child));
+            } else if (child.isAudio()) {
+                result.add(forSong(child));
+            }
+        }
+        return result;
+    }
+
+    private MediaCollection forDirectory(MediaFile dir) {
+        MediaCollection mediaCollection = new MediaCollection();
+
+        mediaCollection.setId(String.valueOf(dir.getId()));
+        mediaCollection.setCanEnumerate(true);
+        mediaCollection.setCanPlay(true);
+        if (dir.isAlbum()) {
+            mediaCollection.setItemType(ItemType.ALBUM);
+            mediaCollection.setArtist(dir.getArtist());
+            mediaCollection.setTitle(dir.getAlbumName());
+            if (dir.getAlbumName() == null) {
+                System.out.println(dir);
+            }
+
+            AlbumArtUrl albumArtURI = new AlbumArtUrl();
+            albumArtURI.setValue(getCoverArtUrl(String.valueOf(dir.getId())));
+            mediaCollection.setAlbumArtURI(albumArtURI);
+        } else {
+            mediaCollection.setItemType(ItemType.CONTAINER);
+            mediaCollection.setTitle(dir.getName());
+            if (dir.getName() == null) {
+                System.out.println(dir);
+            }
+        }
+        return mediaCollection;
     }
 
     public List<MediaCollection> forPlaylists() {
@@ -178,5 +251,9 @@ public class SonosHelper {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setMusicIndexService(MusicIndexService musicIndexService) {
+        this.musicIndexService = musicIndexService;
     }
 }

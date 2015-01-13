@@ -27,12 +27,16 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
+  Play all for artist
   Cover art
   Rating
   Favorites
   Streaming
   Music service icon
   Search
+  Browse
+  By index
+  Read thru doc
   Test with https, if not working add createConstraintMapping("/stream", Constraint.DC_NONE) in SubsonicDeployer
 
   Automatically register music service in Sonos controller

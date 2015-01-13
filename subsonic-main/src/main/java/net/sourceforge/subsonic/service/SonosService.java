@@ -46,7 +46,6 @@ import com.sonos.services._1.GetSessionIdResponse;
 import com.sonos.services._1.HttpHeaders;
 import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaList;
-import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RemoveFromContainerResult;
@@ -71,7 +70,7 @@ public class SonosService implements SonosSoap {
 
     public static final String ID_ROOT = "root";
     public static final String ID_PLAYLISTS = "playlists";
-    public static final String ID_BROWSE = "browse";
+    public static final String ID_LIBRARY = "library";
     public static final String ID_PLAYLIST_PREFIX = "pl-";
 
     private SonosHelper sonosHelper;
@@ -88,18 +87,25 @@ public class SonosService implements SonosSoap {
     @Override
     public GetMetadataResponse getMetadata(GetMetadata parameters) throws CustomFault {
 
+        // TODO: Support recursive
         String id = parameters.getId();
-        System.out.println("getMetadata: " + id);
+        System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
+                          id, parameters.getIndex(), parameters.getCount(), parameters.isRecursive());
 
         List<? extends  AbstractMedia> mediaList = null;
         if (ID_ROOT.equals(id)) {
             mediaList = sonosHelper.forRoot();
+        } else if (ID_LIBRARY.equals(id)) {
+            mediaList = sonosHelper.forLibrary();
         } else if (ID_PLAYLISTS.equals(id)) {
             mediaList = sonosHelper.forPlaylists();
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
             mediaList = sonosHelper.forPlaylist(playlistId);
+        } else {
+            mediaList = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }
+
 
         GetMetadataResponse response = new GetMetadataResponse();
         response.setGetMetadataResult(createSubList(parameters.getIndex(), parameters.getCount(), mediaList));
@@ -130,7 +136,7 @@ public class SonosService implements SonosSoap {
 
     @Override
     public void getMediaURI(String id, Holder<String> getMediaURIResult, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) throws CustomFault {
-        System.out.println("getMediaURI " + id);
+        System.out.println("getMediaURI " + id); // TODO
         getMediaURIResult.value = sonosHelper.getMediaURI(Integer.parseInt(id));
     }
 
