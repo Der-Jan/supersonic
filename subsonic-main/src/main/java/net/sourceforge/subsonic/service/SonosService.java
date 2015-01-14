@@ -93,7 +93,13 @@ public class SonosService implements SonosSoap {
     public static final String ID_STARRED_ARTISTS = "starred-artists";
     public static final String ID_STARRED_ALBUMS = "starred-albums";
     public static final String ID_STARRED_SONGS = "starred-songs";
-    public static final String ID_PLAYLIST_PREFIX = "pl-";
+    public static final String ID_SEARCH = "search";
+    public static final String ID_PLAYLIST_PREFIX = "playlist:";
+
+    // Note: These must match the values in presentationMap.xml
+    public static final String ID_SEARCH_ARTISTS = "search-artists";
+    public static final String ID_SEARCH_ALBUMS = "search-albums";
+    public static final String ID_SEARCH_SONGS = "search-songs";
 
     private SonosHelper sonosHelper;
     private MediaFileService mediaFileService;
@@ -110,8 +116,9 @@ public class SonosService implements SonosSoap {
     @Override
     public LastUpdate getLastUpdate() throws CustomFault {
         LastUpdate result = new LastUpdate();
-        result.setCatalog(RandomStringUtils.randomAscii(5));
-        result.setFavorites(RandomStringUtils.randomAscii(5));
+        // Effectively disabling caching
+        result.setCatalog(RandomStringUtils.randomAscii(8));
+        result.setFavorites(RandomStringUtils.randomAscii(8));
         return result;
     }
 
@@ -121,7 +128,7 @@ public class SonosService implements SonosSoap {
         System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
                           id, parameters.getIndex(), parameters.getCount(), parameters.isRecursive());
 
-        List<? extends AbstractMedia> mediaList = null;
+        List<? extends AbstractMedia> mediaList;
         if (ID_ROOT.equals(id)) {
             mediaList = sonosHelper.forRoot();
         } else if (ID_LIBRARY.equals(id)) {
@@ -136,6 +143,8 @@ public class SonosService implements SonosSoap {
             mediaList = sonosHelper.forStarredAlbums(getUsername());
         } else if (ID_STARRED_SONGS.equals(id)) {
             mediaList = sonosHelper.forStarredSongs(getUsername());
+        } else if (ID_SEARCH.equals(id)) {
+            mediaList = sonosHelper.forSearchCategories();
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
             mediaList = sonosHelper.forPlaylist(playlistId);
@@ -145,6 +154,27 @@ public class SonosService implements SonosSoap {
 
         GetMetadataResponse response = new GetMetadataResponse();
         response.setGetMetadataResult(createSubList(parameters.getIndex(), parameters.getCount(), mediaList));
+        return response;
+    }
+
+    @Override
+    public SearchResponse search(Search parameters) throws CustomFault {
+        String id = parameters.getId();
+
+        SearchService.IndexType indexType;
+        if (ID_SEARCH_ARTISTS.equals(id)) {
+            indexType = SearchService.IndexType.ARTIST;
+        } else if (ID_SEARCH_ALBUMS.equals(id)) {
+            indexType = SearchService.IndexType.ALBUM;
+        } else if (ID_SEARCH_SONGS.equals(id)) {
+            indexType = SearchService.IndexType.SONG;
+        } else {
+            throw new IllegalArgumentException("Invalid search category: " + id);
+        }
+
+        MediaList mediaList = sonosHelper.forSearch(parameters.getTerm(), parameters.getIndex(), parameters.getCount(), indexType);
+        SearchResponse response = new SearchResponse();
+        response.setSearchResult(mediaList);
         return response;
     }
 
@@ -181,6 +211,19 @@ public class SonosService implements SonosSoap {
     public void getMediaURI(String id, Holder<String> getMediaURIResult, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) throws CustomFault {
         System.out.println("getMediaURI " + id); // TODO
         getMediaURIResult.value = sonosHelper.getMediaURI(Integer.parseInt(id));
+    }
+
+    @Override
+    public String createItem(String favorite) throws CustomFault {
+        int id = Integer.parseInt(favorite);
+        sonosHelper.star(id, getUsername());
+        return favorite;
+    }
+
+    @Override
+    public void deleteItem(String favorite) throws CustomFault {
+        int id = Integer.parseInt(favorite);
+        sonosHelper.unstar(id, getUsername());
     }
 
     private MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
@@ -285,11 +328,6 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public void deleteItem(String favorite) throws CustomFault {
-
-    }
-
-    @Override
     public void reportAccountAction(String type) throws CustomFault {
 
     }
@@ -340,17 +378,7 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public SearchResponse search(Search parameters) throws CustomFault {
-        return null;
-    }
-
-    @Override
     public RemoveFromContainerResult removeFromContainer(String id, String indices, String updateId) throws CustomFault {
-        return null;
-    }
-
-    @Override
-    public String createItem(String favorite) throws CustomFault {
         return null;
     }
 

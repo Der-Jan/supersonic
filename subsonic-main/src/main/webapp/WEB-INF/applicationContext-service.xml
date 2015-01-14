@@ -213,6 +213,7 @@
         <property name="playerService" ref="playerService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
+        <property name="searchService" ref="searchService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 

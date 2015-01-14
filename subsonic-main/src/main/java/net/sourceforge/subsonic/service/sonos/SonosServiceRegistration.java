@@ -36,6 +36,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 
+import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
 
@@ -54,15 +55,19 @@ public class SonosServiceRegistration {
         System.out.println("Using controller IP " + controllerIp);
 
         String controllerUrl = String.format("http://%s:1400/customsd", controllerIp);
-        Map<String, String> params = new LinkedHashMap<String, String>();
-        params.put("sid", "255");
-        params.put("name", "Subsonic");
-        params.put("uri", localUrl);
-        params.put("secureUri", localUrl);
-        params.put("pollInterval", "1200");
-//        params.put("authType", "Anonymous");
-        params.put("authType", "UserId");
-        params.put("containerType", "MService");
+        List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+        params.add(Pair.create("sid", "255"));
+        params.add(Pair.create("name", "Subsonic"));
+        params.add(Pair.create("uri", localUrl));
+        params.add(Pair.create("secureUri", localUrl));
+        params.add(Pair.create("pollInterval", "1200"));
+        params.add(Pair.create("authType", "UserId"));
+        params.add(Pair.create("containerType", "MService"));
+        params.add(Pair.create("caps", "search"));
+        params.add(Pair.create("caps", "trFavorites"));
+        params.add(Pair.create("caps", "alFavorites"));
+        params.add(Pair.create("presentationMapVersion", "0"));
+        params.add(Pair.create("presentationMapUri", String.format("http://%s:4040/sonos/presentationMap.xml", Util.getLocalIpAddress())));
 //        params.put("stringsVersion", "0");
 //        params.put("stringsUri", "http://192.168.10.140:8080/smapi-1.0/static/config/strings.xml");
 //        params.put("presentationMapVersion", "0");
@@ -73,10 +78,10 @@ public class SonosServiceRegistration {
         System.out.println(result);
     }
 
-    private String execute(String url, Map<String, String> parameters) throws IOException {
+    private String execute(String url, List<Pair<String, String>> parameters) throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        for (Pair<String, String> parameter : parameters) {
+            params.add(new BasicNameValuePair(parameter.getFirst(), parameter.getSecond()));
         }
 
         HttpPost request = new HttpPost(url);

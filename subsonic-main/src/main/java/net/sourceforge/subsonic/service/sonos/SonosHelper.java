@@ -29,6 +29,7 @@ import com.sonos.services._1.AbstractMedia;
 import com.sonos.services._1.AlbumArtUrl;
 import com.sonos.services._1.ItemType;
 import com.sonos.services._1.MediaCollection;
+import com.sonos.services._1.MediaList;
 import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.TrackMetadata;
 
@@ -41,10 +42,13 @@ import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.SearchCriteria;
+import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.SonosService;
 import net.sourceforge.subsonic.service.TranscodingService;
@@ -62,6 +66,7 @@ public class SonosHelper {
     private TranscodingService transcodingService;
     private SettingsService settingsService;
     private MusicIndexService musicIndexService;
+    private SearchService searchService;
     private MediaFileDao mediaFileDao;
 
     public List<MediaCollection> forRoot() {
@@ -87,8 +92,7 @@ public class SonosHelper {
         try {
             List<AbstractMedia> result = new ArrayList<AbstractMedia>();
             List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
-            MusicFolderContent musicFolderContent = null;
-            musicFolderContent = musicIndexService.getMusicFolderContent(musicFolders, false);
+            MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFolders, false);
 
             for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {
                 for (MusicIndex.SortableArtistWithMediaFiles artist : artists) {
@@ -221,6 +225,48 @@ public class SonosHelper {
         return result;
     }
 
+    public List<MediaCollection> forSearchCategories() {
+        MediaCollection artists = new MediaCollection();
+        artists.setItemType(ItemType.ARTIST);
+        artists.setId(SonosService.ID_SEARCH_ARTISTS);
+        artists.setTitle("Artists");
+
+        MediaCollection albums = new MediaCollection();
+        albums.setItemType(ItemType.ALBUM);
+        albums.setId(SonosService.ID_SEARCH_ALBUMS);
+        albums.setTitle("Albums");
+
+        MediaCollection songs = new MediaCollection();
+        songs.setItemType(ItemType.TRACK);
+        songs.setId(SonosService.ID_SEARCH_SONGS);
+        songs.setTitle("Songs");
+
+        return Arrays.asList(artists, albums, songs);
+    }
+
+    public MediaList forSearch(String query, int offset, int count, SearchService.IndexType indexType) {
+
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.setCount(count);
+        searchCriteria.setOffset(offset);
+        searchCriteria.setQuery(query);
+        SearchResult searchResult = searchService.search(searchCriteria, indexType);
+
+        MediaList result = new MediaList();
+        result.setTotal(searchResult.getTotalHits());
+        result.setIndex(offset);
+        result.setCount(searchResult.getMediaFiles().size());
+        for (MediaFile mediaFile : searchResult.getMediaFiles()) {
+            result.getMediaCollectionOrMediaMetadata().add(forMediaFile(mediaFile));
+        }
+
+        return result;
+    }
+
+    private AbstractMedia forMediaFile(MediaFile mediaFile) {
+        return mediaFile.isFile() ? forSong(mediaFile) : forDirectory(mediaFile);
+    }
+
     public MediaMetadata forSong(MediaFile song) {
         Player player = playerService.getGuestPlayer(null);
         String suffix = transcodingService.getSuffix(player, song, null);
@@ -244,9 +290,21 @@ public class SonosHelper {
         trackMetadata.setDuration(song.getDurationSeconds());
         trackMetadata.setCanSkip(false); // TODO, but probably ok since the whole song is loaded?
 
+        MediaFile parent = mediaFileService.getParentOf(song);
+        if (parent != null && parent.isAlbum()) {
+            trackMetadata.setAlbumId(String.valueOf(parent.getId()));
+        }
         result.setTrackMetadata(trackMetadata);
 
         return result;
+    }
+
+    public void star(int id, String username) {
+        mediaFileDao.starMediaFile(id, username);
+    }
+
+    public void unstar(int id, String username) {
+        mediaFileDao.unstarMediaFile(id, username);
     }
 
     private String getCoverArtUrl(String id) {
@@ -304,5 +362,9 @@ public class SonosHelper {
 
     public void setMediaFileDao(MediaFileDao mediaFileDao) {
         this.mediaFileDao = mediaFileDao;
+    }
+
+    public void setSearchService(SearchService searchService) {
+        this.searchService = searchService;
     }
 }
