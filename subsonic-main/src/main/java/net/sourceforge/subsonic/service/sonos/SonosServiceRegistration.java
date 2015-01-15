@@ -66,7 +66,7 @@ public class SonosServiceRegistration {
         params.add(Pair.create("caps", "search"));
         params.add(Pair.create("caps", "trFavorites"));
         params.add(Pair.create("caps", "alFavorites"));
-        params.add(Pair.create("presentationMapVersion", "0"));
+        params.add(Pair.create("presentationMapVersion", "1"));
         params.add(Pair.create("presentationMapUri", String.format("http://%s:4040/sonos/presentationMap.xml", Util.getLocalIpAddress())));
 //        params.put("stringsVersion", "0");
 //        params.put("stringsUri", "http://192.168.10.140:8080/smapi-1.0/static/config/strings.xml");
