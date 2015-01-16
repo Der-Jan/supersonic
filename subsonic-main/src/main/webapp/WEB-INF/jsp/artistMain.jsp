@@ -161,35 +161,54 @@
 <c:choose>
     <c:when test="${model.viewAsList}">
         <table class="music indent">
-            <c:forEach items="${model.subDirs}" var="album">
+            <c:forEach items="${model.subDirs}" var="subDir">
                 <tr>
                     <c:import url="playButtons.jsp">
-                        <c:param name="id" value="${album.id}"/>
+                        <c:param name="id" value="${subDir.id}"/>
                         <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                         <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
                         <c:param name="asTable" value="true"/>
                     </c:import>
-                    <td class="truncate"><a href="main.view?id=${album.id}" title="${fn:escapeXml(album.name)}">${fn:escapeXml(album.name)}</a></td>
-                    <td class="fit rightalign detail">${album.year}</td>
+                    <td class="truncate"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
+                    <td class="fit rightalign detail">${subDir.year}</td>
                 </tr>
             </c:forEach>
         </table>
     </c:when>
 
     <c:otherwise>
+        <table class="music indent">
+            <c:forEach items="${model.subDirs}" var="subDir">
+                <c:if test="${not subDir.album}">
+                    <tr>
+                        <c:import url="playButtons.jsp">
+                            <c:param name="id" value="${subDir.id}"/>
+                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="asTable" value="true"/>
+                        </c:import>
+                        <td class="truncate"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
+                        <td class="fit rightalign detail">${subDir.year}</td>
+                    </tr>
+                </c:if>
+            </c:forEach>
+        </table>
+
         <div style="float: left;padding-top: 1.5em">
-            <c:forEach items="${model.subDirs}" var="album" varStatus="loopStatus">
-                <div class="albumThumb">
-                    <c:import url="coverArt.jsp">
-                        <c:param name="albumId" value="${album.id}"/>
-                        <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
-                        <c:param name="caption2" value="${album.year}"/>
-                        <c:param name="captionCount" value="2"/>
-                        <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
-                        <c:param name="showLink" value="true"/>
-                        <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-                    </c:import>
-                </div>
+            <c:forEach items="${model.subDirs}" var="subDir" varStatus="loopStatus">
+                <c:if test="${subDir.album}">
+                    <div class="albumThumb">
+                        <c:import url="coverArt.jsp">
+                            <c:param name="albumId" value="${subDir.id}"/>
+                            <c:param name="caption1" value="${fn:escapeXml(subDir.name)}"/>
+                            <c:param name="caption2" value="${subDir.year}"/>
+                            <c:param name="captionCount" value="2"/>
+                            <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
+                            <c:param name="showLink" value="true"/>
+                            <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                        </c:import>
+                    </div>
+                </c:if>
             </c:forEach>
         </div>
     </c:otherwise>
