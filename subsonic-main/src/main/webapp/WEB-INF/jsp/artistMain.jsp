@@ -163,7 +163,13 @@
         <table class="music indent">
             <c:forEach items="${model.subDirs}" var="album">
                 <tr>
-                    <td class="fit"><a href="main.view?id=${album.id}" title="${fn:escapeXml(album.name)}">${fn:escapeXml(album.name)}</a></td>
+                    <c:import url="playButtons.jsp">
+                        <c:param name="id" value="${album.id}"/>
+                        <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                        <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                        <c:param name="asTable" value="true"/>
+                    </c:import>
+                    <td class="truncate"><a href="main.view?id=${album.id}" title="${fn:escapeXml(album.name)}">${fn:escapeXml(album.name)}</a></td>
                     <td class="fit rightalign detail">${album.year}</td>
                 </tr>
             </c:forEach>

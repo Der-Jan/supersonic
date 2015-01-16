@@ -430,7 +430,15 @@
                     <sub:url value="main.view" var="albumUrl">
                         <sub:param name="id" value="${child.id}"/>
                     </sub:url>
-                    <tr><td class="fit"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td></tr>
+                    <tr>
+                        <c:import url="playButtons.jsp">
+                            <c:param name="id" value="${child.id}"/>
+                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="asTable" value="true"/>
+                        </c:import>
+                        <td class="truncate"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
+                    </tr>
                 </c:forEach>
             </table>
         </td>

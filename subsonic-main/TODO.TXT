@@ -1,8 +1,11 @@
 DONE IN 5.1.beta2
 ------------------
+Add play/add/download buttons in list view.
 
 TODO IN 5.1
 --------------
+List mode for siebling albums
+
 Set plugin versions in pom.xml
 Move media statistics to About page.
 Fade out text in auto cover art
