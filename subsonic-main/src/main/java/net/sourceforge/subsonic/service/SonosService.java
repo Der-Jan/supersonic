@@ -73,6 +73,7 @@ import com.sonos.services._1_1.CustomFault;
 import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
@@ -87,6 +88,7 @@ public class SonosService implements SonosSoap {
     private static final Logger LOG = Logger.getLogger(SonosService.class);
 
     public static final String ID_ROOT = "root";
+    public static final String ID_ALBUMLISTS = "albumlists";
     public static final String ID_PLAYLISTS = "playlists";
     public static final String ID_LIBRARY = "library";
     public static final String ID_STARRED = "starred";
@@ -95,6 +97,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_STARRED_SONGS = "starred-songs";
     public static final String ID_SEARCH = "search";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
+    public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
 
     // Note: These must match the values in presentationMap.xml
     public static final String ID_SEARCH_ARTISTS = "search-artists";
@@ -125,35 +128,52 @@ public class SonosService implements SonosSoap {
     @Override
     public GetMetadataResponse getMetadata(GetMetadata parameters) throws CustomFault {
         String id = parameters.getId();
-        System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
-                          id, parameters.getIndex(), parameters.getCount(), parameters.isRecursive());
+        int index = parameters.getIndex();
+        int count = parameters.getCount();
 
-        List<? extends AbstractMedia> mediaList;
+        System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
+                          id, index, count, parameters.isRecursive());
+
+        List<? extends AbstractMedia> media = null;
+        MediaList mediaList = null;
+
         if (ID_ROOT.equals(id)) {
-            mediaList = sonosHelper.forRoot();
+            media = sonosHelper.forRoot();
         } else if (ID_LIBRARY.equals(id)) {
-            mediaList = sonosHelper.forLibrary();
+            media = sonosHelper.forLibrary();
         } else if (ID_PLAYLISTS.equals(id)) {
-            mediaList = sonosHelper.forPlaylists(getUsername());
+            media = sonosHelper.forPlaylists(getUsername());
+        } else if (ID_ALBUMLISTS.equals(id)) {
+            media = sonosHelper.forAlbumLists();
         } else if (ID_STARRED.equals(id)) {
-            mediaList = sonosHelper.forStarred();
+            media = sonosHelper.forStarred();
         } else if (ID_STARRED_ARTISTS.equals(id)) {
-            mediaList = sonosHelper.forStarredArtists(getUsername());
+            media = sonosHelper.forStarredArtists(getUsername());
         } else if (ID_STARRED_ALBUMS.equals(id)) {
-            mediaList = sonosHelper.forStarredAlbums(getUsername());
+            media = sonosHelper.forStarredAlbums(getUsername());
         } else if (ID_STARRED_SONGS.equals(id)) {
-            mediaList = sonosHelper.forStarredSongs(getUsername());
+            media = sonosHelper.forStarredSongs(getUsername());
         } else if (ID_SEARCH.equals(id)) {
-            mediaList = sonosHelper.forSearchCategories();
+            media = sonosHelper.forSearchCategories();
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
-            mediaList = sonosHelper.forPlaylist(playlistId);
+            media = sonosHelper.forPlaylist(playlistId);
+        } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
+            AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
+            mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
         } else {
-            mediaList = sonosHelper.forDirectoryContent(Integer.parseInt(id));
+            media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }
 
+        if (mediaList == null) {
+            mediaList = createSubList(index, count, media);
+        }
+
+        System.out.printf("result: id=%s index=%s count=%s total=%s\n",
+                          id, mediaList.getIndex(), mediaList.getCount(), mediaList.getTotal());
+
         GetMetadataResponse response = new GetMetadataResponse();
-        response.setGetMetadataResult(createSubList(parameters.getIndex(), parameters.getCount(), mediaList));
+        response.setGetMetadataResult(mediaList);
         return response;
     }
 

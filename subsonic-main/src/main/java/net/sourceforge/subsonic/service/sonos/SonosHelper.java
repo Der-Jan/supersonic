@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.service.sonos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +36,7 @@ import com.sonos.services._1.TrackMetadata;
 
 import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -48,6 +50,7 @@ import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.SonosService;
@@ -68,6 +71,7 @@ public class SonosHelper {
     private MusicIndexService musicIndexService;
     private SearchService searchService;
     private MediaFileDao mediaFileDao;
+    private RatingService ratingService;
 
     public List<MediaCollection> forRoot() {
         MediaCollection library = new MediaCollection();
@@ -85,7 +89,12 @@ public class SonosHelper {
         starred.setId(SonosService.ID_STARRED);
         starred.setTitle("Starred");
 
-        return Arrays.asList(library, playlists, starred);
+        MediaCollection albumlists = new MediaCollection();
+        albumlists.setItemType(ItemType.COLLECTION);
+        albumlists.setId(SonosService.ID_ALBUMLISTS);
+        albumlists.setTitle("Album Lists");
+
+        return Arrays.asList(library, playlists, starred, albumlists);
     }
 
     public List<AbstractMedia> forLibrary() {
@@ -163,6 +172,70 @@ public class SonosHelper {
             result.add(mediaCollection);
         }
         return result;
+    }
+
+    public List<MediaCollection> forAlbumLists() {
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+
+        for (AlbumListType albumListType : AlbumListType.values()) {
+            MediaCollection mediaCollection = new MediaCollection();
+            mediaCollection.setId(SonosService.ID_ALBUMLIST_PREFIX + albumListType.getId());
+            mediaCollection.setItemType(ItemType.ALBUM_LIST);
+            mediaCollection.setTitle(albumListType.getDescription());
+            result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public MediaList forAlbumList(AlbumListType albumListType, int offset, int count, String username) {
+        List<MediaFile> albums;
+        int total;
+
+        switch (albumListType) {
+            case RANDOM:
+                albums = searchService.getRandomAlbums(count, null);
+                total = mediaFileService.getAlbumCount();
+                break;
+            case NEWEST:
+                albums = mediaFileService.getNewestAlbums(offset, count, null);
+                total = mediaFileService.getAlbumCount();
+                break;
+            case STARRED:
+                albums = mediaFileService.getStarredAlbums(offset, count, username, null);
+                total = mediaFileService.getStarredAlbumCount(username);
+                break;
+            case HIGHEST:
+                albums = ratingService.getHighestRatedAlbums(offset, count, null);
+                total = ratingService.getRatedAlbumCount(username);
+                break;
+            case FREQUENT:
+                albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, null);
+                total = mediaFileService.getPlayedAlbumCount();
+                break;
+            case RECENT:
+                albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, null);
+                total = mediaFileService.getPlayedAlbumCount();
+                break;
+            case ALPHABETICAL:
+                albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, null);
+                total = mediaFileService.getAlbumCount();
+                break;
+            // TODO: Genre & decade
+            default:
+                albums = Collections.emptyList();
+                total = 0;
+                break;
+        }
+
+        MediaList mediaList = new MediaList();
+        for (MediaFile album : albums) {
+            mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album));
+        }
+
+        mediaList.setIndex(offset);
+        mediaList.setCount(albums.size());
+        mediaList.setTotal(total);
+        return mediaList;
     }
 
     public List<MediaMetadata> forPlaylist(int playlistId) {
@@ -366,5 +439,9 @@ public class SonosHelper {
 
     public void setSearchService(SearchService searchService) {
         this.searchService = searchService;
+    }
+
+    public void setRatingService(RatingService ratingService) {
+        this.ratingService = ratingService;
     }
 }

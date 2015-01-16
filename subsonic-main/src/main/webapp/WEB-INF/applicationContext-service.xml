@@ -214,6 +214,7 @@
         <property name="transcodingService" ref="transcodingService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="searchService" ref="searchService"/>
+        <property name="ratingService" ref="ratingService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 

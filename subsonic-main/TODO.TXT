@@ -29,10 +29,12 @@ TODO IN 5.2
 ------------
 Sonos
   Album lists
+    Use AlbumListType in HomeController
+    By genre, by decade
+  Handle multi-folder artists
   Rating
   getLastUpdate
   Music service icon
-  Search
   Capabilities
      User Content Playlists
   Radio feature

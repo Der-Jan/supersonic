@@ -43,5 +43,14 @@
             <outputDirectory>subsonic-rest-api</outputDirectory>
         </fileSet>
 
+        <fileSet>
+            <directory>../subsonic-sonos-api</directory>
+            <includes>
+                <include>src/**</include>
+                <include>pom.xml</include>
+            </includes>
+            <outputDirectory>subsonic-sonos-api</outputDirectory>
+        </fileSet>
+
     </fileSets>
 </assembly>

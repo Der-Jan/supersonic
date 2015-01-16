@@ -328,6 +328,23 @@ public class MediaFileDao extends AbstractDao {
                      rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name(), username, count, offset);
     }
 
+    public int getAlbumCount() {
+        return queryForInt("select count(*) from media_file where type = ? and present", 0, ALBUM.name());
+    }
+
+    public int getPlayedAlbumCount() {
+        return queryForInt("select count(*) from media_file where type = ? and play_count > 0 and present", 0, ALBUM.name());
+    }
+
+    public int getStarredAlbumCount(String username) {
+        return queryForInt("select count(*) from starred_media_file, media_file " +
+                           "where media_file.id = starred_media_file.media_file_id " +
+                           "and media_file.type = ? " +
+                           "and media_file.present " +
+                           "and starred_media_file.username = ?",
+                           0, ALBUM.name(), username);
+    }
+
     public void starMediaFile(int id, String username) {
         unstarMediaFile(id, username);
         update("insert into starred_media_file(media_file_id, username, created) values (?,?,?)", id, username, new Date());
