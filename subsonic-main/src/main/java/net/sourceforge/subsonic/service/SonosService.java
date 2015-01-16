@@ -96,6 +96,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_STARRED_ALBUMS = "starred-albums";
     public static final String ID_STARRED_SONGS = "starred-songs";
     public static final String ID_SEARCH = "search";
+    public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
 
@@ -161,6 +162,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
+        } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
+            int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
+            media = sonosHelper.forMusicFolder(musicFolderId);
         } else {
             media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }

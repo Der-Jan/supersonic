@@ -3,6 +3,8 @@ DONE IN 5.1.beta2
 
 TODO IN 5.1
 --------------
+Bundle release notes
+Add FAQ for how to cancel recurring payments.
 Set plugin versions in pom.xml
 Move media statistics to About page.
 Fade out text in auto cover art
@@ -31,7 +33,6 @@ Sonos
   Album lists
     Use AlbumListType in HomeController
     By genre, by decade
-  Handle multi-folder artists
   Rating
   getLastUpdate
   Music service icon

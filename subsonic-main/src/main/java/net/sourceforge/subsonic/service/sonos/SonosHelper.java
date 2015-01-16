@@ -98,10 +98,31 @@ public class SonosHelper {
     }
 
     public List<AbstractMedia> forLibrary() {
+        List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+
+        List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
+        if (musicFolders.size() == 1) {
+            return forMusicFolder(musicFolders.get(0));
+        }
+
+        for (MusicFolder musicFolder : musicFolders) {
+            MediaCollection mediaCollection = new MediaCollection();
+            mediaCollection.setItemType(ItemType.COLLECTION);
+            mediaCollection.setId(SonosService.ID_MUSICFOLDER_PREFIX + musicFolder.getId());
+            mediaCollection.setTitle(musicFolder.getName());
+            result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public List<AbstractMedia> forMusicFolder(int musicFolderId) {
+        return forMusicFolder(settingsService.getMusicFolderById(musicFolderId));
+    }
+
+    public List<AbstractMedia> forMusicFolder(MusicFolder musicFolder) {
         try {
             List<AbstractMedia> result = new ArrayList<AbstractMedia>();
-            List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
-            MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFolders, false);
+            MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(Arrays.asList(musicFolder), false);
 
             for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {
                 for (MusicIndex.SortableArtistWithMediaFiles artist : artists) {
