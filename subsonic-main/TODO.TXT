@@ -5,7 +5,6 @@ List mode for siebling albums
 
 TODO IN 5.1
 --------------
-Set plugin versions in pom.xml
 Move media statistics to About page.
 Fade out text in auto cover art
 More space in left.jsp
