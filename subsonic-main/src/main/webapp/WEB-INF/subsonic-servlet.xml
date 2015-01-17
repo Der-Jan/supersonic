@@ -169,6 +169,11 @@
         <property name="upnpService" ref="upnpService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
+    <bean id="sonosSettingsController" class="net.sourceforge.subsonic.controller.SonosSettingsController">
+        <property name="viewName" value="sonosSettings"/>
+        <property name="upnpService" ref="upnpService"/>
+        <property name="settingsService" ref="settingsService"/>
+    </bean>
     <bean id="shareSettingsController" class="net.sourceforge.subsonic.controller.ShareSettingsController">
         <property name="viewName" value="shareSettings"/>
         <property name="shareService" ref="shareService"/>
@@ -433,6 +438,7 @@
                 <prop key="/settings.view">settingsController</prop>
                 <prop key="/playerSettings.view">playerSettingsController</prop>
                 <prop key="/dlnaSettings.view">dlnaSettingsController</prop>
+                <prop key="/sonosSettings.view">sonosSettingsController</prop>
                 <prop key="/shareSettings.view">shareSettingsController</prop>
                 <prop key="/musicFolderSettings.view">musicFolderSettingsController</prop>
                 <prop key="/networkSettings.view">networkSettingsController</prop>

@@ -121,6 +121,7 @@
                 /musicFolderSettings.view=ROLE_ADMIN
                 /networkSettings.view=ROLE_ADMIN
                 /dlnaSettings.view=ROLE_ADMIN
+                /sonosSettings.view=ROLE_ADMIN
                 /transcodingSettings.view=ROLE_ADMIN
                 /internetRadioSettings.view=ROLE_ADMIN
                 /podcastSettings.view=ROLE_ADMIN

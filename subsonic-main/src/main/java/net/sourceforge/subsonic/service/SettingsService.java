@@ -133,6 +133,8 @@ public class SettingsService {
     private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
     private static final String KEY_DLNA_ENABLED = "DlnaEnabled";
     private static final String KEY_DLNA_SERVER_NAME = "DlnaServerName";
+    private static final String KEY_SONOS_ENABLED = "SonosEnabled";
+    private static final String KEY_SONOS_SERVICE_NAME = "SonosServiceName";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -197,6 +199,8 @@ public class SettingsService {
     private static final String DEFAULT_TRIAL_EXPIRES = null;
     private static final boolean DEFAULT_DLNA_ENABLED = true;
     private static final String DEFAULT_DLNA_SERVER_NAME = "Subsonic";
+    private static final boolean DEFAULT_SONOS_ENABLED = true;
+    private static final String DEFAULT_SONOS_SERVICE_NAME = "Subsonic";
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
@@ -1242,6 +1246,22 @@ public class SettingsService {
 
     public void setDlnaServerName(String dlnaServerName) {
         setString(KEY_DLNA_SERVER_NAME, dlnaServerName);
+    }
+
+    public boolean isSonosEnabled() {
+        return getBoolean(KEY_SONOS_ENABLED, DEFAULT_SONOS_ENABLED);
+    }
+
+    public void setSonosEnabled(boolean sonosEnabled) {
+        setBoolean(KEY_SONOS_ENABLED, sonosEnabled);
+    }
+
+    public String getSonosServiceName() {
+        return getString(KEY_SONOS_SERVICE_NAME, DEFAULT_SONOS_SERVICE_NAME);
+    }
+
+    public void setSonosServiceName(String sonosServiceName) {
+        setString(KEY_SONOS_SERVICE_NAME, sonosServiceName);
     }
 
     public String getLocalIpAddress() {

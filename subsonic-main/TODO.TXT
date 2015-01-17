@@ -31,6 +31,8 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
+  Settings page
+  Premium feature
   Album lists
     Use AlbumListType in HomeController
     By genre, by decade
