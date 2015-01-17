@@ -954,16 +954,16 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2015-01-11/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-11/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-11/pages.war
+mkdir /usr/local/jakarta/tomcat/webapps-2015-01-17/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-17/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-17/pages.war
 
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2015-01-11 webapps
+ln -s webapps-2015-01-17 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -971,13 +971,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-01-11/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-01-11/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2015-01-17/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-01-17/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-01-11 webapps
+ln -s webapps-2015-01-17 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
