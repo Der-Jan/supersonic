@@ -29,6 +29,7 @@ OAuth
 
 TODO IN 5.2
 ------------
+Facebook ads
 Sonos
   Album lists
     Use AlbumListType in HomeController
