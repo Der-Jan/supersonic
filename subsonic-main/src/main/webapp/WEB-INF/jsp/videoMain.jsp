@@ -92,61 +92,63 @@
 
 <%@ include file="viewSelector.jsp" %>
 <div style="clear:both;padding-bottom:2em"></div>
-<c:choose>
-    <c:when test="${model.viewAsList}">
-        <table class="music indent">
 
-            <c:forEach items="${model.files}" var="child">
-                <c:url value="/videoPlayer.view" var="videoUrl">
-                    <c:param name="id" value="${child.id}"/>
-                </c:url>
-                <tr>
-                    <td class="truncate">
-                        <a href="${videoUrl}"><span class="songTitle" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</span></a>
-                    </td>
-                    <td class="fit rightalign detail">${child.year}</td>
-                    <td class="fit rightalign detail">${fn:toLowerCase(child.format)}</td>
-                    <td class="fit rightalign detail"><sub:formatBytes bytes="${child.fileSize}"/></td>
-                    <td class="fit rightalign detail">${child.durationString}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:when>
-
-    <c:otherwise>
+<table class="music">
+    <c:forEach items="${model.subDirs}" var="subDir" varStatus="loopStatus">
+        <tr><td class="truncate" colspan="9"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td></tr>
+    </c:forEach>
+    <c:if test="${model.viewAsList}">
         <c:forEach items="${model.files}" var="child">
             <c:url value="/videoPlayer.view" var="videoUrl">
                 <c:param name="id" value="${child.id}"/>
             </c:url>
-            <c:url value="/coverArt.view" var="coverArtUrl">
-                <c:param name="id" value="${child.id}"/>
-                <c:param name="size" value="120"/>
-            </c:url>
-
-            <div class="albumThumb">
-                <div class="coverart dropshadow" style="width:213px">
-                    <div style="position:relative">
-                        <div>
-                            <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
-                                                       onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
-                                                       onmouseout="stopPreview()"></a>
-                        </div>
-                        <div class="detail duration">${child.durationString}</div>
-                    </div>
-                    <div class="caption1" title="${fn:escapeXml(child.name)}"><a href="${videoUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></div>
-                </div>
-            </div>
+            <tr>
+                <c:import url="playButtons.jsp">
+                    <c:param name="id" value="${child.id}"/>
+                    <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
+                    <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
+                    <c:param name="video" value="${child.video and model.player.web}"/>
+                    <c:param name="asTable" value="true"/>
+                </c:import>
+                <td class="truncate">
+                    <a href="${videoUrl}"><span class="songTitle" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</span></a>
+                </td>
+                <td class="fit rightalign detail">${child.year}</td>
+                <td class="fit rightalign detail">${fn:toLowerCase(child.format)}</td>
+                <td class="fit rightalign detail"><sub:formatBytes bytes="${child.fileSize}"/></td>
+                <td class="fit rightalign detail">${child.durationString}</td>
+            </tr>
         </c:forEach>
-    </c:otherwise>
-</c:choose>
+    </c:if>
+</table>
 
 <div style="clear:both;height:1.5em"></div>
 
-<table class="music">
-    <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
-        <tr><td class="truncate"><a href="main.view?id=${child.id}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td></tr>
+<c:if test="${not model.viewAsList}">
+    <c:forEach items="${model.files}" var="child">
+        <c:url value="/videoPlayer.view" var="videoUrl">
+            <c:param name="id" value="${child.id}"/>
+        </c:url>
+        <c:url value="/coverArt.view" var="coverArtUrl">
+            <c:param name="id" value="${child.id}"/>
+            <c:param name="size" value="120"/>
+        </c:url>
+
+        <div class="albumThumb">
+            <div class="coverart dropshadow" style="width:213px">
+                <div style="position:relative">
+                    <div>
+                        <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
+                                                   onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                                   onmouseout="stopPreview()"></a>
+                    </div>
+                    <div class="detail duration">${child.durationString}</div>
+                </div>
+                <div class="caption1" title="${fn:escapeXml(child.name)}"><a href="${videoUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></div>
+            </div>
+        </div>
     </c:forEach>
-</table>
+</c:if>
 
 </body>
 </html>

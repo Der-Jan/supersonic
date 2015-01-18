@@ -1,4 +1,8 @@
 
+//
+// REMEMBER TO UPDATE VERSION WHEN CHANGING THIS SCRIPT, IN ORDER FOR BROWSERS TO REFRESH IT.
+//
+
 var entityMap = {
     "&": "&amp;",
     "<": "&lt;",

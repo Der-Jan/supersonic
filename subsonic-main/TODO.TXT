@@ -1,5 +1,7 @@
 DONE IN 5.1.beta2
 ------------------
+Add play/add/download buttons in list view.
+List mode for siebling albums
 
 TODO IN 5.1
 --------------
@@ -938,23 +940,23 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
+  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1/
 
 On Windows
   svn update
   mvn clean install -Pfull
-  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
+  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1/
 
 On demo.subsonic.org (Ubuntu)
   cd subsonic
   svn update
   mvn clean install -Pfull,debian
-  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
+  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1/
 
 On subsonic.org (CentOS)
   svn update
   mvn clean install -Pfull,rpm
-  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1.beta2/
+  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.1/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -962,7 +964,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.1.beta2 -m "Tagging 5.1.beta2"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.1 -m "Tagging 5.1"
 Post message on forum.
 
 Checking for license abuse:
@@ -972,16 +974,16 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2015-01-11/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-11/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-11/pages.war
+mkdir /usr/local/jakarta/tomcat/webapps-2015-01-17/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-17/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-01-17/pages.war
 
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2015-01-11 webapps
+ln -s webapps-2015-01-17 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -989,13 +991,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-01-11/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-01-11/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2015-01-17/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-01-17/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-01-11 webapps
+ln -s webapps-2015-01-17 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

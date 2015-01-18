@@ -8,7 +8,7 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/chatService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
 </head>
 <body class="bgcolor1 rightframe" style="padding-top:2em" onload="init()">
 

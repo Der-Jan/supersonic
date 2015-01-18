@@ -248,8 +248,11 @@ public class MainController extends AbstractController {
         MediaFile parent = mediaFileService.getParentOf(dir);
         if (!mediaFileService.isRoot(parent)) {
             List<MediaFile> sieblings = mediaFileService.getChildrenOf(parent, false, true, true);
-            sieblings.remove(dir);
-            result.addAll(sieblings);
+            for (MediaFile siebling : sieblings) {
+                if (siebling.isAlbum() && !siebling.equals(dir)) {
+                    result.add(siebling);
+                }
+            }
         }
         return result;
     }

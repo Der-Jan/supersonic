@@ -35,6 +35,11 @@
 
 <section class="box">
 
+    <a name="5.1"><h3>Subsonic 5.1 - Jan 18, 2015</h3></a>
+    <ul>
+        <li><strong>Bugfix:</strong> Misc improvements to list mode.</li>
+    </ul>
+
     <a name="5.1.beta2"><h3>Subsonic 5.1.beta2 - Jan 11, 2015</h3></a>
     <ul>
         <li><strong>New:</strong> Drag and drop to rearrange playlists and play queue.</li>
