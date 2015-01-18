@@ -425,7 +425,7 @@ public class SonosHelper {
     }
 
     // TODO: Make it work with https?
-    private String getBaseUrl() {
+    public String getBaseUrl() {
         int port = settingsService.getPort();
         String contextPath = settingsService.getUrlRedirectContextPath();
 

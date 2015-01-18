@@ -21,9 +21,7 @@ package net.sourceforge.subsonic.service.sonos;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -36,6 +34,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 
+import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
@@ -46,36 +45,39 @@ import net.sourceforge.subsonic.util.Util;
  */
 public class SonosServiceRegistration {
 
-    private void register() throws IOException {
-        String localUrl = String.format("http://%s:4040/ws/Sonos", Util.getLocalIpAddress());
-//        String localUrl = String.format("http://%s:8080/smapi-1.0/ws/Sonos", Util.getLocalIpAddress());
-        String controllerIp = "192.168.10.186";
+    private static final Logger LOG = Logger.getLogger(SonosServiceRegistration.class);
+    private static final int SONOS_SERVICE_ID = 255;
 
-        System.out.println("Using local URL     " + localUrl);
-        System.out.println("Using controller IP " + controllerIp);
+    public void setEnabled(String subsonicBaseUrl, String sonosControllerIp, boolean enabled, String sonosServiceName) throws IOException {
+        String localUrl = subsonicBaseUrl + "ws/Sonos";
+        String controllerUrl = String.format("http://%s:1400/customsd", sonosControllerIp);
 
-        String controllerUrl = String.format("http://%s:1400/customsd", controllerIp);
+        LOG.info((enabled ? "Enabling" : "Disabling") + " Sonos music service, using Sonos controller IP " + sonosControllerIp +
+                 " and Subsonic URL " + localUrl);
+
         List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
-        params.add(Pair.create("sid", "255"));
-        params.add(Pair.create("name", "Subsonic"));
-        params.add(Pair.create("uri", localUrl));
-        params.add(Pair.create("secureUri", localUrl));
-        params.add(Pair.create("pollInterval", "1200"));
-        params.add(Pair.create("authType", "UserId"));
-        params.add(Pair.create("containerType", "MService"));
-        params.add(Pair.create("caps", "search"));
-        params.add(Pair.create("caps", "trFavorites"));
-        params.add(Pair.create("caps", "alFavorites"));
-        params.add(Pair.create("presentationMapVersion", "1"));
-        params.add(Pair.create("presentationMapUri", String.format("http://%s:4040/sonos/presentationMap.xml", Util.getLocalIpAddress())));
-//        params.put("stringsVersion", "0");
-//        params.put("stringsUri", "http://192.168.10.140:8080/smapi-1.0/static/config/strings.xml");
-//        params.put("presentationMapVersion", "0");
-//        params.put("presentationMapUri", "http://192.168.10.140:8080/smapi-1.0/PresentationMap.xml");
-//        params.put("caps", "extendedMD");
+        params.add(Pair.create("sid", String.valueOf(SONOS_SERVICE_ID)));
+        if (enabled) {
+            params.add(Pair.create("name", sonosServiceName));
+            params.add(Pair.create("uri", localUrl));
+            params.add(Pair.create("secureUri", localUrl));
+            params.add(Pair.create("pollInterval", "1200"));
+            params.add(Pair.create("authType", "UserId"));
+            params.add(Pair.create("containerType", "MService"));
+            params.add(Pair.create("caps", "search"));
+            params.add(Pair.create("caps", "trFavorites"));
+            params.add(Pair.create("caps", "alFavorites"));
+            params.add(Pair.create("presentationMapVersion", "1"));
+            params.add(Pair.create("presentationMapUri", String.format("http://%s:4040/sonos/presentationMap.xml", Util.getLocalIpAddress())));
+            //        params.put("stringsVersion", "0");
+            //        params.put("stringsUri", "http://192.168.10.140:8080/smapi-1.0/static/config/strings.xml");
+            //        params.put("presentationMapVersion", "0");
+            //        params.put("presentationMapUri", "http://192.168.10.140:8080/smapi-1.0/PresentationMap.xml");
+            //        params.put("caps", "extendedMD");
+        }
 
         String result = execute(controllerUrl, params);
-        System.out.println(result);
+        LOG.info("Sonos controller returned: " + result);
     }
 
     private String execute(String url, List<Pair<String, String>> parameters) throws IOException {
@@ -92,8 +94,8 @@ public class SonosServiceRegistration {
 
     private String executeRequest(HttpUriRequest request) throws IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpConnectionParams.setConnectionTimeout(client.getParams(), 15000);
-        HttpConnectionParams.setSoTimeout(client.getParams(), 15000);
+        HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000);
+        HttpConnectionParams.setSoTimeout(client.getParams(), 10000);
 
         try {
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -102,9 +104,5 @@ public class SonosServiceRegistration {
         } finally {
             client.getConnectionManager().shutdown();
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        new SonosServiceRegistration().register();
     }
 }

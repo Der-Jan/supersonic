@@ -30,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.service.UPnPService;
+import net.sourceforge.subsonic.service.SonosService;
 
 /**
  * Controller for the page used to administrate the Sonos music service settings.
@@ -39,8 +39,8 @@ import net.sourceforge.subsonic.service.UPnPService;
  */
 public class SonosSettingsController extends ParameterizableViewController {
 
-    private UPnPService upnpService;
     private SettingsService settingsService;
+    private SonosService sonosService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -78,19 +78,19 @@ public class SonosSettingsController extends ParameterizableViewController {
             sonosServiceName = "Subsonic";
         }
 
-        // TODO
-//        upnpService.setMediaServerEnabled(false);
         settingsService.setSonosEnabled(sonosEnabled);
         settingsService.setSonosServiceName(sonosServiceName);
         settingsService.save();
-//        upnpService.setMediaServerEnabled(sonosEnabled);
+
+        sonosService.setMusicServiceEnabled(false);
+        sonosService.setMusicServiceEnabled(sonosEnabled);
     }
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
     }
 
-    public void setUpnpService(UPnPService upnpService) {
-        this.upnpService = upnpService;
+    public void setSonosService(SonosService sonosService) {
+        this.sonosService = sonosService;
     }
 }

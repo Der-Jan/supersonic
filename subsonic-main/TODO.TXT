@@ -47,7 +47,9 @@ Sonos
   Read thru doc
   Run Self-Test
   Automatically register music service in Sonos controller
-      upnpService.getRegistry().getDevices(new DeviceType("schemas-upnp-org", "ZonePlayer"))
+      Handle errors (including missing Sonos controller)
+      Update when local IP change
+      escape html in log
   Test with Java 6
   Ensure src assembly builds
   SkatteFUNN

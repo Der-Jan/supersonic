@@ -218,10 +218,12 @@
         <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 
-    <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService">
+    <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService" init-method="init">
         <property name="sonosHelper" ref="sonosHelper"/>
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="upnpService" ref="upnpService"/>
     </bean>
 
     <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos"/>

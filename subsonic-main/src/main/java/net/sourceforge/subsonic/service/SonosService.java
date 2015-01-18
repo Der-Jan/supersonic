@@ -19,7 +19,11 @@
 
 package net.sourceforge.subsonic.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.xml.bind.JAXBContext;
@@ -77,6 +81,7 @@ import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
+import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
 import net.sourceforge.subsonic.util.Util;
 
 /**
@@ -108,6 +113,10 @@ public class SonosService implements SonosSoap {
     private SonosHelper sonosHelper;
     private MediaFileService mediaFileService;
     private SecurityService securityService;
+    private SettingsService settingsService;
+    private UPnPService upnpService;
+
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     /**
      * The context for the request. This is used to get the Auth information
@@ -116,6 +125,43 @@ public class SonosService implements SonosSoap {
      */
     @Resource
     private WebServiceContext context;
+
+    private String localIp;
+
+    public void init() {
+        executor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                registerIfLocalIpChanged();
+            }
+        }, 30, 60, TimeUnit.SECONDS);
+    }
+
+    private void registerIfLocalIpChanged() {
+        if (settingsService.isSonosEnabled()) {
+            if (localIp == null || !localIp.equals(settingsService.getLocalIpAddress())) {
+                localIp = settingsService.getLocalIpAddress();
+                setMusicServiceEnabled(true);
+            }
+        }
+    }
+
+    public void setMusicServiceEnabled(boolean enabled) {
+        String sonosControllerIp = upnpService.getSonosControllerIp();
+        if (sonosControllerIp == null) {
+            LOG.info("No Sonos controller found");
+            return;
+        }
+
+        String sonosServiceName = settingsService.getSonosServiceName();
+        String subsonicBaseUrl = sonosHelper.getBaseUrl();
+        try {
+            new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosControllerIp, enabled, sonosServiceName);
+        } catch (IOException x) {
+            LOG.error("Failed to enable/disable Sonos music service: " + x, x);
+        }
+    }
+
 
     @Override
     public LastUpdate getLastUpdate() throws CustomFault {
@@ -412,5 +458,13 @@ public class SonosService implements SonosSoap {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
+    }
+
+    public void setUpnpService(UPnPService upnpService) {
+        this.upnpService = upnpService;
     }
 }

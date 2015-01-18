@@ -171,7 +171,7 @@
     </bean>
     <bean id="sonosSettingsController" class="net.sourceforge.subsonic.controller.SonosSettingsController">
         <property name="viewName" value="sonosSettings"/>
-        <property name="upnpService" ref="upnpService"/>
+        <property name="sonosService" ref="sonosService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="shareSettingsController" class="net.sourceforge.subsonic.controller.ShareSettingsController">
