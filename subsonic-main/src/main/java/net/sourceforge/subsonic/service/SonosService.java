@@ -73,7 +73,6 @@ import com.sonos.services._1.ReportPlaySecondsResult;
 import com.sonos.services._1.Search;
 import com.sonos.services._1.SearchResponse;
 import com.sonos.services._1.SegmentMetadataList;
-import com.sonos.services._1_1.CustomFault;
 import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
@@ -82,7 +81,10 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
+import net.sourceforge.subsonic.service.sonos.SonosSoapFault;
 import net.sourceforge.subsonic.util.Util;
+
+import static net.sourceforge.subsonic.service.sonos.SonosSoapFault.LOGIN_INVALID;
 
 /**
  * For manual testing of this service:
@@ -167,7 +169,7 @@ public class SonosService implements SonosSoap {
 
 
     @Override
-    public LastUpdate getLastUpdate() throws CustomFault {
+    public LastUpdate getLastUpdate() {
         LastUpdate result = new LastUpdate();
         // Effectively disabling caching
         result.setCatalog(RandomStringUtils.randomAscii(8));
@@ -176,7 +178,7 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public GetMetadataResponse getMetadata(GetMetadata parameters) throws CustomFault {
+    public GetMetadataResponse getMetadata(GetMetadata parameters) {
         String id = parameters.getId();
         int index = parameters.getIndex();
         int count = parameters.getCount();
@@ -231,7 +233,7 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public SearchResponse search(Search parameters) throws CustomFault {
+    public SearchResponse search(Search parameters) {
         String id = parameters.getId();
 
         SearchService.IndexType indexType;
@@ -252,11 +254,11 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public GetSessionIdResponse getSessionId(GetSessionId parameters) throws CustomFault {
+    public GetSessionIdResponse getSessionId(GetSessionId parameters) {
         System.out.println("getSessionId: " + parameters.getUsername());
         User user = securityService.getUserByName(parameters.getUsername());
         if (user == null || !StringUtils.equals(user.getPassword(), parameters.getPassword())) {
-            throw Errors.LOGIN_INVALID.fail(); // TODO
+            throw new SonosSoapFault(LOGIN_INVALID);
         }
 
         // Use username as session ID for easy access to it later.
@@ -266,7 +268,7 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) throws CustomFault {
+    public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) {
         System.out.println("getMediaMetadata: " + parameters.getId());
 
         int id = Integer.parseInt(parameters.getId());
@@ -281,20 +283,20 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public void getMediaURI(String id, Holder<String> getMediaURIResult, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) throws CustomFault {
+    public void getMediaURI(String id, Holder<String> result, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
         System.out.println("getMediaURI " + id); // TODO
-        getMediaURIResult.value = sonosHelper.getMediaURI(Integer.parseInt(id));
+        result.value = sonosHelper.getMediaURI(Integer.parseInt(id));
     }
 
     @Override
-    public String createItem(String favorite) throws CustomFault {
+    public String createItem(String favorite) {
         int id = Integer.parseInt(favorite);
         sonosHelper.star(id, getUsername());
         return favorite;
     }
 
     @Override
-    public void deleteItem(String favorite) throws CustomFault {
+    public void deleteItem(String favorite) {
         int id = Integer.parseInt(favorite);
         sonosHelper.unstar(id, getUsername());
     }
@@ -361,97 +363,97 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public RateItemResponse rateItem(RateItem parameters) throws CustomFault {
+    public RateItemResponse rateItem(RateItem parameters) {
         return null;
     }
 
     @Override
-    public CreateContainerResult createContainer(String containerType, String title, String parentId, String seedId) throws CustomFault {
+    public CreateContainerResult createContainer(String containerType, String title, String parentId, String seedId) {
         return null;
     }
 
     @Override
-    public AddToContainerResult addToContainer(String id, String parentId, int index, String updateId) throws CustomFault {
+    public AddToContainerResult addToContainer(String id, String parentId, int index, String updateId) {
         return null;
     }
 
     @Override
-    public RenameContainerResult renameContainer(String id, String title) throws CustomFault {
+    public RenameContainerResult renameContainer(String id, String title) {
         return null;
     }
 
     @Override
-    public SegmentMetadataList getStreamingMetadata(String id, XMLGregorianCalendar startTime, int duration) throws CustomFault {
+    public SegmentMetadataList getStreamingMetadata(String id, XMLGregorianCalendar startTime, int duration) {
         return null;
     }
 
     @Override
-    public ReorderContainerResult reorderContainer(String id, String from, int to, String updateId) throws CustomFault {
+    public ReorderContainerResult reorderContainer(String id, String from, int to, String updateId) {
         return null;
     }
 
     @Override
-    public GetExtendedMetadataTextResponse getExtendedMetadataText(GetExtendedMetadataText parameters) throws CustomFault {
+    public GetExtendedMetadataTextResponse getExtendedMetadataText(GetExtendedMetadataText parameters) {
         return null;
     }
 
     @Override
-    public DeviceLinkCodeResult getDeviceLinkCode(String householdId) throws CustomFault {
+    public DeviceLinkCodeResult getDeviceLinkCode(String householdId) {
         return null;
     }
 
     @Override
-    public void reportAccountAction(String type) throws CustomFault {
+    public void reportAccountAction(String type) {
 
     }
 
     @Override
-    public void setPlayedSeconds(String id, int seconds) throws CustomFault {
+    public void setPlayedSeconds(String id, int seconds) {
 
     }
 
     @Override
-    public ReportPlaySecondsResult reportPlaySeconds(String id, int seconds) throws CustomFault {
+    public ReportPlaySecondsResult reportPlaySeconds(String id, int seconds) {
         return null;
     }
 
     @Override
-    public DeviceAuthTokenResult getDeviceAuthToken(String householdId, String linkCode, String linkDeviceId) throws CustomFault {
+    public DeviceAuthTokenResult getDeviceAuthToken(String householdId, String linkCode, String linkDeviceId) {
         return null;
     }
 
     @Override
-    public void reportStatus(String id, int errorCode, String message) throws CustomFault {
+    public void reportStatus(String id, int errorCode, String message) {
 
     }
 
     @Override
-    public GetExtendedMetadataResponse getExtendedMetadata(GetExtendedMetadata parameters) throws CustomFault {
+    public GetExtendedMetadataResponse getExtendedMetadata(GetExtendedMetadata parameters) {
         return null;
     }
 
     @Override
-    public String getScrollIndices(String id) throws CustomFault {
+    public String getScrollIndices(String id) {
         return null;
     }
 
     @Override
-    public DeleteContainerResult deleteContainer(String id) throws CustomFault {
+    public DeleteContainerResult deleteContainer(String id) {
         return null;
     }
 
     @Override
-    public void reportPlayStatus(String id, String status) throws CustomFault {
+    public void reportPlayStatus(String id, String status) {
 
     }
 
     @Override
-    public ContentKey getContentKey(String id, String uri) throws CustomFault {
+    public ContentKey getContentKey(String id, String uri) {
         return null;
     }
 
     @Override
-    public RemoveFromContainerResult removeFromContainer(String id, String indices, String updateId) throws CustomFault {
+    public RemoveFromContainerResult removeFromContainer(String id, String indices, String updateId) {
         return null;
     }
 
@@ -469,25 +471,5 @@ public class SonosService implements SonosSoap {
 
     public void setUpnpService(UPnPService upnpService) {
         this.upnpService = upnpService;
-    }
-
-    private enum Errors {
-        LOGIN_INVALID("Client.LoginInvalid", "Login failed", "Login failed", 1);
-
-        private final String faultCode;
-        private final String faultString;
-        private final String exceptionInfo;
-        private final int sonosError;
-
-        Errors(String faultCode, String faultString, String exceptionInfo, int sonosError) {
-            this.faultCode = faultCode;
-            this.faultString = faultString;
-            this.exceptionInfo = exceptionInfo;
-            this.sonosError = sonosError;
-        }
-
-        CustomFault fail() {
-            return new CustomFault("Login failed", sonosError);
-        }
     }
 }

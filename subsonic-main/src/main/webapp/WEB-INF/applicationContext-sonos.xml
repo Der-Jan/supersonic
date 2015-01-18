@@ -7,7 +7,11 @@
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
-    <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos"/>
+    <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos">
+        <jaxws:outFaultInterceptors>
+            <bean class="net.sourceforge.subsonic.service.sonos.SonosFaultInterceptor"/>
+        </jaxws:outFaultInterceptors>
+    </jaxws:endpoint>
 
     <bean id="sonosHelper" class="net.sourceforge.subsonic.service.sonos.SonosHelper">
         <property name="mediaFileService" ref="mediaFileService"/>
