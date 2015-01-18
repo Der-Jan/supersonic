@@ -84,8 +84,6 @@ import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
 import net.sourceforge.subsonic.service.sonos.SonosSoapFault;
 import net.sourceforge.subsonic.util.Util;
 
-import static net.sourceforge.subsonic.service.sonos.SonosSoapFault.LOGIN_INVALID;
-
 /**
  * For manual testing of this service:
  * curl -s -X POST -H "Content-Type: text/xml;charset=UTF-8" -H 'SOAPACTION: "http://www.sonos.com/Services/1.1#getSessionId"' -d @getSessionId.xml http://localhost:4040/ws/Sonos | xmllint --format -
@@ -258,7 +256,11 @@ public class SonosService implements SonosSoap {
         System.out.println("getSessionId: " + parameters.getUsername());
         User user = securityService.getUserByName(parameters.getUsername());
         if (user == null || !StringUtils.equals(user.getPassword(), parameters.getPassword())) {
-            throw new SonosSoapFault(LOGIN_INVALID);
+            throw new SonosSoapFault.LoginInvalid();
+        }
+
+        if (!settingsService.getLicenseInfo().isLicenseOrTrialValid()) {
+            throw new SonosSoapFault.LoginUnauthorized();
         }
 
         // Use username as session ID for easy access to it later.

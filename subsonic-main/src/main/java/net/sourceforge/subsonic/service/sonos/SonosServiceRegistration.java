@@ -37,7 +37,6 @@ import org.apache.http.params.HttpConnectionParams;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
-import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -68,11 +67,9 @@ public class SonosServiceRegistration {
             params.add(Pair.create("caps", "trFavorites"));
             params.add(Pair.create("caps", "alFavorites"));
             params.add(Pair.create("presentationMapVersion", "1"));
-            params.add(Pair.create("presentationMapUri", String.format("http://%s:4040/sonos/presentationMap.xml", Util.getLocalIpAddress())));
-            //        params.put("stringsVersion", "0");
-            //        params.put("stringsUri", "http://192.168.10.140:8080/smapi-1.0/static/config/strings.xml");
-            //        params.put("presentationMapVersion", "0");
-            //        params.put("presentationMapUri", "http://192.168.10.140:8080/smapi-1.0/PresentationMap.xml");
+            params.add(Pair.create("presentationMapUri", subsonicBaseUrl + "sonos/presentationMap.xml"));
+            params.add(Pair.create("stringsVersion", "5"));
+            params.add(Pair.create("stringsUri", subsonicBaseUrl + "sonos/strings.xml"));
             //        params.put("caps", "extendedMD");
         }
 

@@ -25,15 +25,35 @@ package net.sourceforge.subsonic.service.sonos;
  */
 public class SonosSoapFault extends RuntimeException {
 
-    public static String LOGIN_INVALID = "Client.LoginInvalid";
-
     private final String faultCode;
 
-    public SonosSoapFault(String faultCode) {
+    // Must match values in strings.xml
+    private final int sonosError;
+
+    protected SonosSoapFault(String faultCode, int sonosError) {
         this.faultCode = faultCode;
+        this.sonosError = sonosError;
     }
 
     public String getFaultCode() {
         return faultCode;
+    }
+
+    public int getSonosError() {
+        return sonosError;
+    }
+
+    public static class LoginInvalid extends SonosSoapFault {
+
+        public LoginInvalid() {
+            super("Client.LoginInvalid", 0);
+        }
+    }
+
+    public static class LoginUnauthorized extends SonosSoapFault {
+
+        public LoginUnauthorized() {
+            super("Client.LoginUnauthorized", 1);
+        }
     }
 }
