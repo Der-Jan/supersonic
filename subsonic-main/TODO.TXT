@@ -31,13 +31,11 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
-  Settings page
   Premium feature
   Album lists
     Use AlbumListType in HomeController
     By genre, by decade
   Rating
-  getLastUpdate
   Music service icon
   Capabilities
      User Content Playlists
@@ -46,12 +44,9 @@ Sonos
   Test if the correct set of playlists are returned
   Read thru doc
   Run Self-Test
-  Automatically register music service in Sonos controller
-      Handle errors (including missing Sonos controller)
-      Update when local IP change
-      escape html in log
+  Error handling
+  Escape html in log
   Test with Java 6
-  Ensure src assembly builds
   SkatteFUNN
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
