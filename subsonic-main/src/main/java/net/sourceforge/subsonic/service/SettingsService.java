@@ -190,7 +190,7 @@ public class SettingsService {
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
-    private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = null;
+    private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = System.getProperty("subsonic.contextPath", "").replaceAll("/", "");
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;

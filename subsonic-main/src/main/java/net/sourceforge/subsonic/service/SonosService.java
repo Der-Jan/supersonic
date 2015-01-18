@@ -137,7 +137,7 @@ public class SonosService implements SonosSoap {
             public void run() {
                 registerIfLocalIpChanged();
             }
-        }, 30, 60, TimeUnit.SECONDS);
+        }, 10, 60, TimeUnit.SECONDS);
     }
 
     private void registerIfLocalIpChanged() {
@@ -170,8 +170,8 @@ public class SonosService implements SonosSoap {
     public LastUpdate getLastUpdate() {
         LastUpdate result = new LastUpdate();
         // Effectively disabling caching
-        result.setCatalog(RandomStringUtils.randomAscii(8));
-        result.setFavorites(RandomStringUtils.randomAscii(8));
+        result.setCatalog(RandomStringUtils.randomAlphanumeric(8));
+        result.setFavorites(RandomStringUtils.randomAlphanumeric(8));
         return result;
     }
 

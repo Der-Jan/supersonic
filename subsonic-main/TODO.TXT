@@ -33,7 +33,6 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
-  Test with context path.
   Album lists
     Use AlbumListType in HomeController
     By genre, by decade
