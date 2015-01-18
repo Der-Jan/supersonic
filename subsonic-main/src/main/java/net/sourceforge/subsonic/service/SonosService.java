@@ -85,6 +85,9 @@ import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
 import net.sourceforge.subsonic.util.Util;
 
 /**
+ * For manual testing of this service:
+ * curl -s -X POST -H "Content-Type: text/xml;charset=UTF-8" -H 'SOAPACTION: "http://www.sonos.com/Services/1.1#getSessionId"' -d @getSessionId.xml http://localhost:4040/ws/Sonos | xmllint --format -
+ *
  * @author Sindre Mehus
  * @version $Id$
  */
@@ -253,7 +256,7 @@ public class SonosService implements SonosSoap {
         System.out.println("getSessionId: " + parameters.getUsername());
         User user = securityService.getUserByName(parameters.getUsername());
         if (user == null || !StringUtils.equals(user.getPassword(), parameters.getPassword())) {
-            throw new RuntimeException("Wrong username or password"); // TODO: Different exception?
+            throw Errors.LOGIN_INVALID.fail(); // TODO
         }
 
         // Use username as session ID for easy access to it later.
@@ -466,5 +469,25 @@ public class SonosService implements SonosSoap {
 
     public void setUpnpService(UPnPService upnpService) {
         this.upnpService = upnpService;
+    }
+
+    private enum Errors {
+        LOGIN_INVALID("Client.LoginInvalid", "Login failed", "Login failed", 1);
+
+        private final String faultCode;
+        private final String faultString;
+        private final String exceptionInfo;
+        private final int sonosError;
+
+        Errors(String faultCode, String faultString, String exceptionInfo, int sonosError) {
+            this.faultCode = faultCode;
+            this.faultString = faultString;
+            this.exceptionInfo = exceptionInfo;
+            this.sonosError = sonosError;
+        }
+
+        CustomFault fail() {
+            return new CustomFault("Login failed", sonosError);
+        }
     }
 }

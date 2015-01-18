@@ -3,10 +3,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-
-    <import resource="classpath:META-INF/cxf/cxf.xml"/>
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <!-- DAO's -->
 
@@ -206,18 +203,6 @@
         <property name="artistDao" ref="artistDao"/>
     </bean>
 
-    <bean id="sonosHelper" class="net.sourceforge.subsonic.service.sonos.SonosHelper">
-        <property name="mediaFileService" ref="mediaFileService"/>
-        <property name="settingsService" ref="settingsService"/>
-        <property name="playlistService" ref="playlistService"/>
-        <property name="playerService" ref="playerService"/>
-        <property name="transcodingService" ref="transcodingService"/>
-        <property name="musicIndexService" ref="musicIndexService"/>
-        <property name="searchService" ref="searchService"/>
-        <property name="ratingService" ref="ratingService"/>
-        <property name="mediaFileDao" ref="mediaFileDao"/>
-    </bean>
-
     <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService" init-method="init">
         <property name="sonosHelper" ref="sonosHelper"/>
         <property name="mediaFileService" ref="mediaFileService"/>
@@ -225,8 +210,6 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="upnpService" ref="upnpService"/>
     </bean>
-
-    <jaxws:endpoint id="sonosEndpoint" implementor="#sonosService" address="/Sonos"/>
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">

@@ -12,6 +12,7 @@
             /WEB-INF/applicationContext-service.xml
             /WEB-INF/applicationContext-security.xml
             /WEB-INF/applicationContext-cache.xml
+            /WEB-INF/applicationContext-sonos.xml
         </param-value>
     </context-param>
 
