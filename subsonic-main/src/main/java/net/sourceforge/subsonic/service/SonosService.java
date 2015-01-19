@@ -82,7 +82,6 @@ import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
 import net.sourceforge.subsonic.service.sonos.SonosSoapFault;
-import net.sourceforge.subsonic.util.Util;
 
 /**
  * For manual testing of this service:
@@ -107,6 +106,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
+    public static final String ID_DECADE_PREFIX = "decade:";
 
     // Note: These must match the values in presentationMap.xml
     public static final String ID_SEARCH_ARTISTS = "search-artists";
@@ -208,6 +208,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
             int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
             media = sonosHelper.forPlaylist(playlistId);
+        } else if (id.startsWith(ID_DECADE_PREFIX)) {
+            int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
+            media = sonosHelper.forDecade(decade);
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
@@ -219,7 +222,7 @@ public class SonosService implements SonosSoap {
         }
 
         if (mediaList == null) {
-            mediaList = createSubList(index, count, media);
+            mediaList = SonosHelper.createSubList(index, count, media);
         }
 
         System.out.printf("result: id=%s index=%s count=%s total=%s\n",
@@ -301,18 +304,6 @@ public class SonosService implements SonosSoap {
     public void deleteItem(String favorite) {
         int id = Integer.parseInt(favorite);
         sonosHelper.unstar(id, getUsername());
-    }
-
-    private MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
-        MediaList result = new MediaList();
-        List<? extends AbstractMedia> selectedMediaCollections = Util.subList(mediaCollections, index, count);
-
-        result.setIndex(index);
-        result.setCount(selectedMediaCollections.size());
-        result.setTotal(mediaCollections.size());
-        result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
-
-        return result;
     }
 
     private String getUsername() {

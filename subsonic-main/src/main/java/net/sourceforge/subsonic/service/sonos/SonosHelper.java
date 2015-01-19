@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.service.sonos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,6 +57,7 @@ import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.SonosService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -241,6 +243,8 @@ public class SonosHelper {
                 albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, null);
                 total = mediaFileService.getAlbumCount();
                 break;
+            case DECADE:
+                return forDecades(offset, count);
             // TODO: Genre & decade
             default:
                 albums = Collections.emptyList();
@@ -257,6 +261,29 @@ public class SonosHelper {
         mediaList.setCount(albums.size());
         mediaList.setTotal(total);
         return mediaList;
+    }
+
+    private MediaList forDecades(int offset, int count) {
+        List<MediaCollection> mediaCollections = new ArrayList<MediaCollection>();
+        int currentDecade = Calendar.getInstance().get(Calendar.YEAR) / 10;
+        for (int i = 0; i < 10; i++) {
+            int decade = (currentDecade - i) * 10;
+            MediaCollection mediaCollection = new MediaCollection();
+            mediaCollection.setItemType(ItemType.ALBUM_LIST);
+            mediaCollection.setId(SonosService.ID_DECADE_PREFIX + decade);
+            mediaCollection.setTitle(String.valueOf(decade));
+            mediaCollections.add(mediaCollection);
+        }
+
+        return createSubList(offset, count, mediaCollections);
+    }
+
+    public List<MediaCollection> forDecade(int decade) {
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+        for (MediaFile album : mediaFileService.getAlbumsByYear(0, Integer.MAX_VALUE, decade, decade + 9, null)) {
+            result.add(forDirectory(album));
+        }
+        return result;
     }
 
     public List<MediaMetadata> forPlaylist(int playlistId) {
@@ -403,6 +430,18 @@ public class SonosHelper {
 
     private String getCoverArtUrl(String id) {
         return getBaseUrl() + "coverArt.view?id=" + id + "&size=" + CoverArtScheme.LARGE.getSize();
+    }
+
+    public static MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
+        MediaList result = new MediaList();
+        List<? extends AbstractMedia> selectedMediaCollections = Util.subList(mediaCollections, index, count);
+
+        result.setIndex(index);
+        result.setCount(selectedMediaCollections.size());
+        result.setTotal(mediaCollections.size());
+        result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
+
+        return result;
     }
 
     public void setPlaylistService(PlaylistService playlistService) {
