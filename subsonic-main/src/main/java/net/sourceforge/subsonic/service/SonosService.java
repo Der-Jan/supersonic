@@ -107,6 +107,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
     public static final String ID_DECADE_PREFIX = "decade:";
+    public static final String ID_GENRE_PREFIX = "genre:";
 
     // Note: These must match the values in presentationMap.xml
     public static final String ID_SEARCH_ARTISTS = "search-artists";
@@ -211,6 +212,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_DECADE_PREFIX)) {
             int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
             media = sonosHelper.forDecade(decade);
+        } else if (id.startsWith(ID_GENRE_PREFIX)) {
+            int genre = Integer.parseInt(id.replace(ID_GENRE_PREFIX, ""));
+            media = sonosHelper.forGenre(genre);
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());

@@ -39,6 +39,7 @@ import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
+import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
@@ -245,7 +246,8 @@ public class SonosHelper {
                 break;
             case DECADE:
                 return forDecades(offset, count);
-            // TODO: Genre & decade
+            case GENRE:
+                return forGenres(offset, count);
             default:
                 albums = Collections.emptyList();
                 total = 0;
@@ -278,9 +280,33 @@ public class SonosHelper {
         return createSubList(offset, count, mediaCollections);
     }
 
+    private MediaList forGenres(int offset, int count) {
+        List<MediaCollection> mediaCollections = new ArrayList<MediaCollection>();
+        List<Genre> genres = mediaFileService.getGenres(true);
+        for (int i = 0; i < genres.size(); i++) {
+            Genre genre = genres.get(i);
+            MediaCollection mediaCollection = new MediaCollection();
+            mediaCollection.setItemType(ItemType.ALBUM_LIST);
+            mediaCollection.setId(SonosService.ID_GENRE_PREFIX + i);
+            mediaCollection.setTitle(genre.getName() + " (" + genre.getAlbumCount() + ")");
+            mediaCollections.add(mediaCollection);
+        }
+
+        return createSubList(offset, count, mediaCollections);
+    }
+
     public List<MediaCollection> forDecade(int decade) {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (MediaFile album : mediaFileService.getAlbumsByYear(0, Integer.MAX_VALUE, decade, decade + 9, null)) {
+            result.add(forDirectory(album));
+        }
+        return result;
+    }
+
+    public List<MediaCollection> forGenre(int genreIndex) {
+        Genre genre = mediaFileService.getGenres(true).get(genreIndex);
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+        for (MediaFile album : mediaFileService.getAlbumsByGenre(0, Integer.MAX_VALUE, genre.getName(), null)) {
             result.add(forDirectory(album));
         }
         return result;
