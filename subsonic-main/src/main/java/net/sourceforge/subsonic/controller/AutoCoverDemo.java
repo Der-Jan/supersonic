@@ -28,6 +28,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 /**
  * @author Sindre Mehus
  * @version $Id$
@@ -62,7 +64,8 @@ public class AutoCoverDemo {
 
         @Override
         protected void paintComponent(Graphics g) {
-            new CoverArtController.AutoCover((Graphics2D) g, "abc", "Artist", "Album", width, height).paintCover();
+            String key = RandomStringUtils.random(5);
+            new CoverArtController.AutoCover((Graphics2D) g, key, "Artist with a very long name", "Album", width, height).paintCover();
         }
     }
 }

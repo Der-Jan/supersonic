@@ -179,7 +179,7 @@
 </c:import>
 </div>
 
-<h1 id="name"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; ${model.playlist.name}</h1>
+<h1 id="name"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; ${fn:escapeXml(model.playlist.name)}</h1>
 <h2>
     <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
@@ -200,7 +200,7 @@
 
 </h2>
 
-<div id="comment" class="detail" style="padding-top:0.2em">${model.playlist.comment}</div>
+<div id="comment" class="detail" style="padding-top:0.2em">${fn:escapeXml(model.playlist.comment)}</div>
 
 <div class="detail" style="padding-top:0.2em">
     <span id="songCount"></span> <fmt:message key="playlist2.songs"/> &ndash; <span id="duration"></span>
@@ -258,10 +258,10 @@
 <div id="dialog-edit" title="<fmt:message key="common.edit"/>" style="display: none;">
     <form>
         <label for="newName" style="display:block;"><fmt:message key="playlist2.name"/></label>
-        <input type="text" name="newName" id="newName" value="${model.playlist.name}" class="ui-widget-content"
+        <input type="text" name="newName" id="newName" value="${fn:escapeXml(model.playlist.name)}" class="ui-widget-content"
                style="display:block;width:95%;"/>
         <label for="newComment" style="display:block;margin-top:1em"><fmt:message key="playlist2.comment"/></label>
-        <input type="text" name="newComment" id="newComment" value="${model.playlist.comment}" class="ui-widget-content"
+        <input type="text" name="newComment" id="newComment" value="${fn:escapeXml(model.playlist.comment)}" class="ui-widget-content"
                style="display:block;width:95%;"/>
         <input type="checkbox" name="newShared" id="newShared" ${model.playlist.shared ? "checked='checked'" : ""} style="margin-top:1.5em" class="ui-widget-content"/>
         <label for="newShared"><fmt:message key="playlist2.public"/></label>

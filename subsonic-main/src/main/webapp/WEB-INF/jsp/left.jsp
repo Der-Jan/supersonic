@@ -45,7 +45,7 @@
                 var playlist = playlists[i];
                 var overflow = i > 9;
                 $("<p class='dense'><a target='main' href='playlist.view?id=" +
-                        playlist.id + "'>" + playlist.name + "&nbsp;(" + playlist.fileCount + ")</a></p>").appendTo(overflow ? "#playlistOverflow" : "#playlists");
+                        playlist.id + "'>" + escapeHtml(playlist.name) + "&nbsp;(" + playlist.fileCount + ")</a></p>").appendTo(overflow ? "#playlistOverflow" : "#playlists");
             }
 
             if (playlists.length > 10 && !$('#playlistOverflow').is(":visible")) {
@@ -63,7 +63,7 @@
     <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;">
             <option value="-1"><fmt:message key="left.allfolders"/></option>
             <c:forEach items="${model.musicFolders}" var="musicFolder">
-                <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${musicFolder.name}</option>
+                <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${fn:escapeXml(musicFolder.name)}</option>
             </c:forEach>
         </select>
     </div>
@@ -95,7 +95,7 @@
             <sub:url value="main.view" var="mainUrl">
                 <sub:param name="id" value="${shortcut.id}"/>
             </sub:url>
-            <a target="main" href="${mainUrl}">${shortcut.name}</a>
+            <a target="main" href="${mainUrl}">${fn:escapeXml(shortcut.name)}</a>
         </p>
     </c:forEach>
 </c:if>
@@ -119,10 +119,10 @@
             <span style="vertical-align: middle">
                 <c:choose>
                 <c:when test="${empty radio.homepageUrl}">
-                        ${radio.name}
+                        ${fn:escapeXml(radio.name)}
                     </c:when>
                     <c:otherwise>
-                    <a target="main" href="${radio.homepageUrl}">${radio.name}</a>
+                    <a target="main" href="${radio.homepageUrl}">${fn:escapeXml(radio.name)}</a>
                     </c:otherwise>
                     </c:choose>
             </span>
@@ -133,8 +133,8 @@
 <c:forEach items="${model.indexedArtists}" var="entry">
     <table class="bgcolor1" style="width:100%;padding:0;margin:1em 0 0 0;border:0">
         <tr style="padding:0;margin:0;border:0">
-            <th style="text-align:left;padding:0;margin:0;border:0"><a name="${entry.key.index}"></a>
-                <h2 style="padding:0;margin:0;border:0">${entry.key.index}</h2>
+            <th style="text-align:left;padding:0;margin:0;border:0"><a name="${fn:escapeXml(entry.key.index)}"></a>
+                <h2 style="padding:0;margin:0;border:0">${fn:escapeXml(entry.key.index)}</h2>
             </th>
             <th style="text-align:right;">
                 <a href="#top"><img src="<spring:theme code="upImage"/>" alt=""></a>
@@ -150,7 +150,7 @@
                         <sub:param name="id" value="${mediaFile.id}"/>
                     </c:forEach>
                 </sub:url>
-                <a target="main" href="${mainUrl}"><str:truncateNicely upper="${35}">${artist.name}</str:truncateNicely></a>
+                <a target="main" href="${mainUrl}"><str:truncateNicely upper="${35}">${fn:escapeXml(artist.name)}</str:truncateNicely></a>
             </span>
         </p>
     </c:forEach>
@@ -160,7 +160,7 @@
 
 <c:forEach items="${model.singleSongs}" var="song">
     <p class="dense" style="padding-left:2px">
-        <span class="songTitle" title="${song.title}">
+        <span class="songTitle" title="${fn:escapeXml(song.title)}">
             <c:import url="playButtons.jsp">
                 <c:param name="id" value="${song.id}"/>
                 <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
@@ -168,7 +168,7 @@
                 <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
                 <c:param name="video" value="${song.video and model.player.web}"/>
             </c:import>
-            <str:truncateNicely upper="${35}">${song.title}</str:truncateNicely>
+            <str:truncateNicely upper="${35}">${fn:escapeXml(song.title)}</str:truncateNicely>
         </span>
     </p>
 </c:forEach>

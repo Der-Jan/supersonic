@@ -4,6 +4,7 @@
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
+    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playQueueService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
@@ -267,7 +268,8 @@
         $("#dialog-select-playlist-list").empty();
         for (var i = 0; i < playlists.length; i++) {
             var playlist = playlists[i];
-            $("<p class='dense'><b><a href='#' onclick='appendPlaylist(" + playlist.id + ")'>" + playlist.name + "</a></b></p>").appendTo("#dialog-select-playlist-list");
+            $("<p class='dense'><b><a href='#' onclick='appendPlaylist(" + playlist.id + ")'>" + escapeHtml(playlist.name)
+                    + "</a></b></p>").appendTo("#dialog-select-playlist-list");
         }
         $("#dialog-select-playlist").dialog("open");
     }
@@ -301,8 +303,10 @@
         }
 
         if (songs.length == 0) {
+            $("#songCountAndDuration").html("");
             $("#empty").show();
         } else {
+            $("#songCountAndDuration").html(songs.length + " <fmt:message key="playlist2.songs"/> &ndash; " + playQueue.durationAsString);
             $("#empty").hide();
         }
 
@@ -643,9 +647,9 @@
         </tr></table>
 </div>
 
-<c:if test="${model.autoHide}">
-    <h2><fmt:message key="playlist.more.playlist"/></h2>
-</c:if>
+<h2 style="float:left"><fmt:message key="playlist.more.playlist"/></h2>
+<h2 id="songCountAndDuration" style="float:right;padding-right:1em"></h2>
+<div style="clear:both"></div>
 <p id="empty"><em><fmt:message key="playlist.empty"/></em></p>
 
 <table class="music indent" style="cursor:pointer">

@@ -38,6 +38,7 @@ public class UserSettings {
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
     private boolean autoHidePlayQueue;
+    private boolean viewAsList;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
@@ -205,6 +206,14 @@ public class UserSettings {
 
     public void setAutoHidePlayQueue(boolean autoHidePlayQueue) {
         this.autoHidePlayQueue = autoHidePlayQueue;
+    }
+
+    public boolean isViewAsList() {
+        return viewAsList;
+    }
+
+    public void setViewAsList(boolean viewAsList) {
+        this.viewAsList = viewAsList;
     }
 
     public AvatarScheme getAvatarScheme() {

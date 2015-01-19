@@ -73,7 +73,7 @@
 <h1 style="padding-top:1em;padding-bottom:0.5em;">
     <img id="starImage" src="<spring:theme code="${not empty model.video.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
          onclick="toggleStar(${model.video.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
-    <span style="vertical-align:middle">${model.video.title}</span>
+    <span style="vertical-align:middle">${fn:escapeXml(model.video.title)}</span>
 </h1>
 
 <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>

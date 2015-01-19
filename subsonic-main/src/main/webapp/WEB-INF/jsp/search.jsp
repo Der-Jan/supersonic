@@ -4,6 +4,22 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+
+    <script type="text/javascript" language="javascript">
+
+        function showMoreArtists() {
+            $('.artistRow').show(); $('#moreArtists').hide();
+        }
+
+        function showMoreAlbums() {
+            $('.albumRow').show(); $('#moreAlbums').hide();
+        }
+
+        function showMoreSongs() {
+            $('.songRow').show();$('#moreSongs').hide();
+        }
+
+    </script>
 </head>
 <body class="mainframe bgcolor1">
 
@@ -36,13 +52,13 @@
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
                     <c:param name="asTable" value="true"/>
                 </c:import>
-                <td class="truncate"><a href="${mainUrl}">${match.name}</a></td>
+                <td class="truncate"><a href="${mainUrl}">${fn:escapeXml(match.name)}</a></td>
             </tr>
 
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.artists) gt 5}">
-        <div id="moreArtists" class="forward"><a href="#" onclick="$('.artistRow').show(); $('#moreArtists').hide();"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreArtists" class="forward"><a href="javascript:showMoreArtists()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -63,14 +79,14 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td class="truncate"><a href="${mainUrl}">${match.albumName}</a></td>
-                <td class="truncate"><span class="detail">${match.artist}</span></td>
+                <td class="truncate"><a href="${mainUrl}">${fn:escapeXml(match.albumName)}</a></td>
+                <td class="truncate"><span class="detail">${fn:escapeXml(match.artist)}</span></td>
             </tr>
 
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.albums) gt 5}">
-        <div id="moreAlbums" class="forward"><a href="#" onclick="$('.albumRow').show(); $('#moreAlbums').hide();"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreAlbums" class="forward"><a href="javascript:showMoreAlbums()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -93,15 +109,15 @@
                     <c:param name="asTable" value="true"/>
                 </c:import>
 
-                <td class="truncate"><span class="songTitle">${match.title}</span></td>
-                <td class="truncate"><a href="${mainUrl}"><span class="detail">${match.albumName}</span></a></td>
-                <td class="truncate"><span class="detail">${match.artist}</span></td>
+                <td class="truncate"><span class="songTitle">${fn:escapeXml(match.title)}</span></td>
+                <td class="truncate"><a href="${mainUrl}"><span class="detail">${fn:escapeXml(match.albumName)}</span></a></td>
+                <td class="truncate"><span class="detail">${fn:escapeXml(match.artist)}</span></td>
             </tr>
 
             </c:forEach>
     </table>
 <c:if test="${fn:length(command.songs) gt 15}">
-    <div id="moreSongs" class="forward"><a href="#" onclick="$('.songRow').show();$('#moreSongs').hide(); "><fmt:message key="search.hits.more"/></a></div>
+    <div id="moreSongs" class="forward"><a href="javascript:showMoreSongs()"><fmt:message key="search.hits.more"/></a></div>
 </c:if>
 </c:if>
 

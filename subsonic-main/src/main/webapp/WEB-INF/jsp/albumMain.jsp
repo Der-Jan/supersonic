@@ -5,6 +5,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
@@ -43,7 +44,7 @@
                 var html = "";
                 for (var i = 0; i < artistInfo.similarArtists.length; i++) {
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
-                            artistInfo.similarArtists[i].artistName + "</a>";
+                            escapeHtml(artistInfo.similarArtists[i].artistName) + "</a>";
                     if (i < artistInfo.similarArtists.length - 1) {
                         html += " <span class='similar-artist-divider'>|</span> ";
                     }
@@ -78,7 +79,7 @@
 
     function getSelectedIndexes() {
         var result = "";
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null  && checkbox.is(":checked")) {
                 result += "i=" + i + "&";
@@ -88,7 +89,7 @@
     }
 
     function selectAll(b) {
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox != null) {
                 if (b) {
@@ -111,6 +112,22 @@
         }
     }
 
+    function playAll() {
+        top.playQueue.onPlay(${model.dir.id});
+    }
+
+    function playRandom() {
+        top.playQueue.onPlayRandom(${model.dir.id}, 40);
+    }
+
+    function addAll() {
+        top.playQueue.onAdd(${model.dir.id});
+    }
+
+    function playSimilar() {
+        top.playQueue.onPlaySimilar(${model.dir.id}, 50);
+    }
+
     function onAppendPlaylist() {
         playlistService.getWritablePlaylists(playlistCallback);
     }
@@ -118,7 +135,8 @@
         $("#dialog-select-playlist-list").empty();
         for (var i = 0; i < playlists.length; i++) {
             var playlist = playlists[i];
-            $("<p class='dense'><b><a href='#' onclick='appendPlaylist(" + playlist.id + ")'>" + playlist.name + "</a></b></p>").appendTo("#dialog-select-playlist-list");
+            $("<p class='dense'><b><a href='#' onclick='appendPlaylist(" + playlist.id + ")'>" + escapeHtml(playlist.name)
+                    + "</a></b></p>").appendTo("#dialog-select-playlist-list");
         }
         $("#dialog-select-playlist").dialog("open");
     }
@@ -126,7 +144,7 @@
         $("#dialog-select-playlist").dialog("close");
 
         var mediaFileIds = new Array();
-        for (var i = 0; i < ${fn:length(model.songs)}; i++) {
+        for (var i = 0; i < ${fn:length(model.files)}; i++) {
             var checkbox = $("#songIndex" + i);
             if (checkbox && checkbox.is(":checked")) {
                 mediaFileIds.push($("#songId" + i).html());
@@ -140,68 +158,73 @@
 
 </script>
 
-<h1>
-    <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-         onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
+<div style="float:left">
+    <h1>
+        <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
+             onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
 
-    <span style="vertical-align: middle">
-        <c:forEach items="${model.ancestors}" var="ancestor">
-        <sub:url value="main.view" var="ancestorUrl">
-                <sub:param name="id" value="${ancestor.id}"/>
-            </sub:url>
-            <a href="${ancestorUrl}">${ancestor.name}</a> &raquo;
+        <span style="vertical-align: middle">
+            <c:forEach items="${model.ancestors}" var="ancestor">
+                <sub:url value="main.view" var="ancestorUrl">
+                    <sub:param name="id" value="${ancestor.id}"/>
+                </sub:url>
+                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
             </c:forEach>
-            ${model.dir.name}
-    </span>
+            ${fn:escapeXml(model.dir.name)}
+        </span>
 
-    <c:if test="${model.averageRating gt 0}">
-        &nbsp;&nbsp;
-        <c:import url="rating.jsp">
-            <c:param name="readonly" value="true"/>
-            <c:param name="rating" value="${model.averageRating}"/>
-        </c:import>
-    </c:if>
-</h1>
+        <c:if test="${model.averageRating gt 0}">
+            &nbsp;&nbsp;
+            <c:import url="rating.jsp">
+                <c:param name="readonly" value="true"/>
+                <c:param name="rating" value="${model.averageRating}"/>
+            </c:import>
+        </c:if>
+    </h1>
 
-<c:if test="${not model.partyMode}">
-<h2>
-    <c:if test="${model.navigateUpAllowed}">
-        <sub:url value="main.view" var="upUrl">
-            <sub:param name="id" value="${model.parent.id}"/>
-        </sub:url>
-        <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+    <c:if test="${not model.partyMode}">
+        <h2>
+            <c:if test="${model.navigateUpAllowed}">
+                <sub:url value="main.view" var="upUrl">
+                    <sub:param name="id" value="${model.parent.id}"/>
+                </sub:url>
+                <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.streamRole}">
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="#" onclick="top.playQueue.onPlay(${model.dir.id});"><fmt:message key="main.playall"/></a></span> |
-        <span class="header"><a href="#" onclick="top.playQueue.onPlayRandom(${model.dir.id}, 40);"><fmt:message key="main.playrandom"/></a></span> |
-        <span class="header"><a href="#" onclick="top.playQueue.onAdd(${model.dir.id});"><fmt:message key="main.addall"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+            <c:if test="${model.user.streamRole}">
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
+                <span class="header"><a href="javascript:playRandom()"><fmt:message key="main.playrandom"/></a></span> |
+                <span class="header"><a href="javascript:addAll()"><fmt:message key="main.addall"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.downloadRole}">
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+            <c:if test="${model.user.downloadRole}">
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.coverArtRole}">
-        <sub:url value="editTags.view" var="editTagsUrl">
-            <sub:param name="id" value="${model.dir.id}"/>
-        </sub:url>
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
-        <c:set var="needSep" value="true"/>
-    </c:if>
+            <c:if test="${model.user.coverArtRole}">
+                <sub:url value="editTags.view" var="editTagsUrl">
+                    <sub:param name="id" value="${model.dir.id}"/>
+                </sub:url>
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
+                <c:set var="needSep" value="true"/>
+            </c:if>
 
-    <c:if test="${model.user.commentRole}">
-        <c:if test="${needSep}">|</c:if>
-        <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+            <c:if test="${model.user.commentRole}">
+                <c:if test="${needSep}">|</c:if>
+                <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+            </c:if>
+        </h2>
     </c:if>
-</h2>
-</c:if>
+</div>
+
+<%@ include file="viewSelector.jsp" %>
+<div style="clear:both"></div>
 
 <div class="detail">
     <c:if test="${model.user.commentRole}">
@@ -272,7 +295,7 @@
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
             <table class="music" style="width: 100%">
-                <c:forEach items="${model.songs}" var="song" varStatus="loopStatus">
+                <c:forEach items="${model.files}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <tr style="margin:0;padding:0;border:0">
                         <c:import url="playButtons.jsp">
@@ -295,24 +318,24 @@
                         </c:if>
 
                         <td class="truncate">
-                            <span class="songTitle" title="${song.title}">${fn:escapeXml(song.title)}</span>
+                            <span class="songTitle" title="${fn:escapeXml(song.title)}">${fn:escapeXml(song.title)}</span>
                         </td>
 
                         <c:if test="${model.visibility.albumVisible}">
                             <td class="truncate">
-                                <span class="detail" title="${song.albumName}">${fn:escapeXml(song.albumName)}</span>
+                                <span class="detail" title="${fn:escapeXml(song.albumName)}">${fn:escapeXml(song.albumName)}</span>
                             </td>
                         </c:if>
 
                         <c:if test="${model.visibility.artistVisible}">
                             <td class="truncate">
-                                <span class="detail" title="${song.artist}">${fn:escapeXml(song.artist)}</span>
+                                <span class="detail" title="${fn:escapeXml(song.artist)}">${fn:escapeXml(song.artist)}</span>
                             </td>
                         </c:if>
 
                         <c:if test="${model.visibility.genreVisible}">
                             <td class="fit rightalign">
-                                <span class="detail">${song.genre}</span>
+                                <span class="detail">${fn:escapeXml(song.genre)}</span>
                             </td>
                         </c:if>
 
@@ -357,7 +380,7 @@
             </table>
         </td>
 
-        <td class="fit" style="vertical-align:top;" rowspan="2">
+        <td class="fit" style="vertical-align:top;" rowspan="3">
             <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
@@ -368,7 +391,7 @@
             </div>
         </td>
         <c:if test="${model.showAd}">
-            <td style="vertical-align:top;width:160px" rowspan="2">
+            <td style="vertical-align:top;width:160px" rowspan="3">
                 <h2 style="padding-bottom: 1em">Subsonic Premium</h2>
                 <p style="font-size: 90%">
                     Upgrade to Subsonic Premium and get:
@@ -389,7 +412,7 @@
     </tr>
 
     <tr>
-        <td style="vertical-align:top;height: 100%">
+        <td>
             <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id);" style="margin-bottom:1.0em">
                 <option id="top" selected="selected"><fmt:message key="main.more.selection"/></option>
                 <option id="selectAll">&nbsp;&nbsp;<fmt:message key="playlist.more.selectall"/></option>
@@ -404,23 +427,62 @@
             </select>
         </td>
     </tr>
+
+    <tr>
+        <td style="vertical-align:top;height: 100%">
+            <table class="music indent">
+                <c:forEach items="${model.subDirs}" var="child" varStatus="loopStatus">
+                    <sub:url value="main.view" var="albumUrl">
+                        <sub:param name="id" value="${child.id}"/>
+                    </sub:url>
+                    <tr>
+                        <c:import url="playButtons.jsp">
+                            <c:param name="id" value="${child.id}"/>
+                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                            <c:param name="asTable" value="true"/>
+                        </c:import>
+                        <td class="truncate"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
+                        <td></td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${model.viewAsList}">
+                    <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
+                        <tr>
+                            <c:import url="playButtons.jsp">
+                                <c:param name="id" value="${album.id}"/>
+                                <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                                <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                                <c:param name="asTable" value="true"/>
+                            </c:import>
+                            <td class="truncate"><a href="main.view?id=${album.id}" title="${fn:escapeXml(album.name)}">${fn:escapeXml(album.name)}</a></td>
+                            <td class="fit rightalign detail">${album.year}</td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+            </table>
+        </td>
+
+    </tr>
 </table>
 
-<div style="float: left">
-    <c:forEach items="${model.relatedAlbums}" var="album" varStatus="loopStatus">
-        <div class="albumThumb">
-            <c:import url="coverArt.jsp">
-                <c:param name="albumId" value="${album.id}"/>
-                <c:param name="caption1" value="${album.name}"/>
-                <c:param name="caption2" value="${album.year}"/>
-                <c:param name="captionCount" value="2"/>
-                <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
-                <c:param name="showLink" value="true"/>
-                <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
-            </c:import>
-        </div>
-    </c:forEach>
-</div>
+<c:if test="${not model.viewAsList}">
+    <div style="float: left">
+        <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
+            <div class="albumThumb">
+                <c:import url="coverArt.jsp">
+                    <c:param name="albumId" value="${album.id}"/>
+                    <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
+                    <c:param name="caption2" value="${album.year}"/>
+                    <c:param name="captionCount" value="2"/>
+                    <c:param name="coverArtSize" value="${model.coverArtSizeMedium}"/>
+                    <c:param name="showLink" value="true"/>
+                    <c:param name="appearAfter" value="${loopStatus.count * 30}"/>
+                </c:import>
+            </div>
+        </c:forEach>
+    </div>
+</c:if>
 
 <table style="width: 90%">
     <tr><td>
@@ -429,7 +491,7 @@
     </td></tr>
     <tr><td style="padding-bottom: 0.5em">
         <div id="similarArtistsRadio" class="forward" style="display: none">
-            <a href="#" onclick="top.playQueue.onPlaySimilar(${model.dir.id}, 50);"><fmt:message key="main.startradio"/></a>
+            <a href="javascript:playSimilar()"><fmt:message key="main.startradio"/></a>
         </div>
     </td></tr>
     <tr><td style="height: 100%"></td></tr>
