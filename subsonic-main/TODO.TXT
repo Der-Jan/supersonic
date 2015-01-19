@@ -37,17 +37,13 @@ Sonos
     Use AlbumListType in HomeController
     By genre, by decade
   Rating
-  Music service icon
   Capabilities
      User Content Playlists
   Radio feature
   By index
-  Test if the correct set of playlists are returned
   Read thru doc
   Run Self-Test
   Error handling
-  Escape html in log
-  Test with Java 6
   SkatteFUNN
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
