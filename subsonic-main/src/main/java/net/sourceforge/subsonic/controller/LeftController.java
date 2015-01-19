@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,12 +35,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.MusicIndex;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
@@ -59,8 +56,6 @@ import net.sourceforge.subsonic.util.StringUtil;
  * @author Sindre Mehus
  */
 public class LeftController extends ParameterizableViewController {
-
-    private static final Logger LOG = Logger.getLogger(LeftController.class);
 
     // Update this time if you want to force a refresh in clients.
     private static final Calendar LAST_COMPATIBILITY_TIME = Calendar.getInstance();
@@ -138,7 +133,7 @@ public class LeftController extends ParameterizableViewController {
         String[] shortcuts = settingsService.getShortcutsAsArray();
         UserSettings userSettings = settingsService.getUserSettings(username);
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
-        MusicFolderContent musicFolderContent = getMusicFolderContent(musicFoldersToUse, refresh);
+        MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
 
         map.put("player", playerService.getPlayer(request, response));
         map.put("scanning", mediaScannerService.isScanning());
@@ -193,15 +188,6 @@ public class LeftController extends ParameterizableViewController {
         return settingsService.getMusicFolderById(musicFolderId);
     }
 
-    protected List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
-        List<MediaFile> result = new ArrayList<MediaFile>();
-        for (MusicFolder folder : folders) {
-            MediaFile parent = mediaFileService.getMediaFile(folder.getPath(), !refresh);
-            result.addAll(mediaFileService.getChildrenOf(parent, true, false, true, !refresh));
-        }
-        return result;
-    }
-
     public List<MediaFile> getShortcuts(List<MusicFolder> musicFoldersToUse, String[] shortcuts) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
@@ -215,12 +201,6 @@ public class LeftController extends ParameterizableViewController {
         }
 
         return result;
-    }
-
-    public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
-        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
-        List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
-        return new MusicFolderContent(indexedArtists, singleSongs);
     }
 
     public void setMediaScannerService(MediaScannerService mediaScannerService) {
@@ -247,23 +227,4 @@ public class LeftController extends ParameterizableViewController {
         this.playerService = playerService;
     }
 
-    public static class MusicFolderContent {
-
-        private final SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
-        private final List<MediaFile> singleSongs;
-
-        public MusicFolderContent(SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
-            this.indexedArtists = indexedArtists;
-            this.singleSongs = singleSongs;
-        }
-
-        public SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
-            return indexedArtists;
-        }
-
-        public List<MediaFile> getSingleSongs() {
-            return singleSongs;
-        }
-
-    }
 }

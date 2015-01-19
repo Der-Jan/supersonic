@@ -16,6 +16,7 @@
     <properties>
         <failOnDependencyWarning>true</failOnDependencyWarning>
         <project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
+        <cxf.version>2.4.2</cxf.version>
     </properties>
 
     <repositories>
@@ -85,6 +86,7 @@
 
     <modules>
         <module>subsonic-rest-api</module>
+        <module>subsonic-sonos-api</module>
         <module>subsonic-main</module>
     </modules>
 
@@ -132,6 +134,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
                     <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-codegen-plugin</artifactId>
+                    <version>${cxf.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jvnet.jaxb2.maven2</groupId>

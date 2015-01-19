@@ -35,6 +35,7 @@ import java.util.TreeMap;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.MusicIndex.SortableArtist;
 
@@ -65,6 +66,22 @@ public class MusicIndexService {
         List<MusicIndex.SortableArtistWithArtist> sortableArtists = createSortableArtists(artists);
         return sortArtists(sortableArtists);
     }
+
+    public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = getIndexedArtists(musicFoldersToUse, refresh);
+        List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
+        return new MusicFolderContent(indexedArtists, singleSongs);
+    }
+
+    public List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        for (MusicFolder folder : folders) {
+            MediaFile parent = mediaFileService.getMediaFile(folder.getPath(), !refresh);
+            result.addAll(mediaFileService.getChildrenOf(parent, true, false, true, !refresh));
+        }
+        return result;
+    }
+
 
     private <T extends SortableArtist> SortedMap<MusicIndex, List<T>> sortArtists(List<T> artists) {
         List<MusicIndex> indexes = createIndexesFromExpression(settingsService.getIndexString());

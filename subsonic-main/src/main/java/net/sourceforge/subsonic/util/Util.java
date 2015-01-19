@@ -172,4 +172,8 @@ public final class Util {
             }
         };
     }
+
+    public static <T> List<T> subList(List<T> list, long offset, long max) {
+        return list.subList((int) offset, Math.min(list.size(), (int) (offset + max)));
+    }
 }

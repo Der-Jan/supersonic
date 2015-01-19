@@ -5,13 +5,16 @@ List mode for siebling albums
 
 TODO IN 5.1
 --------------
-Merge changelog
+Bundle release notes
+Add FAQ for how to cancel recurring payments.
+Set plugin versions in pom.xml
 Move media statistics to About page.
 Fade out text in auto cover art
 More space in left.jsp
 Edit/delete artist info.
 Add "handle" for drag&drop
 Make separate category for videos in search.
+  Create search index for videos
 Show video preview in Starred
 "Add to playlist" submenu
   http://behigh.github.io/bootstrap_dropdowns_enhancement/
@@ -28,9 +31,20 @@ OAuth
 
 TODO IN 5.2
 ------------
+Facebook ads
 Sonos
-  subsonic-sonos-api maven module
-  Automatically register music service in Sonos controller
+  Album lists
+    Use AlbumListType in HomeController
+    By genre, by decade
+  Rating
+  Capabilities
+     User Content Playlists
+  Radio feature
+  By index
+  Read thru doc
+  Run Self-Test
+  Error handling
+  SkatteFUNN
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?
@@ -906,6 +920,7 @@ Vis "lignende" album.
 
 HOW TO RELEASE
 ===============================
+MAKE SURE YOU'RE ON TRUNK
 Update version number in pom.xml, version.html, MultiController.java, download.jsp
 Update changelog.jsp
 Commit

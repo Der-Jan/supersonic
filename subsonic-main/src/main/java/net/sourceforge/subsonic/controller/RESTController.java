@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -101,6 +100,7 @@ import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
@@ -114,7 +114,6 @@ import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
-import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
@@ -273,10 +272,9 @@ public class RESTController extends MultiActionController {
             indexes.getShortcut().add(createJaxbArtist(shortcut, username));
         }
 
-        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists =
-                leftController.getMusicFolderContent(musicFolders, false).getIndexedArtists();
+        MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFolders, false);
 
-        for (Map.Entry<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> entry : indexedArtists.entrySet()) {
+        for (Map.Entry<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> entry : musicFolderContent.getIndexedArtists().entrySet()) {
             Index index = new Index();
             indexes.getIndex().add(index);
             index.setName(entry.getKey().getIndex());
@@ -297,9 +295,9 @@ public class RESTController extends MultiActionController {
 
         // Add children
         Player player = playerService.getPlayer(request, response);
-        List<MediaFile> singleSongs = leftController.getSingleSongs(musicFolders, false);
+        List<MediaFile> singleSongs = musicIndexService.getSingleSongs(musicFolders, false);
 
-        for (MediaFile singleSong : singleSongs) {
+        for (MediaFile singleSong : musicFolderContent.getSingleSongs()) {
             indexes.getChild().add(createJaxbChild(player, singleSong, username));
         }
 

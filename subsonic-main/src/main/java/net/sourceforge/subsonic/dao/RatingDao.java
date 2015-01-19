@@ -101,4 +101,13 @@ public class RatingDao extends AbstractDao {
             return null;
         }
     }
+
+    public int getRatedAlbumCount(String username) {
+        return queryForInt("select count(*) from user_rating, media_file " +
+                           "where media_file.path = user_rating.path " +
+                           "and media_file.type = ? " +
+                           "and media_file.present " +
+                           "and user_rating.username = ?",
+                           0, ALBUM.name(), username);
+    }
 }

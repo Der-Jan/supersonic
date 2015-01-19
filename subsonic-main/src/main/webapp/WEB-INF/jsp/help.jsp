@@ -78,7 +78,7 @@
     <c:forEach items="${model.logEntries}" var="entry">
         <tr>
             <td>[<fmt:formatDate value="${entry.date}" dateStyle="short" timeStyle="long" type="both"/>]</td>
-            <td>${entry.level}</td><td>${entry.category}</td><td>${entry.message}</td>
+            <td>${entry.level}</td><td>${entry.category}</td><td>${fn:escapeXml(entry.message)}</td>
         </tr>
     </c:forEach>
 </table>
