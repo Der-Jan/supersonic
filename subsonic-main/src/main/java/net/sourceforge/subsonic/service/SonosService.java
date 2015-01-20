@@ -99,6 +99,7 @@ public class SonosService implements SonosSoap {
     private static final Logger LOG = Logger.getLogger(SonosService.class);
 
     public static final String ID_ROOT = "root";
+    public static final String ID_SHUFFLE = "shuffle";
     public static final String ID_ALBUMLISTS = "albumlists";
     public static final String ID_PLAYLISTS = "playlists";
     public static final String ID_LIBRARY = "library";
@@ -107,6 +108,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_STARRED_ALBUMS = "starred-albums";
     public static final String ID_STARRED_SONGS = "starred-songs";
     public static final String ID_SEARCH = "search";
+    public static final String ID_SHUFFLE_MUSICFOLDER_PREFIX = "shuffle-musicfolder:";
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
@@ -196,6 +198,8 @@ public class SonosService implements SonosSoap {
 
         if (ID_ROOT.equals(id)) {
             media = sonosHelper.forRoot();
+        } else if (ID_SHUFFLE.equals(id)) {
+            media = sonosHelper.forShuffle();
         } else if (ID_LIBRARY.equals(id)) {
             media = sonosHelper.forLibrary();
         } else if (ID_PLAYLISTS.equals(id)) {
@@ -227,6 +231,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
             int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
             media = sonosHelper.forMusicFolder(musicFolderId);
+        } else if (id.startsWith(ID_SHUFFLE_MUSICFOLDER_PREFIX)) {
+            int musicFolderId = Integer.parseInt(id.replace(ID_SHUFFLE_MUSICFOLDER_PREFIX, ""));
+            media = sonosHelper.forShuffleMusicFolder(musicFolderId);
         } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
             media = sonosHelper.forSimilarArtists(mediaFileId);

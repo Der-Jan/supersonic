@@ -78,7 +78,12 @@ public class SonosHelper {
     private RatingService ratingService;
     private LastFmService lastFmService;
 
-    public List<MediaCollection> forRoot() {
+    public List<AbstractMedia> forRoot() {
+        MediaMetadata shuffle = new MediaMetadata();
+        shuffle.setItemType(ItemType.PROGRAM);
+        shuffle.setId(SonosService.ID_SHUFFLE);
+        shuffle.setTitle("Shuffle Play");
+
         MediaCollection library = new MediaCollection();
         library.setItemType(ItemType.COLLECTION);
         library.setId(SonosService.ID_LIBRARY);
@@ -99,7 +104,26 @@ public class SonosHelper {
         albumlists.setId(SonosService.ID_ALBUMLISTS);
         albumlists.setTitle("Album Lists");
 
-        return Arrays.asList(library, playlists, starred, albumlists);
+        return Arrays.asList(shuffle, library, playlists, starred, albumlists);
+    }
+
+    public List<AbstractMedia> forShuffle() {
+        return forShuffleMusicFolder(null);
+    }
+
+    public List<AbstractMedia> forShuffleMusicFolder(int id) {
+        return forShuffleMusicFolder(settingsService.getMusicFolderById(id));
+    }
+
+    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder) {
+        List<MediaFile> albums = searchService.getRandomAlbums(40, musicFolder);
+        List<MediaFile> songs = new ArrayList<MediaFile>();
+        for (MediaFile album : albums) {
+            songs.addAll(mediaFileService.getChildrenOf(album, true, false, false));
+        }
+        Collections.shuffle(songs);
+        songs = songs.subList(0, Math.min(10, songs.size()));
+        return forMediaFiles(songs);
     }
 
     public List<AbstractMedia> forLibrary() {
@@ -127,6 +151,13 @@ public class SonosHelper {
     public List<AbstractMedia> forMusicFolder(MusicFolder musicFolder) {
         try {
             List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+
+            MediaMetadata shuffle = new MediaMetadata();
+            shuffle.setItemType(ItemType.PROGRAM);
+            shuffle.setId(SonosService.ID_SHUFFLE_MUSICFOLDER_PREFIX + musicFolder.getId());
+            shuffle.setTitle("Shuffle Play");
+            result.add(shuffle);
+
             MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(Arrays.asList(musicFolder), false);
 
             for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {

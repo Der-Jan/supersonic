@@ -32,6 +32,9 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
+  Add shuffle play (global, and for each music folder)
+  Add shuffle play for artists
+  Add artist radio
   Logging.
   Album lists
     Use AlbumListType in HomeController
