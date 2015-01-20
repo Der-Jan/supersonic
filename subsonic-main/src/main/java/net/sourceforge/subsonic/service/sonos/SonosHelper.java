@@ -167,7 +167,7 @@ public class SonosHelper {
         if (dir.isAlbum()) {
             mediaCollection.setItemType(ItemType.ALBUM);
             mediaCollection.setArtist(dir.getArtist());
-            mediaCollection.setTitle(dir.getAlbumName());
+            mediaCollection.setTitle(dir.getName());
             mediaCollection.setCanPlay(true);
 
             AlbumArtUrl albumArtURI = new AlbumArtUrl();
@@ -435,7 +435,6 @@ public class SonosHelper {
         trackMetadata.setAlbum(song.getAlbumName());
         trackMetadata.setAlbumArtURI(albumArtURI);
         trackMetadata.setDuration(song.getDurationSeconds());
-        trackMetadata.setCanSkip(false); // TODO, but probably ok since the whole song is loaded?
 
         MediaFile parent = mediaFileService.getParentOf(song);
         if (parent != null && parent.isAlbum()) {

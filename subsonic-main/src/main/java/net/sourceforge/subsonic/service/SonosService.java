@@ -151,16 +151,17 @@ public class SonosService implements SonosSoap {
     }
 
     public void setMusicServiceEnabled(boolean enabled) {
-        String sonosControllerIp = upnpService.getSonosControllerIp();
-        if (sonosControllerIp == null) {
+        List<String> sonosControllers = upnpService.getSonosControllerHosts();
+        if (sonosControllers.isEmpty()) {
             LOG.info("No Sonos controller found");
             return;
         }
+        LOG.info("Found Sonos controllers: " + sonosControllers);
 
         String sonosServiceName = settingsService.getSonosServiceName();
         String subsonicBaseUrl = sonosHelper.getBaseUrl();
         try {
-            new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosControllerIp, enabled, sonosServiceName);
+            new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosControllers.get(0), enabled, sonosServiceName);
         } catch (IOException x) {
             LOG.error("Failed to enable/disable Sonos music service: " + x, x);
         }
