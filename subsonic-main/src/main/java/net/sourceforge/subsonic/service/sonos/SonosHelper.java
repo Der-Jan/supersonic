@@ -48,6 +48,7 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
+import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -75,6 +76,7 @@ public class SonosHelper {
     private SearchService searchService;
     private MediaFileDao mediaFileDao;
     private RatingService ratingService;
+    private LastFmService lastFmService;
 
     public List<MediaCollection> forRoot() {
         MediaCollection library = new MediaCollection();
@@ -410,7 +412,21 @@ public class SonosHelper {
         return result;
     }
 
-    private AbstractMedia forMediaFile(MediaFile mediaFile) {
+    public List<AbstractMedia> forSimilarArtists(int mediaFileId) {
+        MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, 100, false);
+        return forMediaFiles(similarArtists);
+    }
+
+    private List<AbstractMedia> forMediaFiles(List<MediaFile> mediaFiles) {
+        List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+        for (MediaFile mediaFile : mediaFiles) {
+            result.add(forMediaFile(mediaFile));
+        }
+        return result;
+    }
+
+    public AbstractMedia forMediaFile(MediaFile mediaFile) {
         return mediaFile.isFile() ? forSong(mediaFile) : forDirectory(mediaFile);
     }
 
@@ -528,5 +544,9 @@ public class SonosHelper {
 
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
+    }
+
+    public void setLastFmService(LastFmService lastFmService) {
+        this.lastFmService = lastFmService;
     }
 }

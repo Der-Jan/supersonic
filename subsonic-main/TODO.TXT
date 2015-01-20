@@ -32,13 +32,15 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
-  Test with stand-alone Play:1
+  Logging.
   Album lists
     Use AlbumListType in HomeController
   Rating
   Capabilities
      User Content Playlists
   Radio feature
+    getExtendedMediaData
+    Add capability
   By index
   Read thru doc
   Run Self-Test

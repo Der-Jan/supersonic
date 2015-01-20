@@ -51,6 +51,7 @@ import com.sonos.services._1.Credentials;
 import com.sonos.services._1.DeleteContainerResult;
 import com.sonos.services._1.DeviceAuthTokenResult;
 import com.sonos.services._1.DeviceLinkCodeResult;
+import com.sonos.services._1.ExtendedMetadata;
 import com.sonos.services._1.GetExtendedMetadata;
 import com.sonos.services._1.GetExtendedMetadataResponse;
 import com.sonos.services._1.GetExtendedMetadataText;
@@ -63,9 +64,12 @@ import com.sonos.services._1.GetSessionId;
 import com.sonos.services._1.GetSessionIdResponse;
 import com.sonos.services._1.HttpHeaders;
 import com.sonos.services._1.LastUpdate;
+import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaList;
+import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
+import com.sonos.services._1.RelatedBrowse;
 import com.sonos.services._1.RemoveFromContainerResult;
 import com.sonos.services._1.RenameContainerResult;
 import com.sonos.services._1.ReorderContainerResult;
@@ -108,6 +112,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
     public static final String ID_DECADE_PREFIX = "decade:";
     public static final String ID_GENRE_PREFIX = "genre:";
+    public static final String ID_SIMILAR_ARTISTS_PREFIX = "similarartists:";
 
     // Note: These must match the values in presentationMap.xml
     public static final String ID_SEARCH_ARTISTS = "search-artists";
@@ -222,6 +227,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
             int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
             media = sonosHelper.forMusicFolder(musicFolderId);
+        } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
+            int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
+            media = sonosHelper.forSimilarArtists(mediaFileId);
         } else {
             media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }
@@ -237,6 +245,32 @@ public class SonosService implements SonosSoap {
         response.setGetMetadataResult(mediaList);
         return response;
     }
+
+    @Override
+    public GetExtendedMetadataResponse getExtendedMetadata(GetExtendedMetadata parameters) {
+        System.out.println("getExtendedMetadata: " + parameters.getId());
+
+        int id = Integer.parseInt(parameters.getId());
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        AbstractMedia abstractMedia = sonosHelper.forMediaFile(mediaFile);
+
+        ExtendedMetadata extendedMetadata = new ExtendedMetadata();
+        if (abstractMedia instanceof MediaCollection) {
+            extendedMetadata.setMediaCollection((MediaCollection) abstractMedia);
+        } else {
+            extendedMetadata.setMediaMetadata((MediaMetadata) abstractMedia);
+        }
+
+        RelatedBrowse relatedBrowse = new RelatedBrowse();
+        relatedBrowse.setType("RELATED_ARTISTS");
+        relatedBrowse.setId(ID_SIMILAR_ARTISTS_PREFIX + id);
+        extendedMetadata.getRelatedBrowse().add(relatedBrowse);
+
+        GetExtendedMetadataResponse response = new GetExtendedMetadataResponse();
+        response.setGetExtendedMetadataResult(extendedMetadata);
+        return response;
+    }
+
 
     @Override
     public SearchResponse search(Search parameters) {
@@ -422,12 +456,6 @@ public class SonosService implements SonosSoap {
 
     @Override
     public void reportStatus(String id, int errorCode, String message) {
-
-    }
-
-    @Override
-    public GetExtendedMetadataResponse getExtendedMetadata(GetExtendedMetadata parameters) {
-        return null;
     }
 
     @Override
