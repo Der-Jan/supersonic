@@ -107,22 +107,32 @@ public class SonosHelper {
         return Arrays.asList(shuffle, library, playlists, starred, albumlists);
     }
 
-    public List<AbstractMedia> forShuffle() {
-        return forShuffleMusicFolder(null);
+    public List<AbstractMedia> forShuffle(int count) {
+        return forShuffleMusicFolder(null, count);
     }
 
-    public List<AbstractMedia> forShuffleMusicFolder(int id) {
-        return forShuffleMusicFolder(settingsService.getMusicFolderById(id));
+    public List<AbstractMedia> forShuffleMusicFolder(int id, int count) {
+        return forShuffleMusicFolder(settingsService.getMusicFolderById(id), count);
     }
 
-    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder) {
+    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder, int count) {
         List<MediaFile> albums = searchService.getRandomAlbums(40, musicFolder);
         List<MediaFile> songs = new ArrayList<MediaFile>();
         for (MediaFile album : albums) {
-            songs.addAll(mediaFileService.getChildrenOf(album, true, false, false));
+            for (MediaFile file : filterMusic(mediaFileService.getChildrenOf(album, true, false, false))) {
+                songs.add(file);
+            }
         }
         Collections.shuffle(songs);
-        songs = songs.subList(0, Math.min(10, songs.size()));
+        songs = songs.subList(0, Math.min(count, songs.size()));
+        return forMediaFiles(songs);
+    }
+
+    public List<AbstractMedia> forShuffleArtist(int mediaFileId, int count) {
+        MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
+        List<MediaFile> songs = filterMusic(mediaFileService.getDescendantsOf(artist, false));
+        Collections.shuffle(songs);
+        songs = songs.subList(0, Math.min(count, songs.size()));
         return forMediaFiles(songs);
     }
 
@@ -183,13 +193,25 @@ public class SonosHelper {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
         MediaFile dir = mediaFileService.getMediaFile(mediaFileId);
         List<MediaFile> children = mediaFileService.getChildrenOf(dir, true, true, true);
+        boolean isArtist = true;
         for (MediaFile child : children) {
             if (child.isDirectory()) {
                 result.add(forDirectory(child));
+                isArtist &= child.isAlbum();
             } else if (child.isAudio()) {
+                isArtist = false;
                 result.add(forSong(child));
             }
         }
+
+        if (isArtist) {
+            MediaMetadata shuffle = new MediaMetadata();
+            shuffle.setItemType(ItemType.PROGRAM);
+            shuffle.setId(SonosService.ID_SHUFFLE_ARTIST_PREFIX + mediaFileId);
+            shuffle.setTitle("Shuffle Play");
+            result.add(0, shuffle);
+        }
+
         return result;
     }
 
@@ -513,6 +535,17 @@ public class SonosHelper {
         result.setTotal(mediaCollections.size());
         result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
 
+        return result;
+    }
+
+    private List<MediaFile> filterMusic(List<MediaFile> files) {
+        // TODO: Use collection utils, or guava?
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        for (MediaFile file : files) {
+            if (file.getMediaType() == MediaFile.MediaType.MUSIC) {
+                result.add(file);
+            }
+        }
         return result;
     }
 

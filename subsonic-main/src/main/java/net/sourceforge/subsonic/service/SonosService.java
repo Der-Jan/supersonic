@@ -109,6 +109,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_STARRED_SONGS = "starred-songs";
     public static final String ID_SEARCH = "search";
     public static final String ID_SHUFFLE_MUSICFOLDER_PREFIX = "shuffle-musicfolder:";
+    public static final String ID_SHUFFLE_ARTIST_PREFIX = "shuffle-artist:";
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
@@ -199,7 +200,7 @@ public class SonosService implements SonosSoap {
         if (ID_ROOT.equals(id)) {
             media = sonosHelper.forRoot();
         } else if (ID_SHUFFLE.equals(id)) {
-            media = sonosHelper.forShuffle();
+            media = sonosHelper.forShuffle(count);
         } else if (ID_LIBRARY.equals(id)) {
             media = sonosHelper.forLibrary();
         } else if (ID_PLAYLISTS.equals(id)) {
@@ -233,7 +234,10 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forMusicFolder(musicFolderId);
         } else if (id.startsWith(ID_SHUFFLE_MUSICFOLDER_PREFIX)) {
             int musicFolderId = Integer.parseInt(id.replace(ID_SHUFFLE_MUSICFOLDER_PREFIX, ""));
-            media = sonosHelper.forShuffleMusicFolder(musicFolderId);
+            media = sonosHelper.forShuffleMusicFolder(musicFolderId, count);
+        } else if (id.startsWith(ID_SHUFFLE_ARTIST_PREFIX)) {
+            int mediaFileId = Integer.parseInt(id.replace(ID_SHUFFLE_ARTIST_PREFIX, ""));
+            media = sonosHelper.forShuffleArtist(mediaFileId, count);
         } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
             media = sonosHelper.forSimilarArtists(mediaFileId);
