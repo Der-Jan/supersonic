@@ -27,6 +27,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.sonos.services._1.AbstractMedia;
 import com.sonos.services._1.AlbumArtUrl;
 import com.sonos.services._1.ItemType;
@@ -539,14 +542,12 @@ public class SonosHelper {
     }
 
     private List<MediaFile> filterMusic(List<MediaFile> files) {
-        // TODO: Use collection utils, or guava?
-        List<MediaFile> result = new ArrayList<MediaFile>();
-        for (MediaFile file : files) {
-            if (file.getMediaType() == MediaFile.MediaType.MUSIC) {
-                result.add(file);
+        return Lists.newArrayList(Iterables.filter(files, new Predicate<MediaFile>() {
+            @Override
+            public boolean apply(MediaFile input) {
+                return input.getMediaType() == MediaFile.MediaType.MUSIC;
             }
-        }
-        return result;
+        }));
     }
 
     public void setPlaylistService(PlaylistService playlistService) {

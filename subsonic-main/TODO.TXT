@@ -32,7 +32,8 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
-  Avoid podcasts in Shuffle play and Radio.
+  Don't use guest player.
+  Avoid podcasts in Shuffle play and Radio, use filterMusic
   Add shuffle play for album lists
   Add artist radio (i.e., dirs with only albums as children)
   Logging.
