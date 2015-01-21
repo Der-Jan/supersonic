@@ -48,6 +48,7 @@ import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.PlayerTechnology;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
@@ -73,6 +74,8 @@ import net.sourceforge.subsonic.util.Util;
  * @version $Id$
  */
 public class SonosHelper {
+
+    private static final String SUBSONIC_CLIENT_ID = "sonos";
 
     private MediaFileService mediaFileService;
     private PlaylistService playlistService;
@@ -612,14 +615,31 @@ public class SonosHelper {
         this.transcodingService = transcodingService;
     }
 
-    public String getMediaURI(int mediaFileId) {
+    public String getMediaURI(int mediaFileId, String username) {
+        String playerId = createPlayerIfNecessary(username);
         MediaFile song = mediaFileService.getMediaFile(mediaFileId);
-        Player player = playerService.getGuestPlayer(null);
 
-        return getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
+        return getBaseUrl() + "stream?id=" + song.getId() + "&player=" + playerId;
     }
 
-    // TODO: Make it work with https?
+    private String createPlayerIfNecessary(String username) {
+        List<Player> players = playerService.getPlayersForUserAndClientId(username, SUBSONIC_CLIENT_ID);
+
+        // If not found, create it.
+        if (players.isEmpty()) {
+            Player player = new Player();
+            player.setUsername(username);
+            player.setClientId(SUBSONIC_CLIENT_ID);
+            player.setName("Sonos");
+            player.setTechnology(PlayerTechnology.EXTERNAL_WITH_PLAYLIST);
+            playerService.createPlayer(player);
+            players = playerService.getPlayersForUserAndClientId(username, SUBSONIC_CLIENT_ID);
+        }
+
+        // Return the player ID.
+        return !players.isEmpty() ? players.get(0).getId() : null;
+    }
+
     public String getBaseUrl() {
         int port = settingsService.getPort();
         String contextPath = settingsService.getUrlRedirectContextPath();

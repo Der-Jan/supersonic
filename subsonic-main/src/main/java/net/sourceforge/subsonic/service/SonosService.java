@@ -351,7 +351,7 @@ public class SonosService implements SonosSoap {
     @Override
     public void getMediaURI(String id, Holder<String> result, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
         System.out.println("getMediaURI " + id); // TODO
-        result.value = sonosHelper.getMediaURI(Integer.parseInt(id));
+        result.value = sonosHelper.getMediaURI(Integer.parseInt(id), getUsername());
     }
 
     @Override
