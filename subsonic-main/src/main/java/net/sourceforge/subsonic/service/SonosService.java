@@ -102,6 +102,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_SHUFFLE = "shuffle";
     public static final String ID_ALBUMLISTS = "albumlists";
     public static final String ID_PLAYLISTS = "playlists";
+    public static final String ID_PODCASTS = "podcasts";
     public static final String ID_LIBRARY = "library";
     public static final String ID_STARRED = "starred";
     public static final String ID_STARRED_ARTISTS = "starred-artists";
@@ -114,6 +115,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
+    public static final String ID_PODCAST_CHANNEL_PREFIX = "podcast-channel:";
     public static final String ID_DECADE_PREFIX = "decade:";
     public static final String ID_GENRE_PREFIX = "genre:";
     public static final String ID_SIMILAR_ARTISTS_PREFIX = "similarartists:";
@@ -208,6 +210,8 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forPlaylists(getUsername());
         } else if (ID_ALBUMLISTS.equals(id)) {
             media = sonosHelper.forAlbumLists();
+        } else if (ID_PODCASTS.equals(id)) {
+            media = sonosHelper.forPodcastChannels();
         } else if (ID_STARRED.equals(id)) {
             media = sonosHelper.forStarred();
         } else if (ID_STARRED_ARTISTS.equals(id)) {
@@ -230,6 +234,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
+        } else if (id.startsWith(ID_PODCAST_CHANNEL_PREFIX)) {
+            int channelId = Integer.parseInt(id.replace(ID_PODCAST_CHANNEL_PREFIX, ""));
+            media = sonosHelper.forPodcastChannel(channelId);
         } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
             int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
             media = sonosHelper.forMusicFolder(musicFolderId);

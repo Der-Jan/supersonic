@@ -23,6 +23,7 @@
         <property name="searchService" ref="searchService"/>
         <property name="ratingService" ref="ratingService"/>
         <property name="lastFmService" ref="lastFmService"/>
+        <property name="podcastService" ref="podcastService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
 

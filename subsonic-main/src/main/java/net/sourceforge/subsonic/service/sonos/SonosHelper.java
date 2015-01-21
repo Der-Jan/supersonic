@@ -49,6 +49,9 @@ import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.PodcastChannel;
+import net.sourceforge.subsonic.domain.PodcastEpisode;
+import net.sourceforge.subsonic.domain.PodcastStatus;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.service.LastFmService;
@@ -56,6 +59,7 @@ import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.PodcastService;
 import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SettingsService;
@@ -80,6 +84,7 @@ public class SonosHelper {
     private MediaFileDao mediaFileDao;
     private RatingService ratingService;
     private LastFmService lastFmService;
+    private PodcastService podcastService;
 
     public List<AbstractMedia> forRoot() {
         MediaMetadata shuffle = new MediaMetadata();
@@ -107,7 +112,12 @@ public class SonosHelper {
         albumlists.setId(SonosService.ID_ALBUMLISTS);
         albumlists.setTitle("Album Lists");
 
-        return Arrays.asList(shuffle, library, playlists, starred, albumlists);
+        MediaCollection podcasts = new MediaCollection();
+        podcasts.setItemType(ItemType.COLLECTION);
+        podcasts.setId(SonosService.ID_PODCASTS);
+        podcasts.setTitle("Podcasts");
+
+        return Arrays.asList(shuffle, library, playlists, starred, albumlists, podcasts);
     }
 
     public List<AbstractMedia> forShuffle(int count) {
@@ -279,6 +289,32 @@ public class SonosHelper {
             mediaCollection.setItemType(ItemType.ALBUM_LIST);
             mediaCollection.setTitle(albumListType.getDescription());
             result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public List<MediaCollection> forPodcastChannels() {
+        List<MediaCollection> result = new ArrayList<MediaCollection>();
+        for (PodcastChannel channel : podcastService.getAllChannels()) {
+            MediaCollection mediaCollection = new MediaCollection();
+            mediaCollection.setId(SonosService.ID_PODCAST_CHANNEL_PREFIX + channel.getId());
+            mediaCollection.setTitle(channel.getTitle());
+            mediaCollection.setItemType(ItemType.TRACK);
+            result.add(mediaCollection);
+        }
+        return result;
+    }
+
+    public List<AbstractMedia> forPodcastChannel(int channelId) {
+        List<AbstractMedia> result = new ArrayList<AbstractMedia>();
+        for (PodcastEpisode episode : podcastService.getEpisodes(channelId, false)) {
+            if (episode.getStatus() == PodcastStatus.COMPLETED) {
+                Integer mediaFileId = episode.getMediaFileId();
+                MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
+                if (mediaFile != null) {
+                    result.add(forMediaFile(mediaFile));
+                }
+            }
         }
         return result;
     }
@@ -627,5 +663,9 @@ public class SonosHelper {
 
     public void setLastFmService(LastFmService lastFmService) {
         this.lastFmService = lastFmService;
+    }
+
+    public void setPodcastService(PodcastService podcastService) {
+        this.podcastService = podcastService;
     }
 }
