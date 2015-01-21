@@ -80,7 +80,7 @@ import com.sonos.services._1.SegmentMetadataList;
 import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.domain.AlbumListType;
+import net.sourceforge.subsonic.service.sonos.AlbumListType;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
@@ -111,6 +111,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_SEARCH = "search";
     public static final String ID_SHUFFLE_MUSICFOLDER_PREFIX = "shuffle-musicfolder:";
     public static final String ID_SHUFFLE_ARTIST_PREFIX = "shuffle-artist:";
+    public static final String ID_SHUFFLE_ALBUMLIST_PREFIX = "shuffle-albumlist:";
     public static final String ID_RADIO_ARTIST_PREFIX = "radio-artist:";
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
@@ -246,6 +247,9 @@ public class SonosService implements SonosSoap {
         } else if (id.startsWith(ID_SHUFFLE_ARTIST_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_SHUFFLE_ARTIST_PREFIX, ""));
             media = sonosHelper.forShuffleArtist(mediaFileId, count);
+        } else if (id.startsWith(ID_SHUFFLE_ALBUMLIST_PREFIX)) {
+            AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_SHUFFLE_ALBUMLIST_PREFIX, ""));
+            media = sonosHelper.forShuffleAlbumList(albumListType, count, getUsername());
         } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
             media = sonosHelper.forRadioArtist(mediaFileId, count);

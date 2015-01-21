@@ -40,7 +40,6 @@ import com.sonos.services._1.TrackMetadata;
 
 import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.dao.MediaFileDao;
-import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -147,6 +146,18 @@ public class SonosHelper {
     public List<AbstractMedia> forShuffleArtist(int mediaFileId, int count) {
         MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
         List<MediaFile> songs = filterMusic(mediaFileService.getDescendantsOf(artist, false));
+        Collections.shuffle(songs);
+        songs = songs.subList(0, Math.min(count, songs.size()));
+        return forMediaFiles(songs);
+    }
+
+    public List<AbstractMedia> forShuffleAlbumList(AlbumListType albumListType, int count, String username) {
+        AlbumList albumList = createAlbumList(albumListType, 0, 40, username);
+
+        List<MediaFile> songs = new ArrayList<MediaFile>();
+        for (MediaFile album : albumList.getAlbums()) {
+            songs.addAll(filterMusic(mediaFileService.getChildrenOf(album, true, false, false)));
+        }
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
         return forMediaFiles(songs);
@@ -323,9 +334,35 @@ public class SonosHelper {
     }
 
     public MediaList forAlbumList(AlbumListType albumListType, int offset, int count, String username) {
-        List<MediaFile> albums;
-        int total;
+        if (albumListType == AlbumListType.DECADE) {
+            return forDecades(offset, count);
+        }
+        if (albumListType == AlbumListType.GENRE) {
+            return forGenres(offset, count);
+        }
 
+        AlbumList albumList = createAlbumList(albumListType, offset, count, username);
+
+        MediaMetadata shuffle = new MediaMetadata();
+        shuffle.setItemType(ItemType.PROGRAM);
+        shuffle.setId(SonosService.ID_SHUFFLE_ALBUMLIST_PREFIX + albumListType.getId());
+        shuffle.setTitle(String.format("Shuffle Play - %s", albumListType.getDescription()));
+
+        MediaList mediaList = new MediaList();
+        mediaList.getMediaCollectionOrMediaMetadata().add(shuffle);
+        for (MediaFile album : albumList.getAlbums()) {
+            mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album));
+        }
+
+        mediaList.setIndex(offset);
+        mediaList.setCount(albumList.getAlbums().size());
+        mediaList.setTotal(albumList.getTotal());
+        return mediaList;
+    }
+
+    private AlbumList createAlbumList(AlbumListType albumListType, int offset, int count, String username) {
+        List<MediaFile> albums = Collections.emptyList();
+        int total = 0;
         switch (albumListType) {
             case RANDOM:
                 albums = searchService.getRandomAlbums(count, null);
@@ -355,25 +392,8 @@ public class SonosHelper {
                 albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, null);
                 total = mediaFileService.getAlbumCount();
                 break;
-            case DECADE:
-                return forDecades(offset, count);
-            case GENRE:
-                return forGenres(offset, count);
-            default:
-                albums = Collections.emptyList();
-                total = 0;
-                break;
         }
-
-        MediaList mediaList = new MediaList();
-        for (MediaFile album : albums) {
-            mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album));
-        }
-
-        mediaList.setIndex(offset);
-        mediaList.setCount(albums.size());
-        mediaList.setTotal(total);
-        return mediaList;
+        return new AlbumList(albums, total);
     }
 
     private MediaList forDecades(int offset, int count) {
