@@ -336,7 +336,7 @@ public class MediaFileService {
      * @param count  Max number of songs to return.
      * @return Random songs.
      */
-    public List<MediaFile> getRandomSongsForParent(MediaFile parent, int count) throws IOException {
+    public List<MediaFile> getRandomSongsForParent(MediaFile parent, int count) {
         List<MediaFile> children = getDescendantsOf(parent, false);
         removeVideoFiles(children);
 

@@ -139,6 +139,14 @@ public class SonosHelper {
         return forMediaFiles(songs);
     }
 
+    public List<AbstractMedia> forRadioArtist(int mediaFileId, int count) {
+        MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
+        List<MediaFile> songs = filterMusic(lastFmService.getSimilarSongs(artist, count));
+        Collections.shuffle(songs);
+        songs = songs.subList(0, Math.min(count, songs.size()));
+        return forMediaFiles(songs);
+    }
+
     public List<AbstractMedia> forLibrary() {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
 
@@ -213,6 +221,12 @@ public class SonosHelper {
             shuffle.setId(SonosService.ID_SHUFFLE_ARTIST_PREFIX + mediaFileId);
             shuffle.setTitle("Shuffle Play");
             result.add(0, shuffle);
+
+            MediaMetadata radio = new MediaMetadata();
+            radio.setItemType(ItemType.PROGRAM);
+            radio.setId(SonosService.ID_RADIO_ARTIST_PREFIX + mediaFileId);
+            radio.setTitle("Radio");
+            result.add(1, radio);
         }
 
         return result;

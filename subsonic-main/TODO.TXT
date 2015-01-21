@@ -32,11 +32,13 @@ TODO IN 5.2
 ------------
 Facebook ads
 Sonos
-  Don't use guest player.
-  Avoid podcasts in Shuffle play and Radio, use filterMusic
-  Add shuffle play for album lists
+  Don't use guest player, see RESTController
+  Add shuffle play for album lists?
+  Add artist name to shuffle/radio title?
+  Podcasts
   Add artist radio (i.e., dirs with only albums as children)
-  Logging.
+  Avoid podcasts in Shuffle play and Radio, use filterMusic
+  Logging (only log debug if beta)
   Album lists
     Use AlbumListType in HomeController
   Rating

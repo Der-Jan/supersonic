@@ -185,7 +185,7 @@ public class LastFmService {
      * @param count     Max number of songs to return.
      * @return Songs from similar artists;
      */
-    public List<MediaFile> getSimilarSongs(MediaFile mediaFile, int count) throws IOException {
+    public List<MediaFile> getSimilarSongs(MediaFile mediaFile, int count) {
         List<MediaFile> similarSongs = new ArrayList<MediaFile>();
 
         String artistName = getArtistName(mediaFile);
