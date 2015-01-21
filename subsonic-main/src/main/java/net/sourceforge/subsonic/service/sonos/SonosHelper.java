@@ -219,13 +219,13 @@ public class SonosHelper {
             MediaMetadata shuffle = new MediaMetadata();
             shuffle.setItemType(ItemType.PROGRAM);
             shuffle.setId(SonosService.ID_SHUFFLE_ARTIST_PREFIX + mediaFileId);
-            shuffle.setTitle("Shuffle Play");
+            shuffle.setTitle(String.format("Shuffle Play  - %s", dir.getName()));
             result.add(0, shuffle);
 
             MediaMetadata radio = new MediaMetadata();
             radio.setItemType(ItemType.PROGRAM);
             radio.setId(SonosService.ID_RADIO_ARTIST_PREFIX + mediaFileId);
-            radio.setTitle("Radio");
+            radio.setTitle(String.format("Artist Radio - %s", dir.getName()));
             result.add(1, radio);
         }
 

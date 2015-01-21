@@ -34,7 +34,6 @@ Facebook ads
 Sonos
   Don't use guest player, see RESTController
   Add shuffle play for album lists?
-  Add artist name to shuffle/radio title?
   Podcasts
   Add artist radio (i.e., dirs with only albums as children)
   Avoid podcasts in Shuffle play and Radio, use filterMusic
