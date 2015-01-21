@@ -195,8 +195,7 @@ public class SonosService implements SonosSoap {
         int index = parameters.getIndex();
         int count = parameters.getCount();
 
-        System.out.printf("getMetadata: id=%s index=%s count=%s recursive=%s\n",
-                          id, index, count, parameters.isRecursive());
+        LOG.debug(String.format("getMetadata: id=%s index=%s count=%s recursive=%s", id, index, count, parameters.isRecursive()));
 
         List<? extends AbstractMedia> media = null;
         MediaList mediaList = null;
@@ -264,8 +263,8 @@ public class SonosService implements SonosSoap {
             mediaList = SonosHelper.createSubList(index, count, media);
         }
 
-        System.out.printf("result: id=%s index=%s count=%s total=%s\n",
-                          id, mediaList.getIndex(), mediaList.getCount(), mediaList.getTotal());
+        LOG.debug(String.format("getMetadata result: id=%s index=%s count=%s total=%s",
+                                id, mediaList.getIndex(), mediaList.getCount(), mediaList.getTotal()));
 
         GetMetadataResponse response = new GetMetadataResponse();
         response.setGetMetadataResult(mediaList);
@@ -274,7 +273,7 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetExtendedMetadataResponse getExtendedMetadata(GetExtendedMetadata parameters) {
-        System.out.println("getExtendedMetadata: " + parameters.getId());
+        LOG.debug("getExtendedMetadata: " + parameters.getId());
 
         int id = Integer.parseInt(parameters.getId());
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
@@ -321,7 +320,7 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetSessionIdResponse getSessionId(GetSessionId parameters) {
-        System.out.println("getSessionId: " + parameters.getUsername());
+        LOG.debug("getSessionId: " + parameters.getUsername());
         User user = securityService.getUserByName(parameters.getUsername());
         if (user == null || !StringUtils.equals(user.getPassword(), parameters.getPassword())) {
             throw new SonosSoapFault.LoginInvalid();
@@ -339,7 +338,7 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) {
-        System.out.println("getMediaMetadata: " + parameters.getId());
+        LOG.debug("getMediaMetadata: " + parameters.getId());
 
         int id = Integer.parseInt(parameters.getId());
         MediaFile song = mediaFileService.getMediaFile(id);
@@ -354,8 +353,8 @@ public class SonosService implements SonosSoap {
 
     @Override
     public void getMediaURI(String id, Holder<String> result, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
-        System.out.println("getMediaURI " + id); // TODO
         result.value = sonosHelper.getMediaURI(Integer.parseInt(id), getUsername());
+        LOG.debug("getMediaURI: " + id + " -> " + result.value);
     }
 
     @Override
