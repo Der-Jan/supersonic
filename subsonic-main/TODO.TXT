@@ -30,6 +30,8 @@ OAuth
 
 TODO IN 5.2
 ------------
+Replace prototype.js in right.jsp. Move startGetNowPlayingTimer() to init. Remember <c:if test="${model.showNowPlaying}">
+
 Sonos
   Rating
   Capabilities
@@ -38,6 +40,8 @@ Sonos
   Read thru doc
   Run Self-Test
   SkatteFUNN
+UPnP memory leak
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
 Facebook ads
 Only log debug if beta.
 New player controls

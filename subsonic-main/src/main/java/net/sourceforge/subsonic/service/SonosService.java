@@ -150,7 +150,7 @@ public class SonosService implements SonosSoap {
             public void run() {
                 registerIfLocalIpChanged();
             }
-        }, 10, 60, TimeUnit.SECONDS);
+        }, 8, 60, TimeUnit.SECONDS);
     }
 
     private void registerIfLocalIpChanged() {
@@ -172,10 +172,14 @@ public class SonosService implements SonosSoap {
 
         String sonosServiceName = settingsService.getSonosServiceName();
         String subsonicBaseUrl = sonosHelper.getBaseUrl();
-        try {
-            new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosControllers.get(0), enabled, sonosServiceName);
-        } catch (IOException x) {
-            LOG.error("Failed to enable/disable Sonos music service: " + x, x);
+
+        for (String sonosController : sonosControllers) {
+            try {
+                new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosController, enabled, sonosServiceName);
+                break;
+            } catch (IOException x) {
+                LOG.warn(String.format("Failed to enable/disable music service in Sonos controller %s: %s", sonosController, x));
+            }
         }
     }
 

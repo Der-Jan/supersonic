@@ -45,7 +45,7 @@ import net.sourceforge.subsonic.util.StringUtil;
 public class SonosServiceRegistration {
 
     private static final Logger LOG = Logger.getLogger(SonosServiceRegistration.class);
-    private static final int SONOS_SERVICE_ID = 255;
+    private static final int SONOS_SERVICE_ID = 242;
 
     public void setEnabled(String subsonicBaseUrl, String sonosControllerIp, boolean enabled, String sonosServiceName) throws IOException {
         String localUrl = subsonicBaseUrl + "ws/Sonos";
