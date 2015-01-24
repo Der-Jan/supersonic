@@ -3,11 +3,11 @@
 <html>
 <head>
     <%@ include file="head.jsp" %>
+    <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/chatService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
 </head>
 <body class="bgcolor1 rightframe" style="padding-top:2em" onload="init()">
@@ -87,7 +87,7 @@
                 }
             }
             html += "</table>";
-            $('nowPlaying').innerHTML = html;
+            $("#nowPlaying").html(html);
         }
     </script>
 
@@ -108,8 +108,8 @@
         }
 
         function addMessage() {
-            chatService.addMessage($("message").value);
-            dwr.util.setValue("message", null);
+            chatService.addMessage($("#message").attr("value"));
+            dwr.util.setValue("message", null); // TODO
             setTimeout("startGetMessagesTimer()", 500);
         }
         function clearMessages() {
@@ -136,10 +136,10 @@
                 dwr.util.setValue("user" + id, message.username);
                 dwr.util.setValue("date" + id, " [" + formatDate(message.date) + "]");
                 dwr.util.setValue("content" + id, message.content);
-                $("pattern" + id).show();
+                $("#pattern" + id).show();
             }
 
-            var clearDiv = $("clearDiv");
+            var clearDiv = $("#clearDiv");
             if (clearDiv) {
                 if (messages.messages.length == 0) {
                     clearDiv.hide();
@@ -173,10 +173,10 @@
         function getScanningStatusCallback(scanInfo) {
             dwr.util.setValue("scanCount", scanInfo.count);
             if (scanInfo.scanning) {
-                $("scanningStatus").show();
+                $("#scanningStatus").show();
                 setTimeout("startGetScanningStatusTimer()", 1000);
             } else {
-                $("scanningStatus").hide();
+                $("#scanningStatus").hide();
                 setTimeout("startGetScanningStatusTimer()", 15000);
             }
         }
@@ -184,7 +184,7 @@
 
     <h2><fmt:message key="main.chat"/></h2>
     <div style="padding-top:0.3em;padding-bottom:0.3em">
-        <input type="text" id="message" value=" <fmt:message key="main.message"/>" style="width:100%" onclick="dwr.util.setValue('message', null);" onkeypress="dwr.util.onReturn(event, addMessage)"/>
+        <input type="text" id="message" placeholder="<fmt:message key="main.message"/>" style="width:100%" onkeypress="dwr.util.onReturn(event, addMessage)"/>
     </div>
 
     <table>
