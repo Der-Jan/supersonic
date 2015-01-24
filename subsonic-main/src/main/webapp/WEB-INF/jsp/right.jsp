@@ -9,45 +9,28 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/chatService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
-</head>
-<body class="bgcolor1 rightframe" style="padding-top:2em" onload="init()">
 
-<script type="text/javascript">
-    function init() {
-        dwr.engine.setErrorHandler(null);
-    <c:if test="${model.showChat}">
-        chatService.addMessage(null);
-    </c:if>
-    }
-</script>
+    <script type="text/javascript">
 
-<c:if test="${not model.licenseInfo.licenseValid}">
-    <div class="detail" style="text-align: center;padding-bottom: 1em">
-        <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
-            <fmt:message key="top.getpremium"/></a>
-        <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
-            <br>
-            <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
-        </c:if>
-    </div>
-</c:if>
+        var chatRevision = 0;
 
-<c:if test="${model.newVersionAvailable}">
-    <div class="warning" style="padding-bottom: 1em">
-        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
-    </div>
-</c:if>
+        function init() {
+            dwr.engine.setErrorHandler(null);
 
-<div id="scanningStatus" style="display: none;" class="warning">
-    <img src="<spring:theme code="scanningImage"/>" title="" alt=""> <fmt:message key="main.scanning"/> <span id="scanCount"></span>
-</div>
+            startGetScanningStatusTimer();
 
-<c:if test="${model.showNowPlaying}">
+            <c:if test="${model.showChat}">
+            chatService.addMessage(null);
+            </c:if>
 
-    <!-- This script uses AJAX to periodically retrieve what all users are playing. -->
-    <script type="text/javascript" language="javascript">
+            <c:if test="${model.showNowPlaying}">
+            startGetNowPlayingTimer();
+            </c:if>
 
-        startGetNowPlayingTimer();
+            <c:if test="${model.showChat}">
+            startGetMessagesTimer();
+            </c:if>
+        }
 
         function startGetNowPlayingTimer() {
             nowPlayingService.getNowPlaying(getNowPlayingCallback);
@@ -89,21 +72,9 @@
             html += "</table>";
             $("#nowPlaying").html(html);
         }
-    </script>
-
-    <div id="nowPlaying">
-    </div>
-
-</c:if>
-
-<c:if test="${model.showChat}">
-    <script type="text/javascript">
-
-        var revision = 0;
-        startGetMessagesTimer();
 
         function startGetMessagesTimer() {
-            chatService.getMessages(revision, getMessagesCallback);
+            chatService.getMessages(chatRevision, getMessagesCallback);
             setTimeout("startGetMessagesTimer()", 10000);
         }
 
@@ -116,12 +87,13 @@
             chatService.clearMessages();
             setTimeout("startGetMessagesTimer()", 500);
         }
+
         function getMessagesCallback(messages) {
 
             if (messages == null) {
                 return;
             }
-            revision = messages.revision;
+            chatRevision = messages.revision;
 
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("chatlog", { filter:function(div) {
@@ -148,6 +120,7 @@
                 }
             }
         }
+
         function formatDate(date) {
             var hours = date.getHours();
             var minutes = date.getMinutes();
@@ -160,11 +133,6 @@
             result += minutes;
             return result;
         }
-    </script>
-
-    <script type="text/javascript">
-
-        startGetScanningStatusTimer();
 
         function startGetScanningStatusTimer() {
             nowPlayingService.getScanningStatus(getScanningStatusCallback);
@@ -180,8 +148,35 @@
                 setTimeout("startGetScanningStatusTimer()", 15000);
             }
         }
-    </script>
 
+    </script>
+</head>
+<body class="bgcolor1 rightframe" style="padding-top:2em" onload="init()">
+
+<c:if test="${not model.licenseInfo.licenseValid}">
+    <div class="detail" style="text-align: center;padding-bottom: 1em">
+        <a href="premium.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
+            <fmt:message key="top.getpremium"/></a>
+        <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
+            <br>
+            <a href="premium.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
+        </c:if>
+    </div>
+</c:if>
+
+<c:if test="${model.newVersionAvailable}">
+    <div class="warning" style="padding-bottom: 1em">
+        <fmt:message key="top.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message>
+    </div>
+</c:if>
+
+<div id="scanningStatus" style="display: none;" class="warning">
+    <img src="<spring:theme code="scanningImage"/>" title="" alt=""> <fmt:message key="main.scanning"/> <span id="scanCount"></span>
+</div>
+
+<div id="nowPlaying"></div>
+
+<c:if test="${model.showChat}">
     <h2><fmt:message key="main.chat"/></h2>
     <div style="padding-top:0.3em;padding-bottom:0.3em">
         <input type="text" id="message" placeholder="<fmt:message key="main.message"/>" style="width:100%" onkeypress="dwr.util.onReturn(event, addMessage)"/>
