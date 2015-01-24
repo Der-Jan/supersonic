@@ -79,8 +79,8 @@
         }
 
         function addMessage() {
-            chatService.addMessage($("#message").attr("value"));
-            dwr.util.setValue("message", null); // TODO
+            chatService.addMessage($("#message").val());
+            $("#message").val(null);
             setTimeout("startGetMessagesTimer()", 500);
         }
         function clearMessages() {
@@ -105,9 +105,9 @@
                 var message = messages.messages[i];
                 var id = i + 1;
                 dwr.util.cloneNode("pattern", { idSuffix:id });
-                dwr.util.setValue("user" + id, message.username);
-                dwr.util.setValue("date" + id, " [" + formatDate(message.date) + "]");
-                dwr.util.setValue("content" + id, message.content);
+                $("#user" + id).text(message.username);
+                $("#date" + id).text(" [" + formatDate(message.date) + "]");
+                $("#content" + id).text(message.content);
                 $("#pattern" + id).show();
             }
 
@@ -139,7 +139,7 @@
         }
 
         function getScanningStatusCallback(scanInfo) {
-            dwr.util.setValue("scanCount", scanInfo.count);
+            $("#scanCount").text(scanInfo.count);
             if (scanInfo.scanning) {
                 $("#scanningStatus").show();
                 setTimeout("startGetScanningStatusTimer()", 1000);
