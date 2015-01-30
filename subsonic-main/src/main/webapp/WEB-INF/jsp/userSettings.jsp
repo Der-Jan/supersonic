@@ -102,6 +102,19 @@
         </table>
     </c:if>
 
+    <c:if test="${not empty command.allMusicFolders}">
+        <h2><fmt:message key="usersettings.folderaccess"/></h2>
+
+        <div style="width:75%">
+            <c:forEach items="${command.allMusicFolders}" var="musicFolder">
+                <span style="white-space:nowrap">
+                    <form:checkbox path="allowedMusicFolderIds" id="musicFolder${musicFolder.id}" value="${musicFolder.id}" cssClass="checkbox"/>
+                    <label for="musicFolder${musicFolder.id}" style="padding-right:1.5em">${musicFolder.name}</label>
+                </span>
+            </c:forEach>
+        </div>
+    </c:if>
+
     <table class="indent">
         <tr>
             <td><fmt:message key="playersettings.maxbitrate"/></td>

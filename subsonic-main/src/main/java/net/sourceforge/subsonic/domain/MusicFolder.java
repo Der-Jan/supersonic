@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.common.base.Objects;
+
 /**
  * Represents a top level directory in which music or other media is stored.
  *
@@ -144,5 +146,21 @@ public class MusicFolder implements Serializable {
      */
     public void setChanged(Date changed) {
         this.changed = changed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return Objects.equal(id, ((MusicFolder) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.command;
 
 import net.sourceforge.subsonic.controller.UserSettingsController;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 
@@ -52,6 +53,8 @@ public class UserSettingsCommand {
     private String email;
     private boolean isLdapAuthenticated;
     private boolean isLdapEnabled;
+    private List<MusicFolder> allMusicFolders;
+    private List<Integer> allowedMusicFolderIds;
 
     private String transcodeSchemeName;
     private EnumHolder[] transcodeSchemeHolders;
@@ -225,6 +228,22 @@ public class UserSettingsCommand {
 
     public void setLdapEnabled(boolean ldapEnabled) {
         isLdapEnabled = ldapEnabled;
+    }
+
+    public List<MusicFolder> getAllMusicFolders() {
+        return allMusicFolders;
+    }
+
+    public void setAllMusicFolders(List<MusicFolder> allMusicFolders) {
+        this.allMusicFolders = allMusicFolders;
+    }
+
+    public List<Integer> getAllowedMusicFolderIds() {
+        return allowedMusicFolderIds;
+    }
+
+    public void setAllowedMusicFolderIds(List<Integer> allowedMusicFolderIds) {
+        this.allowedMusicFolderIds = allowedMusicFolderIds;
     }
 
     public String getTranscodeSchemeName() {

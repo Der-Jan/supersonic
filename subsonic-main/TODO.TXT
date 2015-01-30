@@ -1,7 +1,3 @@
-DONE IN 5.1.beta2
-------------------
-Add play/add/download buttons in list view.
-List mode for siebling albums
 
 TODO IN 5.1
 --------------
@@ -30,8 +26,6 @@ OAuth
 
 TODO IN 5.2
 ------------
-Replace prototype.js in right.jsp. Move startGetNowPlayingTimer() to init. Remember <c:if test="${model.showNowPlaying}">
-
 Sonos
   Rating
   Capabilities
@@ -41,7 +35,21 @@ Sonos
   Run Self-Test
   SkatteFUNN
 UPnP memory leak
+  Disable by default (also for Sonos?)
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
+Per-user folder access
+  REST support for administering folder access.
+  Use throughout
+      HomeController
+      Search
+      Playlists
+      Starred
+      Shares
+  Browse by tags
+  UserSettings.getSelectedMusicFolderId()
+  Create link from media folder settings to user settings
+
+Lossless streaming
 Facebook ads
 Only log debug if beta.
 New player controls

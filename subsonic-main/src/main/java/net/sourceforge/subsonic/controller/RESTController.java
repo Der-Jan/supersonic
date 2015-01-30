@@ -227,7 +227,8 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
 
         MusicFolders musicFolders = new MusicFolders();
-        for (MusicFolder musicFolder : settingsService.getAllMusicFolders()) {
+        String username = securityService.getCurrentUsername(request);
+        for (MusicFolder musicFolder : settingsService.getMusicFoldersForUser(username)) {
             org.subsonic.restapi.MusicFolder mf = new org.subsonic.restapi.MusicFolder();
             mf.setId(musicFolder.getId());
             mf.setName(musicFolder.getName());
@@ -256,7 +257,7 @@ public class RESTController extends MultiActionController {
         indexes.setLastModified(lastModified);
         indexes.setIgnoredArticles(settingsService.getIgnoredArticles());
 
-        List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
         if (musicFolderId != null) {
             for (MusicFolder musicFolder : musicFolders) {

@@ -209,7 +209,7 @@ public class SonosService implements SonosSoap {
         } else if (ID_SHUFFLE.equals(id)) {
             media = sonosHelper.forShuffle(count);
         } else if (ID_LIBRARY.equals(id)) {
-            media = sonosHelper.forLibrary();
+            media = sonosHelper.forLibrary(getUsername());
         } else if (ID_PLAYLISTS.equals(id)) {
             media = sonosHelper.forPlaylists(getUsername());
         } else if (ID_ALBUMLISTS.equals(id)) {

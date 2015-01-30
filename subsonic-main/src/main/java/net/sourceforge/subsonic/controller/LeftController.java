@@ -89,7 +89,7 @@ public class LeftController extends ParameterizableViewController {
         lastModified = Math.max(lastModified, settingsService.getSettingsChanged());
 
         // When was music folder(s) on disk last changed?
-        List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
+        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
         MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
         if (selectedMusicFolder != null) {
             File file = selectedMusicFolder.getPath();
@@ -127,7 +127,7 @@ public class LeftController extends ParameterizableViewController {
         Locale locale = RequestContextUtils.getLocale(request);
 
         String username = securityService.getCurrentUsername(request);
-        List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
+        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
         MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         String[] shortcuts = settingsService.getShortcutsAsArray();

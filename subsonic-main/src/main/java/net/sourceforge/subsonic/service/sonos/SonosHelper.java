@@ -171,10 +171,10 @@ public class SonosHelper {
         return forMediaFiles(songs);
     }
 
-    public List<AbstractMedia> forLibrary() {
+    public List<AbstractMedia> forLibrary(String username) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
 
-        List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         if (musicFolders.size() == 1) {
             return forMusicFolder(musicFolders.get(0));
         }

@@ -71,7 +71,9 @@ public class WapController extends MultiActionController {
 
     public ModelAndView wap(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
-        List<MusicFolder> folders = settingsService.getAllMusicFolders();
+
+        String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> folders = settingsService.getMusicFoldersForUser(username);
 
         if (folders.isEmpty()) {
             map.put("noMusic", true);
