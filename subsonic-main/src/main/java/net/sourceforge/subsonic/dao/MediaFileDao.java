@@ -195,8 +195,8 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns the most frequently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
      * @param musicFolders Only return albums in these folders.
      * @return The most frequently played albums.
      */
@@ -215,8 +215,8 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns the most recently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
      * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
@@ -228,20 +228,27 @@ public class MediaFileDao extends AbstractDao {
             put("offset", offset);
         }};
         return namedQuery("select " + COLUMNS + " from media_file where type = :type and last_played is not null and present " +
-                     "and folder in (:folders) order by last_played desc limit :count offset :offset", rowMapper, args);
+                          "and folder in (:folders) order by last_played desc limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns the most recently added albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently added albums.
      */
-    public List<MediaFile> getNewestAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present order by created desc limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+    public List<MediaFile> getNewestAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                          "order by created desc limit :count offset :offset", rowMapper, args);
     }
 
     /**

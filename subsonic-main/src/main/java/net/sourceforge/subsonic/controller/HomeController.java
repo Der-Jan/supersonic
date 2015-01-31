@@ -95,7 +95,7 @@ public class HomeController extends ParameterizableViewController {
         } else if ("recent".equals(listType)) {
             albums = getMostRecent(listOffset, LIST_SIZE, musicFolders);
         } else if ("newest".equals(listType)) {
-            albums = getNewest(listOffset, LIST_SIZE, mediaFolder);
+            albums = getNewest(listOffset, LIST_SIZE, musicFolders);
         } else if ("starred".equals(listType)) {
             albums = getStarred(listOffset, LIST_SIZE, user.getUsername(), musicFolders);
         } else if ("random".equals(listType)) {
@@ -165,9 +165,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getNewest(int offset, int count, MusicFolder mediaFolder) throws IOException {
+    private List<Album> getNewest(int offset, int count, List<MusicFolder> musicFolders) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getNewestAlbums(offset, count, mediaFolder)) {
+        for (MediaFile file : mediaFileService.getNewestAlbums(offset, count, musicFolders)) {
             Album album = createAlbum(file);
             Date created = file.getCreated();
             if (created == null) {

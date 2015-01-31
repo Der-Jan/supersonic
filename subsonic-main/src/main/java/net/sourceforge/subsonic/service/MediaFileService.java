@@ -243,8 +243,8 @@ public class MediaFileService {
     /**
      * Returns the most frequently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
      * @param musicFolders Only return albums in these folders.
      * @return The most frequently played albums.
      */
@@ -255,8 +255,8 @@ public class MediaFileService {
     /**
      * Returns the most recently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
      * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
@@ -267,13 +267,13 @@ public class MediaFileService {
     /**
      * Returns the most recently added albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently added albums.
      */
-    public List<MediaFile> getNewestAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return mediaFileDao.getNewestAlbums(offset, count, mediaFolder);
+    public List<MediaFile> getNewestAlbums(int offset, int count, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getNewestAlbums(offset, count, musicFolders);
     }
 
     /**
