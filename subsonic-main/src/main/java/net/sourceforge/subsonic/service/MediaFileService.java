@@ -690,16 +690,16 @@ public class MediaFileService {
         }
     }
 
-    public int getAlbumCount() {
-        return mediaFileDao.getAlbumCount();
+    public int getAlbumCount(List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumCount(musicFolders);
     }
 
-    public int getPlayedAlbumCount() {
-        return mediaFileDao.getPlayedAlbumCount();
+    public int getPlayedAlbumCount(List<MusicFolder> musicFolders) {
+        return mediaFileDao.getPlayedAlbumCount(musicFolders);
     }
 
-    public int getStarredAlbumCount(String username) {
-        return mediaFileDao.getStarredAlbumCount(username);
+    public int getStarredAlbumCount(String username, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getStarredAlbumCount(username, musicFolders);
     }
 
     public void clearMemoryCache() {

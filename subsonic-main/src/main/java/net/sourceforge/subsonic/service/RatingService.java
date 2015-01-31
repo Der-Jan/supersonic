@@ -90,8 +90,8 @@ public class RatingService {
         return ratingDao.getRatingForUser(username, mediaFile);
     }
 
-    public int getRatedAlbumCount(String username) {
-        return ratingDao.getRatedAlbumCount(username);
+    public int getRatedAlbumCount(String username, List<MusicFolder> musicFolders) {
+        return ratingDao.getRatedAlbumCount(username, musicFolders);
     }
 
     public void setRatingDao(RatingDao ratingDao) {

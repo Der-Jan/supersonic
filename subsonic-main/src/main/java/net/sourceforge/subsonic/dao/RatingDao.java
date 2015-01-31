@@ -111,12 +111,19 @@ public class RatingDao extends AbstractDao {
         }
     }
 
-    public int getRatedAlbumCount(String username) {
-        return queryForInt("select count(*) from user_rating, media_file " +
-                           "where media_file.path = user_rating.path " +
-                           "and media_file.type = ? " +
-                           "and media_file.present " +
-                           "and user_rating.username = ?",
-                           0, ALBUM.name(), username);
+    public int getRatedAlbumCount(final String username, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+        }};
+
+        return namedQueryForInt("select count(*) from user_rating, media_file " +
+                                "where media_file.path = user_rating.path " +
+                                "and media_file.type = :type " +
+                                "and media_file.present " +
+                                "and media_file.folder in (:folders) " +
+                                "and user_rating.username = :username",
+                                0, args);
     }
 }

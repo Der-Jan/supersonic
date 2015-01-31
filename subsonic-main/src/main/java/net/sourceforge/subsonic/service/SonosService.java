@@ -231,10 +231,10 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forPlaylist(playlistId);
         } else if (id.startsWith(ID_DECADE_PREFIX)) {
             int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
-            media = sonosHelper.forDecade(decade);
+            media = sonosHelper.forDecade(decade, getUsername());
         } else if (id.startsWith(ID_GENRE_PREFIX)) {
             int genre = Integer.parseInt(id.replace(ID_GENRE_PREFIX, ""));
-            media = sonosHelper.forGenre(genre);
+            media = sonosHelper.forGenre(genre, getUsername());
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());

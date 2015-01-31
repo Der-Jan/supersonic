@@ -123,6 +123,14 @@ public class AbstractDao {
         return result;
     }
 
+    protected Integer namedQueryForInt(String sql, Integer defaultValue, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<Integer> list = getNamedParameterJdbcTemplate().queryForList(sql, args, Integer.class);
+        Integer result = list.isEmpty() ? defaultValue : list.get(0) == null ? defaultValue : list.get(0);
+        log(sql, t);
+        return result;
+    }
+
     protected Date queryForDate(String sql, Date defaultValue, Object... args) {
         long t = System.nanoTime();
         List<Date> list = getJdbcTemplate().queryForList(sql, args, Date.class);

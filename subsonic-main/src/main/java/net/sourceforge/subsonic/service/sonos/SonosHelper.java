@@ -343,54 +343,60 @@ public class SonosHelper {
 
         AlbumList albumList = createAlbumList(albumListType, offset, count, username);
 
-        MediaMetadata shuffle = new MediaMetadata();
-        shuffle.setItemType(ItemType.PROGRAM);
-        shuffle.setId(SonosService.ID_SHUFFLE_ALBUMLIST_PREFIX + albumListType.getId());
-        shuffle.setTitle(String.format("Shuffle Play - %s", albumListType.getDescription()));
-
         MediaList mediaList = new MediaList();
-        mediaList.getMediaCollectionOrMediaMetadata().add(shuffle);
+
+        int additionForShuffle = 0;
+        if (offset == 0) {
+            additionForShuffle = 1;
+            MediaMetadata shuffle = new MediaMetadata();
+            shuffle.setItemType(ItemType.PROGRAM);
+            shuffle.setId(SonosService.ID_SHUFFLE_ALBUMLIST_PREFIX + albumListType.getId());
+            shuffle.setTitle(String.format("Shuffle Play - %s", albumListType.getDescription()));
+            mediaList.getMediaCollectionOrMediaMetadata().add(shuffle);
+        }
+
         for (MediaFile album : albumList.getAlbums()) {
             mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album));
         }
 
         mediaList.setIndex(offset);
-        mediaList.setCount(albumList.getAlbums().size());
-        mediaList.setTotal(albumList.getTotal());
+        mediaList.setCount(albumList.getAlbums().size() + additionForShuffle);
+        mediaList.setTotal(albumList.getTotal() + additionForShuffle);
         return mediaList;
     }
 
     private AlbumList createAlbumList(AlbumListType albumListType, int offset, int count, String username) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaFile> albums = Collections.emptyList();
         int total = 0;
         switch (albumListType) {
             case RANDOM:
-                albums = searchService.getRandomAlbums(count, null);
-                total = mediaFileService.getAlbumCount();
+                albums = searchService.getRandomAlbums(count, musicFolders);
+                total = mediaFileService.getAlbumCount(musicFolders);
                 break;
             case NEWEST:
-                albums = mediaFileService.getNewestAlbums(offset, count, null);
-                total = mediaFileService.getAlbumCount();
+                albums = mediaFileService.getNewestAlbums(offset, count, musicFolders);
+                total = mediaFileService.getAlbumCount(musicFolders);
                 break;
             case STARRED:
-                albums = mediaFileService.getStarredAlbums(offset, count, username, null);
-                total = mediaFileService.getStarredAlbumCount(username);
+                albums = mediaFileService.getStarredAlbums(offset, count, username, musicFolders);
+                total = mediaFileService.getStarredAlbumCount(username, musicFolders);
                 break;
             case HIGHEST:
-                albums = ratingService.getHighestRatedAlbums(offset, count, null);
-                total = ratingService.getRatedAlbumCount(username);
+                albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);
+                total = ratingService.getRatedAlbumCount(username, musicFolders);
                 break;
             case FREQUENT:
-                albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, null);
-                total = mediaFileService.getPlayedAlbumCount();
+                albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, musicFolders);
+                total = mediaFileService.getPlayedAlbumCount(musicFolders);
                 break;
             case RECENT:
-                albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, null);
-                total = mediaFileService.getPlayedAlbumCount();
+                albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, musicFolders);
+                total = mediaFileService.getPlayedAlbumCount(musicFolders);
                 break;
             case ALPHABETICAL:
-                albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, null);
-                total = mediaFileService.getAlbumCount();
+                albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, musicFolders);
+                total = mediaFileService.getAlbumCount(musicFolders);
                 break;
         }
         return new AlbumList(albums, total);
@@ -426,18 +432,20 @@ public class SonosHelper {
         return createSubList(offset, count, mediaCollections);
     }
 
-    public List<MediaCollection> forDecade(int decade) {
+    public List<MediaCollection> forDecade(int decade, String username) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
-        for (MediaFile album : mediaFileService.getAlbumsByYear(0, Integer.MAX_VALUE, decade, decade + 9, null)) {
+        for (MediaFile album : mediaFileService.getAlbumsByYear(0, Integer.MAX_VALUE, decade, decade + 9, musicFolders)) {
             result.add(forDirectory(album));
         }
         return result;
     }
 
-    public List<MediaCollection> forGenre(int genreIndex) {
+    public List<MediaCollection> forGenre(int genreIndex, String username) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         Genre genre = mediaFileService.getGenres(true).get(genreIndex);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
-        for (MediaFile album : mediaFileService.getAlbumsByGenre(0, Integer.MAX_VALUE, genre.getName(), null)) {
+        for (MediaFile album : mediaFileService.getAlbumsByGenre(0, Integer.MAX_VALUE, genre.getName(), musicFolders)) {
             result.add(forDirectory(album));
         }
         return result;

@@ -381,21 +381,36 @@ public class MediaFileDao extends AbstractDao {
                      rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name(), username, count, offset);
     }
 
-    public int getAlbumCount() {
-        return queryForInt("select count(*) from media_file where type = ? and present", 0, ALBUM.name());
+    public int getAlbumCount(final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryForInt("select count(*) from media_file where type = :type and folder in (:folders) and present", 0, args);
     }
 
-    public int getPlayedAlbumCount() {
-        return queryForInt("select count(*) from media_file where type = ? and play_count > 0 and present", 0, ALBUM.name());
+    public int getPlayedAlbumCount(final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryForInt("select count(*) from media_file where type = :type " +
+                                "and play_count > 0 and present and folder in (:folders)", 0, args);
     }
 
-    public int getStarredAlbumCount(String username) {
-        return queryForInt("select count(*) from starred_media_file, media_file " +
-                           "where media_file.id = starred_media_file.media_file_id " +
-                           "and media_file.type = ? " +
-                           "and media_file.present " +
-                           "and starred_media_file.username = ?",
-                           0, ALBUM.name(), username);
+    public int getStarredAlbumCount(final String username, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+        }};
+        return namedQueryForInt("select count(*) from starred_media_file, media_file " +
+                                "where media_file.id = starred_media_file.media_file_id " +
+                                "and media_file.type = :type " +
+                                "and media_file.present " +
+                                "and media_file.folder in (:folders) " +
+                                "and starred_media_file.username = :username",
+                                0, args);
     }
 
     public void starMediaFile(int id, String username) {

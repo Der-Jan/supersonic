@@ -77,13 +77,12 @@ public class HomeController extends ParameterizableViewController {
 
 
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        // TODO: Remove
-        MusicFolder mediaFolder = settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
 
         Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
         if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
             selectedMusicFolderId = null;
         }
+        MusicFolder selectedMediaFolder = selectedMusicFolderId == null ? null : settingsService.getMusicFolderById(selectedMusicFolderId);
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(), selectedMusicFolderId);
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -128,7 +127,7 @@ public class HomeController extends ParameterizableViewController {
         map.put("listSize", LIST_SIZE);
         map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         map.put("listOffset", listOffset);
-        map.put("mediaFolder", mediaFolder);
+        map.put("mediaFolder", selectedMediaFolder);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
