@@ -1034,9 +1034,6 @@ public class RESTController extends MultiActionController {
         int offset = getIntParameter(request, "offset", 0);
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
 
-        // TODO: Remove
-        MusicFolder musicFolder = musicFolderId == null ? null : settingsService.getMusicFolderById(musicFolderId);
-
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, musicFolderId);
 
         size = Math.max(0, Math.min(size, 500));
@@ -1058,7 +1055,7 @@ public class RESTController extends MultiActionController {
         } else if ("alphabeticalByName".equals(type)) {
             albums = mediaFileService.getAlphabeticalAlbums(offset, size, false, musicFolders);
         } else if ("byGenre".equals(type)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"), musicFolder);
+            albums = mediaFileService.getAlbumsByGenre(offset, size, getRequiredStringParameter(request, "genre"), musicFolders);
         } else if ("byYear".equals(type)) {
             albums = mediaFileService.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
                     getRequiredIntParameter(request, "toYear"), musicFolders);

@@ -176,9 +176,6 @@ public class PlayQueueService {
         String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
 
-        // TODO: Remove
-        MusicFolder mediaFolder =  settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
-
         Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
         if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
             selectedMusicFolderId = null;
@@ -205,7 +202,7 @@ public class PlayQueueService {
             int toYear = fromYear + 9;
             albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders);
         } else if ("genre".equals(albumListType)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder);
+            albums = mediaFileService.getAlbumsByGenre(offset, count, genre, musicFolders);
         } else {
             albums = Collections.emptyList();
         }

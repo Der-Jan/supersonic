@@ -305,10 +305,10 @@ public class MediaFileService {
     /**
      * Returns albums within a year range.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param fromYear    The first year in the range.
-     * @param toYear      The last year in the range.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param fromYear     The first year in the range.
+     * @param toYear       The last year in the range.
      * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
@@ -319,14 +319,14 @@ public class MediaFileService {
     /**
      * Returns albums in a genre.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param genre       The genre name.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param genre        The genre name.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the genre.
      */
-    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
-        return mediaFileDao.getAlbumsByGenre(offset, count, genre, mediaFolder);
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumsByGenre(offset, count, genre, musicFolders);
     }
 
     /**

@@ -114,7 +114,7 @@ public class HomeController extends ParameterizableViewController {
             if (!genres.isEmpty()) {
                 String genre = getStringParameter(request, "genre", genres.get(0).getName());
                 map.put("genre", genre);
-                albums = getByGenre(listOffset, LIST_SIZE, genre, mediaFolder);
+                albums = getByGenre(listOffset, LIST_SIZE, genre, musicFolders);
             }
         }
 
@@ -222,9 +222,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
+    private List<Album> getByGenre(int offset, int count, String genre, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder)) {
+        for (MediaFile file : mediaFileService.getAlbumsByGenre(offset, count, genre, musicFolders)) {
             result.add(createAlbum(file));
         }
         return result;

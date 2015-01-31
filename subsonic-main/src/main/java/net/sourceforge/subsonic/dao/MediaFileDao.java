@@ -254,9 +254,9 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns albums in alphabetical order.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param byArtist    Whether to sort by artist name
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param byArtist     Whether to sort by artist name
      * @param musicFolders Only return albums in these folders.
      * @return Albums in alphabetical order.
      */
@@ -276,10 +276,10 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns albums within a year range.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param fromYear    The first year in the range.
-     * @param toYear      The last year in the range.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param fromYear     The first year in the range.
+     * @param toYear       The last year in the range.
      * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
@@ -301,15 +301,23 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns albums in a genre.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param genre       The genre name.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param genre        The genre name.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the genre.
      */
-    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present and genre=? limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), genre, count, offset);
+    public List<MediaFile> getAlbumsByGenre(final int offset, final int count, final String genre,
+                                            final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("genre", genre);
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) " +
+                          "and present and genre = :genre limit :count offset :offset", rowMapper, args);
     }
 
     public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {
