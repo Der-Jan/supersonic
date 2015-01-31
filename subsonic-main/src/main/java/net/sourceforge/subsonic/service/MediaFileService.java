@@ -257,11 +257,11 @@ public class MediaFileService {
      *
      * @param offset      Number of albums to skip.
      * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
-    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count, mediaFolder);
+    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count, musicFolders);
     }
 
     /**

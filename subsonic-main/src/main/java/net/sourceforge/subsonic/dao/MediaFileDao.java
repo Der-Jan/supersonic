@@ -217,13 +217,18 @@ public class MediaFileDao extends AbstractDao {
      *
      * @param offset      Number of albums to skip.
      * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
-    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and last_played is not null and present " +
-                     "and folder like ? order by last_played desc limit ? offset ?", rowMapper, ALBUM.name(),
-                     mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+    public List<MediaFile> getMostRecentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and last_played is not null and present " +
+                     "and folder in (:folders) order by last_played desc limit :count offset :offset", rowMapper, args);
     }
 
     /**
