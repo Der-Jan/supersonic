@@ -21,11 +21,8 @@ package net.sourceforge.subsonic.domain;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 
 /**
  * Represents a top level directory in which music or other media is stored.
@@ -165,19 +162,5 @@ public class MusicFolder implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
-    }
-
-
-    public static List<Integer> toIdList(List<MusicFolder> from) {
-        return Lists.transform(from, toId());
-    }
-
-    public static Function<MusicFolder, Integer> toId() {
-        return new Function<MusicFolder, Integer>() {
-            @Override
-            public Integer apply(MusicFolder from) {
-                return from.getId();
-            }
-        };
     }
 }

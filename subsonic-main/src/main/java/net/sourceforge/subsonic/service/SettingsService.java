@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -1036,6 +1037,22 @@ public class SettingsService {
      */
     public List<MusicFolder> getMusicFoldersForUser(String username) {
         return getMusicFoldersForUser(username, false, false);
+    }
+
+    /**
+     * Returns all music folders a user have access to. Non-existing and disabled folders are not included.
+     *
+     * @param selectedMusicFolderId If non-null and included in the list of allowed music folders, this methods returns
+     *                              a list of only this music folder.
+     * @return Possibly empty list of music folders.
+     */
+    public List<MusicFolder> getMusicFoldersForUser(String username, Integer selectedMusicFolderId) {
+        List<MusicFolder> allowed = getMusicFoldersForUser(username, false, false);
+        if (selectedMusicFolderId == null) {
+            return allowed;
+        }
+        MusicFolder selected = getMusicFolderById(selectedMusicFolderId);
+        return allowed.contains(selected) ? Arrays.asList(selected) : Collections.<MusicFolder>emptyList();
     }
 
     /**

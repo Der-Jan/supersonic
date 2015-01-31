@@ -67,15 +67,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 import static net.sourceforge.subsonic.service.SearchService.IndexType.*;
 import static net.sourceforge.subsonic.service.SearchService.IndexType.SONG;
@@ -290,15 +285,6 @@ public class SearchService {
         return result;
     }
 
-    private String getMusicFolderTerm(List<MusicFolder> musicFolders) {
-        return Joiner.on(" or ").join(Lists.transform(musicFolders, new Function<MusicFolder, String>() {
-            @Override
-            public String apply(MusicFolder from) {
-                return from.getPath().getPath();
-            }
-        }));
-    }
-
     private static String normalizeGenre(String genre) {
         return genre.toLowerCase().replace(" ", "").replace("-", "");
     }
@@ -307,10 +293,10 @@ public class SearchService {
      * Returns a number of random albums.
      *
      * @param count         Number of albums to return.
-     * @param mediaFolder   Only return albums from this media folder, may be {@code null}.
+     * @param mediaFolders   Only return albums from these media folders.
      * @return List of random albums.
      */
-    public List<MediaFile> getRandomAlbums(int count, MusicFolder mediaFolder) {
+    public List<MediaFile> getRandomAlbums(int count, List<MusicFolder> mediaFolders) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
         IndexReader reader = null;
@@ -318,9 +304,11 @@ public class SearchService {
             reader = createIndexReader(ALBUM);
             Searcher searcher = new IndexSearcher(reader);
 
-            Query query = mediaFolder == null ?
-                          new MatchAllDocsQuery() :
-                          new TermQuery(new Term(FIELD_FOLDER, getMusicFolderTerm(Arrays.asList(mediaFolder)))); // TODO
+            List<SpanTermQuery> mediaFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder mediaFolder : mediaFolders) {
+                mediaFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, mediaFolder.getPath().getPath())));
+            }
+            Query query = new SpanOrQuery(mediaFolderQueries.toArray(new SpanQuery[mediaFolderQueries.size()]));
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());

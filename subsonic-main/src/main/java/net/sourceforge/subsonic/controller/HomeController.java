@@ -75,8 +75,16 @@ public class HomeController extends ParameterizableViewController {
         int listOffset = getIntParameter(request, "listOffset", 0);
         String listType = getStringParameter(request, "listType", "random");
 
+
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+        // TODO: Remove
         MusicFolder mediaFolder = settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
+
+        Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
+        if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
+            selectedMusicFolderId = null;
+        }
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(), selectedMusicFolderId);
 
         Map<String, Object> map = new HashMap<String, Object>();
         List<Album> albums = Collections.emptyList();
@@ -91,7 +99,7 @@ public class HomeController extends ParameterizableViewController {
         } else if ("starred".equals(listType)) {
             albums = getStarred(listOffset, LIST_SIZE, user.getUsername(), mediaFolder);
         } else if ("random".equals(listType)) {
-            albums = getRandom(LIST_SIZE, mediaFolder);
+            albums = getRandom(LIST_SIZE, musicFolders);
         } else if ("alphabetical".equals(listType)) {
             albums = getAlphabetical(listOffset, LIST_SIZE, true, mediaFolder);
         } else if ("decade".equals(listType)) {
@@ -179,9 +187,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getRandom(int count, MusicFolder mediaFolder) throws IOException {
+    private List<Album> getRandom(int count, List<MusicFolder> mediaFolders) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : searchService.getRandomAlbums(count, mediaFolder)) {
+        for (MediaFile file : searchService.getRandomAlbums(count, mediaFolders)) {
             result.add(createAlbum(file));
         }
         return result;

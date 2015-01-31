@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -1034,7 +1033,11 @@ public class RESTController extends MultiActionController {
         int size = getIntParameter(request, "size", 10);
         int offset = getIntParameter(request, "offset", 0);
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
+
+        // TODO: Remove
         MusicFolder musicFolder = musicFolderId == null ? null : settingsService.getMusicFolderById(musicFolderId);
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, musicFolderId);
 
         size = Math.max(0, Math.min(size, 500));
         String type = getRequiredStringParameter(request, "type");
@@ -1060,7 +1063,7 @@ public class RESTController extends MultiActionController {
             albums = mediaFileService.getAlbumsByYear(offset, size, getRequiredIntParameter(request, "fromYear"),
                     getRequiredIntParameter(request, "toYear"), musicFolder);
         } else if ("random".equals(type)) {
-            albums = searchService.getRandomAlbums(size, musicFolder);
+            albums = searchService.getRandomAlbums(size, musicFolders);
         } else {
             throw new Exception("Invalid list type: " + type);
         }
@@ -1128,7 +1131,7 @@ public class RESTController extends MultiActionController {
         Integer fromYear = getIntParameter(request, "fromYear");
         Integer toYear = getIntParameter(request, "toYear");
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
-        List<MusicFolder> musicFolders = getAllowedMusicFolders(username, musicFolderId);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, musicFolderId);
         RandomSearchCriteria criteria = new RandomSearchCriteria(size, genre, fromYear, toYear, musicFolders);
 
         Songs result = new Songs();
@@ -1138,15 +1141,6 @@ public class RESTController extends MultiActionController {
         Response res = jaxbWriter.createResponse(true);
         res.setRandomSongs(result);
         jaxbWriter.writeResponse(request, response, res);
-    }
-
-    private List<MusicFolder> getAllowedMusicFolders(String username, Integer selectedMusicFolderId) throws ServletRequestBindingException {
-        List<MusicFolder> allowed = settingsService.getMusicFoldersForUser(username);
-        if (selectedMusicFolderId == null) {
-            return allowed;
-        }
-        MusicFolder selected = settingsService.getMusicFolderById(selectedMusicFolderId);
-        return allowed.contains(selected) ? Arrays.asList(selected) : Collections.<MusicFolder>emptyList();
     }
 
     @SuppressWarnings("UnusedDeclaration")

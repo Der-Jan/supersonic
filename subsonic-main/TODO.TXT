@@ -48,7 +48,8 @@ Per-user folder access
   Browse by tags
   UserSettings.getSelectedMusicFolderId()
   Create link from media folder settings to user settings
-  REST: test getRandomSongs()
+  REST: test getRandomSongs(), getAlbumList
+  Rename to MediaFolder
 Update year list in More > Shuffle play
 
 Lossless streaming

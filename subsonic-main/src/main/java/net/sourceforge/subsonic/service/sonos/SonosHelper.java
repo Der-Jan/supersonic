@@ -131,7 +131,7 @@ public class SonosHelper {
     }
 
     public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder, int count) {
-        List<MediaFile> albums = searchService.getRandomAlbums(40, musicFolder);
+        List<MediaFile> albums = searchService.getRandomAlbums(40, Arrays.asList(musicFolder));
         List<MediaFile> songs = new ArrayList<MediaFile>();
         for (MediaFile album : albums) {
             for (MediaFile file : filterMusic(mediaFileService.getChildrenOf(album, true, false, false))) {

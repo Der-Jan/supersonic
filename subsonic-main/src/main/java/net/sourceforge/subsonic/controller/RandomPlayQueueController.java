@@ -94,15 +94,11 @@ public class RandomPlayQueueController extends ParameterizableViewController {
 
     private List<MusicFolder> getMusicFolders(HttpServletRequest request) throws ServletRequestBindingException {
         String username = securityService.getCurrentUsername(request);
-        List<MusicFolder> allowed = settingsService.getMusicFoldersForUser(username);
-
-        Integer musicFolderId = ServletRequestUtils.getRequiredIntParameter(request, "musicFolderId");
-        if (musicFolderId == -1) {
-            return allowed;
-        } else {
-            MusicFolder selected = settingsService.getMusicFolderById(musicFolderId);
-            return allowed.contains(selected) ? Arrays.asList(selected) : Collections.<MusicFolder>emptyList();
+        Integer selectedMusicFolderId = ServletRequestUtils.getRequiredIntParameter(request, "musicFolderId");
+        if (selectedMusicFolderId == -1) {
+            selectedMusicFolderId = null;
         }
+        return settingsService.getMusicFoldersForUser(username, selectedMusicFolderId);
     }
 
     public void setPlayerService(PlayerService playerService) {

@@ -175,7 +175,15 @@ public class PlayQueueService {
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+
+        // TODO: Remove
         MusicFolder mediaFolder =  settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
+
+        Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
+        if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
+            selectedMusicFolderId = null;
+        }
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, selectedMusicFolderId);
 
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
@@ -189,7 +197,7 @@ public class PlayQueueService {
         } else if ("starred".equals(albumListType)) {
             albums = mediaFileService.getStarredAlbums(offset, count, username, mediaFolder);
         } else if ("random".equals(albumListType)) {
-            albums = searchService.getRandomAlbums(count, mediaFolder);
+            albums = searchService.getRandomAlbums(count, musicFolders);
         } else if ("alphabetical".equals(albumListType)) {
             albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, mediaFolder);
         } else if ("decade".equals(albumListType)) {
