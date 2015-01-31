@@ -107,7 +107,7 @@ public class HomeController extends ParameterizableViewController {
             map.put("decades", decades);
             int decade = getIntParameter(request, "decade", decades.get(0));
             map.put("decade", decade);
-            albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9, mediaFolder);
+            albums = getByYear(listOffset, LIST_SIZE, decade, decade + 9, musicFolders);
         } else if ("genre".equals(listType)) {
             List<Genre> genres = mediaFileService.getGenres(true);
             map.put("genres", genres);
@@ -203,9 +203,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
+    private List<Album> getByYear(int offset, int count, int fromYear, int toYear, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder)) {
+        for (MediaFile file : mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders)) {
             Album album = createAlbum(file);
             album.setYear(file.getYear());
             result.add(album);

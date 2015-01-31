@@ -309,11 +309,11 @@ public class MediaFileService {
      * @param count       Maximum number of albums to return.
      * @param fromYear    The first year in the range.
      * @param toYear      The last year in the range.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
-        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
+    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders);
     }
 
     /**

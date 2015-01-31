@@ -203,7 +203,7 @@ public class PlayQueueService {
         } else if ("decade".equals(albumListType)) {
             int fromYear = Integer.parseInt(decade);
             int toYear = fromYear + 9;
-            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
+            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders);
         } else if ("genre".equals(albumListType)) {
             albums = mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder);
         } else {

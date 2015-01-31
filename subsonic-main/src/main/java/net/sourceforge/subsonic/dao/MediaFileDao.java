@@ -280,12 +280,22 @@ public class MediaFileDao extends AbstractDao {
      * @param count       Maximum number of albums to return.
      * @param fromYear    The first year in the range.
      * @param toYear      The last year in the range.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present and year between ? and ? order by year limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), fromYear, toYear, count, offset);
+    public List<MediaFile> getAlbumsByYear(final int offset, final int count, final int fromYear, final int toYear,
+                                           final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("fromYear", fromYear);
+            put("toYear", toYear);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                          "and year between :fromYear and :toYear order by year limit :count offset :offset",
+                          rowMapper, args);
     }
 
     /**
