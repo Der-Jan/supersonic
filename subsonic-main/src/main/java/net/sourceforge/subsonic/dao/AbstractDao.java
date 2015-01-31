@@ -108,6 +108,13 @@ public class AbstractDao {
         return result;
     }
 
+    protected List<String> namedQueryForStrings(String sql, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<String> result = getNamedParameterJdbcTemplate().queryForList(sql, args, String.class);
+        log(sql, t);
+        return result;
+    }
+
     protected Integer queryForInt(String sql, Integer defaultValue, Object... args) {
         long t = System.nanoTime();
         List<Integer> list = getJdbcTemplate().queryForList(sql, args, Integer.class);

@@ -187,7 +187,7 @@ public class PlayQueueService {
 
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
-            albums = ratingService.getHighestRatedAlbums(offset, count, mediaFolder);
+            albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);
         } else if ("frequent".equals(albumListType)) {
             albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder);
         } else if ("recent".equals(albumListType)) {

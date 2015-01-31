@@ -89,7 +89,7 @@ public class HomeController extends ParameterizableViewController {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Album> albums = Collections.emptyList();
         if ("highest".equals(listType)) {
-            albums = getHighestRated(listOffset, LIST_SIZE, mediaFolder);
+            albums = getHighestRated(listOffset, LIST_SIZE, musicFolders);
         } else if ("frequent".equals(listType)) {
             albums = getMostFrequent(listOffset, LIST_SIZE, mediaFolder);
         } else if ("recent".equals(listType)) {
@@ -135,9 +135,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getHighestRated(int offset, int count, MusicFolder mediaFolder) {
+    private List<Album> getHighestRated(int offset, int count, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count, mediaFolder)) {
+        for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count, musicFolders)) {
             Album album = createAlbum(mediaFile);
             album.setRating((int) Math.round(ratingService.getAverageRating(mediaFile) * 10.0D));
             result.add(album);
