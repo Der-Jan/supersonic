@@ -483,7 +483,8 @@ public class SonosHelper {
 
     public List<MediaCollection> forStarredArtists(String username) {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
-        for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username)) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username, musicFolders)) {
             MediaCollection mediaCollection = forDirectory(artist);
             mediaCollection.setItemType(ItemType.ARTIST);
             result.add(mediaCollection);
@@ -492,8 +493,9 @@ public class SonosHelper {
     }
 
     public List<MediaCollection> forStarredAlbums(String username) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
-        for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, null)) {
+        for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, musicFolders)) {
             MediaCollection mediaCollection = forDirectory(album);
             mediaCollection.setItemType(ItemType.ALBUM);
             result.add(mediaCollection);
@@ -502,8 +504,9 @@ public class SonosHelper {
     }
 
     public List<MediaMetadata> forStarredSongs(String username) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaMetadata> result = new ArrayList<MediaMetadata>();
-        for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username)) {
+        for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders)) {
             if (song.isAudio()) {
                 result.add(forSong(song));
             }

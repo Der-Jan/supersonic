@@ -40,10 +40,7 @@ UPnP memory leak
 Per-user folder access
   REST support for administering folder access.
   Use throughout
-      HomeController
-      Search
       Playlists
-      Starred
       Shares
   Browse by tags
   UserSettings.getSelectedMusicFolderId()
