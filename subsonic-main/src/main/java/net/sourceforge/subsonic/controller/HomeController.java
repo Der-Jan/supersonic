@@ -101,7 +101,7 @@ public class HomeController extends ParameterizableViewController {
         } else if ("random".equals(listType)) {
             albums = getRandom(LIST_SIZE, musicFolders);
         } else if ("alphabetical".equals(listType)) {
-            albums = getAlphabetical(listOffset, LIST_SIZE, true, mediaFolder);
+            albums = getAlphabetical(listOffset, LIST_SIZE, true, musicFolders);
         } else if ("decade".equals(listType)) {
             List<Integer> decades = createDecades();
             map.put("decades", decades);
@@ -195,9 +195,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getAlphabetical(int offset, int count, boolean byArtist, MusicFolder mediaFolder) throws IOException {
+    private List<Album> getAlphabetical(int offset, int count, boolean byArtist, List<MusicFolder> musicFolders) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : mediaFileService.getAlphabeticalAlbums(offset, count, byArtist, mediaFolder)) {
+        for (MediaFile file : mediaFileService.getAlphabeticalAlbums(offset, count, byArtist, musicFolders)) {
             result.add(createAlbum(file));
         }
         return result;

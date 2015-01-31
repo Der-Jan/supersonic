@@ -257,13 +257,20 @@ public class MediaFileDao extends AbstractDao {
      * @param offset      Number of albums to skip.
      * @param count       Maximum number of albums to return.
      * @param byArtist    Whether to sort by artist name
-     * @param mediaFolder Only return albums in this media folder.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist, MusicFolder mediaFolder) {
+    public List<MediaFile> getAlphabeticalAlbums(final int offset, final int count, boolean byArtist, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
         String orderBy = byArtist ? "artist, album" : "album";
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and artist != '' and present order by " + orderBy + " limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and artist != '' and present " +
+                          "order by " + orderBy + " limit :count offset :offset", rowMapper, args);
     }
 
     /**
