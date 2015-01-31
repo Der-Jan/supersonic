@@ -91,7 +91,7 @@ public class HomeController extends ParameterizableViewController {
         if ("highest".equals(listType)) {
             albums = getHighestRated(listOffset, LIST_SIZE, musicFolders);
         } else if ("frequent".equals(listType)) {
-            albums = getMostFrequent(listOffset, LIST_SIZE, mediaFolder);
+            albums = getMostFrequent(listOffset, LIST_SIZE, musicFolders);
         } else if ("recent".equals(listType)) {
             albums = getMostRecent(listOffset, LIST_SIZE, mediaFolder);
         } else if ("newest".equals(listType)) {
@@ -145,9 +145,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getMostFrequent(int offset, int count, MusicFolder mediaFolder) {
+    private List<Album> getMostFrequent(int offset, int count, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder)) {
+        for (MediaFile mediaFile : mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, musicFolders)) {
             Album album = createAlbum(mediaFile);
             album.setPlayCount(mediaFile.getPlayCount());
             result.add(album);
