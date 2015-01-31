@@ -195,7 +195,7 @@ public class PlayQueueService {
         } else if ("newest".equals(albumListType)) {
             albums = mediaFileService.getNewestAlbums(offset, count, mediaFolder);
         } else if ("starred".equals(albumListType)) {
-            albums = mediaFileService.getStarredAlbums(offset, count, username, mediaFolder);
+            albums = mediaFileService.getStarredAlbums(offset, count, username, musicFolders);
         } else if ("random".equals(albumListType)) {
             albums = searchService.getRandomAlbums(count, musicFolders);
         } else if ("alphabetical".equals(albumListType)) {

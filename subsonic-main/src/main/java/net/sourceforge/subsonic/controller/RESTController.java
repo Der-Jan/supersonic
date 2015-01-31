@@ -1052,7 +1052,7 @@ public class RESTController extends MultiActionController {
         } else if ("newest".equals(type)) {
             albums = mediaFileService.getNewestAlbums(offset, size, musicFolder);
         } else if ("starred".equals(type)) {
-            albums = mediaFileService.getStarredAlbums(offset, size, username, musicFolder);
+            albums = mediaFileService.getStarredAlbums(offset, size, username, musicFolders);
         } else if ("alphabeticalByArtist".equals(type)) {
             albums = mediaFileService.getAlphabeticalAlbums(offset, size, true, musicFolder);
         } else if ("alphabeticalByName".equals(type)) {

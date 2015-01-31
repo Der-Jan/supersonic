@@ -45,6 +45,7 @@ Per-user folder access
       Playlists
       Starred
       Shares
+      SonosHelper.createAlbumList()
   Browse by tags
   UserSettings.getSelectedMusicFolderId()
   Create link from media folder settings to user settings

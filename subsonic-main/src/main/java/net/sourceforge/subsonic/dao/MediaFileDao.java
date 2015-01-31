@@ -21,7 +21,9 @@ package net.sourceforge.subsonic.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -288,16 +290,24 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns the most recently starred albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param username    Returns albums starred by this user.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param username     Returns albums starred by this user.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently starred albums for this user.
      */
-    public List<MediaFile> getStarredAlbums(int offset, int count, String username, MusicFolder mediaFolder) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
-                     "media_file.present and media_file.type=? and media_file.folder like ? and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), username, count, offset);
+    public List<MediaFile> getStarredAlbums(final int offset, final int count, final String username, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
+                          "media_file.present and media_file.type = :type and media_file.folder in (:folders) and starred_media_file.username = :username " +
+                          "order by starred_media_file.created desc limit :count offset :offset",
+                          rowMapper, args);
     }
 
     /**

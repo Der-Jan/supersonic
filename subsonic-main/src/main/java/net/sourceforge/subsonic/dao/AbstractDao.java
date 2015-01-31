@@ -20,8 +20,10 @@ package net.sourceforge.subsonic.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import net.sourceforge.subsonic.Logger;
 
@@ -41,6 +43,13 @@ public class AbstractDao {
      */
     public JdbcTemplate getJdbcTemplate() {
         return daoHelper.getJdbcTemplate();
+    }
+
+    /**
+     * Similar to {@link #getJdbcTemplate()}, but with named parameters.
+     */
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+        return daoHelper.getNamedParameterJdbcTemplate();
     }
 
     protected String questionMarks(String columns) {
@@ -81,6 +90,13 @@ public class AbstractDao {
     protected <T> List<T> query(String sql, RowMapper rowMapper, Object... args) {
         long t = System.nanoTime();
         List<T> result = getJdbcTemplate().query(sql, args, rowMapper);
+        log(sql, t);
+        return result;
+    }
+
+    protected <T> List<T> namedQuery(String sql, RowMapper rowMapper, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<T> result = getNamedParameterJdbcTemplate().query(sql, args, rowMapper);
         log(sql, t);
         return result;
     }
