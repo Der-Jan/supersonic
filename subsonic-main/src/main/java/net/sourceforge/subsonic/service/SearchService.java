@@ -55,6 +55,9 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.spans.SpanOrQuery;
+import org.apache.lucene.search.spans.SpanQuery;
+import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -64,10 +67,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 import static net.sourceforge.subsonic.service.SearchService.IndexType.*;
 import static net.sourceforge.subsonic.service.SearchService.IndexType.SONG;
@@ -95,7 +103,6 @@ public class SearchService {
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
 
     private MediaFileService mediaFileService;
-    private SettingsService settingsService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -254,9 +261,12 @@ public class SearchService {
                 NumericRangeQuery<Integer> rangeQuery = NumericRangeQuery.newIntRange(FIELD_YEAR, criteria.getFromYear(), criteria.getToYear(), true, true);
                 query.add(rangeQuery, BooleanClause.Occur.MUST);
             }
-            if (criteria.getMusicFolderId() != null) {
-                query.add(new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(criteria.getMusicFolderId()))), BooleanClause.Occur.MUST);
+
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : criteria.getMusicFolders()) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
             }
+            query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());
@@ -280,9 +290,13 @@ public class SearchService {
         return result;
     }
 
-    private String getMediaFolderPath(int mediaFolderId) {
-        MusicFolder mediaFolder = settingsService.getMusicFolderById(mediaFolderId);
-        return mediaFolder.getPath().getPath();
+    private String getMusicFolderTerm(List<MusicFolder> musicFolders) {
+        return Joiner.on(" or ").join(Lists.transform(musicFolders, new Function<MusicFolder, String>() {
+            @Override
+            public String apply(MusicFolder from) {
+                return from.getPath().getPath();
+            }
+        }));
     }
 
     private static String normalizeGenre(String genre) {
@@ -306,7 +320,7 @@ public class SearchService {
 
             Query query = mediaFolder == null ?
                           new MatchAllDocsQuery() :
-                          new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(mediaFolder.getId())));
+                          new TermQuery(new Term(FIELD_FOLDER, getMusicFolderTerm(Arrays.asList(mediaFolder)))); // TODO
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());
@@ -410,10 +424,6 @@ public class SearchService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
-    }
-
-    public void setSettingsService(SettingsService settingsService) {
-        this.settingsService = settingsService;
     }
 
     public void setArtistDao(ArtistDao artistDao) {

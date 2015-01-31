@@ -155,7 +155,8 @@ public class WapController extends MultiActionController {
                 List<MediaFile> songs = playlistService.getFilesInPlaylist(ServletRequestUtils.getIntParameter(request, "id"));
                 playQueue.addFiles(false, songs);
             } else if (request.getParameter("random") != null) {
-                List<MediaFile> randomFiles = searchService.getRandomSongs(new RandomSearchCriteria(20, null, null, null, null));
+                List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(securityService.getCurrentUsername(request));
+                List<MediaFile> randomFiles = searchService.getRandomSongs(new RandomSearchCriteria(20, null, null, null, musicFolders));
                 playQueue.addFiles(false, randomFiles);
             }
         }

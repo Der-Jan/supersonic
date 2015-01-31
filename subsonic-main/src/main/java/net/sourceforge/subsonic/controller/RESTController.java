@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -1127,7 +1128,8 @@ public class RESTController extends MultiActionController {
         Integer fromYear = getIntParameter(request, "fromYear");
         Integer toYear = getIntParameter(request, "toYear");
         Integer musicFolderId = getIntParameter(request, "musicFolderId");
-        RandomSearchCriteria criteria = new RandomSearchCriteria(size, genre, fromYear, toYear, musicFolderId);
+        List<MusicFolder> musicFolders = getAllowedMusicFolders(username, musicFolderId);
+        RandomSearchCriteria criteria = new RandomSearchCriteria(size, genre, fromYear, toYear, musicFolders);
 
         Songs result = new Songs();
         for (MediaFile mediaFile : searchService.getRandomSongs(criteria)) {
@@ -1136,6 +1138,15 @@ public class RESTController extends MultiActionController {
         Response res = jaxbWriter.createResponse(true);
         res.setRandomSongs(result);
         jaxbWriter.writeResponse(request, response, res);
+    }
+
+    private List<MusicFolder> getAllowedMusicFolders(String username, Integer selectedMusicFolderId) throws ServletRequestBindingException {
+        List<MusicFolder> allowed = settingsService.getMusicFoldersForUser(username);
+        if (selectedMusicFolderId == null) {
+            return allowed;
+        }
+        MusicFolder selected = settingsService.getMusicFolderById(selectedMusicFolderId);
+        return allowed.contains(selected) ? Arrays.asList(selected) : Collections.<MusicFolder>emptyList();
     }
 
     @SuppressWarnings("UnusedDeclaration")

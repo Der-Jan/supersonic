@@ -18,6 +18,8 @@
  */
 package net.sourceforge.subsonic.domain;
 
+import java.util.List;
+
 /**
  * Defines criteria used when generating random playlists.
  *
@@ -25,27 +27,28 @@ package net.sourceforge.subsonic.domain;
  * @see net.sourceforge.subsonic.service.SearchService#getRandomSongs
  */
 public class RandomSearchCriteria {
+
     private final int count;
     private final String genre;
     private final Integer fromYear;
     private final Integer toYear;
-    private final Integer musicFolderId;
+    private final List<MusicFolder> musicFolders;
 
     /**
      * Creates a new instance.
      *
-     * @param count         Maximum number of songs to return.
-     * @param genre         Only return songs of the given genre. May be <code>null</code>.
-     * @param fromYear      Only return songs released after (or in) this year. May be <code>null</code>.
-     * @param toYear        Only return songs released before (or in) this year. May be <code>null</code>.
-     * @param musicFolderId Only return songs from this music folder. May be <code>null</code>.
+     * @param count        Maximum number of songs to return.
+     * @param genre        Only return songs of the given genre. May be <code>null</code>.
+     * @param fromYear     Only return songs released after (or in) this year. May be <code>null</code>.
+     * @param toYear       Only return songs released before (or in) this year. May be <code>null</code>.
+     * @param musicFolders Only return songs from these music folder. May NOT be <code>null</code>.
      */
-    public RandomSearchCriteria(int count, String genre, Integer fromYear, Integer toYear, Integer musicFolderId) {
+    public RandomSearchCriteria(int count, String genre, Integer fromYear, Integer toYear, List<MusicFolder> musicFolders) {
         this.count = count;
         this.genre = genre;
         this.fromYear = fromYear;
         this.toYear = toYear;
-        this.musicFolderId = musicFolderId;
+        this.musicFolders = musicFolders;
     }
 
     public int getCount() {
@@ -64,7 +67,7 @@ public class RandomSearchCriteria {
         return toYear;
     }
 
-    public Integer getMusicFolderId() {
-        return musicFolderId;
+    public List<MusicFolder> getMusicFolders() {
+        return musicFolders;
     }
 }
