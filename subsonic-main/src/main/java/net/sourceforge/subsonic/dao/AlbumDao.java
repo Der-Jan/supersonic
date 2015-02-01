@@ -92,8 +92,14 @@ public class AlbumDao extends AbstractDao {
         return queryOne("select " + COLUMNS + " from album where id=?", rowMapper, id);
     }
 
-    public List<Album> getAlbumsForArtist(String artist) {
-        return query("select " + COLUMNS + " from album where artist=? and present order by name", rowMapper, artist);
+    public List<Album> getAlbumsForArtist(final String artist, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("artist", artist);
+            put("folders", MusicFolder.toIdList(musicFolders));
+        }};
+        return namedQuery("select " + COLUMNS + " from album where artist = :artist and present and folder_id in (:folders) " +
+                          "order by name",
+                          rowMapper, args);
     }
 
     /**

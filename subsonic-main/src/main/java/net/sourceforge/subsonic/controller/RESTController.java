@@ -523,8 +523,9 @@ public class RESTController extends MultiActionController {
             return;
         }
 
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         ArtistWithAlbumsID3 result = createJaxbArtist(new ArtistWithAlbumsID3(), artist, username);
-        for (Album album : albumDao.getAlbumsForArtist(artist.getName())) {
+        for (Album album : albumDao.getAlbumsForArtist(artist.getName(), musicFolders)) {
             result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
 
