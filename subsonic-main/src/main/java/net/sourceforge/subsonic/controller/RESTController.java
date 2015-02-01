@@ -351,8 +351,9 @@ public class RESTController extends MultiActionController {
 
         ArtistsID3 result = new ArtistsID3();
         result.setIgnoredArticles(settingsService.getIgnoredArticles());
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
-        List<Artist> artists = artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE);
+        List<Artist> artists = artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE, musicFolders);
         SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> indexedArtists = musicIndexService.getIndexedArtists(artists);
         for (Map.Entry<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> entry : indexedArtists.entrySet()) {
             IndexID3 index = new IndexID3();
@@ -1472,7 +1473,7 @@ public class RESTController extends MultiActionController {
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
         Starred2 result = new Starred2();
-        for (Artist artist : artistDao.getStarredArtists(0, Integer.MAX_VALUE, username)) {
+        for (Artist artist : artistDao.getStarredArtists(0, Integer.MAX_VALUE, username, musicFolders)) {
             result.getArtist().add(createJaxbArtist(new ArtistID3(), artist, username));
         }
         for (Album album : albumDao.getStarredAlbums(0, Integer.MAX_VALUE, username, musicFolders)) {

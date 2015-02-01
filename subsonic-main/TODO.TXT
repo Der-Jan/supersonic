@@ -48,7 +48,10 @@ Per-user folder access
   REST: test all
   REST: Add musicFolderId param to ID3 methods.
   REST: Random albums returns duplicates
-  Rename to MediaFolder
+  REST: search3
+  REST: getArtist (filter out albums)
+  REST: Avoid accessing directly by id
+  Rename to MusicFolder
 Update year list in More > Shuffle play
 
 Lossless streaming
