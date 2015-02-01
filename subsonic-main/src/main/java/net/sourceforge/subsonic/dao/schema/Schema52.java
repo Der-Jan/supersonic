@@ -52,5 +52,10 @@ public class Schema52 extends Schema {
             LOG.info("Database table 'music_folder_user' was created successfully.");
         }
 
+        if (!columnExists(template, "folder_id", "album")) {
+            LOG.info("Database column 'album.folder_id' not found.  Creating it.");
+            template.execute("alter table album add folder_id int");
+            LOG.info("Database column 'album.folder_id' was added successfully.");
+        }
     }
 }

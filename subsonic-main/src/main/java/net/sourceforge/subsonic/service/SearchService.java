@@ -49,7 +49,6 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
@@ -60,6 +59,7 @@ import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
 import java.io.File;
@@ -94,6 +94,7 @@ public class SearchService {
     private static final String FIELD_YEAR = "year";
     private static final String FIELD_MEDIA_TYPE = "mediaType";
     private static final String FIELD_FOLDER = "folder";
+    private static final String FIELD_FOLDER_ID = "folderId";
 
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
 
@@ -292,8 +293,8 @@ public class SearchService {
     /**
      * Returns a number of random albums.
      *
-     * @param count         Number of albums to return.
-     * @param mediaFolders   Only return albums from these media folders.
+     * @param count        Number of albums to return.
+     * @param mediaFolders Only return albums from these media folders.
      * @return List of random albums.
      */
     public List<MediaFile> getRandomAlbums(int count, List<MusicFolder> mediaFolders) {
@@ -335,10 +336,11 @@ public class SearchService {
     /**
      * Returns a number of random albums, using ID3 tag.
      *
-     * @param count Number of albums to return.
+     * @param count        Number of albums to return.
+     * @param musicFolders Only return albums from these folders.
      * @return List of random albums.
      */
-    public List<Album> getRandomAlbumsId3(int count) {
+    public List<Album> getRandomAlbumsId3(int count, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
 
         IndexReader reader = null;
@@ -346,7 +348,12 @@ public class SearchService {
             reader = createIndexReader(ALBUM_ID3);
             Searcher searcher = new IndexSearcher(reader);
 
-            Query query = new MatchAllDocsQuery();
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER_ID, NumericUtils.intToPrefixCoded(musicFolder.getId()))));
+            }
+            Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
+
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());
 
@@ -471,7 +478,7 @@ public class SearchService {
             }
         },
 
-        ALBUM_ID3(new String[]{FIELD_ALBUM, FIELD_ARTIST}, FIELD_ALBUM) {
+        ALBUM_ID3(new String[]{FIELD_ALBUM, FIELD_ARTIST, FIELD_FOLDER_ID}, FIELD_ALBUM) {
             @Override
             public Document createDocument(Album album) {
                 Document doc = new Document();
@@ -482,6 +489,9 @@ public class SearchService {
                 }
                 if (album.getName() != null) {
                     doc.add(new Field(FIELD_ALBUM, album.getName(), Field.Store.YES, Field.Index.ANALYZED));
+                }
+                if (album.getFolderId() != null) {
+                    doc.add(new NumericField(FIELD_FOLDER_ID, Field.Store.NO, true).setIntValue(album.getFolderId()));
                 }
 
                 return doc;
