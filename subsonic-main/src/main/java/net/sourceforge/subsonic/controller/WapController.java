@@ -176,10 +176,11 @@ public class WapController extends MultiActionController {
     }
 
     public ModelAndView searchResult(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String username = securityService.getCurrentUsername(request);
         String query = request.getParameter("query");
 
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("hits", search(query));
+        map.put("hits", search(query, username));
 
         return new ModelAndView("wap/searchResult", "model", map);
     }
@@ -209,13 +210,14 @@ public class WapController extends MultiActionController {
         return settings(request, response);
     }
 
-    private List<MediaFile> search(String query) throws IOException {
+    private List<MediaFile> search(String query, String username) throws IOException {
         SearchCriteria criteria = new SearchCriteria();
         criteria.setQuery(query);
         criteria.setOffset(0);
         criteria.setCount(50);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
-        SearchResult result = searchService.search(criteria, SearchService.IndexType.SONG);
+        SearchResult result = searchService.search(criteria, musicFolders, SearchService.IndexType.SONG);
         return result.getMediaFiles();
     }
 

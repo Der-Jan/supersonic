@@ -316,7 +316,8 @@ public class SonosService implements SonosSoap {
             throw new IllegalArgumentException("Invalid search category: " + id);
         }
 
-        MediaList mediaList = sonosHelper.forSearch(parameters.getTerm(), parameters.getIndex(), parameters.getCount(), indexType);
+        MediaList mediaList = sonosHelper.forSearch(parameters.getTerm(), parameters.getIndex(),
+                                                    parameters.getCount(), getUsername(), indexType);
         SearchResponse response = new SearchResponse();
         response.setSearchResult(mediaList);
         return response;

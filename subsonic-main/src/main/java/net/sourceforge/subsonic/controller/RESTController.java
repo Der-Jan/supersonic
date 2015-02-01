@@ -677,8 +677,9 @@ public class RESTController extends MultiActionController {
         criteria.setQuery(query.toString().trim());
         criteria.setCount(getIntParameter(request, "count", 20));
         criteria.setOffset(getIntParameter(request, "offset", 0));
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
-        SearchResult result = searchService.search(criteria, SearchService.IndexType.SONG);
+        SearchResult result = searchService.search(criteria, musicFolders, SearchService.IndexType.SONG);
         org.subsonic.restapi.SearchResult searchResult = new org.subsonic.restapi.SearchResult();
         searchResult.setOffset(result.getOffset());
         searchResult.setTotalHits(result.getTotalHits());
@@ -696,6 +697,7 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
         SearchResult2 searchResult = new SearchResult2();
 
@@ -704,21 +706,21 @@ public class RESTController extends MultiActionController {
         criteria.setQuery(StringUtils.trimToEmpty(query));
         criteria.setCount(getIntParameter(request, "artistCount", 20));
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
-        SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
+        SearchResult artists = searchService.search(criteria, musicFolders, SearchService.IndexType.ARTIST);
         for (MediaFile mediaFile : artists.getMediaFiles()) {
             searchResult.getArtist().add(createJaxbArtist(mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
-        SearchResult albums = searchService.search(criteria, SearchService.IndexType.ALBUM);
+        SearchResult albums = searchService.search(criteria, musicFolders, SearchService.IndexType.ALBUM);
         for (MediaFile mediaFile : albums.getMediaFiles()) {
             searchResult.getAlbum().add(createJaxbChild(player, mediaFile, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
-        SearchResult songs = searchService.search(criteria, SearchService.IndexType.SONG);
+        SearchResult songs = searchService.search(criteria, musicFolders, SearchService.IndexType.SONG);
         for (MediaFile mediaFile : songs.getMediaFiles()) {
             searchResult.getSong().add(createJaxbChild(player, mediaFile, username));
         }
@@ -733,6 +735,7 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
         SearchResult3 searchResult = new SearchResult3();
 
@@ -741,21 +744,21 @@ public class RESTController extends MultiActionController {
         criteria.setQuery(StringUtils.trimToEmpty(query));
         criteria.setCount(getIntParameter(request, "artistCount", 20));
         criteria.setOffset(getIntParameter(request, "artistOffset", 0));
-        SearchResult result = searchService.search(criteria, SearchService.IndexType.ARTIST_ID3);
+        SearchResult result = searchService.search(criteria, musicFolders, SearchService.IndexType.ARTIST_ID3);
         for (Artist artist : result.getArtists()) {
             searchResult.getArtist().add(createJaxbArtist(new ArtistID3(), artist, username));
         }
 
         criteria.setCount(getIntParameter(request, "albumCount", 20));
         criteria.setOffset(getIntParameter(request, "albumOffset", 0));
-        result = searchService.search(criteria, SearchService.IndexType.ALBUM_ID3);
+        result = searchService.search(criteria, musicFolders, SearchService.IndexType.ALBUM_ID3);
         for (Album album : result.getAlbums()) {
             searchResult.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
 
         criteria.setCount(getIntParameter(request, "songCount", 20));
         criteria.setOffset(getIntParameter(request, "songOffset", 0));
-        result = searchService.search(criteria, SearchService.IndexType.SONG);
+        result = searchService.search(criteria, musicFolders, SearchService.IndexType.SONG);
         for (MediaFile song : result.getMediaFiles()) {
             searchResult.getSong().add(createJaxbChild(player, song, username));
         }

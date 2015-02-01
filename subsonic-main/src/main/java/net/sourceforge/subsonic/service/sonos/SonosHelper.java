@@ -533,13 +533,15 @@ public class SonosHelper {
         return Arrays.asList(artists, albums, songs);
     }
 
-    public MediaList forSearch(String query, int offset, int count, SearchService.IndexType indexType) {
+    public MediaList forSearch(String query, int offset, int count, String username, SearchService.IndexType indexType) {
 
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.setCount(count);
         searchCriteria.setOffset(offset);
         searchCriteria.setQuery(query);
-        SearchResult searchResult = searchService.search(searchCriteria, indexType);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+
+        SearchResult searchResult = searchService.search(searchCriteria, musicFolders, indexType);
 
         MediaList result = new MediaList();
         result.setTotal(searchResult.getTotalHits());

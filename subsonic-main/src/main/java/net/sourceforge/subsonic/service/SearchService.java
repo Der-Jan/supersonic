@@ -173,7 +173,7 @@ public class SearchService {
         }
     }
 
-    public SearchResult search(SearchCriteria criteria, IndexType indexType) {
+    public SearchResult search(SearchCriteria criteria, List<MusicFolder> musicFolders, IndexType indexType) {
         SearchResult result = new SearchResult();
         int offset = criteria.getOffset();
         int count = criteria.getCount();
@@ -186,7 +186,15 @@ public class SearchService {
             Analyzer analyzer = new SubsonicAnalyzer();
 
             MultiFieldQueryParser queryParser = new MultiFieldQueryParser(LUCENE_VERSION, indexType.getFields(), analyzer, indexType.getBoosts());
-            Query query = queryParser.parse(analyzeQuery(criteria.getQuery()));
+
+            BooleanQuery query = new BooleanQuery();
+            query.add(queryParser.parse(analyzeQuery(criteria.getQuery())), BooleanClause.Occur.MUST);
+
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
+            }
+            query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
             TopDocs topDocs = searcher.search(query, null, offset + count);
             result.setTotalHits(topDocs.totalHits);
