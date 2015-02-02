@@ -93,12 +93,20 @@ public class DownloadController implements Controller, LastModified {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        User user = securityService.getCurrentUser(request);
         TransferStatus status = null;
         try {
 
             status = statusService.createDownloadStatus(playerService.getPlayer(request, response, false, false));
 
             MediaFile mediaFile = getMediaFile(request);
+
+            if (!securityService.isFolderAccessAllowed(mediaFile, user.getUsername())) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                   "Access to file " + mediaFile.getId() + " is forbidden for user " + user.getUsername());
+                return null;
+            }
+
             Integer playlistId = ServletRequestUtils.getIntParameter(request, "playlist");
             String playerId = request.getParameter("player");
             int[] indexes = request.getParameter("i") == null ? null : ServletRequestUtils.getIntParameters(request, "i");
@@ -138,7 +146,6 @@ public class DownloadController implements Controller, LastModified {
         } finally {
             if (status != null) {
                 statusService.removeDownloadStatus(status);
-                User user = securityService.getCurrentUser(request);
                 securityService.updateUserByteCounts(user, 0L, status.getBytesTransfered(), 0L);
             }
         }

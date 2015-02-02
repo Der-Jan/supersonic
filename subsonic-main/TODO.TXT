@@ -48,9 +48,9 @@ Per-user folder access
   Similar songs / artists
   REST: getSongsByGenre
   REST: getVideos
-  Add access check to download, stream, hls
   Rename to MusicFolder
   Access Denied > Back fails.
+  NPE when removing all folder access
 Update year list in More > Shuffle play
 
 Lossless streaming
