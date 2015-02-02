@@ -327,9 +327,17 @@ public class MediaFileDao extends AbstractDao {
                           "and present and genre = :genre limit :count offset :offset", rowMapper, args);
     }
 
-    public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {
-        return query("select " + COLUMNS + " from media_file where type in (?,?,?) and genre=? and present limit ? offset ?",
-                     rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), genre, count, offset);
+    public List<MediaFile> getSongsByGenre(final String genre, final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("types", Arrays.asList(MUSIC.name(), PODCAST.name(), AUDIOBOOK.name()));
+            put("genre", genre);
+            put("count", count);
+            put("offset", offset);
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type in (:types) and genre = :genre " +
+                          "and present and folder in (:folders) limit :count offset :offset",
+                     rowMapper, args);
     }
 
     public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {

@@ -335,8 +335,9 @@ public class RESTController extends MultiActionController {
         int offset = getIntParameter(request, "offset", 0);
         int count = getIntParameter(request, "count", 10);
         count = Math.max(0, Math.min(count, 500));
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
-        for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count)) {
+        for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count, musicFolders)) {
             songs.getSong().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);
