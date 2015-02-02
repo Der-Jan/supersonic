@@ -96,9 +96,15 @@ public class MediaFileDao extends AbstractDao {
                      artist, album, MUSIC.name(), AUDIOBOOK.name(), PODCAST.name());
     }
 
-    public List<MediaFile> getVideos(int size, int offset) {
-        return query("select " + COLUMNS + " from media_file where type=? and present order by title limit ? offset ?", rowMapper,
-                     VIDEO.name(), size, offset);
+    public List<MediaFile> getVideos(final int count, final int offset, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", VIDEO.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and present and folder in (:folders) " +
+                          "order by title limit :count offset :offset", rowMapper, args);
     }
 
     public MediaFile getArtistByName(String name) {

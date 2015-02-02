@@ -1162,9 +1162,10 @@ public class RESTController extends MultiActionController {
 
         int size = getIntParameter(request, "size", Integer.MAX_VALUE);
         int offset = getIntParameter(request, "offset", 0);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
         Videos result = new Videos();
-        for (MediaFile mediaFile : mediaFileDao.getVideos(size, offset)) {
+        for (MediaFile mediaFile : mediaFileDao.getVideos(size, offset, musicFolders)) {
             result.getVideo().add(createJaxbChild(player, mediaFile, username));
         }
         Response res = jaxbWriter.createResponse(true);

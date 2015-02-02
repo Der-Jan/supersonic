@@ -47,7 +47,6 @@ Per-user folder access
   REST: Random albums returns duplicates
   Similar songs / artists
   REST: getSongsByGenre
-  REST: getVideos
   Rename to MusicFolder
   Access Denied > Back fails.
 
