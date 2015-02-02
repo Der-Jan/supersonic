@@ -34,6 +34,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -152,7 +153,11 @@ public class UserSettingsController extends SimpleFormController {
         userSettings.setChanged(new Date());
         settingsService.updateUserSettings(userSettings);
 
-        settingsService.setMusicFoldersForUser(command.getUsername(), command.getAllowedMusicFolderIds());
+        List<Integer> allowedMusicFolderIds = command.getAllowedMusicFolderIds();
+        if (allowedMusicFolderIds == null) {
+            allowedMusicFolderIds = Collections.emptyList();
+        }
+        settingsService.setMusicFoldersForUser(command.getUsername(), allowedMusicFolderIds);
     }
 
     private void resetCommand(UserSettingsCommand command) {

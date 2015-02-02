@@ -50,7 +50,7 @@ Per-user folder access
   REST: getVideos
   Rename to MusicFolder
   Access Denied > Back fails.
-  NPE when removing all folder access
+
 Update year list in More > Shuffle play
 
 Lossless streaming
