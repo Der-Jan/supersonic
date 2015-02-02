@@ -42,13 +42,13 @@ Per-user folder access
   Use throughout
       Playlists
       Shares
-  Browse by tags
-  UserSettings.getSelectedMusicFolderId()
   Create link from media folder settings to user settings
-  Search
   REST: test all
   REST: Random albums returns duplicates
-  REST: Avoid accessing directly by id
+  Similar songs / artists
+  REST: getSongsByGenre
+  REST: getVideos
+  Add access check to download, stream, hls
   Rename to MusicFolder
   Access Denied > Back fails.
 Update year list in More > Shuffle play

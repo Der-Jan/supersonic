@@ -608,6 +608,10 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Song not found.");
             return;
         }
+        if (!securityService.isFolderAccessAllowed(song, username)) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
+            return;
+        }
 
         Response res = jaxbWriter.createResponse(true);
         res.setSong(createJaxbChild(player, song, username));
@@ -623,6 +627,10 @@ public class RESTController extends MultiActionController {
         MediaFile dir = mediaFileService.getMediaFile(id);
         if (dir == null) {
             error(request, response, ErrorCode.NOT_FOUND, "Directory not found");
+            return;
+        }
+        if (!securityService.isFolderAccessAllowed(dir, username)) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
             return;
         }
 
@@ -1355,6 +1363,16 @@ public class RESTController extends MultiActionController {
         User user = securityService.getCurrentUser(request);
         if (!user.isStreamRole()) {
             error(request, response, ErrorCode.NOT_AUTHORIZED, user.getUsername() + " is not authorized to play files.");
+            return null;
+        }
+        int id = getRequiredIntParameter(request, "id");
+        MediaFile video = mediaFileDao.getMediaFile(id);
+        if (video == null || video.isDirectory()) {
+            error(request, response, ErrorCode.NOT_FOUND, "Video not found.");
+            return null;
+        }
+        if (!securityService.isFolderAccessAllowed(video, user.getUsername())) {
+            error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
             return null;
         }
         hlsController.handleRequest(request, response);
