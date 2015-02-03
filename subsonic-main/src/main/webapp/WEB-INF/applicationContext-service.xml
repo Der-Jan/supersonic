@@ -227,6 +227,8 @@
     <bean id="ajaxMultiService" class="net.sourceforge.subsonic.ajax.MultiService">
         <property name="networkService" ref="networkService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="securityService" ref="securityService"/>
         <property name="lastFmService" ref="lastFmService"/>
     </bean>
 

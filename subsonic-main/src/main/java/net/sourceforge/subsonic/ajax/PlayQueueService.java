@@ -244,7 +244,9 @@ public class PlayQueueService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         MediaFile artist = mediaFileService.getMediaFile(id);
-        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count);
+        String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count, musicFolders);
         Player player = getCurrentPlayer(request, response);
         player.getPlayQueue().addFiles(false, similarSongs);
         return convert(request, player, true).setStartPlayerAt(0);

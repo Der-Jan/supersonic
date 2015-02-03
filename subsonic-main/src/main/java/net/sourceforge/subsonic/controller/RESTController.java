@@ -385,7 +385,8 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
             return;
         }
-        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(mediaFile, count);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(mediaFile, count, musicFolders);
         Player player = playerService.getPlayer(request, response);
         for (MediaFile similarSong : similarSongs) {
             result.getSong().add(createJaxbChild(player, similarSong, username));
@@ -411,7 +412,9 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Artist not found.");
             return;
         }
-        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count);
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count, musicFolders);
         Player player = playerService.getPlayer(request, response);
         for (MediaFile similarSong : similarSongs) {
             result.getSong().add(createJaxbChild(player, similarSong, username));
@@ -438,7 +441,8 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
             return;
         }
-        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count, includeNotPresent);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, count, includeNotPresent, musicFolders);
         for (MediaFile similarArtist : similarArtists) {
             result.getSimilarArtist().add(createJaxbArtist(similarArtist, username));
         }
@@ -474,7 +478,8 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        List<Artist> similarArtists = lastFmService.getSimilarArtists(artist, count, includeNotPresent);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<Artist> similarArtists = lastFmService.getSimilarArtists(artist, count, includeNotPresent, musicFolders);
         for (Artist similarArtist : similarArtists) {
             result.getSimilarArtist().add(createJaxbArtist(new ArtistID3(), similarArtist, username));
         }

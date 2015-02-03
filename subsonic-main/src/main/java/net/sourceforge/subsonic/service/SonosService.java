@@ -255,10 +255,10 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forShuffleAlbumList(albumListType, count, getUsername());
         } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
-            media = sonosHelper.forRadioArtist(mediaFileId, count);
+            media = sonosHelper.forRadioArtist(mediaFileId, count, getUsername());
         } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
-            media = sonosHelper.forSimilarArtists(mediaFileId);
+            media = sonosHelper.forSimilarArtists(mediaFileId, getUsername());
         } else {
             media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }

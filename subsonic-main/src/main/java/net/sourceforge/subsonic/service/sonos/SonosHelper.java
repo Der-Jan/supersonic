@@ -163,9 +163,10 @@ public class SonosHelper {
         return forMediaFiles(songs);
     }
 
-    public List<AbstractMedia> forRadioArtist(int mediaFileId, int count) {
+    public List<AbstractMedia> forRadioArtist(int mediaFileId, int count, String username) {
         MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
-        List<MediaFile> songs = filterMusic(lastFmService.getSimilarSongs(artist, count));
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> songs = filterMusic(lastFmService.getSimilarSongs(artist, count, musicFolders));
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
         return forMediaFiles(songs);
@@ -554,9 +555,10 @@ public class SonosHelper {
         return result;
     }
 
-    public List<AbstractMedia> forSimilarArtists(int mediaFileId) {
+    public List<AbstractMedia> forSimilarArtists(int mediaFileId, String username) {
         MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
-        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, 100, false);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, 100, false, musicFolders);
         return forMediaFiles(similarArtists);
     }
 

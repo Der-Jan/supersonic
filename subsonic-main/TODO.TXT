@@ -45,11 +45,11 @@ Per-user folder access
   Create link from media folder settings to user settings
   REST: test all
   REST: Random albums returns duplicates
-  Similar songs / artists
-  REST:
   getSongsByArtist
   Rename to MusicFolder
   Access Denied > Back fails.
+  LastFmService: Simplify logic for filling up with non-present artists.
+  Turn on debug logging of sql queries.
 
 Update year list in More > Shuffle play
 

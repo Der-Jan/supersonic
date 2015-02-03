@@ -152,6 +152,11 @@ public class AbstractDao {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    protected <T> T namedQueryOne(String sql, RowMapper rowMapper, Map<String, Object> args) {
+        List<T> list = namedQuery(sql, rowMapper, args);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
     public void setDaoHelper(DaoHelper daoHelper) {
         this.daoHelper = daoHelper;
     }

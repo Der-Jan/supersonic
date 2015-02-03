@@ -107,9 +107,14 @@ public class MediaFileDao extends AbstractDao {
                           "order by title limit :count offset :offset", rowMapper, args);
     }
 
-    public MediaFile getArtistByName(String name) {
-        return queryOne("select " + COLUMNS + " from media_file where type=? and artist=? and present",
-                        rowMapper, DIRECTORY.name(), name);
+    public MediaFile getArtistByName(final String name, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", DIRECTORY.name());
+            put("name", name);
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from media_file where type = :type and artist = :name " +
+                             "and present and folder in (:folders)", rowMapper, args);
     }
 
     /**
@@ -337,7 +342,7 @@ public class MediaFileDao extends AbstractDao {
         }};
         return namedQuery("select " + COLUMNS + " from media_file where type in (:types) and genre = :genre " +
                           "and present and folder in (:folders) limit :count offset :offset",
-                     rowMapper, args);
+                          rowMapper, args);
     }
 
     public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {

@@ -55,6 +55,23 @@ public class ArtistDao extends AbstractDao {
     }
 
     /**
+     * Returns the artist with the given name.
+     *
+     * @param artistName   The artist name.
+     * @param musicFolders Only return artists that have at least one album in these folders.
+     * @return The artist or null.
+     */
+    public Artist getArtist(final String artistName, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("name", artistName);
+            put("folders", MusicFolder.toIdList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from artist where name = :name and exists " +
+                             "(select 1 from album where artist.name = album.artist and album.present and album.folder_id in (:folders))",
+                             rowMapper, args);
+    }
+
+    /**
      * Returns the artist with the given ID.
      *
      * @param id The artist ID.
