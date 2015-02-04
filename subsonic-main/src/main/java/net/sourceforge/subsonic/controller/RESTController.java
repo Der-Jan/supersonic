@@ -826,7 +826,9 @@ public class RESTController extends MultiActionController {
         }
         PlaylistWithSongs result = createJaxbPlaylist(new PlaylistWithSongs(), playlist);
         for (MediaFile mediaFile : playlistService.getFilesInPlaylist(id)) {
-            result.getEntry().add(createJaxbChild(player, mediaFile, username));
+            if (securityService.isFolderAccessAllowed(mediaFile, username)) {
+                result.getEntry().add(createJaxbChild(player, mediaFile, username));
+            }
         }
 
         Response res = jaxbWriter.createResponse(true);
