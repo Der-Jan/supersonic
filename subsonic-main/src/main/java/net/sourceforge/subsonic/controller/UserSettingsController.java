@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.controller;
 
 import net.sourceforge.subsonic.command.UserSettingsCommand;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
@@ -31,6 +32,9 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +72,8 @@ public class UserSettingsController extends SimpleFormController {
         command.setTranscodeDirectory(transcodingService.getTranscodeDirectory().getPath());
         command.setTranscodeSchemes(TranscodeScheme.values());
         command.setLdapEnabled(settingsService.isLdapEnabled());
+        command.setAllMusicFolders(settingsService.getAllMusicFolders());
+        command.setAllowedMusicFolderIds(getAllowedMusicFolderIds(user));
 
         return command;
     }
@@ -81,6 +87,18 @@ public class UserSettingsController extends SimpleFormController {
             }
         }
         return null;
+    }
+
+    private List<Integer> getAllowedMusicFolderIds(User user) {
+        List<Integer> result = new ArrayList<Integer>();
+        List<MusicFolder> allowedMusicFolders = user == null
+                                                ? settingsService.getAllMusicFolders()
+                                                : settingsService.getMusicFoldersForUser(user.getUsername());
+
+        for (MusicFolder musicFolder : allowedMusicFolders) {
+            result.add(musicFolder.getId());
+        }
+        return result;
     }
 
     @Override
@@ -134,6 +152,12 @@ public class UserSettingsController extends SimpleFormController {
         userSettings.setTranscodeScheme(TranscodeScheme.valueOf(command.getTranscodeSchemeName()));
         userSettings.setChanged(new Date());
         settingsService.updateUserSettings(userSettings);
+
+        List<Integer> allowedMusicFolderIds = command.getAllowedMusicFolderIds();
+        if (allowedMusicFolderIds == null) {
+            allowedMusicFolderIds = Collections.emptyList();
+        }
+        settingsService.setMusicFoldersForUser(command.getUsername(), allowedMusicFolderIds);
     }
 
     private void resetCommand(UserSettingsCommand command) {
@@ -148,6 +172,8 @@ public class UserSettingsController extends SimpleFormController {
         command.setConfirmPassword(null);
         command.setEmail(null);
         command.setTranscodeSchemeName(null);
+        command.setAllMusicFolders(settingsService.getAllMusicFolders());
+        command.setAllowedMusicFolderIds(getAllowedMusicFolderIds(null));
     }
 
     public void setSecurityService(SecurityService securityService) {

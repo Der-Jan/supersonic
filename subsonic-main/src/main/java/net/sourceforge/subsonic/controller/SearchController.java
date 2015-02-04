@@ -18,6 +18,8 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.SearchCommand;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.User;
@@ -65,6 +68,7 @@ public class SearchController extends SimpleFormController {
         command.setUser(user);
         command.setPartyModeEnabled(userSettings.isPartyModeEnabled());
 
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
         String query = StringUtils.trimToNull(command.getQuery());
 
         if (query != null) {
@@ -73,13 +77,13 @@ public class SearchController extends SimpleFormController {
             criteria.setCount(MATCH_COUNT);
             criteria.setQuery(query);
 
-            SearchResult artists = searchService.search(criteria, SearchService.IndexType.ARTIST);
+            SearchResult artists = searchService.search(criteria, musicFolders, SearchService.IndexType.ARTIST);
             command.setArtists(artists.getMediaFiles());
 
-            SearchResult albums = searchService.search(criteria, SearchService.IndexType.ALBUM);
+            SearchResult albums = searchService.search(criteria, musicFolders, SearchService.IndexType.ALBUM);
             command.setAlbums(albums.getMediaFiles());
 
-            SearchResult songs = searchService.search(criteria, SearchService.IndexType.SONG);
+            SearchResult songs = searchService.search(criteria, musicFolders, SearchService.IndexType.SONG);
             command.setSongs(songs.getMediaFiles());
 
             command.setPlayer(playerService.getPlayer(request, response));

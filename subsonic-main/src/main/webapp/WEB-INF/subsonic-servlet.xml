@@ -114,6 +114,8 @@
         <property name="viewName" value="reload"/>
         <property name="playerService" ref="playerService"/>
         <property name="searchService" ref="searchService"/>
+        <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="reloadFrames">
             <list>
                 <bean class="net.sourceforge.subsonic.controller.ReloadFrame">
@@ -189,7 +191,7 @@
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
-        <property name="mediaFolderDao" ref="mediaFileDao"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
     <bean id="networkSettingsController" class="net.sourceforge.subsonic.controller.NetworkSettingsController">
         <property name="commandClass" value="net.sourceforge.subsonic.command.NetworkSettingsCommand"/>
@@ -314,6 +316,7 @@
     <bean id="hlsController" class="net.sourceforge.subsonic.controller.HLSController">
         <property name="playerService" ref="playerService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="videoPlayerController" class="net.sourceforge.subsonic.controller.VideoPlayerController">
         <property name="viewName" value="videoPlayer"/>

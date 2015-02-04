@@ -54,13 +54,14 @@ public class MoreController extends ParameterizableViewController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
 
+        User user = securityService.getCurrentUser(request);
+
         String uploadDirectory = null;
-        List<MusicFolder> musicFolders = settingsService.getAllMusicFolders();
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
         if (musicFolders.size() > 0) {
             uploadDirectory = new File(musicFolders.get(0).getPath(), "Incoming").getPath();
         }
 
-        User user = securityService.getCurrentUser(request);
 
         StringBuilder jamstashUrl = new StringBuilder("http://jamstash.com/#/settings?u=" + StringUtil.urlEncode(user.getUsername()) + "&url=");
         if (settingsService.isUrlRedirectionEnabled()) {
@@ -76,7 +77,7 @@ public class MoreController extends ParameterizableViewController {
         map.put("uploadDirectory", uploadDirectory);
         map.put("genres", mediaFileService.getGenres(false));
         map.put("currentYear", Calendar.getInstance().get(Calendar.YEAR));
-        map.put("musicFolders", settingsService.getAllMusicFolders());
+        map.put("musicFolders", musicFolders);
         map.put("clientSidePlaylist", player.isExternalWithPlaylist() || player.isWeb());
         map.put("brand", settingsService.getBrand());
         map.put("jamstashUrl", jamstashUrl);

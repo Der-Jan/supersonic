@@ -124,6 +124,13 @@ public class StreamController implements Controller {
             HttpRange range = null;
 
             if (isSingleFile) {
+
+                if (!securityService.isFolderAccessAllowed(file, user.getUsername())) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                       "Access to file " + file.getId() + " is forbidden for user " + user.getUsername());
+                    return null;
+                }
+
                 PlayQueue playQueue = new PlayQueue();
                 playQueue.addFiles(true, file);
                 player.setPlayQueue(playQueue);

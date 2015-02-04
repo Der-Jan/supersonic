@@ -35,6 +35,7 @@ import org.springframework.dao.DataAccessException;
 import net.sf.ehcache.Ehcache;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.UserDao;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.util.FileUtil;
@@ -265,6 +266,15 @@ public class SecurityService implements UserDetailsService {
             return settingsService.getPodcastFolder();
         }
         return null;
+    }
+
+    public boolean isFolderAccessAllowed(MediaFile file, String username) {
+        for (MusicFolder musicFolder : settingsService.getMusicFoldersForUser(username)) {
+            if (musicFolder.getPath().getPath().equals(file.getFolder())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

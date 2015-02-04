@@ -20,8 +20,11 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -93,14 +96,25 @@ public class MediaFileDao extends AbstractDao {
                      artist, album, MUSIC.name(), AUDIOBOOK.name(), PODCAST.name());
     }
 
-    public List<MediaFile> getVideos(int size, int offset) {
-        return query("select " + COLUMNS + " from media_file where type=? and present order by title limit ? offset ?", rowMapper,
-                     VIDEO.name(), size, offset);
+    public List<MediaFile> getVideos(final int count, final int offset, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", VIDEO.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and present and folder in (:folders) " +
+                          "order by title limit :count offset :offset", rowMapper, args);
     }
 
-    public MediaFile getArtistByName(String name) {
-        return queryOne("select " + COLUMNS + " from media_file where type=? and artist=? and present",
-                        rowMapper, DIRECTORY.name(), name);
+    public MediaFile getArtistByName(final String name, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", DIRECTORY.name());
+            put("name", name);
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from media_file where type = :type and artist = :name " +
+                             "and present and folder in (:folders)", rowMapper, args);
     }
 
     /**
@@ -193,91 +207,142 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns the most frequently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most frequently played albums.
      */
-    public List<MediaFile> getMostFrequentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and play_count > 0 and present and folder like ? " +
-                     "order by play_count desc limit ? offset ?", rowMapper, ALBUM.name(),
-                     mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+    public List<MediaFile> getMostFrequentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and play_count > 0 and present and folder in (:folders) " +
+                          "order by play_count desc limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns the most recently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
-    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and last_played is not null and present " +
-                     "and folder like ? order by last_played desc limit ? offset ?", rowMapper, ALBUM.name(),
-                     mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+    public List<MediaFile> getMostRecentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and last_played is not null and present " +
+                          "and folder in (:folders) order by last_played desc limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns the most recently added albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently added albums.
      */
-    public List<MediaFile> getNewestAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present order by created desc limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+    public List<MediaFile> getNewestAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                          "order by created desc limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns albums in alphabetical order.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param byArtist    Whether to sort by artist name
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param byArtist     Whether to sort by artist name
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist, MusicFolder mediaFolder) {
+    public List<MediaFile> getAlphabeticalAlbums(final int offset, final int count, boolean byArtist, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
         String orderBy = byArtist ? "artist, album" : "album";
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and artist != '' and present order by " + orderBy + " limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), count, offset);
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and artist != '' and present " +
+                          "order by " + orderBy + " limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns albums within a year range.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param fromYear    The first year in the range.
-     * @param toYear      The last year in the range.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param fromYear     The first year in the range.
+     * @param toYear       The last year in the range.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present and year between ? and ? order by year limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), fromYear, toYear, count, offset);
+    public List<MediaFile> getAlbumsByYear(final int offset, final int count, final int fromYear, final int toYear,
+                                           final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("fromYear", fromYear);
+            put("toYear", toYear);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                          "and year between :fromYear and :toYear order by year limit :count offset :offset",
+                          rowMapper, args);
     }
 
     /**
      * Returns albums in a genre.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param genre       The genre name.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param genre        The genre name.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the genre.
      */
-    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
-        return query("select " + COLUMNS + " from media_file where type=? and folder like ? and present and genre=? limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), genre, count, offset);
+    public List<MediaFile> getAlbumsByGenre(final int offset, final int count, final String genre,
+                                            final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("genre", genre);
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) " +
+                          "and present and genre = :genre limit :count offset :offset", rowMapper, args);
     }
 
-    public List<MediaFile> getSongsByGenre(String genre, int offset, int count) {
-        return query("select " + COLUMNS + " from media_file where type in (?,?,?) and genre=? and present limit ? offset ?",
-                     rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), genre, count, offset);
+    public List<MediaFile> getSongsByGenre(final String genre, final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("types", Arrays.asList(MUSIC.name(), PODCAST.name(), AUDIOBOOK.name()));
+            put("genre", genre);
+            put("count", count);
+            put("offset", offset);
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQuery("select " + COLUMNS + " from media_file where type in (:types) and genre = :genre " +
+                          "and present and folder in (:folders) limit :count offset :offset",
+                          rowMapper, args);
     }
 
     public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {
@@ -288,61 +353,108 @@ public class MediaFileDao extends AbstractDao {
     /**
      * Returns the most recently starred albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param username    Returns albums starred by this user.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param username     Returns albums starred by this user.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently starred albums for this user.
      */
-    public List<MediaFile> getStarredAlbums(int offset, int count, String username, MusicFolder mediaFolder) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
-                     "media_file.present and media_file.type=? and media_file.folder like ? and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
-                     rowMapper, ALBUM.name(), mediaFolder == null ? "%" : mediaFolder.getPath().getPath(), username, count, offset);
+    public List<MediaFile> getStarredAlbums(final int offset, final int count, final String username,
+                                            final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
+                          "media_file.present and media_file.type = :type and media_file.folder in (:folders) and starred_media_file.username = :username " +
+                          "order by starred_media_file.created desc limit :count offset :offset",
+                          rowMapper, args);
     }
 
     /**
      * Returns the most recently starred directories.
      *
-     * @param offset   Number of directories to skip.
-     * @param count    Maximum number of directories to return.
-     * @param username Returns directories starred by this user.
+     * @param offset       Number of directories to skip.
+     * @param count        Maximum number of directories to return.
+     * @param username     Returns directories starred by this user.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently starred directories for this user.
      */
-    public List<MediaFile> getStarredDirectories(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
-                     "media_file.present and media_file.type=? and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
-                     rowMapper, DIRECTORY.name(), username, count, offset);
+    public List<MediaFile> getStarredDirectories(final int offset, final int count, final String username,
+                                                 final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", DIRECTORY.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file " +
+                          "where media_file.id = starred_media_file.media_file_id and " +
+                          "media_file.present and media_file.type = :type and starred_media_file.username = :username and " +
+                          "media_file.folder in (:folders) " +
+                          "order by starred_media_file.created desc limit :count offset :offset",
+                          rowMapper, args);
     }
 
     /**
      * Returns the most recently starred files.
      *
-     * @param offset   Number of files to skip.
-     * @param count    Maximum number of files to return.
-     * @param username Returns files starred by this user.
+     * @param offset       Number of files to skip.
+     * @param count        Maximum number of files to return.
+     * @param username     Returns files starred by this user.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently starred files for this user.
      */
-    public List<MediaFile> getStarredFiles(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
-                     "media_file.present and media_file.type in (?,?,?,?) and starred_media_file.username=? order by starred_media_file.created desc limit ? offset ?",
-                     rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name(), username, count, offset);
+    public List<MediaFile> getStarredFiles(final int offset, final int count, final String username,
+                                           final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("types", Arrays.asList(MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name()));
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+            put("count", count);
+            put("offset", offset);
+        }};
+        return namedQuery("select " + prefix(COLUMNS, "media_file") + " from starred_media_file, media_file where media_file.id = starred_media_file.media_file_id and " +
+                          "media_file.present and media_file.type in (:types) and starred_media_file.username = :username and " +
+                          "media_file.folder in (:folders) " +
+                          "order by starred_media_file.created desc limit :count offset :offset",
+                          rowMapper, args);
     }
 
-    public int getAlbumCount() {
-        return queryForInt("select count(*) from media_file where type = ? and present", 0, ALBUM.name());
+    public int getAlbumCount(final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryForInt("select count(*) from media_file where type = :type and folder in (:folders) and present", 0, args);
     }
 
-    public int getPlayedAlbumCount() {
-        return queryForInt("select count(*) from media_file where type = ? and play_count > 0 and present", 0, ALBUM.name());
+    public int getPlayedAlbumCount(final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryForInt("select count(*) from media_file where type = :type " +
+                                "and play_count > 0 and present and folder in (:folders)", 0, args);
     }
 
-    public int getStarredAlbumCount(String username) {
-        return queryForInt("select count(*) from starred_media_file, media_file " +
-                           "where media_file.id = starred_media_file.media_file_id " +
-                           "and media_file.type = ? " +
-                           "and media_file.present " +
-                           "and starred_media_file.username = ?",
-                           0, ALBUM.name(), username);
+    public int getStarredAlbumCount(final String username, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("type", ALBUM.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+            put("username", username);
+        }};
+        return namedQueryForInt("select count(*) from starred_media_file, media_file " +
+                                "where media_file.id = starred_media_file.media_file_id " +
+                                "and media_file.type = :type " +
+                                "and media_file.present " +
+                                "and media_file.folder in (:folders) " +
+                                "and starred_media_file.username = :username",
+                                0, args);
     }
 
     public void starMediaFile(int id, String username) {

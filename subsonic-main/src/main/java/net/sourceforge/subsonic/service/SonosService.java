@@ -209,7 +209,7 @@ public class SonosService implements SonosSoap {
         } else if (ID_SHUFFLE.equals(id)) {
             media = sonosHelper.forShuffle(count);
         } else if (ID_LIBRARY.equals(id)) {
-            media = sonosHelper.forLibrary();
+            media = sonosHelper.forLibrary(getUsername());
         } else if (ID_PLAYLISTS.equals(id)) {
             media = sonosHelper.forPlaylists(getUsername());
         } else if (ID_ALBUMLISTS.equals(id)) {
@@ -231,10 +231,10 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forPlaylist(playlistId);
         } else if (id.startsWith(ID_DECADE_PREFIX)) {
             int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
-            media = sonosHelper.forDecade(decade);
+            media = sonosHelper.forDecade(decade, getUsername());
         } else if (id.startsWith(ID_GENRE_PREFIX)) {
             int genre = Integer.parseInt(id.replace(ID_GENRE_PREFIX, ""));
-            media = sonosHelper.forGenre(genre);
+            media = sonosHelper.forGenre(genre, getUsername());
         } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
             AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
             mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
@@ -255,10 +255,10 @@ public class SonosService implements SonosSoap {
             media = sonosHelper.forShuffleAlbumList(albumListType, count, getUsername());
         } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
-            media = sonosHelper.forRadioArtist(mediaFileId, count);
+            media = sonosHelper.forRadioArtist(mediaFileId, count, getUsername());
         } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
             int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
-            media = sonosHelper.forSimilarArtists(mediaFileId);
+            media = sonosHelper.forSimilarArtists(mediaFileId, getUsername());
         } else {
             media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
         }
@@ -316,7 +316,8 @@ public class SonosService implements SonosSoap {
             throw new IllegalArgumentException("Invalid search category: " + id);
         }
 
-        MediaList mediaList = sonosHelper.forSearch(parameters.getTerm(), parameters.getIndex(), parameters.getCount(), indexType);
+        MediaList mediaList = sonosHelper.forSearch(parameters.getTerm(), parameters.getIndex(),
+                                                    parameters.getCount(), getUsername(), indexType);
         SearchResponse response = new SearchResponse();
         response.setSearchResult(mediaList);
         return response;

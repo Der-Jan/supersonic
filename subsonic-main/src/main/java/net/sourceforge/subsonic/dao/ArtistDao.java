@@ -20,13 +20,17 @@ package net.sourceforge.subsonic.dao;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.MusicFolder;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides database services for artists.
@@ -51,6 +55,23 @@ public class ArtistDao extends AbstractDao {
     }
 
     /**
+     * Returns the artist with the given name.
+     *
+     * @param artistName   The artist name.
+     * @param musicFolders Only return artists that have at least one album in these folders.
+     * @return The artist or null.
+     */
+    public Artist getArtist(final String artistName, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("name", artistName);
+            put("folders", MusicFolder.toIdList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from artist where name = :name and exists " +
+                             "(select 1 from album where artist.name = album.artist and album.present and album.folder_id in (:folders))",
+                             rowMapper, args);
+    }
+
+    /**
      * Returns the artist with the given ID.
      *
      * @param id The artist ID.
@@ -67,18 +88,18 @@ public class ArtistDao extends AbstractDao {
      */
     public synchronized void createOrUpdateArtist(Artist artist) {
         String sql = "update artist set " +
-                "cover_art_path=?," +
-                "album_count=?," +
-                "last_scanned=?," +
-                "present=? " +
-                "where name=?";
+                     "cover_art_path=?," +
+                     "album_count=?," +
+                     "last_scanned=?," +
+                     "present=? " +
+                     "where name=?";
 
         int n = update(sql, artist.getCoverArtPath(), artist.getAlbumCount(), artist.getLastScanned(), artist.isPresent(), artist.getName());
 
         if (n == 0) {
 
             update("insert into artist (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")", null,
-                    artist.getName(), artist.getCoverArtPath(), artist.getAlbumCount(), artist.getLastScanned(), artist.isPresent());
+                   artist.getName(), artist.getCoverArtPath(), artist.getAlbumCount(), artist.getLastScanned(), artist.isPresent());
         }
 
         int id = queryForInt("select id from artist where name=?", null, artist.getName());
@@ -88,26 +109,47 @@ public class ArtistDao extends AbstractDao {
     /**
      * Returns artists in alphabetical order.
      *
-     * @param offset Number of artists to skip.
-     * @param count  Maximum number of artists to return.
+     * @param offset       Number of artists to skip.
+     * @param count        Maximum number of artists to return.
+     * @param musicFolders Only return artists that have at least one album in these folders.
      * @return Artists in alphabetical order.
      */
-    public List<Artist> getAlphabetialArtists(int offset, int count) {
-        return query("select " + COLUMNS + " from artist where present order by name limit ? offset ?", rowMapper, count, offset);
+    public List<Artist> getAlphabetialArtists(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("folders", MusicFolder.toIdList(musicFolders));
+            put("count", count);
+            put("offset", offset);
+        }};
+
+        return namedQuery("select " + COLUMNS + " from artist where present and exists " +
+                          "(select 1 from album where artist.name = album.artist and album.present and album.folder_id in (:folders))" +
+                          "order by name limit :count offset :offset", rowMapper, args);
     }
 
     /**
      * Returns the most recently starred artists.
      *
-     * @param offset   Number of artists to skip.
-     * @param count    Maximum number of artists to return.
-     * @param username Returns artists starred by this user.
+     * @param offset       Number of artists to skip.
+     * @param count        Maximum number of artists to return.
+     * @param username     Returns artists starred by this user.
+     * @param musicFolders Only return artists that have at least one album in these folders.
      * @return The most recently starred artists for this user.
      */
-    public List<Artist> getStarredArtists(int offset, int count, String username) {
-        return query("select " + prefix(COLUMNS, "artist") + " from starred_artist, artist where artist.id = starred_artist.artist_id and " +
-                "artist.present and starred_artist.username=? order by starred_artist.created desc limit ? offset ?",
-                rowMapper, username, count, offset);
+    public List<Artist> getStarredArtists(final int offset, final int count, final String username,
+                                          final List<MusicFolder> musicFolders) {
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("folders", MusicFolder.toIdList(musicFolders));
+            put("username", username);
+            put("count", count);
+            put("offset", offset);
+        }};
+
+        return namedQuery("select " + prefix(COLUMNS, "artist") + " from starred_artist, artist " +
+                          "where artist.id = starred_artist.artist_id and " +
+                          "artist.present and starred_artist.username = :username and exists " +
+                          "(select 1 from album where artist.name = album.artist and album.present and album.folder_id in (:folders))" +
+                          "order by starred_artist.created desc limit :count offset :offset",
+                          rowMapper, args);
     }
 
     public void markPresent(String artistName, Date lastScanned) {
