@@ -76,7 +76,16 @@ public class PlaylistService {
 
         String username = securityService.getCurrentUsername(request);
         mediaFileService.populateStarredDate(files, username);
+        populateAccess(files, username);
         return new PlaylistInfo(playlist, createEntries(files));
+    }
+
+    private void populateAccess(List<MediaFile> files, String username) {
+        for (MediaFile file : files) {
+            if (!securityService.isFolderAccessAllowed(file, username)) {
+                file.setPresent(false);
+            }
+        }
     }
 
     public List<Playlist> createEmptyPlaylist() {

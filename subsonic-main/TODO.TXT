@@ -40,7 +40,6 @@ UPnP memory leak
 Per-user folder access
   REST support for administering folder access.
   Use throughout
-      Playlists
       Shares
   Create link from media folder settings to user settings
   REST: test all
@@ -50,6 +49,7 @@ Per-user folder access
   Access Denied > Back fails.
   LastFmService: Simplify logic for filling up with non-present artists.
   Turn on debug logging of sql queries.
+  Merge to main trunk
 
 Update year list in More > Shuffle play
 
