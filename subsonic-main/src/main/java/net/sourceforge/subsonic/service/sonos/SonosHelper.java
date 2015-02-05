@@ -342,13 +342,11 @@ public class SonosHelper {
             return forGenres(offset, count);
         }
 
-        AlbumList albumList = createAlbumList(albumListType, offset, count, username);
-
         MediaList mediaList = new MediaList();
 
-        int additionForShuffle = 0;
-        if (offset == 0) {
-            additionForShuffle = 1;
+        boolean includeShuffle = offset == 0;
+        if (includeShuffle) {
+            count--;
             MediaMetadata shuffle = new MediaMetadata();
             shuffle.setItemType(ItemType.PROGRAM);
             shuffle.setId(SonosService.ID_SHUFFLE_ALBUMLIST_PREFIX + albumListType.getId());
@@ -356,13 +354,14 @@ public class SonosHelper {
             mediaList.getMediaCollectionOrMediaMetadata().add(shuffle);
         }
 
+        AlbumList albumList = createAlbumList(albumListType, offset - (includeShuffle ? 0 : 1), count, username);
         for (MediaFile album : albumList.getAlbums()) {
             mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album));
         }
 
         mediaList.setIndex(offset);
-        mediaList.setCount(albumList.getAlbums().size() + additionForShuffle);
-        mediaList.setTotal(albumList.getTotal() + additionForShuffle);
+        mediaList.setCount(mediaList.getMediaCollectionOrMediaMetadata().size());
+        mediaList.setTotal(albumList.getTotal() + 1);
         return mediaList;
     }
 

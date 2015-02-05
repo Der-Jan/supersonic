@@ -281,7 +281,7 @@ public class MediaFileDao extends AbstractDao {
         }};
 
         String orderBy = byArtist ? "artist, album" : "album";
-        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and artist != '' and present " +
+        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
                           "order by " + orderBy + " limit :count offset :offset", rowMapper, args);
     }
 
