@@ -204,8 +204,11 @@ public class SonosHelper {
             shuffle.setTitle("Shuffle Play");
             result.add(shuffle);
 
-            MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(Arrays.asList(musicFolder), false);
+            for (MediaFile shortcut : musicIndexService.getShortcuts(Arrays.asList(musicFolder))) {
+                result.add(forDirectory(shortcut));
+            }
 
+            MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(Arrays.asList(musicFolder), false);
             for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {
                 for (MusicIndex.SortableArtistWithMediaFiles artist : artists) {
                     for (MediaFile artistMediaFile : artist.getMediaFiles()) {

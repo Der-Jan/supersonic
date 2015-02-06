@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.Collator;
@@ -38,6 +39,7 @@ import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.MusicIndex.SortableArtist;
+import net.sourceforge.subsonic.util.FileUtil;
 
 /**
  * Provides services for grouping artists by index.
@@ -82,6 +84,18 @@ public class MusicIndexService {
         return result;
     }
 
+    public List<MediaFile> getShortcuts(List<MusicFolder> musicFoldersToUse) {
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        for (String shortcut : settingsService.getShortcutsAsArray()) {
+            for (MusicFolder musicFolder : musicFoldersToUse) {
+                File file = new File(musicFolder.getPath(), shortcut);
+                if (FileUtil.exists(file)) {
+                    result.add(mediaFileService.getMediaFile(file, true));
+                }
+            }
+        }
+        return result;
+    }
 
     private <T extends SortableArtist> SortedMap<MusicIndex, List<T>> sortArtists(List<T> artists) {
         List<MusicIndex> indexes = createIndexesFromExpression(settingsService.getIndexString());

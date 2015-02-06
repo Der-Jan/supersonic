@@ -27,6 +27,10 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
+  Lossless streaming
+  Configurable SID ("Advanced options"?)
+  Document how to manually configure music service
+  Service registration fails when accessing through subsonic.org url?
   Rating
   Capabilities
      User Content Playlists
@@ -49,7 +53,7 @@ Per-user folder access
   Access Denied > Back fails.
   LastFmService: Simplify logic for filling up with non-present artists.
   Turn on debug logging of sql queries.
-  Merge to main trunk
+  Upgrade to 5.2.beta1
 
 Update year list in More > Shuffle play
 

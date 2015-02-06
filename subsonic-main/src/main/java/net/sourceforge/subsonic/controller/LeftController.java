@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -36,12 +35,10 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import net.sourceforge.subsonic.domain.InternetRadio;
-import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -67,7 +64,6 @@ public class LeftController extends ParameterizableViewController {
     private MediaScannerService mediaScannerService;
     private SettingsService settingsService;
     private SecurityService securityService;
-    private MediaFileService mediaFileService;
     private MusicIndexService musicIndexService;
     private PlayerService playerService;
 
@@ -130,7 +126,6 @@ public class LeftController extends ParameterizableViewController {
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
         MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
-        String[] shortcuts = settingsService.getShortcutsAsArray();
         UserSettings userSettings = settingsService.getUserSettings(username);
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
         MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
@@ -140,7 +135,7 @@ public class LeftController extends ParameterizableViewController {
         map.put("musicFolders", allMusicFolders);
         map.put("selectedMusicFolder", selectedMusicFolder);
         map.put("radios", settingsService.getAllInternetRadios());
-        map.put("shortcuts", getShortcuts(musicFoldersToUse, shortcuts));
+        map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
         map.put("mediaFolderChanged", mediaFolderChanged);
@@ -188,21 +183,6 @@ public class LeftController extends ParameterizableViewController {
         return settingsService.getMusicFolderById(musicFolderId);
     }
 
-    public List<MediaFile> getShortcuts(List<MusicFolder> musicFoldersToUse, String[] shortcuts) {
-        List<MediaFile> result = new ArrayList<MediaFile>();
-
-        for (String shortcut : shortcuts) {
-            for (MusicFolder musicFolder : musicFoldersToUse) {
-                File file = new File(musicFolder.getPath(), shortcut);
-                if (FileUtil.exists(file)) {
-                    result.add(mediaFileService.getMediaFile(file, true));
-                }
-            }
-        }
-
-        return result;
-    }
-
     public void setMediaScannerService(MediaScannerService mediaScannerService) {
         this.mediaScannerService = mediaScannerService;
     }
@@ -213,10 +193,6 @@ public class LeftController extends ParameterizableViewController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
-    }
-
-    public void setMediaFileService(MediaFileService mediaFileService) {
-        this.mediaFileService = mediaFileService;
     }
 
     public void setMusicIndexService(MusicIndexService musicIndexService) {

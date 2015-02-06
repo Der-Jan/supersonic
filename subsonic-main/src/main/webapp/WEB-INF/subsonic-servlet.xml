@@ -9,7 +9,6 @@
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="mediaFileService" ref="mediaFileService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="playerService" ref="playerService"/>
     </bean>

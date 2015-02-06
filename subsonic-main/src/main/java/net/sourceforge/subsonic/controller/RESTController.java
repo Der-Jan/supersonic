@@ -268,8 +268,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        List<MediaFile> shortcuts = leftController.getShortcuts(musicFolders, settingsService.getShortcutsAsArray());
-        for (MediaFile shortcut : shortcuts) {
+        for (MediaFile shortcut : musicIndexService.getShortcuts(musicFolders)) {
             indexes.getShortcut().add(createJaxbArtist(shortcut, username));
         }
 
