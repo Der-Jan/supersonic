@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <table>
     <tr>
-        <c:if test="${not empty model.mediaFolder}">
+        <c:if test="${not empty model.musicFolder}">
             <td style="padding-right: 2em">
                 <div style="border:1px solid #<spring:theme code="detailColor"/>; padding-left: 0.5em;padding-right: 0.5em">
-                        ${fn:escapeXml(model.mediaFolder.name)}
+                        ${fn:escapeXml(model.musicFolder.name)}
                 </div>
             </td>
         </c:if>

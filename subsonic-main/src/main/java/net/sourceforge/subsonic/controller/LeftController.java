@@ -116,7 +116,7 @@ public class LeftController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean mediaFolderChanged = saveSelectedMusicFolder(request);
+        boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
         MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
@@ -138,7 +138,7 @@ public class LeftController extends ParameterizableViewController {
         map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
-        map.put("mediaFolderChanged", mediaFolderChanged);
+        map.put("musicFolderChanged", musicFolderChanged);
 
         if (statistics != null) {
             map.put("statistics", statistics);

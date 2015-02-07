@@ -48,8 +48,6 @@ Per-user folder access
       Shares
   REST: test all
   REST: Random albums returns duplicates
-  getSongsByArtist
-  Rename to MusicFolder
   Access Denied > Back fails.
   LastFmService: Simplify logic for filling up with non-present artists.
   Turn on debug logging of sql queries.

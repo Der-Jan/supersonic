@@ -15,7 +15,7 @@
             updatePlaylists();
 
             var mainLocation = top.main.location.href;
-            if (${model.mediaFolderChanged}) {
+            if (${model.musicFolderChanged}) {
                 if (mainLocation.indexOf("/home.view") != -1) {
                     top.main.location.href = mainLocation;
                 }

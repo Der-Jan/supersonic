@@ -82,7 +82,7 @@ public class HomeController extends ParameterizableViewController {
         if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
             selectedMusicFolderId = null;
         }
-        MusicFolder selectedMediaFolder = selectedMusicFolderId == null ? null : settingsService.getMusicFolderById(selectedMusicFolderId);
+        MusicFolder selectedMusicFolder = selectedMusicFolderId == null ? null : settingsService.getMusicFolderById(selectedMusicFolderId);
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(), selectedMusicFolderId);
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -127,7 +127,7 @@ public class HomeController extends ParameterizableViewController {
         map.put("listSize", LIST_SIZE);
         map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         map.put("listOffset", listOffset);
-        map.put("mediaFolder", selectedMediaFolder);
+        map.put("musicFolder", selectedMusicFolder);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -186,9 +186,9 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getRandom(int count, List<MusicFolder> mediaFolders) throws IOException {
+    private List<Album> getRandom(int count, List<MusicFolder> musicFolders) throws IOException {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile file : searchService.getRandomAlbums(count, mediaFolders)) {
+        for (MediaFile file : searchService.getRandomAlbums(count, musicFolders)) {
             result.add(createAlbum(file));
         }
         return result;

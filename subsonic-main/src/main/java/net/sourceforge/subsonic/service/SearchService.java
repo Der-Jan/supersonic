@@ -302,10 +302,10 @@ public class SearchService {
      * Returns a number of random albums.
      *
      * @param count        Number of albums to return.
-     * @param mediaFolders Only return albums from these media folders.
+     * @param musicFolders Only return albums from these folders.
      * @return List of random albums.
      */
-    public List<MediaFile> getRandomAlbums(int count, List<MusicFolder> mediaFolders) {
+    public List<MediaFile> getRandomAlbums(int count, List<MusicFolder> musicFolders) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
         IndexReader reader = null;
@@ -313,11 +313,11 @@ public class SearchService {
             reader = createIndexReader(ALBUM);
             Searcher searcher = new IndexSearcher(reader);
 
-            List<SpanTermQuery> mediaFolderQueries = new ArrayList<SpanTermQuery>();
-            for (MusicFolder mediaFolder : mediaFolders) {
-                mediaFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, mediaFolder.getPath().getPath())));
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
             }
-            Query query = new SpanOrQuery(mediaFolderQueries.toArray(new SpanQuery[mediaFolderQueries.size()]));
+            Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
             Random random = new Random(System.currentTimeMillis());
