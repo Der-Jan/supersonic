@@ -46,7 +46,12 @@
 
 </table>
 
-    <div style="padding-top: 1.2em;padding-bottom: 0.3em">
+    <p class="forward"><a href="userSettings.view"><fmt:message key="musicfoldersettings.access"/></a></p>
+    <p class="detail" style="width:60%;white-space:normal;margin-top:-10px;">
+        <fmt:message key="musicfoldersettings.access.description"/>
+    </p>
+
+    <div style="padding-top: 0.5em;padding-bottom: 0.3em">
         <span style="white-space: nowrap">
             <fmt:message key="musicfoldersettings.scan"/>
             <form:select path="interval">

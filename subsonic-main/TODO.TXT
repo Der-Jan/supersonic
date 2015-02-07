@@ -27,6 +27,8 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
+  Reload left frame if changing folder access for current user.
+  Install on asrock
   Lossless streaming
   Configurable SID ("Advanced options"?)
   Document how to manually configure music service
@@ -45,7 +47,6 @@ Per-user folder access
   REST support for administering folder access.
   Use throughout
       Shares
-  Create link from media folder settings to user settings
   REST: test all
   REST: Random albums returns duplicates
   getSongsByArtist
