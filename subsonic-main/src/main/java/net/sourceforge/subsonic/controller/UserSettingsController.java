@@ -113,7 +113,6 @@ public class UserSettingsController extends SimpleFormController {
             updateUser(command);
         }
         resetCommand(command);
-        command.setToast(true);
     }
 
     private void deleteUser(UserSettingsCommand command) {
@@ -174,6 +173,8 @@ public class UserSettingsController extends SimpleFormController {
         command.setTranscodeSchemeName(null);
         command.setAllMusicFolders(settingsService.getAllMusicFolders());
         command.setAllowedMusicFolderIds(getAllowedMusicFolderIds(null));
+        command.setToast(true);
+        command.setReload(true);
     }
 
     public void setSecurityService(SecurityService securityService) {

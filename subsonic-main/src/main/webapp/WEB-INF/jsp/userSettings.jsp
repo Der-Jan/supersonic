@@ -5,9 +5,37 @@
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
+    <script type="text/javascript">
+        function init() {
+            enablePasswordChangeFields();
+            <c:if test="${command.reload}">
+            parent.frames.left.location.href="left.view?";
+            </c:if>
+        }
+        function enablePasswordChangeFields() {
+            var changePasswordCheckbox = $("#passwordChange");
+            var ldapCheckbox = $("#ldapAuthenticated");
+            var passwordChangeTable = $("#passwordChangeTable");
+            var passwordChangeCheckboxTable = $("#passwordChangeCheckboxTable");
+
+            if (changePasswordCheckbox && changePasswordCheckbox.is(":checked") && (ldapCheckbox == null || !ldapCheckbox.is(":checked"))) {
+                passwordChangeTable.show();
+            } else {
+                passwordChangeTable.hide();
+            }
+
+            if (changePasswordCheckbox) {
+                if (ldapCheckbox && ldapCheckbox.is(":checked")) {
+                    passwordChangeCheckboxTable.hide();
+                } else {
+                    passwordChangeCheckboxTable.show();
+                }
+            }
+        }
+    </script>
 </head>
 
-<body class="mainframe bgcolor1" onload="enablePasswordChangeFields();">
+<body class="mainframe bgcolor1" onload="init()">
 <script type="text/javascript" src="<c:url value="/script/wz_tooltip.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/script/tip_balloon.js"/>"></script>
 
@@ -15,29 +43,6 @@
     <c:param name="cat" value="user"/>
     <c:param name="toast" value="${command.toast}"/>
 </c:import>
-
-<script type="text/javascript" language="javascript">
-    function enablePasswordChangeFields() {
-        var changePasswordCheckbox = $("#passwordChange");
-        var ldapCheckbox = $("#ldapAuthenticated");
-        var passwordChangeTable = $("#passwordChangeTable");
-        var passwordChangeCheckboxTable = $("#passwordChangeCheckboxTable");
-
-        if (changePasswordCheckbox && changePasswordCheckbox.is(":checked") && (ldapCheckbox == null || !ldapCheckbox.is(":checked"))) {
-            passwordChangeTable.show();
-        } else {
-            passwordChangeTable.hide();
-        }
-
-        if (changePasswordCheckbox) {
-            if (ldapCheckbox && ldapCheckbox.is(":checked")) {
-                passwordChangeCheckboxTable.hide();
-            } else {
-                passwordChangeCheckboxTable.show();
-            }
-        }
-    }
-</script>
 
 <table class="indent">
     <tr>

@@ -61,6 +61,7 @@ public class UserSettingsCommand {
     private boolean transcodingSupported;
     private String transcodeDirectory;
     private boolean toast;
+    private boolean reload;
 
     public String getUsername() {
         return username;
@@ -303,5 +304,13 @@ public class UserSettingsCommand {
 
     public boolean isToast() {
         return toast;
+    }
+
+    public boolean isReload() {
+        return reload;
+    }
+
+    public void setReload(boolean reload) {
+        this.reload = reload;
     }
 }

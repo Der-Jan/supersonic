@@ -27,7 +27,6 @@ OAuth
 TODO IN 5.2
 ------------
 Sonos
-  Reload left frame if changing folder access for current user.
   Install on asrock
   Lossless streaming
   Configurable SID ("Advanced options"?)

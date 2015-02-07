@@ -4,8 +4,18 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+
+    <script type="text/javascript">
+        function init() {
+            <c:if test="${command.reload}">
+            parent.frames.upper.location.href="top.view?";
+            parent.frames.left.location.href="left.view?";
+            parent.frames.right.location.href="right.view?";
+            </c:if>
+        }
+    </script>
 </head>
-<body class="mainframe bgcolor1">
+<body class="mainframe bgcolor1" onload="init()">
 
 <c:import url="settingsHeader.jsp">
     <c:param name="cat" value="musicFolder"/>
@@ -109,13 +119,5 @@
     </p>
 
 </form:form>
-
-<c:if test="${command.reload}">
-    <script type="text/javascript">
-        parent.frames.upper.location.href="top.view?";
-        parent.frames.left.location.href="left.view?";
-        parent.frames.right.location.href="right.view?";
-    </script>
-</c:if>
 
 </body></html>
