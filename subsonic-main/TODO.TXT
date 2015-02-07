@@ -1,31 +1,16 @@
+DONE IN 5.2
+----------------
+Sonos integration
+Music folder access
+Avoid duplicates in random album list
+
 
 TODO IN 5.1
 --------------
-Bundle release notes
-Add FAQ for how to cancel recurring payments.
-Move media statistics to About page.
-Fade out text in auto cover art
-More space in left.jsp
-Edit/delete artist info.
-Add "handle" for drag&drop
-Make separate category for videos in search.
-  Create search index for videos
-Show video preview in Starred
-"Add to playlist" submenu
-  http://behigh.github.io/bootstrap_dropdowns_enhancement/
-Lazy create upnp
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
-Layout improvements
-  Review use of "detail" in music tables.
-Support tags/labels
-  https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
-IntelliJ plugin
-Improve uploader
-FAQ: Mention Lollipop/Java 6 SSL incompatibility
-OAuth
 
 TODO IN 5.2
 ------------
+Home screen broken if not access to selected music folder.
 Sonos
   Install on asrock
   Lossless streaming
@@ -53,8 +38,10 @@ Per-user folder access
   Turn on debug logging of sql queries.
   Upgrade to 5.2.beta1
 
+
 Update year list in More > Shuffle play
 
+"Recommended" album list (based on previous listening)
 Lossless streaming
 Facebook ads
 Only log debug if beta.
@@ -69,6 +56,28 @@ New player controls
   Use html5 audio
   "Previous" button should restart current song
 
+Bundle release notes
+Add FAQ for how to cancel recurring payments.
+Move media statistics to About page.
+Fade out text in auto cover art
+More space in left.jsp
+Edit/delete artist info.
+Add "handle" for drag&drop
+Make separate category for videos in search.
+  Create search index for videos
+Show video preview in Starred
+"Add to playlist" submenu
+  http://behigh.github.io/bootstrap_dropdowns_enhancement/
+Lazy create upnp
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
+Layout improvements
+  Review use of "detail" in music tables.
+Support tags/labels
+  https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
+IntelliJ plugin
+Improve uploader
+FAQ: Mention Lollipop/Java 6 SSL incompatibility
+OAuth
 Avoid scrolling album/artist title
 Find similar tracks / artists
   Use java binding for scrobbling?

@@ -18,17 +18,15 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.AlbumDao;
-import net.sourceforge.subsonic.dao.ArtistDao;
-import net.sourceforge.subsonic.domain.Album;
-import net.sourceforge.subsonic.domain.Artist;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.RandomSearchCriteria;
-import net.sourceforge.subsonic.domain.SearchCriteria;
-import net.sourceforge.subsonic.domain.SearchResult;
-import net.sourceforge.subsonic.util.FileUtil;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.Analyzer;
@@ -51,6 +49,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -62,18 +61,21 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.google.common.collect.Lists;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.AlbumDao;
+import net.sourceforge.subsonic.dao.ArtistDao;
+import net.sourceforge.subsonic.domain.Album;
+import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.RandomSearchCriteria;
+import net.sourceforge.subsonic.domain.SearchCriteria;
+import net.sourceforge.subsonic.domain.SearchResult;
+import net.sourceforge.subsonic.util.FileUtil;
 
 import static net.sourceforge.subsonic.service.SearchService.IndexType.*;
-import static net.sourceforge.subsonic.service.SearchService.IndexType.SONG;
 
 /**
  * Performs Lucene-based searching and indexing.
@@ -273,14 +275,15 @@ public class SearchService {
             query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(criteria.getCount(), topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < criteria.getCount()) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
-                    result.add(mediaFileService.getMediaFile(id));
+                    addIfNotNull(mediaFileService.getMediaFile(id), result);
                 } catch (Exception x) {
                     LOG.warn("Failed to get media file " + id);
                 }
@@ -320,11 +323,12 @@ public class SearchService {
             Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(count, topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < count) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
                     addIfNotNull(mediaFileService.getMediaFile(id), result);
@@ -361,13 +365,13 @@ public class SearchService {
                 musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER_ID, NumericUtils.intToPrefixCoded(musicFolder.getId()))));
             }
             Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
-
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(count, topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < count) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
                     addIfNotNull(albumDao.getAlbum(id), result);
