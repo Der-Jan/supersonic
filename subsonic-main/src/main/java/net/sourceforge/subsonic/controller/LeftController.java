@@ -86,7 +86,7 @@ public class LeftController extends ParameterizableViewController {
 
         // When was music folder(s) on disk last changed?
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
         if (selectedMusicFolder != null) {
             File file = selectedMusicFolder.getPath();
             lastModified = Math.max(lastModified, FileUtil.lastModified(file));
@@ -124,7 +124,7 @@ public class LeftController extends ParameterizableViewController {
 
         String username = securityService.getCurrentUsername(request);
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         UserSettings userSettings = settingsService.getUserSettings(username);
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
@@ -171,16 +171,6 @@ public class LeftController extends ParameterizableViewController {
         settingsService.updateUserSettings(settings);
 
         return true;
-    }
-
-    /**
-     * Returns the selected music folder, or <code>null</code> if all music folders should be displayed.
-     */
-    private MusicFolder getSelectedMusicFolder(HttpServletRequest request) {
-        UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        int musicFolderId = settings.getSelectedMusicFolderId();
-
-        return settingsService.getMusicFolderById(musicFolderId);
     }
 
     public void setMediaScannerService(MediaScannerService mediaScannerService) {

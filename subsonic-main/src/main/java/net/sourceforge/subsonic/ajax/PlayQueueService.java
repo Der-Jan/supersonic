@@ -177,12 +177,9 @@ public class PlayQueueService {
         String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
 
-        Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
-        if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
-            selectedMusicFolderId = null;
-        }
-        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, selectedMusicFolderId);
-
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username,
+                                                                                selectedMusicFolder == null ? null : selectedMusicFolder.getId());
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
             albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);

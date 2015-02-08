@@ -5,12 +5,8 @@ Music folder access
 Avoid duplicates in random album list
 
 
-TODO IN 5.1
---------------
-
 TODO IN 5.2
 ------------
-Home screen broken if not access to selected music folder.
 Sonos
   Install on asrock
   Lossless streaming

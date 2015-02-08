@@ -1056,6 +1056,18 @@ public class SettingsService {
     }
 
     /**
+     * Returns the selected music folder for a given user, or {@code null} if all music folders should be displayed.
+     */
+    public MusicFolder getSelectedMusicFolder(String username) {
+        UserSettings settings = getUserSettings(username);
+        int musicFolderId = settings.getSelectedMusicFolderId();
+
+        MusicFolder musicFolder = getMusicFolderById(musicFolderId);
+        List<MusicFolder> allowedMusicFolders = getMusicFoldersForUser(username);
+        return allowedMusicFolders.contains(musicFolder) ? musicFolder : null;
+    }
+
+    /**
      * Returns all music folders a given user have access to.
      *
      * @param includeDisabled Whether to include disabled folders.

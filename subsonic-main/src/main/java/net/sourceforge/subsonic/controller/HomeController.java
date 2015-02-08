@@ -39,7 +39,6 @@ import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.RatingService;
@@ -75,15 +74,9 @@ public class HomeController extends ParameterizableViewController {
         int listOffset = getIntParameter(request, "listOffset", 0);
         String listType = getStringParameter(request, "listType", "random");
 
-
-        UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-
-        Integer selectedMusicFolderId = userSettings.getSelectedMusicFolderId();
-        if (Integer.valueOf(-1).equals(selectedMusicFolderId)) {
-            selectedMusicFolderId = null;
-        }
-        MusicFolder selectedMusicFolder = selectedMusicFolderId == null ? null : settingsService.getMusicFolderById(selectedMusicFolderId);
-        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(), selectedMusicFolderId);
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(user.getUsername());
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(),
+                                                                                selectedMusicFolder == null ? null : selectedMusicFolder.getId());
 
         Map<String, Object> map = new HashMap<String, Object>();
         List<Album> albums = Collections.emptyList();
