@@ -31,9 +31,6 @@ Per-user folder access
   Use throughout
       Shares
   REST: test all
-  Upgrade to 5.2.beta1
-
-
 Update year list in More > Shuffle play
 
 "Recommended" album list (based on previous listening)
