@@ -5,6 +5,7 @@ Music folder access
 Avoid duplicates in random album list
 Only log debug if beta.
 Add debug logging to sql queries that takes more than two seconds.
+Update year list in More > Shuffle play
 
 TODO IN 5.2
 ------------
@@ -31,7 +32,6 @@ Per-user folder access
   Use throughout
       Shares
   REST: test all
-Update year list in More > Shuffle play
 
 "Recommended" album list (based on previous listening)
 Lossless streaming
