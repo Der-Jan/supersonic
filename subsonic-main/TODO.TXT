@@ -3,7 +3,8 @@ DONE IN 5.2
 Sonos integration
 Music folder access
 Avoid duplicates in random album list
-
+Only log debug if beta.
+Add debug logging to sql queries that takes more than two seconds.
 
 TODO IN 5.2
 ------------
@@ -20,6 +21,8 @@ Sonos
   Read thru doc
   Run Self-Test
   SkatteFUNN
+  65k limit
+  Add debug logging to SonosFaultInterceptor.
 UPnP memory leak
   Disable by default (also for Sonos?)
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
@@ -28,10 +31,6 @@ Per-user folder access
   Use throughout
       Shares
   REST: test all
-  REST: Random albums returns duplicates
-  Access Denied > Back fails.
-  LastFmService: Simplify logic for filling up with non-present artists.
-  Turn on debug logging of sql queries.
   Upgrade to 5.2.beta1
 
 
@@ -40,7 +39,6 @@ Update year list in More > Shuffle play
 "Recommended" album list (based on previous listening)
 Lossless streaming
 Facebook ads
-Only log debug if beta.
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?

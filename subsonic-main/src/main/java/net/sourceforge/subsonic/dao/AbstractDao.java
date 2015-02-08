@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.dao;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -83,8 +84,12 @@ public class AbstractDao {
     }
 
     private void log(String sql, long startTimeNano) {
-//        long micros = (System.nanoTime() - startTimeNano) / 1000L;
-//        LOG.debug(micros + "  " + sql);
+        long micros = (System.nanoTime() - startTimeNano) / 1000L;
+
+        // Log queries that take more than 2 seconds.
+        if (micros > TimeUnit.SECONDS.toMicros(2L)) {
+            LOG.debug(micros + "  " + sql);
+        }
     }
 
     protected <T> List<T> query(String sql, RowMapper rowMapper, Object... args) {

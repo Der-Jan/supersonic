@@ -127,7 +127,7 @@
         <property name="playlistDao" ref="playlistDao"/>
     </bean>
 
-    <bean id="versionService" class="net.sourceforge.subsonic.service.VersionService"/>
+    <bean id="versionService" class="net.sourceforge.subsonic.service.VersionService" init-method="init"/>
 
     <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService">
         <property name="mediaFileService" ref="mediaFileService"/>
