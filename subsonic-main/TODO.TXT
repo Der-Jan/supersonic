@@ -6,14 +6,15 @@ Avoid duplicates in random album list
 Only log debug if beta.
 Add debug logging to sql queries that takes more than two seconds.
 Update year list in More > Shuffle play
+REST: Support for administering folder access (createUser, updateUser, getUser, getUsers)
 
 TODO IN 5.2
 ------------
 Sonos
-  Install on asrock
   Lossless streaming
   Configurable SID ("Advanced options"?)
   Document how to manually configure music service
+  Create dedicated page on subsonic.org. Link to it from Settings page.
   Service registration fails when accessing through subsonic.org url?
   Rating
   Capabilities
@@ -28,7 +29,6 @@ UPnP memory leak
   Disable by default (also for Sonos?)
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
 Per-user folder access
-  REST support for administering folder access.
   Use throughout
       Shares
   REST: test all

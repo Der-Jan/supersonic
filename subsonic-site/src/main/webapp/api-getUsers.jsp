@@ -8,7 +8,7 @@
     </p>
 
     <p>
-        Get details about all users, including which authorization roles they have.
+        Get details about all users, including which authorization roles and folder access they have.
         Only users with admin privileges are allowed to call this method.
     </p>
 

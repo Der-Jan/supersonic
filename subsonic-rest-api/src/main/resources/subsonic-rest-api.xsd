@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.11.0">
+           version="1.12.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -524,6 +524,9 @@
     </xs:complexType>
 
     <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="folder" type="xs:int" minOccurs="0" maxOccurs="unbounded"/> <!-- Added in 1.12.0 -->
+        </xs:sequence>
         <xs:attribute name="username" type="xs:string" use="required"/>
         <xs:attribute name="email" type="xs:string" use="optional"/> <!-- Added in 1.6.0 -->
         <xs:attribute name="scrobblingEnabled" type="xs:boolean" use="required"/> <!-- Added in 1.7.0 -->

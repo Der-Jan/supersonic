@@ -133,6 +133,7 @@ import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
+import net.sourceforge.subsonic.util.Util;
 
 import static net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter.decrypt;
 import static org.springframework.web.bind.ServletRequestUtils.*;
@@ -1925,10 +1926,8 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        UserSettings userSettings = settingsService.getUserSettings(username);
-
         Response res = jaxbWriter.createResponse(true);
-        res.setUser(createJaxbUser(requestedUser, userSettings));
+        res.setUser(createJaxbUser(requestedUser));
         jaxbWriter.writeResponse(request, response, res);
     }
 
@@ -1944,8 +1943,7 @@ public class RESTController extends MultiActionController {
 
         Users result = new Users();
         for (User user : securityService.getAllUsers()) {
-            UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
-            result.getUser().add(createJaxbUser(user, userSettings));
+            result.getUser().add(createJaxbUser(user));
         }
 
         Response res = jaxbWriter.createResponse(true);
@@ -1953,7 +1951,9 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
-    private org.subsonic.restapi.User createJaxbUser(User user, UserSettings userSettings) {
+    private org.subsonic.restapi.User createJaxbUser(User user) {
+        UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
+
         org.subsonic.restapi.User result = new org.subsonic.restapi.User();
         result.setUsername(user.getUsername());
         result.setEmail(user.getEmail());
@@ -1969,6 +1969,11 @@ public class RESTController extends MultiActionController {
         result.setStreamRole(user.isStreamRole());
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
+        for (MusicFolder musicFolder : musicFolders) {
+            result.getFolder().add(musicFolder.getId());
+        }
         return result;
     }
 
@@ -1997,6 +2002,12 @@ public class RESTController extends MultiActionController {
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", true));
         command.setShareRole(getBooleanParameter(request, "shareRole", false));
         command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
+
+        int[] folderIds = ServletRequestUtils.getIntParameters(request, "folder");
+        List<Integer> ids = folderIds.length == 0
+                            ? MusicFolder.toIdList(settingsService.getAllMusicFolders())
+                            : Util.toIntegerList(folderIds);
+        command.setAllowedMusicFolderIds(ids);
 
         userSettingsController.createUser(command);
         jaxbWriter.writeEmptyResponse(request, response);
@@ -2043,6 +2054,12 @@ public class RESTController extends MultiActionController {
             command.setPassword(decrypt(getRequiredStringParameter(request, "password")));
             command.setPasswordChange(true);
         }
+
+        int[] folderIds = ServletRequestUtils.getIntParameters(request, "folder");
+        List<Integer> ids = folderIds.length == 0
+                            ? MusicFolder.toIdList(settingsService.getMusicFoldersForUser(username))
+                            : Util.toIntegerList(folderIds);
+        command.setAllowedMusicFolderIds(ids);
 
         userSettingsController.updateUser(command);
         jaxbWriter.writeEmptyResponse(request, response);
