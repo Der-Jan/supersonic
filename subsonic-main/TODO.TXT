@@ -14,7 +14,6 @@ Test ID3 methods on asrock (after rescan)
 Sonos
   Lossless streaming
   Document how to manually configure music service
-  Create dedicated page on subsonic.org. Link to it from Settings page.
   Service registration fails when accessing through subsonic.org url?
   Rating
   Capabilities
@@ -35,7 +34,6 @@ Per-user folder access
 
 "Recommended" album list (based on previous listening)
 Lossless streaming
-Facebook ads
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?
