@@ -10,9 +10,9 @@ REST: Support for administering folder access (createUser, updateUser, getUser, 
 
 TODO IN 5.2
 ------------
+Test ID3 methods on asrock (after rescan)
 Sonos
   Lossless streaming
-  Configurable SID ("Advanced options"?)
   Document how to manually configure music service
   Create dedicated page on subsonic.org. Link to it from Settings page.
   Service registration fails when accessing through subsonic.org url?

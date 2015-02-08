@@ -138,6 +138,7 @@ public class SettingsService {
     private static final String KEY_DLNA_SERVER_NAME = "DlnaServerName";
     private static final String KEY_SONOS_ENABLED = "SonosEnabled";
     private static final String KEY_SONOS_SERVICE_NAME = "SonosServiceName";
+    private static final String KEY_SONOS_SERVICE_ID = "SonosServiceId";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -172,7 +173,7 @@ public class SettingsService {
     private static final int DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT = 1;
     private static final long DEFAULT_DOWNLOAD_BITRATE_LIMIT = 0;
     private static final long DEFAULT_UPLOAD_BITRATE_LIMIT = 0;
-    private static final long DEFAULT_STREAM_PORT = 0;
+    private static final int DEFAULT_STREAM_PORT = 0;
     private static final String DEFAULT_LICENSE_EMAIL = null;
     private static final String DEFAULT_LICENSE_CODE = null;
     private static final String DEFAULT_LICENSE_DATE = null;
@@ -204,6 +205,7 @@ public class SettingsService {
     private static final String DEFAULT_DLNA_SERVER_NAME = "Subsonic";
     private static final boolean DEFAULT_SONOS_ENABLED = true;
     private static final String DEFAULT_SONOS_SERVICE_NAME = "Subsonic";
+    private static final int DEFAULT_SONOS_SERVICE_ID = 242;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
@@ -348,6 +350,22 @@ public class SettingsService {
         return home;
     }
 
+    private int getInt(String key, int defaultValue) {
+        return Integer.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+    }
+
+    private void setInt(String key, int value) {
+        setProperty(key, String.valueOf(value));
+    }
+
+    private long getLong(String key, long defaultValue) {
+        return Long.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+    }
+
+    private void setLong(String key, long value) {
+        setProperty(key, String.valueOf(value));
+    }
+
     private boolean getBoolean(String key, boolean defaultValue) {
         return Boolean.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
     }
@@ -453,11 +471,11 @@ public class SettingsService {
     }
 
     public int getCoverArtLimit() {
-        return Integer.parseInt(properties.getProperty(KEY_COVER_ART_LIMIT, "" + DEFAULT_COVER_ART_LIMIT));
+        return getInt(KEY_COVER_ART_LIMIT, DEFAULT_COVER_ART_LIMIT);
     }
 
     public void setCoverArtLimit(int limit) {
-        setProperty(KEY_COVER_ART_LIMIT, "" + limit);
+        setInt(KEY_COVER_ART_LIMIT, limit);
     }
 
     public String getWelcomeTitle() {
@@ -497,7 +515,7 @@ public class SettingsService {
      * creation is disabled.
      */
     public int getIndexCreationInterval() {
-        return Integer.parseInt(properties.getProperty(KEY_INDEX_CREATION_INTERVAL, "" + DEFAULT_INDEX_CREATION_INTERVAL));
+        return getInt(KEY_INDEX_CREATION_INTERVAL, DEFAULT_INDEX_CREATION_INTERVAL);
     }
 
     /**
@@ -505,21 +523,21 @@ public class SettingsService {
      * creation is disabled.
      */
     public void setIndexCreationInterval(int days) {
-        setProperty(KEY_INDEX_CREATION_INTERVAL, String.valueOf(days));
+        setInt(KEY_INDEX_CREATION_INTERVAL, days);
     }
 
     /**
      * Returns the hour of day (0 - 23) when automatic index creation should run.
      */
     public int getIndexCreationHour() {
-        return Integer.parseInt(properties.getProperty(KEY_INDEX_CREATION_HOUR, String.valueOf(DEFAULT_INDEX_CREATION_HOUR)));
+        return getInt(KEY_INDEX_CREATION_HOUR, DEFAULT_INDEX_CREATION_HOUR);
     }
 
     /**
      * Sets the hour of day (0 - 23) when automatic index creation should run.
      */
     public void setIndexCreationHour(int hour) {
-        setProperty(KEY_INDEX_CREATION_HOUR, String.valueOf(hour));
+        setInt(KEY_INDEX_CREATION_HOUR, hour);
     }
 
     public boolean isFastCacheEnabled() {
@@ -535,7 +553,7 @@ public class SettingsService {
      * are disabled.
      */
     public int getPodcastUpdateInterval() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_UPDATE_INTERVAL, String.valueOf(DEFAULT_PODCAST_UPDATE_INTERVAL)));
+        return getInt(KEY_PODCAST_UPDATE_INTERVAL, DEFAULT_PODCAST_UPDATE_INTERVAL);
     }
 
     /**
@@ -543,35 +561,35 @@ public class SettingsService {
      * are disabled.
      */
     public void setPodcastUpdateInterval(int hours) {
-        setProperty(KEY_PODCAST_UPDATE_INTERVAL, String.valueOf(hours));
+        setInt(KEY_PODCAST_UPDATE_INTERVAL, hours);
     }
 
     /**
      * Returns the number of Podcast episodes to keep (-1 to keep all).
      */
     public int getPodcastEpisodeRetentionCount() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_EPISODE_RETENTION_COUNT, String.valueOf(DEFAULT_PODCAST_EPISODE_RETENTION_COUNT)));
+        return getInt(KEY_PODCAST_EPISODE_RETENTION_COUNT, DEFAULT_PODCAST_EPISODE_RETENTION_COUNT);
     }
 
     /**
      * Sets the number of Podcast episodes to keep (-1 to keep all).
      */
     public void setPodcastEpisodeRetentionCount(int count) {
-        setProperty(KEY_PODCAST_EPISODE_RETENTION_COUNT, String.valueOf(count));
+        setInt(KEY_PODCAST_EPISODE_RETENTION_COUNT, count);
     }
 
     /**
      * Returns the number of Podcast episodes to download (-1 to download all).
      */
     public int getPodcastEpisodeDownloadCount() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, String.valueOf(DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT)));
+        return getInt(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT);
     }
 
     /**
      * Sets the number of Podcast episodes to download (-1 to download all).
      */
     public void setPodcastEpisodeDownloadCount(int count) {
-        setProperty(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, String.valueOf(count));
+        setInt(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, count);
     }
 
     /**
@@ -606,28 +624,28 @@ public class SettingsService {
      * @return The upload bitrate limit in Kbit/s. Zero if unlimited.
      */
     public long getUploadBitrateLimit() {
-        return Long.parseLong(properties.getProperty(KEY_UPLOAD_BITRATE_LIMIT, "" + DEFAULT_UPLOAD_BITRATE_LIMIT));
+        return getLong(KEY_UPLOAD_BITRATE_LIMIT, DEFAULT_UPLOAD_BITRATE_LIMIT);
     }
 
     /**
      * @param limit The upload bitrate limit in Kbit/s. Zero if unlimited.
      */
     public void setUploadBitrateLimit(long limit) {
-        setProperty(KEY_UPLOAD_BITRATE_LIMIT, "" + limit);
+        setLong(KEY_UPLOAD_BITRATE_LIMIT, limit);
     }
 
     /**
      * @return The non-SSL stream port. Zero if disabled.
      */
     public int getStreamPort() {
-        return Integer.parseInt(properties.getProperty(KEY_STREAM_PORT, "" + DEFAULT_STREAM_PORT));
+        return getInt(KEY_STREAM_PORT, DEFAULT_STREAM_PORT);
     }
 
     /**
      * @param port The non-SSL stream port. Zero if disabled.
      */
     public void setStreamPort(int port) {
-        setProperty(KEY_STREAM_PORT, "" + port);
+        setInt(KEY_STREAM_PORT, port);
     }
 
     public String getLicenseEmail() {
@@ -783,19 +801,19 @@ public class SettingsService {
     }
 
     public int getPort() {
-        return Integer.valueOf(properties.getProperty(KEY_PORT, String.valueOf(DEFAULT_PORT)));
+        return getInt(KEY_PORT, DEFAULT_PORT);
     }
 
     public void setPort(int port) {
-        setProperty(KEY_PORT, String.valueOf(port));
+        setInt(KEY_PORT, port);
     }
 
     public int getHttpsPort() {
-        return Integer.valueOf(properties.getProperty(KEY_HTTPS_PORT, String.valueOf(DEFAULT_HTTPS_PORT)));
+        return getInt(KEY_HTTPS_PORT, DEFAULT_HTTPS_PORT);
     }
 
     public void setHttpsPort(int httpsPort) {
-        setProperty(KEY_HTTPS_PORT, String.valueOf(httpsPort));
+        setInt(KEY_HTTPS_PORT, httpsPort);
     }
 
     public boolean isUrlRedirectionEnabled() {
@@ -841,7 +859,7 @@ public class SettingsService {
     }
 
     public long getSettingsChanged() {
-        return Long.parseLong(properties.getProperty(KEY_SETTINGS_CHANGED, String.valueOf(DEFAULT_SETTINGS_CHANGED)));
+        return getLong(KEY_SETTINGS_CHANGED, DEFAULT_SETTINGS_CHANGED);
     }
 
     public Date getLastScanned() {
@@ -853,7 +871,7 @@ public class SettingsService {
         if (date == null) {
             properties.remove(KEY_LAST_SCANNED);
         } else {
-            properties.setProperty(KEY_LAST_SCANNED, String.valueOf(date.getTime()));
+            setLong(KEY_LAST_SCANNED, date.getTime());
         }
     }
 
@@ -1328,6 +1346,14 @@ public class SettingsService {
 
     public void setSonosServiceName(String sonosServiceName) {
         setString(KEY_SONOS_SERVICE_NAME, sonosServiceName);
+    }
+
+    public int getSonosServiceId() {
+        return getInt(KEY_SONOS_SERVICE_ID, DEFAULT_SONOS_SERVICE_ID);
+    }
+
+    public void setSonosServiceId(int sonosServiceid) {
+        setInt(KEY_SONOS_SERVICE_ID, sonosServiceid);
     }
 
     public String getLocalIpAddress() {

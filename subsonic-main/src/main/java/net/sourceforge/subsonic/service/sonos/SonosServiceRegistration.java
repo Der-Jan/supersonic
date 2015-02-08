@@ -45,17 +45,16 @@ import net.sourceforge.subsonic.util.StringUtil;
 public class SonosServiceRegistration {
 
     private static final Logger LOG = Logger.getLogger(SonosServiceRegistration.class);
-    private static final int SONOS_SERVICE_ID = 242;
 
-    public void setEnabled(String subsonicBaseUrl, String sonosControllerIp, boolean enabled, String sonosServiceName) throws IOException {
+    public void setEnabled(String subsonicBaseUrl, String sonosControllerIp, boolean enabled, String sonosServiceName, int sonosServiceId) throws IOException {
         String localUrl = subsonicBaseUrl + "ws/Sonos";
         String controllerUrl = String.format("http://%s:1400/customsd", sonosControllerIp);
 
         LOG.info((enabled ? "Enabling" : "Disabling") + " Sonos music service, using Sonos controller IP " + sonosControllerIp +
-                 " and Subsonic URL " + localUrl);
+                 ", SID " + sonosServiceId + ", and Subsonic URL " + localUrl);
 
         List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
-        params.add(Pair.create("sid", String.valueOf(SONOS_SERVICE_ID)));
+        params.add(Pair.create("sid", String.valueOf(sonosServiceId)));
         if (enabled) {
             params.add(Pair.create("name", sonosServiceName));
             params.add(Pair.create("uri", localUrl));

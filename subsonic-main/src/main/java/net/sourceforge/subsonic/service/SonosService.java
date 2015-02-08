@@ -171,11 +171,13 @@ public class SonosService implements SonosSoap {
         LOG.info("Found Sonos controllers: " + sonosControllers);
 
         String sonosServiceName = settingsService.getSonosServiceName();
+        int sonosServiceId = settingsService.getSonosServiceId();
         String subsonicBaseUrl = sonosHelper.getBaseUrl();
 
         for (String sonosController : sonosControllers) {
             try {
-                new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosController, enabled, sonosServiceName);
+                new SonosServiceRegistration().setEnabled(subsonicBaseUrl, sonosController, enabled,
+                                                          sonosServiceName, sonosServiceId);
                 break;
             } catch (IOException x) {
                 LOG.warn(String.format("Failed to enable/disable music service in Sonos controller %s: %s", sonosController, x));
