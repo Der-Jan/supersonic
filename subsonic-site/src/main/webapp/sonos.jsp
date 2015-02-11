@@ -19,7 +19,11 @@
         <span class="image featured"><img src="inc/img/sonos/sonos-header.png" alt="" /></span>
         <p>
             Subsonic comes with built-in support for your existing Sonos players. Access your personal music library
-            like any other Sonos music service like Spotify or Google Play.
+            the same way as other Sonos music services like Spotify or Google Play.
+        </p>
+
+        <p>
+            <em>Currently available in Subsonic 5.2.beta1</em>
         </p>
 
         <h3>Features</h3>
@@ -57,13 +61,12 @@
             <li>You're done. The list of music sources now includes the Subsonic music service.</li>
         </ol>
 
-        <span class="image left"><img src="inc/img/sonos/sonos-1.png" alt=""/></span>
-        <span class="image left"><img src="inc/img/sonos/sonos-2.png" alt=""/></span>
-        <span class="image left"><img src="inc/img/sonos/sonos-3.png" alt=""/></span>
-        <span class="image left"><img src="inc/img/sonos/sonos-4.png" alt=""/></span>
+        <%--<span class="image left"><img src="inc/img/sonos/sonos-1.png" alt=""/></span>--%>
+        <%--<span class="image left"><img src="inc/img/sonos/sonos-2.png" alt=""/></span>--%>
+        <%--<span class="image left"><img src="inc/img/sonos/sonos-3.png" alt=""/></span>--%>
+        <%--<span class="image left"><img src="inc/img/sonos/sonos-4.png" alt=""/></span>--%>
 
-        <div style="height:800px"></div>
-    </section>
+        <iframe width="800" height="531" src="https://www.youtube.com/embed/gQPSA4vMj24?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>    </section>
 
 </section>
 

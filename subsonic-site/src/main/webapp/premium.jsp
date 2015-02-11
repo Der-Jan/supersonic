@@ -49,7 +49,7 @@
 
             <div class="6u 12u(3)">
                 <ul>
-                    <li>Stream music and movies to your Chromecast.</li>
+                    <li>Stream to your Chromecast and Sonos devices.</li>
                     <li>Podcast receiver.</li>
                     <li>Play your media on compatible DLNA/UPnP devices.</li>
                     <li>Share your media on Facebook, Twitter, Google+.</li>

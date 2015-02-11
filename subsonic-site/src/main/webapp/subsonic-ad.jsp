@@ -26,7 +26,7 @@
         <div style="font-size:12px;">
             <div style="color:#00008b;padding-top:6px"><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</div>
             <div style="color:green;padding-top:12px">Video streaming.</div>
-            <div style="color:#00008b;padding-top:12px">Chromecast support.</div>
+            <div style="color:#00008b;padding-top:12px">Chromecast and Sonos support.</div>
             <div style="color:green;padding-top:12px">DLNA/UPnP support</div>
             <div style="color:#00008b;padding-top:12px">Share on Facebook, Twitter, Google+</div>
             <div style="color:green;padding-top:12px">No ads.</div>

@@ -399,7 +399,7 @@
                 <div style="font-size: 90%;padding-bottom: 1em">
                     <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
                     <p>Video streaming.</p>
-                    <p>Chromecast support.</p>
+                    <p>Chromecast and Sonos support.</p>
                     <p>DLNA/UPnP support</p>
                     <p>Share on Facebook, Twitter, Google+</p>
                     <p>No ads.</p>

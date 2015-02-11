@@ -83,7 +83,7 @@
             <section class="box special">
                 <span class="image featured"><img src="inc/img/video.png" alt="" /></span>
                 <h3>Packed with features</h3>
-                <p>Podcast receiver, Chromecast, jukebox mode, on-the-fly downsampling and conversion,
+                <p>Podcast receiver, Chromecast, Sonos, jukebox mode, on-the-fly downsampling and conversion,
                     multiple frontends, highly customizable, full support for tags, lyrics and album art, DLNA,
                     open REST API, ...</p>
 
