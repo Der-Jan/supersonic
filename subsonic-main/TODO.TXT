@@ -11,13 +11,11 @@ REST: Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarre
 
 TODO IN 5.2
 ------------
-No search result for artists
 Add subfire
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b768c79888a62e
 Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
 Sonos
-  Create screencast (QuickTime)
   Lossless streaming
   Document how to manually configure music service
   Service registration fails when accessing through subsonic.org url?
@@ -33,10 +31,6 @@ Sonos
 UPnP memory leak
   Disable by default (also for Sonos?)
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
-Per-user folder access
-  Use throughout
-      Shares
-  REST: test all
 
 "Recommended" album list (based on previous listening)
 Lossless streaming

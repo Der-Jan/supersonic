@@ -99,6 +99,7 @@ public class SearchService {
     private static final String FIELD_FOLDER_ID = "folderId";
 
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
+    private static final String LUCENE_DIR = "lucene2";
 
     private MediaFileService mediaFileService;
     private ArtistDao artistDao;
@@ -113,7 +114,6 @@ public class SearchService {
     public SearchService() {
         removeLocks();
     }
-
 
     public void startIndexing() {
         try {
@@ -141,9 +141,9 @@ public class SearchService {
         }
     }
 
-    public void index(Artist artist) {
+    public void index(Artist artist, MusicFolder musicFolder) {
         try {
-            artistId3Writer.addDocument(ARTIST_ID3.createDocument(artist));
+            artistId3Writer.addDocument(ARTIST_ID3.createDocument(artist, musicFolder));
         } catch (Exception x) {
             LOG.error("Failed to create search index for " + artist, x);
         }
@@ -194,7 +194,11 @@ public class SearchService {
 
             List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
             for (MusicFolder musicFolder : musicFolders) {
-                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
+                if (indexType == ALBUM_ID3 || indexType == ARTIST_ID3) {
+                    musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER_ID, NumericUtils.intToPrefixCoded(musicFolder.getId()))));
+                } else {
+                    musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
+                }
             }
             query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
@@ -405,7 +409,7 @@ public class SearchService {
     }
 
     private File getIndexRootDirectory() {
-        return new File(SettingsService.getSubsonicHome(), "lucene2");
+        return new File(SettingsService.getSubsonicHome(), LUCENE_DIR);
     }
 
     private File getIndexDirectory(IndexType indexType) {
@@ -510,7 +514,7 @@ public class SearchService {
             }
         },
 
-        ARTIST(new String[]{FIELD_ARTIST}, null) {
+        ARTIST(new String[]{FIELD_ARTIST, FIELD_FOLDER}, null) {
             @Override
             public Document createDocument(MediaFile mediaFile) {
                 Document doc = new Document();
@@ -519,6 +523,9 @@ public class SearchService {
                 if (mediaFile.getArtist() != null) {
                     doc.add(new Field(FIELD_ARTIST, mediaFile.getArtist(), Field.Store.YES, Field.Index.ANALYZED));
                 }
+                if (mediaFile.getFolder() != null) {
+                    doc.add(new Field(FIELD_FOLDER, mediaFile.getFolder(), Field.Store.NO, Field.Index.NOT_ANALYZED_NO_NORMS));
+                }
 
                 return doc;
             }
@@ -526,10 +533,11 @@ public class SearchService {
 
         ARTIST_ID3(new String[]{FIELD_ARTIST}, null) {
             @Override
-            public Document createDocument(Artist artist) {
+            public Document createDocument(Artist artist, MusicFolder musicFolder) {
                 Document doc = new Document();
                 doc.add(new NumericField(FIELD_ID, Field.Store.YES, false).setIntValue(artist.getId()));
                 doc.add(new Field(FIELD_ARTIST, artist.getName(), Field.Store.YES, Field.Index.ANALYZED));
+                doc.add(new NumericField(FIELD_FOLDER_ID, Field.Store.NO, true).setIntValue(musicFolder.getId()));
 
                 return doc;
             }
@@ -554,7 +562,7 @@ public class SearchService {
             throw new UnsupportedOperationException();
         }
 
-        protected Document createDocument(Artist artist) {
+        protected Document createDocument(Artist artist, MusicFolder musicFolder) {
             throw new UnsupportedOperationException();
         }
 

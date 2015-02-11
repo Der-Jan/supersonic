@@ -163,9 +163,6 @@ public class MediaScannerService {
             Map<String, Integer> albumCount = new HashMap<String, Integer>();
             Genres genres = new Genres();
 
-            // Maps from folder path to folder ID.
-            Map<String, Integer> folderPathToId = createFolderPathToIdMap();
-
             scanCount = 0;
             statistics.reset();
 
@@ -177,7 +174,7 @@ public class MediaScannerService {
             // Recurse through all files on disk.
             for (MusicFolder musicFolder : settingsService.getAllMusicFolders()) {
                 MediaFile root = mediaFileService.getMediaFile(musicFolder.getPath(), false);
-                scanFile(root, musicFolder, lastScanned, albumCount, genres, folderPathToId);
+                scanFile(root, musicFolder, lastScanned, albumCount, genres);
             }
             LOG.info("Scanned media library with " + scanCount + " entries.");
 
@@ -211,16 +208,8 @@ public class MediaScannerService {
         }
     }
 
-    private Map<String, Integer> createFolderPathToIdMap() {
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        for (MusicFolder musicFolder : settingsService.getAllMusicFolders(true, true)) {
-            result.put(musicFolder.getPath().getPath(), musicFolder.getId());
-        }
-        return result;
-    }
-
     private void scanFile(MediaFile file, MusicFolder musicFolder, Date lastScanned,
-                          Map<String, Integer> albumCount, Genres genres, Map<String, Integer> folderPathToId) {
+                          Map<String, Integer> albumCount, Genres genres) {
         scanCount++;
         if (scanCount % 250 == 0) {
             LOG.info("Scanned media library with " + scanCount + " entries.");
@@ -236,14 +225,14 @@ public class MediaScannerService {
 
         if (file.isDirectory()) {
             for (MediaFile child : mediaFileService.getChildrenOf(file, true, false, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount, genres, folderPathToId);
+                scanFile(child, musicFolder, lastScanned, albumCount, genres);
             }
             for (MediaFile child : mediaFileService.getChildrenOf(file, false, true, false, false)) {
-                scanFile(child, musicFolder, lastScanned, albumCount, genres, folderPathToId);
+                scanFile(child, musicFolder, lastScanned, albumCount, genres);
             }
         } else {
-            updateAlbum(file, lastScanned, albumCount, folderPathToId);
-            updateArtist(file, lastScanned, albumCount);
+            updateAlbum(file, musicFolder, lastScanned, albumCount);
+            updateArtist(file, musicFolder, lastScanned, albumCount);
             statistics.incrementSongs(1);
         }
 
@@ -272,7 +261,7 @@ public class MediaScannerService {
         }
     }
 
-    private void updateAlbum(MediaFile file, Date lastScanned, Map<String, Integer> albumCount, Map<String, Integer> folderPathToId) {
+    private void updateAlbum(MediaFile file, MusicFolder musicFolder, Date lastScanned, Map<String, Integer> albumCount) {
         String artist = file.getAlbumArtist() != null ? file.getAlbumArtist() : file.getArtist();
         if (file.getAlbumName() == null || artist == null || file.getParentPath() == null || !file.isAudio()) {
             return;
@@ -301,7 +290,7 @@ public class MediaScannerService {
 
         boolean firstEncounter = !lastScanned.equals(album.getLastScanned());
         if (firstEncounter) {
-            album.setFolderId(folderPathToId.get(file.getFolder()));
+            album.setFolderId(musicFolder.getId());
             album.setDurationSeconds(0);
             album.setSongCount(0);
             Integer n = albumCount.get(artist);
@@ -327,7 +316,7 @@ public class MediaScannerService {
         }
     }
 
-    private void updateArtist(MediaFile file, Date lastScanned, Map<String, Integer> albumCount) {
+    private void updateArtist(MediaFile file, MusicFolder musicFolder, Date lastScanned, Map<String, Integer> albumCount) {
         if (file.getAlbumArtist() == null || !file.isAudio()) {
             return;
         }
@@ -353,7 +342,7 @@ public class MediaScannerService {
         artistDao.createOrUpdateArtist(artist);
 
         if (firstEncounter) {
-            searchService.index(artist);
+            searchService.index(artist, musicFolder);
         }
     }
 
