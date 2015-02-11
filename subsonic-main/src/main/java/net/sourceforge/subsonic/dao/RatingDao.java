@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +47,8 @@ public class RatingDao extends AbstractDao {
      * @return Paths for the highest rated albums.
      */
     public List<String> getHighestRatedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
-        if (count < 1) {
-            return new ArrayList<String>();
+        if (count < 1 || musicFolders.isEmpty()) {
+            return Collections.emptyList();
         }
 
         Map<String, Object> args = new HashMap<String, Object>() {{
@@ -112,6 +113,9 @@ public class RatingDao extends AbstractDao {
     }
 
     public int getRatedAlbumCount(final String username, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return 0;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));

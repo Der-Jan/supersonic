@@ -7,11 +7,17 @@ Only log debug if beta.
 Add debug logging to sql queries that takes more than two seconds.
 Update year list in More > Shuffle play
 REST: Support for administering folder access (createUser, updateUser, getUser, getUsers)
+REST: Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarred, getStarred2, search2, search3
 
 TODO IN 5.2
 ------------
+No search result for artists
+Add subfire
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b768c79888a62e
 Test ID3 methods on asrock (after rescan)
+By genre / year: order by artist, album?
 Sonos
+  Create screencast (QuickTime)
   Lossless streaming
   Document how to manually configure music service
   Service registration fails when accessing through subsonic.org url?

@@ -27,6 +27,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,9 @@ public class ArtistDao extends AbstractDao {
      * @return The artist or null.
      */
     public Artist getArtist(final String artistName, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return null;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("name", artistName);
             put("folders", MusicFolder.toIdList(musicFolders));
@@ -115,6 +119,9 @@ public class ArtistDao extends AbstractDao {
      * @return Artists in alphabetical order.
      */
     public List<Artist> getAlphabetialArtists(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -137,6 +144,9 @@ public class ArtistDao extends AbstractDao {
      */
     public List<Artist> getStarredArtists(final int offset, final int count, final String username,
                                           final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("username", username);

@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,9 @@ public class AlbumDao extends AbstractDao {
     }
 
     public List<Album> getAlbumsForArtist(final String artist, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("artist", artist);
             put("folders", MusicFolder.toIdList(musicFolders));
@@ -149,6 +153,9 @@ public class AlbumDao extends AbstractDao {
      * @return Albums in alphabetical order.
      */
     public List<Album> getAlphabetialAlbums(final int offset, final int count, boolean byArtist, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -168,6 +175,9 @@ public class AlbumDao extends AbstractDao {
      * @return The most frequently played albums.
      */
     public List<Album> getMostFrequentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -186,6 +196,9 @@ public class AlbumDao extends AbstractDao {
      * @return The most recently played albums.
      */
     public List<Album> getMostRecentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -204,6 +217,9 @@ public class AlbumDao extends AbstractDao {
      * @return The most recently added albums.
      */
     public List<Album> getNewestAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -223,6 +239,9 @@ public class AlbumDao extends AbstractDao {
      * @return The most recently starred albums for this user.
      */
     public List<Album> getStarredAlbums(final int offset, final int count, final String username, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -245,6 +264,9 @@ public class AlbumDao extends AbstractDao {
      * @return Albums in the genre.
      */
     public List<Album> getAlbumsByGenre(final int offset, final int count, final String genre, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);
@@ -267,6 +289,9 @@ public class AlbumDao extends AbstractDao {
      */
     public List<Album> getAlbumsByYear(final int offset, final int count, final int fromYear, final int toYear,
                                        final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("folders", MusicFolder.toIdList(musicFolders));
             put("count", count);

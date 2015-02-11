@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +98,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<MediaFile> getVideos(final int count, final int offset, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", VIDEO.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -108,6 +112,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public MediaFile getArtistByName(final String name, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return null;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", DIRECTORY.name());
             put("name", name);
@@ -213,6 +220,9 @@ public class MediaFileDao extends AbstractDao {
      * @return The most frequently played albums.
      */
     public List<MediaFile> getMostFrequentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -233,6 +243,9 @@ public class MediaFileDao extends AbstractDao {
      * @return The most recently played albums.
      */
     public List<MediaFile> getMostRecentlyPlayedAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -252,6 +265,9 @@ public class MediaFileDao extends AbstractDao {
      * @return The most recently added albums.
      */
     public List<MediaFile> getNewestAlbums(final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -273,6 +289,9 @@ public class MediaFileDao extends AbstractDao {
      * @return Albums in alphabetical order.
      */
     public List<MediaFile> getAlphabeticalAlbums(final int offset, final int count, boolean byArtist, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -297,6 +316,9 @@ public class MediaFileDao extends AbstractDao {
      */
     public List<MediaFile> getAlbumsByYear(final int offset, final int count, final int fromYear, final int toYear,
                                            final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -321,6 +343,9 @@ public class MediaFileDao extends AbstractDao {
      */
     public List<MediaFile> getAlbumsByGenre(final int offset, final int count, final String genre,
                                             final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("genre", genre);
@@ -333,6 +358,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<MediaFile> getSongsByGenre(final String genre, final int offset, final int count, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("types", Arrays.asList(MUSIC.name(), PODCAST.name(), AUDIOBOOK.name()));
             put("genre", genre);
@@ -361,6 +389,9 @@ public class MediaFileDao extends AbstractDao {
      */
     public List<MediaFile> getStarredAlbums(final int offset, final int count, final String username,
                                             final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -385,6 +416,9 @@ public class MediaFileDao extends AbstractDao {
      */
     public List<MediaFile> getStarredDirectories(final int offset, final int count, final String username,
                                                  final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", DIRECTORY.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -411,6 +445,9 @@ public class MediaFileDao extends AbstractDao {
      */
     public List<MediaFile> getStarredFiles(final int offset, final int count, final String username,
                                            final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("types", Arrays.asList(MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), VIDEO.name()));
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -426,6 +463,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public int getAlbumCount(final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return 0;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -434,6 +474,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public int getPlayedAlbumCount(final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return 0;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
@@ -443,6 +486,9 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public int getStarredAlbumCount(final String username, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return 0;
+        }
         Map<String, Object> args = new HashMap<String, Object>() {{
             put("type", ALBUM.name());
             put("folders", MusicFolder.toPathList(musicFolders));
