@@ -10,7 +10,20 @@
     <p>
         Returns starred songs, albums and artists.
     </p>
-
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th>Comment</th>
+        </tr>
+        <tr>
+            <td><code>musicFolderId</code></td>
+            <td>No</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.12.0</a>) Only return results from the music folder with the given ID. See <code>getMusicFolders</code>.</td>
+        </tr>
+    </table>
     <p>
         Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;starred&gt;</code>
         element on success. <a href="inc/api/examples/starred_example_1.xml">Example</a>.

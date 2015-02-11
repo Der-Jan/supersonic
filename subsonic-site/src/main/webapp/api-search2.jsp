@@ -58,6 +58,12 @@
             <td>No</td>
             <td>0</td>
             <td>Search result offset for songs. Used for paging.</td>
+        <tr>
+            <td><code>musicFolderId</code></td>
+            <td>No</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.12.0</a>) Only return results from the music folder with the given ID. See <code>getMusicFolders</code>.</td>
+        </tr>
         </tr>
     </table>
     <p>
