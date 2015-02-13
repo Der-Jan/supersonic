@@ -29,6 +29,8 @@ import org.apache.cxf.phase.Phase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import net.sourceforge.subsonic.Logger;
+
 /**
  * Intercepts all SonosSoapFault exceptions and builds a SOAP Fault.
  *
@@ -36,6 +38,8 @@ import org.w3c.dom.Element;
  * @version $Id$
  */
 public class SonosFaultInterceptor extends AbstractSoapInterceptor {
+
+    private static final Logger LOG = Logger.getLogger(SonosFaultInterceptor.class);
 
     /**
      * Constructor, setting the phase to Marshal.  This happens before the default Fault Interceptor
@@ -50,6 +54,7 @@ public class SonosFaultInterceptor extends AbstractSoapInterceptor {
     @Override
     public void handleMessage(SoapMessage message) throws Fault {
         Fault fault = (Fault) message.getContent(Exception.class);
+        LOG.warn("Error: " + fault, fault);
 
         if (fault.getCause() instanceof SonosSoapFault) {
             SonosSoapFault cause = (SonosSoapFault) fault.getCause();

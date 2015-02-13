@@ -28,9 +28,7 @@ Sonos
   Read thru doc
   Run Self-Test
   SkatteFUNN
-  Add debug logging to SonosFaultInterceptor.
 UPnP memory leak
-  Disable by default (also for Sonos?)
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
 
 "Recommended" album list (based on previous listening)
