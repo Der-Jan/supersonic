@@ -9,6 +9,7 @@ Update year list in More > Shuffle play
 REST: Support for administering folder access (createUser, updateUser, getUser, getUsers)
 REST: Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarred, getStarred2, search2, search3
 Use 192 instead of 128 kbps as default bitrate when transcoding.
+Sonos: Support lossless streaming of flac etc. To enable, turn off mp3 transcoding in Settings > Players
 
 TODO IN 5.2
 ------------
@@ -17,10 +18,8 @@ Add subfire
 Update Sub Muxic screenshots
 Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
-Review 128kbit default bitrate
 
 Sonos
-  Lossless streaming - test by disabling transcoding
   Document how to manually configure music service
   Rating
   Capabilities

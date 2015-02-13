@@ -200,6 +200,7 @@ public class SonosService implements SonosSoap {
         String id = parameters.getId();
         int index = parameters.getIndex();
         int count = parameters.getCount();
+        String username = getUsername();
 
         LOG.debug(String.format("getMetadata: id=%s index=%s count=%s recursive=%s", id, index, count, parameters.isRecursive()));
 
@@ -208,61 +209,63 @@ public class SonosService implements SonosSoap {
 
         if (ID_ROOT.equals(id)) {
             media = sonosHelper.forRoot();
-        } else if (ID_SHUFFLE.equals(id)) {
-            media = sonosHelper.forShuffle(count);
-        } else if (ID_LIBRARY.equals(id)) {
-            media = sonosHelper.forLibrary(getUsername());
-        } else if (ID_PLAYLISTS.equals(id)) {
-            media = sonosHelper.forPlaylists(getUsername());
-        } else if (ID_ALBUMLISTS.equals(id)) {
-            media = sonosHelper.forAlbumLists();
-        } else if (ID_PODCASTS.equals(id)) {
-            media = sonosHelper.forPodcastChannels();
-        } else if (ID_STARRED.equals(id)) {
-            media = sonosHelper.forStarred();
-        } else if (ID_STARRED_ARTISTS.equals(id)) {
-            media = sonosHelper.forStarredArtists(getUsername());
-        } else if (ID_STARRED_ALBUMS.equals(id)) {
-            media = sonosHelper.forStarredAlbums(getUsername());
-        } else if (ID_STARRED_SONGS.equals(id)) {
-            media = sonosHelper.forStarredSongs(getUsername());
-        } else if (ID_SEARCH.equals(id)) {
-            media = sonosHelper.forSearchCategories();
-        } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
-            int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
-            media = sonosHelper.forPlaylist(playlistId);
-        } else if (id.startsWith(ID_DECADE_PREFIX)) {
-            int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
-            media = sonosHelper.forDecade(decade, getUsername());
-        } else if (id.startsWith(ID_GENRE_PREFIX)) {
-            int genre = Integer.parseInt(id.replace(ID_GENRE_PREFIX, ""));
-            media = sonosHelper.forGenre(genre, getUsername());
-        } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
-            AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
-            mediaList = sonosHelper.forAlbumList(albumListType, index, count, getUsername());
-        } else if (id.startsWith(ID_PODCAST_CHANNEL_PREFIX)) {
-            int channelId = Integer.parseInt(id.replace(ID_PODCAST_CHANNEL_PREFIX, ""));
-            media = sonosHelper.forPodcastChannel(channelId);
-        } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
-            int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
-            media = sonosHelper.forMusicFolder(musicFolderId);
-        } else if (id.startsWith(ID_SHUFFLE_MUSICFOLDER_PREFIX)) {
-            int musicFolderId = Integer.parseInt(id.replace(ID_SHUFFLE_MUSICFOLDER_PREFIX, ""));
-            media = sonosHelper.forShuffleMusicFolder(musicFolderId, count);
-        } else if (id.startsWith(ID_SHUFFLE_ARTIST_PREFIX)) {
-            int mediaFileId = Integer.parseInt(id.replace(ID_SHUFFLE_ARTIST_PREFIX, ""));
-            media = sonosHelper.forShuffleArtist(mediaFileId, count);
-        } else if (id.startsWith(ID_SHUFFLE_ALBUMLIST_PREFIX)) {
-            AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_SHUFFLE_ALBUMLIST_PREFIX, ""));
-            media = sonosHelper.forShuffleAlbumList(albumListType, count, getUsername());
-        } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
-            int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
-            media = sonosHelper.forRadioArtist(mediaFileId, count, getUsername());
-        } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
-            int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
-            media = sonosHelper.forSimilarArtists(mediaFileId, getUsername());
         } else {
-            media = sonosHelper.forDirectoryContent(Integer.parseInt(id));
+            if (ID_SHUFFLE.equals(id)) {
+                media = sonosHelper.forShuffle(count, username);
+            } else if (ID_LIBRARY.equals(id)) {
+                media = sonosHelper.forLibrary(username);
+            } else if (ID_PLAYLISTS.equals(id)) {
+                media = sonosHelper.forPlaylists(username);
+            } else if (ID_ALBUMLISTS.equals(id)) {
+                media = sonosHelper.forAlbumLists();
+            } else if (ID_PODCASTS.equals(id)) {
+                media = sonosHelper.forPodcastChannels();
+            } else if (ID_STARRED.equals(id)) {
+                media = sonosHelper.forStarred();
+            } else if (ID_STARRED_ARTISTS.equals(id)) {
+                media = sonosHelper.forStarredArtists(username);
+            } else if (ID_STARRED_ALBUMS.equals(id)) {
+                media = sonosHelper.forStarredAlbums(username);
+            } else if (ID_STARRED_SONGS.equals(id)) {
+                media = sonosHelper.forStarredSongs(username);
+            } else if (ID_SEARCH.equals(id)) {
+                media = sonosHelper.forSearchCategories();
+            } else if (id.startsWith(ID_PLAYLIST_PREFIX)) {
+                int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
+                media = sonosHelper.forPlaylist(playlistId, username);
+            } else if (id.startsWith(ID_DECADE_PREFIX)) {
+                int decade = Integer.parseInt(id.replace(ID_DECADE_PREFIX, ""));
+                media = sonosHelper.forDecade(decade, username);
+            } else if (id.startsWith(ID_GENRE_PREFIX)) {
+                int genre = Integer.parseInt(id.replace(ID_GENRE_PREFIX, ""));
+                media = sonosHelper.forGenre(genre, username);
+            } else if (id.startsWith(ID_ALBUMLIST_PREFIX)) {
+                AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_ALBUMLIST_PREFIX, ""));
+                mediaList = sonosHelper.forAlbumList(albumListType, index, count, username);
+            } else if (id.startsWith(ID_PODCAST_CHANNEL_PREFIX)) {
+                int channelId = Integer.parseInt(id.replace(ID_PODCAST_CHANNEL_PREFIX, ""));
+                media = sonosHelper.forPodcastChannel(channelId, username);
+            } else if (id.startsWith(ID_MUSICFOLDER_PREFIX)) {
+                int musicFolderId = Integer.parseInt(id.replace(ID_MUSICFOLDER_PREFIX, ""));
+                media = sonosHelper.forMusicFolder(musicFolderId, username);
+            } else if (id.startsWith(ID_SHUFFLE_MUSICFOLDER_PREFIX)) {
+                int musicFolderId = Integer.parseInt(id.replace(ID_SHUFFLE_MUSICFOLDER_PREFIX, ""));
+                media = sonosHelper.forShuffleMusicFolder(musicFolderId, count, username);
+            } else if (id.startsWith(ID_SHUFFLE_ARTIST_PREFIX)) {
+                int mediaFileId = Integer.parseInt(id.replace(ID_SHUFFLE_ARTIST_PREFIX, ""));
+                media = sonosHelper.forShuffleArtist(mediaFileId, count, username);
+            } else if (id.startsWith(ID_SHUFFLE_ALBUMLIST_PREFIX)) {
+                AlbumListType albumListType = AlbumListType.fromId(id.replace(ID_SHUFFLE_ALBUMLIST_PREFIX, ""));
+                media = sonosHelper.forShuffleAlbumList(albumListType, count, username);
+            } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
+                int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
+                media = sonosHelper.forRadioArtist(mediaFileId, count, username);
+            } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
+                int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
+                media = sonosHelper.forSimilarArtists(mediaFileId, username);
+            } else {
+                media = sonosHelper.forDirectoryContent(Integer.parseInt(id), username);
+            }
         }
 
         if (mediaList == null) {
@@ -283,7 +286,7 @@ public class SonosService implements SonosSoap {
 
         int id = Integer.parseInt(parameters.getId());
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        AbstractMedia abstractMedia = sonosHelper.forMediaFile(mediaFile);
+        AbstractMedia abstractMedia = sonosHelper.forMediaFile(mediaFile, getUsername());
 
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         if (abstractMedia instanceof MediaCollection) {
@@ -352,7 +355,7 @@ public class SonosService implements SonosSoap {
 
         GetMediaMetadataResponse response = new GetMediaMetadataResponse();
         GetMediaMetadataResponse.GetMediaMetadataResult result = new GetMediaMetadataResponse.GetMediaMetadataResult();
-        result.setMediaMetadata(sonosHelper.forSong(song));
+        result.setMediaMetadata(sonosHelper.forSong(song, getUsername()));
         response.setGetMediaMetadataResult(result);
 
         return response;

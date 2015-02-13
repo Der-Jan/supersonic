@@ -122,15 +122,15 @@ public class SonosHelper {
         return Arrays.asList(shuffle, library, playlists, starred, albumlists, podcasts);
     }
 
-    public List<AbstractMedia> forShuffle(int count) {
-        return forShuffleMusicFolder(null, count);
+    public List<AbstractMedia> forShuffle(int count, String username) {
+        return forShuffleMusicFolder(null, count, username);
     }
 
-    public List<AbstractMedia> forShuffleMusicFolder(int id, int count) {
-        return forShuffleMusicFolder(settingsService.getMusicFolderById(id), count);
+    public List<AbstractMedia> forShuffleMusicFolder(int id, int count, String username) {
+        return forShuffleMusicFolder(settingsService.getMusicFolderById(id), count, username);
     }
 
-    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder, int count) {
+    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder, int count, String username) {
         List<MediaFile> albums = searchService.getRandomAlbums(40, Arrays.asList(musicFolder));
         List<MediaFile> songs = new ArrayList<MediaFile>();
         for (MediaFile album : albums) {
@@ -140,15 +140,15 @@ public class SonosHelper {
         }
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
-        return forMediaFiles(songs);
+        return forMediaFiles(songs, username);
     }
 
-    public List<AbstractMedia> forShuffleArtist(int mediaFileId, int count) {
+    public List<AbstractMedia> forShuffleArtist(int mediaFileId, int count, String username) {
         MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
         List<MediaFile> songs = filterMusic(mediaFileService.getDescendantsOf(artist, false));
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
-        return forMediaFiles(songs);
+        return forMediaFiles(songs, username);
     }
 
     public List<AbstractMedia> forShuffleAlbumList(AlbumListType albumListType, int count, String username) {
@@ -160,7 +160,7 @@ public class SonosHelper {
         }
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
-        return forMediaFiles(songs);
+        return forMediaFiles(songs, username);
     }
 
     public List<AbstractMedia> forRadioArtist(int mediaFileId, int count, String username) {
@@ -169,7 +169,7 @@ public class SonosHelper {
         List<MediaFile> songs = filterMusic(lastFmService.getSimilarSongs(artist, count, musicFolders));
         Collections.shuffle(songs);
         songs = songs.subList(0, Math.min(count, songs.size()));
-        return forMediaFiles(songs);
+        return forMediaFiles(songs, username);
     }
 
     public List<AbstractMedia> forLibrary(String username) {
@@ -177,7 +177,7 @@ public class SonosHelper {
 
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         if (musicFolders.size() == 1) {
-            return forMusicFolder(musicFolders.get(0));
+            return forMusicFolder(musicFolders.get(0), username);
         }
 
         for (MusicFolder musicFolder : musicFolders) {
@@ -190,11 +190,11 @@ public class SonosHelper {
         return result;
     }
 
-    public List<AbstractMedia> forMusicFolder(int musicFolderId) {
-        return forMusicFolder(settingsService.getMusicFolderById(musicFolderId));
+    public List<AbstractMedia> forMusicFolder(int musicFolderId, String username) {
+        return forMusicFolder(settingsService.getMusicFolderById(musicFolderId), username);
     }
 
-    public List<AbstractMedia> forMusicFolder(MusicFolder musicFolder) {
+    public List<AbstractMedia> forMusicFolder(MusicFolder musicFolder, String username) {
         try {
             List<AbstractMedia> result = new ArrayList<AbstractMedia>();
 
@@ -218,7 +218,7 @@ public class SonosHelper {
             }
             for (MediaFile song : musicFolderContent.getSingleSongs()) {
                 if (song.isAudio()) {
-                    result.add(forSong(song));
+                    result.add(forSong(song, username));
                 }
             }
             return result;
@@ -228,7 +228,7 @@ public class SonosHelper {
         }
     }
 
-    public List<AbstractMedia> forDirectoryContent(int mediaFileId) {
+    public List<AbstractMedia> forDirectoryContent(int mediaFileId, String username) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
         MediaFile dir = mediaFileService.getMediaFile(mediaFileId);
         List<MediaFile> children = mediaFileService.getChildrenOf(dir, true, true, true);
@@ -239,7 +239,7 @@ public class SonosHelper {
                 isArtist &= child.isAlbum();
             } else if (child.isAudio()) {
                 isArtist = false;
-                result.add(forSong(child));
+                result.add(forSong(child, username));
             }
         }
 
@@ -323,14 +323,14 @@ public class SonosHelper {
         return result;
     }
 
-    public List<AbstractMedia> forPodcastChannel(int channelId) {
+    public List<AbstractMedia> forPodcastChannel(int channelId, String username) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
         for (PodcastEpisode episode : podcastService.getEpisodes(channelId, false)) {
             if (episode.getStatus() == PodcastStatus.COMPLETED) {
                 Integer mediaFileId = episode.getMediaFileId();
                 MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
                 if (mediaFile != null) {
-                    result.add(forMediaFile(mediaFile));
+                    result.add(forMediaFile(mediaFile, username));
                 }
             }
         }
@@ -454,11 +454,11 @@ public class SonosHelper {
         return result;
     }
 
-    public List<MediaMetadata> forPlaylist(int playlistId) {
+    public List<MediaMetadata> forPlaylist(int playlistId, String username) {
         List<MediaMetadata> result = new ArrayList<MediaMetadata>();
         for (MediaFile song : playlistService.getFilesInPlaylist(playlistId)) {
             if (song.isAudio()) {
-                result.add(forSong(song));
+                result.add(forSong(song, username));
             }
         }
         return result;
@@ -511,7 +511,7 @@ public class SonosHelper {
         List<MediaMetadata> result = new ArrayList<MediaMetadata>();
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders)) {
             if (song.isAudio()) {
-                result.add(forSong(song));
+                result.add(forSong(song, username));
             }
         }
         return result;
@@ -551,7 +551,7 @@ public class SonosHelper {
         result.setIndex(offset);
         result.setCount(searchResult.getMediaFiles().size());
         for (MediaFile mediaFile : searchResult.getMediaFiles()) {
-            result.getMediaCollectionOrMediaMetadata().add(forMediaFile(mediaFile));
+            result.getMediaCollectionOrMediaMetadata().add(forMediaFile(mediaFile, username));
         }
 
         return result;
@@ -561,23 +561,23 @@ public class SonosHelper {
         MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaFile> similarArtists = lastFmService.getSimilarArtists(mediaFile, 100, false, musicFolders);
-        return forMediaFiles(similarArtists);
+        return forMediaFiles(similarArtists, username);
     }
 
-    private List<AbstractMedia> forMediaFiles(List<MediaFile> mediaFiles) {
+    private List<AbstractMedia> forMediaFiles(List<MediaFile> mediaFiles, String username) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
         for (MediaFile mediaFile : mediaFiles) {
-            result.add(forMediaFile(mediaFile));
+            result.add(forMediaFile(mediaFile, username));
         }
         return result;
     }
 
-    public AbstractMedia forMediaFile(MediaFile mediaFile) {
-        return mediaFile.isFile() ? forSong(mediaFile) : forDirectory(mediaFile);
+    public AbstractMedia forMediaFile(MediaFile mediaFile, String username) {
+        return mediaFile.isFile() ? forSong(mediaFile, username) : forDirectory(mediaFile);
     }
 
-    public MediaMetadata forSong(MediaFile song) {
-        Player player = playerService.getGuestPlayer(null);
+    public MediaMetadata forSong(MediaFile song, String username) {
+        Player player = createPlayerIfNecessary(username);
         String suffix = transcodingService.getSuffix(player, song, null);
 
         MediaMetadata result = new MediaMetadata();
@@ -653,13 +653,13 @@ public class SonosHelper {
     }
 
     public String getMediaURI(int mediaFileId, String username) {
-        String playerId = createPlayerIfNecessary(username);
+        Player player = createPlayerIfNecessary(username);
         MediaFile song = mediaFileService.getMediaFile(mediaFileId);
 
-        return getBaseUrl() + "stream?id=" + song.getId() + "&player=" + playerId;
+        return getBaseUrl() + "stream?id=" + song.getId() + "&player=" + player.getId();
     }
 
-    private String createPlayerIfNecessary(String username) {
+    private Player createPlayerIfNecessary(String username) {
         List<Player> players = playerService.getPlayersForUserAndClientId(username, SUBSONIC_CLIENT_ID);
 
         // If not found, create it.
@@ -673,8 +673,7 @@ public class SonosHelper {
             players = playerService.getPlayersForUserAndClientId(username, SUBSONIC_CLIENT_ID);
         }
 
-        // Return the player ID.
-        return !players.isEmpty() ? players.get(0).getId() : null;
+        return players.get(0);
     }
 
     public String getBaseUrl() {
