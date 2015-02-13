@@ -13,12 +13,14 @@ TODO IN 5.2
 ------------
 Add subfire
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b768c79888a62e
+Update Sub Muxic screenshots
 Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
+Review 128kbit default bitrate
+
 Sonos
-  Lossless streaming
+  Lossless streaming - test by disabling transcoding
   Document how to manually configure music service
-  Service registration fails when accessing through subsonic.org url?
   Rating
   Capabilities
      User Content Playlists
@@ -26,7 +28,6 @@ Sonos
   Read thru doc
   Run Self-Test
   SkatteFUNN
-  65k limit
   Add debug logging to SonosFaultInterceptor.
 UPnP memory leak
   Disable by default (also for Sonos?)
