@@ -8,6 +8,7 @@ Add debug logging to sql queries that takes more than two seconds.
 Update year list in More > Shuffle play
 REST: Support for administering folder access (createUser, updateUser, getUser, getUsers)
 REST: Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarred, getStarred2, search2, search3
+Use 192 instead of 128 kbps as default bitrate when transcoding.
 
 TODO IN 5.2
 ------------
@@ -33,6 +34,7 @@ UPnP memory leak
 
 "Recommended" album list (based on previous listening)
 Lossless streaming
+
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?
