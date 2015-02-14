@@ -35,6 +35,19 @@
 
 <section class="box">
 
+    <a name="5.2.beta1"><h3>Subsonic 5.2.beta1 - Feb 14, 2015</h3></a>
+    <ul>
+        <li><strong>New:</strong> <a href="sonos.jsp">Sonos</a> integration. Use Subsonic as a music service in Sonos.</li>
+        <li><strong>New:</strong> Media folder access management. Configure which folders each user is allowed to access.</li>
+        <li><strong>New:</strong> Use 192 instead of 128 kbps as default bitrate when transcoding.</li>
+        <li><strong>New:</strong> Updated year list in More &gt; Shuffle play.</li>
+        <li><strong>Bugfix:</strong> Avoid duplicates in random album/song lists.</li>
+        <li><strong>REST:</strong> Support for administering folder access (createUser, updateUser, getUser, getUsers).</li>
+        <li><strong>REST:</strong> Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarred, getStarred2, search2, search3.</li>
+        <li><strong>Tech:</strong> Added debug logging to sql queries that takes more than two seconds.</li>
+        <li><strong>Tech:</strong> Only log debug if beta.</li>
+    </ul>
+
     <a name="5.1"><h3>Subsonic 5.1 - Jan 18, 2015</h3></a>
     <ul>
         <li><strong>Bugfix:</strong> Misc improvements to list mode.</li>

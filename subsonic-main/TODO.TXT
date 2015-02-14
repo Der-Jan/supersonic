@@ -1,15 +1,3 @@
-DONE IN 5.2
-----------------
-Sonos integration
-Music folder access
-Avoid duplicates in random album list
-Only log debug if beta.
-Add debug logging to sql queries that takes more than two seconds.
-Update year list in More > Shuffle play
-REST: Support for administering folder access (createUser, updateUser, getUser, getUsers)
-REST: Added musicFolderId parameter to getAlbumList2, getSongsByGenre, getStarred, getStarred2, search2, search3
-Use 192 instead of 128 kbps as default bitrate when transcoding.
-Sonos: Support lossless streaming of flac etc. To enable, turn off mp3 transcoding in Settings > Players
 
 TODO IN 5.2
 ------------
