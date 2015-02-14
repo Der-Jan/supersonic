@@ -123,15 +123,15 @@ public class SonosHelper {
     }
 
     public List<AbstractMedia> forShuffle(int count, String username) {
-        return forShuffleMusicFolder(null, count, username);
+        return forShuffleMusicFolder(settingsService.getMusicFoldersForUser(username), count, username);
     }
 
     public List<AbstractMedia> forShuffleMusicFolder(int id, int count, String username) {
-        return forShuffleMusicFolder(settingsService.getMusicFolderById(id), count, username);
+        return forShuffleMusicFolder(settingsService.getMusicFoldersForUser(username, id), count, username);
     }
 
-    public List<AbstractMedia> forShuffleMusicFolder(MusicFolder musicFolder, int count, String username) {
-        List<MediaFile> albums = searchService.getRandomAlbums(40, Arrays.asList(musicFolder));
+    private List<AbstractMedia> forShuffleMusicFolder(List<MusicFolder> musicFolders, int count, String username) {
+        List<MediaFile> albums = searchService.getRandomAlbums(40, musicFolders);
         List<MediaFile> songs = new ArrayList<MediaFile>();
         for (MediaFile album : albums) {
             for (MediaFile file : filterMusic(mediaFileService.getChildrenOf(album, true, false, false))) {

@@ -1,6 +1,10 @@
+DONE IN 5.2
+------------
+Bugfix: Fixed broken global shuffle play in Sonos
 
 TODO IN 5.2
 ------------
+Sonos: Global shuffle play broken
 Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
 Sonos: Document lossless
