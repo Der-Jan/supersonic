@@ -51,5 +51,6 @@
         available free of charge.
     </p>
 
-    <span class="image"><a target="_blank" href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
+    <span class="image" style="padding-right:30px"><a target="_blank" href="https://chrome.google.com/webstore/detail/jccdpflnecheidefpofmlblgebobbloc"><img alt="" src="inc/img/chrome_web_store.png"/></a></span>
+    <span class="image"><a target="_blank" href="http://jamstash.com/"><img alt="" src="inc/img/html5-webapp.png"/></a></span>
 </section>

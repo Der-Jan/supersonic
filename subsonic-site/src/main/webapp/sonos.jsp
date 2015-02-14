@@ -18,12 +18,12 @@
     <section class="box">
         <span class="image featured"><img src="inc/img/sonos/sonos-header.png" alt="" /></span>
         <p>
-            Subsonic comes with built-in support for your existing Sonos players. Access your personal music library
+            Subsonic comes with built-in support for your Sonos players. Access your personal music library
             the same way as other Sonos music services like Spotify or Google Play.
         </p>
 
         <p>
-            <em>Currently available in Subsonic 5.2.beta1</em>
+            <em>Currently available in <a href="download.jsp">Subsonic 5.2.beta1</a></em>
         </p>
 
         <h3>Features</h3>

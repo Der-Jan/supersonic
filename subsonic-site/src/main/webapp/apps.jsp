@@ -112,13 +112,14 @@
         <div class="row">
             <div class="6u 12u(3)">
                 <ul>
-                    <li><a href="#perisonic">Perisonic</a> for Google Chrome</li>
+                    <li><a href="#jamstash">Jamstash</a> for HTML5 and Chrome</li>
+                    <li><a href="#subfire">SubFire</a> for HTML5, Chrome and Amazon Fire</li>
                 </ul>
             </div>
 
             <div class="6u 12u(3)">
                 <ul>
-                    <li><a href="#jamstash">Jamstash</a> for HTML5</li>
+                    <li><a href="#perisonic">Perisonic</a> for Chrome</li>
                 </ul>
             </div>
         </div>
@@ -166,8 +167,9 @@
     <%@ include file="apps-supersonic.jsp" %>
     <%@ include file="apps-subsonic8.jsp" %>
 
-    <%@ include file="apps-perisonic.jsp" %>
     <%@ include file="apps-jamstash.jsp" %>
+    <%@ include file="apps-subfire.jsp" %>
+    <%@ include file="apps-perisonic.jsp" %>
 
 </section>
 
