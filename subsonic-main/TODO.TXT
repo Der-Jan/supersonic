@@ -13,9 +13,6 @@ Sonos: Support lossless streaming of flac etc. To enable, turn off mp3 transcodi
 
 TODO IN 5.2
 ------------
-Add subfire
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b768c79888a62e
-Update Sub Muxic screenshots
 Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
 Sonos: Document lossless
