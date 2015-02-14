@@ -4,12 +4,17 @@ Bugfix: Fixed broken global shuffle play in Sonos
 
 TODO IN 5.2
 ------------
-Sonos: Global shuffle play broken
-Test ID3 methods on asrock (after rescan)
 By genre / year: order by artist, album?
 Sonos: Document lossless
+Sonos: Document how to set up several Subsonic servers (SID)
 
 REST: Play queue state
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b7694f9c1bea5b
+  savePlayQueue, getPlayQueue
+    id+
+    current
+    position
+
 Sonos
   Document how to manually configure music service
   Rating
@@ -22,9 +27,11 @@ Sonos
 UPnP memory leak
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
 
-"Recommended" album list (based on previous listening)
 Lossless streaming
 
+TODO IN 5.3
+------------
+"Recommended" album list (based on previous listening and similar artists)
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?
