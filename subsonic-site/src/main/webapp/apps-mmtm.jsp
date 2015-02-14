@@ -33,4 +33,6 @@
     <p>
         It's developed by <a target="_blank" href="http://www.nerdyhearn.com/">NerdyHearn</a>.
     </p>
+
+    <p><b>Note:</b> Subsonic 5.2 and later has built-in Sonos support, and doesn't require this service.</p>
 </section>
