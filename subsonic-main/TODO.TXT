@@ -1,9 +1,11 @@
 DONE IN 5.2
 ------------
 Bugfix: Fixed broken global shuffle play in Sonos
+Bundle Java 8 with Mac installer
 
 TODO IN 5.2
 ------------
+Use Java 8 for windows installer
 By genre / year: order by artist, album?
 Sonos: Document lossless
 Sonos: Document how to set up several Subsonic servers (SID)
