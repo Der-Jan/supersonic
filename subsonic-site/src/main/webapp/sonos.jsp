@@ -66,7 +66,37 @@
         <%--<span class="image left"><img src="inc/img/sonos/sonos-3.png" alt=""/></span>--%>
         <%--<span class="image left"><img src="inc/img/sonos/sonos-4.png" alt=""/></span>--%>
 
-        <iframe width="800" height="531" src="https://www.youtube.com/embed/gQPSA4vMj24?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>    </section>
+        <iframe width="800" height="531" src="https://www.youtube.com/embed/gQPSA4vMj24?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+
+        <h3>Advanced settings</h3>
+
+        <h4>Lossless audio</h4>
+        <p>
+            For maximum compatibility, Subsonic is by default transcoding non-mp3 music files to mp3 when streaming to Sonos.
+            However, Sonos natively supports several other <a href="https://sonos.custhelp.com/app/answers/detail/a_id/80/~/supported-audio-formats">audio formats</a>,
+            such as FLAC and OGG.  To disable the transcoding in Subsonic, select <b>Settings &gt; Players</b>, select the
+            Sonos player, and then disable the "mp3 audio" transcoding.
+        </p>
+
+        <h4>Multiple Subsonic servers</h4>
+        <p>
+            Sonos music services are uniquely identified by a "SID" (a number between 240 and 253). By default, Subsonic uses
+            SID 242. If you want to make multiple Subsonic servers on your local network available to Sonos, you have to
+            assign a unique SID to each server. This setting is not available through the web interface, but you can add this
+            line to the subsonic.properties file (located in /var/subsonic, c:/subsonic or /Library/Application Support/Subsonic)
+            to change it.
+        </p>
+        <p>
+            <code>
+                SonosServiceId=243
+            </code>
+        </p>
+        <p>
+            Remember to restart Subsonic to make it take effect.
+        </p>
+
+    </section>
+
 
 </section>
 
