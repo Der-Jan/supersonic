@@ -444,9 +444,9 @@ public class MediaFileService {
      */
     private boolean isExcluded(File file) {
 
-        // Exclude all hidden files starting with a "." or "@eaDir" (thumbnail dir created on Synology devices).
+        // Exclude all hidden files starting with a single "." or "@eaDir" (thumbnail dir created on Synology devices).
         String name = file.getName();
-        return name.startsWith(".") || name.startsWith("@eaDir") || name.equals("Thumbs.db");
+        return (name.startsWith(".") && !name.startsWith("..")) || name.startsWith("@eaDir") || name.equals("Thumbs.db");
     }
 
     private MediaFile createMediaFile(File file) {
