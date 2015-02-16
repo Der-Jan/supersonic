@@ -7,9 +7,8 @@ Bugfix: Fixed bug in Settings > Users that occured with Java 8
 
 TODO IN 5.2
 ------------
+Add IPs to ping response.
 By genre / year: order by artist, album?
-Sonos: Document lossless
-Sonos: Document how to set up several Subsonic servers (SID)
 Sonos: Document how to set up remote Subsonic servers
 
 REST: Play queue state

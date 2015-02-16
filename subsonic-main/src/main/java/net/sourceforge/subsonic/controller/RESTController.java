@@ -197,7 +197,7 @@ public class RESTController extends MultiActionController {
 
     @SuppressWarnings("UnusedDeclaration")
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         jaxbWriter.writeResponse(request, response, res);
     }
 
@@ -218,7 +218,7 @@ public class RESTController extends MultiActionController {
             license.setDate(jaxbWriter.convertDate(date));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setLicense(license);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -235,7 +235,7 @@ public class RESTController extends MultiActionController {
             mf.setName(musicFolder.getName());
             musicFolders.getMusicFolder().add(mf);
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setMusicFolders(musicFolders);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -243,7 +243,7 @@ public class RESTController extends MultiActionController {
     @SuppressWarnings("UnusedDeclaration")
     public void getIndexes(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         String username = securityService.getCurrentUser(request).getUsername();
 
         long ifModifiedSince = getLongParameter(request, "ifModifiedSince", 0L);
@@ -318,7 +318,7 @@ public class RESTController extends MultiActionController {
             g.setAlbumCount(genre.getAlbumCount());
             g.setSongCount(genre.getSongCount());
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setGenres(genres);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -341,7 +341,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile mediaFile : mediaFileDao.getSongsByGenre(genre, offset, count, musicFolders)) {
             songs.getSong().add(createJaxbChild(player, mediaFile, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSongsByGenre(songs);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -366,7 +366,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setArtists(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -393,7 +393,7 @@ public class RESTController extends MultiActionController {
             result.getSong().add(createJaxbChild(player, similarSong, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSimilarSongs(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -421,7 +421,7 @@ public class RESTController extends MultiActionController {
             result.getSong().add(createJaxbChild(player, similarSong, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSimilarSongs2(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -457,7 +457,7 @@ public class RESTController extends MultiActionController {
             result.setLargeImageUrl(artistBio.getLargeImageUrl());
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setArtistInfo(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -494,7 +494,7 @@ public class RESTController extends MultiActionController {
             result.setLargeImageUrl(artistBio.getLargeImageUrl());
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setArtistInfo2(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -536,7 +536,7 @@ public class RESTController extends MultiActionController {
             result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setArtist(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -598,7 +598,7 @@ public class RESTController extends MultiActionController {
             result.getSong().add(createJaxbChild(player, mediaFile, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setAlbum(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -620,7 +620,7 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSong(createJaxbChild(player, song, username));
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -658,7 +658,7 @@ public class RESTController extends MultiActionController {
             directory.getChild().add(createJaxbChild(player, child, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setDirectory(directory);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -702,7 +702,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile mediaFile : result.getMediaFiles()) {
             searchResult.getMatch().add(createJaxbChild(player, mediaFile, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSearchResult(searchResult);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -741,7 +741,7 @@ public class RESTController extends MultiActionController {
             searchResult.getSong().add(createJaxbChild(player, mediaFile, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSearchResult2(searchResult);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -780,7 +780,7 @@ public class RESTController extends MultiActionController {
             searchResult.getSong().add(createJaxbChild(player, song, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setSearchResult3(searchResult);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -806,7 +806,7 @@ public class RESTController extends MultiActionController {
             result.getPlaylist().add(createJaxbPlaylist(new org.subsonic.restapi.Playlist(), playlist));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setPlaylists(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -834,7 +834,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setPlaylist(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -894,7 +894,7 @@ public class RESTController extends MultiActionController {
         float gain = jukeboxService.getGain();
         int position = controlsJukebox && !playQueue.isEmpty() ? jukeboxService.getPosition() : 0;
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         if (returnPlaylist) {
             JukeboxPlaylist result = new JukeboxPlaylist();
             res.setJukeboxPlaylist(result);
@@ -958,7 +958,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1026,7 +1026,7 @@ public class RESTController extends MultiActionController {
             playlistService.setFilesInPlaylist(id, songs);
         }
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     public void deletePlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1045,7 +1045,7 @@ public class RESTController extends MultiActionController {
         }
         playlistService.deletePlaylist(id);
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1094,7 +1094,7 @@ public class RESTController extends MultiActionController {
             result.getAlbum().add(createJaxbChild(player, album, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setAlbumList(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1138,7 +1138,7 @@ public class RESTController extends MultiActionController {
         for (Album album : albums) {
             result.getAlbum().add(createJaxbAlbum(new AlbumID3(), album, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setAlbumList2(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1161,7 +1161,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile mediaFile : searchService.getRandomSongs(criteria)) {
             result.getSong().add(createJaxbChild(player, mediaFile, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setRandomSongs(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1180,7 +1180,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile mediaFile : mediaFileDao.getVideos(size, offset, musicFolders)) {
             result.getVideo().add(createJaxbChild(player, mediaFile, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setVideos(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1215,7 +1215,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setNowPlaying(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1421,7 +1421,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1475,7 +1475,7 @@ public class RESTController extends MultiActionController {
             }
         }
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1496,7 +1496,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders)) {
             result.getSong().add(createJaxbChild(player, song, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setStarred(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1519,7 +1519,7 @@ public class RESTController extends MultiActionController {
         for (MediaFile song : mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders)) {
             result.getSong().add(createJaxbChild(player, song, username));
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setStarred2(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1571,7 +1571,7 @@ public class RESTController extends MultiActionController {
                 }
             }
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setPodcasts(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1585,7 +1585,7 @@ public class RESTController extends MultiActionController {
             return;
         }
         podcastService.refreshAllChannels(true);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1599,7 +1599,7 @@ public class RESTController extends MultiActionController {
 
         String url = getRequiredStringParameter(request, "url");
         podcastService.createChannel(url);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1613,7 +1613,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         podcastService.deleteChannel(id);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1627,7 +1627,7 @@ public class RESTController extends MultiActionController {
 
         int id = getRequiredIntParameter(request, "id");
         podcastService.deleteEpisode(id, true);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1647,7 +1647,7 @@ public class RESTController extends MultiActionController {
         }
 
         podcastService.downloadEpisode(episode);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1663,7 +1663,7 @@ public class RESTController extends MultiActionController {
             i.setHomePageUrl(radio.getHomepageUrl());
             result.getInternetRadioStation().add(i);
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setInternetRadioStations(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1688,7 +1688,7 @@ public class RESTController extends MultiActionController {
             b.setEntry(createJaxbChild(player, mediaFile, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setBookmarks(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1705,7 +1705,7 @@ public class RESTController extends MultiActionController {
         Bookmark bookmark = new Bookmark(0, mediaFileId, position, username, comment, now, now);
         bookmarkDao.createOrUpdateBookmark(bookmark);
         refreshBookmarkCache();
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1717,7 +1717,7 @@ public class RESTController extends MultiActionController {
         bookmarkDao.deleteBookmark(username, mediaFileId);
         refreshBookmarkCache();
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1736,7 +1736,7 @@ public class RESTController extends MultiActionController {
                 s.getEntry().add(createJaxbChild(player, mediaFile, username));
             }
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setShares(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1781,7 +1781,7 @@ public class RESTController extends MultiActionController {
             s.getEntry().add(createJaxbChild(player, mediaFile, username));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setShares(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1803,7 +1803,7 @@ public class RESTController extends MultiActionController {
         }
 
         shareService.deleteShare(id);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1829,7 +1829,7 @@ public class RESTController extends MultiActionController {
             share.setExpires(expires == 0L ? null : new Date(expires));
         }
         shareService.updateShare(share);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     private org.subsonic.restapi.Share createJaxbShare(Share share) {
@@ -1911,7 +1911,7 @@ public class RESTController extends MultiActionController {
         user.setPassword(password);
         securityService.updateUser(user);
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1932,7 +1932,7 @@ public class RESTController extends MultiActionController {
             return;
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setUser(createJaxbUser(requestedUser));
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -1952,7 +1952,7 @@ public class RESTController extends MultiActionController {
             result.getUser().add(createJaxbUser(user));
         }
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setUsers(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -2016,7 +2016,7 @@ public class RESTController extends MultiActionController {
         command.setAllowedMusicFolderIds(folderIds);
 
         userSettingsController.createUser(command);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -2068,7 +2068,7 @@ public class RESTController extends MultiActionController {
         command.setAllowedMusicFolderIds(folderIds);
 
         userSettingsController.updateUser(command);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     private boolean hasParameter(HttpServletRequest request, String name) {
@@ -2091,7 +2091,7 @@ public class RESTController extends MultiActionController {
 
         securityService.deleteUser(username);
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -2110,7 +2110,7 @@ public class RESTController extends MultiActionController {
                 c.setMessage(message.getContent());
             }
         }
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setChatMessages(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -2119,7 +2119,7 @@ public class RESTController extends MultiActionController {
     public void addChatMessage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         chatService.doAddMessage(getRequiredStringParameter(request, "message"), request);
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -2134,7 +2134,7 @@ public class RESTController extends MultiActionController {
         result.setTitle(lyrics.getTitle());
         result.setContent(lyrics.getLyrics());
 
-        Response res = jaxbWriter.createResponse(true);
+        Response res = createResponse();
         res.setLyrics(result);
         jaxbWriter.writeResponse(request, response, res);
     }
@@ -2156,7 +2156,7 @@ public class RESTController extends MultiActionController {
         String username = securityService.getCurrentUsername(request);
         ratingService.setRatingForUser(username, mediaFile, rating);
 
-        jaxbWriter.writeEmptyResponse(request, response);
+        writeEmptyResponse(request, response);
     }
 
     private HttpServletRequest wrapRequest(HttpServletRequest request) {
@@ -2196,6 +2196,14 @@ public class RESTController extends MultiActionController {
         } catch (Exception x) {
             return id;
         }
+    }
+
+    private Response createResponse() {
+        return jaxbWriter.createResponse(true);
+    }
+
+    private void writeEmptyResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        jaxbWriter.writeResponse(request, response, createResponse());
     }
 
     public void error(HttpServletRequest request, HttpServletResponse response, ErrorCode code, String message) throws Exception {
