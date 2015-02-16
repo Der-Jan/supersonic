@@ -22,6 +22,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -177,10 +178,24 @@ public final class Util {
         return list.subList((int) offset, Math.min(list.size(), (int) (offset + max)));
     }
 
-    public static List<Integer> toIntegerList(int... values) {
+    public static List<Integer> toIntegerList(int[] values) {
+        if (values == null) {
+            return Collections.emptyList();
+        }
         List<Integer> result = new ArrayList<Integer>(values.length);
         for (int value : values) {
             result.add(value);
+        }
+        return result;
+    }
+
+    public static int[] toIntArray(List<Integer> values) {
+        if (values == null) {
+            return new int[0];
+        }
+        int[] result = new int[values.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = values.get(i);
         }
         return result;
     }

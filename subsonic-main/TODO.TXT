@@ -3,6 +3,7 @@ DONE IN 5.2
 Bugfix: Fixed broken global shuffle play in Sonos
 Bundle Java 8 with Mac installer
 Use Java 8 for windows installer
+Bugfix: Fixed bug in Settings > Users that occured with Java 8
 
 TODO IN 5.2
 ------------
@@ -35,6 +36,7 @@ Lossless streaming
 TODO IN 5.3
 ------------
 "Recommended" album list (based on previous listening and similar artists)
+  Calculate async?
 New player controls
   Keyboard shortcuts (media buttons / space / arrows, ..)
   Remove "External player" feature?

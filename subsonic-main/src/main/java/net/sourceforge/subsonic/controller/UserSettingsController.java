@@ -26,6 +26,8 @@ import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.Util;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -34,7 +36,6 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class UserSettingsController extends SimpleFormController {
         command.setTranscodeSchemes(TranscodeScheme.values());
         command.setLdapEnabled(settingsService.isLdapEnabled());
         command.setAllMusicFolders(settingsService.getAllMusicFolders());
-        command.setAllowedMusicFolderIds(getAllowedMusicFolderIds(user));
+        command.setAllowedMusicFolderIds(Util.toIntArray(getAllowedMusicFolderIds(user)));
 
         return command;
     }
@@ -152,10 +153,7 @@ public class UserSettingsController extends SimpleFormController {
         userSettings.setChanged(new Date());
         settingsService.updateUserSettings(userSettings);
 
-        List<Integer> allowedMusicFolderIds = command.getAllowedMusicFolderIds();
-        if (allowedMusicFolderIds == null) {
-            allowedMusicFolderIds = Collections.emptyList();
-        }
+        List<Integer> allowedMusicFolderIds = Util.toIntegerList(command.getAllowedMusicFolderIds());
         settingsService.setMusicFoldersForUser(command.getUsername(), allowedMusicFolderIds);
     }
 
@@ -172,7 +170,7 @@ public class UserSettingsController extends SimpleFormController {
         command.setEmail(null);
         command.setTranscodeSchemeName(null);
         command.setAllMusicFolders(settingsService.getAllMusicFolders());
-        command.setAllowedMusicFolderIds(getAllowedMusicFolderIds(null));
+        command.setAllowedMusicFolderIds(Util.toIntArray(getAllowedMusicFolderIds(null)));
         command.setToast(true);
         command.setReload(true);
     }

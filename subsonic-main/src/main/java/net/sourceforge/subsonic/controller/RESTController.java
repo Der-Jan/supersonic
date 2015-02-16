@@ -2010,10 +2010,10 @@ public class RESTController extends MultiActionController {
         command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
 
         int[] folderIds = ServletRequestUtils.getIntParameters(request, "musicFolderId");
-        List<Integer> ids = folderIds.length == 0
-                            ? MusicFolder.toIdList(settingsService.getAllMusicFolders())
-                            : Util.toIntegerList(folderIds);
-        command.setAllowedMusicFolderIds(ids);
+        if (folderIds.length == 0) {
+            folderIds = Util.toIntArray(MusicFolder.toIdList(settingsService.getAllMusicFolders()));
+        }
+        command.setAllowedMusicFolderIds(folderIds);
 
         userSettingsController.createUser(command);
         jaxbWriter.writeEmptyResponse(request, response);
@@ -2062,10 +2062,10 @@ public class RESTController extends MultiActionController {
         }
 
         int[] folderIds = ServletRequestUtils.getIntParameters(request, "musicFolderId");
-        List<Integer> ids = folderIds.length == 0
-                            ? MusicFolder.toIdList(settingsService.getMusicFoldersForUser(username))
-                            : Util.toIntegerList(folderIds);
-        command.setAllowedMusicFolderIds(ids);
+        if (folderIds.length == 0) {
+            folderIds = Util.toIntArray(MusicFolder.toIdList(settingsService.getMusicFoldersForUser(username)));
+        }
+        command.setAllowedMusicFolderIds(folderIds);
 
         userSettingsController.updateUser(command);
         jaxbWriter.writeEmptyResponse(request, response);

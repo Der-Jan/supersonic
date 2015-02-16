@@ -54,7 +54,7 @@ public class UserSettingsCommand {
     private boolean isLdapAuthenticated;
     private boolean isLdapEnabled;
     private List<MusicFolder> allMusicFolders;
-    private List<Integer> allowedMusicFolderIds;
+    private int[] allowedMusicFolderIds;
 
     private String transcodeSchemeName;
     private EnumHolder[] transcodeSchemeHolders;
@@ -239,11 +239,11 @@ public class UserSettingsCommand {
         this.allMusicFolders = allMusicFolders;
     }
 
-    public List<Integer> getAllowedMusicFolderIds() {
+    public int[] getAllowedMusicFolderIds() {
         return allowedMusicFolderIds;
     }
 
-    public void setAllowedMusicFolderIds(List<Integer> allowedMusicFolderIds) {
+    public void setAllowedMusicFolderIds(int[] allowedMusicFolderIds) {
         this.allowedMusicFolderIds = allowedMusicFolderIds;
     }
 
