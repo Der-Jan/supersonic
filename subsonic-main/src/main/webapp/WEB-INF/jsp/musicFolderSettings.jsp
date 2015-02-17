@@ -4,8 +4,18 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+
+    <script type="text/javascript">
+        function init() {
+            <c:if test="${command.reload}">
+            parent.frames.upper.location.href="top.view?";
+            parent.frames.left.location.href="left.view?";
+            parent.frames.right.location.href="right.view?";
+            </c:if>
+        }
+    </script>
 </head>
-<body class="mainframe bgcolor1">
+<body class="mainframe bgcolor1" onload="init()">
 
 <c:import url="settingsHeader.jsp">
     <c:param name="cat" value="musicFolder"/>
@@ -46,7 +56,12 @@
 
 </table>
 
-    <div style="padding-top: 1.2em;padding-bottom: 0.3em">
+    <p class="forward"><a href="userSettings.view"><fmt:message key="musicfoldersettings.access"/></a></p>
+    <p class="detail" style="width:60%;white-space:normal;margin-top:-10px;">
+        <fmt:message key="musicfoldersettings.access.description"/>
+    </p>
+
+    <div style="padding-top: 0.5em;padding-bottom: 0.3em">
         <span style="white-space: nowrap">
             <fmt:message key="musicfoldersettings.scan"/>
             <form:select path="interval">
@@ -104,13 +119,5 @@
     </p>
 
 </form:form>
-
-<c:if test="${command.reload}">
-    <script type="text/javascript">
-        parent.frames.upper.location.href="top.view?";
-        parent.frames.left.location.href="left.view?";
-        parent.frames.right.location.href="right.view?";
-    </script>
-</c:if>
 
 </body></html>

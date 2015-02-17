@@ -57,6 +57,9 @@ public class MusicFolderDao extends AbstractDao {
     public void createMusicFolder(MusicFolder musicFolder) {
         String sql = "insert into music_folder (" + COLUMNS + ") values (null, ?, ?, ?, ?)";
         update(sql, musicFolder.getPath(), musicFolder.getName(), musicFolder.isEnabled(), musicFolder.getChanged());
+
+        Integer id = queryForInt("select max(id) from music_folder", 0);
+        update("insert into music_folder_user (music_folder_id, username) select ?, username from user", id);
         LOG.info("Created music folder " + musicFolder.getPath());
     }
 
@@ -79,7 +82,20 @@ public class MusicFolderDao extends AbstractDao {
     public void updateMusicFolder(MusicFolder musicFolder) {
         String sql = "update music_folder set path=?, name=?, enabled=?, changed=? where id=?";
         update(sql, musicFolder.getPath().getPath(), musicFolder.getName(),
-                musicFolder.isEnabled(), musicFolder.getChanged(), musicFolder.getId());
+               musicFolder.isEnabled(), musicFolder.getChanged(), musicFolder.getId());
+    }
+
+    public List<MusicFolder> getMusicFoldersForUser(String username) {
+        String sql = "select " + prefix(COLUMNS, "music_folder") + " from music_folder, music_folder_user " +
+                     "where music_folder.id = music_folder_user.music_folder_id and music_folder_user.username = ?";
+        return query(sql, rowMapper, username);
+    }
+
+    public void setMusicFoldersForUser(String username, List<Integer> musicFolderIds) {
+        update("delete from music_folder_user where username = ?", username);
+        for (Integer musicFolderId : musicFolderIds) {
+            update("insert into music_folder_user(music_folder_id, username) values (?, ?)", musicFolderId, username);
+        }
     }
 
     private static class MusicFolderRowMapper implements ParameterizedRowMapper<MusicFolder> {

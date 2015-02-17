@@ -71,6 +71,10 @@ public class VersionService {
      */
     private static final String VERSION_URL = "http://subsonic.org/backend/version.view";
 
+    public void init() {
+        ServiceLocator.setVersionService(this);
+    }
+
     /**
      * Returns the version number for the locally installed Subsonic version.
      *

@@ -3,7 +3,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" language="javascript">
@@ -15,7 +15,7 @@
             updatePlaylists();
 
             var mainLocation = top.main.location.href;
-            if (${model.mediaFolderChanged}) {
+            if (${model.musicFolderChanged}) {
                 if (mainLocation.indexOf("/home.view") != -1) {
                     top.main.location.href = mainLocation;
                 }

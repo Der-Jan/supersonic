@@ -223,6 +223,12 @@
         </thead>
         <tbody>
         <tr>
+            <td>5.2</td>
+            <td>
+                <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-5.2/subsonic-site/src/main/webapp/inc/api/subsonic-rest-api.xsd">1.12.0</a>
+            </td>
+        </tr>
+        <tr>
             <td>5.1</td>
             <td>
                 <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-5.1/subsonic-site/src/main/webapp/inc/api/subsonic-rest-api.xsd">1.11.0</a>

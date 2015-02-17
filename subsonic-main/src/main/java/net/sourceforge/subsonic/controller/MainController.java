@@ -39,6 +39,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaFileComparator;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.AdService;
@@ -83,6 +84,11 @@ public class MainController extends AbstractController {
             return new ModelAndView(new RedirectView("home.view?"));
         }
 
+        String username = securityService.getCurrentUsername(request);
+        if (isAccessDenied(dir, username)) {
+            return new ModelAndView(new RedirectView("accessDenied.view"));
+        }
+
         List<MediaFile> children = mediaFiles.size() == 1 ? mediaFileService.getChildrenOf(dir, true, true, true) : getMultiFolderChildren(mediaFiles);
         List<MediaFile> files = new ArrayList<MediaFile>();
         List<MediaFile> subDirs = new ArrayList<MediaFile>();
@@ -94,7 +100,6 @@ public class MainController extends AbstractController {
             }
         }
 
-        String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(username);
 
         mediaFileService.populateStarredDate(dir, username);
@@ -156,6 +161,15 @@ public class MainController extends AbstractController {
         ModelAndView result = new ModelAndView(view);
         result.addObject("model", map);
         return result;
+    }
+
+    private boolean isAccessDenied(MediaFile dir, String username) {
+        for (MusicFolder musicFolder : settingsService.getMusicFoldersForUser(username)) {
+            if (musicFolder.getPath().getPath().equals(dir.getFolder())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isViewAsList(HttpServletRequest request, UserSettings userSettings) {

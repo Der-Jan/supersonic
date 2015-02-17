@@ -19,15 +19,12 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,14 +34,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.InternetRadio;
-import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.MusicIndex;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -60,8 +54,6 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class LeftController extends ParameterizableViewController {
 
-    private static final Logger LOG = Logger.getLogger(LeftController.class);
-
     // Update this time if you want to force a refresh in clients.
     private static final Calendar LAST_COMPATIBILITY_TIME = Calendar.getInstance();
     static {
@@ -72,7 +64,6 @@ public class LeftController extends ParameterizableViewController {
     private MediaScannerService mediaScannerService;
     private SettingsService settingsService;
     private SecurityService securityService;
-    private MediaFileService mediaFileService;
     private MusicIndexService musicIndexService;
     private PlayerService playerService;
 
@@ -94,8 +85,8 @@ public class LeftController extends ParameterizableViewController {
         lastModified = Math.max(lastModified, settingsService.getSettingsChanged());
 
         // When was music folder(s) on disk last changed?
-        List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
-        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
+        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
         if (selectedMusicFolder != null) {
             File file = selectedMusicFolder.getPath();
             lastModified = Math.max(lastModified, FileUtil.lastModified(file));
@@ -125,30 +116,29 @@ public class LeftController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean mediaFolderChanged = saveSelectedMusicFolder(request);
+        boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
         MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
         Locale locale = RequestContextUtils.getLocale(request);
 
         String username = securityService.getCurrentUsername(request);
-        List<MusicFolder> allMusicFolders = settingsService.getAllMusicFolders();
-        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request);
+        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
-        String[] shortcuts = settingsService.getShortcutsAsArray();
         UserSettings userSettings = settingsService.getUserSettings(username);
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
-        MusicFolderContent musicFolderContent = getMusicFolderContent(musicFoldersToUse, refresh);
+        MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
 
         map.put("player", playerService.getPlayer(request, response));
         map.put("scanning", mediaScannerService.isScanning());
         map.put("musicFolders", allMusicFolders);
         map.put("selectedMusicFolder", selectedMusicFolder);
         map.put("radios", settingsService.getAllInternetRadios());
-        map.put("shortcuts", getShortcuts(musicFoldersToUse, shortcuts));
+        map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
-        map.put("mediaFolderChanged", mediaFolderChanged);
+        map.put("musicFolderChanged", musicFolderChanged);
 
         if (statistics != null) {
             map.put("statistics", statistics);
@@ -183,46 +173,6 @@ public class LeftController extends ParameterizableViewController {
         return true;
     }
 
-    /**
-     * Returns the selected music folder, or <code>null</code> if all music folders should be displayed.
-     */
-    private MusicFolder getSelectedMusicFolder(HttpServletRequest request) {
-        UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        int musicFolderId = settings.getSelectedMusicFolderId();
-
-        return settingsService.getMusicFolderById(musicFolderId);
-    }
-
-    protected List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
-        List<MediaFile> result = new ArrayList<MediaFile>();
-        for (MusicFolder folder : folders) {
-            MediaFile parent = mediaFileService.getMediaFile(folder.getPath(), !refresh);
-            result.addAll(mediaFileService.getChildrenOf(parent, true, false, true, !refresh));
-        }
-        return result;
-    }
-
-    public List<MediaFile> getShortcuts(List<MusicFolder> musicFoldersToUse, String[] shortcuts) {
-        List<MediaFile> result = new ArrayList<MediaFile>();
-
-        for (String shortcut : shortcuts) {
-            for (MusicFolder musicFolder : musicFoldersToUse) {
-                File file = new File(musicFolder.getPath(), shortcut);
-                if (FileUtil.exists(file)) {
-                    result.add(mediaFileService.getMediaFile(file, true));
-                }
-            }
-        }
-
-        return result;
-    }
-
-    public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
-        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = musicIndexService.getIndexedArtists(musicFoldersToUse, refresh);
-        List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
-        return new MusicFolderContent(indexedArtists, singleSongs);
-    }
-
     public void setMediaScannerService(MediaScannerService mediaScannerService) {
         this.mediaScannerService = mediaScannerService;
     }
@@ -235,10 +185,6 @@ public class LeftController extends ParameterizableViewController {
         this.securityService = securityService;
     }
 
-    public void setMediaFileService(MediaFileService mediaFileService) {
-        this.mediaFileService = mediaFileService;
-    }
-
     public void setMusicIndexService(MusicIndexService musicIndexService) {
         this.musicIndexService = musicIndexService;
     }
@@ -247,23 +193,4 @@ public class LeftController extends ParameterizableViewController {
         this.playerService = playerService;
     }
 
-    public static class MusicFolderContent {
-
-        private final SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists;
-        private final List<MediaFile> singleSongs;
-
-        public MusicFolderContent(SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists, List<MediaFile> singleSongs) {
-            this.indexedArtists = indexedArtists;
-            this.singleSongs = singleSongs;
-        }
-
-        public SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> getIndexedArtists() {
-            return indexedArtists;
-        }
-
-        public List<MediaFile> getSingleSongs() {
-            return singleSongs;
-        }
-
-    }
 }

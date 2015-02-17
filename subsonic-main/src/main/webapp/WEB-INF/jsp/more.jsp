@@ -58,9 +58,10 @@
                 <td><fmt:message key="more.random.text"/></td>
                 <td>
                     <select name="size">
-                        <option value="5"><fmt:message key="more.random.songs"><fmt:param value="5"/></fmt:message></option>
-                        <option value="10" selected="true"><fmt:message key="more.random.songs"><fmt:param value="10"/></fmt:message></option>
-                        <option value="20"><fmt:message key="more.random.songs"><fmt:param value="20"/></fmt:message></option>
+                        <option value="10"><fmt:message key="more.random.songs"><fmt:param value="10"/></fmt:message></option>
+                        <option value="20" selected><fmt:message key="more.random.songs"><fmt:param value="20"/></fmt:message></option>
+                        <option value="30"><fmt:message key="more.random.songs"><fmt:param value="30"/></fmt:message></option>
+                        <option value="40"><fmt:message key="more.random.songs"><fmt:param value="40"/></fmt:message></option>
                         <option value="50"><fmt:message key="more.random.songs"><fmt:param value="50"/></fmt:message></option>
                     </select>
                 </td>
@@ -78,11 +79,12 @@
                     <select name="year">
                         <option value="any"><fmt:message key="more.random.anyyear"/></option>
 
-                        <c:forEach begin="0" end="${model.currentYear - 2006}" var="yearOffset">
+                        <c:forEach begin="0" end="${model.currentYear - 2010}" var="yearOffset">
                             <c:set var="year" value="${model.currentYear - yearOffset}"/>
                             <option value="${year} ${year}">${year}</option>
                         </c:forEach>
 
+                        <option value="2010 2015">2010 &ndash; 2015</option>
                         <option value="2005 2010">2005 &ndash; 2010</option>
                         <option value="2000 2005">2000 &ndash; 2005</option>
                         <option value="1990 2000">1990 &ndash; 2000</option>

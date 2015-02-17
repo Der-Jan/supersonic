@@ -10,7 +10,7 @@
     <parent>
         <groupId>net.sourceforge.subsonic</groupId>
         <artifactId>subsonic</artifactId>
-        <version>5.1</version>
+        <version>5.2.beta1</version>
     </parent>
 
     <dependencies>
@@ -48,32 +48,32 @@
                                 <phase>compile</phase>
                                 <configuration>
                                     <target>
-                                        <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
+                                        <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask"/>
                                         <mkdir dir="${project.build.directory}"/>
-                                        <jarbundler dir="target"
+
+                                        <appbundler outputdirectory="target"
                                                     name="Subsonic"
-                                                    mainclass="net.sourceforge.subsonic.booter.Main"
-                                                    arguments="-mac"
-                                                    vmoptions="-Xmx150m"
-                                                    version="${project.version}"
-                                                    jvmversion="1.5+"
-                                                    jar="../subsonic-booter/target/subsonic-booter-jar-with-dependencies.jar"
-                                                    bundleid="net.sourceforge.subsonic"
+                                                    displayname="Subsonic"
                                                     icon="src/subsonic.icns"
-                                                    helpbookfolder="foobar"
-                                                    verbose="true">
-                                            <resourcefilelist dir="../subsonic-main/target" files="subsonic.war"/>
-                                            <javaproperty name="subsonic.war" value="Subsonic.app/Contents/Resources/subsonic.war"/>
-                                            <javaproperty name="subsonic.home" value="/Library/Application Support/Subsonic"/>
-                                            <javaproperty name="subsonic.defaultMusicFolder" value="/Users/Shared/Music/iTunes/iTunes Media"/>
-                                            <javaproperty name="subsonic.defaultPodcastFolder" value="/Users/Shared/Podcasts"/>
-                                            <javaproperty name="subsonic.defaultPlaylistFolder" value="/Users/Shared/Playlists"/>
-                                            <javaproperty name="subsonic.port" value="4040"/>
-                                            <javaproperty name="subsonic.httpsPort" value="0"/>
-                                            <javaproperty name="subsonic.contextPath" value="/"/>
-                                        </jarbundler>
-                                        <replace file="target/Subsonic.app/Contents/Info.plist" token="CFBundleHelpBookFolder" value="LSUIElement"/>
-                                        <replace file="target/Subsonic.app/Contents/Info.plist" token="foobar" value="1"/>
+                                                    identifier="net.sourceforge.subsonic"
+                                                    shortversion="${project.version}"
+                                                    mainclassname="net.sourceforge.subsonic.booter.Main">
+                                            <runtime dir="${env.JAVA_HOME}"/>
+                                            <classpath dir="..">
+                                                <include name="subsonic-booter/target/subsonic-booter-jar-with-dependencies.jar"/>
+                                                <include name="subsonic-main/target/subsonic.war"/>
+                                            </classpath>
+                                            <option value="-Dsubsonic.war=$APP_ROOT/Contents/Java/subsonic.war"/>
+                                            <option value="-Dsubsonic.home=/Library/Application Support/Subsonic"/>
+                                            <option value="-Dsubsonic.defaultMusicFolder=/Users/Shared/Music/iTunes/iTunes Media"/>
+                                            <option value="-Dsubsonic.defaultPodcastFolder=/Users/Shared/Podcasts"/>
+                                            <option value="-Dsubsonic.defaultPlaylistFolder=/Users/Shared/Playlists"/>
+                                            <option value="-Dsubsonic.port=4040"/>
+                                            <option value="-Dsubsonic.httpsPort=0"/>
+                                            <option value="-Dsubsonic.contextPath=/"/>
+                                            <option value="-Xmx150m"/>
+                                            <argument value="-mac"/>
+                                        </appbundler>
 
                                         <!--Requires installation of Packages, see http://s.sudre.free.fr/Software/Packages/about.html or subsonic-tools-->
                                         <exec executable="/usr/local/bin/packagesbuild">
@@ -96,9 +96,9 @@
                         </executions>
                         <dependencies>
                             <dependency>
-                                <groupId>net.sourceforge.jarbundler</groupId>
-                                <artifactId>jarbundler</artifactId>
-                                <version>2.1.0</version>
+                                <groupId>com.oracle</groupId>
+                                <artifactId>appbundler</artifactId>
+                                <version>1.0</version>
                             </dependency>
                         </dependencies>
                     </plugin>

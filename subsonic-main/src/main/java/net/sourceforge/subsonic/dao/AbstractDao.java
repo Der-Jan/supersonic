@@ -20,8 +20,11 @@ package net.sourceforge.subsonic.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import net.sourceforge.subsonic.Logger;
 
@@ -41,6 +44,13 @@ public class AbstractDao {
      */
     public JdbcTemplate getJdbcTemplate() {
         return daoHelper.getJdbcTemplate();
+    }
+
+    /**
+     * Similar to {@link #getJdbcTemplate()}, but with named parameters.
+     */
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+        return daoHelper.getNamedParameterJdbcTemplate();
     }
 
     protected String questionMarks(String columns) {
@@ -74,13 +84,24 @@ public class AbstractDao {
     }
 
     private void log(String sql, long startTimeNano) {
-//        long micros = (System.nanoTime() - startTimeNano) / 1000L;
-//        LOG.debug(micros + "  " + sql);
+        long millis = (System.nanoTime() - startTimeNano) / 1000000L;
+
+        // Log queries that take more than 2 seconds.
+        if (millis > TimeUnit.SECONDS.toMillis(2L)) {
+            LOG.debug(millis + " ms:  " + sql);
+        }
     }
 
     protected <T> List<T> query(String sql, RowMapper rowMapper, Object... args) {
         long t = System.nanoTime();
         List<T> result = getJdbcTemplate().query(sql, args, rowMapper);
+        log(sql, t);
+        return result;
+    }
+
+    protected <T> List<T> namedQuery(String sql, RowMapper rowMapper, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<T> result = getNamedParameterJdbcTemplate().query(sql, args, rowMapper);
         log(sql, t);
         return result;
     }
@@ -92,9 +113,24 @@ public class AbstractDao {
         return result;
     }
 
+    protected List<String> namedQueryForStrings(String sql, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<String> result = getNamedParameterJdbcTemplate().queryForList(sql, args, String.class);
+        log(sql, t);
+        return result;
+    }
+
     protected Integer queryForInt(String sql, Integer defaultValue, Object... args) {
         long t = System.nanoTime();
         List<Integer> list = getJdbcTemplate().queryForList(sql, args, Integer.class);
+        Integer result = list.isEmpty() ? defaultValue : list.get(0) == null ? defaultValue : list.get(0);
+        log(sql, t);
+        return result;
+    }
+
+    protected Integer namedQueryForInt(String sql, Integer defaultValue, Map<String, Object> args) {
+        long t = System.nanoTime();
+        List<Integer> list = getNamedParameterJdbcTemplate().queryForList(sql, args, Integer.class);
         Integer result = list.isEmpty() ? defaultValue : list.get(0) == null ? defaultValue : list.get(0);
         log(sql, t);
         return result;
@@ -118,6 +154,11 @@ public class AbstractDao {
 
     protected <T> T queryOne(String sql, RowMapper rowMapper, Object... args) {
         List<T> list = query(sql, rowMapper, args);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    protected <T> T namedQueryOne(String sql, RowMapper rowMapper, Map<String, Object> args) {
+        List<T> list = namedQuery(sql, rowMapper, args);
         return list.isEmpty() ? null : list.get(0);
     }
 

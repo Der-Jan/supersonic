@@ -2,6 +2,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <!-- DAO's -->
@@ -102,7 +103,6 @@
 
     <bean id="searchService" class="net.sourceforge.subsonic.service.SearchService">
         <property name="mediaFileService" ref="mediaFileService"/>
-        <property name="settingsService" ref="settingsService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>
@@ -127,7 +127,7 @@
         <property name="playlistDao" ref="playlistDao"/>
     </bean>
 
-    <bean id="versionService" class="net.sourceforge.subsonic.service.VersionService"/>
+    <bean id="versionService" class="net.sourceforge.subsonic.service.VersionService" init-method="init"/>
 
     <bean id="statusService" class="net.sourceforge.subsonic.service.StatusService">
         <property name="mediaFileService" ref="mediaFileService"/>
@@ -202,6 +202,14 @@
         <property name="artistDao" ref="artistDao"/>
     </bean>
 
+    <bean id="sonosService" class="net.sourceforge.subsonic.service.SonosService" init-method="init">
+        <property name="sonosHelper" ref="sonosHelper"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="upnpService" ref="upnpService"/>
+    </bean>
+
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">
         <property name="parsers">
             <list>
@@ -219,6 +227,8 @@
     <bean id="ajaxMultiService" class="net.sourceforge.subsonic.ajax.MultiService">
         <property name="networkService" ref="networkService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="securityService" ref="securityService"/>
         <property name="lastFmService" ref="lastFmService"/>
     </bean>
 

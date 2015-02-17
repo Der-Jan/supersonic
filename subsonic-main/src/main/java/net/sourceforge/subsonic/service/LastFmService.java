@@ -36,6 +36,7 @@ import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 
 /**
  * Provides services from the Last.fm REST API.
@@ -67,9 +68,10 @@ public class LastFmService {
      * @param mediaFile         The media file (song, album or artist).
      * @param count             Max number of similar artists to return.
      * @param includeNotPresent Whether to include artists that are not present in the media library.
+     * @param musicFolders      Only return artists present in these folders.
      * @return Similar artists, ordered by presence then similarity.
      */
-    public List<MediaFile> getSimilarArtists(MediaFile mediaFile, int count, boolean includeNotPresent) {
+    public List<MediaFile> getSimilarArtists(MediaFile mediaFile, int count, boolean includeNotPresent, List<MusicFolder> musicFolders) {
         List<MediaFile> result = new ArrayList<MediaFile>();
         if (mediaFile == null) {
             return result;
@@ -81,7 +83,7 @@ public class LastFmService {
 
             // First select artists that are present.
             for (Artist lastFmArtist : similarArtists) {
-                MediaFile similarArtist = mediaFileDao.getArtistByName(lastFmArtist.getName());
+                MediaFile similarArtist = mediaFileDao.getArtistByName(lastFmArtist.getName(), musicFolders);
                 if (similarArtist != null) {
                     result.add(similarArtist);
                     if (result.size() == count) {
@@ -93,7 +95,7 @@ public class LastFmService {
             // Then fill up with non-present artists
             if (includeNotPresent) {
                 for (Artist lastFmArtist : similarArtists) {
-                    MediaFile similarArtist = mediaFileDao.getArtistByName(lastFmArtist.getName());
+                    MediaFile similarArtist = mediaFileDao.getArtistByName(lastFmArtist.getName(), musicFolders);
                     if (similarArtist == null) {
                         MediaFile notPresentArtist = new MediaFile();
                         notPresentArtist.setId(-1);
@@ -118,10 +120,11 @@ public class LastFmService {
      * @param artist            The artist.
      * @param count             Max number of similar artists to return.
      * @param includeNotPresent Whether to include artists that are not present in the media library.
+     * @param musicFolders Only return songs from artists in these folders.
      * @return Similar artists, ordered by presence then similarity.
      */
     public List<net.sourceforge.subsonic.domain.Artist> getSimilarArtists(net.sourceforge.subsonic.domain.Artist artist,
-                                                                          int count, boolean includeNotPresent) {
+                                                                          int count, boolean includeNotPresent, List<MusicFolder> musicFolders) {
         List<net.sourceforge.subsonic.domain.Artist> result = new ArrayList<net.sourceforge.subsonic.domain.Artist>();
 
         try {
@@ -129,7 +132,7 @@ public class LastFmService {
 
             // First select artists that are present.
             for (Artist lastFmArtist : similarArtists) {
-                net.sourceforge.subsonic.domain.Artist similarArtist = artistDao.getArtist(lastFmArtist.getName());
+                net.sourceforge.subsonic.domain.Artist similarArtist = artistDao.getArtist(lastFmArtist.getName(), musicFolders);
                 if (similarArtist != null) {
                     result.add(similarArtist);
                     if (result.size() == count) {
@@ -165,13 +168,15 @@ public class LastFmService {
      *
      * @param artist The artist.
      * @param count  Max number of songs to return.
+     * @param musicFolders Only return songs from artists in these folders.
      * @return Songs from similar artists;
      */
-    public List<MediaFile> getSimilarSongs(net.sourceforge.subsonic.domain.Artist artist, int count) throws IOException {
+    public List<MediaFile> getSimilarSongs(net.sourceforge.subsonic.domain.Artist artist, int count,
+                                           List<MusicFolder> musicFolders) throws IOException {
         List<MediaFile> similarSongs = new ArrayList<MediaFile>();
 
         similarSongs.addAll(mediaFileDao.getSongsByArtist(artist.getName(), 0, 1000));
-        for (net.sourceforge.subsonic.domain.Artist similarArtist : getSimilarArtists(artist, 100, false)) {
+        for (net.sourceforge.subsonic.domain.Artist similarArtist : getSimilarArtists(artist, 100, false, musicFolders)) {
             similarSongs.addAll(mediaFileDao.getSongsByArtist(similarArtist.getName(), 0, 1000));
         }
         Collections.shuffle(similarSongs);
@@ -183,18 +188,19 @@ public class LastFmService {
      *
      * @param mediaFile The media file (song, album or artist).
      * @param count     Max number of songs to return.
+     * @param musicFolders Only return songs from artists present in these folders.
      * @return Songs from similar artists;
      */
-    public List<MediaFile> getSimilarSongs(MediaFile mediaFile, int count) throws IOException {
+    public List<MediaFile> getSimilarSongs(MediaFile mediaFile, int count, List<MusicFolder> musicFolders) {
         List<MediaFile> similarSongs = new ArrayList<MediaFile>();
 
         String artistName = getArtistName(mediaFile);
-        MediaFile artist = mediaFileDao.getArtistByName(artistName);
+        MediaFile artist = mediaFileDao.getArtistByName(artistName, musicFolders);
         if (artist != null) {
             similarSongs.addAll(mediaFileService.getRandomSongsForParent(artist, count));
         }
 
-        for (MediaFile similarArtist : getSimilarArtists(mediaFile, 100, false)) {
+        for (MediaFile similarArtist : getSimilarArtists(mediaFile, 100, false, musicFolders)) {
             similarSongs.addAll(mediaFileService.getRandomSongsForParent(similarArtist, count));
         }
         Collections.shuffle(similarSongs);

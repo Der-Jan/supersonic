@@ -18,7 +18,6 @@
  */
 package net.sourceforge.subsonic.domain;
 
-import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.SearchService;
 
 /**

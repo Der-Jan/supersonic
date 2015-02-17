@@ -243,90 +243,90 @@ public class MediaFileService {
     /**
      * Returns the most frequently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most frequently played albums.
      */
-    public List<MediaFile> getMostFrequentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return mediaFileDao.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder);
+    public List<MediaFile> getMostFrequentlyPlayedAlbums(int offset, int count, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getMostFrequentlyPlayedAlbums(offset, count, musicFolders);
     }
 
     /**
      * Returns the most recently played albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently played albums.
      */
-    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count, mediaFolder);
+    public List<MediaFile> getMostRecentlyPlayedAlbums(int offset, int count, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getMostRecentlyPlayedAlbums(offset, count, musicFolders);
     }
 
     /**
      * Returns the most recently added albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param musicFolders Only return albums in these folders.
      * @return The most recently added albums.
      */
-    public List<MediaFile> getNewestAlbums(int offset, int count, MusicFolder mediaFolder) {
-        return mediaFileDao.getNewestAlbums(offset, count, mediaFolder);
+    public List<MediaFile> getNewestAlbums(int offset, int count, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getNewestAlbums(offset, count, musicFolders);
     }
 
     /**
      * Returns the most recently starred albums.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param username    Returns albums starred by this user.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param username     Returns albums starred by this user.
+     * @param musicFolders Only return albums from these folders.
      * @return The most recently starred albums for this user.
      */
-    public List<MediaFile> getStarredAlbums(int offset, int count, String username, MusicFolder mediaFolder) {
-        return mediaFileDao.getStarredAlbums(offset, count, username, mediaFolder);
+    public List<MediaFile> getStarredAlbums(int offset, int count, String username, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getStarredAlbums(offset, count, username, musicFolders);
     }
 
     /**
      * Returns albums in alphabetical order.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param byArtist    Whether to sort by artist name
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param byArtist     Whether to sort by artist name
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in alphabetical order.
      */
-    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist, MusicFolder mediaFolder) {
-        return mediaFileDao.getAlphabeticalAlbums(offset, count, byArtist, mediaFolder);
+    public List<MediaFile> getAlphabeticalAlbums(int offset, int count, boolean byArtist, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlphabeticalAlbums(offset, count, byArtist, musicFolders);
     }
 
     /**
      * Returns albums within a year range.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param fromYear    The first year in the range.
-     * @param toYear      The last year in the range.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param fromYear     The first year in the range.
+     * @param toYear       The last year in the range.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the year range.
      */
-    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, MusicFolder mediaFolder) {
-        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
+    public List<MediaFile> getAlbumsByYear(int offset, int count, int fromYear, int toYear, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders);
     }
 
     /**
      * Returns albums in a genre.
      *
-     * @param offset      Number of albums to skip.
-     * @param count       Maximum number of albums to return.
-     * @param genre       The genre name.
-     * @param mediaFolder Only return albums in this media folder.
+     * @param offset       Number of albums to skip.
+     * @param count        Maximum number of albums to return.
+     * @param genre        The genre name.
+     * @param musicFolders Only return albums in these folders.
      * @return Albums in the genre.
      */
-    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, MusicFolder mediaFolder) {
-        return mediaFileDao.getAlbumsByGenre(offset, count, genre, mediaFolder);
+    public List<MediaFile> getAlbumsByGenre(int offset, int count, String genre, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumsByGenre(offset, count, genre, musicFolders);
     }
 
     /**
@@ -336,7 +336,7 @@ public class MediaFileService {
      * @param count  Max number of songs to return.
      * @return Random songs.
      */
-    public List<MediaFile> getRandomSongsForParent(MediaFile parent, int count) throws IOException {
+    public List<MediaFile> getRandomSongsForParent(MediaFile parent, int count) {
         List<MediaFile> children = getDescendantsOf(parent, false);
         removeVideoFiles(children);
 
@@ -444,9 +444,9 @@ public class MediaFileService {
      */
     private boolean isExcluded(File file) {
 
-        // Exclude all hidden files starting with a "." or "@eaDir" (thumbnail dir created on Synology devices).
+        // Exclude all hidden files starting with a single "." or "@eaDir" (thumbnail dir created on Synology devices).
         String name = file.getName();
-        return name.startsWith(".") || name.startsWith("@eaDir") || name.equals("Thumbs.db");
+        return (name.startsWith(".") && !name.startsWith("..")) || name.startsWith("@eaDir") || name.equals("Thumbs.db");
     }
 
     private MediaFile createMediaFile(File file) {
@@ -688,6 +688,18 @@ public class MediaFileService {
             album.setPlayCount(album.getPlayCount() + 1);
             albumDao.createOrUpdateAlbum(album);
         }
+    }
+
+    public int getAlbumCount(List<MusicFolder> musicFolders) {
+        return mediaFileDao.getAlbumCount(musicFolders);
+    }
+
+    public int getPlayedAlbumCount(List<MusicFolder> musicFolders) {
+        return mediaFileDao.getPlayedAlbumCount(musicFolders);
+    }
+
+    public int getStarredAlbumCount(String username, List<MusicFolder> musicFolders) {
+        return mediaFileDao.getStarredAlbumCount(username, musicFolders);
     }
 
     public void clearMemoryCache() {

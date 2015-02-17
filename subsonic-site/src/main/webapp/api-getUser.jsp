@@ -8,7 +8,7 @@
     </p>
 
     <p>
-        Get details about a given user, including which authorization roles it has.
+        Get details about a given user, including which authorization roles and folder access it has.
         Can be used to enable/disable certain features in the client, such as jukebox control.
     </p>
     <table>

@@ -154,7 +154,7 @@
         <div class="row">
             <div class="6u 12u(3)">
                 <ul>
-                    <li>Play music and movies on your Chromecast device.</li>
+                    <li>Stream to your Chromecast and Sonos devices.</li>
                     <li>Download Podcasts with the integrated Podcast receiver.</li>
                     <li>Manage your internet TV and radio stations.</li>
                 </ul>

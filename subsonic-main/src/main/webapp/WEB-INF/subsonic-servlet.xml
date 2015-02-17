@@ -9,7 +9,6 @@
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="mediaFileService" ref="mediaFileService"/>
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="playerService" ref="playerService"/>
     </bean>
@@ -114,6 +113,8 @@
         <property name="viewName" value="reload"/>
         <property name="playerService" ref="playerService"/>
         <property name="searchService" ref="searchService"/>
+        <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="reloadFrames">
             <list>
                 <bean class="net.sourceforge.subsonic.controller.ReloadFrame">
@@ -169,6 +170,11 @@
         <property name="upnpService" ref="upnpService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
+    <bean id="sonosSettingsController" class="net.sourceforge.subsonic.controller.SonosSettingsController">
+        <property name="viewName" value="sonosSettings"/>
+        <property name="sonosService" ref="sonosService"/>
+        <property name="settingsService" ref="settingsService"/>
+    </bean>
     <bean id="shareSettingsController" class="net.sourceforge.subsonic.controller.ShareSettingsController">
         <property name="viewName" value="shareSettings"/>
         <property name="shareService" ref="shareService"/>
@@ -184,7 +190,7 @@
         <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
-        <property name="mediaFolderDao" ref="mediaFileDao"/>
+        <property name="mediaFileDao" ref="mediaFileDao"/>
     </bean>
     <bean id="networkSettingsController" class="net.sourceforge.subsonic.controller.NetworkSettingsController">
         <property name="commandClass" value="net.sourceforge.subsonic.command.NetworkSettingsCommand"/>
@@ -309,6 +315,7 @@
     <bean id="hlsController" class="net.sourceforge.subsonic.controller.HLSController">
         <property name="playerService" ref="playerService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="videoPlayerController" class="net.sourceforge.subsonic.controller.VideoPlayerController">
         <property name="viewName" value="videoPlayer"/>
@@ -433,6 +440,7 @@
                 <prop key="/settings.view">settingsController</prop>
                 <prop key="/playerSettings.view">playerSettingsController</prop>
                 <prop key="/dlnaSettings.view">dlnaSettingsController</prop>
+                <prop key="/sonosSettings.view">sonosSettingsController</prop>
                 <prop key="/shareSettings.view">shareSettingsController</prop>
                 <prop key="/musicFolderSettings.view">musicFolderSettingsController</prop>
                 <prop key="/networkSettings.view">networkSettingsController</prop>

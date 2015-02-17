@@ -3,7 +3,7 @@
 
 <html><head>
     <%@ include file="head.jsp" %>
-    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
 </head>
 <body class="mainframe bgcolor1">
 
@@ -78,7 +78,7 @@
     <c:forEach items="${model.logEntries}" var="entry">
         <tr>
             <td>[<fmt:formatDate value="${entry.date}" dateStyle="short" timeStyle="long" type="both"/>]</td>
-            <td>${entry.level}</td><td>${entry.category}</td><td>${entry.message}</td>
+            <td>${entry.level}</td><td>${entry.category}</td><td>${fn:escapeXml(entry.message)}</td>
         </tr>
     </c:forEach>
 </table>

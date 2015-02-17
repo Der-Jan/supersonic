@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.command;
 
 import net.sourceforge.subsonic.controller.UserSettingsController;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 
@@ -52,12 +53,15 @@ public class UserSettingsCommand {
     private String email;
     private boolean isLdapAuthenticated;
     private boolean isLdapEnabled;
+    private List<MusicFolder> allMusicFolders;
+    private int[] allowedMusicFolderIds;
 
     private String transcodeSchemeName;
     private EnumHolder[] transcodeSchemeHolders;
     private boolean transcodingSupported;
     private String transcodeDirectory;
     private boolean toast;
+    private boolean reload;
 
     public String getUsername() {
         return username;
@@ -227,6 +231,22 @@ public class UserSettingsCommand {
         isLdapEnabled = ldapEnabled;
     }
 
+    public List<MusicFolder> getAllMusicFolders() {
+        return allMusicFolders;
+    }
+
+    public void setAllMusicFolders(List<MusicFolder> allMusicFolders) {
+        this.allMusicFolders = allMusicFolders;
+    }
+
+    public int[] getAllowedMusicFolderIds() {
+        return allowedMusicFolderIds;
+    }
+
+    public void setAllowedMusicFolderIds(int[] allowedMusicFolderIds) {
+        this.allowedMusicFolderIds = allowedMusicFolderIds;
+    }
+
     public String getTranscodeSchemeName() {
         return transcodeSchemeName;
     }
@@ -284,5 +304,13 @@ public class UserSettingsCommand {
 
     public boolean isToast() {
         return toast;
+    }
+
+    public boolean isReload() {
+        return reload;
+    }
+
+    public void setReload(boolean reload) {
+        this.reload = reload;
     }
 }

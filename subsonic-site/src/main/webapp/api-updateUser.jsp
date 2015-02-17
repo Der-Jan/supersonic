@@ -101,6 +101,12 @@
             <td></td>
             <td>Whether the user is allowed to share files with anyone.</td>
         </tr>
+        <tr>
+            <td><code>musicFolderId</code></td>
+            <td>No</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.12.0</a>) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</td>
+        </tr>
     </table>
 
     <p>

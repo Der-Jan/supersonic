@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.Collator;
@@ -35,8 +36,10 @@ import java.util.TreeMap;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.MusicIndex;
 import net.sourceforge.subsonic.domain.MusicIndex.SortableArtist;
+import net.sourceforge.subsonic.util.FileUtil;
 
 /**
  * Provides services for grouping artists by index.
@@ -64,6 +67,34 @@ public class MusicIndexService {
     public SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> getIndexedArtists(List<Artist> artists) throws IOException {
         List<MusicIndex.SortableArtistWithArtist> sortableArtists = createSortableArtists(artists);
         return sortArtists(sortableArtists);
+    }
+
+    public MusicFolderContent getMusicFolderContent(List<MusicFolder> musicFoldersToUse, boolean refresh) throws Exception {
+        SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithMediaFiles>> indexedArtists = getIndexedArtists(musicFoldersToUse, refresh);
+        List<MediaFile> singleSongs = getSingleSongs(musicFoldersToUse, refresh);
+        return new MusicFolderContent(indexedArtists, singleSongs);
+    }
+
+    public List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        for (MusicFolder folder : folders) {
+            MediaFile parent = mediaFileService.getMediaFile(folder.getPath(), !refresh);
+            result.addAll(mediaFileService.getChildrenOf(parent, true, false, true, !refresh));
+        }
+        return result;
+    }
+
+    public List<MediaFile> getShortcuts(List<MusicFolder> musicFoldersToUse) {
+        List<MediaFile> result = new ArrayList<MediaFile>();
+        for (String shortcut : settingsService.getShortcutsAsArray()) {
+            for (MusicFolder musicFolder : musicFoldersToUse) {
+                File file = new File(musicFolder.getPath(), shortcut);
+                if (FileUtil.exists(file)) {
+                    result.add(mediaFileService.getMediaFile(file, true));
+                }
+            }
+        }
+        return result;
     }
 
     private <T extends SortableArtist> SortedMap<MusicIndex, List<T>> sortArtists(List<T> artists) {

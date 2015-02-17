@@ -56,6 +56,10 @@ public class Version implements Comparable<Version> {
         return minor;
     }
 
+    public int getBeta() {
+        return beta;
+    }
+
     /**
      * Return whether this object is equal to another.
      * @param o Object to compare to.

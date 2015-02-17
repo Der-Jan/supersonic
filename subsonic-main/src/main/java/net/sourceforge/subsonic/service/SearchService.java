@@ -18,17 +18,15 @@
  */
 package net.sourceforge.subsonic.service;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.AlbumDao;
-import net.sourceforge.subsonic.dao.ArtistDao;
-import net.sourceforge.subsonic.domain.Album;
-import net.sourceforge.subsonic.domain.Artist;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.RandomSearchCriteria;
-import net.sourceforge.subsonic.domain.SearchCriteria;
-import net.sourceforge.subsonic.domain.SearchResult;
-import net.sourceforge.subsonic.util.FileUtil;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.Analyzer;
@@ -49,28 +47,35 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.spans.SpanOrQuery;
+import org.apache.lucene.search.spans.SpanQuery;
+import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.google.common.collect.Lists;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.AlbumDao;
+import net.sourceforge.subsonic.dao.ArtistDao;
+import net.sourceforge.subsonic.domain.Album;
+import net.sourceforge.subsonic.domain.Artist;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.RandomSearchCriteria;
+import net.sourceforge.subsonic.domain.SearchCriteria;
+import net.sourceforge.subsonic.domain.SearchResult;
+import net.sourceforge.subsonic.util.FileUtil;
 
 import static net.sourceforge.subsonic.service.SearchService.IndexType.*;
-import static net.sourceforge.subsonic.service.SearchService.IndexType.SONG;
 
 /**
  * Performs Lucene-based searching and indexing.
@@ -91,11 +96,12 @@ public class SearchService {
     private static final String FIELD_YEAR = "year";
     private static final String FIELD_MEDIA_TYPE = "mediaType";
     private static final String FIELD_FOLDER = "folder";
+    private static final String FIELD_FOLDER_ID = "folderId";
 
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
+    private static final String LUCENE_DIR = "lucene2";
 
     private MediaFileService mediaFileService;
-    private SettingsService settingsService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -108,7 +114,6 @@ public class SearchService {
     public SearchService() {
         removeLocks();
     }
-
 
     public void startIndexing() {
         try {
@@ -136,9 +141,9 @@ public class SearchService {
         }
     }
 
-    public void index(Artist artist) {
+    public void index(Artist artist, MusicFolder musicFolder) {
         try {
-            artistId3Writer.addDocument(ARTIST_ID3.createDocument(artist));
+            artistId3Writer.addDocument(ARTIST_ID3.createDocument(artist, musicFolder));
         } catch (Exception x) {
             LOG.error("Failed to create search index for " + artist, x);
         }
@@ -170,7 +175,7 @@ public class SearchService {
         }
     }
 
-    public SearchResult search(SearchCriteria criteria, IndexType indexType) {
+    public SearchResult search(SearchCriteria criteria, List<MusicFolder> musicFolders, IndexType indexType) {
         SearchResult result = new SearchResult();
         int offset = criteria.getOffset();
         int count = criteria.getCount();
@@ -183,7 +188,19 @@ public class SearchService {
             Analyzer analyzer = new SubsonicAnalyzer();
 
             MultiFieldQueryParser queryParser = new MultiFieldQueryParser(LUCENE_VERSION, indexType.getFields(), analyzer, indexType.getBoosts());
-            Query query = queryParser.parse(analyzeQuery(criteria.getQuery()));
+
+            BooleanQuery query = new BooleanQuery();
+            query.add(queryParser.parse(analyzeQuery(criteria.getQuery())), BooleanClause.Occur.MUST);
+
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                if (indexType == ALBUM_ID3 || indexType == ARTIST_ID3) {
+                    musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER_ID, NumericUtils.intToPrefixCoded(musicFolder.getId()))));
+                } else {
+                    musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
+                }
+            }
+            query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
             TopDocs topDocs = searcher.search(query, null, offset + count);
             result.setTotalHits(topDocs.totalHits);
@@ -254,19 +271,23 @@ public class SearchService {
                 NumericRangeQuery<Integer> rangeQuery = NumericRangeQuery.newIntRange(FIELD_YEAR, criteria.getFromYear(), criteria.getToYear(), true, true);
                 query.add(rangeQuery, BooleanClause.Occur.MUST);
             }
-            if (criteria.getMusicFolderId() != null) {
-                query.add(new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(criteria.getMusicFolderId()))), BooleanClause.Occur.MUST);
+
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : criteria.getMusicFolders()) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
             }
+            query.add(new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()])), BooleanClause.Occur.MUST);
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(criteria.getCount(), topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < criteria.getCount()) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
-                    result.add(mediaFileService.getMediaFile(id));
+                    addIfNotNull(mediaFileService.getMediaFile(id), result);
                 } catch (Exception x) {
                     LOG.warn("Failed to get media file " + id);
                 }
@@ -280,11 +301,6 @@ public class SearchService {
         return result;
     }
 
-    private String getMediaFolderPath(int mediaFolderId) {
-        MusicFolder mediaFolder = settingsService.getMusicFolderById(mediaFolderId);
-        return mediaFolder.getPath().getPath();
-    }
-
     private static String normalizeGenre(String genre) {
         return genre.toLowerCase().replace(" ", "").replace("-", "");
     }
@@ -292,11 +308,11 @@ public class SearchService {
     /**
      * Returns a number of random albums.
      *
-     * @param count         Number of albums to return.
-     * @param mediaFolder   Only return albums from this media folder, may be {@code null}.
+     * @param count        Number of albums to return.
+     * @param musicFolders Only return albums from these folders.
      * @return List of random albums.
      */
-    public List<MediaFile> getRandomAlbums(int count, MusicFolder mediaFolder) {
+    public List<MediaFile> getRandomAlbums(int count, List<MusicFolder> musicFolders) {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
         IndexReader reader = null;
@@ -304,16 +320,19 @@ public class SearchService {
             reader = createIndexReader(ALBUM);
             Searcher searcher = new IndexSearcher(reader);
 
-            Query query = mediaFolder == null ?
-                          new MatchAllDocsQuery() :
-                          new TermQuery(new Term(FIELD_FOLDER, getMediaFolderPath(mediaFolder.getId())));
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER, musicFolder.getPath().getPath())));
+            }
+            Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
 
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(count, topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < count) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
                     addIfNotNull(mediaFileService.getMediaFile(id), result);
@@ -333,10 +352,11 @@ public class SearchService {
     /**
      * Returns a number of random albums, using ID3 tag.
      *
-     * @param count Number of albums to return.
+     * @param count        Number of albums to return.
+     * @param musicFolders Only return albums from these folders.
      * @return List of random albums.
      */
-    public List<Album> getRandomAlbumsId3(int count) {
+    public List<Album> getRandomAlbumsId3(int count, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
 
         IndexReader reader = null;
@@ -344,13 +364,18 @@ public class SearchService {
             reader = createIndexReader(ALBUM_ID3);
             Searcher searcher = new IndexSearcher(reader);
 
-            Query query = new MatchAllDocsQuery();
+            List<SpanTermQuery> musicFolderQueries = new ArrayList<SpanTermQuery>();
+            for (MusicFolder musicFolder : musicFolders) {
+                musicFolderQueries.add(new SpanTermQuery(new Term(FIELD_FOLDER_ID, NumericUtils.intToPrefixCoded(musicFolder.getId()))));
+            }
+            Query query = new SpanOrQuery(musicFolderQueries.toArray(new SpanQuery[musicFolderQueries.size()]));
             TopDocs topDocs = searcher.search(query, null, Integer.MAX_VALUE);
+            List<ScoreDoc> scoreDocs = Lists.newArrayList(topDocs.scoreDocs);
             Random random = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < Math.min(count, topDocs.totalHits); i++) {
-                int index = random.nextInt(topDocs.totalHits);
-                Document doc = searcher.doc(topDocs.scoreDocs[index].doc);
+            while (!scoreDocs.isEmpty() && result.size() < count) {
+                int index = random.nextInt(scoreDocs.size());
+                Document doc = searcher.doc(scoreDocs.remove(index).doc);
                 int id = Integer.valueOf(doc.get(FIELD_ID));
                 try {
                     addIfNotNull(albumDao.getAlbum(id), result);
@@ -384,7 +409,7 @@ public class SearchService {
     }
 
     private File getIndexRootDirectory() {
-        return new File(SettingsService.getSubsonicHome(), "lucene2");
+        return new File(SettingsService.getSubsonicHome(), LUCENE_DIR);
     }
 
     private File getIndexDirectory(IndexType indexType) {
@@ -410,10 +435,6 @@ public class SearchService {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
-    }
-
-    public void setSettingsService(SettingsService settingsService) {
-        this.settingsService = settingsService;
     }
 
     public void setArtistDao(ArtistDao artistDao) {
@@ -473,7 +494,7 @@ public class SearchService {
             }
         },
 
-        ALBUM_ID3(new String[]{FIELD_ALBUM, FIELD_ARTIST}, FIELD_ALBUM) {
+        ALBUM_ID3(new String[]{FIELD_ALBUM, FIELD_ARTIST, FIELD_FOLDER_ID}, FIELD_ALBUM) {
             @Override
             public Document createDocument(Album album) {
                 Document doc = new Document();
@@ -485,12 +506,15 @@ public class SearchService {
                 if (album.getName() != null) {
                     doc.add(new Field(FIELD_ALBUM, album.getName(), Field.Store.YES, Field.Index.ANALYZED));
                 }
+                if (album.getFolderId() != null) {
+                    doc.add(new NumericField(FIELD_FOLDER_ID, Field.Store.NO, true).setIntValue(album.getFolderId()));
+                }
 
                 return doc;
             }
         },
 
-        ARTIST(new String[]{FIELD_ARTIST}, null) {
+        ARTIST(new String[]{FIELD_ARTIST, FIELD_FOLDER}, null) {
             @Override
             public Document createDocument(MediaFile mediaFile) {
                 Document doc = new Document();
@@ -499,6 +523,9 @@ public class SearchService {
                 if (mediaFile.getArtist() != null) {
                     doc.add(new Field(FIELD_ARTIST, mediaFile.getArtist(), Field.Store.YES, Field.Index.ANALYZED));
                 }
+                if (mediaFile.getFolder() != null) {
+                    doc.add(new Field(FIELD_FOLDER, mediaFile.getFolder(), Field.Store.NO, Field.Index.NOT_ANALYZED_NO_NORMS));
+                }
 
                 return doc;
             }
@@ -506,10 +533,11 @@ public class SearchService {
 
         ARTIST_ID3(new String[]{FIELD_ARTIST}, null) {
             @Override
-            public Document createDocument(Artist artist) {
+            public Document createDocument(Artist artist, MusicFolder musicFolder) {
                 Document doc = new Document();
                 doc.add(new NumericField(FIELD_ID, Field.Store.YES, false).setIntValue(artist.getId()));
                 doc.add(new Field(FIELD_ARTIST, artist.getName(), Field.Store.YES, Field.Index.ANALYZED));
+                doc.add(new NumericField(FIELD_FOLDER_ID, Field.Store.NO, true).setIntValue(musicFolder.getId()));
 
                 return doc;
             }
@@ -534,7 +562,7 @@ public class SearchService {
             throw new UnsupportedOperationException();
         }
 
-        protected Document createDocument(Artist artist) {
+        protected Document createDocument(Artist artist, MusicFolder musicFolder) {
             throw new UnsupportedOperationException();
         }
 

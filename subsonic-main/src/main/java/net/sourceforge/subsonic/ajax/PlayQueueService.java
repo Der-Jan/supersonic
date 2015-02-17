@@ -165,7 +165,8 @@ public class PlayQueueService {
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
         String username = securityService.getCurrentUsername(request);
-        List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders);
         Player player = getCurrentPlayer(request, response);
         return doPlay(request, player, files).setStartPlayerAt(0);
     }
@@ -175,29 +176,31 @@ public class PlayQueueService {
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         String username = securityService.getCurrentUsername(request);
         UserSettings userSettings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        MusicFolder mediaFolder =  settingsService.getMusicFolderById(userSettings.getSelectedMusicFolderId());
 
+        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username,
+                                                                                selectedMusicFolder == null ? null : selectedMusicFolder.getId());
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
-            albums = ratingService.getHighestRatedAlbums(offset, count, mediaFolder);
+            albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);
         } else if ("frequent".equals(albumListType)) {
-            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, mediaFolder);
+            albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, musicFolders);
         } else if ("recent".equals(albumListType)) {
-            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, mediaFolder);
+            albums = mediaFileService.getMostRecentlyPlayedAlbums(offset, count, musicFolders);
         } else if ("newest".equals(albumListType)) {
-            albums = mediaFileService.getNewestAlbums(offset, count, mediaFolder);
+            albums = mediaFileService.getNewestAlbums(offset, count, musicFolders);
         } else if ("starred".equals(albumListType)) {
-            albums = mediaFileService.getStarredAlbums(offset, count, username, mediaFolder);
+            albums = mediaFileService.getStarredAlbums(offset, count, username, musicFolders);
         } else if ("random".equals(albumListType)) {
-            albums = searchService.getRandomAlbums(count, mediaFolder);
+            albums = searchService.getRandomAlbums(count, musicFolders);
         } else if ("alphabetical".equals(albumListType)) {
-            albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, mediaFolder);
+            albums = mediaFileService.getAlphabeticalAlbums(offset, count, true, musicFolders);
         } else if ("decade".equals(albumListType)) {
             int fromYear = Integer.parseInt(decade);
             int toYear = fromYear + 9;
-            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, mediaFolder);
+            albums = mediaFileService.getAlbumsByYear(offset, count, fromYear, toYear, musicFolders);
         } else if ("genre".equals(albumListType)) {
-            albums = mediaFileService.getAlbumsByGenre(offset, count, genre, mediaFolder);
+            albums = mediaFileService.getAlbumsByGenre(offset, count, genre, musicFolders);
         } else {
             albums = Collections.emptyList();
         }
@@ -238,7 +241,9 @@ public class PlayQueueService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         MediaFile artist = mediaFileService.getMediaFile(id);
-        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count);
+        String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> similarSongs = lastFmService.getSimilarSongs(artist, count, musicFolders);
         Player player = getCurrentPlayer(request, response);
         player.getPlayQueue().addFiles(false, similarSongs);
         return convert(request, player, true).setStartPlayerAt(0);

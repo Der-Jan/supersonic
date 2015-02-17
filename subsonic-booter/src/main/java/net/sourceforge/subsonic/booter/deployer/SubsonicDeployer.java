@@ -121,10 +121,12 @@ public class SubsonicDeployer implements SubsonicDeployerService {
 
             if (isHttpsEnabled()) {
 
-                // Allow non-https for streaming and cover art (for Chromecast, UPnP etc)
+                // Allow non-https for streaming and cover art (for Chromecast, UPnP, Sonos etc)
                 context.getSecurityHandler().setConstraintMappings(new ConstraintMapping[]{
                         createConstraintMapping("/stream", Constraint.DC_NONE),
                         createConstraintMapping("/coverArt.view", Constraint.DC_NONE),
+                        createConstraintMapping("/ws/*", Constraint.DC_NONE),
+                        createConstraintMapping("/sonos/*", Constraint.DC_NONE),
                         createConstraintMapping("/", Constraint.DC_CONFIDENTIAL)
                 });
             }

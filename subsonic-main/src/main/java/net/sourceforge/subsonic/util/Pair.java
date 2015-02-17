@@ -30,6 +30,10 @@ public class Pair<S, T> implements Serializable {
     private final S first;
     private final T second;
 
+    public static <S, T> Pair<S, T> create(S first, T second) {
+        return new Pair<S, T>(first, second);
+    }
+
     public Pair(S first, T second) {
         this.first = first;
         this.second = second;

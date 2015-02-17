@@ -26,12 +26,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -134,6 +137,9 @@ public class SettingsService {
     private static final String KEY_SUBSONIC_URL = "SubsonicUrl";
     private static final String KEY_DLNA_ENABLED = "DlnaEnabled";
     private static final String KEY_DLNA_SERVER_NAME = "DlnaServerName";
+    private static final String KEY_SONOS_ENABLED = "SonosEnabled";
+    private static final String KEY_SONOS_SERVICE_NAME = "SonosServiceName";
+    private static final String KEY_SONOS_SERVICE_ID = "SonosServiceId";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -168,7 +174,7 @@ public class SettingsService {
     private static final int DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT = 1;
     private static final long DEFAULT_DOWNLOAD_BITRATE_LIMIT = 0;
     private static final long DEFAULT_UPLOAD_BITRATE_LIMIT = 0;
-    private static final long DEFAULT_STREAM_PORT = 0;
+    private static final int DEFAULT_STREAM_PORT = 0;
     private static final String DEFAULT_LICENSE_EMAIL = null;
     private static final String DEFAULT_LICENSE_CODE = null;
     private static final String DEFAULT_LICENSE_DATE = null;
@@ -189,7 +195,7 @@ public class SettingsService {
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
-    private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = null;
+    private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = System.getProperty("subsonic.contextPath", "").replaceAll("/", "");
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
@@ -199,6 +205,9 @@ public class SettingsService {
     private static final String DEFAULT_SUBSONIC_URL = "http://www.yourdomain.com";
     private static final boolean DEFAULT_DLNA_ENABLED = true;
     private static final String DEFAULT_DLNA_SERVER_NAME = "Subsonic";
+    private static final boolean DEFAULT_SONOS_ENABLED = false;
+    private static final String DEFAULT_SONOS_SERVICE_NAME = "Subsonic";
+    private static final int DEFAULT_SONOS_SERVICE_ID = 242;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
@@ -223,7 +232,8 @@ public class SettingsService {
     private String[] cachedMusicFileTypesArray;
     private String[] cachedVideoFileTypesArray;
     private List<MusicFolder> cachedMusicFolders;
-    
+    private final ConcurrentMap<String, List<MusicFolder>> cachedMusicFoldersPerUser = new ConcurrentHashMap<String, List<MusicFolder>>();
+
     private static File subsonicHome;
 
     private boolean licenseValidated = true;
@@ -342,6 +352,22 @@ public class SettingsService {
         return home;
     }
 
+    private int getInt(String key, int defaultValue) {
+        return Integer.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+    }
+
+    private void setInt(String key, int value) {
+        setProperty(key, String.valueOf(value));
+    }
+
+    private long getLong(String key, long defaultValue) {
+        return Long.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+    }
+
+    private void setLong(String key, long value) {
+        setProperty(key, String.valueOf(value));
+    }
+
     private boolean getBoolean(String key, boolean defaultValue) {
         return Boolean.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
     }
@@ -447,11 +473,11 @@ public class SettingsService {
     }
 
     public int getCoverArtLimit() {
-        return Integer.parseInt(properties.getProperty(KEY_COVER_ART_LIMIT, "" + DEFAULT_COVER_ART_LIMIT));
+        return getInt(KEY_COVER_ART_LIMIT, DEFAULT_COVER_ART_LIMIT);
     }
 
     public void setCoverArtLimit(int limit) {
-        setProperty(KEY_COVER_ART_LIMIT, "" + limit);
+        setInt(KEY_COVER_ART_LIMIT, limit);
     }
 
     public String getWelcomeTitle() {
@@ -491,7 +517,7 @@ public class SettingsService {
      * creation is disabled.
      */
     public int getIndexCreationInterval() {
-        return Integer.parseInt(properties.getProperty(KEY_INDEX_CREATION_INTERVAL, "" + DEFAULT_INDEX_CREATION_INTERVAL));
+        return getInt(KEY_INDEX_CREATION_INTERVAL, DEFAULT_INDEX_CREATION_INTERVAL);
     }
 
     /**
@@ -499,21 +525,21 @@ public class SettingsService {
      * creation is disabled.
      */
     public void setIndexCreationInterval(int days) {
-        setProperty(KEY_INDEX_CREATION_INTERVAL, String.valueOf(days));
+        setInt(KEY_INDEX_CREATION_INTERVAL, days);
     }
 
     /**
      * Returns the hour of day (0 - 23) when automatic index creation should run.
      */
     public int getIndexCreationHour() {
-        return Integer.parseInt(properties.getProperty(KEY_INDEX_CREATION_HOUR, String.valueOf(DEFAULT_INDEX_CREATION_HOUR)));
+        return getInt(KEY_INDEX_CREATION_HOUR, DEFAULT_INDEX_CREATION_HOUR);
     }
 
     /**
      * Sets the hour of day (0 - 23) when automatic index creation should run.
      */
     public void setIndexCreationHour(int hour) {
-        setProperty(KEY_INDEX_CREATION_HOUR, String.valueOf(hour));
+        setInt(KEY_INDEX_CREATION_HOUR, hour);
     }
 
     public boolean isFastCacheEnabled() {
@@ -529,7 +555,7 @@ public class SettingsService {
      * are disabled.
      */
     public int getPodcastUpdateInterval() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_UPDATE_INTERVAL, String.valueOf(DEFAULT_PODCAST_UPDATE_INTERVAL)));
+        return getInt(KEY_PODCAST_UPDATE_INTERVAL, DEFAULT_PODCAST_UPDATE_INTERVAL);
     }
 
     /**
@@ -537,35 +563,35 @@ public class SettingsService {
      * are disabled.
      */
     public void setPodcastUpdateInterval(int hours) {
-        setProperty(KEY_PODCAST_UPDATE_INTERVAL, String.valueOf(hours));
+        setInt(KEY_PODCAST_UPDATE_INTERVAL, hours);
     }
 
     /**
      * Returns the number of Podcast episodes to keep (-1 to keep all).
      */
     public int getPodcastEpisodeRetentionCount() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_EPISODE_RETENTION_COUNT, String.valueOf(DEFAULT_PODCAST_EPISODE_RETENTION_COUNT)));
+        return getInt(KEY_PODCAST_EPISODE_RETENTION_COUNT, DEFAULT_PODCAST_EPISODE_RETENTION_COUNT);
     }
 
     /**
      * Sets the number of Podcast episodes to keep (-1 to keep all).
      */
     public void setPodcastEpisodeRetentionCount(int count) {
-        setProperty(KEY_PODCAST_EPISODE_RETENTION_COUNT, String.valueOf(count));
+        setInt(KEY_PODCAST_EPISODE_RETENTION_COUNT, count);
     }
 
     /**
      * Returns the number of Podcast episodes to download (-1 to download all).
      */
     public int getPodcastEpisodeDownloadCount() {
-        return Integer.parseInt(properties.getProperty(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, String.valueOf(DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT)));
+        return getInt(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT);
     }
 
     /**
      * Sets the number of Podcast episodes to download (-1 to download all).
      */
     public void setPodcastEpisodeDownloadCount(int count) {
-        setProperty(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, String.valueOf(count));
+        setInt(KEY_PODCAST_EPISODE_DOWNLOAD_COUNT, count);
     }
 
     /**
@@ -600,28 +626,28 @@ public class SettingsService {
      * @return The upload bitrate limit in Kbit/s. Zero if unlimited.
      */
     public long getUploadBitrateLimit() {
-        return Long.parseLong(properties.getProperty(KEY_UPLOAD_BITRATE_LIMIT, "" + DEFAULT_UPLOAD_BITRATE_LIMIT));
+        return getLong(KEY_UPLOAD_BITRATE_LIMIT, DEFAULT_UPLOAD_BITRATE_LIMIT);
     }
 
     /**
      * @param limit The upload bitrate limit in Kbit/s. Zero if unlimited.
      */
     public void setUploadBitrateLimit(long limit) {
-        setProperty(KEY_UPLOAD_BITRATE_LIMIT, "" + limit);
+        setLong(KEY_UPLOAD_BITRATE_LIMIT, limit);
     }
 
     /**
      * @return The non-SSL stream port. Zero if disabled.
      */
     public int getStreamPort() {
-        return Integer.parseInt(properties.getProperty(KEY_STREAM_PORT, "" + DEFAULT_STREAM_PORT));
+        return getInt(KEY_STREAM_PORT, DEFAULT_STREAM_PORT);
     }
 
     /**
      * @param port The non-SSL stream port. Zero if disabled.
      */
     public void setStreamPort(int port) {
-        setProperty(KEY_STREAM_PORT, "" + port);
+        setInt(KEY_STREAM_PORT, port);
     }
 
     public String getLicenseEmail() {
@@ -777,19 +803,19 @@ public class SettingsService {
     }
 
     public int getPort() {
-        return Integer.valueOf(properties.getProperty(KEY_PORT, String.valueOf(DEFAULT_PORT)));
+        return getInt(KEY_PORT, DEFAULT_PORT);
     }
 
     public void setPort(int port) {
-        setProperty(KEY_PORT, String.valueOf(port));
+        setInt(KEY_PORT, port);
     }
 
     public int getHttpsPort() {
-        return Integer.valueOf(properties.getProperty(KEY_HTTPS_PORT, String.valueOf(DEFAULT_HTTPS_PORT)));
+        return getInt(KEY_HTTPS_PORT, DEFAULT_HTTPS_PORT);
     }
 
     public void setHttpsPort(int httpsPort) {
-        setProperty(KEY_HTTPS_PORT, String.valueOf(httpsPort));
+        setInt(KEY_HTTPS_PORT, httpsPort);
     }
 
     public boolean isUrlRedirectionEnabled() {
@@ -843,7 +869,7 @@ public class SettingsService {
     }
 
     public long getSettingsChanged() {
-        return Long.parseLong(properties.getProperty(KEY_SETTINGS_CHANGED, String.valueOf(DEFAULT_SETTINGS_CHANGED)));
+        return getLong(KEY_SETTINGS_CHANGED, DEFAULT_SETTINGS_CHANGED);
     }
 
     public Date getLastScanned() {
@@ -855,7 +881,7 @@ public class SettingsService {
         if (date == null) {
             properties.remove(KEY_LAST_SCANNED);
         } else {
-            properties.setProperty(KEY_LAST_SCANNED, String.valueOf(date.getTime()));
+            setLong(KEY_LAST_SCANNED, date.getTime());
         }
     }
 
@@ -1033,6 +1059,65 @@ public class SettingsService {
     }
 
     /**
+     * Returns all music folders a user have access to. Non-existing and disabled folders are not included.
+     *
+     * @return Possibly empty list of music folders.
+     */
+    public List<MusicFolder> getMusicFoldersForUser(String username) {
+        return getMusicFoldersForUser(username, false, false);
+    }
+
+    /**
+     * Returns all music folders a user have access to. Non-existing and disabled folders are not included.
+     *
+     * @param selectedMusicFolderId If non-null and included in the list of allowed music folders, this methods returns
+     *                              a list of only this music folder.
+     * @return Possibly empty list of music folders.
+     */
+    public List<MusicFolder> getMusicFoldersForUser(String username, Integer selectedMusicFolderId) {
+        List<MusicFolder> allowed = getMusicFoldersForUser(username, false, false);
+        if (selectedMusicFolderId == null) {
+            return allowed;
+        }
+        MusicFolder selected = getMusicFolderById(selectedMusicFolderId);
+        return allowed.contains(selected) ? Arrays.asList(selected) : Collections.<MusicFolder>emptyList();
+    }
+
+    /**
+     * Returns the selected music folder for a given user, or {@code null} if all music folders should be displayed.
+     */
+    public MusicFolder getSelectedMusicFolder(String username) {
+        UserSettings settings = getUserSettings(username);
+        int musicFolderId = settings.getSelectedMusicFolderId();
+
+        MusicFolder musicFolder = getMusicFolderById(musicFolderId);
+        List<MusicFolder> allowedMusicFolders = getMusicFoldersForUser(username);
+        return allowedMusicFolders.contains(musicFolder) ? musicFolder : null;
+    }
+
+    /**
+     * Returns all music folders a given user have access to.
+     *
+     * @param includeDisabled Whether to include disabled folders.
+     * @param includeNonExisting Whether to include non-existing folders.
+     * @return Possibly empty list of music folders.
+     */
+    public List<MusicFolder> getMusicFoldersForUser(String username, boolean includeDisabled, boolean includeNonExisting) {
+        List<MusicFolder> result = cachedMusicFoldersPerUser.get(username);
+        if (result == null) {
+            result = musicFolderDao.getMusicFoldersForUser(username);
+            result.retainAll(getAllMusicFolders(includeDisabled, includeNonExisting));
+            cachedMusicFoldersPerUser.put(username, result);
+        }
+        return result;
+    }
+
+    public void setMusicFoldersForUser(String username, List<Integer> musicFolderIds) {
+        musicFolderDao.setMusicFoldersForUser(username, musicFolderIds);
+        cachedMusicFoldersPerUser.remove(username);
+    }
+
+    /**
      * Returns the music folder with the given ID.
      *
      * @param id The ID.
@@ -1055,7 +1140,8 @@ public class SettingsService {
      */
     public void createMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.createMusicFolder(musicFolder);
-        cachedMusicFolders = null; 
+        cachedMusicFolders = null;
+        cachedMusicFoldersPerUser.clear();
     }
 
     /**
@@ -1065,7 +1151,8 @@ public class SettingsService {
      */
     public void deleteMusicFolder(Integer id) {
         musicFolderDao.deleteMusicFolder(id);
-        cachedMusicFolders = null; 
+        cachedMusicFolders = null;
+        cachedMusicFoldersPerUser.clear();
     }
 
     /**
@@ -1075,7 +1162,8 @@ public class SettingsService {
      */
     public void updateMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.updateMusicFolder(musicFolder);
-        cachedMusicFolders = null; 
+        cachedMusicFolders = null;
+        cachedMusicFoldersPerUser.clear();
     }
 
     /**
@@ -1252,6 +1340,30 @@ public class SettingsService {
 
     public void setDlnaServerName(String dlnaServerName) {
         setString(KEY_DLNA_SERVER_NAME, dlnaServerName);
+    }
+
+    public boolean isSonosEnabled() {
+        return getBoolean(KEY_SONOS_ENABLED, DEFAULT_SONOS_ENABLED);
+    }
+
+    public void setSonosEnabled(boolean sonosEnabled) {
+        setBoolean(KEY_SONOS_ENABLED, sonosEnabled);
+    }
+
+    public String getSonosServiceName() {
+        return getString(KEY_SONOS_SERVICE_NAME, DEFAULT_SONOS_SERVICE_NAME);
+    }
+
+    public void setSonosServiceName(String sonosServiceName) {
+        setString(KEY_SONOS_SERVICE_NAME, sonosServiceName);
+    }
+
+    public int getSonosServiceId() {
+        return getInt(KEY_SONOS_SERVICE_ID, DEFAULT_SONOS_SERVICE_ID);
+    }
+
+    public void setSonosServiceId(int sonosServiceid) {
+        setInt(KEY_SONOS_SERVICE_ID, sonosServiceid);
     }
 
     public String getLocalIpAddress() {

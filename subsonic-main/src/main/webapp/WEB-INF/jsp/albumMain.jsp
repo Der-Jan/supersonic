@@ -5,7 +5,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <script type="text/javascript" src="<c:url value="/script/scripts.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
@@ -399,7 +399,7 @@
                 <div style="font-size: 90%;padding-bottom: 1em">
                     <p><a href="http://subsonic.org/pages/apps.jsp" target="_blank">Apps</a> for Android, iPhone, Windows Phone ++.</p>
                     <p>Video streaming.</p>
-                    <p>Chromecast support.</p>
+                    <p>Chromecast and Sonos support.</p>
                     <p>DLNA/UPnP support</p>
                     <p>Share on Facebook, Twitter, Google+</p>
                     <p>No ads.</p>

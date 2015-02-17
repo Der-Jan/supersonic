@@ -101,11 +101,13 @@
                 /coverArt.view=IS_AUTHENTICATED_ANONYMOUSLY
                 /hls/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /stream/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /ws/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /share/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /style/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /icons/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /flash/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /script/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /sonos/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /crossdomain.xml=IS_AUTHENTICATED_ANONYMOUSLY
 
                 /personalSettings.view=ROLE_SETTINGS
@@ -119,6 +121,7 @@
                 /musicFolderSettings.view=ROLE_ADMIN
                 /networkSettings.view=ROLE_ADMIN
                 /dlnaSettings.view=ROLE_ADMIN
+                /sonosSettings.view=ROLE_ADMIN
                 /transcodingSettings.view=ROLE_ADMIN
                 /internetRadioSettings.view=ROLE_ADMIN
                 /podcastSettings.view=ROLE_ADMIN

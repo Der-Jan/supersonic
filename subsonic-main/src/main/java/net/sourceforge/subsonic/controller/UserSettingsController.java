@@ -19,18 +19,23 @@
 package net.sourceforge.subsonic.controller;
 
 import net.sourceforge.subsonic.command.UserSettingsCommand;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.util.Util;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +73,8 @@ public class UserSettingsController extends SimpleFormController {
         command.setTranscodeDirectory(transcodingService.getTranscodeDirectory().getPath());
         command.setTranscodeSchemes(TranscodeScheme.values());
         command.setLdapEnabled(settingsService.isLdapEnabled());
+        command.setAllMusicFolders(settingsService.getAllMusicFolders());
+        command.setAllowedMusicFolderIds(Util.toIntArray(getAllowedMusicFolderIds(user)));
 
         return command;
     }
@@ -83,6 +90,18 @@ public class UserSettingsController extends SimpleFormController {
         return null;
     }
 
+    private List<Integer> getAllowedMusicFolderIds(User user) {
+        List<Integer> result = new ArrayList<Integer>();
+        List<MusicFolder> allowedMusicFolders = user == null
+                                                ? settingsService.getAllMusicFolders()
+                                                : settingsService.getMusicFoldersForUser(user.getUsername());
+
+        for (MusicFolder musicFolder : allowedMusicFolders) {
+            result.add(musicFolder.getId());
+        }
+        return result;
+    }
+
     @Override
     protected void doSubmitAction(Object comm) throws Exception {
         UserSettingsCommand command = (UserSettingsCommand) comm;
@@ -95,7 +114,6 @@ public class UserSettingsController extends SimpleFormController {
             updateUser(command);
         }
         resetCommand(command);
-        command.setToast(true);
     }
 
     private void deleteUser(UserSettingsCommand command) {
@@ -134,6 +152,9 @@ public class UserSettingsController extends SimpleFormController {
         userSettings.setTranscodeScheme(TranscodeScheme.valueOf(command.getTranscodeSchemeName()));
         userSettings.setChanged(new Date());
         settingsService.updateUserSettings(userSettings);
+
+        List<Integer> allowedMusicFolderIds = Util.toIntegerList(command.getAllowedMusicFolderIds());
+        settingsService.setMusicFoldersForUser(command.getUsername(), allowedMusicFolderIds);
     }
 
     private void resetCommand(UserSettingsCommand command) {
@@ -148,6 +169,10 @@ public class UserSettingsController extends SimpleFormController {
         command.setConfirmPassword(null);
         command.setEmail(null);
         command.setTranscodeSchemeName(null);
+        command.setAllMusicFolders(settingsService.getAllMusicFolders());
+        command.setAllowedMusicFolderIds(Util.toIntArray(getAllowedMusicFolderIds(null)));
+        command.setToast(true);
+        command.setReload(true);
     }
 
     public void setSecurityService(SecurityService securityService) {

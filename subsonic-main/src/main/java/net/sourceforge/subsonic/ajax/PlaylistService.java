@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.ajax;
 
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.i18n.SubsonicLocaleResolver;
@@ -75,7 +76,16 @@ public class PlaylistService {
 
         String username = securityService.getCurrentUsername(request);
         mediaFileService.populateStarredDate(files, username);
+        populateAccess(files, username);
         return new PlaylistInfo(playlist, createEntries(files));
+    }
+
+    private void populateAccess(List<MediaFile> files, String username) {
+        for (MediaFile file : files) {
+            if (!securityService.isFolderAccessAllowed(file, username)) {
+                file.setPresent(false);
+            }
+        }
     }
 
     public List<Playlist> createEmptyPlaylist() {
@@ -133,7 +143,8 @@ public class PlaylistService {
         playlist.setName(bundle.getString("top.starred") + " " + dateFormat.format(now));
 
         playlistService.createPlaylist(playlist);
-        List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> songs = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders);
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
 
         return playlist.getId();

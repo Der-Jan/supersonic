@@ -18,10 +18,15 @@
  */
 package net.sourceforge.subsonic.service;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
+import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.DeviceIdentity;
 import org.fourthline.cling.model.meta.Icon;
@@ -29,6 +34,7 @@ import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.LocalService;
 import org.fourthline.cling.model.meta.ManufacturerDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
+import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
@@ -163,6 +169,18 @@ public class UPnPService {
         return new LocalDevice(identity, type, details, new Icon[]{icon}, new LocalService[]{contentDirectoryservice, connetionManagerService, receiverService});
     }
 
+    public List<String> getSonosControllerHosts() {
+        List<String> result = new ArrayList<String>();
+        for (Device device : upnpService.getRegistry().getDevices(new DeviceType("schemas-upnp-org", "ZonePlayer"))) {
+            if (device instanceof RemoteDevice) {
+                URL descriptorURL = ((RemoteDevice) device).getIdentity().getDescriptorURL();
+                if (descriptorURL != null) {
+                    result.add(descriptorURL.getHost());
+                }
+            }
+        }
+        return result;
+    }
 
     public UpnpService getUpnpService() {
         return upnpService;

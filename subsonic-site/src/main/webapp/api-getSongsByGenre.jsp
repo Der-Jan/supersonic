@@ -35,6 +35,12 @@
             <td>0</td>
             <td>The offset. Useful if you want to page through the songs in a genre.</td>
         </tr>
+        <tr>
+            <td><code>musicFolderId</code></td>
+            <td>No</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.12.0</a>) Only return albums in the music folder with the given ID. See <code>getMusicFolders</code>.</td>
+        </tr>
     </table>
     <p>
         Returns a <code>&lt;subsonic-response&gt;</code> element with a nested <code>&lt;songsByGenre&gt;</code>
