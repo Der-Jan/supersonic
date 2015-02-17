@@ -28,10 +28,12 @@
 
                 <c:if test="${fn:length(model.albums) gt 0}">
                     <td style="padding-right:0.5em">
+                        <a href="${nextUrl}">
                         <fmt:message key="home.albums">
                             <fmt:param value="${model.listOffset + 1}"/>
                             <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
                         </fmt:message>
+                        </a>
                     </td>
                 </c:if>
 
