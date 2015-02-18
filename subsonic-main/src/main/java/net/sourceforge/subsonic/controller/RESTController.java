@@ -92,6 +92,7 @@ import net.sourceforge.subsonic.dao.AlbumDao;
 import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.BookmarkDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.dao.PlayQueueDao;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.ArtistBio;
@@ -110,6 +111,7 @@ import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.RandomSearchCriteria;
 import net.sourceforge.subsonic.domain.PlayStatus;
+import net.sourceforge.subsonic.domain.SavedPlayQueue;
 import net.sourceforge.subsonic.domain.SearchCriteria;
 import net.sourceforge.subsonic.domain.SearchResult;
 import net.sourceforge.subsonic.domain.Share;
@@ -180,6 +182,7 @@ public class RESTController extends MultiActionController {
     private ArtistDao artistDao;
     private AlbumDao albumDao;
     private BookmarkDao bookmarkDao;
+    private PlayQueueDao playQueueDao;
 
     private final Map<BookmarkKey, Bookmark> bookmarkCache = new ConcurrentHashMap<BookmarkKey, Bookmark>();
     private final JAXBWriter jaxbWriter = new JAXBWriter();
@@ -1721,6 +1724,57 @@ public class RESTController extends MultiActionController {
     }
 
     @SuppressWarnings("UnusedDeclaration")
+    public void getPlayQueue(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+        Player player = playerService.getPlayer(request, response);
+
+        SavedPlayQueue playQueue = playQueueDao.getPlayQueue(username);
+        if (playQueue == null) {
+            writeEmptyResponse(request, response);
+            return;
+        }
+
+        org.subsonic.restapi.PlayQueue restPlayQueue = new org.subsonic.restapi.PlayQueue();
+        restPlayQueue.setUsername(playQueue.getUsername());
+        restPlayQueue.setCurrent(playQueue.getCurrentMediaFileId());
+        restPlayQueue.setPosition(playQueue.getPositionMillis());
+        restPlayQueue.setChanged(jaxbWriter.convertDate(playQueue.getChanged()));
+        restPlayQueue.setChangedBy(playQueue.getChangedBy());
+
+        for (Integer mediaFileId : playQueue.getMediaFileIds()) {
+            MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
+            if (mediaFile != null) {
+                restPlayQueue.getEntry().add(createJaxbChild(player, mediaFile, username));
+            }
+        }
+
+        Response res = createResponse();
+        res.setPlayQueue(restPlayQueue);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void savePlayQueue(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+        List<Integer> mediaFileIds = Util.toIntegerList(getIntParameters(request, "id"));
+        Integer current = getIntParameter(request, "current");
+        Long position = getLongParameter(request, "position");
+        Date changed = new Date();
+        String changedBy = getRequiredStringParameter(request, "c");
+
+        if (!mediaFileIds.contains(current)) {
+            error(request, response, ErrorCode.GENERIC, "Current track is not included in play queue");
+            return;
+        }
+
+        SavedPlayQueue playQueue = new SavedPlayQueue(null, username, mediaFileIds, current, position, changed, changedBy);
+        playQueueDao.savePlayQueue(playQueue);
+        writeEmptyResponse(request, response);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
     public void getShares(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
         Player player = playerService.getPlayer(request, response);
@@ -2349,6 +2403,10 @@ public class RESTController extends MultiActionController {
 
     public void setLastFmService(LastFmService lastFmService) {
         this.lastFmService = lastFmService;
+    }
+
+    public void setPlayQueueDao(PlayQueueDao playQueueDao) {
+        this.playQueueDao = playQueueDao;
     }
 
     public static enum ErrorCode {

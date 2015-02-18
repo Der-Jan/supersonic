@@ -466,6 +466,8 @@
                 <code><a href="#getBookmarks">getBookmarks</a></code>
                 <code><a href="#createBookmark">createBookmark</a></code>
                 <code><a href="#deleteBookmark">deleteBookmark</a></code>
+                <code><a href="#getPlayQueue">getPlayQueue</a></code>
+                <code><a href="#savePlayQueue">savePlayQueue</a></code>
             </td>
         </tr>
         </tbody>
@@ -549,6 +551,8 @@
 <%@ include file="api-getBookmarks.jsp" %>
 <%@ include file="api-createBookmark.jsp" %>
 <%@ include file="api-deleteBookmark.jsp" %>
+<%@ include file="api-getPlayQueue.jsp" %>
+<%@ include file="api-savePlayQueue.jsp" %>
 
 </div>
 </div>

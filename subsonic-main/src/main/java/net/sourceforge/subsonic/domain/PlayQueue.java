@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * A playlist is a list of music files that are associated to a remote player.
+ * A play queue is a list of music files that are associated to a remote player.
  *
  * @author Sindre Mehus
  */

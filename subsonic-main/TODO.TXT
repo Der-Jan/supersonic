@@ -4,19 +4,13 @@ Bugfix: Fixed broken global shuffle play in Sonos
 Bundle Java 8 with Mac installer
 Use Java 8 for windows installer
 Bugfix: Fixed bug in Settings > Users that occured with Java 8
+REST: Added savePlayQueue, getPlayQueue
 
 TODO IN 5.2
 ------------
-Add IPs to ping response.
 By genre / year: order by artist, album?
 Sonos: Document how to set up remote Subsonic servers
-
-REST: Play queue state
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b7694f9c1bea5b
-  savePlayQueue, getPlayQueue
-    id+
-    current
-    position
+Save/Load play queue state in web interface
 
 Sonos
   Document how to manually configure music service

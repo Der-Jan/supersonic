@@ -57,5 +57,30 @@ public class Schema52 extends Schema {
             template.execute("alter table album add folder_id int");
             LOG.info("Database column 'album.folder_id' was added successfully.");
         }
+
+        if (!tableExists(template, "play_queue")) {
+            LOG.info("Database table 'play_queue' not found.  Creating it.");
+            template.execute("create table play_queue (" +
+                             "id identity," +
+                             "username varchar not null," +
+                             "current int," +
+                             "position_millis bigint," +
+                             "changed datetime not null," +
+                             "changed_by varchar not null," +
+                             "foreign key (username) references user(username) on delete cascade)");
+            LOG.info("Database table 'play_queue' was created successfully.");
+        }
+
+        if (!tableExists(template, "play_queue_file")) {
+            LOG.info("Database table 'play_queue_file' not found.  Creating it.");
+            template.execute("create cached table play_queue_file (" +
+                             "id identity," +
+                             "play_queue_id int not null," +
+                             "media_file_id int not null," +
+                             "foreign key (play_queue_id) references play_queue(id) on delete cascade," +
+                             "foreign key (media_file_id) references media_file(id) on delete cascade)");
+
+            LOG.info("Database table 'play_queue_file' was created successfully.");
+        }
     }
 }

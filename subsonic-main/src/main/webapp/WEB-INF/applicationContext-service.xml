@@ -27,6 +27,10 @@
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
 
+    <bean id="playQueueDao" class="net.sourceforge.subsonic.dao.PlayQueueDao">
+        <property name="daoHelper" ref="daoHelper"/>
+    </bean>
+
     <bean id="internetRadioDao" class="net.sourceforge.subsonic.dao.InternetRadioDao">
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
