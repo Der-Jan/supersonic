@@ -6,8 +6,7 @@
         <a target="_blank" href="http://www.subfireplayer.net">SubFire</a> is an HTML5 app that can be played on the
         <a href="http://jwsdev.net/l/subfire" target="_blank">web</a>,
         as a <a href="http://jwsdev.net/l/subfirechrome" target="_blank">Chrome app</a>, and as an
-        <a href="http://jwsdev.net/l/subfireamazon" target="_blank">Android app</a> for phone, tablet,
-        and Amazon's Fire TV and Fire Stick.
+        <a href="http://jwsdev.net/l/subfireamazon" target="_blank">Android app</a> for Amazon's Fire Phone, Kindle Fire tablets, Fire TV and Fire Stick.
     </p>
 
     <span class="image right"><a href="inc/img/screenshots/subfire/subfire-1.png"><img src="inc/img/screenshots/subfire/subfire-thumb-1.jpg" alt=""/></a></span>
