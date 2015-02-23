@@ -32,6 +32,7 @@ import net.sourceforge.subsonic.service.AudioScrobblerService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.util.FileUtil;
 
 /**
@@ -120,7 +121,9 @@ public class PlayQueueInputStream extends InputStream {
             close();
             LOG.info(player.getUsername() + " listening to \"" + FileUtil.getShortPath(file.getFile()) + "\"");
             mediaFileService.incrementPlayCount(file);
-            if (player.getClientId() == null) {  // Don't scrobble REST players.
+
+            // Don't scrobble REST players (except Sonos)
+            if (player.getClientId() == null || player.getClientId().equals(SonosHelper.SUBSONIC_CLIENT_ID)) {
                 audioScrobblerService.register(file, player.getUsername(), false, null);
             }
 
@@ -144,7 +147,8 @@ public class PlayQueueInputStream extends InputStream {
                 currentInputStream.close();
             }
         } finally {
-            if (player.getClientId() == null) {  // Don't scrobble REST players.
+            // Don't scrobble REST players (except Sonos)
+            if (player.getClientId() == null || player.getClientId().equals(SonosHelper.SUBSONIC_CLIENT_ID)) {
                 audioScrobblerService.register(currentFile, player.getUsername(), true, null);
             }
             currentInputStream = null;

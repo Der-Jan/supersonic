@@ -6,6 +6,7 @@ Use Java 8 for windows installer
 Bugfix: Fixed bug in Settings > Users that occured with Java 8
 REST: Added savePlayQueue, getPlayQueue
 Added option to save/load current play queue, including current song and position.
+Bugfix: Make scrobbling work for Sonos
 
 TODO IN 5.2
 ------------
