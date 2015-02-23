@@ -4,8 +4,6 @@ DONE IN 5.2
 TODO IN 5.2
 ------------
 By genre / year: order by artist, album?
-Save/Load play queue state in web interface
-  Test Chromecast/jukebox etc
 
 Sonos
   Rating
