@@ -16,7 +16,6 @@ Save/Load play queue state in web interface
   Test Chromecast/jukebox etc
 
 Sonos
-  Document how to manually configure music service
   Rating
   Capabilities
      User Content Playlists
