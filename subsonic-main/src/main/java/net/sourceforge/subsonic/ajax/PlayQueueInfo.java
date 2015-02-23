@@ -30,16 +30,15 @@ import net.sourceforge.subsonic.util.StringUtil;
 public class PlayQueueInfo {
 
     private final List<Entry> entries;
-    private final int index;
     private final boolean stopEnabled;
     private final boolean repeatEnabled;
     private final boolean sendM3U;
     private final float gain;
     private int startPlayerAt = -1;
+    private long startPlayerAtPosition; // millis
 
-    public PlayQueueInfo(List<Entry> entries, int index, boolean stopEnabled, boolean repeatEnabled, boolean sendM3U, float gain) {
+    public PlayQueueInfo(List<Entry> entries, boolean stopEnabled, boolean repeatEnabled, boolean sendM3U, float gain) {
         this.entries = entries;
-        this.index = index;
         this.stopEnabled = stopEnabled;
         this.repeatEnabled = repeatEnabled;
         this.sendM3U = sendM3U;
@@ -58,10 +57,6 @@ public class PlayQueueInfo {
             }
         }
         return StringUtil.formatDuration(durationSeconds);
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public boolean isStopEnabled() {
@@ -86,6 +81,15 @@ public class PlayQueueInfo {
 
     public PlayQueueInfo setStartPlayerAt(int startPlayerAt) {
         this.startPlayerAt = startPlayerAt;
+        return this;
+    }
+
+    public long getStartPlayerAtPosition() {
+        return startPlayerAtPosition;
+    }
+
+    public PlayQueueInfo setStartPlayerAtPosition(long startPlayerAtPosition) {
+        this.startPlayerAtPosition = startPlayerAtPosition;
         return this;
     }
 

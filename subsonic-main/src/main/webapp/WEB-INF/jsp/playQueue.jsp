@@ -253,6 +253,14 @@
     function onSortByAlbum() {
         playQueueService.sortByAlbum(playQueueCallback);
     }
+    function onSavePlayQueue() {
+        var positionMillis = jwplayer() ? Math.round(1000.0 * jwplayer().getPosition()) : 0;
+        playQueueService.savePlayQueue(getCurrentSongIndex(), positionMillis);
+        $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveplayqueue"/>");
+    }
+    function onLoadPlayQueue() {
+        playQueueService.loadPlayQueue(playQueueCallback);
+    }
     function onSavePlaylist() {
         playlistService.createPlaylistForPlayQueue(function (playlistId) {
             top.left.updatePlaylists();
@@ -384,14 +392,17 @@
         }
 
     <c:if test="${model.player.web}">
-        triggerPlayer(playQueue.startPlayerAt);
+        triggerPlayer(playQueue.startPlayerAt, playQueue.startPlayerAtPosition);
     </c:if>
     }
 
-    function triggerPlayer(startPlayerAt) {
-        if (startPlayerAt != -1) {
-            if (songs.length > startPlayerAt) {
-                skip(startPlayerAt);
+    function triggerPlayer(index, positionMillis) {
+        if (index != -1) {
+            if (songs.length > index) {
+                skip(index);
+                if (positionMillis != 0) {
+                    jwplayer().seek(positionMillis / 1000);
+                }
             }
         }
         updateCurrentImage();
@@ -491,6 +502,10 @@
         var selectedIndexes = getSelectedIndexes();
         if (id == "top") {
             return;
+        } else if (id == "savePlayQueue") {
+            onSavePlayQueue();
+        } else if (id == "loadPlayQueue") {
+            onLoadPlayQueue();
         } else if (id == "savePlaylist") {
             onSavePlaylist();
         } else if (id == "downloadPlaylist") {
@@ -621,6 +636,8 @@
             <td style="white-space:nowrap;"><select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
                 <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
                 <optgroup label="<fmt:message key="playlist.more.playlist"/>">
+                    <option id="savePlayQueue"><fmt:message key="playlist.saveplayqueue"/></option>
+                    <option id="loadPlayQueue"><fmt:message key="playlist.loadplayqueue"/></option>
                     <option id="savePlaylist"><fmt:message key="playlist.save"/></option>
                     <c:if test="${model.user.downloadRole}">
                     <option id="downloadPlaylist"><fmt:message key="common.download"/></option>

@@ -22,10 +22,6 @@
             the same way as other Sonos music services like Spotify or Google Play.
         </p>
 
-        <p>
-            <em>Currently available in <a href="download.jsp">Subsonic 5.2.beta1</a></em>
-        </p>
-
         <h3>Features</h3>
         <div class="row">
             <div class="6u 12u(3)">

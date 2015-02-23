@@ -5,12 +5,14 @@ Bundle Java 8 with Mac installer
 Use Java 8 for windows installer
 Bugfix: Fixed bug in Settings > Users that occured with Java 8
 REST: Added savePlayQueue, getPlayQueue
+Added option to save/load current play queue, including current song and position.
 
 TODO IN 5.2
 ------------
 By genre / year: order by artist, album?
 Sonos: Document how to set up remote Subsonic servers
 Save/Load play queue state in web interface
+  Test Chromecast/jukebox etc
 
 Sonos
   Document how to manually configure music service
@@ -28,6 +30,8 @@ Lossless streaming
 
 TODO IN 5.3
 ------------
+Jukebox audio pops
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bb1de3902d542e
 "Recommended" album list (based on previous listening and similar artists)
   Calculate async?
 New player controls

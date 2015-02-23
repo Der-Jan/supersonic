@@ -249,6 +249,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="lastFmService" ref="lastFmService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
+        <property name="playQueueDao" ref="playQueueDao"/>
         <property name="jukeboxService" ref="jukeboxService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>

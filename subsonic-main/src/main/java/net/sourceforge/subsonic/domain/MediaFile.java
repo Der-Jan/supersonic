@@ -20,8 +20,12 @@ package net.sourceforge.subsonic.domain;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 import net.sourceforge.subsonic.util.FileUtil;
 
@@ -443,6 +447,19 @@ public class MediaFile {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public static List<Integer> toIdList(List<MediaFile> from) {
+        return Lists.transform(from, toId());
+    }
+
+    public static Function<MediaFile, Integer> toId() {
+        return new Function<MediaFile, Integer>() {
+            @Override
+            public Integer apply(MediaFile from) {
+                return from.getId();
+            }
+        };
     }
 
     public static enum MediaType {
