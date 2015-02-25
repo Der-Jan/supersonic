@@ -3,6 +3,8 @@ DONE IN 5.2
 
 TODO IN 5.2
 ------------
+Sonos alac problem
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&sid=8d7603feb8b2f2fa9acd79e6153f600b&p=66525#p66525
 By genre / year: order by artist, album?
 
 Sonos
@@ -20,6 +22,7 @@ Lossless streaming
 
 TODO IN 5.3
 ------------
+Promote Sonos (65k limit)
 Jukebox audio pops
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bb1de3902d542e
 "Recommended" album list (based on previous listening and similar artists)
@@ -936,7 +939,7 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
+  scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
 
 On Windows
   # Verify that we're on trunk
