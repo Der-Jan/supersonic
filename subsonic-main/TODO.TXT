@@ -1,5 +1,6 @@
-DONE IN 5.2
+DONE IN 5.3
 ------------
+Fixed popping sound when starting jukebox.
 
 TODO IN 5.2
 ------------

@@ -52,10 +52,10 @@ public class AudioPlayer {
     private FloatControl gainControl;
 
     public AudioPlayer(InputStream in, Listener listener) throws Exception {
-        this.in = new BufferedInputStream(in);
+        this.in = in;
         this.listener = listener;
 
-        AudioFormat format = AudioSystem.getAudioFileFormat(this.in).getFormat();
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100.0F, 16, 2, 4, 44100.0F, true);
         line = AudioSystem.getSourceDataLine(format);
         line.open(format);
         LOG.debug("Opened line " + line);
@@ -164,7 +164,7 @@ public class AudioPlayer {
 
         public void run() {
             try {
-                byte[] buffer = new byte[8192];
+                byte[] buffer = new byte[line.getBufferSize()];
 
                 while (true) {
 
