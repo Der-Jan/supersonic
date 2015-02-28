@@ -56,7 +56,7 @@ public class TranscodeInputStream extends InputStream {
         for (String s : processBuilder.command()) {
             buf.append('[').append(s).append("] ");
         }
-        LOG.debug(buf);
+        LOG.info(buf);
 
         process = processBuilder.start();
         processOutputStream = process.getOutputStream();

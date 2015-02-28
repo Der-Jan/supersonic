@@ -340,14 +340,14 @@ public class PodcastService {
 
             Element enclosure = episodeElement.getChild("enclosure");
             if (enclosure == null) {
-                LOG.debug("No enclosure found for episode " + title);
+                LOG.info("No enclosure found for episode " + title);
                 continue;
             }
 
             String url = enclosure.getAttributeValue("url");
             url = sanitizeUrl(url);
             if (url == null) {
-                LOG.debug("No enclosure URL found for episode " + title);
+                LOG.info("No enclosure URL found for episode " + title);
                 continue;
             }
 

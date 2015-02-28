@@ -261,7 +261,7 @@ public class SettingsService {
             for (Iterator<Object> iterator = properties.keySet().iterator(); iterator.hasNext();) {
                 String key = (String) iterator.next();
                 if (OBSOLETE_KEYS.contains(key)) {
-                    LOG.debug("Removing obsolete property [" + key + ']');
+                    LOG.info("Removing obsolete property [" + key + ']');
                     iterator.remove();
                 }
             }
