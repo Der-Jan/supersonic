@@ -1,23 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
-<%--
-  ~ This file is part of Subsonic.
-  ~
-  ~  Subsonic is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as published by
-  ~  the Free Software Foundation, either version 3 of the License, or
-  ~  (at your option) any later version.
-  ~
-  ~  Subsonic is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  ~  Copyright 2014 (C) Sindre Mehus
-  --%>
-
 <!DOCTYPE HTML>
 <html>
 <%@ include file="head.jsp" %>
@@ -34,6 +15,17 @@
 <div class="12u">
 
 <section class="box">
+
+    <a name="5.2"><h3>Subsonic 5.2 - Feb 24, 2015</h3></a>
+    <ul>
+        <li><strong>New:</strong> Added option to save/load current play queue, including current song and position.</li>
+        <li><strong>New:</strong> Bundle Java 8 JRE with Mac installer.</li>
+        <li><strong>New:</strong> Use Java 8 for Windows installer.</li>
+        <li><strong>Bugfix:</strong> Fixed bug in Settings &gt; Users that occured with Java 8.</li>
+        <li><strong>Bugfix:</strong> Fixed broken global shuffle play in Sonos.</li>
+        <li><strong>Bugfix:</strong> Make scrobbling work for Sonos.</li>
+        <li><strong>REST:</strong> Added savePlayQueue, getPlayQueue.</li>
+    </ul>
 
     <a name="5.2.beta1"><h3>Subsonic 5.2.beta1 - Feb 14, 2015</h3></a>
     <ul>

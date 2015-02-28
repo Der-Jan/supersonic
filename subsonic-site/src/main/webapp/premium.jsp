@@ -133,6 +133,7 @@
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" name="lifetimeForm">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="RDHD4QKYSAYK8">
+                    <input type="hidden" name="lc" value="US">
                 </form>
                 <a onclick="document.lifetimeForm.submit()" class="button special icon fa-arrow-right">Continue to PayPal</a>
             </section>

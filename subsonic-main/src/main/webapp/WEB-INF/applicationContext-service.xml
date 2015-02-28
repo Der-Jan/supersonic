@@ -27,6 +27,10 @@
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
 
+    <bean id="playQueueDao" class="net.sourceforge.subsonic.dao.PlayQueueDao">
+        <property name="daoHelper" ref="daoHelper"/>
+    </bean>
+
     <bean id="internetRadioDao" class="net.sourceforge.subsonic.dao.InternetRadioDao">
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
@@ -245,6 +249,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="lastFmService" ref="lastFmService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
+        <property name="playQueueDao" ref="playQueueDao"/>
         <property name="jukeboxService" ref="jukeboxService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>

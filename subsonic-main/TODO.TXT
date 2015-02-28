@@ -1,25 +1,14 @@
-DONE IN 5.2
+DONE IN 5.3
 ------------
-Bugfix: Fixed broken global shuffle play in Sonos
-Bundle Java 8 with Mac installer
-Use Java 8 for windows installer
-Bugfix: Fixed bug in Settings > Users that occured with Java 8
+Fixed popping sound when starting jukebox.
 
 TODO IN 5.2
 ------------
-Add IPs to ping response.
+Sonos alac problem
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&sid=8d7603feb8b2f2fa9acd79e6153f600b&p=66525#p66525
 By genre / year: order by artist, album?
-Sonos: Document how to set up remote Subsonic servers
-
-REST: Play queue state
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14b7694f9c1bea5b
-  savePlayQueue, getPlayQueue
-    id+
-    current
-    position
 
 Sonos
-  Document how to manually configure music service
   Rating
   Capabilities
      User Content Playlists
@@ -34,6 +23,7 @@ Lossless streaming
 
 TODO IN 5.3
 ------------
+Promote Sonos (65k limit)
 "Recommended" album list (based on previous listening and similar artists)
   Calculate async?
 New player controls
@@ -88,15 +78,12 @@ Instant search
   - test other browsers
   - test remote
 Sort folders using locale-specific collation.
-Cast: Update site (premium feature)
 Don't differentiate between albums and dirs when sorting?
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64555#p64555
 Sort genres alphabetically?
 Keep Playlists Regardless if Media Found
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14737
 Shows extra "|" in movie dir.
-Test: Make it possible to cast from remote server
-
 
 Cast
   Initial volume, both local and remote.
@@ -459,28 +446,6 @@ Album art border, ala wimp
 Reuse list item views in SelectAlbumActivity?
 Colors: http://www.androidtapp.com/opentable/
 
-
-PLAYLIST
---------
-Show playlists in left column.
-Checkbox in main.jsp + combobox with options.
-Save playlists in database?  Access rights.
-More prominent display.
-Automatically import iTunes playlists.
-Dynamic playlists,  Message from zeekay.
-Personal playlists http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=7538#7538
-Playlist summary. http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=1833
-New playlist REST methods?
-WiMP, iTunes
-
-SITE
-----
-Tutorial, windows shared folders.
-Slideshow
-  How it works, slide from presentation ("Stream music straight from your home computer")
-  Update video slide.
-Update Android Market description
-
 VIDEO
 -----
 Hide timeOffset if duration unknown.
@@ -490,34 +455,7 @@ Add .divx
 Select inital bitrate based on network type.
 Buy new JW license
 
-FORUM UPGRADE
----------------
-x Drop phpbb2 and phpbb3 databases.
-x Delete existing phpbb3 forum.
-x Create new phpbb3 installation.
-x Create index.php on forum.subsonic.org
-x Reboot
-x Disable forums.
-x Export sql.
-x Rewrite URLs in sql.
-x Convert
-x Update search index.
-x Unlock forums.
-x Change style.
-x Change logo.
-x Enable attachments.
-x Verify
-x Create php forwarding pages on activeobjects.no
-x Update links in subsonic.org pages.
-x Update DNS.
-x Create announcement.
-  Investigate backup.
-  Give courtesy to canaca.com
-  Anti-spam tools
-    http://forum.subsonic.org/forum/viewtopic.php?f=9&t=7623
-x Search on subsonic.org
 
-REST method for rating.
 Amahi
 Add link to ReadyNAS add-on
   http://www.readynas.com/forum/viewtopic.php?f=48&t=45661
@@ -948,14 +886,14 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  rsync -avP -e ssh subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.beta1/
+  scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
 
 On Windows
   # Verify that we're on trunk
   svn info
   svn update
   mvn clean install -Pfull
-  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.beta1/
+  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
 
 On demo.subsonic.org (Ubuntu)
   cd subsonic
@@ -965,7 +903,7 @@ On demo.subsonic.org (Ubuntu)
   mvn clean -Pfull,debian
   svn st
   mvn install -Pfull,debian
-  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.beta1/
+  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
 
 On subsonic.org (CentOS)
   cd subsonic
@@ -975,7 +913,7 @@ On subsonic.org (CentOS)
   mvn clean -Pfull,rpm
   svn st
   mvn install -Pfull,rpm
-  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.beta1/
+  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -983,7 +921,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.2.beta1 -m "Tagging 5.2.beta1"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.2 -m "Tagging 5.2"
 Post message on forum.
 
 Checking for license abuse:
@@ -993,16 +931,16 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2015-02-14/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-02-14/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-02-14/pages.war
+mkdir /usr/local/jakarta/tomcat/webapps-2015-02-24/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-02-24/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-02-24/pages.war
 
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2015-02-14 webapps
+ln -s webapps-2015-02-24 webapps
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -1010,13 +948,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-02-14/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-02-14/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2015-02-24/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-02-24/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-02-14 webapps
+ln -s webapps-2015-02-24 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

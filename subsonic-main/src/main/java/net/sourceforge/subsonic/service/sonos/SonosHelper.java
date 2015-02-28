@@ -74,7 +74,7 @@ import net.sourceforge.subsonic.util.Util;
  */
 public class SonosHelper {
 
-    private static final String SUBSONIC_CLIENT_ID = "sonos";
+    public static final String SUBSONIC_CLIENT_ID = "sonos";
 
     private MediaFileService mediaFileService;
     private PlaylistService playlistService;
