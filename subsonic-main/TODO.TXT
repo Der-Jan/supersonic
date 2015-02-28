@@ -1,6 +1,7 @@
 DONE IN 5.3
 ------------
 Fixed popping sound when starting jukebox.
+Bugfix: Download playlist was broken
 
 TODO IN 5.2
 ------------

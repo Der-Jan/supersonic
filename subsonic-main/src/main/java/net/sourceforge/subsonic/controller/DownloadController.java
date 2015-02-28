@@ -101,12 +101,6 @@ public class DownloadController implements Controller, LastModified {
 
             MediaFile mediaFile = getMediaFile(request);
 
-            if (!securityService.isFolderAccessAllowed(mediaFile, user.getUsername())) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                   "Access to file " + mediaFile.getId() + " is forbidden for user " + user.getUsername());
-                return null;
-            }
-
             Integer playlistId = ServletRequestUtils.getIntParameter(request, "playlist");
             String playerId = request.getParameter("player");
             int[] indexes = request.getParameter("i") == null ? null : ServletRequestUtils.getIntParameters(request, "i");
@@ -123,6 +117,12 @@ public class DownloadController implements Controller, LastModified {
             }
 
             if (mediaFile != null) {
+                if (!securityService.isFolderAccessAllowed(mediaFile, user.getUsername())) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                       "Access to file " + mediaFile.getId() + " is forbidden for user " + user.getUsername());
+                    return null;
+                }
+
                 if (mediaFile.isFile()) {
                     downloadFile(response, status, mediaFile.getFile(), range);
                 } else {
