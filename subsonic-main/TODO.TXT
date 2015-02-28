@@ -24,8 +24,6 @@ Lossless streaming
 TODO IN 5.3
 ------------
 Promote Sonos (65k limit)
-Jukebox audio pops
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bb1de3902d542e
 "Recommended" album list (based on previous listening and similar artists)
   Calculate async?
 New player controls
@@ -80,15 +78,12 @@ Instant search
   - test other browsers
   - test remote
 Sort folders using locale-specific collation.
-Cast: Update site (premium feature)
 Don't differentiate between albums and dirs when sorting?
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=14727&p=64555#p64555
 Sort genres alphabetically?
 Keep Playlists Regardless if Media Found
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=14737
 Shows extra "|" in movie dir.
-Test: Make it possible to cast from remote server
-
 
 Cast
   Initial volume, both local and remote.
@@ -451,28 +446,6 @@ Album art border, ala wimp
 Reuse list item views in SelectAlbumActivity?
 Colors: http://www.androidtapp.com/opentable/
 
-
-PLAYLIST
---------
-Show playlists in left column.
-Checkbox in main.jsp + combobox with options.
-Save playlists in database?  Access rights.
-More prominent display.
-Automatically import iTunes playlists.
-Dynamic playlists,  Message from zeekay.
-Personal playlists http://www.activeobjects.no/subsonic/forum/viewtopic.php?p=7538#7538
-Playlist summary. http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=1833
-New playlist REST methods?
-WiMP, iTunes
-
-SITE
-----
-Tutorial, windows shared folders.
-Slideshow
-  How it works, slide from presentation ("Stream music straight from your home computer")
-  Update video slide.
-Update Android Market description
-
 VIDEO
 -----
 Hide timeOffset if duration unknown.
@@ -482,34 +455,7 @@ Add .divx
 Select inital bitrate based on network type.
 Buy new JW license
 
-FORUM UPGRADE
----------------
-x Drop phpbb2 and phpbb3 databases.
-x Delete existing phpbb3 forum.
-x Create new phpbb3 installation.
-x Create index.php on forum.subsonic.org
-x Reboot
-x Disable forums.
-x Export sql.
-x Rewrite URLs in sql.
-x Convert
-x Update search index.
-x Unlock forums.
-x Change style.
-x Change logo.
-x Enable attachments.
-x Verify
-x Create php forwarding pages on activeobjects.no
-x Update links in subsonic.org pages.
-x Update DNS.
-x Create announcement.
-  Investigate backup.
-  Give courtesy to canaca.com
-  Anti-spam tools
-    http://forum.subsonic.org/forum/viewtopic.php?f=9&t=7623
-x Search on subsonic.org
 
-REST method for rating.
 Amahi
 Add link to ReadyNAS add-on
   http://www.readynas.com/forum/viewtopic.php?f=48&t=45661

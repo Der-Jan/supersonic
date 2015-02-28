@@ -27,7 +27,7 @@
             <div class="6u 12u(3)">
                 <ul>
                     <li>Works with giant music libraries. Not limited to 65,000 songs like the native Sonos controller.</li>
-                    <li>Doesn't require installation of the Sonos controller.</li>
+                    <li>Configure which folders each user is allowed to access.</li>
                     <li>Access your personal Subsonic playlists (as well as Sonos playlists).</li>
                     <li>Star your favorites.</li>
                     <li>Audioscrobbling and play statistics.</li>
@@ -41,7 +41,7 @@
                     <li>Artist radio for playing similar songs.</li>
                     <li>Shuffle play whole library or by artist.</li>
                     <li>Album lists: Random, Recently added, Starred, Top rated, Most Played, Recently played, By decade, By genre.</li>
-                    <li>Same folder structure / album art / media meta data as in the Subsonic web app</li>
+                    <li>Same folder structure / album art / media meta data as in the Subsonic web app.</li>
                 </ul>
             </div>
         </div>
@@ -118,6 +118,11 @@
 
         <p>
             Finally, in the Sonos controller, click <b>Add Music Services</b> and select the newly added Subsonic music service.
+        </p>
+
+        <h3>Disclaimer</h3>
+        <p>
+            Subsonic is not affiliated with Sonos, Inc. Sonos and its product names are trademarks or registered trademarks of Sonos, Inc.
         </p>
     </section>
 
