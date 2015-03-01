@@ -85,7 +85,7 @@ public class MainController extends AbstractController {
         }
 
         String username = securityService.getCurrentUsername(request);
-        if (isAccessDenied(dir, username)) {
+        if (!securityService.isFolderAccessAllowed(dir, username)) {
             return new ModelAndView(new RedirectView("accessDenied.view"));
         }
 
@@ -161,15 +161,6 @@ public class MainController extends AbstractController {
         ModelAndView result = new ModelAndView(view);
         result.addObject("model", map);
         return result;
-    }
-
-    private boolean isAccessDenied(MediaFile dir, String username) {
-        for (MusicFolder musicFolder : settingsService.getMusicFoldersForUser(username)) {
-            if (musicFolder.getPath().getPath().equals(dir.getFolder())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private boolean isViewAsList(HttpServletRequest request, UserSettings userSettings) {

@@ -3,6 +3,7 @@ DONE IN 5.3
 Fixed popping sound when starting jukebox.
 Bugfix: Download playlist was broken
 Bugfix: Hide dock icon on Mac OS
+Bugfix: Avoid "access denied" for podcast folders
 
 TODO IN 5.2
 ------------
