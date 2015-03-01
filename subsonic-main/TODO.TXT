@@ -2,6 +2,7 @@ DONE IN 5.3
 ------------
 Fixed popping sound when starting jukebox.
 Bugfix: Download playlist was broken
+Bugfix: Hide dock icon on Mac OS
 
 TODO IN 5.2
 ------------
