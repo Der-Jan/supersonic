@@ -583,7 +583,7 @@ public class SonosHelper {
         MediaMetadata result = new MediaMetadata();
         result.setId(String.valueOf(song.getId()));
         result.setItemType(ItemType.TRACK);
-        result.setMimeType(StringUtil.getMimeType(suffix));
+        result.setMimeType(StringUtil.getMimeType(suffix, true));
         result.setTitle(song.getTitle());
         result.setGenre(song.getGenre());
 //        result.setDynamic();// TODO: For starred songs

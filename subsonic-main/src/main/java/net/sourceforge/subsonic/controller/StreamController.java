@@ -53,6 +53,7 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
@@ -161,7 +162,8 @@ public class StreamController implements Controller {
                     response.setContentType(StringUtil.getMimeType("ts")); // HLS is always MPEG TS.
                 } else {
                     String transcodedSuffix = transcodingService.getSuffix(player, file, preferredTargetFormat);
-                    response.setContentType(StringUtil.getMimeType(transcodedSuffix));
+                    boolean sonos = SonosHelper.SUBSONIC_CLIENT_ID.equals(player.getClientId());
+                    response.setContentType(StringUtil.getMimeType(transcodedSuffix, sonos));
                     setContentDuration(response, file);
                 }
 
