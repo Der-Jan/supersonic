@@ -1,21 +1,17 @@
 DONE IN 5.2.1
 ------------
-Fixed popping sound when starting jukebox.
-Bugfix: Download playlist was broken
-Bugfix: Hide dock icon on Mac OS
-Bugfix: Unable to play podcast if located outside media folders
+Bugfix: Fixed popping sound when starting songs in jukebox mode.
+Bugfix: Download playlist is broken.
+Bugfix: Hide dock icon on Mac OS.
+Bugfix: Unable to play podcast if located outside media folders.
 Bugfix: Scrobbled songs don't appear in "Now playing".
 
 TODO IN 5.2.1
 ------------
 Sonos: Wrong media url for remote player
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&p=66617#p66617
-Scrobble doesn't update Now playing
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bc1fa353e95b7f
 Sonos mp4 (aac, alac) problem
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&sid=8d7603feb8b2f2fa9acd79e6153f600b&p=66525#p66525
-Scrobble / now playing
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bc1fa353e95b7f
 
 By genre / year: order by artist, album?
 
