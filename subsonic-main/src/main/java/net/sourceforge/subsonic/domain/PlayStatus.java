@@ -54,7 +54,7 @@ public class PlayStatus {
     }
 
     public boolean isExpired() {
-        return time.getTime() + TTL_MILLIS > System.currentTimeMillis();
+        return System.currentTimeMillis() > time.getTime() + TTL_MILLIS;
     }
 
     public long getMinutesAgo() {
