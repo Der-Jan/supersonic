@@ -11,6 +11,8 @@ TODO IN 5.2.1
 ------------
 Sonos: Wrong media url for remote player
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&p=66617#p66617
+Create donation option (without license)
+  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G9LP3DHYDVG6J
 
 By genre / year: order by artist, album?
 
@@ -22,10 +24,6 @@ Sonos
   Read thru doc
   Run Self-Test
   SkatteFUNN
-UPnP memory leak
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14866&p=65945#p65945
-
-Lossless streaming
 
 TODO IN 5.3
 ------------
