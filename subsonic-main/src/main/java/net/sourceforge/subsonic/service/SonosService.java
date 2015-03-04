@@ -42,7 +42,6 @@ import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.jaxws.context.WrappedMessageContext;
 import org.apache.cxf.message.Message;
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.w3c.dom.Node;
 
 import com.sonos.services._1.AbstractMedia;
@@ -384,7 +383,10 @@ public class SonosService implements SonosSoap {
     }
 
     private HttpServletRequest getRequest() {
-        return (HttpServletRequest) context.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
+        MessageContext messageContext = context == null ? null : context.getMessageContext();
+
+        // See org.apache.cxf.transport.http.AbstractHTTPDestination#HTTP_REQUEST
+        return messageContext == null ? null : (HttpServletRequest) messageContext.get("HTTP.REQUEST");
     }
 
     private String getUsername() {

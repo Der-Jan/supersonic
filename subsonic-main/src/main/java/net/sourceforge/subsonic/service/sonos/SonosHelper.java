@@ -685,7 +685,10 @@ public class SonosHelper {
 
         // Note that the server IP can be overridden by the "ip" parameter. Used when Subsonic and Sonos are
         // on different networks.
-        String ip = ServletRequestUtils.getStringParameter(request, "ip", settingsService.getLocalIpAddress());
+        String ip = settingsService.getLocalIpAddress();
+        if (request != null) {
+            ip = ServletRequestUtils.getStringParameter(request, "ip", ip);
+        }
 
         // Note: Serving media and cover art with http (as opposed to https) works when using jetty and SubsonicDeployer.
         StringBuilder url = new StringBuilder("http://")
