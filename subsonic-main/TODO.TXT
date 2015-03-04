@@ -1,12 +1,5 @@
 DONE IN 5.2.1
 ------------
-Bugfix: Fixed popping sound when starting songs in jukebox mode.
-Bugfix: Download playlist is broken.
-Bugfix: Hide dock icon on Mac OS.
-Bugfix: Unable to play podcast if located outside media folders.
-Bugfix: Scrobbled songs don't appear in "Now playing".
-Bugfix: Support native streaming of ALAC and AAC to Sonos.
-Bugfix: Support streaming to Sonos from remote Subsonic servers, see description on sonos.subsonic.org
 
 TODO IN 5.2.1
 ------------
