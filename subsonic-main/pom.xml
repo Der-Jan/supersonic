@@ -320,7 +320,6 @@
                     <artifactId>spring-web</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>

@@ -6,11 +6,10 @@ Bugfix: Hide dock icon on Mac OS.
 Bugfix: Unable to play podcast if located outside media folders.
 Bugfix: Scrobbled songs don't appear in "Now playing".
 Bugfix: Support native streaming of ALAC and AAC to Sonos.
+Bugfix: Support streaming to Sonos from remote Subsonic servers, see description on sonos.subsonic.org
 
 TODO IN 5.2.1
 ------------
-Sonos: Wrong media url for remote player
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15304&p=66617#p66617
 Create donation option (without license)
   https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G9LP3DHYDVG6J
 

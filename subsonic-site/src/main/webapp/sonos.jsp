@@ -91,34 +91,34 @@
             Remember to restart Subsonic to make it take effect.
         </p>
 
-        <%--<h4>Using a remote Subsonic server</h4>--%>
-        <%--<p>--%>
-            <%--Subsonic automatically configures Sonos players on your local network. If Subsonic and Sonos are not on the--%>
-            <%--same network you can still connect them, using a manual one-time registration procedure. Make sure you have the--%>
-            <%--IP address of the Sonos player and Subsonic server available. You can find the Sonos IP by selecting <b>About my Sonos System</b>--%>
-            <%--in the Sonos controller app.--%>
-        <%--</p>--%>
-        <%--<ol>--%>
-            <%--<li>Open <b>http://SONOS_IP:1400/customsd.htm</b> in a browser.</li>--%>
-            <%--<li>Enter the following values in the web form:--%>
-                <%--<ul>--%>
-                    <%--<li><b>SID</b> &ndash; Any legal value except 242</li>--%>
-                    <%--<li><b>Service Name</b> &ndash; Any name, for instance "Subsonic Remote"</li>--%>
-                    <%--<li><b>Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos</li>--%>
-                    <%--<li><b>Secure Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos</li>--%>
-                    <%--<li><b>Polling Interval</b> &ndash; 1200</li>--%>
-                    <%--<li><b>Authentication</b> &ndash; Session ID</li>--%>
-                    <%--<li><b>Strings Table</b> &ndash; Version: 5, URI: http://SUBSONIC_IP:4040/sonos/strings.xml</li>--%>
-                    <%--<li><b>Presentation Map</b> &ndash; Version: 1, URI: http://SUBSONIC_IP:4040/sonos/presentationMap.xml</li>--%>
-                    <%--<li><b>Container Type</b> &ndash; Music Service</li>--%>
-                    <%--<li><b>Capabilities</b> &ndash; Search, Favorites, Extended Metadata</li>--%>
-                <%--</ul>--%>
-            <%--</li>--%>
-        <%--</ol>--%>
+        <h4>Using a remote Subsonic server</h4>
+        <p>
+            Subsonic automatically configures Sonos players on your local network. If Subsonic and Sonos are not on the
+            same network you can still connect them, using a manual one-time registration procedure. Make sure you have the
+            IP address of the Sonos player and Subsonic server available. You can find the Sonos IP by selecting <b>About my Sonos System</b>
+            in the Sonos controller app.
+        </p>
+        <ol>
+            <li>Open <b>http://SONOS_IP:1400/customsd.htm</b> in a browser.</li>
+            <li>Enter the following values in the web form:
+                <ul>
+                    <li><b>SID</b> &ndash; Any legal value except 242</li>
+                    <li><b>Service Name</b> &ndash; Any name, for instance "Subsonic Remote"</li>
+                    <li><b>Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos?ip=SUBSONIC_IP</li>
+                    <li><b>Secure Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos?ip=SUBSONIC_IP</li>
+                    <li><b>Polling Interval</b> &ndash; 1200</li>
+                    <li><b>Authentication</b> &ndash; Session ID</li>
+                    <li><b>Strings Table</b> &ndash; Version: 5, URI: http://SUBSONIC_IP:4040/sonos/strings.xml</li>
+                    <li><b>Presentation Map</b> &ndash; Version: 1, URI: http://SUBSONIC_IP:4040/sonos/presentationMap.xml</li>
+                    <li><b>Container Type</b> &ndash; Music Service</li>
+                    <li><b>Capabilities</b> &ndash; Search, Favorites, Extended Metadata</li>
+                </ul>
+            </li>
+        </ol>
 
-        <%--<p>--%>
-            <%--Finally, in the Sonos controller, click <b>Add Music Services</b> and select the newly added Subsonic music service.--%>
-        <%--</p>--%>
+        <p>
+            Finally, in the Sonos controller, click <b>Add Music Services</b> and select the newly added Subsonic music service.
+        </p>
 
         <h3>Disclaimer</h3>
         <p>
