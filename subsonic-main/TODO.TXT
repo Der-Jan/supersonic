@@ -10,8 +10,6 @@ Bugfix: Support streaming to Sonos from remote Subsonic servers, see description
 
 TODO IN 5.2.1
 ------------
-Create donation option (without license)
-  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G9LP3DHYDVG6J
 
 By genre / year: order by artist, album?
 

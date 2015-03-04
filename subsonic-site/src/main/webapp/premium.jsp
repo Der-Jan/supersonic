@@ -146,6 +146,9 @@
 
                 <p><a href="faq.jsp">Other payment alternatives</a> are also available.</p>
 
+                <p>Want to give an extra contribution to the project? <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G9LP3DHYDVG6J">Donations</a>
+                    are much appreciated!</p>
+
                 <p>If you have any questions, feel free to send an email to <a href="mailto:mail@subsonic.org">mail@subsonic.org</a></p>
             </section>
 
