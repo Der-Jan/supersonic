@@ -16,6 +16,17 @@
 
 <section class="box">
 
+    <a name="5.2.1"><h3>Subsonic 5.2.1 - Mar 04, 2015</h3></a>
+    <ul>
+        <li><strong>Bugfix:</strong> Fixed popping sound when starting songs in jukebox mode.</li>
+        <li><strong>Bugfix:</strong> Download playlist is broken.</li>
+        <li><strong>Bugfix:</strong> Hide dock icon on Mac OS.</li>
+        <li><strong>Bugfix:</strong> Unable to play podcast if located outside media folders.</li>
+        <li><strong>Bugfix:</strong> Scrobbled songs don't appear in "Now playing".</li>
+        <li><strong>Bugfix:</strong> Support native streaming of ALAC and AAC to Sonos, see <a href="sonos.jsp">description</a>.</li>
+        <li><strong>Bugfix:</strong> Support streaming to Sonos from remote Subsonic servers, see <a href="sonos.jsp">description</a>.</li>
+    </ul>
+
     <a name="5.2"><h3>Subsonic 5.2 - Feb 24, 2015</h3></a>
     <ul>
         <li><strong>New:</strong> Added option to save/load current play queue, including current song and position.</li>

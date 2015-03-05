@@ -269,6 +269,10 @@ public class SecurityService implements UserDetailsService {
     }
 
     public boolean isFolderAccessAllowed(MediaFile file, String username) {
+        if (isInPodcastFolder(file.getFile())) {
+            return true;
+        }
+
         for (MusicFolder musicFolder : settingsService.getMusicFoldersForUser(username)) {
             if (musicFolder.getPath().getPath().equals(file.getFolder())) {
                 return true;

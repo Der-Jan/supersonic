@@ -195,8 +195,12 @@ public class IPNController implements Controller {
             paymentForTx.setPaymentStatus(paymentStatus);
             paymentForTx.setLastUpdated(new Date());
             paymentDao.updatePayment(paymentForTx);
-        }
-        else {
+
+        } else if (isDonation(item)) {
+            // TODO: insert into separate donation table?
+            LOG.info("Received donation of " + paymentCurrency + " " + paymentAmount + " from " + payerEmail);
+
+        } else {
             Payment paymentForEmail = paymentDao.getPaymentByEmail(payerEmail);
             Date validTo = computeValidTo(paymentForEmail, request, item);
 
@@ -205,6 +209,10 @@ public class IPNController implements Controller {
                     payerCountry, ProcessingStatus.NEW, validTo, new Date(), new Date());
             paymentDao.createPayment(newPayment);
         }
+    }
+
+    private boolean isDonation(String item) {
+        return "sub-donation".equals(item);
     }
 
     private Date computeValidTo(Payment existingPayment, HttpServletRequest request, String item) {

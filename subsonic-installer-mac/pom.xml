@@ -10,7 +10,7 @@
     <parent>
         <groupId>net.sourceforge.subsonic</groupId>
         <artifactId>subsonic</artifactId>
-        <version>5.2</version>
+        <version>5.2.1</version>
     </parent>
 
     <dependencies>
@@ -71,6 +71,7 @@
                                             <option value="-Dsubsonic.port=4040"/>
                                             <option value="-Dsubsonic.httpsPort=0"/>
                                             <option value="-Dsubsonic.contextPath=/"/>
+                                            <option value="-Dapple.awt.UIElement=true"/>
                                             <option value="-Xmx150m"/>
                                             <argument value="-mac"/>
                                         </appbundler>

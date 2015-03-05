@@ -99,17 +99,17 @@
             in the Sonos controller app.
         </p>
         <ol>
-            <li>Open <b>http://SONOS_IP:1400/customsd.htm</b> in a browser.</li>
+            <li>Open http://<b>SONOS_IP</b>:1400/customsd.htm in a browser.</li>
             <li>Enter the following values in the web form:
                 <ul>
                     <li><b>SID</b> &ndash; Any legal value except 242</li>
                     <li><b>Service Name</b> &ndash; Any name, for instance "Subsonic Remote"</li>
-                    <li><b>Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos</li>
-                    <li><b>Secure Endpoint URL</b> &ndash; http://SUBSONIC_IP:4040/ws/Sonos</li>
+                    <li><b>Endpoint URL</b> &ndash; http://<b>SUBSONIC_IP</b>:4040/ws/Sonos?ip=<b>SUBSONIC_IP</b></li>
+                    <li><b>Secure Endpoint URL</b> &ndash; http://<b>SUBSONIC_IP</b>:4040/ws/Sonos?ip=<b>SUBSONIC_IP</b></li>
                     <li><b>Polling Interval</b> &ndash; 1200</li>
                     <li><b>Authentication</b> &ndash; Session ID</li>
-                    <li><b>Strings Table</b> &ndash; Version: 5, URI: http://SUBSONIC_IP:4040/sonos/strings.xml</li>
-                    <li><b>Presentation Map</b> &ndash; Version: 1, URI: http://SUBSONIC_IP:4040/sonos/presentationMap.xml</li>
+                    <li><b>Strings Table</b> &ndash; Version: 5, URI: http://<b>SUBSONIC_IP</b>:4040/sonos/strings.xml</li>
+                    <li><b>Presentation Map</b> &ndash; Version: 1, URI: http://<b>SUBSONIC_IP</b>:4040/sonos/presentationMap.xml</li>
                     <li><b>Container Type</b> &ndash; Music Service</li>
                     <li><b>Capabilities</b> &ndash; Search, Favorites, Extended Metadata</li>
                 </ul>
