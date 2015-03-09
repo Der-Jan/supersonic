@@ -16,9 +16,10 @@
 
  Copyright 2009 (C) Sindre Mehus
  */
-package net.sourceforge.subsonic.dao.schema;
+package net.sourceforge.subsonic.dao.schema.hsql;
 
 import net.sourceforge.subsonic.*;
+import net.sourceforge.subsonic.dao.schema.Schema;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import org.springframework.jdbc.core.*;
 

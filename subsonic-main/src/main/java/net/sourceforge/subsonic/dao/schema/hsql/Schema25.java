@@ -16,11 +16,12 @@
 
  Copyright 2009 (C) Sindre Mehus
  */
-package net.sourceforge.subsonic.dao.schema;
+package net.sourceforge.subsonic.dao.schema.hsql;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.schema.Schema;
 
 /**
  * Used for creating and evolving the database schema.
@@ -28,7 +29,7 @@ import net.sourceforge.subsonic.Logger;
  *
  * @author Sindre Mehus
  */
-public class Schema25 extends Schema{
+public class Schema25 extends Schema {
     private static final Logger LOG = Logger.getLogger(Schema25.class);
 
     public void execute(JdbcTemplate template) {
