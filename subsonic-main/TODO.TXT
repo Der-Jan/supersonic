@@ -4,6 +4,8 @@ DONE IN 5.3
 
 TODO IN 5.3
 ------------
+REST: Add video height/width
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/139bc17f62dff9ce
 Add SonicStreamer
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14be0b793d6f0a9d
 CarSub > AVSub
