@@ -1,6 +1,6 @@
 DONE IN 5.3
 ------------
-Fixed bug with double speed for mono files in jukebox mode.
+Bugfix: Ensure correct playback speed for mono and high sample frequency files in jukebox mode.
 
 Interstitial
 ------------
@@ -39,8 +39,6 @@ Interstitial
 
 TODO IN 5.3
 ------------
-Bug with mono podcast
-  https://sourceforge.net/p/subsonic/bugs/148/
 REST: Add video height/width
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/139bc17f62dff9ce
 Add SonicStreamer
