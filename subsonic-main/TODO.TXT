@@ -39,6 +39,10 @@ Interstitial
 
 TODO IN 5.3
 ------------
+Add personal settings for
+  Play button behaviour
+  Which home screen to show
+Improve UI when no media exists
 REST: Add video height/width
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/139bc17f62dff9ce
 Add SonicStreamer
@@ -51,6 +55,7 @@ Artwork issues
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bfee1e60021c46
 Doesn't work on 32-bit OS X.
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bfd2220da4091e
+Movie metadata
 
 Promote Sonos (65k limit)
 "Recommended" album list (based on previous listening and similar artists)
