@@ -2,46 +2,13 @@ DONE IN 5.3
 ------------
 Bugfix: Ensure correct playback speed for mono and high sample frequency files in jukebox mode.
 
-Interstitial
-------------
-1. Ad tracks are stored within one of the configured media folder (as defined in Settings > Music folders)
-
-2. Database keeps a list of such ad tracks, with foreign keys to MEDIA_FILE table.
-
-3. Ads are not further categorized (into campaigns and/or ad groups)
-
-4. Rules for how to place interstitial ads between tracks:
-  a) A global setting, "ad frequency", is used to determine the probability that the next track is an ad.
-     For instance, if the ad frequency is 0.20, then on average every fifth track is an ad.
-  b) Each individual ad has an associated "weight", used when selecting between ads.  For instance, if ad A has
-   weight 1.0 and B has weight 0.5, then A will be played twice as much as B.
-
-5. A new page (Settings > Ads) will be added to manage the list of ads, with the following features:
-  a) Add and remove ads.
-  b) Change ad weights.
-  c) Change ad frequency.
-  d) See play counts for each ad.
-
-6. Interstitial ads will be added automatically in the following REST methods:
-   getMusicDirectory
-   getAlbum
-   getSimilarSongs
-   getSimilarSongs2
-   getRandomSongs
-   getSongsByGenre
-   getStarred
-   getStarred2
-   getPlaylist
-
-7. A new media type "ad" will be defined in the REST schema (subsonic-rest-api.xsd)
-
-
 
 TODO IN 5.3
 ------------
 Add personal settings for
   Play button behaviour
   Which home screen to show
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15448
 Improve UI when no media exists
 REST: Add video height/width
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/139bc17f62dff9ce
@@ -51,6 +18,8 @@ CarSub > AVSub
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bf980f2ef99783
 Chromecast stops casting ~5min before movie ends
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
+  https://sourceforge.net/p/subsonic/bugs/146/
+  https://sourceforge.net/p/subsonic/bugs/121
 Artwork issues
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bfee1e60021c46
 Doesn't work on 32-bit OS X.
