@@ -75,7 +75,7 @@ public class MusicIndexService {
         return new MusicFolderContent(indexedArtists, singleSongs);
     }
 
-    public List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
+    private List<MediaFile> getSingleSongs(List<MusicFolder> folders, boolean refresh) throws IOException {
         List<MediaFile> result = new ArrayList<MediaFile>();
         for (MusicFolder folder : folders) {
             MediaFile parent = mediaFileService.getMediaFile(folder.getPath(), !refresh);
