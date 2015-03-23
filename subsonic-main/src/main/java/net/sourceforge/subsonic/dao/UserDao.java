@@ -117,11 +117,9 @@ public class UserDao extends AbstractDao {
             throw new IllegalArgumentException("Can't delete admin user.");
         }
 
-        String sql = "delete from user_role where username=?";
-        update(sql, username);
-
-        sql = "delete from user where username=?";
-        update(sql, username);
+        update("delete from user_role where username=?", username);
+        update("delete from player where username=?", username);
+        update("delete from user where username=?", username);
     }
 
     /**
