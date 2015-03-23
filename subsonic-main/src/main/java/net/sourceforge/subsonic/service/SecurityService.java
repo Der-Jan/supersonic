@@ -148,6 +148,7 @@ public class SecurityService implements UserDetailsService {
      */
     public void createUser(User user) {
         userDao.createUser(user);
+        settingsService.setMusicFoldersForUser(user.getUsername(), MusicFolder.toIdList(settingsService.getAllMusicFolders()));
         LOG.info("Created user " + user.getUsername());
     }
 
