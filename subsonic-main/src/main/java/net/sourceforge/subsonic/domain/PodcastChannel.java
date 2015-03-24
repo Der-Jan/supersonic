@@ -39,8 +39,8 @@ public class PodcastChannel {
                           PodcastStatus status, String errorMessage) {
         this.id = id;
         this.url = url;
-        this.title = StringUtil.removeMarkup(title);
-        this.description = StringUtil.removeMarkup(description);
+        this.title = title;
+        this.description = description;
         this.status = status;
         this.errorMessage = errorMessage;
     }

@@ -328,7 +328,7 @@ public class SonosHelper {
 
     public List<AbstractMedia> forPodcastChannel(int channelId, String username, HttpServletRequest request) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
-        for (PodcastEpisode episode : podcastService.getEpisodes(channelId, false)) {
+        for (PodcastEpisode episode : podcastService.getEpisodes(channelId)) {
             if (episode.getStatus() == PodcastStatus.COMPLETED) {
                 Integer mediaFileId = episode.getMediaFileId();
                 MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);

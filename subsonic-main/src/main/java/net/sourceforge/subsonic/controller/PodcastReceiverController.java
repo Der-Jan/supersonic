@@ -58,7 +58,7 @@ public class PodcastReceiverController extends ParameterizableViewController {
 
         Map<PodcastChannel, List<PodcastEpisode>> channels = new LinkedHashMap<PodcastChannel, List<PodcastEpisode>>();
         for (PodcastChannel channel : podcastService.getAllChannels()) {
-            channels.put(channel, podcastService.getEpisodes(channel.getId(), false));
+            channels.put(channel, podcastService.getEpisodes(channel.getId()));
         }
 
         User user = securityService.getCurrentUser(request);

@@ -108,8 +108,9 @@ public class PodcastDao extends AbstractDao {
      *         reverse chronological order (newest episode first).
      */
     public List<PodcastEpisode> getEpisodes(int channelId) {
-        String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where channel_id=? order by publish_date desc";
-        return query(sql, episodeRowMapper, channelId);
+        String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where channel_id = ? " +
+                     "and status != ? order by publish_date desc";
+        return query(sql, episodeRowMapper, channelId, PodcastStatus.DELETED);
     }
 
     /**
@@ -121,6 +122,11 @@ public class PodcastDao extends AbstractDao {
     public PodcastEpisode getEpisode(int episodeId) {
         String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where id=?";
         return queryOne(sql, episodeRowMapper, episodeId);
+    }
+
+    public PodcastEpisode getEpisodeByUrl(String url) {
+        String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where url=?";
+        return queryOne(sql, episodeRowMapper, url);
     }
 
     /**

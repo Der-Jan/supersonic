@@ -51,8 +51,8 @@ public class PodcastEpisode {
         this.channelId = channelId;
         this.url = url;
         this.path = path;
-        this.title = StringUtil.removeMarkup(title);
-        this.description = StringUtil.removeMarkup(description);
+        this.title = title;
+        this.description = description;
         this.publishDate = publishDate;
         this.duration = duration;
         this.bytesTotal = length;

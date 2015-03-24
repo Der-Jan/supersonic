@@ -103,7 +103,7 @@ public class PodcastService {
         try {
             // Clean up partial downloads.
             for (PodcastChannel channel : getAllChannels()) {
-                for (PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
+                for (PodcastEpisode episode : getEpisodes(channel.getId())) {
                     if (episode.getStatus() == PodcastStatus.DOWNLOADING) {
                         deleteEpisode(episode.getId(), false);
                         LOG.info("Deleted Podcast episode '" + episode.getTitle() + "' since download was interrupted.");
@@ -179,29 +179,28 @@ public class PodcastService {
         return podcastDao.getAllChannels();
     }
 
+    private PodcastEpisode getEpisodeByUrl(String url) {
+        PodcastEpisode episode = podcastDao.getEpisodeByUrl(url);
+        if (episode == null) {
+            return null;
+        }
+        List<PodcastEpisode> episodes = Arrays.asList(episode);
+        episodes = filterAllowed(episodes);
+        addMediaFileIdToEpisodes(episodes);
+        return episodes.isEmpty() ? null : episodes.get(0);
+    }
+
     /**
      * Returns all Podcast episodes for a given channel.
      *
      * @param channelId      The Podcast channel ID.
-     * @param includeDeleted Whether to include logically deleted episodes in the result.
      * @return Possibly empty list of all Podcast episodes for the given channel, sorted in
      *         reverse chronological order (newest episode first).
      */
-    public List<PodcastEpisode> getEpisodes(int channelId, boolean includeDeleted) {
-        List<PodcastEpisode> all = filterAllowed(podcastDao.getEpisodes(channelId));
-
-        addMediaFileIdToEpisodes(all);
-        if (includeDeleted) {
-            return all;
-        }
-
-        List<PodcastEpisode> filtered = new ArrayList<PodcastEpisode>();
-        for (PodcastEpisode episode : all) {
-            if (episode.getStatus() != PodcastStatus.DELETED) {
-                filtered.add(episode);
-            }
-        }
-        return filtered;
+    public List<PodcastEpisode> getEpisodes(int channelId) {
+        List<PodcastEpisode> episodes = filterAllowed(podcastDao.getEpisodes(channelId));
+        addMediaFileIdToEpisodes(episodes);
+        return episodes;
     }
 
     private List<PodcastEpisode> filterAllowed(List<PodcastEpisode> episodes) {
@@ -235,19 +234,6 @@ public class PodcastService {
                 }
             }
         }
-    }
-
-    private PodcastEpisode getEpisode(int channelId, String url) {
-        if (url == null) {
-            return null;
-        }
-
-        for (PodcastEpisode episode : getEpisodes(channelId, true)) {
-            if (url.equals(episode.getUrl())) {
-                return episode;
-            }
-        }
-        return null;
     }
 
     public void refreshAllChannels(boolean downloadEpisodes) {
@@ -285,8 +271,8 @@ public class PodcastService {
             Document document = new SAXBuilder().build(in);
             Element channelElement = document.getRootElement().getChild("channel");
 
-            channel.setTitle(channelElement.getChildTextTrim("title"));
-            channel.setDescription(channelElement.getChildTextTrim("description"));
+            channel.setTitle(StringUtil.removeMarkup(channelElement.getChildTextTrim("title")));
+            channel.setDescription(StringUtil.removeMarkup(channelElement.getChildTextTrim("description")));
             channel.setStatus(PodcastStatus.COMPLETED);
             channel.setErrorMessage(null);
             podcastDao.updateChannel(channel);
@@ -304,7 +290,7 @@ public class PodcastService {
         }
 
         if (downloadEpisodes) {
-            for (final PodcastEpisode episode : getEpisodes(channel.getId(), false)) {
+            for (final PodcastEpisode episode : getEpisodes(channel.getId())) {
                 if (episode.getStatus() == PodcastStatus.NEW && episode.getUrl() != null) {
                     downloadEpisode(episode);
                 }
@@ -337,6 +323,8 @@ public class PodcastService {
             if (StringUtils.isBlank(description)) {
                 description = getITunesElement(episodeElement, "summary");
             }
+            title = StringUtil.removeMarkup(title);
+            description = StringUtil.removeMarkup(description);
 
             Element enclosure = episodeElement.getChild("enclosure");
             if (enclosure == null) {
@@ -351,7 +339,7 @@ public class PodcastService {
                 continue;
             }
 
-            if (getEpisode(channel.getId(), url) == null) {
+            if (getEpisodeByUrl(url) == null) {
                 Long length = null;
                 try {
                     length = new Long(enclosure.getAttributeValue("length"));
@@ -534,7 +522,7 @@ public class PodcastService {
             return;
         }
 
-        List<PodcastEpisode> episodes = getEpisodes(channel.getId(), false);
+        List<PodcastEpisode> episodes = getEpisodes(channel.getId());
 
         // Don't do anything if other episodes of the same channel is currently downloading.
         for (PodcastEpisode episode : episodes) {
@@ -598,7 +586,7 @@ public class PodcastService {
      */
     public void deleteChannel(int channelId) {
         // Delete all associated episodes (in case they have files that need to be deleted).
-        List<PodcastEpisode> episodes = getEpisodes(channelId, false);
+        List<PodcastEpisode> episodes = getEpisodes(channelId);
         for (PodcastEpisode episode : episodes) {
             deleteEpisode(episode.getId(), false);
         }

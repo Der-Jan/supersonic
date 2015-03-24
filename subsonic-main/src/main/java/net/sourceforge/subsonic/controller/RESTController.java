@@ -1550,7 +1550,7 @@ public class RESTController extends MultiActionController {
                 c.setErrorMessage(channel.getErrorMessage());
 
                 if (includeEpisodes) {
-                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
+                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId());
                     for (PodcastEpisode episode : episodes) {
 
                         org.subsonic.restapi.PodcastEpisode e = new org.subsonic.restapi.PodcastEpisode();

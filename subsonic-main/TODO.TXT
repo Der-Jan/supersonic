@@ -2,12 +2,10 @@ DONE IN 5.3
 ------------
 Bugfix: Ensure correct playback speed for mono and high sample frequency files in jukebox mode.
 Bugfix: Grant access to media folders when auto-creating LDAP users.
+Bugfix: Improved performance for podcast channels with many (>1000) episodes.
 
 TODO IN 5.3
 ------------
-LDAP users don't get access to media folders.
-  https://sourceforge.net/p/subsonic/bugs/149/
-Review SecurityService.userCache
 Add personal settings for
   Play button behaviour
   Which home screen to show

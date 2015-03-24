@@ -79,7 +79,7 @@ public class PodcastReceiverAdminController extends AbstractController {
             uniqueEpisodeIds.add(episodeId);
         }
         for (int channelId : channelIds) {
-            List<PodcastEpisode> episodes = podcastService.getEpisodes(channelId, false);
+            List<PodcastEpisode> episodes = podcastService.getEpisodes(channelId);
             for (PodcastEpisode episode : episodes) {
                 uniqueEpisodeIds.add(episode.getId());
             }
