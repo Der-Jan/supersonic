@@ -39,6 +39,7 @@ public class UserSettings {
     private boolean songNotificationEnabled;
     private boolean autoHidePlayQueue;
     private boolean viewAsList;
+    private AlbumListType defaultAlbumList;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
@@ -214,6 +215,14 @@ public class UserSettings {
 
     public void setViewAsList(boolean viewAsList) {
         this.viewAsList = viewAsList;
+    }
+
+    public AlbumListType getDefaultAlbumList() {
+        return defaultAlbumList;
+    }
+
+    public void setDefaultAlbumList(AlbumListType defaultAlbumList) {
+        this.defaultAlbumList = defaultAlbumList;
     }
 
     public AvatarScheme getAvatarScheme() {

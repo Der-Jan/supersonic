@@ -54,6 +54,7 @@ import net.sourceforge.subsonic.dao.AvatarDao;
 import net.sourceforge.subsonic.dao.InternetRadioDao;
 import net.sourceforge.subsonic.dao.MusicFolderDao;
 import net.sourceforge.subsonic.dao.UserDao;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.Avatar;
 import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.LicenseInfo;
@@ -1246,6 +1247,7 @@ public class SettingsService {
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
         settings.setViewAsList(false);
+        settings.setDefaultAlbumList(AlbumListType.RANDOM);
         settings.setLastFmEnabled(false);
         settings.setLastFmUsername(null);
         settings.setLastFmPassword(null);

@@ -43,6 +43,7 @@ import com.sonos.services._1.TrackMetadata;
 
 import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;

@@ -81,7 +81,7 @@ import com.sonos.services._1.SegmentMetadataList;
 import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.service.sonos.AlbumListType;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;

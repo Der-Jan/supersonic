@@ -3,12 +3,14 @@ DONE IN 5.3
 Bugfix: Ensure correct playback speed for mono and high sample frequency files in jukebox mode.
 Bugfix: Grant access to media folders when auto-creating LDAP users.
 Bugfix: Improved performance for podcast channels with many (>1000) episodes.
+New: Make default album list on home screen configurable.
 
 TODO IN 5.3
 ------------
+Missing disc number for getAlbum
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14c60e744b07c8de
 Add personal settings for
   Play button behaviour
-  Which home screen to show
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15448
 Improve UI when no media exists
 REST: Add video height/width

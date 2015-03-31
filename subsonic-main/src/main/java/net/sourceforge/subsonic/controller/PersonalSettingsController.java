@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.PersonalSettingsCommand;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.Theme;
 import net.sourceforge.subsonic.domain.User;
@@ -54,6 +55,8 @@ public class PersonalSettingsController extends SimpleFormController {
         command.setUser(user);
         command.setLocaleIndex("-1");
         command.setThemeIndex("-1");
+        command.setAlbumLists(AlbumListType.values());
+        command.setAlbumListId(userSettings.getDefaultAlbumList().getId());
         command.setAvatars(settingsService.getAllSystemAvatars());
         command.setCustomAvatar(settingsService.getCustomAvatar(user.getUsername()));
         command.setAvatarId(getAvatarId(userSettings));
@@ -117,6 +120,7 @@ public class PersonalSettingsController extends SimpleFormController {
 
         settings.setLocale(locale);
         settings.setThemeId(themeId);
+        settings.setDefaultAlbumList(AlbumListType.fromId(command.getAlbumListId()));
         settings.setPartyModeEnabled(command.isPartyModeEnabled());
         settings.setShowNowPlayingEnabled(command.isShowNowPlayingEnabled());
         settings.setShowChatEnabled(command.isShowChatEnabled());

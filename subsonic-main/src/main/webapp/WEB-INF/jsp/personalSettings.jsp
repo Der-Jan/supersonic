@@ -55,6 +55,20 @@
                 <c:import url="helpToolTip.jsp"><c:param name="topic" value="theme"/></c:import>
             </td>
         </tr>
+
+        <tr>
+            <td><fmt:message key="personalsettings.albumlist"/></td>
+            <td>
+                <form:select path="albumListId" cssStyle="width:15em">
+                    <c:forEach items="${command.albumLists}" var="albumList" varStatus="loopStatus">
+                        <c:set var="label">
+                            <fmt:message key="home.${albumList.id}.title"/>
+                        </c:set>
+                        <form:option value="${albumList.id}" label="${label}"/>
+                    </c:forEach>
+                </form:select>
+            </td>
+        </tr>
     </table>
 
     <table class="indent">

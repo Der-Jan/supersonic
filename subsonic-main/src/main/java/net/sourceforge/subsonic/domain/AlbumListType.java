@@ -17,7 +17,7 @@
  *  Copyright 2015 (C) Sindre Mehus
  */
 
-package net.sourceforge.subsonic.service.sonos;
+package net.sourceforge.subsonic.domain;
 
 /**
  * @author Sindre Mehus

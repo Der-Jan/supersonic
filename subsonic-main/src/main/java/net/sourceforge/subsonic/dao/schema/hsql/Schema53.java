@@ -23,6 +23,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.schema.Schema;
+import net.sourceforge.subsonic.domain.AlbumListType;
 
 /**
  * Used for creating and evolving the database schema.
@@ -48,6 +49,11 @@ public class Schema53 extends Schema {
             LOG.info("Created index for podcast_episode.url");
         }
 
-
+        if (!columnExists(template, "default_album_list", "user_settings")) {
+            LOG.info("Database column 'user_settings.default_album_list' not found.  Creating it.");
+            template.execute("alter table user_settings add default_album_list varchar default '" +
+                             AlbumListType.RANDOM.getId() + "' not null");
+            LOG.info("Database column 'user_settings.default_album_list' was added successfully.");
+        }
     }
 }
