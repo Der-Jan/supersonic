@@ -7,6 +7,9 @@
 
     <script type="text/javascript">
         function init() {
+            $("#newMusicFolderName").attr("placeholder", "<fmt:message key="musicfoldersettings.name"/>");
+            $("#newMusicFolderPath").attr("placeholder", "<fmt:message key="musicfoldersettings.path"/>");
+
             <c:if test="${command.reload}">
             parent.frames.upper.location.href="top.view?";
             parent.frames.left.location.href="left.view?";
@@ -43,13 +46,15 @@
         </tr>
     </c:forEach>
 
-    <tr>
-        <th colspan="4" align="left" style="padding-top:1em"><fmt:message key="musicfoldersettings.add"/></th>
-    </tr>
+    <c:if test="${not empty command.musicFolders}">
+        <tr>
+            <th colspan="4" align="left" style="padding-top:1em"><fmt:message key="musicfoldersettings.add"/></th>
+        </tr>
+    </c:if>
 
     <tr>
-        <td><form:input path="newMusicFolder.name" size="20"/></td>
-        <td><form:input path="newMusicFolder.path" size="40"/></td>
+        <td><form:input id="newMusicFolderName" path="newMusicFolder.name" size="20"/></td>
+        <td><form:input id="newMusicFolderPath" path="newMusicFolder.path" size="40"/></td>
         <td align="center" style="padding-left:1em"><form:checkbox path="newMusicFolder.enabled" cssClass="checkbox"/></td>
         <td></td>
     </tr>
