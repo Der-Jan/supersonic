@@ -96,10 +96,17 @@
     <span style="vertical-align: middle"><fmt:message key="podcastreceiver.title"/></span>
 </h1>
 
-<table><tr>
-    <td style="padding-right:2em"><div class="forward"><a href="javascript:toggleAllEpisodes(true)"><fmt:message key="podcastreceiver.expandall"/></a></div></td>
-    <td style="padding-right:2em"><div class="forward"><a href="javascript:toggleAllEpisodes(false)"><fmt:message key="podcastreceiver.collapseall"/></a></div></td>
-</tr></table>
+<c:choose>
+    <c:when test="${empty model.channels}">
+        <p style="padding-top: 1em"><em><fmt:message key="podcastreceiver.empty"/></em></p>
+    </c:when>
+    <c:otherwise>
+        <table><tr>
+            <td style="padding-right:2em"><div class="forward"><a href="javascript:toggleAllEpisodes(true)"><fmt:message key="podcastreceiver.expandall"/></a></div></td>
+            <td style="padding-right:2em"><div class="forward"><a href="javascript:toggleAllEpisodes(false)"><fmt:message key="podcastreceiver.collapseall"/></a></div></td>
+        </tr></table>
+    </c:otherwise>
+</c:choose>
 
 <table class="music">
 

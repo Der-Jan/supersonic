@@ -11,6 +11,10 @@
     <span style="vertical-align: middle"><fmt:message key="left.playlists"/></span>
 </h1>
 
+<c:if test="${empty model.playlists}">
+    <p><em><fmt:message key="playlist2.noplaylists"/></em></p>
+</c:if>
+
 <c:forEach items="${model.playlists}" var="playlist" varStatus="loopStatus">
 
     <c:set var="caption2">

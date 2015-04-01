@@ -7,7 +7,7 @@ New: Make default album list on home screen configurable.
 
 TODO IN 5.3
 ------------
-Missing disc number for getAlbum
+Consider disc number in sorting for getAlbum
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14c60e744b07c8de
 Add personal settings for
   Play button behaviour
