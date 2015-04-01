@@ -61,6 +61,7 @@ public class PersonalSettingsController extends SimpleFormController {
         command.setCustomAvatar(settingsService.getCustomAvatar(user.getUsername()));
         command.setAvatarId(getAvatarId(userSettings));
         command.setPartyModeEnabled(userSettings.isPartyModeEnabled());
+        command.setQueueFollowingSongs(userSettings.isQueueFollowingSongs());
         command.setShowNowPlayingEnabled(userSettings.isShowNowPlayingEnabled());
         command.setShowChatEnabled(userSettings.isShowChatEnabled());
         command.setShowArtistInfoEnabled(userSettings.isShowArtistInfoEnabled());
@@ -122,6 +123,7 @@ public class PersonalSettingsController extends SimpleFormController {
         settings.setThemeId(themeId);
         settings.setDefaultAlbumList(AlbumListType.fromId(command.getAlbumListId()));
         settings.setPartyModeEnabled(command.isPartyModeEnabled());
+        settings.setQueueFollowingSongs(command.isQueueFollowingSongs());
         settings.setShowNowPlayingEnabled(command.isShowNowPlayingEnabled());
         settings.setShowChatEnabled(command.isShowChatEnabled());
         settings.setShowArtistInfoEnabled(command.isShowArtistInfoEnabled());

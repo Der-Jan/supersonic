@@ -48,7 +48,7 @@ public class UserDao extends AbstractDao {
             "playlist_year, playlist_bit_rate, playlist_duration, playlist_format, playlist_file_size, " +
             "last_fm_enabled, last_fm_username, last_fm_password, transcode_scheme, show_now_playing, selected_music_folder_id, " +
             "party_mode_enabled, now_playing_allowed, avatar_scheme, system_avatar_id, changed, show_chat, show_artist_info, auto_hide_play_queue, " +
-            "view_as_list, default_album_list";
+            "view_as_list, default_album_list, queue_following_songs";
 
     private static final Integer ROLE_ID_ADMIN = 1;
     private static final Integer ROLE_ID_DOWNLOAD = 2;
@@ -191,7 +191,7 @@ public class UserDao extends AbstractDao {
                 settings.getSelectedMusicFolderId(), settings.isPartyModeEnabled(), settings.isNowPlayingAllowed(),
                 settings.getAvatarScheme().name(), settings.getSystemAvatarId(), settings.getChanged(),
                 settings.isShowChatEnabled(), settings.isShowArtistInfoEnabled(), settings.isAutoHidePlayQueue(),
-                settings.isViewAsList(), settings.getDefaultAlbumList().getId()});
+                settings.isViewAsList(), settings.getDefaultAlbumList().getId(), settings.isQueueFollowingSongs()});
     }
 
     private static String encrypt(String s) {
@@ -350,6 +350,7 @@ public class UserDao extends AbstractDao {
             settings.setAutoHidePlayQueue(rs.getBoolean(col++));
             settings.setViewAsList(rs.getBoolean(col++));
             settings.setDefaultAlbumList(AlbumListType.fromId(rs.getString(col++)));
+            settings.setQueueFollowingSongs(rs.getBoolean(col++));
 
             return settings;
         }

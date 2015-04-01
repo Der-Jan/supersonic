@@ -54,6 +54,7 @@ public class PersonalSettingsCommand {
     private boolean finalVersionNotificationEnabled;
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
+    private boolean queueFollowingSongs;
     private boolean lastFmEnabled;
     private String lastFmUsername;
     private String lastFmPassword;
@@ -257,5 +258,13 @@ public class PersonalSettingsCommand {
 
     public void setReloadNeeded(boolean reloadNeeded) {
         isReloadNeeded = reloadNeeded;
+    }
+
+    public boolean isQueueFollowingSongs() {
+        return queueFollowingSongs;
+    }
+
+    public void setQueueFollowingSongs(boolean queueFollowingSongs) {
+        this.queueFollowingSongs = queueFollowingSongs;
     }
 }

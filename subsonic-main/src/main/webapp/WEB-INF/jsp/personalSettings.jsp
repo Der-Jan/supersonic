@@ -146,6 +146,14 @@
                 <c:import url="helpToolTip.jsp"><c:param name="topic" value="partymode"/></c:import>
             </td>
         </tr>
+        <tr>
+            <td><form:checkbox path="queueFollowingSongs" id="queueFollowingSongs" cssClass="checkbox"/></td>
+            <td><label for="queueFollowingSongs"><fmt:message key="personalsettings.queuefollowingsongs"/></label></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
     </table>
 
     <table class="indent">

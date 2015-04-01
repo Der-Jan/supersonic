@@ -55,5 +55,11 @@ public class Schema53 extends Schema {
                              AlbumListType.RANDOM.getId() + "' not null");
             LOG.info("Database column 'user_settings.default_album_list' was added successfully.");
         }
+
+        if (!columnExists(template, "queue_following_songs", "user_settings")) {
+            LOG.info("Database column 'user_settings.queue_following_songs' not found.  Creating it.");
+            template.execute("alter table user_settings add queue_following_songs boolean default true not null");
+            LOG.info("Database column 'user_settings.queue_following_songs' was added successfully.");
+        }
     }
 }

@@ -39,6 +39,7 @@ public class UserSettings {
     private boolean songNotificationEnabled;
     private boolean autoHidePlayQueue;
     private boolean viewAsList;
+    private boolean queueFollowingSongs;
     private AlbumListType defaultAlbumList;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
@@ -257,6 +258,14 @@ public class UserSettings {
      */
     public void setChanged(Date changed) {
         this.changed = changed;
+    }
+
+    public boolean isQueueFollowingSongs() {
+        return queueFollowingSongs;
+    }
+
+    public void setQueueFollowingSongs(boolean queueFollowingSongs) {
+        this.queueFollowingSongs = queueFollowingSongs;
     }
 
     /**

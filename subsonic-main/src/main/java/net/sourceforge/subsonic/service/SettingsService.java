@@ -1247,6 +1247,7 @@ public class SettingsService {
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
         settings.setViewAsList(false);
+        settings.setQueueFollowingSongs(true);
         settings.setDefaultAlbumList(AlbumListType.RANDOM);
         settings.setLastFmEnabled(false);
         settings.setLastFmUsername(null);

@@ -4,15 +4,14 @@ Bugfix: Ensure correct playback speed for mono and high sample frequency files i
 Bugfix: Grant access to media folders when auto-creating LDAP users.
 Bugfix: Improved performance for podcast channels with many (>1000) episodes.
 New: Make default album list on home screen configurable.
+Improve UI when no media exists
+Added Settings > Personal > Queue following songs on play
 
 TODO IN 5.3
 ------------
 Consider disc number in sorting for getAlbum
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14c60e744b07c8de
-Add personal settings for
-  Play button behaviour
-  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15448
-Improve UI when no media exists
+Add scrubber for drag n drop
 REST: Add video height/width
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/139bc17f62dff9ce
 Add SonicStreamer

@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.ajax;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -185,11 +186,18 @@ public class PlayQueueService {
         MediaFile file = mediaFileService.getMediaFile(id);
 
         if (file.isFile()) {
-            MediaFile dir = mediaFileService.getParentOf(file);
-            List<MediaFile> songs = mediaFileService.getChildrenOf(dir, true, false, true);
-            if (!songs.isEmpty()) {
-                int index = songs.indexOf(file);
-                songs = songs.subList(index, songs.size());
+            String username = securityService.getCurrentUsername(request);
+            boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
+            List<MediaFile> songs;
+            if (queueFollowingSongs) {
+                MediaFile dir = mediaFileService.getParentOf(file);
+                songs = mediaFileService.getChildrenOf(dir, true, false, true);
+                if (!songs.isEmpty()) {
+                    int index = songs.indexOf(file);
+                    songs = songs.subList(index, songs.size());
+                }
+            } else {
+                songs = Arrays.asList(file);
             }
             return doPlay(request, player, songs).setStartPlayerAt(0);
         } else {
@@ -198,13 +206,23 @@ public class PlayQueueService {
         }
     }
 
-    public PlayQueueInfo playPlaylist(int id, int index) throws Exception {
+    /**
+     * @param index Start playing at this index, or play whole playlist if {@code null}.
+     */
+    public PlayQueueInfo playPlaylist(int id, Integer index) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
+        String username = securityService.getCurrentUsername(request);
+        boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
+
         List<MediaFile> files = playlistService.getFilesInPlaylist(id, true);
-        if (!files.isEmpty()) {
-            files = files.subList(index, files.size());
+        if (!files.isEmpty() && index != null) {
+            if (queueFollowingSongs) {
+                files = files.subList(index, files.size());
+            } else {
+                files = Arrays.asList(files.get(index));
+            }
         }
 
         // Remove non-present files

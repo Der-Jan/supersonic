@@ -196,7 +196,6 @@
         playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
     }
     function onPlayPlaylist(id, index) {
-        index = index || 0;
         playQueueService.playPlaylist(id, index, playQueueCallback);
     }
     function onPlayStarred() {
