@@ -1289,6 +1289,8 @@ public class RESTController extends MultiActionController {
                     break;
                 case VIDEO:
                     child.setType(MediaType.VIDEO);
+                    child.setOriginalWidth(mediaFile.getWidth());
+                    child.setOriginalHeight(mediaFile.getHeight());
                     break;
                 default:
                     break;

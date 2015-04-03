@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.12.0">
+           version="1.13.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -212,6 +212,8 @@
         <xs:attribute name="artistId" type="xs:string" use="optional"/>  <!-- Added in 1.8.0 -->
         <xs:attribute name="type" type="sub:MediaType" use="optional"/>  <!-- Added in 1.8.0 -->
         <xs:attribute name="bookmarkPosition" type="xs:long" use="optional"/>  <!-- In millis. Added in 1.10.1 -->
+        <xs:attribute name="originalWidth" type="xs:int" use="optional"/>  <!-- Added in 1.13.0 -->
+        <xs:attribute name="originalHeight" type="xs:int" use="optional"/>  <!-- Added in 1.13.0 -->
     </xs:complexType>
 
     <xs:simpleType name="MediaType">
