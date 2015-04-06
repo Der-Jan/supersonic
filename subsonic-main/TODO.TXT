@@ -8,6 +8,7 @@ Improve UI when no media exists
 Added Settings > Personal > Queue following songs on play
 REST: Consider disc number in sorting for getAlbum
 REST: Add original width and height for videos.
+REST: Add album rating to getIndexes and getMusicDirectory
 
 TODO IN 5.3
 ------------

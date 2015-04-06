@@ -292,6 +292,11 @@ public class RESTController extends MultiActionController {
                         a.setId(String.valueOf(mediaFile.getId()));
                         a.setName(artist.getName());
                         a.setStarred(jaxbWriter.convertDate(starredDate));
+
+                        if (mediaFile.isAlbum()) {
+                            a.setAverageRating(ratingService.getAverageRating(mediaFile));
+                            a.setUserRating(ratingService.getRatingForUser(username, mediaFile));
+                        }
                     }
                 }
             }
@@ -655,6 +660,11 @@ public class RESTController extends MultiActionController {
         }
         directory.setName(dir.getName());
         directory.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(id, username)));
+
+        if (dir.isAlbum()) {
+            directory.setAverageRating(ratingService.getAverageRating(dir));
+            directory.setUserRating(ratingService.getRatingForUser(username, dir));
+        }
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
             directory.getChild().add(createJaxbChild(player, child, username));
