@@ -40,7 +40,7 @@ public class UserSettings {
     private boolean autoHidePlayQueue;
     private boolean viewAsList;
     private boolean queueFollowingSongs;
-    private AlbumListType defaultAlbumList;
+    private AlbumListType defaultAlbumList = AlbumListType.RANDOM;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
