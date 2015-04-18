@@ -12,9 +12,11 @@ REST: Add album rating to getIndexes and getMusicDirectory
 
 TODO IN 5.3
 ------------
+Backend: valid_to_date not used for whitelist.
+Backend: consider all payments when determining valid_to_date (including null)
+  https://mail.google.com/mail/ca/u/0/#inbox/14c4dab69f24a443
+Check that ssh from demo works
 Add scrubber for drag n drop
-Add SonicStreamer
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14be0b793d6f0a9d
 CarSub > AVSub
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bf980f2ef99783
 Chromecast stops casting ~5min before movie ends
@@ -26,6 +28,10 @@ Artwork issues
 Doesn't work on 32-bit OS X.
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bfd2220da4091e
 Movie metadata
+
+Integrate MySQL and audio ad support
+  After 6 months
+  Make premium features
 
 Promote Sonos (65k limit)
 "Recommended" album list (based on previous listening and similar artists)
