@@ -3,6 +3,7 @@ package net.sourceforge.subsonic.backend.dao;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,17 +51,17 @@ public class PaymentDao extends AbstractDao {
     }
 
     /**
-     * Returns the (most recent) payment with the given payer email.
+     * Returns the payments with the given payer email.
      *
      * @param email The payer email.
-     * @return The payment or <code>null</code> if not found.
+     * @return The payments
      */
-    public Payment getPaymentByEmail(String email) {
+    public List<Payment> getPaymentsByEmail(String email) {
         if (email == null) {
-            return null;
+            return Collections.emptyList();
         }
-        String sql = "select " + COLUMNS + " from payment where payer_email_lower=? order by created desc";
-        return queryOne(sql, paymentRowMapper, email.toLowerCase());
+        String sql = "select " + COLUMNS + " from payment where payer_email_lower=?";
+        return query(sql, paymentRowMapper, email.toLowerCase());
     }
 
     /**

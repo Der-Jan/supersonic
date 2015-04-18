@@ -299,21 +299,27 @@ public class MultiController extends MultiActionController {
         }
 
         Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
-        Payment payment = paymentDao.getPaymentByEmail(email);
+        Date result = subscription == null ? null : subscription.getValidTo();
 
-        Date subscriptionExpirationDate = subscription == null ? null : subscription.getValidTo();
-        Date paymentExpirationDate = payment == null ? null : payment.getValidTo();
-
-        return Util.latest(subscriptionExpirationDate, paymentExpirationDate);
+        List<Payment> payments = paymentDao.getPaymentsByEmail(email);
+        for (Payment payment : payments) {
+            if (payment.getValidTo() == null) {
+                return null;
+            }
+            result = Util.latest(result, payment.getValidTo());
+        }
+        return result;
     }
 
     private boolean hasValidPayment(String email) {
-        Payment payment = paymentDao.getPaymentByEmail(email);
-        if (payment == null) {
-            return false;
-        }
+        List<Payment> payments = paymentDao.getPaymentsByEmail(email);
         Date now = new Date();
-        return payment.getValidTo() == null || payment.getValidTo().after(now);
+        for (Payment payment : payments) {
+            if (payment.getValidTo() == null || payment.getValidTo().after(now)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean hasValidSubscription(String email) {

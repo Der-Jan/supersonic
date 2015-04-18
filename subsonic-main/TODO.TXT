@@ -12,9 +12,6 @@ REST: Add album rating to getIndexes and getMusicDirectory
 
 TODO IN 5.3
 ------------
-Backend: valid_to_date not used for whitelist.
-Backend: consider all payments when determining valid_to_date (including null)
-  https://mail.google.com/mail/ca/u/0/#inbox/14c4dab69f24a443
 Check that ssh from demo works
 Add scrubber for drag n drop
 Chromecast stops casting ~5min before movie ends

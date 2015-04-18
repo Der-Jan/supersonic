@@ -44,6 +44,7 @@ import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -201,8 +202,8 @@ public class IPNController implements Controller {
             LOG.info("Received donation of " + paymentCurrency + " " + paymentAmount + " from " + payerEmail);
 
         } else {
-            Payment paymentForEmail = paymentDao.getPaymentByEmail(payerEmail);
-            Date validTo = computeValidTo(paymentForEmail, request, item);
+            List<Payment> payments = paymentDao.getPaymentsByEmail(payerEmail);
+            Date validTo = computeValidTo(payments, request, item);
 
             Payment newPayment = new Payment(null, txnId, txnType, item, paymentType, paymentStatus,
                     paymentAmount, paymentCurrency, payerEmail, payerFirstName, payerLastName,
@@ -215,7 +216,7 @@ public class IPNController implements Controller {
         return "sub-donation".equals(item);
     }
 
-    private Date computeValidTo(Payment existingPayment, HttpServletRequest request, String item) {
+    private Date computeValidTo(List<Payment> existingPayments, HttpServletRequest request, String item) {
         if ("sub-pre-lifetime".equals(item)) {
             return null;
         }
@@ -233,9 +234,11 @@ public class IPNController implements Controller {
         int years = Integer.parseInt(matcher.group(1));
         Calendar validTo = Calendar.getInstance();
 
-        // If an existing payment exists, add to the existing end date.
-        if (existingPayment != null && existingPayment.getValidTo() != null && existingPayment.getValidTo().after(new Date())) {
-            validTo.setTime(existingPayment.getValidTo());
+        // If payment exists, add to the existing end date.
+        for (Payment existingPayment : existingPayments) {
+            if (existingPayment.getValidTo() != null && existingPayment.getValidTo().after(validTo.getTime())) {
+                validTo.setTime(existingPayment.getValidTo());
+            }
         }
 
         validTo.add(Calendar.YEAR, years);
