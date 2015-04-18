@@ -61,7 +61,7 @@
                     <li><a href="#substream">SubStream</a> for iPhone/iPad</li>
                     <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
-                    <li><a href="#carsub">CarSub</a> for iPhone/iPad</li>
+                    <li><a href="#avsub">AVSub</a> for iPhone/iPad</li>
                     <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
                 </ul>
             </div>
@@ -152,7 +152,7 @@
     <%@ include file="apps-zsubsonic.jsp" %>
     <%@ include file="apps-substream.jsp" %>
     <%@ include file="apps-subhub.jsp" %>
-    <%@ include file="apps-carsub.jsp" %>
+    <%@ include file="apps-avsub.jsp" %>
     <%@ include file="apps-subsonar.jsp" %>
 
     <%@ include file="apps-sonicair.jsp" %>

@@ -17,8 +17,6 @@ Backend: consider all payments when determining valid_to_date (including null)
   https://mail.google.com/mail/ca/u/0/#inbox/14c4dab69f24a443
 Check that ssh from demo works
 Add scrubber for drag n drop
-CarSub > AVSub
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bf980f2ef99783
 Chromecast stops casting ~5min before movie ends
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
   https://sourceforge.net/p/subsonic/bugs/146/
