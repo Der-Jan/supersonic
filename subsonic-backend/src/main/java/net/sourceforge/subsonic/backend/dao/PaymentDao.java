@@ -33,7 +33,8 @@ public class PaymentDao extends AbstractDao {
             "processing_status, valid_to, created, last_updated";
 
     private RowMapper paymentRowMapper = new PaymentRowMapper();
-    private RowMapper listRowMapper = new ParameterizedSingleColumnRowMapper<Integer>();
+    private RowMapper intRowMapper = new ParameterizedSingleColumnRowMapper<Integer>();
+    private RowMapper dateRowMapper = new ParameterizedSingleColumnRowMapper<Date>();
     private RowMapper moneyRowMapper = new MoneyRowMapper();
     private RowMapper currencyRowMapper = new CurrencyRowMapper();
 
@@ -113,17 +114,22 @@ public class PaymentDao extends AbstractDao {
 
     public boolean isBlacklisted(String email) {
         String sql = "select 1 from blacklist where email=?";
-        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email)) != null;
+        return queryOne(sql, intRowMapper, StringUtils.lowerCase(email)) != null;
     }
 
     public boolean isWhitelisted(String email) {
         Date now = new Date();
         String sql = "select 1 from whitelist where email=? and (valid_to is null or valid_to > ?)";
-        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email), now) != null;
+        return queryOne(sql, intRowMapper, StringUtils.lowerCase(email), now) != null;
     }
 
     public void whitelist(String email) {
         update("insert into whitelist(email) values (?)", StringUtils.lowerCase(email));
+    }
+
+    public Date getWhitelistExpirationDate(String email) {
+        String sql = "select valid_to from whitelist where email=?";
+        return queryOne(sql, dateRowMapper, StringUtils.lowerCase(email));
     }
 
     public Map<CurrencyUnit, BigDecimal> getCurrencyConversionsFor(CurrencyUnit currency) {

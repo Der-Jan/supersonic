@@ -290,8 +290,12 @@ public class MultiController extends MultiActionController {
             return null;
         }
 
-        if (paymentDao.isBlacklisted(email) || paymentDao.isWhitelisted(email)) {
+        if (paymentDao.isBlacklisted(email)) {
             return null;
+        }
+
+        if (paymentDao.isWhitelisted(email)) {
+            return paymentDao.getWhitelistExpirationDate(email);
         }
 
         Subscription subscription = subscriptionDao.getSubscriptionByEmail(email);
