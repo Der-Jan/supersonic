@@ -3,7 +3,7 @@
 
     <h3>SonicStreamer</h3>
     <p>
-        SonicStreamer is a free app for Windows 8.1 and Windows Phone 8.1, published by <a href="https://theaxelander.de/" target="_blank">Axelander Apps</a>.
+        SonicStreamer is a free app for Windows 8.1 and Windows Phone 8.1, published by <a href="https://theaxelander.de/" target="_blank">Alexander Preibisch</a>.
     </p>
     <span class="image"><img src="inc/img/screenshots/sonicstreamer/sonicstreamer-1.png" alt=""/></span>
 
