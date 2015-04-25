@@ -9,15 +9,15 @@ Added Settings > Personal > Queue following songs on play
 REST: Consider disc number in sorting for getAlbum
 REST: Add original width and height for videos.
 REST: Add album rating to getIndexes and getMusicDirectory
+Chromecast stops casting ~5min before movie ends
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
+  https://sourceforge.net/p/subsonic/bugs/146/
+  https://sourceforge.net/p/subsonic/bugs/121
 
 TODO IN 5.3
 ------------
 Check that ssh from demo works
 Add scrubber for drag n drop
-Chromecast stops casting ~5min before movie ends
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
-  https://sourceforge.net/p/subsonic/bugs/146/
-  https://sourceforge.net/p/subsonic/bugs/121
 Artwork issues
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14bfee1e60021c46
 Doesn't work on 32-bit OS X.
