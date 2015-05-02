@@ -1390,8 +1390,6 @@ public class SettingsService {
             return;
         }
 
-        licenseValidated = true;
-
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 120000);
         HttpConnectionParams.setSoTimeout(client.getParams(), 120000);
@@ -1425,6 +1423,9 @@ public class SettingsService {
                 validateLicense();
             }
         };
+        licenseValidated = true;
+        licenseExpires = null;
+
         licenseValidationFuture = executor.scheduleWithFixedDelay(task, 0L, LICENSE_VALIDATION_DELAY_HOURS, TimeUnit.HOURS);
     }
 

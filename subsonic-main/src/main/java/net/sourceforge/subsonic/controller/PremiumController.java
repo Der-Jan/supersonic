@@ -62,8 +62,8 @@ public class PremiumController extends SimpleFormController {
         settingsService.save();
         settingsService.scheduleLicenseValidation();
 
-        // Reflect changes in view. The validator has already validated the license.
-        command.getLicenseInfo().setLicenseValid(true);
+        // Reflect changes in view. The validator will validate the license asynchronously.
+        command.setLicenseInfo(settingsService.getLicenseInfo());
 
         return new ModelAndView(getSuccessView(), errors.getModel());
     }

@@ -13,9 +13,15 @@ Chromecast stops casting ~5min before movie ends
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
   https://sourceforge.net/p/subsonic/bugs/146/
   https://sourceforge.net/p/subsonic/bugs/121
+Bugfix: Expiration date not updated when upgrading from normal to lifetime subscription.
 
 TODO IN 5.3
 ------------
+Check that expiration date changes when registering lifetime license.
+Site: Document SSL on Mac
+Check that star image for videos work
+Create Settings > Premium
+REST: getLicense returns wrong date?
 Check that ssh from demo works
 Add scrubber for drag n drop
 Artwork issues
