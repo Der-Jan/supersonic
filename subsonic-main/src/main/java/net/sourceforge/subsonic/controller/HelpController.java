@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.VersionService;
 
@@ -40,6 +41,7 @@ public class HelpController extends ParameterizableViewController {
 
     private VersionService versionService;
     private SettingsService settingsService;
+    private SecurityService securityService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -61,6 +63,7 @@ public class HelpController extends ParameterizableViewController {
                             ", " + System.getProperty("os.name");
 
         map.put("licenseInfo", settingsService.getLicenseInfo());
+        map.put("user", securityService.getCurrentUser(request));
         map.put("brand", settingsService.getBrand());
         map.put("localVersion", versionService.getLocalVersion());
         map.put("buildDate", versionService.getLocalBuildDate());
@@ -82,5 +85,9 @@ public class HelpController extends ParameterizableViewController {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

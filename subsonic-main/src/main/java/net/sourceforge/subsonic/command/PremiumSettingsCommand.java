@@ -20,16 +20,16 @@ package net.sourceforge.subsonic.command;
 
 import org.apache.commons.lang.StringUtils;
 
-import net.sourceforge.subsonic.controller.PremiumController;
+import net.sourceforge.subsonic.controller.PremiumSettingsController;
 import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.User;
 
 /**
- * Command used in {@link PremiumController}.
+ * Command used in {@link PremiumSettingsController}.
  *
  * @author Sindre Mehus
  */
-public class PremiumCommand {
+public class PremiumSettingsCommand {
 
     private String path;
     private String brand;
@@ -38,6 +38,7 @@ public class PremiumCommand {
     private boolean forceChange;
     private boolean submissionError;
     private User user;
+    private boolean toast;
 
     public String getPath() {
         return path;
@@ -93,5 +94,13 @@ public class PremiumCommand {
 
     public User getUser() {
         return user;
+    }
+
+    public void setToast(boolean toast) {
+        this.toast = toast;
+    }
+
+    public boolean isToast() {
+        return toast;
     }
 }

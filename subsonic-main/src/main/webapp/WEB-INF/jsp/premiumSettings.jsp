@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
-<%--@elvariable id="command" type="net.sourceforge.subsonic.command.PremiumCommand"--%>
+<%--@elvariable id="command" type="net.sourceforge.subsonic.command.PremiumSettingsCommand"--%>
 <html>
 <head>
     <%@ include file="head.jsp" %>
+    <%@ include file="jquery.jsp" %>
 </head>
 <body class="mainframe bgcolor1">
 
-<h1>
-    <img src="<spring:theme code="donateImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="premium.title"/></span>
-</h1>
+<c:import url="settingsHeader.jsp">
+    <c:param name="cat" value="premium"/>
+    <c:param name="restricted" value="${not command.user.adminRole}"/>
+    <c:param name="toast" value="${command.toast}"/>
+</c:import>
+
 <c:if test="${not empty command.path}">
     <sub:url value="main.view" var="backUrl">
         <sub:param name="path" value="${command.path}"/>
@@ -39,7 +42,7 @@
                 <fmt:message key="premium.licensedto"><fmt:param value="${command.licenseInfo.licenseEmail}"/></fmt:message>
             </p>
             <c:if test="${command.user.adminRole}">
-                <div class="forward"><a href="premium.view?change"><fmt:message key="premium.forcechange"/></a></div>
+                <div class="forward"><a href="premiumSettings.view?change"><fmt:message key="premium.forcechange"/></a></div>
             </c:if>
         </c:if>
     </c:if>
@@ -59,7 +62,7 @@
     </c:if>
 
     <c:if test="${not command.licenseInfo.licenseValid or command.forceChange or command.submissionError}">
-        <form:form commandName="command" method="post" action="premium.view">
+        <form:form commandName="command" method="post" action="premiumSettings.view">
             <form:hidden path="path"/>
             <table>
                 <tr>

@@ -40,7 +40,14 @@
         <td class="ruleTableCell">
             <c:choose>
                 <c:when test="${model.licenseInfo.licenseValid}">
-                    <a href="premium.view">Subsonic Premium</a>
+                    <c:choose>
+                        <c:when test="${model.user.settingsRole}">
+                            <a href="premiumSettings.view">Subsonic Premium</a>
+                        </c:when>
+                        <c:otherwise>
+                            Subsonic Premium
+                        </c:otherwise>
+                    </c:choose>
                     <c:if test="${not empty model.licenseInfo.licenseExpires}">
                         <fmt:message key="help.premium.expires">
                             <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.licenseInfo.licenseExpires}"/></fmt:param>

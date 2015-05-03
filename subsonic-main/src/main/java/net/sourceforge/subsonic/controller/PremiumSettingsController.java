@@ -27,7 +27,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import net.sourceforge.subsonic.command.PremiumCommand;
+import net.sourceforge.subsonic.command.PremiumSettingsCommand;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -36,13 +36,13 @@ import net.sourceforge.subsonic.service.SettingsService;
  *
  * @author Sindre Mehus
  */
-public class PremiumController extends SimpleFormController {
+public class PremiumSettingsController extends SimpleFormController {
 
     private SettingsService settingsService;
     private SecurityService securityService;
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        PremiumCommand command = new PremiumCommand();
+        PremiumSettingsCommand command = new PremiumSettingsCommand();
         command.setPath(request.getParameter("path"));
         command.setForceChange(request.getParameter("change") != null);
         command.setLicenseInfo(settingsService.getLicenseInfo());
@@ -53,7 +53,7 @@ public class PremiumController extends SimpleFormController {
 
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object com, BindException errors)
             throws Exception {
-        PremiumCommand command = (PremiumCommand) com;
+        PremiumSettingsCommand command = (PremiumSettingsCommand) com;
         Date now = new Date();
 
         settingsService.setLicenseCode(command.getLicenseCode());
@@ -64,6 +64,7 @@ public class PremiumController extends SimpleFormController {
 
         // Reflect changes in view. The validator will validate the license asynchronously.
         command.setLicenseInfo(settingsService.getLicenseInfo());
+        command.setToast(true);
 
         return new ModelAndView(getSuccessView(), errors.getModel());
     }

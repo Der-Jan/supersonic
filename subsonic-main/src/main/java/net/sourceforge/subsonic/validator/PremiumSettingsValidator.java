@@ -21,24 +21,24 @@ package net.sourceforge.subsonic.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import net.sourceforge.subsonic.command.PremiumCommand;
-import net.sourceforge.subsonic.controller.PremiumController;
+import net.sourceforge.subsonic.command.PremiumSettingsCommand;
+import net.sourceforge.subsonic.controller.PremiumSettingsController;
 import net.sourceforge.subsonic.service.SettingsService;
 
 /**
- * Validator for {@link PremiumController}.
+ * Validator for {@link PremiumSettingsController}.
  *
  * @author Sindre Mehus
  */
-public class PremiumValidator implements Validator {
+public class PremiumSettingsValidator implements Validator {
     private SettingsService settingsService;
 
     public boolean supports(Class clazz) {
-        return clazz.equals(PremiumCommand.class);
+        return clazz.equals(PremiumSettingsCommand.class);
     }
 
     public void validate(Object obj, Errors errors) {
-        PremiumCommand command = (PremiumCommand) obj;
+        PremiumSettingsCommand command = (PremiumSettingsCommand) obj;
 
         if (!settingsService.isLicenseValid(command.getLicenseInfo().getLicenseEmail(), command.getLicenseCode())) {
             command.setSubmissionError(true);
