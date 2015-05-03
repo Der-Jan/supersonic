@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
@@ -54,9 +55,11 @@ public class VideoPlayerController extends ParameterizableViewController {
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        User user = securityService.getCurrentUser(request);
         Map<String, Object> map = new HashMap<String, Object>();
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile file = mediaFileService.getMediaFile(id);
+        mediaFileService.populateStarredDate(file, user.getUsername());
 
         Integer duration = file.getDurationSeconds();
         String playerId = playerService.getPlayer(request, response).getId();
@@ -90,7 +93,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         map.put("bitRates", BIT_RATES);
         map.put("defaultBitRate", DEFAULT_BIT_RATE);
         map.put("licenseInfo", settingsService.getLicenseInfo());
-        map.put("user", securityService.getCurrentUser(request));
+        map.put("user", user);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
