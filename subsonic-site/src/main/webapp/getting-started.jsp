@@ -180,15 +180,18 @@
                 <p>For improved security you can turn on https encryption.  On Windows, open the Subsonic Control Panel by clicking
                     on the Subsonic tray icon, then enable https on the specified port (default 443).
                 </p>
-                <p> On Linux, add <strong>--https-port=4443</strong> (or any other port) to SUBSONIC_ARGS in
+                <p>On Linux, add <strong>--https-port=4443</strong> (or any other port) to SUBSONIC_ARGS in
                     <strong>/etc/default/subsonic</strong> (Ubuntu/Debian) or <strong>/etc/sysconfig/subsonic</strong> (Fedora/RPM).
                 </p>
+                <p>On Mac, look for <strong>-Dsubsonic.httpsPort=0</strong> in <strong>/Applications/Subsonic.app/Contents/Info.plist</strong>
+                    and change it to the desired port number.</p>
                 <p>
                     Note that Subsonic uses a self-signed https certificate by default. This provides encryption but not
                     proper authentication.  To use your own certificate you must put it in a Java keystore, then specify the
                     following Java system properties: <strong>subsonic.ssl.keystore</strong> (path to an alternate SSL keystore), and
                     <strong>subsonic.ssl.password</strong> (password of the alternate SSL keystore). On Windows, you can set these system
-                    properties in <strong>C:\Program Files (x86)\Subsonic\subsonic-service.exe.vmoptions</strong>.
+                    properties in <strong>C:\Program Files (x86)\Subsonic\subsonic-service.exe.vmoptions</strong>. On Mac, you can
+                    add them to <strong>/Applications/Subsonic.app/Contents/Info.plist</strong>.
                 </p>
             </section>
 

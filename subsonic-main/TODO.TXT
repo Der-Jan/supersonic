@@ -19,8 +19,7 @@ Bugfix: Starred image not shown for videos
 
 TODO IN 5.3
 ------------
-Site: Document SSL on Mac
-REST: getLicense returns wrong date?
+Site: Make "Features" more prominent
 Check that ssh from demo works
 Add scrubber for drag n drop
 Artwork issues
