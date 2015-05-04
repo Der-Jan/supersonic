@@ -92,7 +92,7 @@ public class RedirectionManagementController extends MultiActionController {
     public void register(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String redirectFrom = StringUtils.lowerCase(ServletRequestUtils.getRequiredStringParameter(request, "redirectFrom"));
-        String licenseHolder = StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "licenseHolder"));
+        String licenseHolder = StringUtils.lowerCase(StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "licenseHolder")));
         String serverId = ServletRequestUtils.getRequiredStringParameter(request, "serverId");
         int port = ServletRequestUtils.getRequiredIntParameter(request, "port");
         Integer localPort = ServletRequestUtils.getIntParameter(request, "localPort");
@@ -141,7 +141,7 @@ public class RedirectionManagementController extends MultiActionController {
         } else {
 
             boolean sameServerId = serverId.equals(redirection.getServerId());
-            boolean sameLicenseHolder = licenseHolder != null && licenseHolder.equals(redirection.getLicenseHolder());
+            boolean sameLicenseHolder = licenseHolder != null && licenseHolder.equalsIgnoreCase(redirection.getLicenseHolder());
 
             // Note: A licensed user can take over any expired trial domain.
             boolean existingTrialExpired = redirection.getTrialExpires() != null && redirection.getTrialExpires().before(now);

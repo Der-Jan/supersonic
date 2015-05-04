@@ -19,7 +19,7 @@ Bugfix: Starred image not shown for videos
 
 TODO IN 5.3
 ------------
-Site: Make "Features" more prominent
+Site: Make "Features" more prominent, use image.
 Check that ssh from demo works
 Add scrubber for drag n drop
 Artwork issues
@@ -69,10 +69,6 @@ Improve uploader
 FAQ: Mention Lollipop/Java 6 SSL incompatibility
 OAuth
 Avoid scrolling album/artist title
-Find similar tracks / artists
-  Use java binding for scrobbling?
-  Use minium similarity
-  Test other browsers.
 Artist cover art collage (or use last.fm api)
 Subtitle support
   https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
@@ -121,8 +117,6 @@ Update ffmpeg
   Or HandBrake, https://trac.handbrake.fr/wiki/CLIGuide
   Support ISO
 
-Bundle JRE?
-Bug in SettingsService.java:1269 if going from time limited to eternal license.
 Review Madsonic features
   https://mail.google.com/mail/ca/u/0/?ui=2&shva=1#inbox/1437cc0dc4ec9a3d
 Replace paging with dynamic album fetching (like Google image search) in home.jsp
@@ -132,7 +126,6 @@ Gzip REST / Jetty
 Monitoring with JavaMelody
 Requests unscaled image when clicking on thumb.
 Problem with web ui becoming unresponsive (toggling between jukebox and web player? subsonic.org unresponsive?)
-Figure out problem with lots of stream requests swamping server.
 
 Selection in play queue is automatically cleared if no current playing.
   Happens if switching to jukebox, then back to web player.
@@ -143,27 +136,15 @@ Support playlist sharing.
   Back button should go back to playlist.
 album year/genre should update if songs have changed (same as song count)
 Update Norwegian translation
-Jukebox clicking between tracks
-  https://mail.google.com/mail/u/0/?shva=1#inbox/141322f12f3aded0
 
 Backend
   Send email 7 days after subscription expires.
   Mention that purchased subscription time is added to existing.
 
-TODO IN SITE
-------------
-Create mosaic of apps, put on slideshow.
-
-DLNA
-  Make sure sublist works
-  Make sure top-level single files work.
-
 Can't play videos from left.jsp?
 Single songs in left.jsp have wrong v align.
 
-Update screenshots
 Publish on Mac app store
-Shuffle play
 Dont use <div/>
 REST video subtitle support
   https://sites.google.com/site/mxvpen/api
@@ -173,7 +154,6 @@ https port 8080 redirect to 8443 (jetty?)
 REST: Add getSongs
   https://mail.google.com/mail/u/0/?tab=cm#inbox/13e240db8f93072b
 Clean up podcasts in demo
-Update backup server (after a couple of days)
 Improve video support
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=11254
   https://sourceforge.net/p/subsonic/feature-requests/15/
@@ -193,7 +173,6 @@ PS3 (3450) - Can browse albums
     https://mail.google.com/mail/u/0/?tab=cm#inbox/13a4690309e4d779
     http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=976
 
-Go through forum feedback for 4.7
 Try to reproduce playlist import problem
   https://mail.google.com/mail/u/0/?tab=cm#inbox/139e96f97e7c9b09
 Something wrong with matching players/users in Now Playing.
@@ -208,7 +187,6 @@ FLAC crashes Flash in Firefox (with server on Linux).
 
 Postponed:
   - Add "Force rescan" option.
-  - Increase line height in playlist.jsp
   - Rename to play queue in Settings > Player.
   - Show message if no songs are selected when doing add to playlist.
   - Encourage users to save email addresses, also for admin.  Explain why.
@@ -253,17 +231,9 @@ Stream from devices
 Go through tracker.
 Recursive getFolders API method?
   https://Smail.google.com/mail/?shva=1#inbox/13090cd32a9922bd
-Checkbox, combobox bg color
-REST: scrobble should increment the internal playcounters too.
 Show lyrics in tags.
   http://www.activeobjects.no/subsonic/forum/viewtopic.php?t=1700
 Hide log for non-admin users?
-ffmpeg processes not stopped in opera.
-Sharing (facebook, twitter++)
-  Test video sharing
-  Add some space towards bottom of main.jsp
-  Make it work if no songs are selected
-  https://mail.google.com/a/activeobjects.no/#inbox/12ded75e94256283
 Add "append" parameter to createPlaylist REST method. (or create appendPlaylist method)
 Handle non-square cover art
   https://mail.google.com/a/activeobjects.no/#inbox/12debb505054d33a
