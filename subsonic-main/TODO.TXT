@@ -19,7 +19,7 @@ Bugfix: Starred image not shown for videos
 
 TODO IN 5.3
 ------------
-Site: Make "Features" more prominent, use image.
+Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works
 Add scrubber for drag n drop
 Artwork issues
