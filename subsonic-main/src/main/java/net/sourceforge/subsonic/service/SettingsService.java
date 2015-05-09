@@ -1246,6 +1246,7 @@ public class SettingsService {
         settings.setPartyModeEnabled(false);
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
+        settings.setShowArtistInfoEnabled(true);
         settings.setViewAsList(false);
         settings.setQueueFollowingSongs(true);
         settings.setDefaultAlbumList(AlbumListType.RANDOM);
