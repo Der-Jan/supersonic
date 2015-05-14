@@ -128,19 +128,20 @@ public class DownloadController implements Controller, LastModified {
                 } else {
                     List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, false, true);
                     String zipFileName = FilenameUtils.getBaseName(mediaFile.getPath()) + ".zip";
-                    downloadFiles(response, status, children, indexes, range, zipFileName);
+                    File coverArtFile = indexes == null ? mediaFile.getCoverArtFile() : null;
+                    downloadFiles(response, status, children, indexes, coverArtFile, range, zipFileName);
                 }
 
             } else if (playlistId != null) {
                 List<MediaFile> songs = playlistService.getFilesInPlaylist(playlistId);
                 Playlist playlist = playlistService.getPlaylist(playlistId);
-                downloadFiles(response, status, songs, null, range, playlist.getName() + ".zip");
+                downloadFiles(response, status, songs, null, null, range, playlist.getName() + ".zip");
 
             } else if (playerId != null) {
                 Player player = playerService.getPlayerById(playerId);
                 PlayQueue playQueue = player.getPlayQueue();
                 playQueue.setName("Playlist");
-                downloadFiles(response, status, playQueue.getFiles(), indexes, range, "download.zip");
+                downloadFiles(response, status, playQueue.getFiles(), indexes, null, range, "download.zip");
             }
 
         } finally {
@@ -208,11 +209,11 @@ public class DownloadController implements Controller, LastModified {
      * @param status      The download status.
      * @param files       The files to download.
      * @param indexes     Only download songs at these indexes. May be <code>null</code>.
-     * @param range       The byte range, may be <code>null</code>.
-     * @param zipFileName The name of the resulting zip file.
-     * @throws IOException If an I/O error occurs.
+     * @param coverArtFile The cover art file to include, may be {@code null}.
+     *@param range       The byte range, may be <code>null</code>.
+     * @param zipFileName The name of the resulting zip file.   @throws IOException If an I/O error occurs.
      */
-    private void downloadFiles(HttpServletResponse response, TransferStatus status, List<MediaFile> files, int[] indexes, HttpRange range, String zipFileName) throws IOException {
+    private void downloadFiles(HttpServletResponse response, TransferStatus status, List<MediaFile> files, int[] indexes, File coverArtFile, HttpRange range, String zipFileName) throws IOException {
         if (indexes != null && indexes.length == 1) {
             downloadFile(response, status, files.get(indexes[0]).getFile(), range);
             return;
@@ -239,6 +240,10 @@ public class DownloadController implements Controller, LastModified {
         for (MediaFile mediaFile : filesToDownload) {
             zip(out, mediaFile.getParentFile(), mediaFile.getFile(), status, range);
         }
+        if (coverArtFile != null && coverArtFile.exists()) {
+            zip(out, coverArtFile.getParentFile(), coverArtFile, status, range);
+        }
+
 
         out.close();
         LOG.info("Downloaded '" + zipFileName + "' to " + status.getPlayer());
