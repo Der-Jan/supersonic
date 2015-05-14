@@ -2041,6 +2041,11 @@ public class RESTController extends MultiActionController {
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
 
+        TranscodeScheme transcodeScheme = userSettings.getTranscodeScheme();
+        if (transcodeScheme != null && transcodeScheme != TranscodeScheme.OFF) {
+            result.setMaxBitRate(transcodeScheme.getMaxBitRate());
+        }
+
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
         for (MusicFolder musicFolder : musicFolders) {
             result.getFolder().add(musicFolder.getId());
@@ -2119,7 +2124,9 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
         command.setShareRole(getBooleanParameter(request, "shareRole", u.isShareRole()));
-        command.setTranscodeSchemeName(s.getTranscodeScheme().name());
+
+        int maxBitRate = getIntParameter(request, "maxBitRate", s.getTranscodeScheme().getMaxBitRate());
+        command.setTranscodeSchemeName(TranscodeScheme.fromMaxBitRate(maxBitRate).name());
 
         if (hasParameter(request, "password")) {
             command.setPassword(decrypt(getRequiredStringParameter(request, "password")));

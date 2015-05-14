@@ -107,6 +107,15 @@
             <td></td>
             <td>(Since <a href="#versions">1.12.0</a>) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</td>
         </tr>
+        <tr>
+            <td><code>maxBitRate</code></td>
+            <td>No</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.13.0</a>) The maximum bit rate (in Kbps) for the user. Audio streams of higher bit rates are
+                automatically downsampled to this bit rate. Legal values: 0 (no limit), 32, 40, 48, 56, 64, 80, 96, 112, 128,
+                160, 192, 224, 256, 320.
+            </td>
+        </tr>
     </table>
 
     <p>
