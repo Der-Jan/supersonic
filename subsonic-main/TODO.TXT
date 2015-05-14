@@ -17,9 +17,22 @@ Bugfix: Expiration date not updated when upgrading from normal to lifetime subsc
 Create Settings > Subsonic Premium
 Bugfix: Starred image not shown for videos
 Bugfix: "Show artist info" should be turned on by default when creating new users.
+Updated German translation, courtesy of deejay2302.
 
 TODO IN 5.3
 ------------
+Include cover art in "Download all"
+  https://mail.google.com/mail/ca/u/0/#inbox/14d4469876431e2e
+Access-Control-Allow-Headers
+  https://mail.google.com/mail/ca/u/0/#inbox/14d4e9bb13c10238
+Misc REST improvements
+  https://mail.google.com/mail/ca/u/0/#inbox/14d4e73a150d9cee
+Site: Add Soundwaves
+  https://mail.google.com/mail/ca/u/0/#inbox/14d382b21948eb49
+Site: Add play:Sub
+  https://mail.google.com/mail/ca/u/0/#inbox/14b84a0a3d3a14ad
+Site: Add Polysonic
+  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15477
 Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works
