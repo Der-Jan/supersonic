@@ -531,8 +531,8 @@
     <xs:complexType name="License">
         <xs:attribute name="valid" type="xs:boolean" use="required"/>
         <xs:attribute name="email" type="xs:string" use="optional"/>
-        <xs:attribute name="key" type="xs:string" use="optional"/>
-        <xs:attribute name="date" type="xs:dateTime" use="optional"/>
+        <xs:attribute name="licenseExpires" type="xs:dateTime" use="optional"/>
+        <xs:attribute name="trialExpires" type="xs:dateTime" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="Users">

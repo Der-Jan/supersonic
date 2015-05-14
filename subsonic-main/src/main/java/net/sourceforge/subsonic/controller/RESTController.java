@@ -99,6 +99,7 @@ import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.Bookmark;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.InternetRadio;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
@@ -209,17 +210,12 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         License license = new License();
 
-        String email = settingsService.getLicenseEmail();
-        String key = settingsService.getLicenseCode();
-        Date date = settingsService.getLicenseDate();
-        boolean valid = settingsService.isLicenseValid();
+        LicenseInfo licenseInfo = settingsService.getLicenseInfo();
 
-        license.setValid(valid);
-        if (valid) {
-            license.setEmail(email);
-            license.setKey(key);
-            license.setDate(jaxbWriter.convertDate(date));
-        }
+        license.setEmail(licenseInfo.getLicenseEmail());
+        license.setValid(licenseInfo.isLicenseValid());
+        license.setLicenseExpires(jaxbWriter.convertDate(licenseInfo.getLicenseExpires()));
+        license.setTrialExpires(jaxbWriter.convertDate(licenseInfo.getTrialExpires()));
 
         Response res = createResponse();
         res.setLicense(license);

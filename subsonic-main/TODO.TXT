@@ -20,6 +20,7 @@ Bugfix: "Show artist info" should be turned on by default when creating new user
 Updated German translation, courtesy of deejay2302.
 Bugfix: Include cover art when downloading whole album
 REST: Added maxBitRate to getUser, getUsers and updateUser.
+REST: Added license and trial expiration dates in getLicense.
 
 TODO IN 5.3
 ------------
