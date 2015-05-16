@@ -50,6 +50,7 @@
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
                     <li><a href="#sonicstreamer">SonicStreamer</a> for Windows Phone</li>
+                    <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
                 </ul>
             </div>
 
@@ -62,7 +63,7 @@
                     <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                     <li><a href="#avsub">AVSub</a> for iPhone/iPad</li>
-                    <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
+                    <li><a href="#soundwaves">Soundwaves</a> for iPhone/iPad</li>
                 </ul>
             </div>
         </div>
@@ -146,6 +147,7 @@
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>
     <%@ include file="apps-sonicstreamer.jsp" %>
+    <%@ include file="apps-subsonar.jsp" %>
 
     <%@ include file="apps-isub.jsp" %>
     <%@ include file="apps-audiophone.jsp" %>
@@ -153,7 +155,7 @@
     <%@ include file="apps-substream.jsp" %>
     <%@ include file="apps-subhub.jsp" %>
     <%@ include file="apps-avsub.jsp" %>
-    <%@ include file="apps-subsonar.jsp" %>
+    <%@ include file="apps-soundwaves.jsp" %>
 
     <%@ include file="apps-sonicair.jsp" %>
     <%@ include file="apps-mmtm.jsp" %>

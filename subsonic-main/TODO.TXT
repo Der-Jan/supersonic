@@ -26,10 +26,6 @@ TODO IN 5.3
 ------------
 Access-Control-Allow-Headers
   https://mail.google.com/mail/ca/u/0/#inbox/14d4e9bb13c10238
-Misc REST improvements
-  https://mail.google.com/mail/ca/u/0/#inbox/14d4e73a150d9cee
-Site: Add Soundwaves
-  https://mail.google.com/mail/ca/u/0/#inbox/14d382b21948eb49
 Site: Add play:Sub
   https://mail.google.com/mail/ca/u/0/#inbox/14b84a0a3d3a14ad
 Site: Add Polysonic

@@ -34,6 +34,6 @@
         AVSub is developed by Richard Levy and is available from <a href="https://itunes.apple.com/us/app/avsub/id923424694?mt=8">App Store</a>.
     </p>
 
-    <span class="image"><a href="https://itunes.apple.com/us/app/avsub/id923424694?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
+    <span class="image"><a target="_blank" href="https://itunes.apple.com/us/app/avsub/id923424694?mt=8"><img alt="" src="inc/img/available_on_appstore.png"/></a></span>
 
 </section>
