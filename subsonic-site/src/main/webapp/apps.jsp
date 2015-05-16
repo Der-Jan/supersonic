@@ -124,6 +124,7 @@
             <div class="6u 12u(3)">
                 <ul>
                     <li><a href="#perisonic">Perisonic</a> for Chrome</li>
+                    <li><a href="#polysonic">Polysonic</a> for Chrome</li>
                 </ul>
             </div>
         </div>
@@ -177,6 +178,7 @@
     <%@ include file="apps-jamstash.jsp" %>
     <%@ include file="apps-subfire.jsp" %>
     <%@ include file="apps-perisonic.jsp" %>
+    <%@ include file="apps-polysonic.jsp" %>
 
 </section>
 

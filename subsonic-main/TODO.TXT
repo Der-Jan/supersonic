@@ -27,8 +27,6 @@ TODO IN 5.3
 REST: Create secure authentication scheme
 Access-Control-Allow-Headers
   https://mail.google.com/mail/ca/u/0/#inbox/14d4e9bb13c10238
-Site: Add Polysonic
-  http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15477
 Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works
