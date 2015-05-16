@@ -64,6 +64,7 @@
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                     <li><a href="#avsub">AVSub</a> for iPhone/iPad</li>
                     <li><a href="#soundwaves">Soundwaves</a> for iPhone/iPad</li>
+                    <li><a href="#playsub">play:Sub</a> for iPhone/iPad</li>
                 </ul>
             </div>
         </div>
@@ -156,6 +157,7 @@
     <%@ include file="apps-subhub.jsp" %>
     <%@ include file="apps-avsub.jsp" %>
     <%@ include file="apps-soundwaves.jsp" %>
+    <%@ include file="apps-playsub.jsp" %>
 
     <%@ include file="apps-sonicair.jsp" %>
     <%@ include file="apps-mmtm.jsp" %>

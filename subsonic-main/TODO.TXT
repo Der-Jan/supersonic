@@ -24,10 +24,9 @@ REST: Added license and trial expiration dates in getLicense.
 
 TODO IN 5.3
 ------------
+REST: Create secure authentication scheme
 Access-Control-Allow-Headers
   https://mail.google.com/mail/ca/u/0/#inbox/14d4e9bb13c10238
-Site: Add play:Sub
-  https://mail.google.com/mail/ca/u/0/#inbox/14b84a0a3d3a14ad
 Site: Add Polysonic
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15477
 Playlist sharing displayed in dialog even if sharing is disallowed.
