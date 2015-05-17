@@ -21,12 +21,10 @@ Updated German translation, courtesy of deejay2302.
 Bugfix: Include cover art when downloading whole album
 REST: Added maxBitRate to getUser, getUsers and updateUser.
 REST: Added license and trial expiration dates in getLicense.
+REST: Added more secure authentication scheme.
 
 TODO IN 5.3
 ------------
-REST: Create secure authentication scheme
-Access-Control-Allow-Headers
-  https://mail.google.com/mail/ca/u/0/#inbox/14d4e9bb13c10238
 Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works

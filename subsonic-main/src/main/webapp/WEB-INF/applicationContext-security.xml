@@ -47,6 +47,7 @@
     <bean id="restRequestParameterProcessingFilter" class="net.sourceforge.subsonic.security.RESTRequestParameterProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
 
     <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
