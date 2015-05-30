@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +33,7 @@ import javax.mail.MessagingException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import net.sourceforge.subsonic.backend.Util;
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
 import net.sourceforge.subsonic.backend.dao.SubscriptionDao;
 import net.sourceforge.subsonic.backend.domain.Payment;
@@ -54,7 +54,7 @@ public class EmailReminderGenerator {
     private LicenseService licenseService;
     private PaymentDao paymentDao;
     private SubscriptionDao subscriptionDao;
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executor = Util.singleThreadExecutor("EmailReminderGenerator");
 
     public void init() {
         Runnable task = new Runnable() {

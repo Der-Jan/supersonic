@@ -5,6 +5,7 @@ import java.io.File;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -19,38 +20,28 @@ import net.sourceforge.subsonic.backend.dao.schema.Schema30;
  *
  * @author Sindre Mehus
  */
-public class DaoHelper {
+public class DaoHelper implements DisposableBean {
 
     private static final Logger LOG = Logger.getLogger(DaoHelper.class);
 
     private Schema[] schemas = {new Schema10(), new Schema20(), new Schema30()};
     private DataSource dataSource;
-    private static boolean shutdownHookAdded;
 
     public DaoHelper() {
         dataSource = createDataSource();
         checkDatabase();
-        addShutdownHook();
     }
 
-    private void addShutdownHook() {
-        if (shutdownHookAdded) {
-            return;
+    @Override
+    public void destroy() throws Exception {
+        System.err.println("Shutting down database.");
+        try {
+            getJdbcTemplate().execute("shutdown");
+            System.err.println("Shutting down database - Done!");
+        } catch (Throwable x) {
+            System.err.println("Failed to shut down database.");
+            x.printStackTrace();
         }
-        shutdownHookAdded = true;
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                System.err.println("Shutting down database.");
-                try {
-                    getJdbcTemplate().execute("shutdown");
-                    System.err.println("Shutting down database - Done!");
-                } catch (Throwable x) {
-                    System.err.println("Failed to shut down database.");
-                    x.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
