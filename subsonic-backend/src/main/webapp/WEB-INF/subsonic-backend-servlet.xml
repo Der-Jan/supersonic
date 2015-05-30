@@ -5,6 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="multiController" class="net.sourceforge.subsonic.backend.controller.MultiController">
+        <property name="licenseService" ref="licenseService"/>
         <property name="daoHelper" ref="daoHelper"/>
         <property name="paymentDao" ref="paymentDao"/>
         <property name="subscriptionDao" ref="subscriptionDao"/>
@@ -17,6 +18,7 @@
     </bean>
 
     <bean id="ipnController" class="net.sourceforge.subsonic.backend.controller.IPNController">
+        <property name="licenseService" ref="licenseService"/>
         <property name="paymentDao" ref="paymentDao"/>
         <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>

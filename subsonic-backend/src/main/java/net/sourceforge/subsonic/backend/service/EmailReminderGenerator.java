@@ -49,11 +49,12 @@ public class EmailReminderGenerator {
 
     private static final Logger LOG = Logger.getLogger(EmailReminderGenerator.class);
     private static final long DELAY_HOURS = 24;
+    private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.US);
 
+    private LicenseService licenseService;
     private PaymentDao paymentDao;
     private SubscriptionDao subscriptionDao;
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.US);
 
     public void init() {
         Runnable task = new Runnable() {
@@ -96,13 +97,14 @@ public class EmailReminderGenerator {
     private void processPayments(EmailSession emailSession, Date from, Date to) throws Exception {
         List<Payment> payments = paymentDao.getPaymentsByExpirationDate(from, to);
         LOG.info(payments.size() + " payment(s) expiring between " + from + " and " + to);
-        if (payments.isEmpty()) {
-            return;
-        }
 
         for (Payment payment : payments) {
             try {
-                processPayment(payment, emailSession);
+                // Don't send email if another payment exists which is valid after the "to" date.
+                Date expires = licenseService.getLicenseInfo(payment.getPayerEmail()).getLicenseExpires();
+                if (expires != null && expires.before(to)) {
+                    processPayment(payment, emailSession);
+                }
             } catch (Throwable x) {
                 LOG.error("Failed to process " + payment, x);
             }
@@ -191,5 +193,9 @@ public class EmailReminderGenerator {
 
     public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
         this.subscriptionDao = subscriptionDao;
+    }
+
+    public void setLicenseService(LicenseService licenseService) {
+        this.licenseService = licenseService;
     }
 }

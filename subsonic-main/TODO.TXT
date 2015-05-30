@@ -27,6 +27,8 @@ Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
 
 TODO IN 5.3
 ------------
+Backend: Does redirection work if license is expired?
+Backend: Use daemon threads?
 Fail to play videos in music folder root
 Logout icon causes scrollbars
   https://mail.google.com/mail/ca/u/0/#inbox/14d85e8983c0da3a
