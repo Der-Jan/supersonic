@@ -57,7 +57,7 @@ public class HLSController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         int id = ServletRequestUtils.getIntParameter(request, "id");
         MediaFile mediaFile = mediaFileService.getMediaFile(id);

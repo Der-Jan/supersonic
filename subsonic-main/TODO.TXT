@@ -23,13 +23,13 @@ REST: Added maxBitRate to getUser, getUsers and updateUser.
 REST: Added license and trial expiration dates in getLicense.
 REST: Added more secure authentication scheme.
 Show Last.fm info even if artist name is slightly wrong
+Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
 
 TODO IN 5.3
 ------------
+Fail to play videos in music folder root
 Logout icon causes scrollbars
   https://mail.google.com/mail/ca/u/0/#inbox/14d85e8983c0da3a
-Access-Control-Allow-Origin returned 2 times
-  https://mail.google.com/mail/ca/u/0/#inbox/14d7e0c5d95daa9f
 Open video in popup
 Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
