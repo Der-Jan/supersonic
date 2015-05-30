@@ -22,9 +22,15 @@ Bugfix: Include cover art when downloading whole album
 REST: Added maxBitRate to getUser, getUsers and updateUser.
 REST: Added license and trial expiration dates in getLicense.
 REST: Added more secure authentication scheme.
+Show Last.fm info even if artist name is slightly wrong
 
 TODO IN 5.3
 ------------
+Logout icon causes scrollbars
+  https://mail.google.com/mail/ca/u/0/#inbox/14d85e8983c0da3a
+Access-Control-Allow-Origin returned 2 times
+  https://mail.google.com/mail/ca/u/0/#inbox/14d7e0c5d95daa9f
+Open video in popup
 Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works

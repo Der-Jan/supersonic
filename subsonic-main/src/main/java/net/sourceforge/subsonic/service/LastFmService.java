@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -79,7 +81,7 @@ public class LastFmService {
 
         String artistName = getArtistName(mediaFile);
         try {
-            Collection<Artist> similarArtists = Artist.getSimilar(artistName, LAST_FM_KEY);
+            Collection<Artist> similarArtists = Artist.getSimilar(getCanonicalArtistName(artistName), LAST_FM_KEY);
 
             // First select artists that are present.
             for (Artist lastFmArtist : similarArtists) {
@@ -128,9 +130,9 @@ public class LastFmService {
         List<net.sourceforge.subsonic.domain.Artist> result = new ArrayList<net.sourceforge.subsonic.domain.Artist>();
 
         try {
-            Collection<Artist> similarArtists = Artist.getSimilar(artist.getName(), LAST_FM_KEY);
 
             // First select artists that are present.
+            Collection<Artist> similarArtists = Artist.getSimilar(getCanonicalArtistName(artist.getName()), LAST_FM_KEY);
             for (Artist lastFmArtist : similarArtists) {
                 net.sourceforge.subsonic.domain.Artist similarArtist = artistDao.getArtist(lastFmArtist.getName(), musicFolders);
                 if (similarArtist != null) {
@@ -214,7 +216,7 @@ public class LastFmService {
      * @return Artist bio.
      */
     public ArtistBio getArtistBio(MediaFile mediaFile) {
-        return getArtistBio(getArtistName(mediaFile));
+        return getArtistBio(getCanonicalArtistName(getArtistName(mediaFile)));
     }
 
     /**
@@ -224,7 +226,7 @@ public class LastFmService {
      * @return Artist bio.
      */
     public ArtistBio getArtistBio(net.sourceforge.subsonic.domain.Artist artist) {
-        return getArtistBio(artist.getName());
+        return getArtistBio(getCanonicalArtistName(artist.getName()));
     }
 
     private ArtistBio getArtistBio(String artistName) {
@@ -247,6 +249,44 @@ public class LastFmService {
             LOG.warn("Failed to find artist bio for " + artistName, x);
             return null;
         }
+    }
+
+    private String getCanonicalArtistName(String artistName) {
+        try {
+            if (artistName == null) {
+                return null;
+            }
+
+            Artist info = Artist.getInfo(artistName, LAST_FM_KEY);
+            if (info == null) {
+                return null;
+            }
+
+            String biography = processWikiText(info.getWikiText());
+            String redirectedArtistName = getRedirectedArtist(biography);
+            return redirectedArtistName != null ? redirectedArtistName : artistName;
+        } catch (Throwable x) {
+            LOG.warn("Failed to find artist bio for " + artistName, x);
+            return null;
+        }
+    }
+
+    private String getRedirectedArtist(String biography) {
+        /*
+         This is mistagged for <a target='_blank' href="http://www.last.fm/music/The+Boomtown+Rats" class="bbcode_artist">The Boomtown Rats</a>;
+         it would help Last.fm if you could correct your tags.
+         <a target='_blank' href="http://www.last.fm/music/+noredirect/Boomtown+Rats">Boomtown Rats on Last.fm</a>.
+        */
+
+        if (biography == null) {
+            return null;
+        }
+        Pattern pattern = Pattern.compile("This is mistagged for.*class=\"bbcode_artist\">(.*?)</a>");
+        Matcher matcher = pattern.matcher(biography);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 
     private String processWikiText(String text) {
