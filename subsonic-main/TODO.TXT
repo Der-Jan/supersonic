@@ -24,11 +24,15 @@ REST: Added license and trial expiration dates in getLicense.
 REST: Added more secure authentication scheme.
 Show Last.fm info even if artist name is slightly wrong
 Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
+Bugfix: Downloading png album art doesn't always work
 
 TODO IN 5.3
 ------------
+Missing art in ID3
+  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14db7569073cd444
+Support custom subsonic.org redirects
+Backend: Change reminder email text for subscribers
 Backend: Does redirection work if license is expired?
-Backend: Use daemon threads?
 Fail to play videos in music folder root
 Logout icon causes scrollbars
   https://mail.google.com/mail/ca/u/0/#inbox/14d85e8983c0da3a

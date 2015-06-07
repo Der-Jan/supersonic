@@ -96,7 +96,7 @@ public class CoverArtService {
             }
 
             // If file exists, create a backup.
-            backup(newCoverFile, new File(path, "cover.backup." + suffix));
+            backup(newCoverFile, new File(path, "cover." + suffix + ".backup"));
 
             // Write file.
             output = new FileOutputStream(newCoverFile);
@@ -108,16 +108,22 @@ public class CoverArtService {
             mediaFileService.refreshMediaFile(dir);
             dir = mediaFileService.getMediaFile(dir.getId());
 
-            // Rename existing cover file if new cover file is not the preferred.
+            // Rename existing cover files if new cover file is not the preferred.
             try {
-                File coverFile = mediaFileService.getCoverArt(dir);
-                if (coverFile != null && !isMediaFile(coverFile)) {
-                    if (!newCoverFile.equals(coverFile)) {
-                        coverFile.renameTo(new File(coverFile.getCanonicalPath() + ".old"));
+                while (true) {
+                    File coverFile = mediaFileService.getCoverArt(dir);
+                    if (coverFile != null && !isMediaFile(coverFile) && !newCoverFile.equals(coverFile)) {
+                        if (!coverFile.renameTo(new File(coverFile.getCanonicalPath() + ".old"))) {
+                            LOG.warn("Unable to rename old image file " + coverFile);
+                            break;
+                        }
                         LOG.info("Renamed old image file " + coverFile);
 
                         // Must refresh again.
                         mediaFileService.refreshMediaFile(dir);
+                        dir = mediaFileService.getMediaFile(dir.getId());
+                    } else {
+                        break;
                     }
                 }
             } catch (Exception x) {
