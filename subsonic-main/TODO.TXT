@@ -22,6 +22,7 @@ Bugfix: Include cover art when downloading whole album
 REST: Added maxBitRate to getUser, getUsers and updateUser.
 REST: Added license and trial expiration dates in getLicense.
 REST: Added more secure authentication scheme.
+REST: Added image url to podcast channels
 Show Last.fm info even if artist name is slightly wrong
 Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
 Bugfix: Downloading png album art doesn't always work
@@ -29,12 +30,16 @@ Bugfix: Downloading png album art doesn't always work
 
 TODO IN 5.3
 ------------
+Improve Podcast page.
+When scaling images, don't distort aspect rate.
 Issue with Sonos 5.4
   http://forum.subsonic.org/forum/viewtopic.php?f=5&t=15630#p67970
 Support reverse chronological album list
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14e03cb1884fbe40
 Podcast channel image url
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14e028439424d09a
+  Update also for existing channels
+  Test adding new channels.
 Album art for ID3 not updated on media scan (Aerosmith - Big Ones)
 Missing art in ID3
   https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14db7569073cd444

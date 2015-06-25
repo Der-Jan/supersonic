@@ -18,8 +18,6 @@
  */
 package net.sourceforge.subsonic.domain;
 
-import net.sourceforge.subsonic.util.StringUtil;
-
 /**
  * A Podcast channel. Each channel contain several episodes.
  *
@@ -32,15 +30,17 @@ public class PodcastChannel {
     private String url;
     private String title;
     private String description;
+    private String imageUrl;
     private PodcastStatus status;
     private String errorMessage;
 
-    public PodcastChannel(Integer id, String url, String title, String description,
+    public PodcastChannel(Integer id, String url, String title, String description, String imageUrl,
                           PodcastStatus status, String errorMessage) {
         this.id = id;
         this.url = url;
         this.title = title;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.status = status;
         this.errorMessage = errorMessage;
     }
@@ -76,6 +76,14 @@ public class PodcastChannel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public PodcastStatus getStatus() {

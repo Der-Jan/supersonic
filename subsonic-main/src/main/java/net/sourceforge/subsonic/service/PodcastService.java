@@ -273,6 +273,7 @@ public class PodcastService {
 
             channel.setTitle(StringUtil.removeMarkup(channelElement.getChildTextTrim("title")));
             channel.setDescription(StringUtil.removeMarkup(channelElement.getChildTextTrim("description")));
+            channel.setImageUrl(getChannelImageUrl(channelElement));
             channel.setStatus(PodcastStatus.COMPLETED);
             channel.setErrorMessage(null);
             podcastDao.updateChannel(channel);
@@ -296,6 +297,17 @@ public class PodcastService {
                 }
             }
         }
+    }
+
+    private String getChannelImageUrl(Element channelElement) {
+        String result = getITunesAttribute(channelElement, "image", "href");
+        if (result == null) {
+            Element imageElement = channelElement.getChild("image");
+            if (imageElement != null) {
+                result = imageElement.getChildTextTrim("url");
+            }
+        }
+        return result;
     }
 
     private String getErrorMessage(Exception x) {
@@ -403,6 +415,16 @@ public class PodcastService {
             String value = element.getChildTextTrim(childName, ns);
             if (value != null) {
                 return value;
+            }
+        }
+        return null;
+    }
+
+    private String getITunesAttribute(Element element, String childName, String attributeName) {
+        for (Namespace ns : ITUNES_NAMESPACES) {
+            Element elem = element.getChild(childName, ns);
+            if (elem != null) {
+                return StringUtils.trimToNull(elem.getAttributeValue(attributeName));
             }
         }
         return null;

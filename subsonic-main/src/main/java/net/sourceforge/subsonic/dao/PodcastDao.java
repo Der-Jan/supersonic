@@ -36,7 +36,7 @@ import net.sourceforge.subsonic.domain.PodcastStatus;
  */
 public class PodcastDao extends AbstractDao {
 
-    private static final String CHANNEL_COLUMNS = "id, url, title, description, status, error_message";
+    private static final String CHANNEL_COLUMNS = "id, url, title, description, image_url, status, error_message";
     private static final String EPISODE_COLUMNS = "id, channel_id, url, path, title, description, publish_date, " +
             "duration, bytes_total, bytes_downloaded, status, error_message";
 
@@ -51,7 +51,7 @@ public class PodcastDao extends AbstractDao {
      */
     public synchronized int createChannel(PodcastChannel channel) {
         String sql = "insert into podcast_channel (" + CHANNEL_COLUMNS + ") values (" + questionMarks(CHANNEL_COLUMNS) + ")";
-        update(sql, null, channel.getUrl(), channel.getTitle(), channel.getDescription(),
+        update(sql, null, channel.getUrl(), channel.getTitle(), channel.getDescription(), channel.getImageUrl(),
                 channel.getStatus().name(), channel.getErrorMessage());
 
         return getJdbcTemplate().queryForInt("select max(id) from podcast_channel");
@@ -73,8 +73,8 @@ public class PodcastDao extends AbstractDao {
      * @param channel The Podcast channel to update.
      */
     public void updateChannel(PodcastChannel channel) {
-        String sql = "update podcast_channel set url=?, title=?, description=?, status=?, error_message=? where id=?";
-        update(sql, channel.getUrl(), channel.getTitle(), channel.getDescription(),
+        String sql = "update podcast_channel set url=?, title=?, description=?, image_url=?, status=?, error_message=? where id=?";
+        update(sql, channel.getUrl(), channel.getTitle(), channel.getDescription(), channel.getImageUrl(),
                 channel.getStatus().name(), channel.getErrorMessage(), channel.getId());
     }
 
@@ -156,8 +156,8 @@ public class PodcastDao extends AbstractDao {
 
     private static class PodcastChannelRowMapper implements RowMapper {
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new PodcastChannel(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                    PodcastStatus.valueOf(rs.getString(5)), rs.getString(6));
+            return new PodcastChannel(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+                                      PodcastStatus.valueOf(rs.getString(6)), rs.getString(7));
         }
     }
 

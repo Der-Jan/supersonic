@@ -61,5 +61,11 @@ public class Schema53 extends Schema {
             template.execute("alter table user_settings add queue_following_songs boolean default true not null");
             LOG.info("Database column 'user_settings.queue_following_songs' was added successfully.");
         }
+
+        if (!columnExists(template, "image_url", "podcast_channel")) {
+            LOG.info("Database column 'podcast_channel.image_url' not found.  Creating it.");
+            template.execute("alter table podcast_channel add image_url varchar");
+            LOG.info("Database column 'podcast_channel.image_url' was added successfully.");
+        }
     }
 }
