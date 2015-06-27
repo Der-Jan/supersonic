@@ -301,9 +301,15 @@ public class AlbumDao extends AbstractDao {
             put("fromYear", fromYear);
             put("toYear", toYear);
         }};
-        return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
-                          "and year between :fromYear and :toYear order by year limit :count offset :offset",
-                          rowMapper, args);
+        if (fromYear <= toYear) {
+            return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
+                              "and year between :fromYear and :toYear order by year limit :count offset :offset",
+                              rowMapper, args);
+        } else {
+            return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
+                              "and year between :toYear and :fromYear order by year desc limit :count offset :offset",
+                              rowMapper, args);
+        }
     }
 
     public void markNonPresent(Date lastScanned) {

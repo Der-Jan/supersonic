@@ -45,7 +45,7 @@
             <td><code>fromYear</code></td>
             <td>Yes (if <code>type</code> is <code>byYear</code>)</td>
             <td></td>
-            <td>The first year in the range.</td>
+            <td>The first year in the range. If <code>fromYear &gt; toYear</code> a reverse chronological list is returned.</td>
         </tr>
         <tr>
             <td><code>toYear</code></td>
