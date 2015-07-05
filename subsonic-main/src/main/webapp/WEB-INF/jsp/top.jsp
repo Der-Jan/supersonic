@@ -60,8 +60,8 @@
             <div class="topHeader"><a href="playlists.view?" target="main">${playlists}</a></div>
         </td>
         <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="podcastReceiver.view?" target="main"><img src="<spring:theme code="podcastLargeImage"/>" title="${podcast}" alt="${podcast}"></a>
-            <div class="topHeader"><a href="podcastReceiver.view?" target="main">${podcast}</a></div>
+            <a href="podcastChannels.view?" target="main"><img src="<spring:theme code="podcastLargeImage"/>" title="${podcast}" alt="${podcast}"></a>
+            <div class="topHeader"><a href="podcastChannels.view?" target="main">${podcast}</a></div>
         </td>
         <c:if test="${model.user.settingsRole}">
             <td style="min-width:4em;padding-right:2em;text-align: center">

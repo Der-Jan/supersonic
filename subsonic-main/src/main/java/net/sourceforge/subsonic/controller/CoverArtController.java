@@ -56,10 +56,12 @@ import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Playlist;
+import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.Transcoding;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.PodcastService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.TranscodingService;
 import net.sourceforge.subsonic.service.metadata.JaudiotaggerParser;
@@ -75,6 +77,7 @@ public class CoverArtController implements Controller, LastModified {
     public static final String ALBUM_COVERART_PREFIX = "al-";
     public static final String ARTIST_COVERART_PREFIX = "ar-";
     public static final String PLAYLIST_COVERART_PREFIX = "pl-";
+    public static final String PODCAST_COVERART_PREFIX = "pod-";
 
     private static final Logger LOG = Logger.getLogger(CoverArtController.class);
 
@@ -82,6 +85,7 @@ public class CoverArtController implements Controller, LastModified {
     private TranscodingService transcodingService;
     private SettingsService settingsService;
     private PlaylistService playlistService;
+    private PodcastService podcastService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
 
@@ -140,6 +144,9 @@ public class CoverArtController implements Controller, LastModified {
         if (id.startsWith(PLAYLIST_COVERART_PREFIX)) {
             return createPlaylistCoverArtRequest(Integer.valueOf(id.replace(PLAYLIST_COVERART_PREFIX, "")));
         }
+        if (id.startsWith(PODCAST_COVERART_PREFIX)) {
+            return createPodcastCoverArtRequest(Integer.valueOf(id.replace(PODCAST_COVERART_PREFIX, "")), request);
+        }
         return createMediaFileCoverArtRequest(Integer.valueOf(id), request);
     }
 
@@ -156,6 +163,17 @@ public class CoverArtController implements Controller, LastModified {
     private PlaylistCoverArtRequest createPlaylistCoverArtRequest(int id) {
         Playlist playlist = playlistService.getPlaylist(id);
         return playlist == null ? null : new PlaylistCoverArtRequest(playlist);
+    }
+
+    private CoverArtRequest createPodcastCoverArtRequest(int id, HttpServletRequest request) {
+        PodcastChannel channel = podcastService.getChannel(id);
+        if (channel == null) {
+            return null;
+        }
+        if (channel.getMediaFileId() == null) {
+            new PodcastCoverArtRequest(channel);
+        }
+        return createMediaFileCoverArtRequest(channel.getMediaFileId(), request);
     }
 
     private CoverArtRequest createMediaFileCoverArtRequest(int id, HttpServletRequest request) {
@@ -336,6 +354,10 @@ public class CoverArtController implements Controller, LastModified {
 
     public void setPlaylistService(PlaylistService playlistService) {
         this.playlistService = playlistService;
+    }
+
+    public void setPodcastService(PodcastService podcastService) {
+        this.podcastService = podcastService;
     }
 
     private abstract class CoverArtRequest {
@@ -521,6 +543,35 @@ public class CoverArtController implements Controller, LastModified {
                 }
             }
             return new ArrayList<MediaFile>(albums);
+        }
+    }
+
+    private class PodcastCoverArtRequest extends CoverArtRequest {
+
+        private final PodcastChannel channel;
+
+        public PodcastCoverArtRequest(PodcastChannel channel) {
+            this.channel = channel;
+        }
+
+        @Override
+        public String getKey() {
+            return PODCAST_COVERART_PREFIX + channel.getId();
+        }
+
+        @Override
+        public long lastModified() {
+            return -1;
+        }
+
+        @Override
+        public String getAlbum() {
+            return null;
+        }
+
+        @Override
+        public String getArtist() {
+            return channel.getTitle();
         }
     }
 

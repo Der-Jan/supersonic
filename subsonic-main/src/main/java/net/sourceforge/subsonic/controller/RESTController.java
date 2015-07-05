@@ -1555,7 +1555,8 @@ public class RESTController extends MultiActionController {
                 c.setStatus(PodcastStatus.valueOf(channel.getStatus().name()));
                 c.setTitle(channel.getTitle());
                 c.setDescription(channel.getDescription());
-                c.setImageUrl(channel.getImageUrl());
+                c.setCoverArt(CoverArtController.PODCAST_COVERART_PREFIX + channel.getId());
+                c.setOriginalImageUrl(channel.getImageUrl());
                 c.setErrorMessage(channel.getErrorMessage());
 
                 if (includeEpisodes) {

@@ -38,6 +38,8 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
+import net.sourceforge.subsonic.domain.PodcastEpisode;
+import net.sourceforge.subsonic.domain.PodcastStatus;
 import net.sourceforge.subsonic.domain.SavedPlayQueue;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.JukeboxService;
@@ -45,6 +47,7 @@ import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.PlaylistService;
+import net.sourceforge.subsonic.service.PodcastService;
 import net.sourceforge.subsonic.service.RatingService;
 import net.sourceforge.subsonic.service.SearchService;
 import net.sourceforge.subsonic.service.SecurityService;
@@ -70,6 +73,7 @@ public class PlayQueueService {
     private SecurityService securityService;
     private SearchService searchService;
     private RatingService ratingService;
+    private PodcastService podcastService;
     private net.sourceforge.subsonic.service.PlaylistService playlistService;
     private MediaFileDao mediaFileDao;
     private PlayQueueDao playQueueDao;
@@ -231,6 +235,48 @@ public class PlayQueueService {
             MediaFile file = iterator.next();
             if (!file.isPresent()) {
                 iterator.remove();
+            }
+        }
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
+    public PlayQueueInfo playPodcastChannel(int id) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        List<PodcastEpisode> episodes = podcastService.getEpisodes(id);
+        List<MediaFile> files = new ArrayList<MediaFile>();
+        for (PodcastEpisode episode : episodes) {
+            if (episode.getStatus() == PodcastStatus.COMPLETED) {
+                MediaFile mediaFile = mediaFileService.getMediaFile(episode.getMediaFileId());
+                if (mediaFile != null && mediaFile.isPresent()) {
+                    files.add(mediaFile);
+                }
+            }
+        }
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
+    public PlayQueueInfo playPodcastEpisode(int id) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        PodcastEpisode episode = podcastService.getEpisode(id, false);
+        List<PodcastEpisode> allEpisodes = podcastService.getEpisodes(episode.getChannelId());
+        List<MediaFile> files = new ArrayList<MediaFile>();
+
+        String username = securityService.getCurrentUsername(request);
+        boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
+
+        for (PodcastEpisode ep : allEpisodes) {
+            if (ep.getStatus() == PodcastStatus.COMPLETED) {
+                MediaFile mediaFile = mediaFileService.getMediaFile(ep.getMediaFileId());
+                if (mediaFile != null && mediaFile.isPresent() &&
+                    (ep.getId().equals(episode.getId()) || queueFollowingSongs && !files.isEmpty())) {
+                    files.add(mediaFile);
+                }
             }
         }
         Player player = getCurrentPlayer(request, response);
@@ -624,6 +670,10 @@ public class PlayQueueService {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setPodcastService(PodcastService podcastService) {
+        this.podcastService = podcastService;
     }
 
     public void setMediaFileDao(MediaFileDao mediaFileDao) {

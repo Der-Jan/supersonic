@@ -183,6 +183,15 @@ public final class StringUtil {
         return sonos && "audio/mp4".equals(result) ? "audio/aac" : result;
     }
 
+    public static String getSuffix(String mimeType) {
+        for (String[] map : MIME_TYPES) {
+            if (map[1].equalsIgnoreCase(mimeType)) {
+                return map[0];
+            }
+        }
+        return null;
+    }
+
     /**
      * Converts a byte-count to a formatted string suitable for display to the user.
      * For instance:

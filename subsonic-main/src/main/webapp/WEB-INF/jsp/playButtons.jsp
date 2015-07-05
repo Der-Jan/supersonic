@@ -4,6 +4,7 @@
 <%--
 PARAMETERS
   id: ID of file.
+  podcastEpisodeId: ID of podcast episode.
   video: Whether the file is a video (default false).
   playEnabled: Whether to show play button (default true).
   addEnabled: Whether to show add next/last buttons (default true).
@@ -38,6 +39,10 @@ PARAMETERS
             <a href="${videoUrl}" target="main">
                 <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
                      title="<fmt:message key="common.play"/>"></a>
+        </c:when>
+        <c:when test="${not empty param.podcastEpisodeId}">
+            <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"
+                 onclick="top.playQueue.onPlayPodcastEpisode(${param.podcastEpisodeId}); return false;" title="<fmt:message key="common.play"/>">
         </c:when>
         <c:otherwise>
             <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"

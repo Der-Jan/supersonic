@@ -68,6 +68,14 @@ public class PodcastDao extends AbstractDao {
     }
 
     /**
+     * Returns a single Podcast channel.
+     */
+    public PodcastChannel getChannel(int channelId) {
+        String sql = "select " + CHANNEL_COLUMNS + " from podcast_channel where id=?";
+        return queryOne(sql, channelRowMapper, channelId);
+    }
+
+    /**
      * Updates the given Podcast channel.
      *
      * @param channel The Podcast channel to update.

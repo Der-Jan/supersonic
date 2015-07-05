@@ -255,6 +255,7 @@
         <property name="searchService" ref="searchService"/>
         <property name="ratingService" ref="ratingService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="podcastService" ref="podcastService"/>
     </bean>
 
     <bean id="ajaxPlaylistService" class="net.sourceforge.subsonic.ajax.PlaylistService">

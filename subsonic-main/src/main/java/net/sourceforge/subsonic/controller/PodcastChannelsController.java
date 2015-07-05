@@ -1,20 +1,20 @@
 /*
- This file is part of Subsonic.
-
- Subsonic is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Subsonic is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
-
- Copyright 2009 (C) Sindre Mehus
+ * This file is part of Subsonic.
+ *
+ *  Subsonic is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Subsonic is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Copyright 2015 (C) Sindre Mehus
  */
 package net.sourceforge.subsonic.controller;
 
@@ -31,19 +31,16 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.PodcastChannel;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
-import net.sourceforge.subsonic.domain.User;
-import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.PodcastService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.util.StringUtil;
 
 /**
- * Controller for the "Podcast receiver" page.
+ * Controller for the "Podcast channels" page.
  *
  * @author Sindre Mehus
  */
-public class PodcastReceiverController extends ParameterizableViewController {
+public class PodcastChannelsController extends ParameterizableViewController {
 
     private PodcastService podcastService;
     private SecurityService securityService;
@@ -61,13 +58,8 @@ public class PodcastReceiverController extends ParameterizableViewController {
             channels.put(channel, podcastService.getEpisodes(channel.getId()));
         }
 
-        User user = securityService.getCurrentUser(request);
-        UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
-
-        map.put("user", user);
-        map.put("partyMode", userSettings.isPartyModeEnabled());
+        map.put("user", securityService.getCurrentUser(request));
         map.put("channels", channels);
-        map.put("expandedChannels", StringUtil.parseInts(request.getParameter("expandedChannels")));
         map.put("licenseInfo", settingsService.getLicenseInfo());
         return result;
     }

@@ -33,6 +33,7 @@ public class PodcastChannel {
     private String imageUrl;
     private PodcastStatus status;
     private String errorMessage;
+    private Integer mediaFileId;
 
     public PodcastChannel(Integer id, String url, String title, String description, String imageUrl,
                           PodcastStatus status, String errorMessage) {
@@ -100,5 +101,13 @@ public class PodcastChannel {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public void setMediaFileId(Integer mediaFileId) {
+        this.mediaFileId = mediaFileId;
+    }
+
+    public Integer getMediaFileId() {
+        return mediaFileId;
     }
 }

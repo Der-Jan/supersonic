@@ -84,14 +84,18 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
-    <bean id="podcastReceiverController" class="net.sourceforge.subsonic.controller.PodcastReceiverController">
-        <property name="viewName" value="podcastReceiver"/>
+    <bean id="podcastChannelsController" class="net.sourceforge.subsonic.controller.PodcastChannelsController">
+        <property name="viewName" value="podcastChannels"/>
         <property name="podcastService" ref="podcastService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
     </bean>
-    <bean id="podcastReceiverAdminController"
-          class="net.sourceforge.subsonic.controller.PodcastReceiverAdminController">
+    <bean id="podcastChannelController" class="net.sourceforge.subsonic.controller.PodcastChannelController">
+        <property name="viewName" value="podcastChannel"/>
+        <property name="podcastService" ref="podcastService"/>
+        <property name="securityService" ref="securityService"/>
+    </bean>
+    <bean id="podcastReceiverAdminController" class="net.sourceforge.subsonic.controller.PodcastReceiverAdminController">
         <property name="podcastService" ref="podcastService"/>
     </bean>
     <bean id="setMusicFileInfoController" class="net.sourceforge.subsonic.controller.SetMusicFileInfoController">
@@ -284,6 +288,7 @@
         <property name="transcodingService" ref="transcodingService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="playlistService" ref="playlistService"/>
+        <property name="podcastService" ref="podcastService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>
@@ -468,7 +473,8 @@
                 <prop key="/download.view">downloadController</prop>
                 <prop key="/db.view">dbController</prop>
                 <prop key="/test.view">multiController</prop>
-                <prop key="/podcastReceiver.view">podcastReceiverController</prop>
+                <prop key="/podcastChannels.view">podcastChannelsController</prop>
+                <prop key="/podcastChannel.view">podcastChannelController</prop>
                 <prop key="/podcastReceiverAdmin.view">podcastReceiverAdminController</prop>
                 <prop key="/podcast.view">podcastController</prop>
                 <prop key="/podcast/**">podcastController</prop>

@@ -41,9 +41,11 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.jdom.Document;
@@ -161,13 +163,13 @@ public class PodcastService {
         return url.replace(" ", "%20");
     }
 
-    private PodcastChannel getChannel(int channelId) {
-        for (PodcastChannel channel : getAllChannels()) {
-            if (channelId == channel.getId()) {
-                return channel;
-            }
-        }
-        return null;
+    /**
+     * Returns a single Podcast channel.
+     */
+    public PodcastChannel getChannel(int channelId) {
+        PodcastChannel channel = podcastDao.getChannel(channelId);
+        addMediaFileIdToChannels(Arrays.asList(channel));
+        return channel;
     }
 
     /**
@@ -176,7 +178,7 @@ public class PodcastService {
      * @return Possibly empty list of all Podcast channels.
      */
     public List<PodcastChannel> getAllChannels() {
-        return podcastDao.getAllChannels();
+        return addMediaFileIdToChannels(podcastDao.getAllChannels());
     }
 
     private PodcastEpisode getEpisodeByUrl(String url) {
@@ -229,11 +231,30 @@ public class PodcastService {
         for (PodcastEpisode episode : episodes) {
             if (episode.getPath() != null) {
                 MediaFile mediaFile = mediaFileService.getMediaFile(episode.getPath());
-                if (mediaFile != null) {
+                if (mediaFile != null && mediaFile.isPresent()) {
                     episode.setMediaFileId(mediaFile.getId());
                 }
             }
         }
+    }
+
+    private List<PodcastChannel> addMediaFileIdToChannels(List<PodcastChannel> channels) {
+        for (PodcastChannel channel : channels) {
+            try {
+                File dir = getChannelDirectory(channel);
+                MediaFile mediaFile = mediaFileService.getMediaFile(dir);
+                if (mediaFile != null) {
+                    channel.setMediaFileId(mediaFile.getId());
+                }
+            } catch (Exception x) {
+                LOG.warn("Failed to resolve media file ID for podcast channel '" + channel.getTitle() + "': " + x, x);
+            }
+        }
+        return channels;
+    }
+
+    public void refreshChannel(int channelId, boolean downloadEpisodes) {
+        refreshChannels(Arrays.asList(getChannel(channelId)), downloadEpisodes);
     }
 
     public void refreshAllChannels(boolean downloadEpisodes) {
@@ -278,6 +299,7 @@ public class PodcastService {
             channel.setErrorMessage(null);
             podcastDao.updateChannel(channel);
 
+            downloadImage(channel);
             refreshEpisodes(channel, channelElement.getChildren("item"));
 
         } catch (Exception x) {
@@ -297,6 +319,50 @@ public class PodcastService {
                 }
             }
         }
+    }
+
+    private void downloadImage(PodcastChannel channel) {
+        HttpClient client = new DefaultHttpClient();
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            String imageUrl = channel.getImageUrl();
+            if (imageUrl == null) {
+                return;
+            }
+
+            File dir = getChannelDirectory(channel);
+            MediaFile channelMediaFile = mediaFileService.getMediaFile(dir);
+            File existingCoverArt = mediaFileService.getCoverArt(channelMediaFile);
+            boolean imageFileExists = existingCoverArt != null && mediaFileService.getMediaFile(existingCoverArt) == null;
+            if (imageFileExists) {
+                return;
+            }
+
+            HttpGet method = new HttpGet(imageUrl);
+            HttpResponse response = client.execute(method);
+            in = response.getEntity().getContent();
+            out = new FileOutputStream(new File(dir, "cover." + getCoverArtSuffix(response)));
+            IOUtils.copy(in, out);
+            mediaFileService.refreshMediaFile(channelMediaFile);
+        } catch (Exception x) {
+            LOG.warn("Failed to download cover art for podcast channel '" + channel.getTitle() + "': " + x, x);
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+            client.getConnectionManager().shutdown();
+        }
+    }
+
+    private String getCoverArtSuffix(HttpResponse response) {
+        String result = null;
+        Header contentTypeHeader = response.getEntity().getContentType();
+        if (contentTypeHeader != null && contentTypeHeader.getValue() != null) {
+            ContentType contentType = ContentType.parse(contentTypeHeader.getValue());
+            String mimeType = contentType.getMimeType();
+            result = StringUtil.getSuffix(mimeType);
+        }
+        return result == null ? "jpeg" : result;
     }
 
     private String getChannelImageUrl(Element channelElement) {
@@ -565,19 +631,7 @@ public class PodcastService {
 
     private synchronized File getFile(PodcastChannel channel, PodcastEpisode episode) {
 
-        File podcastDir = new File(settingsService.getPodcastFolder());
-        File channelDir = new File(podcastDir, StringUtil.fileSystemSafe(channel.getTitle()));
-
-        if (!channelDir.exists()) {
-            boolean ok = channelDir.mkdirs();
-            if (!ok) {
-                throw new RuntimeException("Failed to create directory " + channelDir);
-            }
-
-            MediaFile mediaFile = mediaFileService.getMediaFile(channelDir);
-            mediaFile.setComment(channel.getDescription());
-            mediaFileService.updateMediaFile(mediaFile);
-        }
+        File channelDir = getChannelDirectory(channel);
 
         String filename = StringUtil.getUrlFile(episode.getUrl());
         if (filename == null) {
@@ -599,6 +653,23 @@ public class PodcastService {
             throw new SecurityException("Access denied to file " + file);
         }
         return file;
+    }
+
+    private File getChannelDirectory(PodcastChannel channel) {
+        File podcastDir = new File(settingsService.getPodcastFolder());
+        File channelDir = new File(podcastDir, StringUtil.fileSystemSafe(channel.getTitle()));
+
+        if (!channelDir.exists()) {
+            boolean ok = channelDir.mkdirs();
+            if (!ok) {
+                throw new RuntimeException("Failed to create directory " + channelDir);
+            }
+
+            MediaFile mediaFile = mediaFileService.getMediaFile(channelDir);
+            mediaFile.setComment(channel.getDescription());
+            mediaFileService.updateMediaFile(mediaFile);
+        }
+        return channelDir;
     }
 
     /**
