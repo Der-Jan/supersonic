@@ -94,6 +94,7 @@ public class RedirectionManagementController extends MultiActionController {
         String redirectFrom = StringUtils.lowerCase(ServletRequestUtils.getRequiredStringParameter(request, "redirectFrom"));
         String licenseHolder = StringUtils.lowerCase(StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "licenseHolder")));
         String serverId = ServletRequestUtils.getRequiredStringParameter(request, "serverId");
+        String host = ServletRequestUtils.getStringParameter(request, "host", request.getRemoteAddr());
         int port = ServletRequestUtils.getRequiredIntParameter(request, "port");
         Integer localPort = ServletRequestUtils.getIntParameter(request, "localPort");
         String localIp = ServletRequestUtils.getStringParameter(request, "localIp");
@@ -118,7 +119,6 @@ public class RedirectionManagementController extends MultiActionController {
             return;
         }
 
-        String host = request.getRemoteAddr();
         URL url = new URL("http", host, port, "/" + contextPath);
         String redirectTo = url.toExternalForm();
 

@@ -29,6 +29,7 @@ public class NetworkSettingsCommand {
     private boolean portForwardingEnabled;
     private boolean urlRedirectionEnabled;
     private String urlRedirectFrom;
+    private String urlRedirectCustomHost;
     private int port;
     private boolean toast;
     private LicenseInfo licenseInfo;
@@ -57,6 +58,13 @@ public class NetworkSettingsCommand {
         this.urlRedirectFrom = urlRedirectFrom;
     }
 
+    public String getUrlRedirectCustomHost() {
+        return urlRedirectCustomHost;
+    }
+
+    public void setUrlRedirectCustomHost(String urlRedirectCustomHost) {
+        this.urlRedirectCustomHost = urlRedirectCustomHost;
+    }
     public int getPort() {
         return port;
     }

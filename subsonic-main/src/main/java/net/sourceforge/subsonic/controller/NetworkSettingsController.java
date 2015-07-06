@@ -44,6 +44,7 @@ public class NetworkSettingsController extends SimpleFormController {
         command.setPortForwardingEnabled(settingsService.isPortForwardingEnabled());
         command.setUrlRedirectionEnabled(settingsService.isUrlRedirectionEnabled());
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
+        command.setUrlRedirectCustomHost(settingsService.getUrlRedirectCustomHost());
         command.setPort(settingsService.getPort());
         command.setLicenseInfo(settingsService.getLicenseInfo());
 
@@ -57,6 +58,7 @@ public class NetworkSettingsController extends SimpleFormController {
         settingsService.setPortForwardingEnabled(command.isPortForwardingEnabled());
         settingsService.setUrlRedirectionEnabled(command.isUrlRedirectionEnabled());
         settingsService.setUrlRedirectFrom(StringUtils.lowerCase(command.getUrlRedirectFrom()));
+        settingsService.setUrlRedirectCustomHost(StringUtils.trimToEmpty(command.getUrlRedirectCustomHost()));
 
         if (settingsService.getServerId() == null) {
             Random rand = new Random(System.currentTimeMillis());

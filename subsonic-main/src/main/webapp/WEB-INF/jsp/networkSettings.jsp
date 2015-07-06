@@ -26,6 +26,7 @@
 
         function enableUrlRedirectionFields() {
             $("#urlRedirectFrom").prop("disabled", !$("#urlRedirectionEnabled").is(":checked"));
+            $("#urlRedirectCustomHost").prop("disabled", !$("#urlRedirectionEnabled").is(":checked"));
         }
 
     </script>
@@ -67,6 +68,10 @@
 
         <p>http://<form:input id="urlRedirectFrom" path="urlRedirectFrom" size="16" cssStyle="margin-left:0.25em"/>.subsonic.org</p>
 
+        <p>
+            <fmt:message key="networksettings.customhost"/>
+            <form:input id="urlRedirectCustomHost" path="urlRedirectCustomHost" size="32" cssStyle="margin-left:0.5em"/>
+        </p>
         <p class="detail">
             <fmt:message key="networksettings.status"/>
             <span id="urlRedirectionStatus" style="margin-left:0.25em"></span>

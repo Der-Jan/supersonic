@@ -27,6 +27,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -114,7 +115,7 @@ public class NetworkService {
     }
 
     public static String getBackendUrl() {
-        return "true".equals(System.getProperty("subsonic.test")) ? "http://localhost:8181" : "http://subsonic.org";
+        return "true".equals(System.getProperty("subsonic.test")) ? "http://localhost:8080" : "http://subsonic.org";
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -221,6 +222,7 @@ public class NetworkService {
             int port = settingsService.getPort();
             boolean trial = !settingsService.isLicenseValid();
             Date trialExpires = settingsService.getTrialExpires();
+            String host = StringUtils.trimToNull(settingsService.getUrlRedirectCustomHost());
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("serverId", settingsService.getServerId()));
@@ -234,6 +236,9 @@ public class NetworkService {
                 params.add(new BasicNameValuePair("trialExpires", String.valueOf(trialExpires.getTime())));
             } else {
                 params.add(new BasicNameValuePair("licenseHolder", settingsService.getLicenseEmail()));
+            }
+            if (host != null) {
+                params.add(new BasicNameValuePair("host", host));
             }
 
             HttpClient client = new DefaultHttpClient();

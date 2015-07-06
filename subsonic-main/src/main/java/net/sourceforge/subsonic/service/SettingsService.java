@@ -128,6 +128,7 @@ public class SettingsService {
     private static final String KEY_URL_REDIRECTION_ENABLED = "UrlRedirectionEnabled";
     private static final String KEY_URL_REDIRECT_FROM = "UrlRedirectFrom";
     private static final String KEY_URL_REDIRECT_CONTEXT_PATH = "UrlRedirectContextPath";
+    private static final String KEY_URL_REDIRECT_CUSTOM_HOST = "UrlRedirectCustomHost";
     private static final String KEY_SERVER_ID = "ServerId";
     private static final String KEY_SETTINGS_CHANGED = "SettingsChanged";
     private static final String KEY_LAST_SCANNED = "LastScanned";
@@ -196,6 +197,7 @@ public class SettingsService {
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
     private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = System.getProperty("subsonic.contextPath", "").replaceAll("/", "");
+    private static final String DEFAULT_URL_REDIRECT_CUSTOM_HOST = null;
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
@@ -850,6 +852,14 @@ public class SettingsService {
 
     public void setUrlRedirectContextPath(String contextPath) {
         properties.setProperty(KEY_URL_REDIRECT_CONTEXT_PATH, contextPath);
+    }
+
+    public String getUrlRedirectCustomHost() {
+        return StringUtils.trimToNull(properties.getProperty(KEY_URL_REDIRECT_CUSTOM_HOST, DEFAULT_URL_REDIRECT_CUSTOM_HOST));
+    }
+
+    public void setUrlRedirectCustomHost(String customHost) {
+        properties.setProperty(KEY_URL_REDIRECT_CUSTOM_HOST, customHost);
     }
 
     public String getServerId() {
