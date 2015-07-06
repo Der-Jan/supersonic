@@ -285,17 +285,15 @@ public class MediaScannerService {
             album.setArtist(artist);
             album.setCreated(file.getChanged());
         }
-        if (album.getCoverArtPath() == null) {
-            MediaFile parent = mediaFileService.getParentOf(file);
-            if (parent != null) {
-                album.setCoverArtPath(parent.getCoverArtPath());
-            }
-        }
-        if (album.getYear() == null) {
+        if (file.getYear() != null) {
             album.setYear(file.getYear());
         }
-        if (album.getGenre() == null) {
+        if (file.getGenre() != null) {
             album.setGenre(file.getGenre());
+        }
+        MediaFile parent = mediaFileService.getParentOf(file);
+        if (parent != null && parent.getCoverArtPath() != null) {
+            album.setCoverArtPath(parent.getCoverArtPath());
         }
 
         boolean firstEncounter = !lastScanned.equals(album.getLastScanned());
