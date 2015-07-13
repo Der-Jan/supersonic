@@ -28,9 +28,16 @@ Show Last.fm info even if artist name is slightly wrong
 Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
 Bugfix: Downloading png album art doesn't always work
 New: Redesigned podcast pages
+REST: Improved metadata updates of ID3 albums, e.g., changing cover art.
+New: Support custom subsonic.org redirects.
 
 TODO IN 5.3
 ------------
+Google Cast publish
+REST: Add "updated" to playlists
+Inifinite scroll on home page
+Prepare release
+reCAPTCHA v2
 Add integration to other audio systems than Sonos
 Improve Podcast page.
   Support staring?
@@ -42,19 +49,15 @@ Improve Podcast page.
 
 When scaling images, don't distort aspect rate.
 Album art for ID3 not updated on media scan (Aerosmith - Big Ones)
-Missing art in ID3
-  https://mail.google.com/mail/ca/u/0/?pli=1#inbox/14db7569073cd444
+  Test with chrome app
 Sonos: Shuffle play per folder
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15169&p=67927#p67927
-Support custom subsonic.org redirects
-Support custom hostname
 Backend: Change reminder email text for subscribers
 Backend: Does redirection work if license is expired?
 Fail to play videos in music folder root
 Logout icon causes scrollbars
   https://mail.google.com/mail/ca/u/0/#inbox/14d85e8983c0da3a
 Open video in popup
-Playlist sharing displayed in dialog even if sharing is disallowed.
 Site: Make "Features" more prominent, use image. "View all features"
 Check that ssh from demo works
 Add scrubber for drag n drop
@@ -88,7 +91,6 @@ Move media statistics to About page.
 Fade out text in auto cover art
 More space in left.jsp
 Edit/delete artist info.
-Add "handle" for drag&drop
 Make separate category for videos in search.
   Create search index for videos
 Show video preview in Starred
@@ -96,8 +98,6 @@ Show video preview in Starred
   http://behigh.github.io/bootstrap_dropdowns_enhancement/
 Lazy create upnp
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=14873&p=65539#p65539
-Layout improvements
-  Review use of "detail" in music tables.
 Support tags/labels
   https://mail.google.com/mail/ca/u/0/#inbox/14a187fb3cb4f0f5
 IntelliJ plugin

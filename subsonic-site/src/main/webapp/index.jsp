@@ -125,7 +125,7 @@
                     </ul>
             </div>
             <div class="6u 12u(3)">
-                <span class="image right"><a href="inc/img/screenshot.png"><img src="inc/img/screenshot.png" height="230px" alt=""/></a></span>
+                <span class="image right"><a href="inc/img/screenshot.png"><img src="inc/img/screenshot.png" alt="" style="max-width:100%"/></a></span>
             </div>
         </div>
 
