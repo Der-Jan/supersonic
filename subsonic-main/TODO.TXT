@@ -30,22 +30,18 @@ Bugfix: Downloading png album art doesn't always work
 New: Redesigned podcast pages
 REST: Improved metadata updates of ID3 albums, e.g., changing cover art.
 New: Support custom subsonic.org redirects.
+REST: Add changed date to playlists
 
 TODO IN 5.3
 ------------
-Google Cast publish
-REST: Add "updated" to playlists
+HLS audio stutter
+Auto-playlist: starred songs
+Highest rated: separate my vs global rating
 Inifinite scroll on home page
 Prepare release
 reCAPTCHA v2
 Add integration to other audio systems than Sonos
-Improve Podcast page.
-  Support staring?
-  Podcast channel image in Sonos
-  Retest changes in coverArt.jsp
-  Test with no channels
-  Test add podcast
-  Test scanning if non-existent podcast dir
+Podcast channel image in Sonos
 
 When scaling images, don't distort aspect rate.
 Album art for ID3 not updated on media scan (Aerosmith - Big Ones)
