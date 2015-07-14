@@ -31,10 +31,15 @@ New: Redesigned podcast pages
 REST: Improved metadata updates of ID3 albums, e.g., changing cover art.
 New: Support custom subsonic.org redirects.
 REST: Add changed date to playlists
+Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
 
 TODO IN 5.3
 ------------
+Limit number of concurrent cover art generations.
+  https://sourceforge.net/p/subsonic/bugs/124/
+Make lyrics popup bigger
 HLS audio stutter
+  Try audio-only stream
 Auto-playlist: starred songs
 Highest rated: separate my vs global rating
 Inifinite scroll on home page
@@ -42,6 +47,7 @@ Prepare release
 reCAPTCHA v2
 Add integration to other audio systems than Sonos
 Podcast channel image in Sonos
+Site: Change hero image
 
 When scaling images, don't distort aspect rate.
 Album art for ID3 not updated on media scan (Aerosmith - Big Ones)

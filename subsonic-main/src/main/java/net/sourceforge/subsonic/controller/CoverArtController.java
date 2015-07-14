@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -88,6 +89,11 @@ public class CoverArtController implements Controller, LastModified {
     private PodcastService podcastService;
     private ArtistDao artistDao;
     private AlbumDao albumDao;
+    private Semaphore semaphore;
+
+    public void init() {
+        semaphore = new Semaphore(settingsService.getCoverArtConcurrency());
+    }
 
     public long getLastModified(HttpServletRequest request) {
         CoverArtRequest coverArtRequest = createCoverArtRequest(request);
@@ -243,6 +249,7 @@ public class CoverArtController implements Controller, LastModified {
 //                LOG.info("Cache MISS - " + request + " (" + size + ")");
                 OutputStream out = null;
                 try {
+                    semaphore.acquire();
                     BufferedImage image = request.createImage(size);
                     if (image == null) {
                         throw new Exception("Unable to decode image.");
@@ -258,6 +265,7 @@ public class CoverArtController implements Controller, LastModified {
                     throw new IOException("Failed to create thumbnail for " + request + ". " + x.getMessage());
 
                 } finally {
+                    semaphore.release();
                     IOUtils.closeQuietly(out);
                 }
             } else {
