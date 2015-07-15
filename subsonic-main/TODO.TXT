@@ -35,9 +35,11 @@ Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
 
 TODO IN 5.3
 ------------
-Limit number of concurrent cover art generations.
-  https://sourceforge.net/p/subsonic/bugs/124/
-Make lyrics popup bigger
+Test html5 audio when transcoding
+Experimental: html5 player
+Test out chromecast support in jwplayer
+Backend: Is license email sent when extending?
+Disable scroll bar in top.jsp?
 HLS audio stutter
   Try audio-only stream
 Auto-playlist: starred songs

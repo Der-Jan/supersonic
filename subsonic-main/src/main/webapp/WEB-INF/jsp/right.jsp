@@ -56,7 +56,7 @@
 
                 html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>";
                 if (nowPlaying[i].lyricsUrl != null) {
-                    html += "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 430, 550)\">" +
+                    html += "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 500, 550)\">" +
                             "<fmt:message key="main.lyrics"/>" + "</a></span>";
                 }
                 html += "</td><td>" +
