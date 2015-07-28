@@ -65,6 +65,7 @@ public class SonosServiceRegistration {
             params.add(Pair.create("caps", "search"));
             params.add(Pair.create("caps", "trFavorites"));
             params.add(Pair.create("caps", "alFavorites"));
+            params.add(Pair.create("caps", "ucPlaylists"));
             params.add(Pair.create("caps", "extendedMD"));
             params.add(Pair.create("presentationMapVersion", "1"));
             params.add(Pair.create("presentationMapUri", subsonicBaseUrl + "sonos/presentationMap.xml"));

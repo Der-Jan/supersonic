@@ -34,12 +34,33 @@ REST: Add changed date to playlists
 Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
 Security: Fixed some XSS vulnerabilities
 New: Hide left frame by default
+Sonos: Manage Subsonic playlists from the Sonos controller.
 
 TODO IN 5.3
 ------------
+Add SubStreamer
+ https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
 Make playqueue extend horizontally
 Make logout float right
 Check jwplayer in external player
+  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
+Honor cover art limit.
+Get jukebox status from web.
+Change chromecast background.
+Log failed login attempts.
+Custom Sonos texts for starring.
+Upgrade sonos wsdl.
+  Track numbers in Sonos.
+Test out sonos display types.
+Test out jwplayer html5.
+Test other html5 apps.
+Status should only be available for admin.
+Kernel notification of disk changes.
+Case insensitive ldap.
+Last fm top tracks by artist.
+Private domain share.
+Show list of latest podcast episodes.
+NAS support
 
 Test html5 audio when transcoding
   Use custom progress bar, with time offset parameter instead of ranges

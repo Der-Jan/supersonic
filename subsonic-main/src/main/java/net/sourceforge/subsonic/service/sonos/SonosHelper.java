@@ -104,9 +104,11 @@ public class SonosHelper {
         library.setTitle("Browse Library");
 
         MediaCollection playlists = new MediaCollection();
-        playlists.setItemType(ItemType.COLLECTION);
+        playlists.setItemType(ItemType.FAVORITES);
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
+        playlists.setUserContent(true);
+        playlists.setReadOnly(false);
 
         MediaCollection starred = new MediaCollection();
         starred.setItemType(ItemType.FAVORITES);
@@ -235,7 +237,7 @@ public class SonosHelper {
     public List<AbstractMedia> forDirectoryContent(int mediaFileId, String username, HttpServletRequest request) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
         MediaFile dir = mediaFileService.getMediaFile(mediaFileId);
-        List<MediaFile> children = mediaFileService.getChildrenOf(dir, true, true, true);
+        List<MediaFile> children = dir.isFile() ? Arrays.asList(dir) : mediaFileService.getChildrenOf(dir, true, true, true);
         boolean isArtist = true;
         for (MediaFile child : children) {
             if (child.isDirectory()) {
@@ -293,6 +295,9 @@ public class SonosHelper {
 
             mediaCollection.setId(SonosService.ID_PLAYLIST_PREFIX + playlist.getId());
             mediaCollection.setCanPlay(true);
+            mediaCollection.setReadOnly(!username.equals(playlist.getUsername()));
+            mediaCollection.setRenameable(username.equals(playlist.getUsername()));
+            mediaCollection.setUserContent(false);
             mediaCollection.setItemType(ItemType.PLAYLIST);
             mediaCollection.setArtist(playlist.getUsername());
             mediaCollection.setTitle(playlist.getName());
