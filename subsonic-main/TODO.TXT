@@ -35,6 +35,7 @@ Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
 Security: Fixed some XSS vulnerabilities
 New: Hide left frame by default
 Sonos: Manage Subsonic playlists from the Sonos controller.
+Sonos: Show track numbers
 
 TODO IN 5.3
 ------------
@@ -50,7 +51,12 @@ Change chromecast background.
 Log failed login attempts.
 Custom Sonos texts for starring.
 Upgrade sonos wsdl.
-  Track numbers in Sonos.
+  AbstractMedia.summary
+  AbstractMedia.isFavorite
+  AbstractMedia.displayType
+  MediaCollection.containsFavorite
+  ExtendedMetadata.relatedPlay
+Sonos: artist bio
 Test out sonos display types.
 Test out jwplayer html5.
 Test other html5 apps.

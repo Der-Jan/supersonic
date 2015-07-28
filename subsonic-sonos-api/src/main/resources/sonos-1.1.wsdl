@@ -2,7 +2,7 @@
 
 <!--
    Sonos Music Service WSDL definition
-   Copyright (c) 2007-2013 Sonos, Inc. All Rights Reserved
+   Copyright (c) 2007-2015 Sonos, Inc. All Rights Reserved
 
    This document is licensed under the Creative Commons Attribution, Share-Alike
    license, v3.0 (Unported) with the following modifications:
@@ -28,7 +28,7 @@
 
             <xs:simpleType name="id">
                 <xs:restriction base="xs:string">
-                    <xs:maxLength value="128"/>
+                    <xs:maxLength value="255"/>
                 </xs:restriction>
             </xs:simpleType>
 
@@ -105,6 +105,16 @@
                 </xs:complexType>
             </xs:element>
 
+            <xs:element name="context">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="timeZone" type="xs:string" minOccurs="0"/>
+                        <xs:element name="zones" type="xs:string" minOccurs="0"/>
+                        <xs:element name="location" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
             <xs:simpleType name="itemType">
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="artist"/>
@@ -130,11 +140,34 @@
 
             <xs:element name="itemType" type="tns:itemType"/>
 
+            <xs:simpleType name="mediaUriAction">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="IMPLICIT"/>
+                    <xs:enumeration value="EXPLICIT:PLAY"/>
+                    <xs:enumeration value="EXPLICIT:SEEK"/>
+                    <xs:enumeration value="EXPLICIT:SKIP_FORWARD"/>
+                    <xs:enumeration value="EXPLICIT:SKIP_BACK"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+            <xs:element name="mediaUriAction" type="tns:mediaUriAction" />
+
             <xs:complexType name="AbstractMedia" abstract="true">
                 <xs:sequence>
                     <xs:element ref="tns:id"/>
                     <xs:element ref="tns:itemType"/>
+                    <xs:element name="displayType" type="xs:string"/>
                     <xs:element name="title" type="xs:string"/>
+
+                    <!--
+                       The summary field will only be displayed if the displayType
+                       maps to a HeroView or Editorial layout otherwise it will be ignored
+                    -->
+                    <xs:element name="summary" type="xs:string" minOccurs="0"/>
+                    <!--Indicates that the item is currently favorited.
+                       If omitted, we don't know the favorited state. -->
+                    <xs:element name="isFavorite" type="xs:boolean" minOccurs="0"/>
+
                     <!--
                        Included for backwards compatibility with MOAPI 1.0. These are
                        currently all disregarded by the Sonos firmware. -->
@@ -170,15 +203,15 @@
                     <xs:element name="interval" type="xs:int"/>
                 </xs:sequence>
             </xs:complexType>
-			
-			<xs:complexType name="albumArtUrl">
+
+            <xs:complexType name="albumArtUrl">
                 <xs:simpleContent>
                     <xs:extension base="xs:anyURI">
                         <xs:attribute name="requiresAuthentication" type="xs:boolean" use="optional" />
                     </xs:extension>
                 </xs:simpleContent>
             </xs:complexType>
-            
+
             <xs:complexType name="mediaCollection">
                 <xs:complexContent>
                     <xs:extension base="tns:AbstractMedia">
@@ -213,6 +246,11 @@
                                Indicates that the collection can be added to user favorites.
                                If omitted, canAddToFavorites is assumed to be true. -->
                             <xs:element name="canAddToFavorites" type="xs:boolean" minOccurs="0"/>
+
+                            <!--
+                               Indicates that the collection contains user favorites.
+                               If omitted, containsFavorite is assumed to be false. -->
+                            <xs:element name="containsFavorite" type="xs:boolean" minOccurs="0"/>
 
                             <!--
                                Included for backwards compatibility with MOAPI 1.0. This is
@@ -256,9 +294,10 @@
                     <xs:element name="duration" type="xs:int" minOccurs="0"/>
                     <xs:element name="rating" type="xs:int" minOccurs="0"/>
                     <xs:element name="albumArtURI" type="tns:albumArtUrl" minOccurs="0"/>
+                    <xs:element name="trackNumber" type="xs:int" minOccurs="0"/>
 
                     <!--
-                       Indicates that the collection can be played. If not present, the
+                       Indicates that the track can be played. If not present, the
                        default value is "true". If "false" this flag indicates that the
                        user does not have rights to stream the track. -->
                     <xs:element name="canPlay" type="xs:boolean" minOccurs="0"/>
@@ -379,6 +418,16 @@
                     </xs:choice>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="radioTrackList">
+                <xs:sequence>
+                    <xs:element name="count" type="xs:int" />
+                    <xs:element name="id" type="xs:string" minOccurs="0" />
+                    <xs:element name="name" type="xs:string" minOccurs="0" />
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="mediaMetadata" type="tns:mediaMetadata"/>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:complexType>
 
             <xs:complexType name="segmentMetadataList">
                 <xs:sequence minOccurs="0">
@@ -426,6 +475,15 @@
                 </xs:sequence>
             </xs:complexType>
 
+            <xs:complexType name="relatedPlay">
+                <xs:sequence>
+                    <xs:element ref="tns:id"/>
+                    <xs:element ref="tns:itemType"/>
+                    <xs:element name="title" type="xs:string"/>
+                    <xs:element name="canPlay" type="xs:boolean" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+
             <xs:complexType name="extendedMetadata">
                 <xs:sequence>
                     <xs:choice>
@@ -434,6 +492,7 @@
                     </xs:choice>
                     <xs:element name="relatedBrowse" type="tns:relatedBrowse" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="relatedText" type="tns:relatedText" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="relatedPlay" type="tns:relatedPlay" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:complexType>
 
@@ -582,41 +641,7 @@
             <xs:element name="getMediaMetadataResponse">
                 <xs:complexType>
                     <xs:sequence>
-                    <xs:element name="getMediaMetadataResult">
-                      <xs:complexType>
-                        <xs:choice>
-                          <xs:sequence>
-                            <xs:element name="mediaMetadata" type="tns:mediaMetadata" />
-                          </xs:sequence>
-                          <xs:sequence>
-                            <!--
-                               mediaMetadata manually constructed here for partners not using the
-                               explicit mediaMetadata tags.
-                              -->
-                            <xs:element ref="tns:id" />
-                            <xs:element ref="tns:itemType" />
-                            <xs:element name="title" type="xs:string" />
-                            <!--
-                               Included for backwards compatability with MOAPI 1.0.  These
-                               are currently all disregarded by the Sonos firmware.
-                              -->
-                            <xs:element name="language" type="xs:string" minOccurs="0" />
-                            <xs:element name="country" type="xs:string" minOccurs="0" />
-                            <xs:element name="genreId" type="xs:string" minOccurs="0" />
-                            <xs:element name="genre" type="xs:string" minOccurs="0" />
-                            <xs:element name="twitterId" type="xs:string" minOccurs="0" />
-                            <xs:element name="liveNow" type="xs:boolean" minOccurs="0" />
-                            <xs:element name="onDemand" type="xs:boolean" minOccurs="0" />
-                            <xs:element name="mimeType" type="xs:string" />
-                            <xs:choice>
-                              <xs:element name="trackMetadata" type="tns:trackMetadata" />
-                              <xs:element name="streamMetadata" type="tns:streamMetadata" />
-                            </xs:choice>
-                            <xs:element name="dynamic" type="tns:dynamicData" minOccurs="0" maxOccurs="1"/>
-                          </xs:sequence>
-                        </xs:choice>
-                      </xs:complexType>
-                    </xs:element>
+                        <xs:element name="getMediaMetadataResult" type="tns:mediaMetadata"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -625,6 +650,8 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="id" type="tns:id"/>
+                        <xs:element name="action" type="tns:mediaUriAction" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="secondsSinceExplicit" type="xs:int" minOccurs="0" maxOccurs="1"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -959,13 +986,27 @@
                 </xs:complexType>
             </xs:element>
 
-            <xs:element name="SonosError" type="xs:int"/>
+            <xs:element name="customFaultDetail">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:sequence>
+                            <xs:element name="SonosError" type="xs:int"/>
+                            <xs:element name="ExceptionInfo" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:element name="refreshAuthTokenResult" type="tns:deviceAuthTokenResult"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
 
         </xs:schema>
     </wsdl:types>
 
     <wsdl:message name="credentials">
         <wsdl:part name="credentials" element="tns:credentials"/>
+    </wsdl:message>
+
+    <wsdl:message name="context">
+        <wsdl:part name="context" element="tns:context"/>
     </wsdl:message>
 
     <wsdl:message name="getSessionIdIn">
@@ -1184,7 +1225,7 @@
     </wsdl:message>
 
     <wsdl:message name="customFault">
-        <wsdl:part name="customFault" element="tns:SonosError"/>
+        <wsdl:part name="customFault" element="tns:customFaultDetail"/>
     </wsdl:message>
 
     <wsdl:portType name="SonosSoap">
@@ -1323,6 +1364,7 @@
             <wsdl:output message="tns:reorderContainerOut"/>
             <wsdl:fault message="tns:customFault" name="customFault"/>
         </wsdl:operation>
+
     </wsdl:portType>
 
     <wsdl:binding name="SonosSoap" type="tns:SonosSoap">
@@ -1331,6 +1373,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getSessionId" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1344,6 +1387,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getMetadata" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1357,6 +1401,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getExtendedMetadata" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1370,6 +1415,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getExtendedMetadataText" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1383,6 +1429,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#rateItem" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1396,6 +1443,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#search" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1409,6 +1457,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getMediaMetadata" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1422,6 +1471,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getMediaURI" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1435,6 +1485,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getScrollIndices" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1448,6 +1499,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#createItem" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1461,6 +1513,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#deleteItem" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1474,6 +1527,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getLastUpdate" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1487,6 +1541,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#reportStatus" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1500,6 +1555,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#setPlayedSeconds" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1513,6 +1569,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#reportPlaySeconds" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1526,6 +1583,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#reportPlayStatus" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1539,6 +1597,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#reportAccountAction" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1552,6 +1611,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getDeviceLinkCode" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1565,6 +1625,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getDeviceAuthToken" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1578,6 +1639,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getStreamingMetadata" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1591,6 +1653,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#getContentKey" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1604,6 +1667,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#createContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1617,6 +1681,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#addToContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1630,6 +1695,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#renameContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1643,6 +1709,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#deleteContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1656,6 +1723,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#removeFromContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
@@ -1669,6 +1737,7 @@
             <soap:operation soapAction="http://www.sonos.com/Services/1.1#reorderContainer" style="document"/>
             <wsdl:input>
                 <soap:header use="literal" message="tns:credentials" part="credentials"/>
+                <soap:header use="literal" message="tns:context" part="context"/>
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output>

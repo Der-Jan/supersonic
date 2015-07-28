@@ -74,6 +74,7 @@ import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaList;
 import com.sonos.services._1.MediaMetadata;
+import com.sonos.services._1.MediaUriAction;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RelatedBrowse;
@@ -371,15 +372,14 @@ public class SonosService implements SonosSoap {
         int id = Integer.parseInt(parameters.getId());
         MediaFile song = mediaFileService.getMediaFile(id);
 
-        GetMediaMetadataResponse.GetMediaMetadataResult result = new GetMediaMetadataResponse.GetMediaMetadataResult();
-        result.setMediaMetadata(sonosHelper.forSong(song, getUsername(), getRequest()));
-        response.setGetMediaMetadataResult(result);
+        response.setGetMediaMetadataResult(sonosHelper.forSong(song, getUsername(), getRequest()));
 
         return response;
     }
 
     @Override
-    public void getMediaURI(String id, Holder<String> result, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
+    public void getMediaURI(String id, MediaUriAction action, Integer secondsSinceExplicit, Holder<String> result,
+                            Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
         result.value = sonosHelper.getMediaURI(Integer.parseInt(id), getUsername(), getRequest());
         LOG.debug("getMediaURI: " + id + " -> " + result.value);
     }

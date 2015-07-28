@@ -211,14 +211,14 @@ public class SonosHelper {
             result.add(shuffle);
 
             for (MediaFile shortcut : musicIndexService.getShortcuts(Arrays.asList(musicFolder))) {
-                result.add(forDirectory(shortcut, request));
+                result.add(forDirectory(shortcut, request, username));
             }
 
             MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(Arrays.asList(musicFolder), false);
             for (List<MusicIndex.SortableArtistWithMediaFiles> artists : musicFolderContent.getIndexedArtists().values()) {
                 for (MusicIndex.SortableArtistWithMediaFiles artist : artists) {
                     for (MediaFile artistMediaFile : artist.getMediaFiles()) {
-                        result.add(forDirectory(artistMediaFile, request));
+                        result.add(forDirectory(artistMediaFile, request, username));
                     }
                 }
             }
@@ -241,7 +241,7 @@ public class SonosHelper {
         boolean isArtist = true;
         for (MediaFile child : children) {
             if (child.isDirectory()) {
-                result.add(forDirectory(child, request));
+                result.add(forDirectory(child, request, username));
                 isArtist &= child.isAlbum();
             } else if (child.isAudio()) {
                 isArtist = false;
@@ -266,10 +266,12 @@ public class SonosHelper {
         return result;
     }
 
-    private MediaCollection forDirectory(MediaFile dir, HttpServletRequest request) {
+    private MediaCollection forDirectory(MediaFile dir, HttpServletRequest request, String username) {
+        mediaFileService.populateStarredDate(dir, username);
         MediaCollection mediaCollection = new MediaCollection();
 
         mediaCollection.setId(String.valueOf(dir.getId()));
+        mediaCollection.setIsFavorite(dir.getStarredDate() != null);
         if (dir.isAlbum()) {
             mediaCollection.setItemType(ItemType.ALBUM);
             mediaCollection.setArtist(dir.getArtist());
@@ -368,7 +370,7 @@ public class SonosHelper {
 
         AlbumList albumList = createAlbumList(albumListType, offset - (includeShuffle ? 0 : 1), count, username);
         for (MediaFile album : albumList.getAlbums()) {
-            mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album, request));
+            mediaList.getMediaCollectionOrMediaMetadata().add(forDirectory(album, request, username));
         }
 
         mediaList.setIndex(offset);
@@ -448,7 +450,7 @@ public class SonosHelper {
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (MediaFile album : mediaFileService.getAlbumsByYear(0, Integer.MAX_VALUE, decade, decade + 9, musicFolders)) {
-            result.add(forDirectory(album, request));
+            result.add(forDirectory(album, request, username));
         }
         return result;
     }
@@ -458,7 +460,7 @@ public class SonosHelper {
         Genre genre = mediaFileService.getGenres(true).get(genreIndex);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (MediaFile album : mediaFileService.getAlbumsByGenre(0, Integer.MAX_VALUE, genre.getName(), musicFolders)) {
-            result.add(forDirectory(album, request));
+            result.add(forDirectory(album, request, username));
         }
         return result;
     }
@@ -497,7 +499,7 @@ public class SonosHelper {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         for (MediaFile artist : mediaFileDao.getStarredDirectories(0, Integer.MAX_VALUE, username, musicFolders)) {
-            MediaCollection mediaCollection = forDirectory(artist, request);
+            MediaCollection mediaCollection = forDirectory(artist, request, username);
             mediaCollection.setItemType(ItemType.ARTIST);
             result.add(mediaCollection);
         }
@@ -508,7 +510,7 @@ public class SonosHelper {
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (MediaFile album : mediaFileDao.getStarredAlbums(0, Integer.MAX_VALUE, username, musicFolders)) {
-            MediaCollection mediaCollection = forDirectory(album, request);
+            MediaCollection mediaCollection = forDirectory(album, request, username);
             mediaCollection.setItemType(ItemType.ALBUM);
             result.add(mediaCollection);
         }
@@ -582,12 +584,13 @@ public class SonosHelper {
     }
 
     public AbstractMedia forMediaFile(MediaFile mediaFile, String username, HttpServletRequest request) {
-        return mediaFile.isFile() ? forSong(mediaFile, username, request) : forDirectory(mediaFile, request);
+        return mediaFile.isFile() ? forSong(mediaFile, username, request) : forDirectory(mediaFile, request, username);
     }
 
     public MediaMetadata forSong(MediaFile song, String username, HttpServletRequest request) {
         Player player = createPlayerIfNecessary(username);
         String suffix = transcodingService.getSuffix(player, song, null);
+        mediaFileService.populateStarredDate(song, username);
 
         MediaMetadata result = new MediaMetadata();
         result.setId(String.valueOf(song.getId()));
@@ -595,6 +598,7 @@ public class SonosHelper {
         result.setMimeType(StringUtil.getMimeType(suffix, true));
         result.setTitle(song.getTitle());
         result.setGenre(song.getGenre());
+        result.setIsFavorite(song.getStarredDate() != null);
 //        result.setDynamic();// TODO: For starred songs
 
         AlbumArtUrl albumArtURI = new AlbumArtUrl();
@@ -606,6 +610,7 @@ public class SonosHelper {
         trackMetadata.setAlbum(song.getAlbumName());
         trackMetadata.setAlbumArtURI(albumArtURI);
         trackMetadata.setDuration(song.getDurationSeconds());
+        trackMetadata.setTrackNumber(song.getTrackNumber());
 
         MediaFile parent = mediaFileService.getParentOf(song);
         if (parent != null && parent.isAlbum()) {
