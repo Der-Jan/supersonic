@@ -23,10 +23,33 @@
                 document.searchForm.submit();
             }
         }
+
+        function showLeftFrame() {
+            $("#show-left-frame").hide();
+            $("#hide-left-frame").show();
+            toggleLeftFrame(230);
+        }
+
+        function hideLeftFrame() {
+            $("#hide-left-frame").hide();
+            $("#show-left-frame").show();
+            toggleLeftFrame(0);
+        }
+
+        function toggleLeftFrame(width) {
+            $("#dummy-animation-target").stop();
+            $("#dummy-animation-target").animate({"max-width": width}, {
+                step: function (now, fx) {
+                    top.document.getElementById("mainFrameset").cols = now + ",*";
+                }
+            });
+        }
     </script>
 </head>
 
 <body class="bgcolor2 topframe" style="margin:0.4em 1em 0 1em;">
+
+<span id="dummy-animation-target" style="max-width:50px;display: none"></span>
 
 <fmt:message key="top.home" var="home"/>
 <fmt:message key="top.now_playing" var="nowPlaying"/>
@@ -40,8 +63,9 @@
 
 <table style="margin:0;padding-top:5px">
     <tr>
-        <td style="padding-right:3.5em;">
-            <a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="${help}" alt=""></a>
+        <td style="padding-right:4.5em;">
+            <img id="show-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="showLeftFrame()" alt="" style="cursor:pointer">
+            <img id="hide-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="hideLeftFrame()" alt="" style="display:none; cursor:pointer">
         </td>
         <td style="min-width:4em;padding-right:2em;text-align: center">
             <a href="home.view?" target="main"><img src="<spring:theme code="homeImage"/>" title="${home}" alt="${home}"></a>
@@ -100,7 +124,8 @@
             </c:if>
 
             <div class="detail">
-                <a href="j_acegi_logout" target="_top"><fmt:message key="top.logout"><fmt:param value="${model.user.username}"/></fmt:message></a>
+                <fmt:message key="top.logout" var="logout"><fmt:param value="${model.user.username}"/></fmt:message>
+                <a href="j_acegi_logout" target="_top">${fn:escapeXml(logout)}</a>
             </div>
         </td>
 

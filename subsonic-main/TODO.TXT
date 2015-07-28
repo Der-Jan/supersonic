@@ -32,12 +32,19 @@ REST: Improved metadata updates of ID3 albums, e.g., changing cover art.
 New: Support custom subsonic.org redirects.
 REST: Add changed date to playlists
 Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
+Security: Fixed some XSS vulnerabilities
+New: Hide left frame by default
 
 TODO IN 5.3
 ------------
+Make playqueue extend horizontally
+Make logout float right
+Check jwplayer in external player
+
 Test html5 audio when transcoding
+  Use custom progress bar, with time offset parameter instead of ranges
+  But this wouldn't work for non-transcoded tracks...
 Experimental: html5 player
-Test out chromecast support in jwplayer
 Backend: Is license email sent when extending?
 Disable scroll bar in top.jsp?
 HLS audio stutter

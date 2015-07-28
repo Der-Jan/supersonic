@@ -58,6 +58,10 @@
 <body class="bgcolor2 leftframe" onload="init()">
 <a name="top"></a>
 
+<div style="padding-bottom:1.5em">
+    <a href="help.view?" target="main"><img src="<spring:theme code="logoImage"/>" title="<fmt:message key="top.help"/>" alt=""></a>
+</div>
+
 <c:if test="${fn:length(model.musicFolders) > 1}">
     <div style="padding-bottom:1.0em">
     <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;">
