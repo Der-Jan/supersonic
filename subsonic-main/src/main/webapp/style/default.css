@@ -33,6 +33,12 @@
 .playlistframe {
 }
 
+.topframe::-webkit-scrollbar:vertical {
+    display:none
+}
+.leftframe::-webkit-scrollbar:horizontal {
+    display:none
+}
 
 /* Background color for form controls (use default). */
 input, select {
@@ -107,7 +113,7 @@ body {
     padding:0;
     border:0;
     margin:0.75em;
-    font-size: 10.1pt;
+    font-size: 10.5pt;
     line-height: 1.5em;
 }
 
