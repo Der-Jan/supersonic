@@ -33,6 +33,7 @@ New: Support custom subsonic.org redirects.
 REST: Add changed date to playlists
 Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
 Security: Fixed some XSS vulnerabilities
+Security: Log failed login attempts, including IP address.
 New: Hide left frame by default
 Sonos: Manage Subsonic playlists from the Sonos controller.
 Sonos: Show track numbers
@@ -48,7 +49,6 @@ Check jwplayer in external player
 Honor cover art limit.
 Get jukebox status from web.
 Change chromecast background.
-Log failed login attempts.
 Custom Sonos texts for starring.
 Upgrade sonos wsdl.
   AbstractMedia.summary

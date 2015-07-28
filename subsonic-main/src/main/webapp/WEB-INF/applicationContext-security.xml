@@ -4,6 +4,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
+    <bean id="loginFailureLogger" class="net.sourceforge.subsonic.security.LoginFailureLogger"/>
+
+    <bean class="net.sourceforge.subsonic.security.SubsonicApplicationEventListener">
+        <property name="loginFailureLogger" ref="loginFailureLogger"/>
+    </bean>
+
     <bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
         <property name="filterInvocationDefinitionSource">
             <value>
@@ -48,6 +54,7 @@
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="loginFailureLogger" ref="loginFailureLogger"/>
     </bean>
 
     <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">

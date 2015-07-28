@@ -66,6 +66,7 @@ public class RESTRequestParameterProcessingFilter implements Filter {
     private ProviderManager authenticationManager;
     private SettingsService settingsService;
     private SecurityService securityService;
+    private LoginFailureLogger loginFailureLogger;
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!(request instanceof HttpServletRequest)) {
@@ -111,6 +112,9 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         if (errorCode == null) {
             chain.doFilter(request, response);
         } else {
+            if (errorCode == RESTController.ErrorCode.NOT_AUTHENTICATED) {
+                loginFailureLogger.log(request.getRemoteAddr(), username);
+            }
             SecurityContextHolder.getContext().setAuthentication(null);
             sendErrorXml(httpRequest, httpResponse, errorCode);
         }
@@ -157,7 +161,6 @@ public class RESTRequestParameterProcessingFilter implements Filter {
                 SecurityContextHolder.getContext().setAuthentication(authResult);
                 return null;
             } catch (AuthenticationException x) {
-                LOG.info("Authentication failed for user " + username);
                 return RESTController.ErrorCode.NOT_AUTHENTICATED;
             }
         }
@@ -212,5 +215,9 @@ public class RESTRequestParameterProcessingFilter implements Filter {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setLoginFailureLogger(LoginFailureLogger loginFailureLogger) {
+        this.loginFailureLogger = loginFailureLogger;
     }
 }
