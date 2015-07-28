@@ -23,7 +23,8 @@
     <c:param name="toast" value="${command.reloadNeeded}"/>
 </c:import>
 
-<h2><fmt:message key="personalsettings.title"><fmt:param>${command.user.username}</fmt:param></fmt:message></h2>
+<fmt:message key="personalsettings.title" var="title"><fmt:param>${command.user.username}</fmt:param></fmt:message>
+<h2>${fn:escapeXml(title)}</h2>
 
 <fmt:message key="common.default" var="defaultTitle"/>
 <form:form method="post" action="personalSettings.view" commandName="command">

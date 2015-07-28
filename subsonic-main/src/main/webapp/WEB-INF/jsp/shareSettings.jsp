@@ -45,7 +45,7 @@
 
             <tr>
                 <td ${cssClass} style="padding-left:1em"><a href="${model.shareBaseUrl}${share.name}" target="_blank">${share.name}</a></td>
-                <td ${cssClass} style="padding-left:1em">${share.username}</td>
+                <td ${cssClass} style="padding-left:1em">${fn:escapeXml(share.username)}</td>
                 <td ${cssClass} style="padding-left:1em"><input type="text" name="description[${share.id}]" size="40" value="${share.description}"/></td>
                 <td ${cssClass} style="padding-left:1em"><fmt:formatDate value="${share.lastVisited}" type="date" dateStyle="medium"/></td>
                 <td ${cssClass} style="padding-left:1em; text-align:right">${share.visitCount}</td>

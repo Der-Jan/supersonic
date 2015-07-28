@@ -83,7 +83,7 @@
 <div style="margin:auto;width:500px">
     <h1 >${empty model.share.description ? model.songs[0].artist : fn:escapeXml(model.share.description)}</h1>
     <div style="float:left;padding-right:1.5em">
-        <h2 style="margin:0;">${empty model.share.description ? model.songs[0].albumName : model.share.username}</h2>
+        <h2 style="margin:0;">${empty model.share.description ? model.songs[0].albumName : fn:escapeXml(model.share.username)}</h2>
     </div>
     <div class="detail" style="float:right">Streaming by <a href="http://subsonic.org/" target="_blank"><b>Subsonic</b></a></div>
 

@@ -52,7 +52,7 @@
                 <option value="">-- <fmt:message key="usersettings.newuser"/> --</option>
                 <c:forEach items="${command.users}" var="user">
                     <option ${user.username eq command.username ? "selected" : ""}
-                            value="${user.username}">${user.username}</option>
+                            value="${fn:escapeXml(user.username)}">${fn:escapeXml(user.username)}</option>
                 </c:forEach>
             </select>
         </td>

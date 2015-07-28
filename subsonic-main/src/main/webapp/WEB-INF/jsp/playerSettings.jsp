@@ -38,7 +38,7 @@
                     <select name="player" onchange="location='playerSettings.view?id=' + options[selectedIndex].value;">
                         <c:forEach items="${command.players}" var="player">
                             <option ${player.id eq command.playerId ? "selected" : ""}
-                                    value="${player.id}">${player.description}</option>
+                                    value="${player.id}">${fn:escapeXml(player.description)}</option>
                         </c:forEach>
                     </select>
                 </td>
