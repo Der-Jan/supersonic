@@ -100,7 +100,7 @@
         <h4>Troubleshooting</h4>
         <p>
             If Subsonic doesn't start properly you can troubleshoot it by starting it from the command line:
-            <strong>/Applications/Subsonic.app/Contents/MacOS/JavaApplicationStub</strong>.
+            <strong>/Applications/Subsonic.app/Contents/MacOS/JavaAppLauncher</strong>.
         </p>
         <p>
             Also check the logs in <strong>/Library/Application Support/Subsonic</strong>.
