@@ -44,8 +44,6 @@ REST: Added getTopSongs
 TODO IN 5.3
 ------------
 Show toast when adding to play queue from playlist or top songs.
-Misspelled artist names vs last.fm
-  Chemical Brothers
 Remember visibility of left.jsp?
 Add SubStreamer
  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
