@@ -147,9 +147,11 @@
     }
     function addTopSong(index) {
         top.playQueue.onAdd(topSongs[index].id);
+        $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>')
     }
     function addNextTopSong(index) {
         top.playQueue.onAddNext(topSongs[index].id);
+        $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>')
     }
 </script>
 

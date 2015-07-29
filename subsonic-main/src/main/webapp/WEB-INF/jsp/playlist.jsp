@@ -135,9 +135,11 @@
         }
         function onAdd(index) {
             top.playQueue.onAdd(songs[index].id);
+            $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>')
         }
         function onAddNext(index) {
             top.playQueue.onAddNext(songs[index].id);
+            $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>')
         }
         function onStar(index) {
             playlistService.toggleStar(playlist.id, index, playlistCallback);

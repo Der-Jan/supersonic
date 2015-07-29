@@ -43,10 +43,10 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Log java version as early as possible
 Problem with podcast images
   Heia fotball
   Badevaktene
-Show toast when adding to play queue from playlist or top songs.
 Remember visibility of left.jsp?
 Add SubStreamer
  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
