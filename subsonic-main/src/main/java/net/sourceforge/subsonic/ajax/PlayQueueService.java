@@ -249,7 +249,7 @@ public class PlayQueueService {
         boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
 
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
-        List<MediaFile> files = lastFmService.getTopSongs(mediaFileService.getMediaFile(id), musicFolders);
+        List<MediaFile> files = lastFmService.getTopSongs(mediaFileService.getMediaFile(id), 50, musicFolders);
         if (!files.isEmpty()) {
             if (queueFollowingSongs) {
                 files = files.subList(index, files.size());

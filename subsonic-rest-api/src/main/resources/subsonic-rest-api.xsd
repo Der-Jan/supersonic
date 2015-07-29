@@ -47,6 +47,7 @@
             <xs:element name="artistInfo2" type="sub:ArtistInfo2" minOccurs="1" maxOccurs="1"/>
             <xs:element name="similarSongs" type="sub:SimilarSongs" minOccurs="1" maxOccurs="1"/>
             <xs:element name="similarSongs2" type="sub:SimilarSongs2" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="topSongs" type="sub:TopSongs" minOccurs="1" maxOccurs="1"/>
             <xs:element name="error" type="sub:Error" minOccurs="1" maxOccurs="1"/>
         </xs:choice>
         <xs:attribute name="status" type="sub:ResponseStatus" use="required"/>
@@ -518,6 +519,12 @@
     </xs:complexType>
 
     <xs:complexType name="SimilarSongs2">
+        <xs:sequence>
+            <xs:element name="song" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TopSongs">
         <xs:sequence>
             <xs:element name="song" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>

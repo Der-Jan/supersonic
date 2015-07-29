@@ -79,6 +79,7 @@ import org.subsonic.restapi.SimilarSongs2;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
+import org.subsonic.restapi.TopSongs;
 import org.subsonic.restapi.Users;
 import org.subsonic.restapi.Videos;
 
@@ -426,6 +427,28 @@ public class RESTController extends MultiActionController {
 
         Response res = createResponse();
         res.setSimilarSongs2(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getTopSongs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        String artist = getRequiredStringParameter(request, "artist");
+        int count = getIntParameter(request, "count", 50);
+
+        TopSongs result = new TopSongs();
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> topSongs = lastFmService.getTopSongs(artist, count, musicFolders);
+        Player player = playerService.getPlayer(request, response);
+        for (MediaFile topSong : topSongs) {
+            result.getSong().add(createJaxbChild(player, topSong, username));
+        }
+
+        Response res = createResponse();
+        res.setTopSongs(result);
         jaxbWriter.writeResponse(request, response, res);
     }
 

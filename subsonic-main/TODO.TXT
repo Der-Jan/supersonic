@@ -39,11 +39,13 @@ Sonos: Manage Subsonic playlists from the Sonos controller.
 Sonos: Show track numbers
 New: Show top tracks for artist
 New: Improved artist bio design
+REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
 Last.fm top tracks by artist.
   REST support
+  Add button "Play top songs"
 Show toast when adding to play queue from playlist or top songs.
 Misspelled artist names vs last.fm
   Chemical Brothers

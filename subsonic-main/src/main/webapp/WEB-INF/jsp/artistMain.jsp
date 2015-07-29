@@ -47,7 +47,7 @@
     }
 
     function loadArtistInfo() {
-        multiService.getArtistInfo(${model.dir.id}, 8, true, function (artistInfo) {
+        multiService.getArtistInfo(${model.dir.id}, 8, 50, function (artistInfo) {
             if (artistInfo.similarArtists.length > 0) {
 
                 var html = "";

@@ -234,24 +234,37 @@ public class LastFmService {
      * Returns top songs for the given artist, using last.fm REST API.
      *
      * @param artist       The artist.
+     * @param count        Max number of songs to return.
      * @param musicFolders Only return songs present in these folders.
      * @return Top songs for artist.
      */
-    public List<MediaFile> getTopSongs(MediaFile artist, List<MusicFolder> musicFolders) {
-        // TODO: Use canonical?
-        return getTopSongs(artist.getName(), musicFolders);
+    public List<MediaFile> getTopSongs(MediaFile artist, int count, List<MusicFolder> musicFolders) {
+        return getTopSongs(artist.getName(), count, musicFolders);
     }
 
-    private List<MediaFile> getTopSongs(String artistName, List<MusicFolder> musicFolders) {
+    /**
+     * Returns top songs for the given artist, using last.fm REST API.
+     *
+     * @param artistName   The artist name.
+     * @param count        Max number of songs to return.
+     * @param musicFolders Only return songs present in these folders.
+     * @return Top songs for artist.
+     */
+    public List<MediaFile> getTopSongs(String artistName, int count, List<MusicFolder> musicFolders) {
+        // TODO: Use canonical?
         try {
-            if (artistName == null) {
-                return null;
+            if (StringUtils.isBlank(artistName) || count <= 0) {
+                return Collections.emptyList();
             }
+
             List<MediaFile> result = new ArrayList<MediaFile>();
             for (Track topTrack : Artist.getTopTracks(artistName, LAST_FM_KEY)) {
                 MediaFile song = mediaFileDao.getSongByArtistAndTitle(artistName, topTrack.getName(), musicFolders);
                 if (song != null) {
                     result.add(song);
+                    if (result.size() == count) {
+                        return result;
+                    }
                 }
             }
             return result;
