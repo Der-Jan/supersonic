@@ -54,12 +54,16 @@ public class PodcastChannelsController extends ParameterizableViewController {
         result.addObject("model", map);
 
         Map<PodcastChannel, List<PodcastEpisode>> channels = new LinkedHashMap<PodcastChannel, List<PodcastEpisode>>();
+        Map<Integer, PodcastChannel> channelMap = new HashMap<Integer, PodcastChannel>();
         for (PodcastChannel channel : podcastService.getAllChannels()) {
             channels.put(channel, podcastService.getEpisodes(channel.getId()));
+            channelMap.put(channel.getId(), channel);
         }
 
         map.put("user", securityService.getCurrentUser(request));
         map.put("channels", channels);
+        map.put("channelMap", channelMap);
+        map.put("newestEpisodes", podcastService.getNewestEpisodes(10));
         map.put("licenseInfo", settingsService.getLicenseInfo());
         return result;
     }

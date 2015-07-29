@@ -122,6 +122,18 @@ public class PodcastDao extends AbstractDao {
     }
 
     /**
+     * Returns the N newest episodes.
+     *
+     * @return Possibly empty list of the newest Podcast episodes, sorted in
+     *         reverse chronological order (newest episode first).
+     */
+    public List<PodcastEpisode> getNewestEpisodes(int count) {
+        String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where status = ? and publish_date is not null " +
+                     "order by publish_date desc limit ?";
+        return query(sql, episodeRowMapper, PodcastStatus.COMPLETED, count);
+    }
+
+    /**
      * Returns the Podcast episode with the given ID.
      *
      * @param episodeId The Podcast episode ID.

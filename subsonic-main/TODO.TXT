@@ -43,6 +43,9 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Problem with podcast images
+  Heia fotball
+  Badevaktene
 Show toast when adding to play queue from playlist or top songs.
 Remember visibility of left.jsp?
 Add SubStreamer
@@ -69,7 +72,6 @@ Status should only be available for admin.
 Kernel notification of disk changes.
 Case insensitive ldap.
 Private domain share.
-Show list of latest podcast episodes.
 NAS support
 
 Test html5 audio when transcoding

@@ -125,10 +125,6 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:url value="main.view" var="mainUrl">
-                <c:param name="id" value="${episode.mediaFileId}"/>
-            </c:url>
-
             <td class="truncate">
                     <span title="${episode.title}" class="songTitle">${episode.title}</span>
             </td>

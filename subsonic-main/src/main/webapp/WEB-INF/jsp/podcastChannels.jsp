@@ -53,6 +53,41 @@
 
 </c:forEach>
 
+<c:if test="${not empty model.newestEpisodes}">
+    <h2 style="margin-top:1em"><fmt:message key="podcastreceiver.newestepisodes"/></h2>
+    <table class="music indent">
+        <c:forEach items="${model.newestEpisodes}" var="episode">
+            <tr>
+                <c:import url="playButtons.jsp">
+                    <c:param name="id" value="${episode.mediaFileId}"/>
+                    <c:param name="podcastEpisodeId" value="${episode.id}"/>
+                    <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
+                    <c:param name="addEnabled" value="${model.user.streamRole and not model.partyMode}"/>
+                    <c:param name="asTable" value="true"/>
+                </c:import>
+                <c:set var="channelTitle" value="${model.channelMap[episode.channelId].title}"/>
+
+                <td class="truncate">
+                    <span title="${episode.title}" class="songTitle">${episode.title}</span>
+                </td>
+
+                <td class="truncate">
+                    <a href="podcastChannel.view?id=${episode.channelId}"><span class="detail" title="${channelTitle}">${channelTitle}</span></a>
+                </td>
+
+                <td class="fit">
+                    <span class="detail">${episode.duration}</span>
+                </td>
+
+                <td class="fit">
+                    <span class="detail"><fmt:formatDate value="${episode.publishDate}" dateStyle="medium"/></span>
+                </td>
+
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
 <table style="padding-top:1em"><tr>
     <c:if test="${model.user.podcastRole}">
         <td style="padding-right:2em"><div class="forward"><a href="podcastReceiverAdmin.view?refresh"><fmt:message key="podcastreceiver.check"/></a></div></td>

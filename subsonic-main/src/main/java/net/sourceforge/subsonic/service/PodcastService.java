@@ -201,8 +201,17 @@ public class PodcastService {
      */
     public List<PodcastEpisode> getEpisodes(int channelId) {
         List<PodcastEpisode> episodes = filterAllowed(podcastDao.getEpisodes(channelId));
-        addMediaFileIdToEpisodes(episodes);
-        return episodes;
+        return addMediaFileIdToEpisodes(episodes);
+    }
+
+    /**
+     * Returns the N newest episodes.
+     *
+     * @return Possibly empty list of the newest Podcast episodes, sorted in
+     *         reverse chronological order (newest episode first).
+     */
+    public List<PodcastEpisode> getNewestEpisodes(int count) {
+        return addMediaFileIdToEpisodes(podcastDao.getNewestEpisodes(count));
     }
 
     private List<PodcastEpisode> filterAllowed(List<PodcastEpisode> episodes) {
@@ -227,7 +236,7 @@ public class PodcastService {
         return episode;
     }
 
-    private void addMediaFileIdToEpisodes(List<PodcastEpisode> episodes) {
+    private List<PodcastEpisode> addMediaFileIdToEpisodes(List<PodcastEpisode> episodes) {
         for (PodcastEpisode episode : episodes) {
             if (episode.getPath() != null) {
                 MediaFile mediaFile = mediaFileService.getMediaFile(episode.getPath());
@@ -236,6 +245,7 @@ public class PodcastService {
                 }
             }
         }
+        return episodes;
     }
 
     private List<PodcastChannel> addMediaFileIdToChannels(List<PodcastChannel> channels) {
