@@ -79,6 +79,7 @@
 
             if (topSongs.length > 0) {
                 $("#topSongsHeader").show();
+                $("#playTopSongs").show();
 
                 // Delete all the rows except for the "pattern" row
                 dwr.util.removeAllRows("topSongsBody", { filter:function(tr) {
@@ -137,6 +138,9 @@
     }
     function playSimilar() {
         top.playQueue.onPlaySimilar(${model.dir.id}, 50);
+    }
+    function playAllTopSongs() {
+        top.playQueue.onPlayTopSong(${model.dir.id});
     }
     function playTopSong(index) {
         top.playQueue.onPlayTopSong(${model.dir.id}, index);
@@ -286,7 +290,8 @@
         <span id="similarArtists"></span>
     </td></tr>
     <tr><td style="text-align:center">
-        <input id="similarArtistsRadio" style="display:none;margin-top:1em" type="button" value="<fmt:message key="main.startradio"/>" onclick="playSimilar()">
+        <input id="similarArtistsRadio" style="display:none;margin-top:1em;margin-right:0.3em;cursor:pointer" type="button" value="<fmt:message key="main.startradio"/>" onclick="playSimilar()">
+        <input id="playTopSongs" style="display:none;margin-top:1em;margin-left:0.3em;cursor:pointer" type="button" value="<fmt:message key="main.playtopsongs"/>" onclick="playAllTopSongs()">
     </td></tr>
     <tr><td style="height: 100%"></td></tr>
 </table>

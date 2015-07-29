@@ -241,7 +241,10 @@ public class PlayQueueService {
         return doPlay(request, player, files).setStartPlayerAt(0);
     }
 
-    public PlayQueueInfo playTopSong(int id, int index) throws Exception {
+    /**
+     * @param index Start playing at this index, or play all top songs if {@code null}.
+     */
+    public PlayQueueInfo playTopSong(int id, Integer index) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
@@ -250,7 +253,7 @@ public class PlayQueueService {
 
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaFile> files = lastFmService.getTopSongs(mediaFileService.getMediaFile(id), 50, musicFolders);
-        if (!files.isEmpty()) {
+        if (!files.isEmpty() && index != null) {
             if (queueFollowingSongs) {
                 files = files.subList(index, files.size());
             } else {

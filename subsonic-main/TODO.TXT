@@ -43,9 +43,6 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
-Last.fm top tracks by artist.
-  REST support
-  Add button "Play top songs"
 Show toast when adding to play queue from playlist or top songs.
 Misspelled artist names vs last.fm
   Chemical Brothers
