@@ -44,7 +44,6 @@ TODO IN 5.3
 ------------
 Last.fm top tracks by artist.
   REST support
-  Click to zoom artist image
 Show toast when adding to play queue from playlist or top songs.
 Misspelled artist names vs last.fm
   Chemical Brothers

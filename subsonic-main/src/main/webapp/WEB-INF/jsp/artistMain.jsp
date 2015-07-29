@@ -29,6 +29,8 @@
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
 </head><body class="mainframe bgcolor1" onload="init();">
 
@@ -37,6 +39,8 @@
     var topSongs;
 
     function init() {
+        setupZoom('<c:url value="/"/>');
+
         <c:if test="${model.showArtistInfo}">
         loadArtistInfo();
         </c:if>
@@ -65,6 +69,7 @@
                 $("#artistBio").append(artistInfo.artistBio.biography);
                 if (artistInfo.artistBio.largeImageUrl) {
                     $("#artistImage").attr("src", artistInfo.artistBio.largeImageUrl);
+                    $("#artistImageZoom").attr("href", artistInfo.artistBio.largeImageUrl);
                     $("#artistImage").show();
                     $("#artistInfoTable").show();
                 }
@@ -267,7 +272,9 @@
 <table id="artistInfoTable" style="padding:2em;clear:both;display:none" class="bgcolor2 dropshadow">
     <tr>
         <td rowspan="5" style="vertical-align: top">
-            <img id="artistImage" class="dropshadow" alt="" style="margin-right:2em; display:none; max-width:300px; max-height:300px">
+            <a id="artistImageZoom" rel="zoom" href="void">
+                <img id="artistImage" class="dropshadow" alt="" style="margin-right:2em; display:none; max-width:300px; max-height:300px">
+            </a>
         </td>
         <td style="text-align:center"><h2>${fn:escapeXml(model.dir.name)}</h2></td>
     </tr>
