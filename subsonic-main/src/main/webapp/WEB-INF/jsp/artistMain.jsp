@@ -25,6 +25,7 @@
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
+    <script type="text/javascript" src="<c:url value='/dwr/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
@@ -32,6 +33,9 @@
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <script type="text/javascript" language="javascript">
+
+    var topSongs;
+
     function init() {
         <c:if test="${model.showArtistInfo}">
         loadArtistInfo();
@@ -39,8 +43,9 @@
     }
 
     function loadArtistInfo() {
-        multiService.getArtistInfo(${model.dir.id}, 8, function (artistInfo) {
+        multiService.getArtistInfo(${model.dir.id}, 8, true, function (artistInfo) {
             if (artistInfo.similarArtists.length > 0) {
+
                 var html = "";
                 for (var i = 0; i < artistInfo.similarArtists.length; i++) {
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
@@ -53,16 +58,57 @@
                 $("#similarArtists").show();
                 $("#similarArtistsTitle").show();
                 $("#similarArtistsRadio").show();
+                $("#artistInfoTable").show();
             }
 
             if (artistInfo.artistBio && artistInfo.artistBio.biography) {
                 $("#artistBio").append(artistInfo.artistBio.biography);
-                if (artistInfo.artistBio.mediumImageUrl) {
-                    $("#artistImage").attr("src", artistInfo.artistBio.mediumImageUrl);
+                if (artistInfo.artistBio.largeImageUrl) {
+                    $("#artistImage").attr("src", artistInfo.artistBio.largeImageUrl);
                     $("#artistImage").show();
+                    $("#artistInfoTable").show();
+                }
+            }
+
+            this.topSongs = artistInfo.topSongs;
+
+            if (topSongs.length > 0) {
+                $("#topSongsHeader").show();
+
+                // Delete all the rows except for the "pattern" row
+                dwr.util.removeAllRows("topSongsBody", { filter:function(tr) {
+                    return (tr.id != "pattern");
+                }});
+
+                // Create a new set cloned from the pattern row
+                for (var i = 0; i < topSongs.length; i++) {
+                    var song  = topSongs[i];
+                    var id = i + 1;
+                    dwr.util.cloneNode("pattern", { idSuffix:id });
+                    if (song.starred) {
+                        $("#starSong" + id).attr("src", "<spring:theme code='ratingOnImage'/>");
+                    } else {
+                        $("#starSong" + id).attr("src", "<spring:theme code='ratingOffImage'/>");
+                    }
+                    $("#rank" + id).html(i + 1);
+                    $("#title" + id).html(song.title);
+                    $("#title" + id).attr("title", song.title);
+                    $("#album" + id).html(song.album);
+                    $("#album" + id).attr("title", song.album);
+                    $("#albumUrl" + id).attr("href", "main.view?id=" + song.id);
+                    $("#artist" + id).html(song.artist);
+                    $("#artist" + id).attr("title", song.artist);
+                    $("#songDuration" + id).html(song.durationAsString);
+
+                    // Note: show() method causes page to scroll to top.
+                    $("#pattern" + id).css("display", "table-row");
                 }
             }
         });
+    }
+
+    function toggleStarTopSong(index, imageId) {
+        toggleStar(topSongs[index].id, imageId);
     }
 
     function toggleStar(mediaFileId, imageId) {
@@ -75,23 +121,27 @@
             starService.star(mediaFileId);
         }
     }
-
     function playAll() {
         top.playQueue.onPlay(${model.dir.id});
     }
-
     function playRandom() {
         top.playQueue.onPlayRandom(${model.dir.id}, 40);
     }
-
     function addAll() {
         top.playQueue.onAdd(${model.dir.id});
     }
-
     function playSimilar() {
         top.playQueue.onPlaySimilar(${model.dir.id}, 50);
     }
-
+    function playTopSong(index) {
+        top.playQueue.onPlayTopSong(${model.dir.id}, index);
+    }
+    function addTopSong(index) {
+        top.playQueue.onAdd(topSongs[index].id);
+    }
+    function addNextTopSong(index) {
+        top.playQueue.onAddNext(topSongs[index].id);
+    }
 </script>
 
 <div style="float:left">
@@ -214,23 +264,50 @@
     </c:otherwise>
 </c:choose>
 
-<table style="width:90%;padding-top:2em;clear:both">
+<table id="artistInfoTable" style="padding:2em;clear:both;display:none" class="bgcolor2 dropshadow">
     <tr>
-        <td rowspan="4" style="vertical-align: top">
-            <img id="artistImage" class="dropshadow" alt="" style="margin-right: 1em; display: none">
+        <td rowspan="5" style="vertical-align: top">
+            <img id="artistImage" class="dropshadow" alt="" style="margin-right:2em; display:none; max-width:300px; max-height:300px">
         </td>
+        <td style="text-align:center"><h2>${fn:escapeXml(model.dir.name)}</h2></td>
+    </tr>
+    <tr>
         <td id="artistBio" style="padding-bottom: 0.5em"></td>
     </tr>
     <tr><td style="padding-bottom: 0.5em">
         <span id="similarArtistsTitle" style="padding-right: 0.5em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
     </td></tr>
-    <tr><td>
-        <div id="similarArtistsRadio" class="forward" style="display: none">
-            <a href="javascript:playSimilar()"><fmt:message key="main.startradio"/></a>
-        </div>
+    <tr><td style="text-align:center">
+        <input id="similarArtistsRadio" style="display:none;margin-top:1em" type="button" value="<fmt:message key="main.startradio"/>" onclick="playSimilar()">
     </td></tr>
     <tr><td style="height: 100%"></td></tr>
+</table>
+
+<h2 id="topSongsHeader" style="display:none; padding-top:1em"><fmt:message key="main.topsongs"/></h2>
+
+<table class="music indent">
+    <tbody id="topSongsBody">
+    <tr id="pattern" style="display:none;margin:0;padding:0;border:0">
+        <td class="fit">
+            <img id="starSong" onclick="toggleStarTopSong(this.id.substring(8) - 1, '#starSong' + this.id.substring(8))" src="<spring:theme code="ratingOffImage"/>"
+                 style="cursor:pointer" alt="" title=""></td>
+        <td class="fit">
+            <img id="play" src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"
+                 style="padding-right:0.1em;cursor:pointer" onclick="playTopSong(this.id.substring(4) - 1)"></td>
+        <td class="fit">
+            <img id="add" src="<spring:theme code="addImage"/>" alt="<fmt:message key="common.add"/>" title="<fmt:message key="common.add"/>"
+                 style="padding-right:0.1em;cursor:pointer" onclick="addTopSong(this.id.substring(3) - 1)"></td>
+        <td class="fit" style="padding-right:30px">
+            <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
+                 style="padding-right:0.1em;cursor:pointer" onclick="addNextTopSong(this.id.substring(7) - 1)"></td>
+        <td class="fit rightalign"><span id="rank" class="detail">Rank</span></td>
+        <td class="truncate"><span id="title" class="songTitle">Title</span></td>
+        <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
+        <td class="truncate"><span id="artist" class="detail">Artist</span></td>
+        <td class="fit rightalign"><span id="songDuration" class="detail">Duration</span></td>
+    </tr>
+    </tbody>
 </table>
 
 </body>

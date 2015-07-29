@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
@@ -384,6 +385,21 @@ public class MediaFileDao extends AbstractDao {
     public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {
         return query("select " + COLUMNS + " from media_file where type in (?,?,?) and artist=? and present limit ? offset ?",
                      rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), artist, count, offset);
+    }
+
+    public MediaFile getSongByArtistAndTitle(final String artist, final String title, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty() || StringUtils.isBlank(title) || StringUtils.isBlank(artist)) {
+            return null;
+        }
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("artist", artist);
+            put("title", title);
+            put("type", MUSIC.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from media_file where type = :type and artist = :artist " +
+                             "and title = :title and present and folder in (:folders)" ,
+                             rowMapper, args);
     }
 
     /**

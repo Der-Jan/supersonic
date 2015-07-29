@@ -37,9 +37,18 @@ Security: Log failed login attempts, including IP address.
 New: Hide left frame by default
 Sonos: Manage Subsonic playlists from the Sonos controller.
 Sonos: Show track numbers
+New: Show top tracks for artist
+New: Improved artist bio design
 
 TODO IN 5.3
 ------------
+Last.fm top tracks by artist.
+  REST support
+  Click to zoom artist image
+Show toast when adding to play queue from playlist or top songs.
+Misspelled artist names vs last.fm
+  Chemical Brothers
+Remember visibility of left.jsp?
 Add SubStreamer
  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
 Make playqueue extend horizontally
@@ -63,7 +72,6 @@ Test other html5 apps.
 Status should only be available for admin.
 Kernel notification of disk changes.
 Case insensitive ldap.
-Last fm top tracks by artist.
 Private domain share.
 Show list of latest podcast episodes.
 NAS support

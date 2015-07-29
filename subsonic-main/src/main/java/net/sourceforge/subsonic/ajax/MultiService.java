@@ -18,7 +18,9 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,11 +66,28 @@ public class MultiService {
                                  urlRedirectionStatus.getDate());
     }
 
-    public ArtistInfo getArtistInfo(int mediaFileId, int maxSimilarArtists) {
+    public ArtistInfo getArtistInfo(int mediaFileId, int maxSimilarArtists, boolean includeTopSongs) {
         MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
         List<SimilarArtist> similarArtists = getSimilarArtists(mediaFileId, maxSimilarArtists);
         ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
-        return new ArtistInfo(similarArtists, artistBio);
+        List<TopSong> topSongs = includeTopSongs ? getTopSongs(mediaFile) : Collections.<TopSong>emptyList();
+
+        return new ArtistInfo(similarArtists, artistBio, topSongs);
+    }
+
+    private List<TopSong> getTopSongs(MediaFile mediaFile) {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        String username = securityService.getCurrentUsername(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+
+        List<TopSong> result = new ArrayList<TopSong>();
+        List<MediaFile> files = lastFmService.getTopSongs(mediaFile, musicFolders);
+        mediaFileService.populateStarredDate(files, username);
+        for (MediaFile file : files) {
+            result.add(new TopSong(file.getId(), file.getTitle(), file.getArtist(), file.getAlbumName(),
+                                   file.getDurationString(), file.getStarredDate() != null));
+        }
+        return result;
     }
 
     private List<SimilarArtist> getSimilarArtists(int mediaFileId, int limit) {

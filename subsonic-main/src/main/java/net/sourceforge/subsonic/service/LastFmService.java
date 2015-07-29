@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.Track;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
@@ -122,7 +123,7 @@ public class LastFmService {
      * @param artist            The artist.
      * @param count             Max number of similar artists to return.
      * @param includeNotPresent Whether to include artists that are not present in the media library.
-     * @param musicFolders Only return songs from artists in these folders.
+     * @param musicFolders      Only return songs from artists in these folders.
      * @return Similar artists, ordered by presence then similarity.
      */
     public List<net.sourceforge.subsonic.domain.Artist> getSimilarArtists(net.sourceforge.subsonic.domain.Artist artist,
@@ -168,8 +169,8 @@ public class LastFmService {
     /**
      * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
      *
-     * @param artist The artist.
-     * @param count  Max number of songs to return.
+     * @param artist       The artist.
+     * @param count        Max number of songs to return.
      * @param musicFolders Only return songs from artists in these folders.
      * @return Songs from similar artists;
      */
@@ -188,8 +189,8 @@ public class LastFmService {
     /**
      * Returns songs from similar artists, using last.fm REST API. Typically used for artist radio features.
      *
-     * @param mediaFile The media file (song, album or artist).
-     * @param count     Max number of songs to return.
+     * @param mediaFile    The media file (song, album or artist).
+     * @param count        Max number of songs to return.
      * @param musicFolders Only return songs from artists present in these folders.
      * @return Songs from similar artists;
      */
@@ -227,6 +228,37 @@ public class LastFmService {
      */
     public ArtistBio getArtistBio(net.sourceforge.subsonic.domain.Artist artist) {
         return getArtistBio(getCanonicalArtistName(artist.getName()));
+    }
+
+    /**
+     * Returns top songs for the given artist, using last.fm REST API.
+     *
+     * @param artist       The artist.
+     * @param musicFolders Only return songs present in these folders.
+     * @return Top songs for artist.
+     */
+    public List<MediaFile> getTopSongs(MediaFile artist, List<MusicFolder> musicFolders) {
+        // TODO: Use canonical?
+        return getTopSongs(artist.getName(), musicFolders);
+    }
+
+    private List<MediaFile> getTopSongs(String artistName, List<MusicFolder> musicFolders) {
+        try {
+            if (artistName == null) {
+                return null;
+            }
+            List<MediaFile> result = new ArrayList<MediaFile>();
+            for (Track topTrack : Artist.getTopTracks(artistName, LAST_FM_KEY)) {
+                MediaFile song = mediaFileDao.getSongByArtistAndTitle(artistName, topTrack.getName(), musicFolders);
+                if (song != null) {
+                    result.add(song);
+                }
+            }
+            return result;
+        } catch (Throwable x) {
+            LOG.warn("Failed to find top songs for " + artistName, x);
+            return Collections.emptyList();
+        }
     }
 
     private ArtistBio getArtistBio(String artistName) {

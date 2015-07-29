@@ -198,6 +198,9 @@
     function onPlayPlaylist(id, index) {
         playQueueService.playPlaylist(id, index, playQueueCallback);
     }
+    function onPlayTopSong(id, index) {
+        playQueueService.playTopSong(id, index, playQueueCallback);
+    }
     function onPlayPodcastChannel(id) {
         playQueueService.playPodcastChannel(id, playQueueCallback);
     }

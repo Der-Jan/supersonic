@@ -241,6 +241,27 @@ public class PlayQueueService {
         return doPlay(request, player, files).setStartPlayerAt(0);
     }
 
+    public PlayQueueInfo playTopSong(int id, int index) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        String username = securityService.getCurrentUsername(request);
+        boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> files = lastFmService.getTopSongs(mediaFileService.getMediaFile(id), musicFolders);
+        if (!files.isEmpty()) {
+            if (queueFollowingSongs) {
+                files = files.subList(index, files.size());
+            } else {
+                files = Arrays.asList(files.get(index));
+            }
+        }
+
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
     public PlayQueueInfo playPodcastChannel(int id) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
