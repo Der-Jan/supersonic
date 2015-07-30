@@ -56,7 +56,7 @@
 <c:if test="${not empty model.newestEpisodes}">
     <h2 style="margin-top:1em"><fmt:message key="podcastreceiver.newestepisodes"/></h2>
     <table class="music indent">
-        <c:forEach items="${model.newestEpisodes}" var="episode">
+        <c:forEach items="${model.newestEpisodes}" var="episode" varStatus="i">
             <tr>
                 <c:import url="playButtons.jsp">
                     <c:param name="id" value="${episode.mediaFileId}"/>
@@ -64,6 +64,7 @@
                     <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                     <c:param name="addEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                     <c:param name="asTable" value="true"/>
+                    <c:param name="onPlay" value="top.playQueue.onPlayNewestPodcastEpisode(${i.index})"/>
                 </c:import>
                 <c:set var="channelTitle" value="${model.channelMap[episode.channelId].title}"/>
 

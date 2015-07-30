@@ -4,7 +4,6 @@
 <%--
 PARAMETERS
   id: ID of file.
-  podcastEpisodeId: ID of podcast episode.
   video: Whether the file is a video (default false).
   playEnabled: Whether to show play button (default true).
   addEnabled: Whether to show add next/last buttons (default true).
@@ -12,6 +11,7 @@ PARAMETERS
   starEnabled: Whether to show star/unstar controls (default false).
   starred: Whether the file is currently starred.
   asTable: Whether to put the images in td tags.
+  onPlay: Overrides the javascript used for the play action.
 --%>
 
 <c:if test="${param.starEnabled}">
@@ -40,9 +40,9 @@ PARAMETERS
                 <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
                      title="<fmt:message key="common.play"/>"></a>
         </c:when>
-        <c:when test="${not empty param.podcastEpisodeId}">
+        <c:when test="${not empty param.onPlay}">
             <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"
-                 onclick="top.playQueue.onPlayPodcastEpisode(${param.podcastEpisodeId}); return false;" title="<fmt:message key="common.play"/>">
+                 onclick="${param.onPlay}; return false;" title="<fmt:message key="common.play"/>">
         </c:when>
         <c:otherwise>
             <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"

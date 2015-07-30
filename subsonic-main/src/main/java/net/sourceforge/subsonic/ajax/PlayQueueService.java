@@ -32,6 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.dao.PlayQueueDao;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -303,6 +306,33 @@ public class PlayQueueService {
                 }
             }
         }
+        Player player = getCurrentPlayer(request, response);
+        return doPlay(request, player, files).setStartPlayerAt(0);
+    }
+
+    public PlayQueueInfo playNewestPodcastEpisode(Integer index) throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+
+        List<PodcastEpisode> episodes = podcastService.getNewestEpisodes(10);
+        List<MediaFile> files = Lists.transform(episodes, new Function<PodcastEpisode, MediaFile>() {
+            @Override
+            public MediaFile apply(PodcastEpisode episode) {
+                return mediaFileService.getMediaFile(episode.getMediaFileId());
+            }
+        });
+
+        String username = securityService.getCurrentUsername(request);
+        boolean queueFollowingSongs = settingsService.getUserSettings(username).isQueueFollowingSongs();
+
+        if (!files.isEmpty() && index != null) {
+            if (queueFollowingSongs) {
+                files = files.subList(index, files.size());
+            } else {
+                files = Arrays.asList(files.get(index));
+            }
+        }
+
         Player player = getCurrentPlayer(request, response);
         return doPlay(request, player, files).setStartPlayerAt(0);
     }

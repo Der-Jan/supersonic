@@ -53,6 +53,10 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.PodcastDao;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -211,7 +215,15 @@ public class PodcastService {
      *         reverse chronological order (newest episode first).
      */
     public List<PodcastEpisode> getNewestEpisodes(int count) {
-        return addMediaFileIdToEpisodes(podcastDao.getNewestEpisodes(count));
+        List<PodcastEpisode> episodes = addMediaFileIdToEpisodes(podcastDao.getNewestEpisodes(count));
+
+        return Lists.newArrayList(Iterables.filter(episodes, new Predicate<PodcastEpisode>() {
+            @Override
+            public boolean apply(PodcastEpisode episode) {
+                MediaFile mediaFile = mediaFileService.getMediaFile(episode.getMediaFileId());
+                return mediaFile != null && mediaFile.isPresent();
+            }
+        }));
     }
 
     private List<PodcastEpisode> filterAllowed(List<PodcastEpisode> episodes) {

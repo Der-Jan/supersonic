@@ -117,10 +117,10 @@
                 <c:otherwise>
                     <c:import url="playButtons.jsp">
                         <c:param name="id" value="${episode.mediaFileId}"/>
-                        <c:param name="podcastEpisodeId" value="${episode.id}"/>
                         <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                         <c:param name="addEnabled" value="${model.user.streamRole and not model.partyMode}"/>
                         <c:param name="asTable" value="true"/>
+                        <c:param name="onPlay" value="top.playQueue.onPlayPodcastEpisode(${episode.id})"/>
                     </c:import>
                 </c:otherwise>
             </c:choose>

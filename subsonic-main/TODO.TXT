@@ -43,6 +43,7 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Honor cover art limit.
 Log java version as early as possible
 Problem with podcast images
   Heia fotball
@@ -54,8 +55,7 @@ Make playqueue extend horizontally
 Make logout float right
 Check jwplayer in external player
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
-Honor cover art limit.
-Get jukebox status from web.
+- Get jukebox status from web.
 Change chromecast background.
 Custom Sonos texts for starring.
 Upgrade sonos wsdl.

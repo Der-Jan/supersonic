@@ -207,6 +207,9 @@
     function onPlayPodcastEpisode(id) {
         playQueueService.playPodcastEpisode(id, playQueueCallback);
     }
+    function onPlayNewestPodcastEpisode(index) {
+        playQueueService.playNewestPodcastEpisode(index, playQueueCallback);
+    }
     function onPlayStarred() {
         playQueueService.playStarred(playQueueCallback);
     }
