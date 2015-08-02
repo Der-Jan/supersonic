@@ -43,6 +43,10 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Status and log should only be available for admin.
+Problem with updating "deep" folders?
+  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
+Integrate with iTunes playlists
 Honor cover art limit.
 Log java version as early as possible
 Problem with podcast images
@@ -68,7 +72,6 @@ Sonos: artist bio
 Test out sonos display types.
 Test out jwplayer html5.
 Test other html5 apps.
-Status should only be available for admin.
 Kernel notification of disk changes.
 Case insensitive ldap.
 Private domain share.

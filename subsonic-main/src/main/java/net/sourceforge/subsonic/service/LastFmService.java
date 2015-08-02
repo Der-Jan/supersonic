@@ -251,7 +251,6 @@ public class LastFmService {
      * @return Top songs for artist.
      */
     public List<MediaFile> getTopSongs(String artistName, int count, List<MusicFolder> musicFolders) {
-        // TODO: Use canonical?
         try {
             if (StringUtils.isBlank(artistName) || count <= 0) {
                 return Collections.emptyList();

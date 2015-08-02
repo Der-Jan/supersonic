@@ -113,6 +113,7 @@
                 if (!song.present) {
                     $("#missing" + id).show();
                 }
+                $("#index" + id).html(id);
                 $("#title" + id).html(song.title);
                 $("#title" + id).attr("title", song.title);
                 $("#album" + id).html(song.album);
@@ -238,6 +239,7 @@
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
                  style="padding-right:0.1em;cursor:pointer" onclick="onAddNext(this.id.substring(7) - 1)"></td>
 
+        <td class="fit rightalign"><span id="index">1</span></td>
         <td class="fit"><span id="missing" class="playlist-missing"><fmt:message key="playlist.missing"/></span></td>
         <td class="truncate"><span id="title" class="songTitle">Title</span></td>
         <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>
