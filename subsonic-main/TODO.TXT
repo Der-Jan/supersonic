@@ -955,6 +955,7 @@ Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW
 
 On Mac OS:
   scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.1/
+  scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* root@subsonic.org:/usr/local/jakarta/tomcat/download/
 
 On Windows
   # Verify that we're on trunk
@@ -962,6 +963,7 @@ On Windows
   svn update
   mvn clean install -Pfull
   scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.1/
+  scp subsonic-installer-windows/target/subsonic*-setup.exe  root@subsonic.org:/usr/local/jakarta/tomcat/download/
 
 On demo.subsonic.org (Ubuntu)
   cd subsonic
@@ -972,6 +974,7 @@ On demo.subsonic.org (Ubuntu)
   svn st
   mvn install -Pfull,debian
   scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.1/
+  scp subsonic-installer-debian/target/subsonic*.deb root@subsonic.org:/usr/local/jakarta/tomcat/download/
 
 On subsonic.org (CentOS)
   cd subsonic
@@ -982,6 +985,7 @@ On subsonic.org (CentOS)
   svn st
   mvn install -Pfull,rpm
   scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.2.1/
+  scp subsonic-installer-rpm/target/subsonic*.rpm root@subsonic.org:/usr/local/jakarta/tomcat/download/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -1009,6 +1013,7 @@ ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
 ln -s webapps-2015-03-04 webapps
+ln -s download webapps/download
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat

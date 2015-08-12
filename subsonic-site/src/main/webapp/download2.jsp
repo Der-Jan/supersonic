@@ -44,7 +44,7 @@
 
 <script type="text/javascript">
     function redirect() {
-        window.location = "http://prdownloads.sourceforge.net/subsonic/<%=request.getParameter("target")%>";
+        window.location = "http://subsonic.org/download/<%=request.getParameter("target")%>";
     }
 </script>
 
@@ -52,9 +52,21 @@
 
 <section id="main" class="container">
 <header>
-    <h3>Please wait, contacting SourceForge download center...</h3>
+    <h3>Downloading Subsonic...</h3>
 </header>
 
+    <div class="row">
+        <div class="12u">
+
+            <section class="box">
+                <p><b><%=request.getParameter("target")%></b> is now being downloaded to your computer.
+                    In the mean time, please check out the <a href="installation.jsp">installation instructions</a>.</p>
+            </section>
+        </div>
+    </div>
+
 </section>
+
+<%@ include file="footer.jsp" %>
 </body>
 </html>
