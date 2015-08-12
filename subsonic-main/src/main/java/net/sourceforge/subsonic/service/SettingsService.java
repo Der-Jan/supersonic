@@ -287,9 +287,15 @@ public class SettingsService {
      * This method is invoked automatically by Spring.
      */
     public void init() {
+        logServerInfo();
         ServiceLocator.setSettingsService(this);
         scheduleLocalIpAddressLookup();
         scheduleLicenseValidation();
+    }
+
+    private void logServerInfo() {
+        LOG.info("Java: " + System.getProperty("java.version") +
+                 ", OS: " + System.getProperty("os.name"));
     }
 
     public void save() {
