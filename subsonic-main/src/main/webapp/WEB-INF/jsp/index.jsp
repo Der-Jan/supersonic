@@ -13,7 +13,7 @@
 
         <frameset id="playQueueFrameset" rows=${model.autoHide ? "*,50" : "75%,25%"} border="0" framespacing="0" frameborder="0">
             <frameset cols="*,${model.showRight ? 235 : 0}" border="0" framespacing="0" frameborder="0">
-                <frame name="main" src="nowPlaying.view?" marginwidth="0" marginheight="0" class="bgcolor1" style="padding-left:1.0em">
+                <frame name="main" src="nowPlaying.view?" marginwidth="0" marginheight="0" class="bgcolor1">
                 <frame name="right" src="right.view?" class="bgcolor1">
             </frameset>
             <frame name="playQueue" src="playQueue.view?" class="bgcolor2">
