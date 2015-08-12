@@ -49,7 +49,7 @@
 
 <body class="bgcolor2 topframe" style="margin:0.4em 1em 0 1em;">
 
-<span id="dummy-animation-target" style="max-width:50px;display: none"></span>
+<span id="dummy-animation-target" style="max-width:0;display: none"></span>
 
 <fmt:message key="top.home" var="home"/>
 <fmt:message key="top.now_playing" var="nowPlaying"/>

@@ -43,6 +43,12 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Open/close playqueue broken in Chrome 44
+Artist info box too wide in firefox
+Port-forward https port also
+Outdated SSL
+  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ef975868d1aaa5
+Test with Windows 10
 Status and log should only be available for admin.
 Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed

@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.text.DateFormat;
@@ -379,6 +380,17 @@ public final class StringUtil {
     public static String urlEncode(String s) {
         try {
             return URLEncoder.encode(s, StringUtil.ENCODING_UTF8);
+        } catch (UnsupportedEncodingException x) {
+            throw new RuntimeException(x);
+        }
+    }
+
+    /**
+     * URL-decodes the input value using UTF-8.
+     */
+    public static String urlDecode(String s) {
+        try {
+            return URLDecoder.decode(s, StringUtil.ENCODING_UTF8);
         } catch (UnsupportedEncodingException x) {
             throw new RuntimeException(x);
         }
