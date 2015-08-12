@@ -177,7 +177,7 @@ public class CoverArtController implements Controller, LastModified {
             return null;
         }
         if (channel.getMediaFileId() == null) {
-            new PodcastCoverArtRequest(channel);
+            return new PodcastCoverArtRequest(channel);
         }
         return createMediaFileCoverArtRequest(channel.getMediaFileId(), request);
     }
@@ -579,7 +579,7 @@ public class CoverArtController implements Controller, LastModified {
 
         @Override
         public String getArtist() {
-            return channel.getTitle();
+            return channel.getTitle() != null ? channel.getTitle() : channel.getUrl();
         }
     }
 
