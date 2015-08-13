@@ -46,6 +46,7 @@
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
+                    <li><a href="#substreamer">SubStreamer</a> for Android</li>
                     <li><a href="#submuxic">Sub Muxic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
@@ -61,6 +62,7 @@
                     <li><a href="#zsubsonic">Z-Subsonic</a> for iPhone/iPad</li>
                     <li><a href="#substream">SubStream</a> for iPhone/iPad</li>
                     <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
+                    <li><a href="#substreamer">SubStreamer</a> for iPhone/iPad</li>
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
                     <li><a href="#avsub">AVSub</a> for iPhone/iPad</li>
                     <li><a href="#soundwaves">Soundwaves</a> for iPhone/iPad</li>
@@ -145,6 +147,7 @@
     <%@ include file="apps-android.jsp" %>
     <%@ include file="apps-dsub.jsp" %>
     <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-substreamer.jsp" %>
     <%@ include file="apps-submuxic.jsp" %>
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>

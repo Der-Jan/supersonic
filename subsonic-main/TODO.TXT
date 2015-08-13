@@ -43,8 +43,7 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
-Add SubStreamer
- https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
+Change hero image.
 Open/close playqueue broken in Chrome 44
 Port-forward https port also
 Outdated SSL
