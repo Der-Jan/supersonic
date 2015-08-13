@@ -43,7 +43,6 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
-Change hero image.
 Open/close playqueue broken in Chrome 44
 Port-forward https port also
 Outdated SSL
