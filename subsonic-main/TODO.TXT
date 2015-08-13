@@ -43,6 +43,8 @@ REST: Added getTopSongs
 
 TODO IN 5.3
 ------------
+Add SubStreamer
+ https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
 Open/close playqueue broken in Chrome 44
 Port-forward https port also
 Outdated SSL
@@ -53,12 +55,7 @@ Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
 Honor cover art limit.
-Problem with podcast images
-  Heia fotball
-  Badevaktene
 Remember visibility of left.jsp?
-Add SubStreamer
- https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14eae3b2b04c1a44
 Make playqueue extend horizontally
 Make logout float right
 Check jwplayer in external player
