@@ -3,7 +3,7 @@ DONE IN 5.3.BETA2
 Fixed performance issue when retrieving "top songs".
 Allow custom URL as an alternative to *.subsonic.org
 Don't disable all animations on Chrome
-
+Display proper message when visiting a non-existent or expired share.
 
 TODO IN 5.3
 ------------

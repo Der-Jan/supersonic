@@ -7,7 +7,6 @@
     <script type="text/javascript" src="<c:url value="/script/swfobject.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/prototype.js"/>"></script>
 
-    <meta name="og:title" content="${fn:escapeXml(model.songs[0].artist)} &mdash; ${fn:escapeXml(model.songs[0].albumName)}"/>
     <meta name="og:type" content="album"/>
 
     <c:if test="${not empty model.songs}">
@@ -15,6 +14,7 @@
             <sub:param name="id" value="${model.songs[0].id}"/>
             <sub:param name="size" value="500"/>
         </sub:url>
+        <meta name="og:title" content="${fn:escapeXml(model.songs[0].artist)} &mdash; ${fn:escapeXml(model.songs[0].albumName)}"/>
         <meta name="og:image" content="${model.redirectUrl}${coverArtUrl}"/>
     </c:if>
 
@@ -81,7 +81,16 @@
 <body class="mainframe bgcolor1" style="padding-top:2em" onload="init();">
 
 <div style="margin:auto;width:500px">
-    <h1 >${empty model.share.description ? model.songs[0].artist : fn:escapeXml(model.share.description)}</h1>
+    <h1>
+        <c:choose>
+            <c:when test="${empty model.share}">
+                Sorry, the content is not available.
+            </c:when>
+            <c:otherwise>
+                ${empty model.share.description ? model.songs[0].artist : fn:escapeXml(model.share.description)}
+            </c:otherwise>
+        </c:choose>
+    </h1>
     <div style="float:left;padding-right:1.5em">
         <h2 style="margin:0;">${empty model.share.description ? model.songs[0].albumName : fn:escapeXml(model.share.username)}</h2>
     </div>
