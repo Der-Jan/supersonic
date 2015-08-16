@@ -15,7 +15,7 @@
             <sub:param name="id" value="${model.songs[0].id}"/>
             <sub:param name="size" value="500"/>
         </sub:url>
-        <meta name="og:image" content="http://${model.redirectFrom}.subsonic.org${coverArtUrl}"/>
+        <meta name="og:image" content="${model.redirectUrl}${coverArtUrl}"/>
     </c:if>
 
     <script type="text/javascript">

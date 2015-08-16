@@ -61,6 +61,7 @@ import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Theme;
+import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.util.FileUtil;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -127,9 +128,10 @@ public class SettingsService {
     private static final String KEY_PORT = "Port";
     private static final String KEY_HTTPS_PORT = "HttpsPort";
     private static final String KEY_URL_REDIRECTION_ENABLED = "UrlRedirectionEnabled";
+    private static final String KEY_URL_REDIRECT_TYPE = "UrlRedirectType";
     private static final String KEY_URL_REDIRECT_FROM = "UrlRedirectFrom";
     private static final String KEY_URL_REDIRECT_CONTEXT_PATH = "UrlRedirectContextPath";
-    private static final String KEY_URL_REDIRECT_CUSTOM_HOST = "UrlRedirectCustomHost";
+    private static final String KEY_URL_REDIRECT_CUSTOM_URL = "UrlRedirectCustomUrl";
     private static final String KEY_SERVER_ID = "ServerId";
     private static final String KEY_SETTINGS_CHANGED = "SettingsChanged";
     private static final String KEY_LAST_SCANNED = "LastScanned";
@@ -197,9 +199,10 @@ public class SettingsService {
     private static final int DEFAULT_PORT = 80;
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
+    private static final UrlRedirectType DEFAULT_URL_REDIRECT_TYPE = UrlRedirectType.NORMAL;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
     private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = System.getProperty("subsonic.contextPath", "").replaceAll("/", "");
-    private static final String DEFAULT_URL_REDIRECT_CUSTOM_HOST = null;
+    private static final String DEFAULT_URL_REDIRECT_CUSTOM_URL = "http://";
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
@@ -216,7 +219,7 @@ public class SettingsService {
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "DownsamplingCommand3", "AutoCoverBatch", "MusicMask",
             "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
-            "CoverArtFileTypes");
+            "CoverArtFileTypes", "UrlRedirectCustomHost");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -840,12 +843,27 @@ public class SettingsService {
         setBoolean(KEY_URL_REDIRECTION_ENABLED, isUrlRedirectionEnabled);
     }
 
+    public String getUrlRedirectUrl() {
+        if (getUrlRedirectType() == UrlRedirectType.NORMAL) {
+            return "http://" + getUrlRedirectFrom() + ".subsonic.org";
+        }
+        return StringUtils.removeEnd(getUrlRedirectCustomUrl(), "/");
+    }
+
     public String getUrlRedirectFrom() {
         return properties.getProperty(KEY_URL_REDIRECT_FROM, DEFAULT_URL_REDIRECT_FROM);
     }
 
     public void setUrlRedirectFrom(String urlRedirectFrom) {
         properties.setProperty(KEY_URL_REDIRECT_FROM, urlRedirectFrom);
+    }
+
+    public UrlRedirectType getUrlRedirectType() {
+        return UrlRedirectType.valueOf(properties.getProperty(KEY_URL_REDIRECT_TYPE, DEFAULT_URL_REDIRECT_TYPE.name()));
+    }
+
+    public void setUrlRedirectType(UrlRedirectType urlRedirectType) {
+        properties.setProperty(KEY_URL_REDIRECT_TYPE, urlRedirectType.name());
     }
 
     public Date getTrialExpires() {
@@ -866,12 +884,12 @@ public class SettingsService {
         properties.setProperty(KEY_URL_REDIRECT_CONTEXT_PATH, contextPath);
     }
 
-    public String getUrlRedirectCustomHost() {
-        return StringUtils.trimToNull(properties.getProperty(KEY_URL_REDIRECT_CUSTOM_HOST, DEFAULT_URL_REDIRECT_CUSTOM_HOST));
+    public String getUrlRedirectCustomUrl() {
+        return StringUtils.trimToNull(properties.getProperty(KEY_URL_REDIRECT_CUSTOM_URL, DEFAULT_URL_REDIRECT_CUSTOM_URL));
     }
 
-    public void setUrlRedirectCustomHost(String customHost) {
-        properties.setProperty(KEY_URL_REDIRECT_CUSTOM_HOST, customHost);
+    public void setUrlRedirectCustomUrl(String customUrl) {
+        properties.setProperty(KEY_URL_REDIRECT_CUSTOM_URL, customUrl);
     }
 
     public String getServerId() {

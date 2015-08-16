@@ -82,7 +82,7 @@ public class ExternalPlayerController extends ParameterizableViewController {
 
         map.put("share", share);
         map.put("songs", getSongs(share));
-        map.put("redirectFrom", settingsService.getUrlRedirectFrom());
+        map.put("redirectUrl", settingsService.getUrlRedirectUrl());
         map.put("player", playerService.getGuestPlayer(request).getId());
 
         ModelAndView result = super.handleRequestInternal(request, response);

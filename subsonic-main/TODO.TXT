@@ -1,49 +1,18 @@
-DONE IN 5.3
-------------
-Bugfix: Ensure correct playback speed for mono and high sample frequency files in jukebox mode.
-Bugfix: Grant access to media folders when auto-creating LDAP users.
-Bugfix: Improved performance for podcast channels with many (>1000) episodes.
-New: Make default album list on home screen configurable.
-Improve UI when no media exists
-Added Settings > Personal > Queue following songs on play
-REST: Consider disc number in sorting for getAlbum
-REST: Add original width and height for videos.
-REST: Add album rating to getIndexes and getMusicDirectory
-Chromecast stops casting ~5min before movie ends
-  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15054&p=66709#p66709
-  https://sourceforge.net/p/subsonic/bugs/146/
-  https://sourceforge.net/p/subsonic/bugs/121
-Bugfix: Expiration date not updated when upgrading from normal to lifetime subscription.
-Create Settings > Subsonic Premium
-Bugfix: Starred image not shown for videos
-Bugfix: "Show artist info" should be turned on by default when creating new users.
-Updated German translation, courtesy of deejay2302.
-Bugfix: Include cover art when downloading whole album
-REST: Added maxBitRate to getUser, getUsers and updateUser.
-REST: Added license and trial expiration dates in getLicense.
-REST: Added more secure authentication scheme.
-REST: Added cover art (and original image url) to podcast channels
-REST: Support reverse chronological album lists.
-Show Last.fm info even if artist name is slightly wrong
-Bugfix: Avoid duplicate Access-Control-Allow-Origin headers
-Bugfix: Downloading png album art doesn't always work
-New: Redesigned podcast pages
-REST: Improved metadata updates of ID3 albums, e.g., changing cover art.
-New: Support custom subsonic.org redirects.
-REST: Add changed date to playlists
-Bugfix: Limit number of concurrent cover art requests, to avoid out-of-memory
-Security: Fixed some XSS vulnerabilities
-Security: Log failed login attempts, including IP address.
-New: Hide left frame by default
-Sonos: Manage Subsonic playlists from the Sonos controller.
-Sonos: Show track numbers
-New: Show top tracks for artist
-New: Improved artist bio design
-REST: Added getTopSongs
+DONE IN 5.3.BETA2
+-----------------
+Fixed performance issue when retrieving "top songs".
+Allow custom URL as an alternative to *.subsonic.org
+Don't disable all animations on Chrome
+
 
 TODO IN 5.3
 ------------
+Improve custom hostname support
+  Validate url
+  Test with context path, including chromecast
+  Test with https
 Open/close playqueue broken in Chrome 44
+Add option to delete all expired shares. Show expiration status.
 Port-forward https port also
 Outdated SSL
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ef975868d1aaa5
@@ -54,11 +23,9 @@ Problem with updating "deep" folders?
 Integrate with iTunes playlists
 Honor cover art limit.
 Remember visibility of left.jsp?
-Make playqueue extend horizontally
 Make logout float right
 Check jwplayer in external player
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
-- Get jukebox status from web.
 Change chromecast background.
 Custom Sonos texts for starring.
 Upgrade sonos wsdl.
@@ -978,7 +945,8 @@ On subsonic.org (CentOS)
   svn st
   mvn install -Pfull,rpm
   scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.3.beta1/
-  scp subsonic-installer-rpm/target/subsonic*.rpm root@subsonic.org:/usr/local/jakarta/tomcat/download/
+#  scp subsonic-installer-rpm/target/subsonic*.rpm root@subsonic.org:/usr/local/jakarta/tomcat/download/
+  cp subsonic-installer-rpm/target/subsonic*.rpm /usr/local/jakarta/tomcat/download/
 
 Modify FRS properties
   https://sourceforge.net/projects/subsonic/files/subsonic/
@@ -996,17 +964,17 @@ order by n desc
 
 Update subsonic.org (66.49.215.227)
 -----------------------------------
-mkdir /usr/local/jakarta/tomcat/webapps-2015-03-04/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-03-04/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-03-04/pages.war
+mkdir /usr/local/jakarta/tomcat/webapps-2015-08-14/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-08-14/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/usr/local/jakarta/tomcat/webapps-2015-08-14/pages.war
 
 Checkpoint database (db.view)
 cd /usr/local/jakarta/tomcat
 ps -elf | grep jsvc
 /usr/sbin/stoptomcat
 rm webapps
-ln -s webapps-2015-03-04 webapps
-ln -s download webapps/download
+ln -s webapps-2015-08-14 webapps
+ln -s /usr/local/jakarta/tomcat/download webapps/download
 ll webapps/
 rm -rf work logs/*
 /usr/sbin/starttomcat
@@ -1014,13 +982,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-03-04/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-03-04/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2015-08-14/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-08-14/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-03-04 webapps
+ln -s webapps-2015-08-14 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import net.sourceforge.subsonic.command.NetworkSettingsCommand;
+import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.service.NetworkService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -43,8 +44,9 @@ public class NetworkSettingsController extends SimpleFormController {
         NetworkSettingsCommand command = new NetworkSettingsCommand();
         command.setPortForwardingEnabled(settingsService.isPortForwardingEnabled());
         command.setUrlRedirectionEnabled(settingsService.isUrlRedirectionEnabled());
+        command.setUrlRedirectType(settingsService.getUrlRedirectType().name());
         command.setUrlRedirectFrom(settingsService.getUrlRedirectFrom());
-        command.setUrlRedirectCustomHost(settingsService.getUrlRedirectCustomHost());
+        command.setUrlRedirectCustomUrl(settingsService.getUrlRedirectCustomUrl());
         command.setPort(settingsService.getPort());
         command.setLicenseInfo(settingsService.getLicenseInfo());
 
@@ -57,8 +59,9 @@ public class NetworkSettingsController extends SimpleFormController {
 
         settingsService.setPortForwardingEnabled(command.isPortForwardingEnabled());
         settingsService.setUrlRedirectionEnabled(command.isUrlRedirectionEnabled());
+        settingsService.setUrlRedirectType(UrlRedirectType.valueOf(command.getUrlRedirectType()));
         settingsService.setUrlRedirectFrom(StringUtils.lowerCase(command.getUrlRedirectFrom()));
-        settingsService.setUrlRedirectCustomHost(StringUtils.trimToEmpty(command.getUrlRedirectCustomHost()));
+        settingsService.setUrlRedirectCustomUrl(StringUtils.trimToEmpty(command.getUrlRedirectCustomUrl()));
 
         if (settingsService.getServerId() == null) {
             Random rand = new Random(System.currentTimeMillis());

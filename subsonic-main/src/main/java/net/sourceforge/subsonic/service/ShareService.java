@@ -111,7 +111,7 @@ public class ShareService {
     }
 
     public String getShareBaseUrl() {
-        return "http://" + settingsService.getUrlRedirectFrom() + ".subsonic.org/share/";
+        return settingsService.getUrlRedirectUrl() + "/share/";
     }
 
     public String getShareUrl(Share share) {

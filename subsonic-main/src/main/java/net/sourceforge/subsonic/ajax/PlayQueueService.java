@@ -44,6 +44,7 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.PodcastStatus;
 import net.sourceforge.subsonic.domain.SavedPlayQueue;
+import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.JukeboxService;
 import net.sourceforge.subsonic.service.LastFmService;
@@ -641,11 +642,13 @@ public class PlayQueueService {
             boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
             String urlRedirectFrom = settingsService.getUrlRedirectFrom();
             String urlRedirectContextPath = settingsService.getUrlRedirectContextPath();
+            UrlRedirectType urlRedirectType = settingsService.getUrlRedirectType();
+            String urlRedirectCustomUrl = settingsService.getUrlRedirectCustomUrl();
 
-            String remoteStreamUrl = StringUtil.rewriteRemoteUrl(streamUrl, urlRedirectionEnabled, urlRedirectFrom,
-                    urlRedirectContextPath, localIp, localPort);
-            String remoteCoverArtUrl = StringUtil.rewriteRemoteUrl(coverArtUrl, urlRedirectionEnabled, urlRedirectFrom,
-                    urlRedirectContextPath, localIp, localPort);
+            String remoteStreamUrl = StringUtil.rewriteRemoteUrl(streamUrl, urlRedirectionEnabled, urlRedirectType, urlRedirectFrom,
+                                                                 urlRedirectCustomUrl, urlRedirectContextPath, localIp, localPort);
+            String remoteCoverArtUrl = StringUtil.rewriteRemoteUrl(coverArtUrl, urlRedirectionEnabled, urlRedirectType, urlRedirectFrom,
+                                                                   urlRedirectCustomUrl, urlRedirectContextPath, localIp, localPort);
 
             String format = formatFormat(player, file);
             String username = securityService.getCurrentUsername(request);

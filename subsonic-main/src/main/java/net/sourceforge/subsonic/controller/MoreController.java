@@ -65,7 +65,7 @@ public class MoreController extends ParameterizableViewController {
 
         StringBuilder jamstashUrl = new StringBuilder("http://jamstash.com/#/settings?u=" + StringUtil.urlEncode(user.getUsername()) + "&url=");
         if (settingsService.isUrlRedirectionEnabled()) {
-            jamstashUrl.append(StringUtil.urlEncode("http://" + settingsService.getUrlRedirectFrom() + ".subsonic.org"));
+            jamstashUrl.append(StringUtil.urlEncode(settingsService.getUrlRedirectUrl()));
         } else {
             jamstashUrl.append(StringUtil.urlEncode(request.getRequestURL().toString().replaceAll("/more.view.*", "")));
         }

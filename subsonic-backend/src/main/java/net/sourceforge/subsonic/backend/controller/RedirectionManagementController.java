@@ -194,26 +194,37 @@ public class RedirectionManagementController extends MultiActionController {
     }
 
     public void test(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String redirectFrom = StringUtils.lowerCase(ServletRequestUtils.getRequiredStringParameter(request, "redirectFrom"));
+        String redirectFrom = StringUtils.lowerCase(ServletRequestUtils.getStringParameter(request, "redirectFrom"));
+        String customUrl = ServletRequestUtils.getStringParameter(request, "customUrl");
         PrintWriter writer = response.getWriter();
 
-        Redirection redirection = redirectionDao.getRedirection(redirectFrom);
-        String webAddress = redirectFrom + ".subsonic.org";
-        if (redirection == null) {
-            writer.print("Web address " + webAddress + " not registered.");
-            return;
+        String webAddress;
+        String url;
+        if (redirectFrom != null) {
+            Redirection redirection = redirectionDao.getRedirection(redirectFrom);
+            webAddress = redirectFrom + ".subsonic.org";
+            if (redirection == null) {
+                writer.print("Web address " + webAddress + " not registered.");
+                return;
+            }
+
+            if (redirection.getTrialExpires() != null && redirection.getTrialExpires().before(new Date())) {
+                writer.print("Trial period expired. Please upgrade to Subsonic Premium to activate web address.");
+                return;
+            }
+
+            url = redirection.getRedirectTo();
+
+        } else {
+            webAddress = customUrl;
+            url = customUrl;
         }
 
-        if (redirection.getTrialExpires() != null && redirection.getTrialExpires().before(new Date())) {
-            writer.print("Trial period expired. Please upgrade to Subsonic Premium to activate web address.");
-            return;
-        }
 
-        String url = redirection.getRedirectTo();
         if (!url.endsWith("/")) {
             url += "/";
         }
-        url += "index.html";
+        url += "crossdomain.xml";
 
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 15000);
@@ -225,9 +236,17 @@ public class RedirectionManagementController extends MultiActionController {
             StatusLine status = resp.getStatusLine();
 
             if (status.getStatusCode() == HttpStatus.SC_OK) {
-                String msg = webAddress + " responded successfully.";
-                writer.print(msg);
-                LOG.info(msg);
+
+                String content = IOUtils.toString(resp.getEntity().getContent());
+                if (!content.contains("cross-domain-policy")) {
+                    String msg = webAddress + " responded, but with unexpected content.";
+                    writer.print(msg);
+                    LOG.info(msg);
+                } else {
+                    String msg = webAddress + " responded successfully.";
+                    writer.print(msg);
+                    LOG.info(msg);
+                }
             } else {
                 String msg = webAddress + " returned HTTP error code " + status.getStatusCode() + " " + status.getReasonPhrase();
                 writer.print(msg);
@@ -239,7 +258,7 @@ public class RedirectionManagementController extends MultiActionController {
             LOG.info(msg);
 
         } catch (Throwable x) {
-            String msg = webAddress + " is registered, but could not connect to it. (" + x.getClass().getSimpleName() + ")";
+            String msg = "Could not connect to " + webAddress + ". (" + x.getClass().getSimpleName() + ")";
             writer.print(msg);
             LOG.info(msg);
         } finally {
