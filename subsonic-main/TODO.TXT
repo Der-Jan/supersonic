@@ -4,15 +4,16 @@ Fixed performance issue when retrieving "top songs".
 Allow custom URL as an alternative to *.subsonic.org
 Don't disable all animations on Chrome
 Display proper message when visiting a non-existent or expired share.
+Added option to delete all expired shares.
 
 TODO IN 5.3
 ------------
+Shares shouldn't work if license expired
 Improve custom hostname support
   Validate url
   Test with context path, including chromecast
   Test with https
 Open/close playqueue broken in Chrome 44
-Add option to delete all expired shares. Show expiration status.
 Port-forward https port also
 Outdated SSL
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ef975868d1aaa5

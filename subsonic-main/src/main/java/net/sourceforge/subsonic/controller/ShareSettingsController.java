@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -58,8 +59,7 @@ public class ShareSettingsController extends ParameterizableViewController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (isFormSubmission(request)) {
-            String error = handleParameters(request);
-            map.put("error", error);
+            handleParameters(request);
             map.put("toast", true);
         }
 
@@ -83,7 +83,7 @@ public class ShareSettingsController extends ParameterizableViewController {
         return "POST".equals(request.getMethod());
     }
 
-    private String handleParameters(HttpServletRequest request) {
+    private void handleParameters(HttpServletRequest request) {
         User user = securityService.getCurrentUser(request);
         for (Share share : shareService.getSharesForUser(user)) {
             int id = share.getId();
@@ -103,7 +103,16 @@ public class ShareSettingsController extends ParameterizableViewController {
             }
         }
 
-        return null;
+        boolean deleteExpired = ServletRequestUtils.getBooleanParameter(request, "deleteExpired", false);
+        if (deleteExpired) {
+            Date now = new Date();
+            for (Share share : shareService.getSharesForUser(user)) {
+                Date expires = share.getExpires();
+                if (expires != null && expires.before(now)) {
+                    shareService.deleteShare(share.getId());
+                }
+            }
+        }
     }
 
     private List<ShareInfo> getShareInfos(HttpServletRequest request) {

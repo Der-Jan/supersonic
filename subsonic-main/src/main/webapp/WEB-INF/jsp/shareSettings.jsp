@@ -31,9 +31,9 @@
         <c:forEach items="${model.shareInfos}" var="shareInfo" varStatus="loopStatus">
             <c:set var="share" value="${shareInfo.share}"/>
 
-            <sub:url value="main.view" var="albumUrl">
-                <sub:param name="path" value="${shareInfo.dir.path}"/>
-            </sub:url>
+            <c:url value="main.view" var="albumUrl">
+                <c:param name="id" value="${shareInfo.dir.id}"/>
+            </c:url>
 
             <tr>
                 <td style="padding-left:1em"><a href="${model.shareBaseUrl}${share.name}" target="_blank">${share.name}</a></td>
@@ -60,7 +60,9 @@
 
     <p style="padding-top:1em">
         <input type="submit" value="<fmt:message key="common.save"/>" style="margin-right:0.3em">
-        <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'">
+        <input type="button" value="<fmt:message key="common.cancel"/>" onclick="location.href='nowPlaying.view'" style="margin-right:2.0em">
+        <input type="checkbox" id="deleteExpired" name="deleteExpired" class="checkbox"/>
+        <label for="deleteExpired"><fmt:message key="sharesettings.deleteexpired"/></label>
     </p>
 
 </form>
