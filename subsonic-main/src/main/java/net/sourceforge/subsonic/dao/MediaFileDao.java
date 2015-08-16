@@ -397,8 +397,8 @@ public class MediaFileDao extends AbstractDao {
             put("type", MUSIC.name());
             put("folders", MusicFolder.toPathList(musicFolders));
         }};
-        return namedQueryOne("select " + COLUMNS + " from media_file where type = :type and artist = :artist " +
-                             "and title = :title and present and folder in (:folders)" ,
+        return namedQueryOne("select " + COLUMNS + " from media_file where artist = :artist " +
+                             "and title = :title and type = :type and present and folder in (:folders)" ,
                              rowMapper, args);
     }
 
