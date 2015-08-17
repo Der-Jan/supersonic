@@ -16,6 +16,14 @@
 
 <section class="box">
 
+    <a name="5.3.beta2"><h3>Subsonic 5.3.beta2 - Aug 17, 2015</h3></a>
+    <ul>
+        <li><strong>Bugfix:</strong> Fixed performance issue when retrieving "top songs".</li>
+        <li><strong>New:</strong> Allow custom URL as an alternative to *.subsonic.org</li>
+        <li><strong>New:</strong> Display proper message when visiting a non-existent or expired share.</li>
+        <li><strong>New:</strong> Added option to delete all expired shares.</li>
+    </ul>
+
     <a name="5.3.beta1"><h3>Subsonic 5.3.beta1 - Aug 14, 2015</h3></a>
     <ul>
         <li><strong>New:</strong> Show top tracks for artist.</li>
