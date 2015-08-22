@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
@@ -93,7 +94,8 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public List<MediaFile> getSongsForAlbum(String artist, String album) {
-        return query("select " + COLUMNS + " from media_file where album_artist=? and album=? and present and type in (?,?,?) order by track_number", rowMapper,
+        return query("select " + COLUMNS + " from media_file where album_artist=? and album=? and present " +
+                     "and type in (?,?,?) order by disc_number, track_number", rowMapper,
                      artist, album, MUSIC.name(), AUDIOBOOK.name(), PODCAST.name());
     }
 
@@ -327,9 +329,16 @@ public class MediaFileDao extends AbstractDao {
             put("count", count);
             put("offset", offset);
         }};
-        return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
-                          "and year between :fromYear and :toYear order by year limit :count offset :offset",
-                          rowMapper, args);
+
+        if (fromYear <= toYear) {
+            return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                              "and year between :fromYear and :toYear order by year limit :count offset :offset",
+                              rowMapper, args);
+        } else {
+            return namedQuery("select " + COLUMNS + " from media_file where type = :type and folder in (:folders) and present " +
+                              "and year between :toYear and :fromYear order by year desc limit :count offset :offset",
+                              rowMapper, args);
+        }
     }
 
     /**
@@ -376,6 +385,21 @@ public class MediaFileDao extends AbstractDao {
     public List<MediaFile> getSongsByArtist(String artist, int offset, int count) {
         return query("select " + COLUMNS + " from media_file where type in (?,?,?) and artist=? and present limit ? offset ?",
                      rowMapper, MUSIC.name(), PODCAST.name(), AUDIOBOOK.name(), artist, count, offset);
+    }
+
+    public MediaFile getSongByArtistAndTitle(final String artist, final String title, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty() || StringUtils.isBlank(title) || StringUtils.isBlank(artist)) {
+            return null;
+        }
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("artist", artist);
+            put("title", title);
+            put("type", MUSIC.name());
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQueryOne("select " + COLUMNS + " from media_file where artist = :artist " +
+                             "and title = :title and type = :type and present and folder in (:folders)" ,
+                             rowMapper, args);
     }
 
     /**

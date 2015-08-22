@@ -39,6 +39,8 @@ public class UserSettings {
     private boolean songNotificationEnabled;
     private boolean autoHidePlayQueue;
     private boolean viewAsList;
+    private boolean queueFollowingSongs;
+    private AlbumListType defaultAlbumList = AlbumListType.RANDOM;
     private Visibility mainVisibility = new Visibility();
     private Visibility playlistVisibility = new Visibility();
     private boolean lastFmEnabled;
@@ -216,6 +218,14 @@ public class UserSettings {
         this.viewAsList = viewAsList;
     }
 
+    public AlbumListType getDefaultAlbumList() {
+        return defaultAlbumList;
+    }
+
+    public void setDefaultAlbumList(AlbumListType defaultAlbumList) {
+        this.defaultAlbumList = defaultAlbumList;
+    }
+
     public AvatarScheme getAvatarScheme() {
         return avatarScheme;
     }
@@ -248,6 +258,14 @@ public class UserSettings {
      */
     public void setChanged(Date changed) {
         this.changed = changed;
+    }
+
+    public boolean isQueueFollowingSongs() {
+        return queueFollowingSongs;
+    }
+
+    public void setQueueFollowingSongs(boolean queueFollowingSongs) {
+        this.queueFollowingSongs = queueFollowingSongs;
     }
 
     /**

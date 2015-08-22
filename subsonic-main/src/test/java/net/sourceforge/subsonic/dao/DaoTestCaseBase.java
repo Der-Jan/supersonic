@@ -31,7 +31,7 @@ public abstract class DaoTestCaseBase extends TestCase {
     protected PodcastDao podcastDao;
 
     protected DaoTestCaseBase() {
-        daoHelper = new DaoHelper();
+        daoHelper = new HsqlDaoHelper();
 
         playerDao = new PlayerDao();
         internetRadioDao = new InternetRadioDao();

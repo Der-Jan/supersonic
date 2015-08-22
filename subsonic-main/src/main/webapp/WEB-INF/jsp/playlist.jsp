@@ -21,8 +21,8 @@
                         var name = $("#newName").val();
                         var comment = $("#newComment").val();
                         var shared = $("#newShared").is(":checked");
-                        $("#name").html(name);
-                        $("#comment").html(comment);
+                        $("#name").text(name);
+                        $("#comment").text(comment);
                         playlistService.updatePlaylist(playlist.id, name, comment, shared, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
                     },
                     "<fmt:message key="common.cancel"/>": function() {
@@ -113,6 +113,7 @@
                 if (!song.present) {
                     $("#missing" + id).show();
                 }
+                $("#index" + id).html(id);
                 $("#title" + id).html(song.title);
                 $("#title" + id).attr("title", song.title);
                 $("#album" + id).html(song.album);
@@ -135,9 +136,11 @@
         }
         function onAdd(index) {
             top.playQueue.onAdd(songs[index].id);
+            $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>')
         }
         function onAddNext(index) {
             top.playQueue.onAddNext(songs[index].id);
+            $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>')
         }
         function onStar(index) {
             playlistService.toggleStar(playlist.id, index, playlistCallback);
@@ -179,7 +182,7 @@
 </c:import>
 </div>
 
-<h1 id="name"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; ${fn:escapeXml(model.playlist.name)}</h1>
+<h1><a href="playlists.view"><fmt:message key="left.playlists"/></a> &raquo; <span id="name">${fn:escapeXml(model.playlist.name)}</span></h1>
 <h2>
     <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
@@ -206,10 +209,11 @@
     <span id="songCount"></span> <fmt:message key="playlist2.songs"/> &ndash; <span id="duration"></span>
 </div>
 <div class="detail" style="padding-top:0.2em">
-    <fmt:message key="playlist2.created">
+    <fmt:message key="playlist2.created" var="created">
         <fmt:param>${model.playlist.username}</fmt:param>
         <fmt:param><fmt:formatDate type="date" dateStyle="long" value="${model.playlist.created}"/></fmt:param>
-    </fmt:message>.
+    </fmt:message>
+    ${fn:escapeXml(created)}.
 </div>
 <div class="detail" style="padding-top:0.2em">
     <span id="shared"></span>.
@@ -235,6 +239,7 @@
             <img id="addNext" src="<spring:theme code="addNextImage"/>" alt="<fmt:message key="main.addnext"/>" title="<fmt:message key="main.addnext"/>"
                  style="padding-right:0.1em;cursor:pointer" onclick="onAddNext(this.id.substring(7) - 1)"></td>
 
+        <td class="fit rightalign"><span id="index">1</span></td>
         <td class="fit"><span id="missing" class="playlist-missing"><fmt:message key="playlist.missing"/></span></td>
         <td class="truncate"><span id="title" class="songTitle">Title</span></td>
         <td class="truncate"><a id="albumUrl" target="main"><span id="album" class="detail">Album</span></a></td>

@@ -81,16 +81,31 @@
         </tr>
         <tr>
             <td><code>p</code></td>
-            <td>Yes</td>
+            <td>Yes*</td>
             <td></td>
-            <td>The password, either in clear text or hex-encoded with a "enc:" prefix.</td>
+            <td>The password, either in clear text or hex-encoded with a "enc:" prefix. Since <a href="#versions">1.13.0</a>
+                this should only be used for testing purposes.</td>
+        </tr>
+        <tr>
+            <td><code>t</code></td>
+            <td>Yes*</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.13.0</a>) The authentication token computed as <strong>md5(password + salt)</strong>.
+                See below for details.</td>
+        </tr>
+        <tr>
+            <td><code>s</code></td>
+            <td>Yes*</td>
+            <td></td>
+            <td>(Since <a href="#versions">1.13.0</a>) A random string ("salt") used as input for computing the password hash.
+                See below for details.</td>
         </tr>
         <tr>
             <td><code>v</code></td>
             <td>Yes</td>
             <td></td>
             <td>The protocol version implemented by the client, i.e., the version of the
-                <code>subsonic-rest-api.xsd</code> schema used (see below).
+                <a href="#versions">subsonic-rest-api.xsd</a> schema used (see below).
             </td>
         </tr>
         <tr>
@@ -112,33 +127,57 @@
         </tbody>
     </table>
 </div>
+
 <p>
-    For example:
+    *) Either <code>p</code> or <em>both</em> <code>t</code> and <code>s</code> must be specified.
 </p>
 
 <p>
-    <code>http://your-server/rest/getIndexes.view?u=joe&amp;p=sesame&amp;v=1.1.0&amp;c=myapp</code>,
-    or<br/>
-    <code>http://your-server/rest/getIndexes.view?u=joe&amp;p=enc:736573616d65&amp;v=1.1.0&amp;c=myapp</code>
-</p>
-
-<p>
-    Starting with API version <a href="#versions">1.2.0</a> it is no longer necessary to send the
-    username and password as part of the URL. Instead, HTTP <a target="_blank"
-                                                               href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>
-    authentication could be used. (Only <em>preemptive</em> authentication is supported, meaning that
-    the credentials should be supplied by the client without being challenged for it.)
-</p>
-
-<p>
-    Note that UTF-8 should be used when sending parameters to API methods. The XML returned
-    will also be encoded with UTF-8.
-</p>
-
-<p>
+    Remember to <a href="http://www.w3schools.com/tags/ref_urlencode.asp">URL encode</a> the request parameters.
     All methods (except those that return binary data) returns XML documents conforming to the
-    <code>subsonic-rest-api.xsd</code> schema.
+    <a href="#versions">subsonic-rest-api.xsd</a> schema. The XML documents are encoded with UTF-8.
 </p>
+
+<h3>Authentication</h3>
+<p>
+    If your targeting API version <a href="#versions">1.12.0</a> or earlier, authentication is performed by sending
+    the password as clear text or hex-encoded.  Examples:
+</p>
+
+<p>
+    <code>http://your-server/rest/ping.view?u=joe&amp;p=sesame&amp;v=1.12.0&amp;c=myapp</code>
+    <br>
+    <code>http://your-server/rest/ping.view?u=joe&amp;p=enc:736573616d65&amp;v=1.12.0&amp;c=myapp</code>
+</p>
+
+<p>
+    Starting with API version <a href="#versions">1.13.0</a>, the recommended authentication scheme is to send
+    an authentication token, calculated as a <em>one-way salted hash</em> of the password.
+</p>
+<p>This involves two steps:</p>
+<ol>
+    <li>For each REST call, generate a random string called the <em>salt</em>. Send this as parameter <code>s</code>.</li>
+    Use a salt length of at least six characters.
+    <li>Calculate the authentication token as follows: <strong>token = md5(password + salt)</strong>.
+        The md5() function takes a string and returns the 32-byte ASCII hexadecimal representation of the MD5 hash, using lower case
+        characters for the hex values. The '+' operator represents concatenation of the two strings. Treat the strings
+        as UTF-8 encoded when calculating the hash. Send the result as parameter <code>t</code>.
+    </li>
+</ol>
+<p>
+    For example: if the password is <strong>sesame</strong> and the random salt is <strong>c19b2d</strong>, then
+    <strong>token = md5("sesamec19b2d") = 26719a1196d2a940705a59634eb18eab</strong>. The corresponding request URL then becomes:
+</p>
+<p>
+    <code>http://your-server/rest/ping.view?u=joe&amp;t=26719a1196d2a940705a59634eb18eab&amp;s=c19b2d&amp;v=1.12.0&amp;c=myapp</code>
+</p>
+<%--<p>--%>
+    <%--Starting with API version <a href="#versions">1.2.0</a> it is no longer necessary to send the--%>
+    <%--username and password as part of the URL. Instead, HTTP <a target="_blank"--%>
+                                                               <%--href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>--%>
+    <%--authentication could be used. (Only <em>preemptive</em> authentication is supported, meaning that--%>
+    <%--the credentials should be supplied by the client without being challenged for it.)--%>
+<%--</p>--%>
 
 <h3>Error handling</h3>
 
@@ -222,6 +261,12 @@
         </tr>
         </thead>
         <tbody>
+        <tr>
+            <td>5.3</td>
+            <td>
+                <a href="https://sourceforge.net/p/subsonic/code/HEAD/tree/tags/release-5.3/subsonic-site/src/main/webapp/inc/api/subsonic-rest-api.xsd">1.13.0</a>
+            </td>
+        </tr>
         <tr>
             <td>5.2</td>
             <td>
@@ -358,6 +403,7 @@
                 <code><a href="#getArtistInfo2">getArtistInfo2</a></code>
                 <code><a href="#getSimilarSongs">getSimilarSongs</a></code>
                 <code><a href="#getSimilarSongs2">getSimilarSongs2</a></code>
+                <code><a href="#getTopSongs">getTopSongs</a></code>
             </td>
         </tr>
         <tr>
@@ -491,6 +537,7 @@
 <%@ include file="api-getArtistInfo2.jsp" %>
 <%@ include file="api-getSimilarSongs.jsp" %>
 <%@ include file="api-getSimilarSongs2.jsp" %>
+<%@ include file="api-getTopSongs.jsp" %>
 
 <%@ include file="api-getAlbumList.jsp" %>
 <%@ include file="api-getAlbumList2.jsp" %>

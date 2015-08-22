@@ -40,7 +40,7 @@ public class ResponseHeaderFilter implements Filter {
         // Sets the provided HTTP response parameters
         for (Enumeration e = filterConfig.getInitParameterNames(); e.hasMoreElements();) {
             String headerName = (String) e.nextElement();
-            response.addHeader(headerName, filterConfig.getInitParameter(headerName));
+            response.setHeader(headerName, filterConfig.getInitParameter(headerName));
         }
 
         // pass the request/response on

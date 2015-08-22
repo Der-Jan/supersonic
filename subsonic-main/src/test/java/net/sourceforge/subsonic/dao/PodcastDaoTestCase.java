@@ -50,6 +50,7 @@ public class PodcastDaoTestCase extends DaoTestCaseBase {
         channel.setUrl("http://bar");
         channel.setTitle("Title");
         channel.setDescription("Description");
+        channel.setImageUrl("http://foo/bar.jpg");
         channel.setStatus(PodcastStatus.ERROR);
         channel.setErrorMessage("Something went terribly wrong.");
 
@@ -194,6 +195,7 @@ public class PodcastDaoTestCase extends DaoTestCaseBase {
         assertEquals("Wrong URL.", expected.getUrl(), actual.getUrl());
         assertEquals("Wrong title.", expected.getTitle(), actual.getTitle());
         assertEquals("Wrong description.", expected.getDescription(), actual.getDescription());
+        assertEquals("Wrong image URL.", expected.getImageUrl(), actual.getImageUrl());
         assertSame("Wrong status.", expected.getStatus(), actual.getStatus());
         assertEquals("Wrong error message.", expected.getErrorMessage(), actual.getErrorMessage());
     }

@@ -3,6 +3,7 @@ package net.sourceforge.subsonic.backend.dao;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,8 @@ public class PaymentDao extends AbstractDao {
             "processing_status, valid_to, created, last_updated";
 
     private RowMapper paymentRowMapper = new PaymentRowMapper();
-    private RowMapper listRowMapper = new ParameterizedSingleColumnRowMapper<Integer>();
+    private RowMapper intRowMapper = new ParameterizedSingleColumnRowMapper<Integer>();
+    private RowMapper dateRowMapper = new ParameterizedSingleColumnRowMapper<Date>();
     private RowMapper moneyRowMapper = new MoneyRowMapper();
     private RowMapper currencyRowMapper = new CurrencyRowMapper();
 
@@ -49,17 +51,17 @@ public class PaymentDao extends AbstractDao {
     }
 
     /**
-     * Returns the (most recent) payment with the given payer email.
+     * Returns the payments with the given payer email.
      *
      * @param email The payer email.
-     * @return The payment or <code>null</code> if not found.
+     * @return The payments
      */
-    public Payment getPaymentByEmail(String email) {
+    public List<Payment> getPaymentsByEmail(String email) {
         if (email == null) {
-            return null;
+            return Collections.emptyList();
         }
-        String sql = "select " + COLUMNS + " from payment where payer_email_lower=? order by created desc";
-        return queryOne(sql, paymentRowMapper, email.toLowerCase());
+        String sql = "select " + COLUMNS + " from payment where payer_email_lower=?";
+        return query(sql, paymentRowMapper, email.toLowerCase());
     }
 
     /**
@@ -113,17 +115,22 @@ public class PaymentDao extends AbstractDao {
 
     public boolean isBlacklisted(String email) {
         String sql = "select 1 from blacklist where email=?";
-        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email)) != null;
+        return queryOne(sql, intRowMapper, StringUtils.lowerCase(email)) != null;
     }
 
     public boolean isWhitelisted(String email) {
         Date now = new Date();
         String sql = "select 1 from whitelist where email=? and (valid_to is null or valid_to > ?)";
-        return queryOne(sql, listRowMapper, StringUtils.lowerCase(email), now) != null;
+        return queryOne(sql, intRowMapper, StringUtils.lowerCase(email), now) != null;
     }
 
     public void whitelist(String email) {
         update("insert into whitelist(email) values (?)", StringUtils.lowerCase(email));
+    }
+
+    public Date getWhitelistExpirationDate(String email) {
+        String sql = "select valid_to from whitelist where email=?";
+        return queryOne(sql, dateRowMapper, StringUtils.lowerCase(email));
     }
 
     public Map<CurrencyUnit, BigDecimal> getCurrencyConversionsFor(CurrencyUnit currency) {

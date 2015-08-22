@@ -18,26 +18,26 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.ShareDao;
-import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.Share;
-import net.sourceforge.subsonic.service.MediaFileService;
-import net.sourceforge.subsonic.service.PlayerService;
-import net.sourceforge.subsonic.service.SecurityService;
-import net.sourceforge.subsonic.service.SettingsService;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.dao.ShareDao;
+import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Share;
+import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.PlayerService;
+import net.sourceforge.subsonic.service.SettingsService;
 
 /**
  * Controller for the page used to play shared music (Twitter, Facebook etc).
@@ -66,23 +66,20 @@ public class ExternalPlayerController extends ParameterizableViewController {
         }
 
         Share share = shareDao.getShareByName(pathInfo.substring(1));
-        if (share == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
+
+        if (share != null && share.getExpires() != null && share.getExpires().before(new Date())) {
+            share = null;
         }
 
-        if (share.getExpires() != null && share.getExpires().before(new Date())) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
+        if (share != null) {
+            share.setLastVisited(new Date());
+            share.setVisitCount(share.getVisitCount() + 1);
+            shareDao.updateShare(share);
         }
-
-        share.setLastVisited(new Date());
-        share.setVisitCount(share.getVisitCount() + 1);
-        shareDao.updateShare(share);
 
         map.put("share", share);
         map.put("songs", getSongs(share));
-        map.put("redirectFrom", settingsService.getUrlRedirectFrom());
+        map.put("redirectUrl", settingsService.getUrlRedirectUrl());
         map.put("player", playerService.getGuestPlayer(request).getId());
 
         ModelAndView result = super.handleRequestInternal(request, response);
@@ -93,18 +90,20 @@ public class ExternalPlayerController extends ParameterizableViewController {
     private List<MediaFile> getSongs(Share share) throws IOException {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
-        for (String path : shareDao.getSharedFiles(share.getId())) {
-            try {
-                MediaFile file = mediaFileService.getMediaFile(path);
-                if (file.getFile().exists()) {
-                    if (file.isDirectory()) {
-                        result.addAll(mediaFileService.getChildrenOf(file, true, false, true));
-                    } else {
-                        result.add(file);
+        if (share != null) {
+            for (String path : shareDao.getSharedFiles(share.getId())) {
+                try {
+                    MediaFile file = mediaFileService.getMediaFile(path);
+                    if (file.getFile().exists()) {
+                        if (file.isDirectory()) {
+                            result.addAll(mediaFileService.getChildrenOf(file, true, false, true));
+                        } else {
+                            result.add(file);
+                        }
                     }
+                } catch (Exception x) {
+                    LOG.warn("Couldn't read file " + path);
                 }
-            } catch (Exception x) {
-                LOG.warn("Couldn't read file " + path);
             }
         }
         return result;

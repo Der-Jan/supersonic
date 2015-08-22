@@ -8,7 +8,7 @@
 
 <frameset rows="80,*,0" border="0" framespacing="0" frameborder="0">
     <frame name="upper" src="top.view?" class="bgcolor2">
-    <frameset cols="15%,85%" border="0" framespacing="0" frameborder="0">
+    <frameset id="mainFrameset" cols="0,*" border="0" framespacing="0" frameborder="0">
         <frame name="left" src="left.view?" marginwidth="0" marginheight="0" class="bgcolor2">
 
         <frameset id="playQueueFrameset" rows=${model.autoHide ? "*,50" : "75%,25%"} border="0" framespacing="0" frameborder="0">

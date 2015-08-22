@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.filter;
 
+import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.service.SettingsService;
 
 import javax.servlet.Filter;
@@ -27,8 +28,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This filter is executed very early in the filter chain. It verifies that
@@ -43,8 +47,9 @@ import java.io.IOException;
  */
 public class BootstrapVerificationFilter implements Filter {
 
+    private static final Logger LOG = Logger.getLogger(BootstrapVerificationFilter.class);
     private boolean subsonicHomeVerified = false;
-
+    private final AtomicBoolean serverInfoLogged = new AtomicBoolean();
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
@@ -70,7 +75,15 @@ public class BootstrapVerificationFilter implements Filter {
 
         } else {
             subsonicHomeVerified = true;
+            logServerInfo(req);
             chain.doFilter(req, res);
+        }
+    }
+
+    private void logServerInfo(ServletRequest req) {
+        if (!serverInfoLogged.getAndSet(true) && req instanceof HttpServletRequest) {
+            String serverInfo = ((HttpServletRequest) req).getSession().getServletContext().getServerInfo();
+            LOG.info("Servlet container: " + serverInfo);
         }
     }
 

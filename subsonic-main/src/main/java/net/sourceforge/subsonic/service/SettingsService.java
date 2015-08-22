@@ -54,12 +54,14 @@ import net.sourceforge.subsonic.dao.AvatarDao;
 import net.sourceforge.subsonic.dao.InternetRadioDao;
 import net.sourceforge.subsonic.dao.MusicFolderDao;
 import net.sourceforge.subsonic.dao.UserDao;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.Avatar;
 import net.sourceforge.subsonic.domain.InternetRadio;
 import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Theme;
+import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.util.FileUtil;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -86,8 +88,9 @@ public class SettingsService {
     private static final String KEY_PLAYLIST_FOLDER = "PlaylistFolder";
     private static final String KEY_MUSIC_FILE_TYPES = "MusicFileTypes";
     private static final String KEY_VIDEO_FILE_TYPES = "VideoFileTypes";
-    private static final String KEY_COVER_ART_FILE_TYPES = "CoverArtFileTypes";
+    private static final String KEY_COVER_ART_FILE_TYPES = "CoverArtFileTypes2";
     private static final String KEY_COVER_ART_LIMIT = "CoverArtLimit";
+    private static final String KEY_COVER_ART_CONCURRENCY = "CoverArtConcurrency";
     private static final String KEY_WELCOME_TITLE = "WelcomeTitle";
     private static final String KEY_WELCOME_SUBTITLE = "WelcomeSubtitle";
     private static final String KEY_WELCOME_MESSAGE = "WelcomeMessage2";
@@ -125,8 +128,10 @@ public class SettingsService {
     private static final String KEY_PORT = "Port";
     private static final String KEY_HTTPS_PORT = "HttpsPort";
     private static final String KEY_URL_REDIRECTION_ENABLED = "UrlRedirectionEnabled";
+    private static final String KEY_URL_REDIRECT_TYPE = "UrlRedirectType";
     private static final String KEY_URL_REDIRECT_FROM = "UrlRedirectFrom";
     private static final String KEY_URL_REDIRECT_CONTEXT_PATH = "UrlRedirectContextPath";
+    private static final String KEY_URL_REDIRECT_CUSTOM_URL = "UrlRedirectCustomUrl";
     private static final String KEY_SERVER_ID = "ServerId";
     private static final String KEY_SETTINGS_CHANGED = "SettingsChanged";
     private static final String KEY_LAST_SCANNED = "LastScanned";
@@ -148,8 +153,9 @@ public class SettingsService {
     private static final String DEFAULT_PLAYLIST_FOLDER = Util.getDefaultPlaylistFolder();
     private static final String DEFAULT_MUSIC_FILE_TYPES = "mp3 ogg oga aac m4a flac wav wma aif aiff ape mpc shn";
     private static final String DEFAULT_VIDEO_FILE_TYPES = "flv avi mpg mpeg mp4 m4v mkv mov wmv ogv divx m2ts";
-    private static final String DEFAULT_COVER_ART_FILE_TYPES = "cover.jpg folder.jpg jpg jpeg gif png";
+    private static final String DEFAULT_COVER_ART_FILE_TYPES = "cover.jpg cover.png cover.gif folder.jpg jpg jpeg gif png";
     private static final int DEFAULT_COVER_ART_LIMIT = 50;
+    private static final int DEFAULT_COVER_ART_CONCURRENCY = 4;
     private static final String DEFAULT_WELCOME_TITLE = "Welcome to Subsonic!";
     private static final String DEFAULT_WELCOME_SUBTITLE = null;
     private static final String DEFAULT_WELCOME_MESSAGE = "__Welcome to Subsonic!__\n" +
@@ -180,7 +186,7 @@ public class SettingsService {
     private static final String DEFAULT_LICENSE_DATE = null;
     private static final String DEFAULT_DOWNSAMPLING_COMMAND = "ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -";
     private static final String DEFAULT_HLS_COMMAND = "ffmpeg -ss %o -t %d -i %s -async 1 -b:v %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f mpegts -c:v libx264 -preset superfast -c:a libmp3lame -threads 0 -";
-    private static final String DEFAULT_JUKEBOX_COMMAND = "ffmpeg -ss %o -i %s -map 0:0 -v 0 -f s16be -";
+    private static final String DEFAULT_JUKEBOX_COMMAND = "ffmpeg -ss %o -i %s -map 0:0 -v 0 -ar 44100 -ac 2 -f s16be -";
     private static final String DEFAULT_VIDEO_IMAGE_COMMAND = "ffmpeg -r 1 -ss %o -t 1 -i %s -s %wx%h -v 0 -f mjpeg -";
     private static final boolean DEFAULT_REWRITE_URL = true;
     private static final boolean DEFAULT_LDAP_ENABLED = false;
@@ -194,8 +200,10 @@ public class SettingsService {
     private static final int DEFAULT_PORT = 80;
     private static final int DEFAULT_HTTPS_PORT = 0;
     private static final boolean DEFAULT_URL_REDIRECTION_ENABLED = false;
+    private static final UrlRedirectType DEFAULT_URL_REDIRECT_TYPE = UrlRedirectType.NORMAL;
     private static final String DEFAULT_URL_REDIRECT_FROM = "yourname";
     private static final String DEFAULT_URL_REDIRECT_CONTEXT_PATH = System.getProperty("subsonic.contextPath", "").replaceAll("/", "");
+    private static final String DEFAULT_URL_REDIRECT_CUSTOM_URL = "http://";
     private static final String DEFAULT_SERVER_ID = null;
     private static final long DEFAULT_SETTINGS_CHANGED = 0L;
     private static final boolean DEFAULT_ORGANIZE_BY_FOLDER_STRUCTURE = true;
@@ -212,7 +220,8 @@ public class SettingsService {
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "DownsamplingCommand3", "AutoCoverBatch", "MusicMask",
-            "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires");
+            "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
+            "CoverArtFileTypes", "UrlRedirectCustomHost");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -283,9 +292,15 @@ public class SettingsService {
      * This method is invoked automatically by Spring.
      */
     public void init() {
+        logServerInfo();
         ServiceLocator.setSettingsService(this);
         scheduleLocalIpAddressLookup();
         scheduleLicenseValidation();
+    }
+
+    private void logServerInfo() {
+        LOG.info("Java: " + System.getProperty("java.version") +
+                 ", OS: " + System.getProperty("os.name"));
     }
 
     public void save() {
@@ -478,6 +493,10 @@ public class SettingsService {
 
     public void setCoverArtLimit(int limit) {
         setInt(KEY_COVER_ART_LIMIT, limit);
+    }
+
+    public int getCoverArtConcurrency() {
+        return getInt(KEY_COVER_ART_CONCURRENCY, DEFAULT_COVER_ART_CONCURRENCY);
     }
 
     public String getWelcomeTitle() {
@@ -826,12 +845,27 @@ public class SettingsService {
         setBoolean(KEY_URL_REDIRECTION_ENABLED, isUrlRedirectionEnabled);
     }
 
+    public String getUrlRedirectUrl() {
+        if (getUrlRedirectType() == UrlRedirectType.NORMAL) {
+            return "http://" + getUrlRedirectFrom() + ".subsonic.org";
+        }
+        return StringUtils.removeEnd(getUrlRedirectCustomUrl(), "/");
+    }
+
     public String getUrlRedirectFrom() {
         return properties.getProperty(KEY_URL_REDIRECT_FROM, DEFAULT_URL_REDIRECT_FROM);
     }
 
     public void setUrlRedirectFrom(String urlRedirectFrom) {
         properties.setProperty(KEY_URL_REDIRECT_FROM, urlRedirectFrom);
+    }
+
+    public UrlRedirectType getUrlRedirectType() {
+        return UrlRedirectType.valueOf(properties.getProperty(KEY_URL_REDIRECT_TYPE, DEFAULT_URL_REDIRECT_TYPE.name()));
+    }
+
+    public void setUrlRedirectType(UrlRedirectType urlRedirectType) {
+        properties.setProperty(KEY_URL_REDIRECT_TYPE, urlRedirectType.name());
     }
 
     public Date getTrialExpires() {
@@ -850,6 +884,14 @@ public class SettingsService {
 
     public void setUrlRedirectContextPath(String contextPath) {
         properties.setProperty(KEY_URL_REDIRECT_CONTEXT_PATH, contextPath);
+    }
+
+    public String getUrlRedirectCustomUrl() {
+        return StringUtils.trimToNull(properties.getProperty(KEY_URL_REDIRECT_CUSTOM_URL, DEFAULT_URL_REDIRECT_CUSTOM_URL));
+    }
+
+    public void setUrlRedirectCustomUrl(String customUrl) {
+        properties.setProperty(KEY_URL_REDIRECT_CUSTOM_URL, customUrl);
     }
 
     public String getServerId() {
@@ -1255,7 +1297,10 @@ public class SettingsService {
         settings.setPartyModeEnabled(false);
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
+        settings.setShowArtistInfoEnabled(true);
         settings.setViewAsList(false);
+        settings.setQueueFollowingSongs(true);
+        settings.setDefaultAlbumList(AlbumListType.RANDOM);
         settings.setLastFmEnabled(false);
         settings.setLastFmUsername(null);
         settings.setLastFmPassword(null);
@@ -1397,8 +1442,6 @@ public class SettingsService {
             return;
         }
 
-        licenseValidated = true;
-
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 120000);
         HttpConnectionParams.setSoTimeout(client.getParams(), 120000);
@@ -1432,6 +1475,9 @@ public class SettingsService {
                 validateLicense();
             }
         };
+        licenseValidated = true;
+        licenseExpires = null;
+
         licenseValidationFuture = executor.scheduleWithFixedDelay(task, 0L, LICENSE_VALIDATION_DELAY_HOURS, TimeUnit.HOURS);
     }
 

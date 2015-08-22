@@ -34,13 +34,16 @@ import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.ProviderManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.controller.JAXBWriter;
 import net.sourceforge.subsonic.controller.RESTController;
 import net.sourceforge.subsonic.domain.LicenseInfo;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.Version;
+import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.StringUtil;
 
@@ -62,6 +65,8 @@ public class RESTRequestParameterProcessingFilter implements Filter {
     private final JAXBWriter jaxbWriter = new JAXBWriter();
     private ProviderManager authenticationManager;
     private SettingsService settingsService;
+    private SecurityService securityService;
+    private LoginFailureLogger loginFailureLogger;
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!(request instanceof HttpServletRequest)) {
@@ -76,15 +81,18 @@ public class RESTRequestParameterProcessingFilter implements Filter {
 
         String username = StringUtils.trimToNull(httpRequest.getParameter("u"));
         String password = decrypt(StringUtils.trimToNull(httpRequest.getParameter("p")));
+        String salt = StringUtils.trimToNull(httpRequest.getParameter("s"));
+        String token = StringUtils.trimToNull(httpRequest.getParameter("t"));
         String version = StringUtils.trimToNull(httpRequest.getParameter("v"));
         String client = StringUtils.trimToNull(httpRequest.getParameter("c"));
 
         RESTController.ErrorCode errorCode = null;
 
-        // The username and password parameters are not required if the user
+        // The username and credentials parameters are not required if the user
         // was previously authenticated, for example using Basic Auth.
+        boolean passwordOrTokenPresent = password != null || (salt != null && token != null);
         Authentication previousAuth = SecurityContextHolder.getContext().getAuthentication();
-        boolean missingCredentials = previousAuth == null && (username == null || password == null);
+        boolean missingCredentials = previousAuth == null && (username == null || !passwordOrTokenPresent);
         if (missingCredentials || version == null || client == null) {
             errorCode = RESTController.ErrorCode.MISSING_PARAMETER;
         }
@@ -94,7 +102,7 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         }
 
         if (errorCode == null) {
-            errorCode = authenticate(username, password, previousAuth);
+            errorCode = authenticate(username, password, salt, token, previousAuth);
         }
 
         if (errorCode == null) {
@@ -104,6 +112,9 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         if (errorCode == null) {
             chain.doFilter(request, response);
         } else {
+            if (errorCode == RESTController.ErrorCode.NOT_AUTHENTICATED) {
+                loginFailureLogger.log(request.getRemoteAddr(), username);
+            }
             SecurityContextHolder.getContext().setAuthentication(null);
             sendErrorXml(httpRequest, httpResponse, errorCode);
         }
@@ -123,28 +134,38 @@ public class RESTRequestParameterProcessingFilter implements Filter {
         return null;
     }
 
-    private RESTController.ErrorCode authenticate(String username, String password, Authentication previousAuth) {
+    private RESTController.ErrorCode authenticate(String username, String password, String salt, String token, Authentication previousAuth) {
 
         // Previously authenticated and username not overridden?
         if (username == null && previousAuth != null) {
             return null;
         }
 
-        // Ensure password is given.
-        if (password == null) {
-            return RESTController.ErrorCode.MISSING_PARAMETER;
+        if (salt != null && token != null) {
+            User user = securityService.getUserByName(username);
+            if (user == null) {
+                return RESTController.ErrorCode.NOT_AUTHENTICATED;
+            }
+            String expectedToken = DigestUtils.md5Hex(user.getPassword() + salt);
+            if (!expectedToken.equals(token)) {
+                return RESTController.ErrorCode.NOT_AUTHENTICATED;
+            }
+
+            password = user.getPassword();
         }
 
-        try {
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-            Authentication authResult = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(authResult);
-//            LOG.info("Authentication succeeded for user " + username);
-        } catch (AuthenticationException x) {
-            LOG.info("Authentication failed for user " + username);
-            return RESTController.ErrorCode.NOT_AUTHENTICATED;
+        if (password != null) {
+            try {
+                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+                Authentication authResult = authenticationManager.authenticate(authRequest);
+                SecurityContextHolder.getContext().setAuthentication(authResult);
+                return null;
+            } catch (AuthenticationException x) {
+                return RESTController.ErrorCode.NOT_AUTHENTICATED;
+            }
         }
-        return null;
+
+        return RESTController.ErrorCode.MISSING_PARAMETER;
     }
 
     private RESTController.ErrorCode checkLicense(String client) {
@@ -190,5 +211,13 @@ public class RESTRequestParameterProcessingFilter implements Filter {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+
+    public void setLoginFailureLogger(LoginFailureLogger loginFailureLogger) {
+        this.loginFailureLogger = loginFailureLogger;
     }
 }

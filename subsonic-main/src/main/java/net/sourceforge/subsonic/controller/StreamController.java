@@ -104,7 +104,7 @@ public class StreamController implements Controller {
                 LOG.info("Incoming Podcast request for playlist " + playlistId);
             }
 
-            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Origin", "*");
 
             String contentType = StringUtil.getMimeType(request.getParameter("suffix"));
             response.setContentType(contentType);
@@ -148,7 +148,7 @@ public class StreamController implements Controller {
                 boolean isHls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
 
                 range = getRange(request, file);
-                if (range != null) {
+                if (range != null && !file.isVideo()) {
                     LOG.info("Got HTTP range: " + range);
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                     Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());

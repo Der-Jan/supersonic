@@ -11,6 +11,7 @@ PARAMETERS
   starEnabled: Whether to show star/unstar controls (default false).
   starred: Whether the file is currently starred.
   asTable: Whether to put the images in td tags.
+  onPlay: Overrides the javascript used for the play action.
 --%>
 
 <c:if test="${param.starEnabled}">
@@ -38,6 +39,10 @@ PARAMETERS
             <a href="${videoUrl}" target="main">
                 <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>"
                      title="<fmt:message key="common.play"/>"></a>
+        </c:when>
+        <c:when test="${not empty param.onPlay}">
+            <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"
+                 onclick="${param.onPlay}; return false;" title="<fmt:message key="common.play"/>">
         </c:when>
         <c:otherwise>
             <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" style="cursor:pointer"

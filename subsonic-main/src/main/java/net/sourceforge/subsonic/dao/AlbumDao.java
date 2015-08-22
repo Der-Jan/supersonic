@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.util.FileUtil;
 
 /**
  * Provides database services for albums.
@@ -73,7 +74,7 @@ public class AlbumDao extends AbstractDao {
 
         // Look for album with the correct artist.
         for (Album candidate : candidates) {
-            if (ObjectUtils.equals(candidate.getArtist(), file.getArtist())) {
+            if (ObjectUtils.equals(candidate.getArtist(), file.getArtist()) && FileUtil.exists(candidate.getPath())) {
                 return candidate;
             }
         }
@@ -113,6 +114,7 @@ public class AlbumDao extends AbstractDao {
      */
     public synchronized void createOrUpdateAlbum(Album album) {
         String sql = "update album set " +
+                     "path=?," +
                      "song_count=?," +
                      "duration_seconds=?," +
                      "cover_art_path=?," +
@@ -127,7 +129,7 @@ public class AlbumDao extends AbstractDao {
                      "folder_id=? " +
                      "where artist=? and name=?";
 
-        int n = update(sql, album.getSongCount(), album.getDurationSeconds(), album.getCoverArtPath(), album.getYear(),
+        int n = update(sql, album.getPath(), album.getSongCount(), album.getDurationSeconds(), album.getCoverArtPath(), album.getYear(),
                        album.getGenre(), album.getPlayCount(), album.getLastPlayed(), album.getComment(), album.getCreated(),
                        album.getLastScanned(), album.isPresent(), album.getFolderId(), album.getArtist(), album.getName());
 
@@ -299,9 +301,15 @@ public class AlbumDao extends AbstractDao {
             put("fromYear", fromYear);
             put("toYear", toYear);
         }};
-        return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
-                          "and year between :fromYear and :toYear order by year limit :count offset :offset",
-                          rowMapper, args);
+        if (fromYear <= toYear) {
+            return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
+                              "and year between :fromYear and :toYear order by year limit :count offset :offset",
+                              rowMapper, args);
+        } else {
+            return namedQuery("select " + COLUMNS + " from album where present and folder_id in (:folders) " +
+                              "and year between :toYear and :fromYear order by year desc limit :count offset :offset",
+                              rowMapper, args);
+        }
     }
 
     public void markNonPresent(Date lastScanned) {

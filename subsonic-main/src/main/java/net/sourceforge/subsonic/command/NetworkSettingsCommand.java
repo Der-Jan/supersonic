@@ -29,6 +29,8 @@ public class NetworkSettingsCommand {
     private boolean portForwardingEnabled;
     private boolean urlRedirectionEnabled;
     private String urlRedirectFrom;
+    private String urlRedirectCustomUrl;
+    private String urlRedirectType;
     private int port;
     private boolean toast;
     private LicenseInfo licenseInfo;
@@ -58,6 +60,13 @@ public class NetworkSettingsCommand {
         this.urlRedirectFrom = urlRedirectFrom;
     }
 
+    public String getUrlRedirectCustomUrl() {
+        return urlRedirectCustomUrl;
+    }
+
+    public void setUrlRedirectCustomUrl(String urlRedirectCustomUrl) {
+        this.urlRedirectCustomUrl = urlRedirectCustomUrl;
+    }
     public int getPort() {
         return port;
     }
@@ -81,7 +90,7 @@ public class NetworkSettingsCommand {
     public LicenseInfo getLicenseInfo() {
         return licenseInfo;
     }
-    
+
     public String getSubsonicUrl() {
        return subsonicUrl;
     }
@@ -89,5 +98,12 @@ public class NetworkSettingsCommand {
     public void setSubsonicUrl(String subsonicUrl) {
         this.subsonicUrl = subsonicUrl;
     }
-    
+
+    public String getUrlRedirectType() {
+        return urlRedirectType;
+    }
+
+    public void setUrlRedirectType(String urlRedirectType) {
+        this.urlRedirectType = urlRedirectType;
+    }
 }

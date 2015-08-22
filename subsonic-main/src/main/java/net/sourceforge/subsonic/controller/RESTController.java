@@ -79,6 +79,7 @@ import org.subsonic.restapi.SimilarSongs2;
 import org.subsonic.restapi.Songs;
 import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
+import org.subsonic.restapi.TopSongs;
 import org.subsonic.restapi.Users;
 import org.subsonic.restapi.Videos;
 
@@ -99,6 +100,7 @@ import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.Bookmark;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.InternetRadio;
+import net.sourceforge.subsonic.domain.LicenseInfo;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
@@ -209,17 +211,12 @@ public class RESTController extends MultiActionController {
         request = wrapRequest(request);
         License license = new License();
 
-        String email = settingsService.getLicenseEmail();
-        String key = settingsService.getLicenseCode();
-        Date date = settingsService.getLicenseDate();
-        boolean valid = settingsService.isLicenseValid();
+        LicenseInfo licenseInfo = settingsService.getLicenseInfo();
 
-        license.setValid(valid);
-        if (valid) {
-            license.setEmail(email);
-            license.setKey(key);
-            license.setDate(jaxbWriter.convertDate(date));
-        }
+        license.setEmail(licenseInfo.getLicenseEmail());
+        license.setValid(licenseInfo.isLicenseValid());
+        license.setLicenseExpires(jaxbWriter.convertDate(licenseInfo.getLicenseExpires()));
+        license.setTrialExpires(jaxbWriter.convertDate(licenseInfo.getTrialExpires()));
 
         Response res = createResponse();
         res.setLicense(license);
@@ -292,6 +289,11 @@ public class RESTController extends MultiActionController {
                         a.setId(String.valueOf(mediaFile.getId()));
                         a.setName(artist.getName());
                         a.setStarred(jaxbWriter.convertDate(starredDate));
+
+                        if (mediaFile.isAlbum()) {
+                            a.setAverageRating(ratingService.getAverageRating(mediaFile));
+                            a.setUserRating(ratingService.getRatingForUser(username, mediaFile));
+                        }
                     }
                 }
             }
@@ -299,7 +301,6 @@ public class RESTController extends MultiActionController {
 
         // Add children
         Player player = playerService.getPlayer(request, response);
-        List<MediaFile> singleSongs = musicIndexService.getSingleSongs(musicFolders, false);
 
         for (MediaFile singleSong : musicFolderContent.getSingleSongs()) {
             indexes.getChild().add(createJaxbChild(player, singleSong, username));
@@ -426,6 +427,28 @@ public class RESTController extends MultiActionController {
 
         Response res = createResponse();
         res.setSimilarSongs2(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getTopSongs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+        String username = securityService.getCurrentUsername(request);
+
+        String artist = getRequiredStringParameter(request, "artist");
+        int count = getIntParameter(request, "count", 50);
+
+        TopSongs result = new TopSongs();
+
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> topSongs = lastFmService.getTopSongs(artist, count, musicFolders);
+        Player player = playerService.getPlayer(request, response);
+        for (MediaFile topSong : topSongs) {
+            result.getSong().add(createJaxbChild(player, topSong, username));
+        }
+
+        Response res = createResponse();
+        res.setTopSongs(result);
         jaxbWriter.writeResponse(request, response, res);
     }
 
@@ -575,6 +598,7 @@ public class RESTController extends MultiActionController {
         jaxbPlaylist.setSongCount(playlist.getFileCount());
         jaxbPlaylist.setDuration(playlist.getDurationSeconds());
         jaxbPlaylist.setCreated(jaxbWriter.convertDate(playlist.getCreated()));
+        jaxbPlaylist.setChanged(jaxbWriter.convertDate(playlist.getChanged()));
         jaxbPlaylist.setCoverArt(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId());
 
         for (String username : playlistService.getPlaylistUsers(playlist.getId())) {
@@ -656,6 +680,11 @@ public class RESTController extends MultiActionController {
         }
         directory.setName(dir.getName());
         directory.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(id, username)));
+
+        if (dir.isAlbum()) {
+            directory.setAverageRating(ratingService.getAverageRating(dir));
+            directory.setUserRating(ratingService.getRatingForUser(username, dir));
+        }
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
             directory.getChild().add(createJaxbChild(player, child, username));
@@ -1290,6 +1319,8 @@ public class RESTController extends MultiActionController {
                     break;
                 case VIDEO:
                     child.setType(MediaType.VIDEO);
+                    child.setOriginalWidth(mediaFile.getWidth());
+                    child.setOriginalHeight(mediaFile.getHeight());
                     break;
                 default:
                     break;
@@ -1548,10 +1579,12 @@ public class RESTController extends MultiActionController {
                 c.setStatus(PodcastStatus.valueOf(channel.getStatus().name()));
                 c.setTitle(channel.getTitle());
                 c.setDescription(channel.getDescription());
+                c.setCoverArt(CoverArtController.PODCAST_COVERART_PREFIX + channel.getId());
+                c.setOriginalImageUrl(channel.getImageUrl());
                 c.setErrorMessage(channel.getErrorMessage());
 
                 if (includeEpisodes) {
-                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId(), false);
+                    List<PodcastEpisode> episodes = podcastService.getEpisodes(channel.getId());
                     for (PodcastEpisode episode : episodes) {
 
                         org.subsonic.restapi.PodcastEpisode e = new org.subsonic.restapi.PodcastEpisode();
@@ -2030,6 +2063,11 @@ public class RESTController extends MultiActionController {
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
 
+        TranscodeScheme transcodeScheme = userSettings.getTranscodeScheme();
+        if (transcodeScheme != null && transcodeScheme != TranscodeScheme.OFF) {
+            result.setMaxBitRate(transcodeScheme.getMaxBitRate());
+        }
+
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
         for (MusicFolder musicFolder : musicFolders) {
             result.getFolder().add(musicFolder.getId());
@@ -2108,7 +2146,9 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
         command.setShareRole(getBooleanParameter(request, "shareRole", u.isShareRole()));
-        command.setTranscodeSchemeName(s.getTranscodeScheme().name());
+
+        int maxBitRate = getIntParameter(request, "maxBitRate", s.getTranscodeScheme().getMaxBitRate());
+        command.setTranscodeSchemeName(TranscodeScheme.fromMaxBitRate(maxBitRate).name());
 
         if (hasParameter(request, "password")) {
             command.setPassword(decrypt(getRequiredStringParameter(request, "password")));

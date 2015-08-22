@@ -23,7 +23,13 @@
         <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>
 
+    <bean id="licenseService" class="net.sourceforge.subsonic.backend.service.LicenseService">
+        <property name="paymentDao" ref="paymentDao"/>
+        <property name="subscriptionDao" ref="subscriptionDao"/>
+    </bean>
+
     <bean class="net.sourceforge.subsonic.backend.service.EmailReminderGenerator" init-method="init">
+        <property name="licenseService" ref="licenseService"/>
         <property name="paymentDao" ref="paymentDao"/>
         <property name="subscriptionDao" ref="subscriptionDao"/>
     </bean>

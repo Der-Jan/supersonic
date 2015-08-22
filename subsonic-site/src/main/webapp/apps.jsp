@@ -46,9 +46,11 @@
                     <li><a href="#android">Subsonic</a> for Android</li>
                     <li><a href="#dsub">DSub</a> for Android</li>
                     <li><a href="#xenoamp">XenoAmp</a> for Android</li>
+                    <li><a href="#substreamer">SubStreamer</a> for Android</li>
                     <li><a href="#submuxic">Sub Muxic</a> for Android</li>
                     <li><a href="#winphone">Subsonic</a> for Windows Phone</li>
                     <li><a href="#silversonic">SilverSonic</a> for Windows Phone</li>
+                    <li><a href="#sonicstreamer">SonicStreamer</a> for Windows Phone</li>
                     <li><a href="#subsonar">SubSonar</a> for BlackBerry</li>
                 </ul>
             </div>
@@ -60,8 +62,11 @@
                     <li><a href="#zsubsonic">Z-Subsonic</a> for iPhone/iPad</li>
                     <li><a href="#substream">SubStream</a> for iPhone/iPad</li>
                     <%--<li><a href="#hypersonic">Hypersonic</a> for iPhone/iPad</li>--%>
+                    <li><a href="#substreamer">SubStreamer</a> for iPhone/iPad</li>
                     <li><a href="#subhub">SubHub</a> for iPhone/iPad</li>
-                    <li><a href="#carsub">CarSub</a> for iPhone/iPad</li>
+                    <li><a href="#avsub">AVSub</a> for iPhone/iPad</li>
+                    <li><a href="#soundwaves">Soundwaves</a> for iPhone/iPad</li>
+                    <li><a href="#playsub">play:Sub</a> for iPhone/iPad</li>
                 </ul>
             </div>
         </div>
@@ -103,6 +108,7 @@
                     <li><a href="#subwiji">SubWiji</a> for Windows</li>
                     <li><a href="#supersonic">Supersonic</a> for Windows 8</li>
                     <li><a href="#subsonic8">Subsonic8</a> for Windows 8</li>
+                    <li><a href="#sonicstreamer">SonicStreamer</a> for Windows 8</li>
                 </ul>
             </div>
         </div>
@@ -120,6 +126,7 @@
             <div class="6u 12u(3)">
                 <ul>
                     <li><a href="#perisonic">Perisonic</a> for Chrome</li>
+                    <li><a href="#polysonic">Polysonic</a> for Chrome</li>
                 </ul>
             </div>
         </div>
@@ -140,9 +147,11 @@
     <%@ include file="apps-android.jsp" %>
     <%@ include file="apps-dsub.jsp" %>
     <%@ include file="apps-xenoamp.jsp" %>
+    <%@ include file="apps-substreamer.jsp" %>
     <%@ include file="apps-submuxic.jsp" %>
     <%@ include file="apps-winphone.jsp" %>
     <%@ include file="apps-silversonic.jsp" %>
+    <%@ include file="apps-sonicstreamer.jsp" %>
     <%@ include file="apps-subsonar.jsp" %>
 
     <%@ include file="apps-isub.jsp" %>
@@ -150,7 +159,9 @@
     <%@ include file="apps-zsubsonic.jsp" %>
     <%@ include file="apps-substream.jsp" %>
     <%@ include file="apps-subhub.jsp" %>
-    <%@ include file="apps-carsub.jsp" %>
+    <%@ include file="apps-avsub.jsp" %>
+    <%@ include file="apps-soundwaves.jsp" %>
+    <%@ include file="apps-playsub.jsp" %>
 
     <%@ include file="apps-sonicair.jsp" %>
     <%@ include file="apps-mmtm.jsp" %>
@@ -170,6 +181,7 @@
     <%@ include file="apps-jamstash.jsp" %>
     <%@ include file="apps-subfire.jsp" %>
     <%@ include file="apps-perisonic.jsp" %>
+    <%@ include file="apps-polysonic.jsp" %>
 
 </section>
 

@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.text.DateFormat;
@@ -43,6 +44,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+
+import net.sourceforge.subsonic.domain.UrlRedirectType;
 
 /**
  * Miscellaneous string utility methods.
@@ -181,6 +184,15 @@ public final class StringUtil {
 
         // Sonos doesn't work with "audio/mp4" but needs "audio/aac" for ALAC and AAC (in MP4 container)
         return sonos && "audio/mp4".equals(result) ? "audio/aac" : result;
+    }
+
+    public static String getSuffix(String mimeType) {
+        for (String[] map : MIME_TYPES) {
+            if (map[1].equalsIgnoreCase(mimeType)) {
+                return map[0];
+            }
+        }
+        return null;
     }
 
     /**
@@ -376,6 +388,17 @@ public final class StringUtil {
     }
 
     /**
+     * URL-decodes the input value using UTF-8.
+     */
+    public static String urlDecode(String s) {
+        try {
+            return URLDecoder.decode(s, StringUtil.ENCODING_UTF8);
+        } catch (UnsupportedEncodingException x) {
+            throw new RuntimeException(x);
+        }
+    }
+
+    /**
     * Encodes the given string by using the hexadecimal representation of its UTF-8 bytes.
     *
     * @param s The string to encode.
@@ -484,25 +507,39 @@ public final class StringUtil {
     /**
      * Rewrites an URL to make it accessible from remote clients.
      */
-    public static String rewriteRemoteUrl(String localUrl, boolean urlRedirectionEnabled, String urlRedirectFrom,
-            String urlRedirectContextPath, String localIp, int localPort) throws MalformedURLException {
+    public static String rewriteRemoteUrl(String localUrl, boolean urlRedirectionEnabled, UrlRedirectType urlRedirectType,
+                                          String urlRedirectFrom, String urlRedirectCustomUrl, String urlRedirectContextPath,
+                                          String localIp, int localPort)  {
+        try {
+            URLBuilder urlBuilder = new URLBuilder(localUrl);
+            if (urlRedirectionEnabled) {
+                if (urlRedirectType == UrlRedirectType.NORMAL) {
+                    String subsonicHost = urlRedirectFrom + ".subsonic.org";
+                    urlBuilder.setHost(subsonicHost);
+                    urlBuilder.setPort(80);
+                    urlBuilder.setProtocol(URLBuilder.HTTP);
+                    if (StringUtils.isNotBlank(urlRedirectContextPath)) {
+                        urlBuilder.setFile(urlBuilder.getFile().replaceFirst("^/" + urlRedirectContextPath, ""));
+                    }
 
-        URLBuilder urlBuilder = new URLBuilder(localUrl);
-        if (urlRedirectionEnabled) {
-            String subsonicHost = urlRedirectFrom + ".subsonic.org";
-            urlBuilder.setProtocol(URLBuilder.HTTP);
-            urlBuilder.setHost(subsonicHost);
-            urlBuilder.setPort(80);
-            if (StringUtils.isNotBlank(urlRedirectContextPath)) {
-                urlBuilder.setFile(urlBuilder.getFile().replaceFirst("^/" + urlRedirectContextPath, ""));
+                } else {
+                    URL customUrl = new URL(urlRedirectCustomUrl);
+                    urlBuilder.setProtocol(URLBuilder.HTTP);
+                    urlBuilder.setHost(customUrl.getHost());
+                    urlBuilder.setPort(localPort);
+                }
+
+            } else {
+                urlBuilder.setProtocol(URLBuilder.HTTP);
+                urlBuilder.setHost(localIp);
+                urlBuilder.setPort(localPort);
             }
 
-        } else {
-            urlBuilder.setProtocol(URLBuilder.HTTP);
-            urlBuilder.setHost(localIp);
-            urlBuilder.setPort(localPort);
+            return urlBuilder.getURLAsString();
+
+        } catch (Exception e) {
+            return localUrl;
         }
-        return urlBuilder.getURLAsString();
     }
 
     /**

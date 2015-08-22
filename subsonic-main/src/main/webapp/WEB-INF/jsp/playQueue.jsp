@@ -101,11 +101,15 @@
     }
 
     function setFrameHeight(height) {
+        <%-- Disable animation in Chrome. It stopped working in Chrome 44. --%>
+        var duration = navigator.userAgent.indexOf("Chrome") != -1 ? 0 : 400;
+
         $("#dummy-animation-target").stop();
         $("#dummy-animation-target").animate({"max-width": height}, {
             step: function (now, fx) {
                 top.document.getElementById("playQueueFrameset").rows = "*," + now;
-            }
+            },
+            duration: duration
         });
     }
 
@@ -196,8 +200,19 @@
         playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
     }
     function onPlayPlaylist(id, index) {
-        index = index || 0;
         playQueueService.playPlaylist(id, index, playQueueCallback);
+    }
+    function onPlayTopSong(id, index) {
+        playQueueService.playTopSong(id, index, playQueueCallback);
+    }
+    function onPlayPodcastChannel(id) {
+        playQueueService.playPodcastChannel(id, playQueueCallback);
+    }
+    function onPlayPodcastEpisode(id) {
+        playQueueService.playPodcastEpisode(id, playQueueCallback);
+    }
+    function onPlayNewestPodcastEpisode(index) {
+        playQueueService.playNewestPodcastEpisode(index, playQueueCallback);
     }
     function onPlayStarred() {
         playQueueService.playStarred(playQueueCallback);

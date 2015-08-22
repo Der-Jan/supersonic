@@ -3,7 +3,6 @@ package net.sourceforge.subsonic.backend.service;
 import net.sourceforge.subsonic.backend.dao.PaymentDao;
 import org.apache.log4j.Logger;
 
-import javax.mail.Address;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
@@ -38,7 +37,7 @@ public class WhitelistGenerator {
             }
             LOG.info(date + " " + recipient);
 
-            if (paymentDao.getPaymentByEmail(recipient) == null && !paymentDao.isWhitelisted(recipient)) {
+            if (paymentDao.getPaymentsByEmail(recipient).isEmpty() && !paymentDao.isWhitelisted(recipient)) {
                 paymentDao.whitelist(recipient);
                 LOG.info("WHITELISTED " + recipient);
             }

@@ -60,6 +60,7 @@
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.ChatService$Messages"/>
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.SimilarArtist"/>
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.ArtistInfo"/>
+        <convert converter="bean" match="net.sourceforge.subsonic.ajax.TopSong"/>
 
     </allow>
 </dwr>

@@ -18,17 +18,19 @@
  */
 package net.sourceforge.subsonic.service.jukebox;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.service.JukeboxService;
-import org.apache.commons.io.IOUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.SourceDataLine;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicReference;
+
+import org.apache.commons.io.IOUtils;
+
+import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.service.JukeboxService;
 
 import static net.sourceforge.subsonic.service.jukebox.AudioPlayer.State.*;
 
@@ -176,7 +178,8 @@ public class AudioPlayer {
                             Thread.sleep(250);
                             break;
                         case PLAYING:
-                            int n = in.read(buffer);
+                            // Fill buffer in order to ensure that write() receives an integral number of frames.
+                            int n = fill(buffer);
                             if (n == -1) {
                                 setState(EOM);
                                 return;
@@ -190,6 +193,18 @@ public class AudioPlayer {
             } finally {
                 close();
             }
+        }
+
+        private int fill(byte[] buffer) throws IOException {
+            int bytesRead = 0;
+            while (bytesRead < buffer.length) {
+                int n = in.read(buffer, bytesRead, buffer.length - bytesRead);
+                if (n == -1) {
+                    return bytesRead == 0 ? -1 : bytesRead;
+                }
+                bytesRead += n;
+            }
+            return bytesRead;
         }
     }
 

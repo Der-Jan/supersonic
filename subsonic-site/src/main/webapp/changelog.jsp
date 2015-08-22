@@ -16,6 +16,54 @@
 
 <section class="box">
 
+    <a name="5.3.beta2"><h3>Subsonic 5.3.beta2 - Aug 17, 2015</h3></a>
+    <ul>
+        <li><strong>Bugfix:</strong> Fixed performance issue when retrieving "top songs".</li>
+        <li><strong>New:</strong> Allow custom URL as an alternative to *.subsonic.org</li>
+        <li><strong>New:</strong> Display proper message when visiting a non-existent or expired share.</li>
+        <li><strong>New:</strong> Added option to delete all expired shares.</li>
+    </ul>
+
+    <a name="5.3.beta1"><h3>Subsonic 5.3.beta1 - Aug 14, 2015</h3></a>
+    <ul>
+        <li><strong>New:</strong> Show top tracks for artist.</li>
+        <li><strong>New:</strong> Improved artist bio design.</li>
+        <li><strong>New:</strong> Redesigned podcast pages.</li>
+        <li><strong>New:</strong> Hide left frame by default, added toggle button.</li>
+        <li><strong>New:</strong> Support custom subsonic.org redirects.</li>
+        <li><strong>New:</strong> Make default album list on home screen configurable.</li>
+        <li><strong>New:</strong> Make play button behaviour configurable (Settings &gt; Personal &gt Queue following songs on play)</li>
+        <li><strong>New:</strong> Improve UI when no media is found.</li>
+        <li><strong>New:</strong> Updated German translation, courtesy of deejay2302.</li>
+        <li><strong>New:</strong> Show Last.fm info even if artist name is slightly wrong</li>
+        <li><strong>Bugfix:</strong> Ensure correct playback speed for mono and high sample frequency files in jukebox mode.</li>
+        <li><strong>Bugfix:</strong> Grant access to media folders when auto-creating LDAP users.</li>
+        <li><strong>Bugfix:</strong> Improved performance for podcast channels with many (>1000) episodes.</li>
+        <li><strong>Bugfix:</strong> Chromecast stops casting before movie ends.</li>
+        <li><strong>Bugfix:</strong> Expiration date not updated when upgrading from normal to lifetime subscription.</li>
+        <li><strong>Bugfix:</strong> Starred image not shown for videos</li>
+        <li><strong>Bugfix:</strong> "Show artist info" should be turned on by default when creating new users.</li>
+        <li><strong>Bugfix:</strong> Include cover art when downloading whole album.</li>
+        <li><strong>Bugfix:</strong> Downloading png album art doesn't always work.</li>
+        <li><strong>Bugfix:</strong> Limit number of concurrent cover art requests, to avoid out-of-memory.</li>
+        <li><strong>Security:</strong> Fixed some XSS vulnerabilities</li>
+        <li><strong>Security:</strong> Log failed login attempts. Can be used by fail2ban for IP banning.</li>
+        <li><strong>Sonos:</strong> Manage Subsonic playlists from the Sonos controller.</li>
+        <li><strong>Sonos:</strong> Show track numbers</li>
+        <li><strong>REST:</strong> Added more secure authentication scheme.</li>
+        <li><strong>REST:</strong> Added getTopSongs</li>
+        <li><strong>REST:</strong> Consider disc number in sorting for getAlbum</li>
+        <li><strong>REST:</strong> Added original width and height for videos.</li>
+        <li><strong>REST:</strong> Added album rating to getIndexes and getMusicDirectory.</li>
+        <li><strong>REST:</strong> Added maxBitRate to getUser, getUsers and updateUser.</li>
+        <li><strong>REST:</strong> Added license and trial expiration dates in getLicense.</li>
+        <li><strong>REST:</strong> Added cover art (and original image url) for podcast channels.</li>
+        <li><strong>REST:</strong> Support reverse chronological album lists.</li>
+        <li><strong>REST:</strong> Improved metadata updates of ID3 albums, e.g., changing cover art.</li>
+        <li><strong>REST:</strong> Add changed date to playlists.</li>
+        <li><strong>REST:</strong> Avoid duplicate Access-Control-Allow-Origin headers.</li>
+    </ul>
+
     <a name="5.2.1"><h3>Subsonic 5.2.1 - Mar 04, 2015</h3></a>
     <ul>
         <li><strong>Bugfix:</strong> Fixed popping sound when starting songs in jukebox mode.</li>

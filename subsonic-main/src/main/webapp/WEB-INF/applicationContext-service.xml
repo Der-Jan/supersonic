@@ -2,7 +2,6 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <!-- DAO's -->
@@ -67,7 +66,7 @@
         <property name="daoHelper" ref="daoHelper"/>
     </bean>
 
-    <bean id="daoHelper" class="net.sourceforge.subsonic.dao.DaoHelper"/>
+    <bean id="daoHelper" class="net.sourceforge.subsonic.dao.DaoHelperFactory" factory-method="create"/>
 
 
     <!-- Services -->
@@ -211,6 +210,7 @@
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="playlistService" ref="playlistService"/>
         <property name="upnpService" ref="upnpService"/>
     </bean>
 
@@ -256,6 +256,7 @@
         <property name="searchService" ref="searchService"/>
         <property name="ratingService" ref="ratingService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="podcastService" ref="podcastService"/>
     </bean>
 
     <bean id="ajaxPlaylistService" class="net.sourceforge.subsonic.ajax.PlaylistService">

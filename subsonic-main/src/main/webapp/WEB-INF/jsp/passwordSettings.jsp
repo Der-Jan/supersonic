@@ -20,7 +20,8 @@
     </c:when>
 
     <c:otherwise>
-        <h2><fmt:message key="passwordsettings.title"><fmt:param>${command.username}</fmt:param></fmt:message></h2>
+        <fmt:message key="passwordsettings.title" var="title"><fmt:param>${command.username}</fmt:param></fmt:message>
+        <h2>${fn:escapeXml(title)}</h2>
         <form:form method="post" action="passwordSettings.view" commandName="command">
             <table class="indent">
                 <tr>

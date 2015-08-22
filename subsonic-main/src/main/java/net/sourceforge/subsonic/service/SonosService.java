@@ -20,7 +20,13 @@
 package net.sourceforge.subsonic.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +74,7 @@ import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaList;
 import com.sonos.services._1.MediaMetadata;
+import com.sonos.services._1.MediaUriAction;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RelatedBrowse;
@@ -81,8 +88,9 @@ import com.sonos.services._1.SegmentMetadataList;
 import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.service.sonos.AlbumListType;
+import net.sourceforge.subsonic.domain.AlbumListType;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.service.sonos.SonosServiceRegistration;
@@ -131,6 +139,7 @@ public class SonosService implements SonosSoap {
     private MediaFileService mediaFileService;
     private SecurityService securityService;
     private SettingsService settingsService;
+    private PlaylistService playlistService;
     private UPnPService upnpService;
 
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -352,21 +361,179 @@ public class SonosService implements SonosSoap {
     public GetMediaMetadataResponse getMediaMetadata(GetMediaMetadata parameters) {
         LOG.debug("getMediaMetadata: " + parameters.getId());
 
+        GetMediaMetadataResponse response = new GetMediaMetadataResponse();
+
+        // This method is called whenever a playlist is modified. Don't know why.
+        // Return an empty response to avoid ugly log message.
+        if (parameters.getId().startsWith(ID_PLAYLIST_PREFIX)) {
+            return response;
+        }
+
         int id = Integer.parseInt(parameters.getId());
         MediaFile song = mediaFileService.getMediaFile(id);
 
-        GetMediaMetadataResponse response = new GetMediaMetadataResponse();
-        GetMediaMetadataResponse.GetMediaMetadataResult result = new GetMediaMetadataResponse.GetMediaMetadataResult();
-        result.setMediaMetadata(sonosHelper.forSong(song, getUsername(), getRequest()));
-        response.setGetMediaMetadataResult(result);
+        response.setGetMediaMetadataResult(sonosHelper.forSong(song, getUsername(), getRequest()));
 
         return response;
     }
 
     @Override
-    public void getMediaURI(String id, Holder<String> result, Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
+    public void getMediaURI(String id, MediaUriAction action, Integer secondsSinceExplicit, Holder<String> result,
+                            Holder<HttpHeaders> httpHeaders, Holder<Integer> uriTimeout) {
         result.value = sonosHelper.getMediaURI(Integer.parseInt(id), getUsername(), getRequest());
         LOG.debug("getMediaURI: " + id + " -> " + result.value);
+    }
+
+    @Override
+    public CreateContainerResult createContainer(String containerType, String title, String parentId, String seedId) {
+        Date now = new Date();
+        Playlist playlist = new Playlist();
+        playlist.setName(title);
+        playlist.setUsername(getUsername());
+        playlist.setCreated(now);
+        playlist.setChanged(now);
+        playlist.setShared(false);
+
+        playlistService.createPlaylist(playlist);
+        CreateContainerResult result = new CreateContainerResult();
+        result.setId(ID_PLAYLIST_PREFIX + playlist.getId());
+        addItemToPlaylist(playlist.getId(), seedId, -1);
+
+        return result;
+    }
+
+    @Override
+    public DeleteContainerResult deleteContainer(String id) {
+        if (id.startsWith(ID_PLAYLIST_PREFIX)) {
+            int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
+            Playlist playlist = playlistService.getPlaylist(playlistId);
+            if (playlist != null && playlist.getUsername().equals(getUsername())) {
+                playlistService.deletePlaylist(playlistId);
+            }
+        }
+        return new DeleteContainerResult();
+    }
+
+    @Override
+    public RenameContainerResult renameContainer(String id, String title) {
+        if (id.startsWith(ID_PLAYLIST_PREFIX)) {
+            int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
+            Playlist playlist = playlistService.getPlaylist(playlistId);
+            if (playlist != null && playlist.getUsername().equals(getUsername())) {
+                playlist.setName(title);
+                playlistService.updatePlaylist(playlist);
+            }
+        }
+        return new RenameContainerResult();
+    }
+
+    @Override
+    public AddToContainerResult addToContainer(String id, String parentId, int index, String updateId) {
+        if (parentId.startsWith(ID_PLAYLIST_PREFIX)) {
+            int playlistId = Integer.parseInt(parentId.replace(ID_PLAYLIST_PREFIX, ""));
+            Playlist playlist = playlistService.getPlaylist(playlistId);
+            if (playlist != null && playlist.getUsername().equals(getUsername())) {
+                addItemToPlaylist(playlistId, id, index);
+            }
+        }
+        return new AddToContainerResult();
+    }
+
+    private void addItemToPlaylist(int playlistId, String id, int index) {
+        if (StringUtils.isBlank(id)) {
+            return;
+        }
+
+        GetMetadata parameters = new GetMetadata();
+        parameters.setId(id);
+        parameters.setIndex(0);
+        parameters.setCount(Integer.MAX_VALUE);
+        GetMetadataResponse metadata = getMetadata(parameters);
+        List<MediaFile> newSongs = new ArrayList<MediaFile>();
+
+        for (AbstractMedia media : metadata.getGetMetadataResult().getMediaCollectionOrMediaMetadata()) {
+            if (StringUtils.isNumeric(media.getId())) {
+                MediaFile mediaFile = mediaFileService.getMediaFile(Integer.parseInt(media.getId()));
+                if (mediaFile != null && mediaFile.isFile()) {
+                    newSongs.add(mediaFile);
+                }
+            }
+        }
+        List<MediaFile> existingSongs = playlistService.getFilesInPlaylist(playlistId);
+        if (index == -1) {
+            index = existingSongs.size();
+        }
+
+        existingSongs.addAll(index, newSongs);
+        playlistService.setFilesInPlaylist(playlistId, existingSongs);
+    }
+
+    @Override
+    public ReorderContainerResult reorderContainer(String id, String from, int to, String updateId) {
+        if (id.startsWith(ID_PLAYLIST_PREFIX)) {
+            int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
+            Playlist playlist = playlistService.getPlaylist(playlistId);
+            if (playlist != null && playlist.getUsername().equals(getUsername())) {
+
+                SortedMap<Integer, MediaFile> indexToSong = new ConcurrentSkipListMap<Integer, MediaFile>();
+                List<MediaFile> songs = playlistService.getFilesInPlaylist(playlistId);
+                for (int i = 0; i < songs.size(); i++) {
+                    indexToSong.put(i, songs.get(i));
+                }
+
+                List<MediaFile> movedSongs = new ArrayList<MediaFile>();
+                for (Integer i : parsePlaylistIndices(from)) {
+                    movedSongs.add(indexToSong.remove(i));
+                }
+
+                List<MediaFile> updatedSongs = new ArrayList<MediaFile>();
+                updatedSongs.addAll(indexToSong.headMap(to).values());
+                updatedSongs.addAll(movedSongs);
+                updatedSongs.addAll(indexToSong.tailMap(to).values());
+
+                playlistService.setFilesInPlaylist(playlistId, updatedSongs);
+            }
+        }
+        return new ReorderContainerResult();
+    }
+
+    @Override
+    public RemoveFromContainerResult removeFromContainer(String id, String indices, String updateId) {
+        if (id.startsWith(ID_PLAYLIST_PREFIX)) {
+            int playlistId = Integer.parseInt(id.replace(ID_PLAYLIST_PREFIX, ""));
+            Playlist playlist = playlistService.getPlaylist(playlistId);
+            if (playlist != null && playlist.getUsername().equals(getUsername())) {
+                SortedSet<Integer> indicesToRemove = parsePlaylistIndices(indices);
+                List<MediaFile> songs = playlistService.getFilesInPlaylist(playlistId);
+                List<MediaFile> updatedSongs = new ArrayList<MediaFile>();
+                for (int i = 0; i < songs.size(); i++) {
+                    if (!indicesToRemove.contains(i)) {
+                        updatedSongs.add(songs.get(i));
+                    }
+                }
+                playlistService.setFilesInPlaylist(playlistId, updatedSongs);
+            }
+        }
+        return new RemoveFromContainerResult();
+    }
+
+    protected SortedSet<Integer> parsePlaylistIndices(String indices) {
+        // Comma-separated, may include ranges:  1,2,4-7
+        SortedSet<Integer> result = new TreeSet<Integer>();
+
+        for (String part : StringUtils.split(indices, ',')) {
+            if (StringUtils.isNumeric(part)) {
+                result.add(Integer.parseInt(part));
+            } else {
+                int dashIndex = part.indexOf("-");
+                int from = Integer.parseInt(part.substring(0, dashIndex));
+                int to = Integer.parseInt(part.substring(dashIndex + 1));
+                for (int i = from; i <= to; i++) {
+                    result.add(i);
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -444,27 +611,7 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public CreateContainerResult createContainer(String containerType, String title, String parentId, String seedId) {
-        return null;
-    }
-
-    @Override
-    public AddToContainerResult addToContainer(String id, String parentId, int index, String updateId) {
-        return null;
-    }
-
-    @Override
-    public RenameContainerResult renameContainer(String id, String title) {
-        return null;
-    }
-
-    @Override
     public SegmentMetadataList getStreamingMetadata(String id, XMLGregorianCalendar startTime, int duration) {
-        return null;
-    }
-
-    @Override
-    public ReorderContainerResult reorderContainer(String id, String from, int to, String updateId) {
         return null;
     }
 
@@ -508,22 +655,12 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public DeleteContainerResult deleteContainer(String id) {
-        return null;
-    }
-
-    @Override
     public void reportPlayStatus(String id, String status) {
 
     }
 
     @Override
     public ContentKey getContentKey(String id, String uri) {
-        return null;
-    }
-
-    @Override
-    public RemoveFromContainerResult removeFromContainer(String id, String indices, String updateId) {
         return null;
     }
 
@@ -541,5 +678,9 @@ public class SonosService implements SonosSoap {
 
     public void setUpnpService(UPnPService upnpService) {
         this.upnpService = upnpService;
+    }
+
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
     }
 }

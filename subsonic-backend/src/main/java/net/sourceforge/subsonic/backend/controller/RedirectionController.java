@@ -78,7 +78,7 @@ public class RedirectionController implements Controller {
         LOG.info("Redirecting from " + requestUrl + " to " + redirectTo);
 
         // Add the CORS response header (http://enable-cors.org)
-        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         return new ModelAndView(new RedirectView(redirectTo));
     }

@@ -39,7 +39,7 @@
     }
 
     function loadArtistInfo() {
-        multiService.getArtistInfo(${model.dir.id}, 8, function (artistInfo) {
+        multiService.getArtistInfo(${model.dir.id}, 8, 0, function (artistInfo) {
             if (artistInfo.similarArtists.length > 0) {
                 var html = "";
                 for (var i = 0; i < artistInfo.similarArtists.length; i++) {

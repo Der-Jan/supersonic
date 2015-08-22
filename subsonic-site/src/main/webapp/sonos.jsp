@@ -111,7 +111,7 @@
                     <li><b>Strings Table</b> &ndash; Version: 5, URI: http://<b>SUBSONIC_IP</b>:4040/sonos/strings.xml</li>
                     <li><b>Presentation Map</b> &ndash; Version: 1, URI: http://<b>SUBSONIC_IP</b>:4040/sonos/presentationMap.xml</li>
                     <li><b>Container Type</b> &ndash; Music Service</li>
-                    <li><b>Capabilities</b> &ndash; Search, Favorites, Extended Metadata</li>
+                    <li><b>Capabilities</b> &ndash; Search, Favorites, User Content Playlists, Extended Metadata</li>
                 </ul>
             </li>
         </ol>
