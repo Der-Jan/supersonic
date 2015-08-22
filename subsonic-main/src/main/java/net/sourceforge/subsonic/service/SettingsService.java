@@ -139,7 +139,6 @@ public class SettingsService {
     private static final String KEY_SORT_ALBUMS_BY_YEAR = "SortAlbumsByYear";
     private static final String KEY_MEDIA_LIBRARY_STATISTICS = "MediaLibraryStatistics";
     private static final String KEY_TRIAL_EXPIRES = "TrialExpires";
-    private static final String KEY_SUBSONIC_URL = "SubsonicUrl";
     private static final String KEY_DLNA_ENABLED = "DlnaEnabled";
     private static final String KEY_DLNA_SERVER_NAME = "DlnaServerName";
     private static final String KEY_SONOS_ENABLED = "SonosEnabled";
@@ -210,7 +209,6 @@ public class SettingsService {
     private static final boolean DEFAULT_SORT_ALBUMS_BY_YEAR = true;
     private static final String DEFAULT_MEDIA_LIBRARY_STATISTICS = "0 0 0 0 0";
     private static final String DEFAULT_TRIAL_EXPIRES = null;
-    private static final String DEFAULT_SUBSONIC_URL = "http://www.yourdomain.com";
     private static final boolean DEFAULT_DLNA_ENABLED = true;
     private static final String DEFAULT_DLNA_SERVER_NAME = "Subsonic";
     private static final boolean DEFAULT_SONOS_ENABLED = false;
@@ -902,14 +900,6 @@ public class SettingsService {
         properties.setProperty(KEY_SERVER_ID, serverId);
     }
     
-    public String getSubsonicUrl() {
-        return properties.getProperty(KEY_SUBSONIC_URL, DEFAULT_SUBSONIC_URL);
-    }
-
-    public void setSubsonicUrl(String subsonicUrl) {
-        properties.setProperty(KEY_SUBSONIC_URL, subsonicUrl);
-    }
-
     public long getSettingsChanged() {
         return getLong(KEY_SETTINGS_CHANGED, DEFAULT_SETTINGS_CHANGED);
     }

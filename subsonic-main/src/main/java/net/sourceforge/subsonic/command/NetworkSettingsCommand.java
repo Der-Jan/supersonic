@@ -34,7 +34,6 @@ public class NetworkSettingsCommand {
     private int port;
     private boolean toast;
     private LicenseInfo licenseInfo;
-    private String subsonicUrl;
 
     public void setPortForwardingEnabled(boolean portForwardingEnabled) {
         this.portForwardingEnabled = portForwardingEnabled;
@@ -89,14 +88,6 @@ public class NetworkSettingsCommand {
 
     public LicenseInfo getLicenseInfo() {
         return licenseInfo;
-    }
-
-    public String getSubsonicUrl() {
-       return subsonicUrl;
-    }
-
-    public void setSubsonicUrl(String subsonicUrl) {
-        this.subsonicUrl = subsonicUrl;
     }
 
     public String getUrlRedirectType() {
