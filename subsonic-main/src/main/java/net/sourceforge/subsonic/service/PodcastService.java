@@ -220,7 +220,11 @@ public class PodcastService {
         return Lists.newArrayList(Iterables.filter(episodes, new Predicate<PodcastEpisode>() {
             @Override
             public boolean apply(PodcastEpisode episode) {
-                MediaFile mediaFile = mediaFileService.getMediaFile(episode.getMediaFileId());
+                Integer mediaFileId = episode.getMediaFileId();
+                if (mediaFileId == null) {
+                    return false;
+                }
+                MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
                 return mediaFile != null && mediaFile.isPresent();
             }
         }));
