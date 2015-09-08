@@ -1,6 +1,7 @@
 DONE IN 5.3
 -----------------
 Bugfix: Fixed error with list of newest podcast episodes.
+REST: Add method to get newest podcast episodes
 
 TODO IN 5.3
 ------------
@@ -10,7 +11,9 @@ Forum:
   setup backup
   test mail sending
 
+Add option to show/hide artist list by default.
 REST: Add method to get newest podcast episodes
+  Add doc.
 Sharing fails if guest user is not allowed access to folders.
 Interface binding for DLNA server part
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f4cafdc00a3660
