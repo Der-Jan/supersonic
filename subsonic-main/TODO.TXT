@@ -13,11 +13,10 @@ Forum:
 Support media folder types (Music vs Video)
   https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
 Add option to show/hide artist list by default.
-REST: Add method to get newest podcast episodes
-  Add doc.
 Sharing fails if guest user is not allowed access to folders.
 Interface binding for DLNA server part
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f4cafdc00a3660
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15944&p=68658
 Update Japanese translation
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f59a7fb5ae6a62
 Site: Update list of apps
