@@ -2,15 +2,16 @@ DONE IN 5.3
 -----------------
 Bugfix: Fixed error with list of newest podcast episodes.
 REST: Add method to get newest podcast episodes
+Bugfix: Display shorter artist bio.
 
 TODO IN 5.3
 ------------
+
 Forum:
   add icon file
-  cleanup
-  setup backup
-  test mail sending
 
+Support media folder types (Music vs Video)
+  https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
 Add option to show/hide artist list by default.
 REST: Add method to get newest podcast episodes
   Add doc.
