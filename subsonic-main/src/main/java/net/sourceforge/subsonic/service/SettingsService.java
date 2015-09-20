@@ -89,7 +89,6 @@ public class SettingsService {
     private static final String KEY_MUSIC_FILE_TYPES = "MusicFileTypes";
     private static final String KEY_VIDEO_FILE_TYPES = "VideoFileTypes";
     private static final String KEY_COVER_ART_FILE_TYPES = "CoverArtFileTypes2";
-    private static final String KEY_COVER_ART_LIMIT = "CoverArtLimit";
     private static final String KEY_COVER_ART_CONCURRENCY = "CoverArtConcurrency";
     private static final String KEY_WELCOME_TITLE = "WelcomeTitle";
     private static final String KEY_WELCOME_SUBTITLE = "WelcomeSubtitle";
@@ -219,7 +218,7 @@ public class SettingsService {
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "DownsamplingCommand3", "AutoCoverBatch", "MusicMask",
             "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
-            "CoverArtFileTypes", "UrlRedirectCustomHost");
+            "CoverArtFileTypes", "UrlRedirectCustomHost", "CoverArtLimit");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -483,14 +482,6 @@ public class SettingsService {
             cachedCoverArtFileTypesArray = toStringArray(getCoverArtFileTypes());
         }
         return cachedCoverArtFileTypesArray;
-    }
-
-    public int getCoverArtLimit() {
-        return getInt(KEY_COVER_ART_LIMIT, DEFAULT_COVER_ART_LIMIT);
-    }
-
-    public void setCoverArtLimit(int limit) {
-        setInt(KEY_COVER_ART_LIMIT, limit);
     }
 
     public int getCoverArtConcurrency() {

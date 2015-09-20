@@ -155,7 +155,10 @@
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });
     }
-
+    function showAllAlbums() {
+        $("#showAllButton").hide();
+        $(".albumThumb").show();
+    }
 </script>
 
 <div style="float:left">
@@ -469,7 +472,7 @@
 <c:if test="${not model.viewAsList}">
     <div style="float: left">
         <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
-            <div class="albumThumb">
+            <div class="albumThumb" style="display:${loopStatus.count < 10 ? 'inline-block' : 'none'}">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${album.id}"/>
                     <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
@@ -481,6 +484,9 @@
                 </c:import>
             </div>
         </c:forEach>
+        <c:if test="${fn:length(model.sieblingAlbums) >= 10}">
+            <input id="showAllButton" class="albumOverflowButton" type="button" value="<fmt:message key="main.showall"/>" onclick="showAllAlbums()">
+        </c:if>
     </div>
 </c:if>
 

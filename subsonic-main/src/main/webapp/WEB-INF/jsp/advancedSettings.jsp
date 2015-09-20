@@ -25,14 +25,6 @@
 
     <table style="white-space:nowrap" class="indent">
         <tr>
-            <td><fmt:message key="advancedsettings.coverartlimit"/></td>
-            <td>
-                <form:input path="coverArtLimit" size="8"/>
-                <c:import url="helpToolTip.jsp"><c:param name="topic" value="coverartlimit"/></c:import>
-            </td>
-        </tr>
-
-        <tr>
             <td><fmt:message key="advancedsettings.downloadlimit"/></td>
             <td>
                 <form:input path="downloadLimit" size="8"/>

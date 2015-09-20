@@ -153,6 +153,10 @@
         top.playQueue.onAddNext(topSongs[index].id);
         $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>')
     }
+    function showAllAlbums() {
+        $("#showAllButton").hide();
+        $(".albumThumb").show();
+    }
 </script>
 
 <div style="float:left">
@@ -256,9 +260,11 @@
         </table>
 
         <div style="float: left;padding-top: 1.5em">
+            <c:set var="albumCount" value="0"/>
             <c:forEach items="${model.subDirs}" var="subDir" varStatus="loopStatus">
                 <c:if test="${subDir.album}">
-                    <div class="albumThumb">
+                    <c:set var="albumCount" value="${albumCount + 1}"/>
+                    <div class="albumThumb" style="display:${loopStatus.count < 40 ? 'inline-block' : 'none'}">
                         <c:import url="coverArt.jsp">
                             <c:param name="albumId" value="${subDir.id}"/>
                             <c:param name="caption1" value="${fn:escapeXml(subDir.name)}"/>
@@ -271,6 +277,9 @@
                     </div>
                 </c:if>
             </c:forEach>
+            <c:if test="${albumCount >= 40}">
+                <input id="showAllButton" class="albumOverflowButton" type="button" value="<fmt:message key="main.showall"/>" onclick="showAllAlbums()">
+            </c:if>
         </div>
     </c:otherwise>
 </c:choose>

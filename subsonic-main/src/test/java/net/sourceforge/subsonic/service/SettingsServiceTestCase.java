@@ -49,7 +49,6 @@ public class SettingsServiceTestCase extends TestCase {
 
     public void testDefaultValues() {
         assertEquals("Wrong default language.", "en", settingsService.getLocale().getLanguage());
-        assertEquals("Wrong default cover art limit.", 50, settingsService.getCoverArtLimit());
         assertEquals("Wrong default index creation interval.", 1, settingsService.getIndexCreationInterval());
         assertEquals("Wrong default index creation hour.", 3, settingsService.getIndexCreationHour());
         assertTrue("Wrong default playlist folder.", settingsService.getPlaylistFolder().endsWith("playlists"));
@@ -78,7 +77,6 @@ public class SettingsServiceTestCase extends TestCase {
         settingsService.setPlaylistFolder("playlistFolder");
         settingsService.setMusicFileTypes("mp3 ogg  aac");
         settingsService.setCoverArtFileTypes("jpeg gif  png");
-        settingsService.setCoverArtLimit(99);
         settingsService.setWelcomeMessage("welcomeMessage");
         settingsService.setLoginMessage("loginMessage");
         settingsService.setLocale(Locale.CANADA_FRENCH);
@@ -120,7 +118,6 @@ public class SettingsServiceTestCase extends TestCase {
         assertTrue("Wrong music mask array.", Arrays.equals(new String[] {"mp3", "ogg", "aac"}, ss.getMusicFileTypesAsArray()));
         assertEquals("Wrong cover art mask.", "jpeg gif  png", ss.getCoverArtFileTypes());
         assertTrue("Wrong cover art mask array.", Arrays.equals(new String[] {"jpeg", "gif", "png"}, ss.getCoverArtFileTypesAsArray()));
-        assertEquals("Wrong cover art limit.", 99, ss.getCoverArtLimit());
         assertEquals("Wrong welcome message.", "welcomeMessage", ss.getWelcomeMessage());
         assertEquals("Wrong login message.", "loginMessage", ss.getLoginMessage());
         assertEquals("Wrong locale.", Locale.CANADA_FRENCH, ss.getLocale());

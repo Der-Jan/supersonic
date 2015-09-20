@@ -27,7 +27,6 @@ import net.sourceforge.subsonic.controller.AdvancedSettingsController;
  */
 public class AdvancedSettingsCommand {
 
-    private String coverArtLimit;
     private String downloadLimit;
     private String uploadLimit;
     private String streamPort;
@@ -40,14 +39,6 @@ public class AdvancedSettingsCommand {
     private String brand;
     private boolean isReloadNeeded;
     private boolean toast;
-
-    public String getCoverArtLimit() {
-        return coverArtLimit;
-    }
-
-    public void setCoverArtLimit(String coverArtLimit) {
-        this.coverArtLimit = coverArtLimit;
-    }
 
     public String getDownloadLimit() {
         return downloadLimit;
