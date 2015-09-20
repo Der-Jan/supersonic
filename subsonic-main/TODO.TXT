@@ -3,6 +3,7 @@ DONE IN 5.3
 Bugfix: Fixed error with list of newest podcast episodes.
 REST: Add method to get newest podcast episodes
 Bugfix: Display shorter artist bio.
+New: Show sidebar by default. Remember state across sessions.
 
 TODO IN 5.3
 ------------
@@ -10,10 +11,11 @@ TODO IN 5.3
 Forum:
   add icon file
 
+Honor cover art limit.
 Support media folder types (Music vs Video)
   https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
-Add option to show/hide artist list by default.
 Sharing fails if guest user is not allowed access to folders.
+  Show error message?
 Interface binding for DLNA server part
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f4cafdc00a3660
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15944&p=68658
@@ -35,7 +37,6 @@ Status and log should only be available for admin.
 Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
-Honor cover art limit.
 Remember visibility of left.jsp?
 Make logout float right
 Check jwplayer in external player

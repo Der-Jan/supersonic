@@ -38,6 +38,7 @@ public class UserSettings {
     private boolean betaVersionNotificationEnabled;
     private boolean songNotificationEnabled;
     private boolean autoHidePlayQueue;
+    private boolean showSideBar;
     private boolean viewAsList;
     private boolean queueFollowingSongs;
     private AlbumListType defaultAlbumList = AlbumListType.RANDOM;
@@ -208,6 +209,14 @@ public class UserSettings {
 
     public void setAutoHidePlayQueue(boolean autoHidePlayQueue) {
         this.autoHidePlayQueue = autoHidePlayQueue;
+    }
+
+    public boolean isShowSideBar() {
+        return showSideBar;
+    }
+
+    public void setShowSideBar(boolean showSideBar) {
+        this.showSideBar = showSideBar;
     }
 
     public boolean isViewAsList() {

@@ -150,6 +150,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         assertFalse("Error in getUserSettings().", userSettings.isFinalVersionNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isBetaVersionNotificationEnabled());
         assertFalse("Error in getUserSettings().", userSettings.isSongNotificationEnabled());
+        assertFalse("Error in getUserSettings().", userSettings.isShowSideBar());
         assertFalse("Error in getUserSettings().", userSettings.isLastFmEnabled());
         assertNull("Error in getUserSettings().", userSettings.getLastFmUsername());
         assertNull("Error in getUserSettings().", userSettings.getLastFmPassword());
@@ -166,6 +167,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         settings.setThemeId("midnight");
         settings.setBetaVersionNotificationEnabled(true);
         settings.setSongNotificationEnabled(false);
+        settings.setShowSideBar(true);
         settings.getMainVisibility().setBitRateVisible(true);
         settings.getPlaylistVisibility().setYearVisible(true);
         settings.setLastFmEnabled(true);
@@ -187,6 +189,7 @@ public class UserDaoTestCase extends DaoTestCaseBase {
         assertEquals("Error in getUserSettings().", false, userSettings.isFinalVersionNotificationEnabled());
         assertEquals("Error in getUserSettings().", true, userSettings.isBetaVersionNotificationEnabled());
         assertEquals("Error in getUserSettings().", false, userSettings.isSongNotificationEnabled());
+        assertEquals("Error in getUserSettings().", true, userSettings.isShowSideBar());
         assertEquals("Error in getUserSettings().", "midnight", userSettings.getThemeId());
         assertEquals("Error in getUserSettings().", true, userSettings.getMainVisibility().isBitRateVisible());
         assertEquals("Error in getUserSettings().", true, userSettings.getPlaylistVisibility().isYearVisible());
