@@ -4,6 +4,7 @@ Bugfix: Fixed error with list of newest podcast episodes.
 REST: Add method to get newest podcast episodes
 Bugfix: Display shorter artist bio.
 New: Show sidebar by default. Remember state across sessions.
+New: Update Japanese translation, courtesy of Kenji Maekawa
 
 TODO IN 5.3
 ------------
@@ -19,8 +20,6 @@ Sharing fails if guest user is not allowed access to folders.
 Interface binding for DLNA server part
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f4cafdc00a3660
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15944&p=68658
-Update Japanese translation
-  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f59a7fb5ae6a62
 Site: Update list of apps
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f395ddbae11289
 Shares shouldn't work if license expired
