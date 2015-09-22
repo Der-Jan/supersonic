@@ -129,13 +129,6 @@ public class StringUtilTestCase extends TestCase {
         assertEquals("Error in parseInts().", Arrays.toString(expected), Arrays.toString(StringUtil.parseInts(s)));
     }
 
-    public void testToHttpUrl() throws Exception {
-        assertEquals("Error in toHttpUrl.", "http://foo.bar.com", StringUtil.toHttpUrl("http://foo.bar.com", 8080));
-        assertEquals("Error in toHttpUrl.", "http://foo.bar.com:12/abc?f=a", StringUtil.toHttpUrl("http://foo.bar.com:12/abc?f=a", 8080));
-        assertEquals("Error in toHttpUrl.", "http://foo.bar.com:443", StringUtil.toHttpUrl("https://foo.bar.com", 443));
-        assertEquals("Error in toHttpUrl.", "http://foo.bar.com:443/a/b/c?k=1&j=2", StringUtil.toHttpUrl("https://foo.bar.com/a/b/c?k=1&j=2", 443));
-    }
-
     public void testParseLocale() {
         assertEquals("Error in parseLocale().", null, null);
         assertEquals("Error in parseLocale().", new Locale("en"), StringUtil.parseLocale("en"));

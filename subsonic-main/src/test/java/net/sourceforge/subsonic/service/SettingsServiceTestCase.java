@@ -53,7 +53,6 @@ public class SettingsServiceTestCase extends TestCase {
         assertEquals("Wrong default index creation hour.", 3, settingsService.getIndexCreationHour());
         assertTrue("Wrong default playlist folder.", settingsService.getPlaylistFolder().endsWith("playlists"));
         assertEquals("Wrong default theme.", "default", settingsService.getThemeId());
-        assertEquals("Wrong default stream port.", 0, settingsService.getStreamPort());
         assertNull("Wrong default license email.", settingsService.getLicenseEmail());
         assertNull("Wrong default license code.", settingsService.getLicenseCode());
         assertNull("Wrong default license date.", settingsService.getLicenseDate());
@@ -83,7 +82,6 @@ public class SettingsServiceTestCase extends TestCase {
         settingsService.setThemeId("dark");
         settingsService.setIndexCreationInterval(4);
         settingsService.setIndexCreationHour(9);
-        settingsService.setStreamPort(8080);
         settingsService.setLicenseEmail("sindre@foo.bar.no");
         settingsService.setLicenseCode(null);
         settingsService.setLicenseDate(new Date(223423412351253L));
@@ -124,7 +122,6 @@ public class SettingsServiceTestCase extends TestCase {
         assertEquals("Wrong theme.", "dark", ss.getThemeId());
         assertEquals("Wrong index creation interval.", 4, ss.getIndexCreationInterval());
         assertEquals("Wrong index creation hour.", 9, ss.getIndexCreationHour());
-        assertEquals("Wrong stream port.", 8080, ss.getStreamPort());
         assertEquals("Wrong license email.", "sindre@foo.bar.no", ss.getLicenseEmail());
         assertEquals("Wrong license code.", null, ss.getLicenseCode());
         assertEquals("Wrong license date.", new Date(223423412351253L), ss.getLicenseDate());

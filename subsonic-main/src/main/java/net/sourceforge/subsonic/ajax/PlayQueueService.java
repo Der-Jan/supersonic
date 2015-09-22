@@ -623,8 +623,6 @@ public class PlayQueueService {
 
         List<PlayQueueInfo.Entry> entries = new ArrayList<PlayQueueInfo.Entry>();
         PlayQueue playQueue = player.getPlayQueue();
-        String localIp = settingsService.getLocalIpAddress();
-        int localPort = settingsService.getPort();
 
         for (MediaFile file : playQueue.getFiles()) {
 
@@ -639,16 +637,8 @@ public class PlayQueueService {
                 streamUrl = StringUtil.rewriteUrl(streamUrl, referer);
             }
 
-            boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
-            String urlRedirectFrom = settingsService.getUrlRedirectFrom();
-            String urlRedirectContextPath = settingsService.getUrlRedirectContextPath();
-            UrlRedirectType urlRedirectType = settingsService.getUrlRedirectType();
-            String urlRedirectCustomUrl = settingsService.getUrlRedirectCustomUrl();
-
-            String remoteStreamUrl = StringUtil.rewriteRemoteUrl(streamUrl, urlRedirectionEnabled, urlRedirectType, urlRedirectFrom,
-                                                                 urlRedirectCustomUrl, urlRedirectContextPath, localIp, localPort);
-            String remoteCoverArtUrl = StringUtil.rewriteRemoteUrl(coverArtUrl, urlRedirectionEnabled, urlRedirectType, urlRedirectFrom,
-                                                                   urlRedirectCustomUrl, urlRedirectContextPath, localIp, localPort);
+            String remoteStreamUrl = settingsService.rewriteRemoteUrl(streamUrl);
+            String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
 
             String format = formatFormat(player, file);
             String username = securityService.getCurrentUsername(request);

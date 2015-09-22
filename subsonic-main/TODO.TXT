@@ -9,16 +9,7 @@ New: Added "Show all albums" overflow button.
 
 TODO IN 5.3
 ------------
-Remove:
-  SettingsService.getStreamPort()
-  StringUtil.toHttpUrl()
-
-Forum:
-  add icon file
-
-Honor cover art limit.
-  Add "Show all" button.
-
+Forum: add favicon file
 Support media folder types (Music vs Video)
   https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
 Sharing fails if guest user is not allowed access to folders.
@@ -74,15 +65,12 @@ HLS audio stutter
 Auto-playlist: starred songs
 Highest rated: separate my vs global rating
 Inifinite scroll on home page
-Prepare release
 reCAPTCHA v2
 Add integration to other audio systems than Sonos
 Podcast channel image in Sonos
 Site: Change hero image
 
 When scaling images, don't distort aspect rate.
-Album art for ID3 not updated on media scan (Aerosmith - Big Ones)
-  Test with chrome app
 Sonos: Shuffle play per folder
   http://forum.subsonic.org/forum/viewtopic.php?f=4&t=15169&p=67927#p67927
 Backend: Change reminder email text for subscribers

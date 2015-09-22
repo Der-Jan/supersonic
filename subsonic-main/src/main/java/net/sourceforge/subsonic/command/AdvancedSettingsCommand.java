@@ -29,7 +29,6 @@ public class AdvancedSettingsCommand {
 
     private String downloadLimit;
     private String uploadLimit;
-    private String streamPort;
     private boolean ldapEnabled;
     private String ldapUrl;
     private String ldapSearchFilter;
@@ -50,14 +49,6 @@ public class AdvancedSettingsCommand {
 
     public String getUploadLimit() {
         return uploadLimit;
-    }
-
-    public String getStreamPort() {
-        return streamPort;
-    }
-
-    public void setStreamPort(String streamPort) {
-        this.streamPort = streamPort;
     }
 
     public void setUploadLimit(String uploadLimit) {

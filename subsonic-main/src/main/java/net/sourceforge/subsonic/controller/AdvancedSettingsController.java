@@ -39,7 +39,6 @@ public class AdvancedSettingsController extends SimpleFormController {
         AdvancedSettingsCommand command = new AdvancedSettingsCommand();
         command.setDownloadLimit(String.valueOf(settingsService.getDownloadBitrateLimit()));
         command.setUploadLimit(String.valueOf(settingsService.getUploadBitrateLimit()));
-        command.setStreamPort(String.valueOf(settingsService.getStreamPort()));
         command.setLdapEnabled(settingsService.isLdapEnabled());
         command.setLdapUrl(settingsService.getLdapUrl());
         command.setLdapSearchFilter(settingsService.getLdapSearchFilter());
@@ -62,9 +61,6 @@ public class AdvancedSettingsController extends SimpleFormController {
         } catch (NumberFormatException x) { /* Intentionally ignored. */ }
         try {
             settingsService.setUploadBitrateLimit(Long.parseLong(command.getUploadLimit()));
-        } catch (NumberFormatException x) { /* Intentionally ignored. */ }
-        try {
-            settingsService.setStreamPort(Integer.parseInt(command.getStreamPort()));
         } catch (NumberFormatException x) { /* Intentionally ignored. */ }
 
         settingsService.setLdapEnabled(command.isLdapEnabled());
