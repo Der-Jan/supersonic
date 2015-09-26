@@ -122,12 +122,16 @@ public class LeftController extends ParameterizableViewController {
         MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
         Locale locale = RequestContextUtils.getLocale(request);
 
+        boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
+        if (refresh) {
+            settingsService.clearMusicFolderCache();
+        }
+
         String username = securityService.getCurrentUsername(request);
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
         MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         UserSettings userSettings = settingsService.getUserSettings(username);
-        boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
         MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
 
         map.put("player", playerService.getPlayer(request, response));

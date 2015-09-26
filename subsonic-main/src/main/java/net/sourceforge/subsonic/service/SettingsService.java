@@ -1070,7 +1070,13 @@ public class SettingsService {
      * @return Possibly empty list of music folders.
      */
     public List<MusicFolder> getMusicFoldersForUser(String username) {
-        return getMusicFoldersForUser(username, false, false);
+        List<MusicFolder> result = cachedMusicFoldersPerUser.get(username);
+        if (result == null) {
+            result = musicFolderDao.getMusicFoldersForUser(username);
+            result.retainAll(getAllMusicFolders(false, false));
+            cachedMusicFoldersPerUser.put(username, result);
+        }
+        return result;
     }
 
     /**
@@ -1081,7 +1087,7 @@ public class SettingsService {
      * @return Possibly empty list of music folders.
      */
     public List<MusicFolder> getMusicFoldersForUser(String username, Integer selectedMusicFolderId) {
-        List<MusicFolder> allowed = getMusicFoldersForUser(username, false, false);
+        List<MusicFolder> allowed = getMusicFoldersForUser(username);
         if (selectedMusicFolderId == null) {
             return allowed;
         }
@@ -1099,23 +1105,6 @@ public class SettingsService {
         MusicFolder musicFolder = getMusicFolderById(musicFolderId);
         List<MusicFolder> allowedMusicFolders = getMusicFoldersForUser(username);
         return allowedMusicFolders.contains(musicFolder) ? musicFolder : null;
-    }
-
-    /**
-     * Returns all music folders a given user have access to.
-     *
-     * @param includeDisabled Whether to include disabled folders.
-     * @param includeNonExisting Whether to include non-existing folders.
-     * @return Possibly empty list of music folders.
-     */
-    public List<MusicFolder> getMusicFoldersForUser(String username, boolean includeDisabled, boolean includeNonExisting) {
-        List<MusicFolder> result = cachedMusicFoldersPerUser.get(username);
-        if (result == null) {
-            result = musicFolderDao.getMusicFoldersForUser(username);
-            result.retainAll(getAllMusicFolders(includeDisabled, includeNonExisting));
-            cachedMusicFoldersPerUser.put(username, result);
-        }
-        return result;
     }
 
     public void setMusicFoldersForUser(String username, List<Integer> musicFolderIds) {
@@ -1146,8 +1135,7 @@ public class SettingsService {
      */
     public void createMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.createMusicFolder(musicFolder);
-        cachedMusicFolders = null;
-        cachedMusicFoldersPerUser.clear();
+        clearMusicFolderCache();
     }
 
     /**
@@ -1157,8 +1145,7 @@ public class SettingsService {
      */
     public void deleteMusicFolder(Integer id) {
         musicFolderDao.deleteMusicFolder(id);
-        cachedMusicFolders = null;
-        cachedMusicFoldersPerUser.clear();
+        clearMusicFolderCache();
     }
 
     /**
@@ -1168,6 +1155,10 @@ public class SettingsService {
      */
     public void updateMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.updateMusicFolder(musicFolder);
+        clearMusicFolderCache();
+    }
+
+    public void clearMusicFolderCache() {
         cachedMusicFolders = null;
         cachedMusicFoldersPerUser.clear();
     }
