@@ -31,13 +31,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import net.sourceforge.subsonic.Logger;
-import net.sourceforge.subsonic.dao.ShareDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.ShareService;
 
 /**
  * Controller for the page used to play shared music (Twitter, Facebook etc).
@@ -46,11 +47,9 @@ import net.sourceforge.subsonic.service.SettingsService;
  */
 public class ExternalPlayerController extends ParameterizableViewController {
 
-    private static final Logger LOG = Logger.getLogger(ExternalPlayerController.class);
-
     private SettingsService settingsService;
     private PlayerService playerService;
-    private ShareDao shareDao;
+    private ShareService shareService;
     private MediaFileService mediaFileService;
 
     @Override
@@ -65,7 +64,7 @@ public class ExternalPlayerController extends ParameterizableViewController {
             return null;
         }
 
-        Share share = shareDao.getShareByName(pathInfo.substring(1));
+        Share share = shareService.getShareByName(pathInfo.substring(1));
 
         if (share != null && share.getExpires() != null && share.getExpires().before(new Date())) {
             share = null;
@@ -74,35 +73,34 @@ public class ExternalPlayerController extends ParameterizableViewController {
         if (share != null) {
             share.setLastVisited(new Date());
             share.setVisitCount(share.getVisitCount() + 1);
-            shareDao.updateShare(share);
+            shareService.updateShare(share);
         }
 
+        Player player = playerService.getGuestPlayer(request);
+
         map.put("share", share);
-        map.put("songs", getSongs(share));
+        map.put("songs", getSongs(share, player.getUsername()));
         map.put("redirectUrl", settingsService.getUrlRedirectUrl());
-        map.put("player", playerService.getGuestPlayer(request).getId());
+        map.put("player", player.getId());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
     }
 
-    private List<MediaFile> getSongs(Share share) throws IOException {
+    private List<MediaFile> getSongs(Share share, String username) throws IOException {
         List<MediaFile> result = new ArrayList<MediaFile>();
 
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+
         if (share != null) {
-            for (String path : shareDao.getSharedFiles(share.getId())) {
-                try {
-                    MediaFile file = mediaFileService.getMediaFile(path);
-                    if (file.getFile().exists()) {
-                        if (file.isDirectory()) {
-                            result.addAll(mediaFileService.getChildrenOf(file, true, false, true));
-                        } else {
-                            result.add(file);
-                        }
+            for (MediaFile file : shareService.getSharedFiles(share.getId(), musicFolders)) {
+                if (file.getFile().exists()) {
+                    if (file.isDirectory()) {
+                        result.addAll(mediaFileService.getChildrenOf(file, true, false, true));
+                    } else {
+                        result.add(file);
                     }
-                } catch (Exception x) {
-                    LOG.warn("Couldn't read file " + path);
                 }
             }
         }
@@ -117,8 +115,8 @@ public class ExternalPlayerController extends ParameterizableViewController {
         this.playerService = playerService;
     }
 
-    public void setShareDao(ShareDao shareDao) {
-        this.shareDao = shareDao;
+    public void setShareService(ShareService shareService) {
+        this.shareService = shareService;
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {

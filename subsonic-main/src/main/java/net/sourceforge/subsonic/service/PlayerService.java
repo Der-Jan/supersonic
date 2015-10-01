@@ -46,7 +46,6 @@ public class PlayerService {
 
     private static final String COOKIE_NAME = "player";
     private static final int COOKIE_EXPIRY = 365 * 24 * 3600; // One year
-    private static final String GUEST_USERNAME = "guest";
 
     private PlayerDao playerDao;
     private StatusService statusService;
@@ -305,15 +304,15 @@ public class PlayerService {
     public Player getGuestPlayer(HttpServletRequest request) {
 
         // Create guest user if necessary.
-        User user = securityService.getUserByName(GUEST_USERNAME);
+        User user = securityService.getUserByName(User.USERNAME_GUEST);
         if (user == null) {
-            user = new User(GUEST_USERNAME, RandomStringUtils.randomAlphanumeric(30), null);
+            user = new User(User.USERNAME_GUEST, RandomStringUtils.randomAlphanumeric(30), null);
             user.setStreamRole(true);
             securityService.createUser(user);
         }
 
         // Look for existing player.
-        List<Player> players = getPlayersForUserAndClientId(GUEST_USERNAME, null);
+        List<Player> players = getPlayersForUserAndClientId(User.USERNAME_GUEST, null);
         if (!players.isEmpty()) {
             return players.get(0);
         }
@@ -323,7 +322,7 @@ public class PlayerService {
         if (request != null ) {
             player.setIpAddress(request.getRemoteAddr());
         }
-        player.setUsername(GUEST_USERNAME);
+        player.setUsername(User.USERNAME_GUEST);
         createPlayer(player);
 
         return player;

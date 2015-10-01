@@ -10,10 +10,9 @@ New: Added "Show all albums" overflow button.
 TODO IN 5.3
 ------------
 Forum: add favicon file
+Site: html email
 Support media folder types (Music vs Video)
   https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
-Sharing fails if guest user is not allowed access to folders.
-  Show error message?
 Interface binding for DLNA server part
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14f4cafdc00a3660
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=15944&p=68658

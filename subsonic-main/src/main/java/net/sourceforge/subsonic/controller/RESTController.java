@@ -1840,13 +1840,14 @@ public class RESTController extends MultiActionController {
         Player player = playerService.getPlayer(request, response);
         String username = securityService.getCurrentUsername(request);
         User user = securityService.getCurrentUser(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
 
         Shares result = new Shares();
         for (Share share : shareService.getSharesForUser(user)) {
             org.subsonic.restapi.Share s = createJaxbShare(share);
             result.getShare().add(s);
 
-            for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
+            for (MediaFile mediaFile : shareService.getSharedFiles(share.getId(), musicFolders)) {
                 s.getEntry().add(createJaxbChild(player, mediaFile, username));
             }
         }
@@ -1877,8 +1878,6 @@ public class RESTController extends MultiActionController {
             files.add(mediaFileService.getMediaFile(id));
         }
 
-        // TODO: Update api.jsp
-
         Share share = shareService.createShare(request, files);
         share.setDescription(request.getParameter("description"));
         long expires = getLongParameter(request, "expires", 0L);
@@ -1891,7 +1890,9 @@ public class RESTController extends MultiActionController {
         org.subsonic.restapi.Share s = createJaxbShare(share);
         result.getShare().add(s);
 
-        for (MediaFile mediaFile : shareService.getSharedFiles(share.getId())) {
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+
+        for (MediaFile mediaFile : shareService.getSharedFiles(share.getId(), musicFolders)) {
             s.getEntry().add(createJaxbChild(player, mediaFile, username));
         }
 
