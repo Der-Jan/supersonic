@@ -9,6 +9,7 @@ New: Added "Show all albums" overflow button.
 
 TODO IN 5.3
 ------------
+Site: Provide static download link to latest.
 Forum: add favicon file
 Site: html email
 Support media folder types (Music vs Video)
