@@ -9,9 +9,15 @@ New: Added "Show all albums" overflow button.
 
 TODO IN 5.3
 ------------
+Site: html email
+  Litmus
+  Smaller logo
+  Don't send reminders for subscriptions?
+
+Test with Android
+  http://forum.subsonic.org/forum/viewtopic.php?f=8&t=15997
 Site: Provide static download link to latest.
 Forum: add favicon file
-Site: html email
 Support media folder types (Music vs Video)
   https://mail.google.com/mail/ca/u/0/#inbox/14e801e8820f0616
 Interface binding for DLNA server part

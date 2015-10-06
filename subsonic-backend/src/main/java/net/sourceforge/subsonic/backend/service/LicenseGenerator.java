@@ -3,13 +3,14 @@ package net.sourceforge.subsonic.backend.service;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.subsonic.backend.Util;
@@ -97,7 +98,7 @@ public class LicenseGenerator {
             boolean eligible = isEligible(payment);
             boolean ignorable = isIgnorable(payment);
             if (eligible) {
-                sendLicenseTo(email, emailSession);
+                sendLicenseTo(payment.getPayerFirstName(), email, emailSession);
                 LOG.info("Sent license key for " + payment);
             } else {
                 LOG.info("Payment not eligible for " + payment);
@@ -122,7 +123,7 @@ public class LicenseGenerator {
                 throw new Exception("Missing email address.");
             }
 
-            sendLicenseTo(email, emailSession);
+            sendLicenseTo(subscription.getFirstName(), email, emailSession);
             LOG.info("Sent license key for " + subscription);
 
             subscription.setProcessingStatus(ProcessingStatus.COMPLETED);
@@ -149,38 +150,29 @@ public class LicenseGenerator {
                 "Refunded".equalsIgnoreCase(status);
     }
 
-    public void sendLicenseTo(String to, EmailSession emailSession) throws MessagingException {
-        emailSession.sendMessage("license@subsonic.org",
-                                 Arrays.asList(to),
-                                 null,
-                                 Arrays.asList("license@subsonic.org", "sindre@activeobjects.no"),
-                                 Arrays.asList("license@subsonic.org"),
-                                 "Subsonic License",
-                                 createLicenseContent(to));
-        LOG.info("Sent license to " + to);
-    }
-
-    private String createLicenseContent(String to) {
+    public void sendLicenseTo(String name, String to, EmailSession emailSession) throws Exception {
+        Map<String, String> tokens = new HashMap<String, String>();
         String license = md5Hex(to.toLowerCase());
+        if (StringUtils.isBlank(name)) {
+            name = "Subsonic user";
+        }
 
-        return "Dear Subsonic user,\n" +
-                "\n" +
-                "Many thanks for upgrading to Subsonic Premium!\n" +
-                "Please find your license key below.\n" +
-                "\n" +
-                "Email: " + to + "\n" +
-                "License: " + license + " \n" +
-                "\n" +
-                "To install the license key, click the \"Get Subsonic Premium\" link in the top right corner of the Subsonic web interface.\n" +
-                "\n" +
-                "More info here: http://subsonic.org/pages/getting-started.jsp#3\n" +
-                "\n" +
-                "This license is valid for personal, non-commercial of Subsonic. For commercial use, please contact us for licensing options.\n" +
-                "\n" +
-                "Thanks again for supporting the project!\n" +
-                "\n" +
-                "Best regards,\n" +
-                "The Subsonic team";
+        tokens.put("NAME", name);
+        tokens.put("EMAIL", to);
+        tokens.put("LICENSE", license);
+
+        String plainText = emailSession.fromTemplate("license.txt", tokens);
+        String htmlText = emailSession.fromTemplate("license.html", tokens);
+
+        emailSession.sendHtmlMessage("license@subsonic.org",
+                                     Arrays.asList(to),
+                                     null,
+                                     Arrays.asList("license@subsonic.org", "sindre@activeobjects.no"),
+                                     Arrays.asList("license@subsonic.org"),
+                                     "Subsonic License",
+                                     htmlText,
+                                     plainText);
+        LOG.info("Sent license to " + to);
     }
 
     /**
@@ -207,13 +199,10 @@ public class LicenseGenerator {
     }
 
     public static void main(String[] args) throws Exception {
-        String address = args[0];
-        String license = new LicenseGenerator().md5Hex(address.toLowerCase());
-        System.out.println("Email: " + address);
-        System.out.println("License: " + license);
+        String address = "sindre@activeobjects.no";
 
-//        LicenseGenerator generator = new LicenseGenerator();
-//        generator.sendLicenseTo(address, new EmailSession());
+        LicenseGenerator generator = new LicenseGenerator();
+        generator.sendLicenseTo("Sindre", address, new EmailSession());
     }
 
     public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
