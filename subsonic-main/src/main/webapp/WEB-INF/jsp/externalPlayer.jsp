@@ -83,7 +83,7 @@
 <div style="margin:auto;width:500px">
     <h1>
         <c:choose>
-            <c:when test="${empty model.share}">
+            <c:when test="${empty model.share or empty model.songs}">
                 Sorry, the content is not available.
             </c:when>
             <c:otherwise>

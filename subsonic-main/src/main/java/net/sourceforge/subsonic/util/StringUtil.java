@@ -326,23 +326,6 @@ public final class StringUtil {
     }
 
     /**
-     * Change protocol from "https" to "http" for the given URL. The port number is also changed,
-     * but not if the given URL is already "http".
-     *
-     * @param url  The original URL.
-     * @param port The port number to use, for instance 4040.
-     * @return The transformed URL.
-     * @throws MalformedURLException If the original URL is invalid.
-     */
-    public static String toHttpUrl(String url, int port) throws MalformedURLException {
-        URL u = new URL(url);
-        if ("https".equals(u.getProtocol())) {
-            return new URL("http", u.getHost(), port, u.getFile()).toString();
-        }
-        return url;
-    }
-
-    /**
      * Determines whether a is equal to b, taking null into account.
      *
      * @return Whether a and b are equal, or both null.

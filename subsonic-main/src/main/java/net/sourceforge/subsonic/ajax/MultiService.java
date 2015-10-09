@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.ajax;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.NetworkService;
@@ -102,6 +104,15 @@ public class MultiService {
             result[i] = new SimilarArtist(similarArtist.getId(), similarArtist.getName());
         }
         return Arrays.asList(result);
+    }
+
+    public void setShowSideBar(boolean show) {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        String username = securityService.getCurrentUsername(request);
+        UserSettings userSettings = settingsService.getUserSettings(username);
+        userSettings.setShowSideBar(show);
+        userSettings.setChanged(new Date());
+        settingsService.updateUserSettings(userSettings);
     }
 
     public void setNetworkService(NetworkService networkService) {

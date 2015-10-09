@@ -31,6 +31,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.ShareDao;
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.User;
 
@@ -67,9 +68,13 @@ public class ShareService {
         return shareDao.getShareById(id);
     }
 
-    public List<MediaFile> getSharedFiles(int id) {
+    public Share getShareByName(String name) {
+        return shareDao.getShareByName(name);
+    }
+
+    public List<MediaFile> getSharedFiles(int id, List<MusicFolder> musicFolders) {
         List<MediaFile> result = new ArrayList<MediaFile>();
-        for (String path : shareDao.getSharedFiles(id)) {
+        for (String path : shareDao.getSharedFiles(id, musicFolders)) {
             try {
                 MediaFile mediaFile = mediaFileService.getMediaFile(path);
                 if (mediaFile != null) {

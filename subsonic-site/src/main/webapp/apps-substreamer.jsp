@@ -22,6 +22,7 @@
             by genre or year and allow you to simply swipe to either side to add a track to your favorites or to skip to the next track.
             Great for getting a random playlist to listen to or for finding something different on those old compilation albums.</li>
         <li>More features are under development including better offline support for offline music and artwork.</li>
+        <li>Offline caching support</li>
         <li>Only US 99c (give it a try!)</li>
     </ul>
 

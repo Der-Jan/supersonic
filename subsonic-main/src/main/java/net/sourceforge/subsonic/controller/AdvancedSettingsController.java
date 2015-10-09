@@ -37,10 +37,8 @@ public class AdvancedSettingsController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         AdvancedSettingsCommand command = new AdvancedSettingsCommand();
-        command.setCoverArtLimit(String.valueOf(settingsService.getCoverArtLimit()));
         command.setDownloadLimit(String.valueOf(settingsService.getDownloadBitrateLimit()));
         command.setUploadLimit(String.valueOf(settingsService.getUploadBitrateLimit()));
-        command.setStreamPort(String.valueOf(settingsService.getStreamPort()));
         command.setLdapEnabled(settingsService.isLdapEnabled());
         command.setLdapUrl(settingsService.getLdapUrl());
         command.setLdapSearchFilter(settingsService.getLdapSearchFilter());
@@ -59,16 +57,10 @@ public class AdvancedSettingsController extends SimpleFormController {
         command.setReloadNeeded(false);
 
         try {
-            settingsService.setCoverArtLimit(Integer.parseInt(command.getCoverArtLimit()));
-        } catch (NumberFormatException x) { /* Intentionally ignored. */ }
-        try {
             settingsService.setDownloadBitrateLimit(Long.parseLong(command.getDownloadLimit()));
         } catch (NumberFormatException x) { /* Intentionally ignored. */ }
         try {
             settingsService.setUploadBitrateLimit(Long.parseLong(command.getUploadLimit()));
-        } catch (NumberFormatException x) { /* Intentionally ignored. */ }
-        try {
-            settingsService.setStreamPort(Integer.parseInt(command.getStreamPort()));
         } catch (NumberFormatException x) { /* Intentionally ignored. */ }
 
         settingsService.setLdapEnabled(command.isLdapEnabled());

@@ -26,6 +26,7 @@ package net.sourceforge.subsonic.domain;
 public class User {
 
     public static final String USERNAME_ADMIN = "admin";
+    public static final String USERNAME_GUEST = "guest";
 
     private final String username;
     private String password;

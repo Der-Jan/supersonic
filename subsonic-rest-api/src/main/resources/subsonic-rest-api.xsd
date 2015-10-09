@@ -37,6 +37,7 @@
             <xs:element name="songsByGenre" type="sub:Songs" minOccurs="1" maxOccurs="1"/>
             <xs:element name="lyrics" type="sub:Lyrics" minOccurs="1" maxOccurs="1"/>
             <xs:element name="podcasts" type="sub:Podcasts" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="newestPodcasts" type="sub:NewestPodcasts" minOccurs="1" maxOccurs="1"/>
             <xs:element name="internetRadioStations" type="sub:InternetRadioStations" minOccurs="1" maxOccurs="1"/>
             <xs:element name="bookmarks" type="sub:Bookmarks" minOccurs="1" maxOccurs="1"/>
             <xs:element name="playQueue" type="sub:PlayQueue" minOccurs="1" maxOccurs="1"/>
@@ -390,10 +391,17 @@
         <xs:attribute name="errorMessage" type="xs:string" use="optional"/>
     </xs:complexType>
 
+    <xs:complexType name="NewestPodcasts">
+        <xs:sequence>
+            <xs:element name="episode" type="sub:PodcastEpisode" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="PodcastEpisode">
         <xs:complexContent>
             <xs:extension base="sub:Child">
                 <xs:attribute name="streamId" type="xs:string" use="optional"/> <!-- Use this ID for streaming the podcast. -->
+                <xs:attribute name="channelId" type="xs:string" use="required"/> <!-- Added in 1.13.0 -->
                 <xs:attribute name="description" type="xs:string" use="optional"/>
                 <xs:attribute name="status" type="sub:PodcastStatus" use="required"/>
                 <xs:attribute name="publishDate" type="xs:dateTime" use="optional"/>

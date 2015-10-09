@@ -469,6 +469,7 @@
             <td>Podcast</td>
             <td>
                 <code><a href="#getPodcasts">getPodcasts</a></code>
+                <code><a href="#getNewestPodcasts">getNewestPodcasts</a></code>
                 <code><a href="#refreshPodcasts">refreshPodcasts</a></code>
                 <code><a href="#createPodcastChannel">createPodcastChannel</a></code>
                 <code><a href="#deletePodcastChannel">deletePodcastChannel</a></code>
@@ -575,6 +576,7 @@
 <%@ include file="api-deleteShare.jsp" %>
 
 <%@ include file="api-getPodcasts.jsp" %>
+<%@ include file="api-getNewestPodcasts.jsp" %>
 <%@ include file="api-refreshPodcasts.jsp" %>
 <%@ include file="api-createPodcastChannel.jsp" %>
 <%@ include file="api-deletePodcastChannel.jsp" %>

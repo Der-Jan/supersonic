@@ -349,6 +349,14 @@ img {
     padding-right: 20px;
 }
 
+.albumOverflowButton {
+    display:inline-block;
+    cursor:pointer;
+    vertical-align:bottom;
+    margin-left:15px;
+    margin-bottom:20px
+}
+
 .log {
     white-space: nowrap;
     font-size: 90%;

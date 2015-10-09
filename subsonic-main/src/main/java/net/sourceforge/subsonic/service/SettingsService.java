@@ -89,7 +89,6 @@ public class SettingsService {
     private static final String KEY_MUSIC_FILE_TYPES = "MusicFileTypes";
     private static final String KEY_VIDEO_FILE_TYPES = "VideoFileTypes";
     private static final String KEY_COVER_ART_FILE_TYPES = "CoverArtFileTypes2";
-    private static final String KEY_COVER_ART_LIMIT = "CoverArtLimit";
     private static final String KEY_COVER_ART_CONCURRENCY = "CoverArtConcurrency";
     private static final String KEY_WELCOME_TITLE = "WelcomeTitle";
     private static final String KEY_WELCOME_SUBTITLE = "WelcomeSubtitle";
@@ -108,7 +107,6 @@ public class SettingsService {
     private static final String KEY_PODCAST_EPISODE_DOWNLOAD_COUNT = "PodcastEpisodeDownloadCount";
     private static final String KEY_DOWNLOAD_BITRATE_LIMIT = "DownloadBitrateLimit";
     private static final String KEY_UPLOAD_BITRATE_LIMIT = "UploadBitrateLimit";
-    private static final String KEY_STREAM_PORT = "StreamPort";
     private static final String KEY_LICENSE_EMAIL = "LicenseEmail";
     private static final String KEY_LICENSE_CODE = "LicenseCode";
     private static final String KEY_LICENSE_DATE = "LicenseDate";
@@ -153,7 +151,6 @@ public class SettingsService {
     private static final String DEFAULT_MUSIC_FILE_TYPES = "mp3 ogg oga aac m4a flac wav wma aif aiff ape mpc shn";
     private static final String DEFAULT_VIDEO_FILE_TYPES = "flv avi mpg mpeg mp4 m4v mkv mov wmv ogv divx m2ts";
     private static final String DEFAULT_COVER_ART_FILE_TYPES = "cover.jpg cover.png cover.gif folder.jpg jpg jpeg gif png";
-    private static final int DEFAULT_COVER_ART_LIMIT = 50;
     private static final int DEFAULT_COVER_ART_CONCURRENCY = 4;
     private static final String DEFAULT_WELCOME_TITLE = "Welcome to Subsonic!";
     private static final String DEFAULT_WELCOME_SUBTITLE = null;
@@ -179,7 +176,6 @@ public class SettingsService {
     private static final int DEFAULT_PODCAST_EPISODE_DOWNLOAD_COUNT = 1;
     private static final long DEFAULT_DOWNLOAD_BITRATE_LIMIT = 0;
     private static final long DEFAULT_UPLOAD_BITRATE_LIMIT = 0;
-    private static final int DEFAULT_STREAM_PORT = 0;
     private static final String DEFAULT_LICENSE_EMAIL = null;
     private static final String DEFAULT_LICENSE_CODE = null;
     private static final String DEFAULT_LICENSE_DATE = null;
@@ -219,7 +215,7 @@ public class SettingsService {
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "DownsamplingCommand3", "AutoCoverBatch", "MusicMask",
             "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
-            "CoverArtFileTypes", "UrlRedirectCustomHost");
+            "CoverArtFileTypes", "UrlRedirectCustomHost", "CoverArtLimit", "StreamPort");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
     private static final String THEMES_FILE = "/net/sourceforge/subsonic/theme/themes.txt";
@@ -485,14 +481,6 @@ public class SettingsService {
         return cachedCoverArtFileTypesArray;
     }
 
-    public int getCoverArtLimit() {
-        return getInt(KEY_COVER_ART_LIMIT, DEFAULT_COVER_ART_LIMIT);
-    }
-
-    public void setCoverArtLimit(int limit) {
-        setInt(KEY_COVER_ART_LIMIT, limit);
-    }
-
     public int getCoverArtConcurrency() {
         return getInt(KEY_COVER_ART_CONCURRENCY, DEFAULT_COVER_ART_CONCURRENCY);
     }
@@ -651,20 +639,6 @@ public class SettingsService {
      */
     public void setUploadBitrateLimit(long limit) {
         setLong(KEY_UPLOAD_BITRATE_LIMIT, limit);
-    }
-
-    /**
-     * @return The non-SSL stream port. Zero if disabled.
-     */
-    public int getStreamPort() {
-        return getInt(KEY_STREAM_PORT, DEFAULT_STREAM_PORT);
-    }
-
-    /**
-     * @param port The non-SSL stream port. Zero if disabled.
-     */
-    public void setStreamPort(int port) {
-        setInt(KEY_STREAM_PORT, port);
     }
 
     public String getLicenseEmail() {
@@ -1096,7 +1070,13 @@ public class SettingsService {
      * @return Possibly empty list of music folders.
      */
     public List<MusicFolder> getMusicFoldersForUser(String username) {
-        return getMusicFoldersForUser(username, false, false);
+        List<MusicFolder> result = cachedMusicFoldersPerUser.get(username);
+        if (result == null) {
+            result = musicFolderDao.getMusicFoldersForUser(username);
+            result.retainAll(getAllMusicFolders(false, false));
+            cachedMusicFoldersPerUser.put(username, result);
+        }
+        return result;
     }
 
     /**
@@ -1107,7 +1087,7 @@ public class SettingsService {
      * @return Possibly empty list of music folders.
      */
     public List<MusicFolder> getMusicFoldersForUser(String username, Integer selectedMusicFolderId) {
-        List<MusicFolder> allowed = getMusicFoldersForUser(username, false, false);
+        List<MusicFolder> allowed = getMusicFoldersForUser(username);
         if (selectedMusicFolderId == null) {
             return allowed;
         }
@@ -1125,23 +1105,6 @@ public class SettingsService {
         MusicFolder musicFolder = getMusicFolderById(musicFolderId);
         List<MusicFolder> allowedMusicFolders = getMusicFoldersForUser(username);
         return allowedMusicFolders.contains(musicFolder) ? musicFolder : null;
-    }
-
-    /**
-     * Returns all music folders a given user have access to.
-     *
-     * @param includeDisabled Whether to include disabled folders.
-     * @param includeNonExisting Whether to include non-existing folders.
-     * @return Possibly empty list of music folders.
-     */
-    public List<MusicFolder> getMusicFoldersForUser(String username, boolean includeDisabled, boolean includeNonExisting) {
-        List<MusicFolder> result = cachedMusicFoldersPerUser.get(username);
-        if (result == null) {
-            result = musicFolderDao.getMusicFoldersForUser(username);
-            result.retainAll(getAllMusicFolders(includeDisabled, includeNonExisting));
-            cachedMusicFoldersPerUser.put(username, result);
-        }
-        return result;
     }
 
     public void setMusicFoldersForUser(String username, List<Integer> musicFolderIds) {
@@ -1172,8 +1135,7 @@ public class SettingsService {
      */
     public void createMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.createMusicFolder(musicFolder);
-        cachedMusicFolders = null;
-        cachedMusicFoldersPerUser.clear();
+        clearMusicFolderCache();
     }
 
     /**
@@ -1183,8 +1145,7 @@ public class SettingsService {
      */
     public void deleteMusicFolder(Integer id) {
         musicFolderDao.deleteMusicFolder(id);
-        cachedMusicFolders = null;
-        cachedMusicFoldersPerUser.clear();
+        clearMusicFolderCache();
     }
 
     /**
@@ -1194,6 +1155,10 @@ public class SettingsService {
      */
     public void updateMusicFolder(MusicFolder musicFolder) {
         musicFolderDao.updateMusicFolder(musicFolder);
+        clearMusicFolderCache();
+    }
+
+    public void clearMusicFolderCache() {
         cachedMusicFolders = null;
         cachedMusicFoldersPerUser.clear();
     }
@@ -1287,6 +1252,7 @@ public class SettingsService {
         settings.setPartyModeEnabled(false);
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
+        settings.setShowSideBar(true);
         settings.setShowArtistInfoEnabled(true);
         settings.setViewAsList(false);
         settings.setQueueFollowingSongs(true);
@@ -1403,6 +1369,15 @@ public class SettingsService {
 
     public String getLocalIpAddress() {
         return localIpAddress;
+    }
+
+    /**
+     * Rewrites an URL to make it accessible from remote clients.
+     */
+    public String rewriteRemoteUrl(String localUrl) {
+        return StringUtil.rewriteRemoteUrl(localUrl, isUrlRedirectionEnabled(), getUrlRedirectType(), getUrlRedirectFrom(),
+                                           getUrlRedirectCustomUrl(), getUrlRedirectContextPath(), getLocalIpAddress(),
+                                           getPort());
     }
 
     private void setProperty(String key, String value) {

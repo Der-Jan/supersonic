@@ -20,10 +20,14 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Share;
 
 /**
@@ -102,8 +106,17 @@ public class ShareDao extends AbstractDao {
      * @param shareId The ID of the share.
      * @return The paths of the shared files.
      */
-    public List<String> getSharedFiles(int shareId) {
-        return query("select path from share_file where share_id=?", shareFileRowMapper, shareId);
+    public List<String> getSharedFiles(final int shareId, final List<MusicFolder> musicFolders) {
+        if (musicFolders.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<String, Object> args = new HashMap<String, Object>() {{
+            put("shareId", shareId);
+            put("folders", MusicFolder.toPathList(musicFolders));
+        }};
+        return namedQuery("select share_file.path from share_file, media_file where share_id = :shareId and " +
+                          "share_file.path = media_file.path and media_file.present and media_file.folder in (:folders)",
+                          shareFileRowMapper, args);
     }
 
     /**

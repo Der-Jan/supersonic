@@ -13,6 +13,7 @@
                  status="completed">
             <episode id="34"
                      streamId="523"
+                     channelId="1"
                      title="Scorpions have re-evolved eyes"
                      description="This week Dr Chris fills us in on the UK's largest free science festival, plus all this week's big scientific discoveries."
                      publishDate="2011-02-03T14:46:43"
@@ -22,6 +23,7 @@
                      path="Podcast/drkarl/20110203.mp3"/>
             <episode id="35"
                      streamId="524"
+                     channelId="1"
                      title="Scar tissue and snake venom treatment"
                      description="This week Dr Karl tells the gruesome tale of a surgeon who operated on himself."
                      publishDate="2011-09-03T16:47:52"

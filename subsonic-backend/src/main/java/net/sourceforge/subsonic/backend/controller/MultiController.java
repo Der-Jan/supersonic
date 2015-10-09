@@ -233,10 +233,11 @@ public class MultiController extends MultiActionController {
 
         String email = request.getParameter("email");
 
-        boolean valid = licenseService.getLicenseInfo(email).isLicenseValid();
+        LicenseInfo licenseInfo = licenseService.getLicenseInfo(email);
+        boolean valid = licenseInfo.isLicenseValid();
         if (valid) {
             EmailSession session = new EmailSession();
-            licenseGenerator.sendLicenseTo(email, session);
+            licenseGenerator.sendLicenseTo(licenseInfo.getFirstName(), email, session);
         }
 
         Map<String, Object> map = new HashMap<String, Object>();

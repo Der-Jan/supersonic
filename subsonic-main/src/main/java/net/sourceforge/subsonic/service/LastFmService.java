@@ -283,7 +283,7 @@ public class LastFmService {
             if (info == null) {
                 return null;
             }
-            return new ArtistBio(processWikiText(info.getWikiText()),
+            return new ArtistBio(processWikiText(info.getWikiSummary()),
                                  info.getMbid(),
                                  info.getUrl(),
                                  info.getImageURL(ImageSize.MEDIUM),

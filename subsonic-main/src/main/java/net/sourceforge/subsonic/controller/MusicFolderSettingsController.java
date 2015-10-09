@@ -51,6 +51,7 @@ public class MusicFolderSettingsController extends SimpleFormController {
         MusicFolderSettingsCommand command = new MusicFolderSettingsCommand();
 
         if (request.getParameter("scanNow") != null) {
+            settingsService.clearMusicFolderCache();
             mediaScannerService.scanLibrary();
         }
         if (request.getParameter("expunge") != null) {

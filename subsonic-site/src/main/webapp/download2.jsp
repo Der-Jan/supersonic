@@ -1,23 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
-<%--
-  ~ This file is part of Subsonic.
-  ~
-  ~  Subsonic is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as published by
-  ~  the Free Software Foundation, either version 3 of the License, or
-  ~  (at your option) any later version.
-  ~
-  ~  Subsonic is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  ~  Copyright 2014 (C) Sindre Mehus
-  --%>
-
 <!DOCTYPE HTML>
 <html>
 <%@ include file="head.jsp" %>
@@ -51,20 +32,15 @@
 <c:import url="header.jsp"/>
 
 <section id="main" class="container">
-<header>
-    <h3>Downloading Subsonic...</h3>
-</header>
-
-    <div class="row">
-        <div class="12u">
-
-            <section class="box">
-                <p><b><%=request.getParameter("target")%></b> is now being downloaded to your computer.
-                    In the mean time, please check out the <a href="installation.jsp">installation instructions</a>.</p>
-            </section>
-        </div>
-    </div>
-
+    <header>
+        <h2>Thank you for downloading Subsonic</h2>
+        <p>
+            <a href="http://subsonic.org/download/<%=request.getParameter("target")%>"><%=request.getParameter("target")%></a>
+            is now being downloaded to your computer.
+            <br>
+            In the mean time, please check out the <a href="installation.jsp">installation instructions</a>.
+        </p>
+    </header>
 </section>
 
 <%@ include file="footer.jsp" %>

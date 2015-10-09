@@ -50,6 +50,16 @@ public class LicenseInfo {
         return licenseExpires;
     }
 
+    public String getFirstName() {
+        if (subscription != null) {
+            return subscription.getFirstName();
+        }
+        if (!payments.isEmpty()) {
+            return payments.get(0).getPayerFirstName();
+        }
+        return null;
+    }
+
     public LicenseInfo licenseExpires(Date licenseExpires) {
         this.licenseExpires = licenseExpires;
         Date now = new Date();

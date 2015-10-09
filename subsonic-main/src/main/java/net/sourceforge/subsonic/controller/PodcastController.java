@@ -72,19 +72,14 @@ public class PodcastController extends ParameterizableViewController {
             String suffix = songs.get(0).getFormat();
             String type = StringUtil.getMimeType(suffix);
 
-            String enclosureUrl = url.replaceFirst("/podcast.*", "/stream?playlist=" + playlist.getId() + "&amp;suffix=." + suffix);
-
             // Rewrite URLs in case we're behind a proxy.
             if (settingsService.isRewriteUrlEnabled()) {
                 String referer = request.getHeader("referer");
                 url = StringUtil.rewriteUrl(url, referer);
             }
 
-            // Change protocol and port, if specified. (To make it work with players that don't support SSL.)
-            int streamPort = settingsService.getStreamPort();
-            if (streamPort != 0) {
-                enclosureUrl = StringUtil.toHttpUrl(enclosureUrl, streamPort);
-            }
+            String enclosureUrl = url.replaceFirst("/podcast.*", "/stream?playlist=" + playlist.getId());
+            enclosureUrl = settingsService.rewriteRemoteUrl(enclosureUrl);
 
             podcasts.add(new Podcast(playlist.getName(), publishDate, enclosureUrl, length, type));
         }

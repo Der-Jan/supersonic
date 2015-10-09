@@ -34,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
@@ -118,8 +119,10 @@ public class ShareSettingsController extends ParameterizableViewController {
     private List<ShareInfo> getShareInfos(HttpServletRequest request) {
         List<ShareInfo> result = new ArrayList<ShareInfo>();
         User user = securityService.getCurrentUser(request);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
+
         for (Share share : shareService.getSharesForUser(user)) {
-            List<MediaFile> files = shareService.getSharedFiles(share.getId());
+            List<MediaFile> files = shareService.getSharedFiles(share.getId(), musicFolders);
             if (!files.isEmpty()) {
                 MediaFile file = files.get(0);
                 result.add(new ShareInfo(share, file.isDirectory() ? file : mediaFileService.getParentOf(file)));

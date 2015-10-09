@@ -30,7 +30,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MediaFile;
-import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -75,20 +74,8 @@ public class VideoPlayerController extends ParameterizableViewController {
             coverArtUrl = StringUtil.rewriteUrl(coverArtUrl, referer);
         }
 
-        boolean urlRedirectionEnabled = settingsService.isUrlRedirectionEnabled();
-        String urlRedirectFrom = settingsService.getUrlRedirectFrom();
-        String urlRedirectContextPath = settingsService.getUrlRedirectContextPath();
-        UrlRedirectType urlRedirectType = settingsService.getUrlRedirectType();
-        String urlRedirectCustomUrl = settingsService.getUrlRedirectCustomUrl();
-
-        String localIp = settingsService.getLocalIpAddress();
-        int localPort = settingsService.getPort();
-        String remoteStreamUrl = StringUtil.rewriteRemoteUrl(streamUrl, urlRedirectionEnabled, urlRedirectType,
-                                                             urlRedirectFrom, urlRedirectCustomUrl, urlRedirectContextPath,
-                                                             localIp, localPort);
-        String remoteCoverArtUrl = StringUtil.rewriteRemoteUrl(coverArtUrl, urlRedirectionEnabled, urlRedirectType,
-                                                               urlRedirectFrom, urlRedirectCustomUrl, urlRedirectContextPath,
-                                                               localIp, localPort);
+        String remoteStreamUrl = settingsService.rewriteRemoteUrl(streamUrl);
+        String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
 
         map.put("video", file);
         map.put("streamUrl", streamUrl);

@@ -4,6 +4,8 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
 
     <script type="text/javascript">
         var previousQuery = "";
@@ -28,12 +30,14 @@
             $("#show-left-frame").hide();
             $("#hide-left-frame").show();
             toggleLeftFrame(230);
+            multiService.setShowSideBar(true);
         }
 
         function hideLeftFrame() {
             $("#hide-left-frame").hide();
             $("#show-left-frame").show();
             toggleLeftFrame(0);
+            multiService.setShowSideBar(false);
         }
 
         function toggleLeftFrame(width) {
@@ -68,8 +72,8 @@
 <table style="margin:0;padding-top:5px">
     <tr>
         <td style="padding-right:4.5em;">
-            <img id="show-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="showLeftFrame()" alt="" style="cursor:pointer">
-            <img id="hide-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="hideLeftFrame()" alt="" style="display:none; cursor:pointer">
+            <img id="show-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="showLeftFrame()" alt="" style="display:${model.showSideBar ? 'none' : 'inline'};cursor:pointer">
+            <img id="hide-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="hideLeftFrame()" alt="" style="display:${model.showSideBar ? 'inline' : 'none'};cursor:pointer">
         </td>
         <td style="min-width:4em;padding-right:2em;text-align: center">
             <a href="home.view?" target="main"><img src="<spring:theme code="homeImage"/>" title="${home}" alt="${home}"></a>

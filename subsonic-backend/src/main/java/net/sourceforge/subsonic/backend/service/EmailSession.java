@@ -18,20 +18,28 @@
  */
 package net.sourceforge.subsonic.backend.service;
 
-import net.sourceforge.subsonic.backend.Util;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-import javax.mail.Folder;
-import javax.mail.Session;
-import javax.mail.Message;
 import javax.mail.Address;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.mail.internet.AddressException;
-import java.util.Properties;
-import java.util.List;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import org.apache.commons.io.IOUtils;
+
+import net.sourceforge.subsonic.backend.Util;
 
 /**
  * @author Sindre Mehus
@@ -39,7 +47,6 @@ import java.util.List;
 public class EmailSession {
 
     private static final String SMTP_MAIL_SERVER = "smtp.gmail.com";
-    private static final String POP_MAIL_SERVER = "pop.gmail.com";
     private static final String IMAP_MAIL_SERVER = "imap.gmail.com";
     private static final String USER = "subsonic@activeobjects.no";
 
@@ -61,9 +68,47 @@ public class EmailSession {
         password = Util.getPassword("gmailpwd.txt");
     }
 
+    public String fromTemplate(String template, Map<String, String> tokens) throws Exception {
+        InputStream in = null;
+        try {
+            in = getClass().getResourceAsStream(template);
+            String text = IOUtils.toString(in);
+            for (Map.Entry<String, String> entry : tokens.entrySet()) {
+                text = text.replace("$" + entry.getKey(), entry.getValue());
+            }
+            return text;
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
+
     public void sendMessage(String from, List<String> to, List<String> cc, List<String> bcc, List<String> replyTo,
                             String subject, String text) throws MessagingException {
-        Message message = new MimeMessage(session);
+        MimeMessage message = createMessage(from, to, cc, bcc, replyTo, subject);
+        message.setText(text);
+        sendMessage(message);
+    }
+
+    public void sendHtmlMessage(String from, List<String> to, List<String> cc, List<String> bcc, List<String> replyTo,
+                                String subject, String html, String plain) throws MessagingException {
+        MimeMessage message = createMessage(from, to, cc, bcc, replyTo, subject);
+
+        MimeBodyPart plainPart = new MimeBodyPart();
+        plainPart.setText(plain);
+
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setText(html, "utf-8", "html");
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+        multipart.addBodyPart(plainPart);
+        multipart.addBodyPart(htmlPart);
+        message.setContent(multipart);
+
+        sendMessage(message);
+    }
+
+    private MimeMessage createMessage(String from, List<String> to, List<String> cc, List<String> bcc, List<String> replyTo, String subject) throws MessagingException {
+        MimeMessage message = new MimeMessage(session);
 
         message.setFrom(new InternetAddress(from));
         message.setReplyTo(new Address[]{new InternetAddress(from)});
@@ -72,9 +117,10 @@ public class EmailSession {
         message.setRecipients(Message.RecipientType.BCC, convertAddress(bcc));
         message.setReplyTo(convertAddress(replyTo));
         message.setSubject(subject);
-        message.setText(text);
+        return message;
+    }
 
-        // Send the message
+    private void sendMessage(MimeMessage message) throws MessagingException {
         Transport transport = null;
         try {
             transport = session.getTransport("smtps");
