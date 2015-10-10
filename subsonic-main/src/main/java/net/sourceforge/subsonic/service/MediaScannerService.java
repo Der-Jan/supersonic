@@ -280,10 +280,12 @@ public class MediaScannerService {
         Album album = albumDao.getAlbumForFile(file);
         if (album == null) {
             album = new Album();
-            album.setPath(file.getParentPath());
             album.setName(file.getAlbumName());
             album.setArtist(artist);
             album.setCreated(file.getChanged());
+        }
+        if (album.getPath() == null) {
+            album.setPath(file.getParentPath());
         }
         if (file.getYear() != null) {
             album.setYear(file.getYear());

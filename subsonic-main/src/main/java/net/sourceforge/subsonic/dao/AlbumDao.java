@@ -72,16 +72,17 @@ public class AlbumDao extends AbstractDao {
             return null;
         }
 
-        // Look for album with the correct artist.
+        // Look for album with the same path as the file.
         for (Album candidate : candidates) {
-            if (ObjectUtils.equals(candidate.getArtist(), file.getArtist()) && FileUtil.exists(candidate.getPath())) {
+            if (ObjectUtils.equals(candidate.getPath(), file.getParentPath())) {
                 return candidate;
             }
         }
 
-        // Look for album with the same path as the file.
+        // Look for album with the correct artist.
         for (Album candidate : candidates) {
-            if (ObjectUtils.equals(candidate.getPath(), file.getParentPath())) {
+            if (ObjectUtils.equals(candidate.getArtist(), file.getArtist()) && 
+                (candidate.getPath() == null || FileUtil.exists(candidate.getPath()))) {
                 return candidate;
             }
         }
