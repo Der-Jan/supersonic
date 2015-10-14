@@ -5,6 +5,7 @@ REST: Add method to get newest podcast episodes
 Bugfix: Display shorter artist bio.
 New: Show sidebar by default. Remember state across sessions.
 New: Update Japanese translation, courtesy of Kenji Maekawa
+New: Update German translation, courtesy of deejay2302
 New: Added "Show all albums" overflow button.
 
 TODO IN 5.3
