@@ -16,13 +16,12 @@ New server:
   backup: forum -> subsonic.org
 
 Speed up artist info
+Support ID3 lyrics
+  https://mail.google.com/mail/ca/u/0/#inbox/150960f1fc7133ac
+Google Chart API
+Site: Add info about unsubscribing
 
-Site: html email
-  Don't send reminders for subscriptions?
-  Change text for license mail when subscription?
 
-Improve performance of getArtists
-  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/1501b1aa9b0bf24c
 Test with Android
   http://forum.subsonic.org/forum/viewtopic.php?f=8&t=15997
 Site: Provide static download link to latest.
