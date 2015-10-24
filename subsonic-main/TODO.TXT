@@ -12,6 +12,7 @@ New: Added "Show all albums" overflow button.
 
 TODO IN 5.3
 ------------
+Review forum comments.
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
