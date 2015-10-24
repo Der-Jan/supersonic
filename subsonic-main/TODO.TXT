@@ -1,6 +1,7 @@
 DONE IN 5.3
 -----------------
 Bugfix: Fixed error with list of newest podcast episodes.
+Bugfix: Much faster artist bio.
 REST: Add method to get newest podcast episodes
 REST: Improved performance of getArtists
 Bugfix: Display shorter artist bio.
@@ -15,15 +16,11 @@ New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
 
-Speed up artist info
 Support ID3 lyrics
   https://mail.google.com/mail/ca/u/0/#inbox/150960f1fc7133ac
 Google Chart API
 Site: Add info about unsubscribing
 
-
-Test with Android
-  http://forum.subsonic.org/forum/viewtopic.php?f=8&t=15997
 Site: Provide static download link to latest.
 Forum: add favicon file
 Support media folder types (Music vs Video)
