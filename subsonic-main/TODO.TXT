@@ -1,15 +1,3 @@
-DONE IN 5.3
------------------
-Bugfix: Fixed error with list of newest podcast episodes.
-Bugfix: Much faster artist bio.
-REST: Add method to get newest podcast episodes
-REST: Improved performance of getArtists
-Bugfix: Display shorter artist bio.
-New: Show sidebar by default. Remember state across sessions.
-New: Update Japanese translation, courtesy of Kenji Maekawa
-New: Update German translation, courtesy of deejay2302
-New: Added "Show all albums" overflow button.
-
 TODO IN 5.3
 ------------
 Review forum comments.
