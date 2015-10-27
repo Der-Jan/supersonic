@@ -191,49 +191,60 @@
         </c:if>
     </h1>
 
-    <c:if test="${not model.partyMode}">
-        <h2>
-            <c:if test="${model.navigateUpAllowed}">
-                <sub:url value="main.view" var="upUrl">
-                    <sub:param name="id" value="${model.parent.id}"/>
-                </sub:url>
-                <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
-                <c:set var="needSep" value="true"/>
-            </c:if>
+    <div class="detail" style="padding-top:1.0em;padding-bottom:0">
+        <c:if test="${not empty model.dir.year}">
+            ${model.dir.year}&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+        </c:if>
+        ${fn:length(model.files)} <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.duration}
+        <c:if test="${not empty model.dir.genre}">
+            &nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.dir.genre}
+        </c:if>
+    </div>
 
-            <c:if test="${model.user.streamRole}">
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
-                <span class="header"><a href="javascript:playRandom()"><fmt:message key="main.playrandom"/></a></span> |
-                <span class="header"><a href="javascript:addAll()"><fmt:message key="main.addall"/></a></span>
-                <c:set var="needSep" value="true"/>
-            </c:if>
-
-            <c:if test="${model.user.downloadRole}">
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
-                <c:set var="needSep" value="true"/>
-            </c:if>
-
-            <c:if test="${model.user.coverArtRole}">
-                <sub:url value="editTags.view" var="editTagsUrl">
-                    <sub:param name="id" value="${model.dir.id}"/>
-                </sub:url>
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
-                <c:set var="needSep" value="true"/>
-            </c:if>
-
-            <c:if test="${model.user.commentRole}">
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
-            </c:if>
-        </h2>
-    </c:if>
 </div>
 
 <%@ include file="viewSelector.jsp" %>
 <div style="clear:both"></div>
+
+<c:if test="${not model.partyMode}">
+    <h2>
+        <c:if test="${model.navigateUpAllowed}">
+            <sub:url value="main.view" var="upUrl">
+                <sub:param name="id" value="${model.parent.id}"/>
+            </sub:url>
+            <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
+            <c:set var="needSep" value="true"/>
+        </c:if>
+
+        <c:if test="${model.user.streamRole}">
+            <c:if test="${needSep}">|</c:if>
+            <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
+            <span class="header"><a href="javascript:playRandom()"><fmt:message key="main.playrandom"/></a></span> |
+            <span class="header"><a href="javascript:addAll()"><fmt:message key="main.addall"/></a></span>
+            <c:set var="needSep" value="true"/>
+        </c:if>
+
+        <c:if test="${model.user.downloadRole}">
+            <c:if test="${needSep}">|</c:if>
+            <span class="header"><a href="${downloadUrl}"><fmt:message key="main.downloadall"/></a></span>
+            <c:set var="needSep" value="true"/>
+        </c:if>
+
+        <c:if test="${model.user.coverArtRole}">
+            <sub:url value="editTags.view" var="editTagsUrl">
+                <sub:param name="id" value="${model.dir.id}"/>
+            </sub:url>
+            <c:if test="${needSep}">|</c:if>
+            <span class="header"><a href="${editTagsUrl}"><fmt:message key="main.tags"/></a></span>
+            <c:set var="needSep" value="true"/>
+        </c:if>
+
+        <c:if test="${model.user.commentRole}">
+            <c:if test="${needSep}">|</c:if>
+            <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+        </c:if>
+    </h2>
+</c:if>
 
 <div class="detail" style="padding-top:0.5em;padding-bottom:0.5em">
     <c:if test="${model.user.commentRole}">
