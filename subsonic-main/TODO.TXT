@@ -1,6 +1,17 @@
-TODO IN 5.3
+DONE IN 5.4
+-----------
+Artist thumbnail image
+
+TODO IN 5.4
 ------------
-Review forum comments.
+
+Round artist image in albumMain
+  Move star
+  Show playing time, genre and year - like Google Play
+  More space in header
+  Remove "Up"
+  Rename "Play random" to "Shuffle play" (or remove it)
+
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
@@ -969,16 +980,17 @@ order by n desc
 
 Update subsonic.org
 -----------------------------------
-mkdir /var/lib/tomcat/webapps-2015-08-17/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2015-08-17/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2015-08-17/pages.war
+mkdir /var/lib/tomcat/webapps-2015-10-25/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/pages.war
 
-Checkpoint database (db.view)
 cd /var/lib/tomcat
+chown -R tomcat:tomcat webapps-2015-10-25
+Checkpoint database (db.view)
 ps -elf | grep tomcat
 systemctl stop tomcat
 rm webapps
-ln -s webapps-2015-08-17 webapps
+ln -s webapps-2015-10-25 webapps
 ln -s /var/lib/tomcat/download webapps/download
 ll webapps/
 rm -rf work logs/*
@@ -987,13 +999,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-08-17/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-08-17/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2015-10-25/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-10-25/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-08-17 webapps
+ln -s webapps-2015-10-25 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

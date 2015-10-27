@@ -54,6 +54,10 @@
                 $("#similarArtistsTitle").show();
                 $("#similarArtistsRadio").show();
             }
+            if (artistInfo.artistBio && artistInfo.artistBio.mediumImageUrl) {
+                $("#artistThumbImage").attr("src", artistInfo.artistBio.mediumImageUrl);
+                $("#artistThumbImage").show();
+            }
         });
     }
 
@@ -161,6 +165,8 @@
     }
 </script>
 
+<img id="artistThumbImage" alt="" class="circle" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
+
 <div style="float:left">
     <h1>
         <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
@@ -229,7 +235,7 @@
 <%@ include file="viewSelector.jsp" %>
 <div style="clear:both"></div>
 
-<div class="detail">
+<div class="detail" style="padding-top:0.5em;padding-bottom:0.5em">
     <c:if test="${model.user.commentRole}">
         <c:import url="rating.jsp">
             <c:param name="id" value="${model.dir.id}"/>
