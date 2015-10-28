@@ -127,14 +127,6 @@ public class MainController extends AbstractController {
             map.put("duration", StringUtil.formatDuration(getDuration(files)));
         }
 
-        try {
-            MediaFile parent = mediaFileService.getParentOf(dir);
-            map.put("parent", parent);
-            map.put("navigateUpAllowed", !mediaFileService.isRoot(parent));
-        } catch (SecurityException x) {
-            // Happens if Podcast directory is outside music folder.
-        }
-
         Integer userRating = ratingService.getRatingForUser(username, dir);
         Double averageRating = ratingService.getAverageRating(dir);
 

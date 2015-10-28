@@ -5,14 +5,6 @@ Show album year, song count, genre and duration
 
 TODO IN 5.4
 ------------
-
-Round artist image in albumMain
-  Move star
-  Show playing time, genre and year - like Google Play
-  More space in header
-  Remove "Up"
-  Rename "Play random" to "Shuffle play" (or remove it)
-
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org

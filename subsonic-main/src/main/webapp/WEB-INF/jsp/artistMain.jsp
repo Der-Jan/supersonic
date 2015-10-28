@@ -167,15 +167,12 @@
 
 <div style="float:left">
     <h1>
-        <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-             onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
-
         <span style="vertical-align: middle">
             <c:forEach items="${model.ancestors}" var="ancestor">
                 <sub:url value="main.view" var="ancestorUrl">
                     <sub:param name="id" value="${ancestor.id}"/>
                 </sub:url>
-                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
+                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
             </c:forEach>
             ${fn:escapeXml(model.dir.name)}
         </span>
@@ -183,13 +180,9 @@
 
     <c:if test="${not model.partyMode}">
         <h2>
-            <c:if test="${model.navigateUpAllowed}">
-                <sub:url value="main.view" var="upUrl">
-                    <sub:param name="id" value="${model.parent.id}"/>
-                </sub:url>
-                <span class="header"><a href="${upUrl}"><fmt:message key="main.up"/></a></span>
-                <c:set var="needSep" value="true"/>
-            </c:if>
+            <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
+                 onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer;padding-right:0.25em" alt="">
+            <c:set var="needSep" value="true"/>
 
             <c:if test="${model.user.streamRole}">
                 <c:if test="${needSep}">|</c:if>

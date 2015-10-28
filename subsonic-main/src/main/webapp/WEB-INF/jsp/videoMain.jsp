@@ -84,7 +84,7 @@
             <sub:url value="main.view" var="ancestorUrl">
                 <sub:param name="id" value="${ancestor.id}"/>
             </sub:url>
-            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &raquo;
+            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
         </c:forEach>
         ${fn:escapeXml(model.dir.name)}
     </span>
