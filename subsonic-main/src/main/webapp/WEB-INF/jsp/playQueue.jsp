@@ -329,7 +329,7 @@
             $("#songCountAndDuration").html("");
             $("#empty").show();
         } else {
-            $("#songCountAndDuration").html(songs.length + " <fmt:message key="playlist2.songs"/> &ndash; " + playQueue.durationAsString);
+            $("#songCountAndDuration").html(songs.length + " <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;" + playQueue.durationAsString);
             $("#empty").hide();
         }
 

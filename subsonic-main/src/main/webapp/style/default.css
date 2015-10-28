@@ -232,6 +232,12 @@ img {
     vertical-align: middle;
 }
 
+img.circle {
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center;
+}
+
 .dropshadow {
     box-shadow: 2px 2px 10px #333333;
 }
