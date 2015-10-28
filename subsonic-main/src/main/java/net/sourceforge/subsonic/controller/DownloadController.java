@@ -237,11 +237,12 @@ public class DownloadController implements Controller, LastModified {
             }
         }
 
-        for (MediaFile mediaFile : filesToDownload) {
-            zip(out, mediaFile.getParentFile(), mediaFile.getFile(), status, range);
-        }
         if (coverArtFile != null && coverArtFile.exists()) {
             zip(out, coverArtFile.getParentFile(), coverArtFile, status, range);
+        }
+        for (MediaFile mediaFile : filesToDownload) {
+            if (coverArtFile == null || !coverArtFile.equals(mediaFile.getFile()))
+                zip(out, mediaFile.getParentFile(), mediaFile.getFile(), status, range);
         }
 
 
