@@ -306,7 +306,7 @@
     <tr><td style="height: 100%"></td></tr>
 </table>
 
-<h2 id="topSongsHeader" style="display:none; padding-top:1em"><fmt:message key="main.topsongs"/></h2>
+<h2 id="topSongsHeader" style="display:none;clear:both;padding-top:1em"><fmt:message key="main.topsongs"/></h2>
 
 <table class="music indent">
     <tbody id="topSongsBody">

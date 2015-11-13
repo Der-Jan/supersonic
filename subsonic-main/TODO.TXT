@@ -5,10 +5,17 @@ Show album year, song count, genre and duration
 
 TODO IN 5.4
 ------------
+Content length of FLAC transcoded to WAV incorrect
+  http://sourceforge.net/p/subsonic/bugs/121/
+REST authentication not supported for LDAP users.
+  https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
+  https://sourceforge.net/p/subsonic/bugs/158/
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
 
+Site: Update SubStreamer
+  https://mail.google.com/mail/ca/u/0/#inbox/1505f8232760c3bf
 Support ID3 lyrics
   https://mail.google.com/mail/ca/u/0/#inbox/150960f1fc7133ac
 Google Chart API
