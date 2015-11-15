@@ -81,6 +81,7 @@ import com.sonos.services._1.Property;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RelatedBrowse;
+import com.sonos.services._1.RelatedText;
 import com.sonos.services._1.RemoveFromContainerResult;
 import com.sonos.services._1.RenameContainerResult;
 import com.sonos.services._1.ReorderContainerResult;
@@ -92,6 +93,7 @@ import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.AlbumListType;
+import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Playlist;
 import net.sourceforge.subsonic.domain.User;
@@ -144,6 +146,7 @@ public class SonosService implements SonosSoap {
     private SettingsService settingsService;
     private PlaylistService playlistService;
     private UPnPService upnpService;
+    private LastFmService lastFmService;
 
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
@@ -323,11 +326,28 @@ public class SonosService implements SonosSoap {
         relatedBrowse.setId(ID_SIMILAR_ARTISTS_PREFIX + id);
         extendedMetadata.getRelatedBrowse().add(relatedBrowse);
 
+        RelatedText relatedText = new RelatedText();
+        relatedText.setType("ARTIST_BIO");
+        relatedText.setId(String.valueOf(id));
+        extendedMetadata.getRelatedText().add(relatedText);
+
         GetExtendedMetadataResponse response = new GetExtendedMetadataResponse();
         response.setGetExtendedMetadataResult(extendedMetadata);
         return response;
     }
 
+    @Override
+    public GetExtendedMetadataTextResponse getExtendedMetadataText(GetExtendedMetadataText parameters) {
+        int id = Integer.parseInt(parameters.getId());
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
+
+        String bio = artistBio == null ? null : artistBio.getBiography();
+
+        GetExtendedMetadataTextResponse response = new GetExtendedMetadataTextResponse();
+        response.setGetExtendedMetadataTextResult(bio);
+        return response;
+    }
 
     @Override
     public SearchResponse search(Search parameters) {
@@ -637,11 +657,6 @@ public class SonosService implements SonosSoap {
     }
 
     @Override
-    public GetExtendedMetadataTextResponse getExtendedMetadataText(GetExtendedMetadataText parameters) {
-        return null;
-    }
-
-    @Override
     public DeviceLinkCodeResult getDeviceLinkCode(String householdId) {
         return null;
     }
@@ -703,5 +718,9 @@ public class SonosService implements SonosSoap {
 
     public void setPlaylistService(PlaylistService playlistService) {
         this.playlistService = playlistService;
+    }
+
+    public void setLastFmService(LastFmService lastFmService) {
+        this.lastFmService = lastFmService;
     }
 }

@@ -212,6 +212,7 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="upnpService" ref="upnpService"/>
+        <property name="lastFmService" ref="lastFmService"/>
     </bean>
 
     <bean id="metaDataParserFactory" class="net.sourceforge.subsonic.service.metadata.MetaDataParserFactory">

@@ -3,6 +3,7 @@ DONE IN 5.4
 Artist thumbnail image
 Show album year, song count, genre and duration
 Sonos: Star/unstar tracks
+Sonos: Artist bio
 
 TODO IN 5.4
 ------------
@@ -55,7 +56,6 @@ Make logout float right
 Check jwplayer in external player
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
 Change chromecast background.
-Custom Sonos texts for starring.
 Upgrade sonos wsdl.
   AbstractMedia.summary
   AbstractMedia.isFavorite
