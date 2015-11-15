@@ -72,6 +72,7 @@ import com.sonos.services._1.GetSessionId;
 import com.sonos.services._1.GetSessionIdResponse;
 import com.sonos.services._1.HttpHeaders;
 import com.sonos.services._1.ItemRating;
+import com.sonos.services._1.ItemType;
 import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaList;
@@ -81,6 +82,7 @@ import com.sonos.services._1.Property;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RelatedBrowse;
+import com.sonos.services._1.RelatedPlay;
 import com.sonos.services._1.RelatedText;
 import com.sonos.services._1.RemoveFromContainerResult;
 import com.sonos.services._1.RenameContainerResult;
@@ -321,10 +323,19 @@ public class SonosService implements SonosSoap {
             extendedMetadata.setMediaMetadata(mediaMetadata);
         }
 
-        RelatedBrowse relatedBrowse = new RelatedBrowse();
-        relatedBrowse.setType("RELATED_ARTISTS");
-        relatedBrowse.setId(ID_SIMILAR_ARTISTS_PREFIX + id);
-        extendedMetadata.getRelatedBrowse().add(relatedBrowse);
+        if (mediaFile.getArtist() != null) {
+            RelatedBrowse relatedBrowse = new RelatedBrowse();
+            relatedBrowse.setType("RELATED_ARTISTS");
+            relatedBrowse.setId(ID_SIMILAR_ARTISTS_PREFIX + id);
+            extendedMetadata.getRelatedBrowse().add(relatedBrowse);
+
+            RelatedPlay relatedPlay = new RelatedPlay();
+            relatedPlay.setItemType(ItemType.PROGRAM);
+            relatedPlay.setCanPlay(true);
+            relatedPlay.setTitle("Artist Radio - " + mediaFile.getArtist());
+            relatedPlay.setId(SonosService.ID_RADIO_ARTIST_PREFIX + mediaFile.getId());
+            extendedMetadata.setRelatedPlay(relatedPlay);
+        }
 
         RelatedText relatedText = new RelatedText();
         relatedText.setType("ARTIST_BIO");

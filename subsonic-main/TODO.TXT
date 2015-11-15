@@ -4,11 +4,12 @@ Artist thumbnail image
 Show album year, song count, genre and duration
 Sonos: Star/unstar tracks
 Sonos: Artist bio
+Sonos: Improved radio feature
 
 TODO IN 5.4
 ------------
 Status and log should only be available for admin.
-
+last.fm album notes?
 Load artist images
   Slowly, in the background?
   Save locally, or store link in db?
