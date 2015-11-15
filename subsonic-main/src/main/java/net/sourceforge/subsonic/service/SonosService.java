@@ -58,6 +58,7 @@ import com.sonos.services._1.Credentials;
 import com.sonos.services._1.DeleteContainerResult;
 import com.sonos.services._1.DeviceAuthTokenResult;
 import com.sonos.services._1.DeviceLinkCodeResult;
+import com.sonos.services._1.DynamicData;
 import com.sonos.services._1.ExtendedMetadata;
 import com.sonos.services._1.GetExtendedMetadata;
 import com.sonos.services._1.GetExtendedMetadataResponse;
@@ -70,11 +71,13 @@ import com.sonos.services._1.GetMetadataResponse;
 import com.sonos.services._1.GetSessionId;
 import com.sonos.services._1.GetSessionIdResponse;
 import com.sonos.services._1.HttpHeaders;
+import com.sonos.services._1.ItemRating;
 import com.sonos.services._1.LastUpdate;
 import com.sonos.services._1.MediaCollection;
 import com.sonos.services._1.MediaList;
 import com.sonos.services._1.MediaMetadata;
 import com.sonos.services._1.MediaUriAction;
+import com.sonos.services._1.Property;
 import com.sonos.services._1.RateItem;
 import com.sonos.services._1.RateItemResponse;
 import com.sonos.services._1.RelatedBrowse;
@@ -297,13 +300,22 @@ public class SonosService implements SonosSoap {
 
         int id = Integer.parseInt(parameters.getId());
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        AbstractMedia abstractMedia = sonosHelper.forMediaFile(mediaFile, getUsername(), getRequest());
+        String username = getUsername();
+        AbstractMedia abstractMedia = sonosHelper.forMediaFile(mediaFile, username, getRequest());
 
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         if (abstractMedia instanceof MediaCollection) {
             extendedMetadata.setMediaCollection((MediaCollection) abstractMedia);
         } else {
-            extendedMetadata.setMediaMetadata((MediaMetadata) abstractMedia);
+            MediaMetadata mediaMetadata = (MediaMetadata) abstractMedia;
+            DynamicData dynamicData = new DynamicData();
+            Property property = new Property();
+            property.setName("isStarred");
+            mediaFileService.populateStarredDate(mediaFile, username);
+            property.setValue(mediaFile.getStarredDate() == null ? "0" : "1");
+            dynamicData.getProperty().add(property);
+            mediaMetadata.setDynamic(dynamicData);
+            extendedMetadata.setMediaMetadata(mediaMetadata);
         }
 
         RelatedBrowse relatedBrowse = new RelatedBrowse();
@@ -549,6 +561,20 @@ public class SonosService implements SonosSoap {
         sonosHelper.unstar(id, getUsername());
     }
 
+    @Override
+    public RateItemResponse rateItem(RateItem parameters) {
+        int id = Integer.parseInt(parameters.getId());
+        if (parameters.getRating() == 0) {
+            sonosHelper.unstar(id, getUsername());
+        } else {
+            sonosHelper.star(id, getUsername());
+        }
+
+        RateItemResponse response = new RateItemResponse();
+        response.setRateItemResult(new ItemRating());
+        return response;
+    }
+
     private HttpServletRequest getRequest() {
         MessageContext messageContext = context == null ? null : context.getMessageContext();
 
@@ -603,11 +629,6 @@ public class SonosService implements SonosSoap {
 
     public void setSonosHelper(SonosHelper sonosHelper) {
         this.sonosHelper = sonosHelper;
-    }
-
-    @Override
-    public RateItemResponse rateItem(RateItem parameters) {
-        return null;
     }
 
     @Override

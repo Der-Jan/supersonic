@@ -2,9 +2,17 @@ DONE IN 5.4
 -----------
 Artist thumbnail image
 Show album year, song count, genre and duration
+Sonos: Star/unstar tracks
 
 TODO IN 5.4
 ------------
+Status and log should only be available for admin.
+
+Load artist images
+  Slowly, in the background?
+  Save locally, or store link in db?
+  What to use it for?
+
 Content length of FLAC transcoded to WAV incorrect
   http://sourceforge.net/p/subsonic/bugs/121/
 REST authentication not supported for LDAP users.
@@ -39,7 +47,6 @@ Port-forward https port also
 Outdated SSL
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ef975868d1aaa5
 Test with Windows 10
-Status and log should only be available for admin.
 Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
