@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.umass.lastfm.Album;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
@@ -37,6 +38,7 @@ import de.umass.lastfm.Track;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
+import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -211,6 +213,54 @@ public class LastFmService {
     }
 
     /**
+     * Returns album notes and images.
+     *
+     * @param mediaFile The media file (song or album).
+     * @return Album notes.
+     */
+    public AlbumNotes getAlbumNotes(MediaFile mediaFile) {
+        return getAlbumNotes(getCanonicalArtistName(getArtistName(mediaFile)), mediaFile.getAlbumName());
+    }
+
+    /**
+     * Returns album notes and images.
+     *
+     * @param album The album.
+     * @return Album notes.
+     */
+    public AlbumNotes getAlbumNotes(net.sourceforge.subsonic.domain.Album album) {
+        return getAlbumNotes(getCanonicalArtistName(album.getArtist()), album.getName());
+    }
+
+    /**
+     * Returns album notes and images.
+     *
+     * @param artist The artist name.
+     * @param album The album name.
+     * @return Album notes.
+     */
+    private AlbumNotes getAlbumNotes(String artist, String album) {
+        if (artist == null || album == null) {
+            return null;
+        }
+        try {
+            Album info = Album.getInfo(artist, album, LAST_FM_KEY);
+            if (info == null) {
+                return null;
+            }
+            return new AlbumNotes(processWikiText(info.getWikiSummary()),
+                                 info.getMbid(),
+                                 info.getUrl(),
+                                 info.getImageURL(ImageSize.MEDIUM),
+                                 info.getImageURL(ImageSize.LARGE),
+                                 info.getImageURL(ImageSize.MEGA));
+        } catch (Throwable x) {
+            LOG.warn("Failed to find album notes for " + artist + " - " + album, x);
+            return null;
+        }
+    }
+
+    /**
      * Returns artist bio and images.
      *
      * @param mediaFile The media file (song, album or artist).
@@ -339,6 +389,10 @@ public class LastFmService {
     }
 
     private String processWikiText(String text) {
+        if (text == null) {
+            return null;
+        }
+
         /*
          System of a Down is an Armenian American <a href="http://www.last.fm/tag/alternative%20metal" class="bbcode_tag" rel="tag">alternative metal</a> band,
          formed in 1994 in Los Angeles, California, USA. All four members are of Armenian descent, and are widely known for their outspoken views expressed in

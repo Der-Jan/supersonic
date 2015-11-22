@@ -95,6 +95,7 @@ import com.sonos.services._1_1.SonosSoap;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.AlbumListType;
+import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Playlist;
@@ -141,6 +142,9 @@ public class SonosService implements SonosSoap {
     public static final String ID_SEARCH_ARTISTS = "search-artists";
     public static final String ID_SEARCH_ALBUMS = "search-albums";
     public static final String ID_SEARCH_SONGS = "search-songs";
+
+    private static final String RELATED_TEXT_ARTIST_BIO = "ARTIST_BIO";
+    private static final String RELATED_TEXT_ALBUM_NOTES = "ALBUM_NOTES";
 
     private SonosHelper sonosHelper;
     private MediaFileService mediaFileService;
@@ -335,12 +339,19 @@ public class SonosService implements SonosSoap {
             relatedPlay.setTitle("Artist Radio - " + mediaFile.getArtist());
             relatedPlay.setId(SonosService.ID_RADIO_ARTIST_PREFIX + mediaFile.getId());
             extendedMetadata.setRelatedPlay(relatedPlay);
-        }
 
-        RelatedText relatedText = new RelatedText();
-        relatedText.setType("ARTIST_BIO");
-        relatedText.setId(String.valueOf(id));
-        extendedMetadata.getRelatedText().add(relatedText);
+            RelatedText artistBio = new RelatedText();
+            artistBio.setType(RELATED_TEXT_ARTIST_BIO);
+            artistBio.setId(String.valueOf(id));
+            extendedMetadata.getRelatedText().add(artistBio);
+
+            if (mediaFile.isAlbum() || mediaFile.isAudio()) {
+                RelatedText albumNotes = new RelatedText();
+                albumNotes.setType(RELATED_TEXT_ALBUM_NOTES);
+                albumNotes.setId(String.valueOf(id));
+                extendedMetadata.getRelatedText().add(albumNotes);
+            }
+        }
 
         GetExtendedMetadataResponse response = new GetExtendedMetadataResponse();
         response.setGetExtendedMetadataResult(extendedMetadata);
@@ -349,14 +360,21 @@ public class SonosService implements SonosSoap {
 
     @Override
     public GetExtendedMetadataTextResponse getExtendedMetadataText(GetExtendedMetadataText parameters) {
+
         int id = Integer.parseInt(parameters.getId());
         MediaFile mediaFile = mediaFileService.getMediaFile(id);
-        ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
 
-        String bio = artistBio == null ? null : artistBio.getBiography();
+        String text = null;
+        if (RELATED_TEXT_ARTIST_BIO.equals(parameters.getType())) {
+            ArtistBio artistBio = lastFmService.getArtistBio(mediaFile);
+            text = artistBio == null ? null : artistBio.getBiography();
+        } else if (RELATED_TEXT_ALBUM_NOTES.equals(parameters.getType())) {
+            AlbumNotes albumNotes = lastFmService.getAlbumNotes(mediaFile);
+            text = albumNotes == null ? null : albumNotes.getNotes();
+        }
 
         GetExtendedMetadataTextResponse response = new GetExtendedMetadataTextResponse();
-        response.setGetExtendedMetadataTextResult(bio);
+        response.setGetExtendedMetadataTextResult(text);
         return response;
     }
 

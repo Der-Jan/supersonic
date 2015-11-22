@@ -163,7 +163,7 @@
     }
 </script>
 
-<img id="artistThumbImage" alt="" class="circle" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
+<img id="artistThumbImage" alt="" class="circle dropshadow" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
 
 <div style="float:left">
     <h1>

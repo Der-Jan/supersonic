@@ -4,7 +4,7 @@
            targetNamespace="http://subsonic.org/restapi"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           version="1.13.0">
+           version="1.14.0">
 
     <xs:element name="subsonic-response" type="sub:Response"/>
 
@@ -44,6 +44,7 @@
             <xs:element name="shares" type="sub:Shares" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred" type="sub:Starred" minOccurs="1" maxOccurs="1"/>
             <xs:element name="starred2" type="sub:Starred2" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="albumInfo" type="sub:AlbumInfo" minOccurs="1" maxOccurs="1"/>
             <xs:element name="artistInfo" type="sub:ArtistInfo" minOccurs="1" maxOccurs="1"/>
             <xs:element name="artistInfo2" type="sub:ArtistInfo2" minOccurs="1" maxOccurs="1"/>
             <xs:element name="similarSongs" type="sub:SimilarSongs" minOccurs="1" maxOccurs="1"/>
@@ -486,6 +487,17 @@
             <xs:element name="artist" type="sub:Artist" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="album" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="song" type="sub:Child" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AlbumInfo">
+        <xs:sequence>
+            <xs:element name="notes" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="musicBrainzId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="lastFmUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="smallImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="mediumImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="largeImageUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 

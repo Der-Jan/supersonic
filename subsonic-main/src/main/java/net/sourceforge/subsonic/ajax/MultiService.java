@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.directwebremoting.WebContextFactory;
 
 import net.sourceforge.subsonic.Logger;
+import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
@@ -74,6 +75,13 @@ public class MultiService {
         List<TopSong> topSongs = getTopSongs(mediaFile, maxTopSongs);
 
         return new ArtistInfo(similarArtists, artistBio, topSongs);
+    }
+
+    public AlbumInfo getAlbumInfo(int mediaFileId, int maxSimilarArtists) {
+        MediaFile mediaFile = mediaFileService.getMediaFile(mediaFileId);
+        AlbumNotes albumNotes = lastFmService.getAlbumNotes(mediaFile);
+        ArtistInfo artistInfo = getArtistInfo(mediaFileId, maxSimilarArtists, 0);
+        return new AlbumInfo(artistInfo, albumNotes == null ? null : albumNotes.getNotes());
     }
 
     private List<TopSong> getTopSongs(MediaFile mediaFile, int limit) {
