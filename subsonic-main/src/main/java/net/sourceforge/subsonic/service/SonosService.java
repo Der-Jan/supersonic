@@ -130,6 +130,7 @@ public class SonosService implements SonosSoap {
     public static final String ID_SHUFFLE_ARTIST_PREFIX = "shuffle-artist:";
     public static final String ID_SHUFFLE_ALBUMLIST_PREFIX = "shuffle-albumlist:";
     public static final String ID_RADIO_ARTIST_PREFIX = "radio-artist:";
+    public static final String ID_TOP_SONGS_PREFIX = "top-songs:";
     public static final String ID_MUSICFOLDER_PREFIX = "musicfolder:";
     public static final String ID_PLAYLIST_PREFIX = "playlist:";
     public static final String ID_ALBUMLIST_PREFIX = "albumlist:";
@@ -283,6 +284,9 @@ public class SonosService implements SonosSoap {
             } else if (id.startsWith(ID_RADIO_ARTIST_PREFIX)) {
                 int mediaFileId = Integer.parseInt(id.replace(ID_RADIO_ARTIST_PREFIX, ""));
                 media = sonosHelper.forRadioArtist(mediaFileId, count, username, request);
+            } else if (id.startsWith(ID_TOP_SONGS_PREFIX)) {
+                int mediaFileId = Integer.parseInt(id.replace(ID_TOP_SONGS_PREFIX, ""));
+                media = sonosHelper.forTopSongs(mediaFileId, username, request);
             } else if (id.startsWith(ID_SIMILAR_ARTISTS_PREFIX)) {
                 int mediaFileId = Integer.parseInt(id.replace(ID_SIMILAR_ARTISTS_PREFIX, ""));
                 media = sonosHelper.forSimilarArtists(mediaFileId, username, request);

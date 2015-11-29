@@ -178,6 +178,13 @@ public class SonosHelper {
         return forMediaFiles(songs, username, request);
     }
 
+    public List<AbstractMedia> forTopSongs(int mediaFileId, String username, HttpServletRequest request) {
+        MediaFile artist = mediaFileService.getMediaFile(mediaFileId);
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+        List<MediaFile> songs = filterMusic(lastFmService.getTopSongs(artist, 100, musicFolders));
+        return forMediaFiles(songs, username, request);
+    }
+
     public List<AbstractMedia> forLibrary(String username, HttpServletRequest request) {
         List<AbstractMedia> result = new ArrayList<AbstractMedia>();
 
@@ -261,6 +268,12 @@ public class SonosHelper {
             radio.setId(SonosService.ID_RADIO_ARTIST_PREFIX + mediaFileId);
             radio.setTitle(String.format("Artist Radio - %s", dir.getName()));
             result.add(1, radio);
+
+            MediaCollection topSongs = new MediaCollection();
+            topSongs.setItemType(ItemType.TRACK);
+            topSongs.setId(SonosService.ID_TOP_SONGS_PREFIX + mediaFileId);
+            topSongs.setTitle(String.format("Top Songs - %s", dir.getName()));
+            result.add(2, topSongs);
         }
 
         return result;
@@ -633,14 +646,14 @@ public class SonosHelper {
         return getBaseUrl(request) + "coverArt.view?id=" + id + "&size=" + CoverArtScheme.LARGE.getSize();
     }
 
-    public static MediaList createSubList(int index, int count, List<? extends AbstractMedia> mediaCollections) {
+    public static MediaList createSubList(int index, int count, List<? extends AbstractMedia> media) {
         MediaList result = new MediaList();
-        List<? extends AbstractMedia> selectedMediaCollections = Util.subList(mediaCollections, index, count);
+        List<? extends AbstractMedia> selectedMedia = Util.subList(media, index, count);
 
         result.setIndex(index);
-        result.setCount(selectedMediaCollections.size());
-        result.setTotal(mediaCollections.size());
-        result.getMediaCollectionOrMediaMetadata().addAll(selectedMediaCollections);
+        result.setCount(selectedMedia.size());
+        result.setTotal(media.size());
+        result.getMediaCollectionOrMediaMetadata().addAll(selectedMedia);
 
         return result;
     }

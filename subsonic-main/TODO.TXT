@@ -6,10 +6,17 @@ Show album notes
 Sonos: Star/unstar tracks
 Sonos: Artist bio and album notes
 Sonos: Improved radio feature
+Sonos: Artist top songs
 REST: Added getAlbumInfo and getAlbumInfo2
 
 TODO IN 5.4
 ------------
+Sonos: Show artist image, if cached.
+
+Last.fm song matching and playlists
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126
+Keyboard shortcuts
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15926
 Status and log should only be available for admin.
 Load artist images
   Slowly, in the background?
