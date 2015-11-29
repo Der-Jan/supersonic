@@ -148,6 +148,10 @@ public class LastFmCache extends Cache {
         }
     }
 
+    public boolean isCached(String cacheEntryName) {
+        return getXmlFile(cacheEntryName).exists();
+    }
+
     private File getXmlFile(String cacheEntryName) {
         return new File(cacheDir, cacheEntryName + ".xml");
     }

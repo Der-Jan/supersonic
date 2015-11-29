@@ -44,6 +44,7 @@ import com.sonos.services._1.TrackMetadata;
 import net.sourceforge.subsonic.controller.CoverArtController;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.AlbumListType;
+import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.CoverArtScheme;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -291,12 +292,21 @@ public class SonosHelper {
             mediaCollection.setTitle(dir.getName());
             mediaCollection.setCanPlay(true);
 
-            AlbumArtUrl albumArtURI = new AlbumArtUrl();
-            albumArtURI.setValue(getCoverArtUrl(String.valueOf(dir.getId()), request));
-            mediaCollection.setAlbumArtURI(albumArtURI);
+            AlbumArtUrl albumArtUrl = new AlbumArtUrl();
+            albumArtUrl.setValue(getCoverArtUrl(String.valueOf(dir.getId()), request));
+            mediaCollection.setAlbumArtURI(albumArtUrl);
         } else {
             mediaCollection.setItemType(ItemType.ARTIST);
             mediaCollection.setTitle(dir.getName());
+
+            if (lastFmService.isArtistBioCached(dir.getName())) {
+                ArtistBio artistBio = lastFmService.getArtistBio(dir);
+                if (artistBio != null && artistBio.getSmallImageUrl() != null) {
+                    AlbumArtUrl artistImageUrl = new AlbumArtUrl();
+                    artistImageUrl.setValue(artistBio.getMediumImageUrl());
+                    mediaCollection.setAlbumArtURI(artistImageUrl);
+                }
+            }
         }
         return mediaCollection;
     }
@@ -305,8 +315,8 @@ public class SonosHelper {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (Playlist playlist : playlistService.getReadablePlaylistsForUser(username)) {
             MediaCollection mediaCollection = new MediaCollection();
-            AlbumArtUrl albumArtURI = new AlbumArtUrl();
-            albumArtURI.setValue(getCoverArtUrl(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId(), request));
+            AlbumArtUrl albumArtUrl = new AlbumArtUrl();
+            albumArtUrl.setValue(getCoverArtUrl(CoverArtController.PLAYLIST_COVERART_PREFIX + playlist.getId(), request));
 
             mediaCollection.setId(SonosService.ID_PLAYLIST_PREFIX + playlist.getId());
             mediaCollection.setCanPlay(true);
@@ -316,7 +326,7 @@ public class SonosHelper {
             mediaCollection.setItemType(ItemType.PLAYLIST);
             mediaCollection.setArtist(playlist.getUsername());
             mediaCollection.setTitle(playlist.getName());
-            mediaCollection.setAlbumArtURI(albumArtURI);
+            mediaCollection.setAlbumArtURI(albumArtUrl);
             result.add(mediaCollection);
         }
         return result;
@@ -338,14 +348,14 @@ public class SonosHelper {
     public List<MediaCollection> forPodcastChannels(HttpServletRequest request) {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (PodcastChannel channel : podcastService.getAllChannels()) {
-            AlbumArtUrl albumArtURI = new AlbumArtUrl();
-            albumArtURI.setValue(getCoverArtUrl(CoverArtController.PODCAST_COVERART_PREFIX + channel.getId(), request));
+            AlbumArtUrl albumArtUri = new AlbumArtUrl();
+            albumArtUri.setValue(getCoverArtUrl(CoverArtController.PODCAST_COVERART_PREFIX + channel.getId(), request));
 
             MediaCollection mediaCollection = new MediaCollection();
             mediaCollection.setId(SonosService.ID_PODCAST_CHANNEL_PREFIX + channel.getId());
             mediaCollection.setTitle(channel.getTitle());
             mediaCollection.setItemType(ItemType.TRACK);
-            mediaCollection.setAlbumArtURI(albumArtURI);
+            mediaCollection.setAlbumArtURI(albumArtUri);
             result.add(mediaCollection);
         }
         return result;
@@ -618,14 +628,14 @@ public class SonosHelper {
         result.setIsFavorite(song.getStarredDate() != null);
 //        result.setDynamic();// TODO: For starred songs
 
-        AlbumArtUrl albumArtURI = new AlbumArtUrl();
-        albumArtURI.setValue(getCoverArtUrl(String.valueOf(song.getId()), request));
+        AlbumArtUrl albumArtUrl = new AlbumArtUrl();
+        albumArtUrl.setValue(getCoverArtUrl(String.valueOf(song.getId()), request));
 
         TrackMetadata trackMetadata = new TrackMetadata();
         trackMetadata.setArtist(song.getArtist());
         trackMetadata.setAlbumArtist(song.getAlbumArtist());
         trackMetadata.setAlbum(song.getAlbumName());
-        trackMetadata.setAlbumArtURI(albumArtURI);
+        trackMetadata.setAlbumArtURI(albumArtUrl);
         trackMetadata.setDuration(song.getDurationSeconds());
         trackMetadata.setTrackNumber(song.getTrackNumber());
 

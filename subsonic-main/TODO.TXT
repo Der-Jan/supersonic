@@ -9,10 +9,13 @@ Sonos: Improved radio feature
 Sonos: Artist top songs
 Sonos: Nicer presentation on Android and iOS controllers
 REST: Added getAlbumInfo and getAlbumInfo2
+Sonos: Show artist image, if cached.
 
 TODO IN 5.4
 ------------
-Sonos: Show artist image, if cached.
+Sonos: Missing cover art in search results
+Review last.fm caching. Currently 6 months.  Differentiate?
+
 
 Last.fm song matching and playlists
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126

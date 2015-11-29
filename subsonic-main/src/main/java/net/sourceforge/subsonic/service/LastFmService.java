@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +37,7 @@ import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.Track;
+import de.umass.lastfm.cache.Cache;
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
@@ -58,13 +61,15 @@ public class LastFmService {
     private MediaFileDao mediaFileDao;
     private MediaFileService mediaFileService;
     private ArtistDao artistDao;
+    private LastFmCache cache;
 
     public void init() {
         Caller caller = Caller.getInstance();
         caller.setUserAgent("Subsonic");
 
         File cacheDir = new File(SettingsService.getSubsonicHome(), "lastfmcache");
-        caller.setCache(new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS));
+        cache = new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS);
+        caller.setCache(cache);
     }
 
     /**
@@ -278,6 +283,17 @@ public class LastFmService {
      */
     public ArtistBio getArtistBio(net.sourceforge.subsonic.domain.Artist artist) {
         return getArtistBio(getCanonicalArtistName(artist.getName()));
+    }
+
+    /**
+     * Returns whether the bio for the given artist is cached.
+     */
+    public boolean isArtistBioCached(String artist) {
+        Map<String, String> params = new TreeMap<String, String>();
+        params.put("artist", artist);
+
+        String key = Cache.createCacheEntryName("artist.getInfo", params);
+        return cache.isCached(key);
     }
 
     /**
