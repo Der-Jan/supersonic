@@ -7,6 +7,7 @@ Sonos: Star/unstar tracks
 Sonos: Artist bio and album notes
 Sonos: Improved radio feature
 Sonos: Artist top songs
+Sonos: Nicer presentation on Android and iOS controllers
 REST: Added getAlbumInfo and getAlbumInfo2
 
 TODO IN 5.4
@@ -22,6 +23,8 @@ Load artist images
   Slowly, in the background?
   Save locally, or store link in db?
   What to use it for?
+    Sonos, REST
+  Make square
 
 Content length of FLAC transcoded to WAV incorrect
   http://sourceforge.net/p/subsonic/bugs/121/

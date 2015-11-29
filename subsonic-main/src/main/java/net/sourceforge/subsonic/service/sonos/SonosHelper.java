@@ -104,7 +104,7 @@ public class SonosHelper {
         library.setTitle("Browse Library");
 
         MediaCollection playlists = new MediaCollection();
-        playlists.setItemType(ItemType.FAVORITES);
+        playlists.setItemType(ItemType.ALBUM_LIST);
         playlists.setId(SonosService.ID_PLAYLISTS);
         playlists.setTitle("Playlists");
         playlists.setUserContent(true);
@@ -121,7 +121,7 @@ public class SonosHelper {
         albumlists.setTitle("Album Lists");
 
         MediaCollection podcasts = new MediaCollection();
-        podcasts.setItemType(ItemType.COLLECTION);
+        podcasts.setItemType(ItemType.ALBUM_LIST);
         podcasts.setId(SonosService.ID_PODCASTS);
         podcasts.setTitle("Podcasts");
 
@@ -295,7 +295,7 @@ public class SonosHelper {
             albumArtURI.setValue(getCoverArtUrl(String.valueOf(dir.getId()), request));
             mediaCollection.setAlbumArtURI(albumArtURI);
         } else {
-            mediaCollection.setItemType(ItemType.CONTAINER);
+            mediaCollection.setItemType(ItemType.ARTIST);
             mediaCollection.setTitle(dir.getName());
         }
         return mediaCollection;
@@ -335,13 +335,17 @@ public class SonosHelper {
         return result;
     }
 
-    public List<MediaCollection> forPodcastChannels() {
+    public List<MediaCollection> forPodcastChannels(HttpServletRequest request) {
         List<MediaCollection> result = new ArrayList<MediaCollection>();
         for (PodcastChannel channel : podcastService.getAllChannels()) {
+            AlbumArtUrl albumArtURI = new AlbumArtUrl();
+            albumArtURI.setValue(getCoverArtUrl(CoverArtController.PODCAST_COVERART_PREFIX + channel.getId(), request));
+
             MediaCollection mediaCollection = new MediaCollection();
             mediaCollection.setId(SonosService.ID_PODCAST_CHANNEL_PREFIX + channel.getId());
             mediaCollection.setTitle(channel.getTitle());
             mediaCollection.setItemType(ItemType.TRACK);
+            mediaCollection.setAlbumArtURI(albumArtURI);
             result.add(mediaCollection);
         }
         return result;
@@ -490,17 +494,17 @@ public class SonosHelper {
 
     public List<MediaCollection> forStarred() {
         MediaCollection artists = new MediaCollection();
-        artists.setItemType(ItemType.FAVORITES);
+        artists.setItemType(ItemType.ARTIST);
         artists.setId(SonosService.ID_STARRED_ARTISTS);
         artists.setTitle("Starred Artists");
 
         MediaCollection albums = new MediaCollection();
-        albums.setItemType(ItemType.FAVORITES);
+        albums.setItemType(ItemType.ALBUM_LIST);
         albums.setId(SonosService.ID_STARRED_ALBUMS);
         albums.setTitle("Starred Albums");
 
         MediaCollection songs = new MediaCollection();
-        songs.setItemType(ItemType.FAVORITES);
+        songs.setItemType(ItemType.TRACK_LIST);
         songs.setId(SonosService.ID_STARRED_SONGS);
         songs.setCanPlay(true);
         songs.setTitle("Starred Songs");
