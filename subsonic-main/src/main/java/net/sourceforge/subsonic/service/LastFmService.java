@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +60,7 @@ public class LastFmService {
     private static final long CACHE_TIME_TO_LIVE_MILLIS = 6 * 30 * 24 * 3600 * 1000L; // 6 months
     private static final Logger LOG = Logger.getLogger(LastFmService.class);
 
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private MediaFileDao mediaFileDao;
     private MediaFileService mediaFileService;
     private ArtistDao artistDao;
@@ -70,6 +73,8 @@ public class LastFmService {
         File cacheDir = new File(SettingsService.getSubsonicHome(), "lastfmcache");
         cache = new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS);
         caller.setCache(cache);
+
+        executor.execute(new ArtistImageLoader());
     }
 
     /**
@@ -449,5 +454,22 @@ public class LastFmService {
 
     public void setArtistDao(ArtistDao artistDao) {
         this.artistDao = artistDao;
+    }
+
+    private class ArtistImageLoader implements Runnable {
+        @Override
+        public void run() {
+            for (String artist : mediaFileDao.getArtistNames()) {
+                if (!isArtistBioCached(artist)) {
+                    try {
+                        Thread.sleep(10000L);
+                        getArtistBio(artist);
+                        LOG.debug("Fetched artist bio for " + artist);
+                    } catch (Exception x) {
+                        LOG.warn("Failed to get artist bio for " + artist, x);
+                    }
+                }
+            }
+        }
     }
 }

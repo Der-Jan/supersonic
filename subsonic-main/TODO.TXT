@@ -13,21 +13,14 @@ Sonos: Show artist image, if cached.
 
 TODO IN 5.4
 ------------
-Sonos: Missing cover art in search results
 Review last.fm caching. Currently 6 months.  Differentiate?
-
+REST: Artist image url?
 
 Last.fm song matching and playlists
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126
 Keyboard shortcuts
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15926
 Status and log should only be available for admin.
-Load artist images
-  Slowly, in the background?
-  Save locally, or store link in db?
-  What to use it for?
-    Sonos, REST
-  Make square
 
 Content length of FLAC transcoded to WAV incorrect
   http://sourceforge.net/p/subsonic/bugs/121/
