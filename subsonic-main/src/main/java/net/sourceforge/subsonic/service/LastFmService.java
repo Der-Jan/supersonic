@@ -57,7 +57,6 @@ import net.sourceforge.subsonic.domain.MusicFolder;
 public class LastFmService {
 
     private static final String LAST_FM_KEY = "ece4499898a9440896dfdce5dab26bbf";
-    private static final long CACHE_TIME_TO_LIVE_MILLIS = 6 * 30 * 24 * 3600 * 1000L; // 6 months
     private static final Logger LOG = Logger.getLogger(LastFmService.class);
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -71,7 +70,7 @@ public class LastFmService {
         caller.setUserAgent("Subsonic");
 
         File cacheDir = new File(SettingsService.getSubsonicHome(), "lastfmcache");
-        cache = new LastFmCache(cacheDir, CACHE_TIME_TO_LIVE_MILLIS);
+        cache = new LastFmCache(cacheDir);
         caller.setCache(cache);
 
         executor.execute(new ArtistImageLoader());
@@ -462,7 +461,7 @@ public class LastFmService {
             for (String artist : mediaFileDao.getArtistNames()) {
                 if (!isArtistBioCached(artist)) {
                     try {
-                        Thread.sleep(10000L);
+                        Thread.sleep(5000L);
                         getArtistBio(artist);
                         LOG.debug("Fetched artist bio for " + artist);
                     } catch (Exception x) {

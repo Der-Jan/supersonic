@@ -13,8 +13,15 @@ Sonos: Show artist image, if cached.
 
 TODO IN 5.4
 ------------
-Review last.fm caching. Currently 6 months.  Differentiate?
+Review scanning algorithm. Always visit children?
+Ensure cover art is refreshed when changed.
+Don't fetch artist bio at every startup.
 REST: Artist image url?
+Sonos: Star button missing on ipad
+Don't queue following songs when playing from search results / starred songs.
+  https://mail.google.com/mail/ca/u/0/?zx=nmcjqt3dyrzj#inbox/15169f6c8b06cc1b
+Remove Thumper?
+  https://mail.google.com/mail/ca/u/0/?zx=nmcjqt3dyrzj#inbox/151634428b1feffc
 
 Last.fm song matching and playlists
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126
