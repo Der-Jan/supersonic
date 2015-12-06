@@ -201,6 +201,7 @@
 
     <bean id="lastFmService" class="net.sourceforge.subsonic.service.LastFmService" init-method="init">
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="artistDao" ref="artistDao"/>
     </bean>

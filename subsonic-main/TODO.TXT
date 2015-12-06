@@ -15,7 +15,6 @@ TODO IN 5.4
 ------------
 Review scanning algorithm. Always visit children?
 Ensure cover art is refreshed when changed.
-Don't fetch artist bio at every startup.
 REST: Artist image url?
 Sonos: Star button missing on ipad
 Don't queue following songs when playing from search results / starred songs.

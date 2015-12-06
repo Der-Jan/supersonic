@@ -60,8 +60,9 @@ public class LastFmService {
     private static final Logger LOG = Logger.getLogger(LastFmService.class);
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private MediaFileDao mediaFileDao;
     private MediaFileService mediaFileService;
+    private SettingsService settingsService;
+    private MediaFileDao mediaFileDao;
     private ArtistDao artistDao;
     private LastFmCache cache;
 
@@ -73,7 +74,7 @@ public class LastFmService {
         cache = new LastFmCache(cacheDir);
         caller.setCache(cache);
 
-        executor.execute(new ArtistImageLoader());
+        executor.execute(new ArtistBioLoader());
     }
 
     /**
@@ -455,19 +456,31 @@ public class LastFmService {
         this.artistDao = artistDao;
     }
 
-    private class ArtistImageLoader implements Runnable {
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
+    }
+
+    private class ArtistBioLoader implements Runnable {
+
+        private static final long ARTIST_BIO_UPDATE_INTERVAL = 3 * 30 * 24 * 3600 * 1000L; // 3 months
+
         @Override
         public void run() {
-            for (String artist : mediaFileDao.getArtistNames()) {
-                if (!isArtistBioCached(artist)) {
-                    try {
-                        Thread.sleep(5000L);
-                        getArtistBio(artist);
-                        LOG.debug("Fetched artist bio for " + artist);
-                    } catch (Exception x) {
-                        LOG.warn("Failed to get artist bio for " + artist, x);
+            long lastUpdated = settingsService.getArtistBioLastUpdated();
+            if (System.currentTimeMillis() - lastUpdated > ARTIST_BIO_UPDATE_INTERVAL) {
+                for (String artist : mediaFileDao.getArtistNames()) {
+                    if (!isArtistBioCached(artist)) {
+                        try {
+                            Thread.sleep(5000L);
+                            getArtistBio(artist);
+                            LOG.debug("Fetched artist bio for " + artist);
+                        } catch (Exception x) {
+                            LOG.warn("Failed to get artist bio for " + artist, x);
+                        }
                     }
                 }
+                settingsService.setArtistBioLastUpdated(System.currentTimeMillis());
+                settingsService.save(false);
             }
         }
     }
