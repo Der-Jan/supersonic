@@ -19,8 +19,7 @@
 
 package net.sourceforge.subsonic.service;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import de.umass.lastfm.cache.ExpirationPolicy;
@@ -33,11 +32,17 @@ import de.umass.lastfm.cache.ExpirationPolicy;
  */
 public class LastFmExpirationPolicy implements ExpirationPolicy {
 
-    private final static List<String> METHODS_TO_CACHE_PERMANENTLY = Arrays.asList("artist.getInfo", "album.getInfo");
     private final static long ONE_YEAR = 12 * 30 * 24 * 3600 * 1000L;
+
+    private final Map<String, Long> methodToExpirationTime = new LinkedHashMap<String, Long>() {{
+        put("artist.getInfo", Long.MAX_VALUE);  // Cache forever
+        put("album.getInfo", Long.MAX_VALUE);   // Cache forever
+        put("album.search", -1L);               // Don't cache
+    }};
 
     @Override
     public long getExpirationTime(String method, Map<String, String> params) {
-        return METHODS_TO_CACHE_PERMANENTLY.contains(method) ? Long.MAX_VALUE : ONE_YEAR;
+        Long expirationTime = methodToExpirationTime.get(method);
+        return expirationTime == null ? ONE_YEAR : expirationTime;
     }
 }

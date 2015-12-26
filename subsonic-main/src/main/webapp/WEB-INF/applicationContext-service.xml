@@ -276,6 +276,7 @@
     <bean id="ajaxCoverArtService" class="net.sourceforge.subsonic.ajax.CoverArtService">
         <property name="securityService" ref="securityService"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="lastFmService" ref="lastFmService"/>
     </bean>
 
     <bean id="ajaxStarService" class="net.sourceforge.subsonic.ajax.StarService">

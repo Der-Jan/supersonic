@@ -53,6 +53,7 @@
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.PlaylistInfo$Entry"/>
         <convert converter="bean" match="net.sourceforge.subsonic.domain.Playlist"/>
         <convert converter="bean" match="net.sourceforge.subsonic.domain.ArtistBio"/>
+        <convert converter="bean" match="net.sourceforge.subsonic.domain.LastFmCoverArt"/>
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.UploadInfo"/>
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.LyricsInfo"/>
         <convert converter="bean" match="net.sourceforge.subsonic.ajax.CoverArtInfo"/>

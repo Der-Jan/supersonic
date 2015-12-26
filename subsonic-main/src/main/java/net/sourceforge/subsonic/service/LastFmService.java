@@ -22,6 +22,7 @@ package net.sourceforge.subsonic.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
+
 import de.umass.lastfm.Album;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Caller;
@@ -45,6 +51,7 @@ import net.sourceforge.subsonic.dao.ArtistDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.ArtistBio;
+import net.sourceforge.subsonic.domain.LastFmCoverArt;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 
@@ -269,6 +276,48 @@ public class LastFmService {
             return null;
         }
     }
+
+    public List<LastFmCoverArt> searchCoverArt(String artist, String album) {
+        if (artist == null && album == null) {
+            return Collections.emptyList();
+        }
+        try {
+            StringBuilder query = new StringBuilder();
+            if (artist != null) {
+                query.append(artist).append(" ");
+            }
+            if (album != null) {
+                query.append(album);
+            }
+
+            Collection<Album> matches = Album.search(query.toString(), LAST_FM_KEY);
+            return FluentIterable.from(matches)
+                                 .transform(new Function<Album, LastFmCoverArt>() {
+                                     @Override
+                                     public LastFmCoverArt apply(Album album) {
+                                         return convert(album);
+                                     }
+                                 })
+                                 .filter(Predicates.notNull())
+                                 .toList();
+        } catch (Throwable x) {
+            LOG.warn("Failed to search for cover art for " + artist + " - " + album, x);
+            return Collections.emptyList();
+        }
+    }
+
+    private LastFmCoverArt convert(Album album) {
+        String imageUrl = null;
+        for (ImageSize imageSize : Lists.reverse(Arrays.asList(ImageSize.values()))) {
+            imageUrl = StringUtils.trimToNull(album.getImageURL(imageSize));
+            if (imageUrl != null) {
+                break;
+            }
+        }
+
+        return imageUrl == null ? null : new LastFmCoverArt(imageUrl, album.getArtist(), album.getName());
+    }
+
 
     /**
      * Returns artist bio and images.
