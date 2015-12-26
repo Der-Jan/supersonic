@@ -640,6 +640,7 @@ public class RESTController extends MultiActionController {
         jaxbAlbum.setDuration(album.getDurationSeconds());
         jaxbAlbum.setCreated(jaxbWriter.convertDate(album.getCreated()));
         jaxbAlbum.setStarred(jaxbWriter.convertDate(albumDao.getAlbumStarredDate(album.getId(), username)));
+        jaxbAlbum.setPlayCount((long) album.getPlayCount());
         jaxbAlbum.setYear(album.getYear());
         jaxbAlbum.setGenre(album.getGenre());
         return jaxbAlbum;
@@ -741,6 +742,7 @@ public class RESTController extends MultiActionController {
         if (dir.isAlbum()) {
             directory.setAverageRating(ratingService.getAverageRating(dir));
             directory.setUserRating(ratingService.getRatingForUser(username, dir));
+            directory.setPlayCount((long) dir.getPlayCount());
         }
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
@@ -1338,6 +1340,7 @@ public class RESTController extends MultiActionController {
         child.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
         child.setUserRating(ratingService.getRatingForUser(username, mediaFile));
         child.setAverageRating(ratingService.getAverageRating(mediaFile));
+        child.setPlayCount((long) mediaFile.getPlayCount());
 
         if (mediaFile.isFile()) {
             child.setDuration(mediaFile.getDurationSeconds());

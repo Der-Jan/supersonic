@@ -8,11 +8,15 @@ Sonos: Artist bio and album notes
 Sonos: Improved radio feature
 Sonos: Artist top songs
 Sonos: Nicer presentation on Android and iOS controllers
-REST: Added getAlbumInfo and getAlbumInfo2
 Sonos: Show artist image, if cached.
+REST: Added getAlbumInfo and getAlbumInfo2
+REST: Added playCount
 
 TODO IN 5.4
 ------------
+HTML5 player?
+  http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
+Google image search broken?
 Review scanning algorithm. Always visit children?
 Ensure cover art is refreshed when changed.
 REST: Artist image url?
