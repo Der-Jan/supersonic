@@ -12,6 +12,7 @@ Sonos: Show artist image, if cached.
 REST: Added getAlbumInfo and getAlbumInfo2
 REST: Added playCount
 Bugfix: Reimplemented cover art search using Last.fm
+Bugfix: Ensure changed cover art is displayed
 
 TODO IN 5.4
 ------------
