@@ -37,6 +37,9 @@
 .topframe::-webkit-scrollbar:vertical {
     display:none
 }
+.playlistframe::-webkit-scrollbar:vertical {
+    display:none
+}
 .leftframe::-webkit-scrollbar:horizontal {
     display:none
 }
@@ -301,7 +304,7 @@ img.circle {
     border-radius: 6px;
 }
 
-.header, .header a, .headerSelected {
+.header, .headerSelected {
     padding-left: 0.25em;
     padding-right: 0.25em;
     vertical-align: middle;

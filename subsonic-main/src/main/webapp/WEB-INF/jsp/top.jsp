@@ -66,7 +66,7 @@
     </style>
 </head>
 
-<body class="bgcolor2 topframe" style="margin:0.4em 1.2em 0 1.2em;white-space:nowrap">
+<body class="bgcolor2 topframe" style="margin:10px 10px 0 20px;white-space:nowrap">
 
 <span id="dummy-animation-target" style="max-width:0;display: none"></span>
 
@@ -91,7 +91,7 @@
     <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>
     <span class="topHeader top-menu-item" onclick="showPage('starred.view')"><i class="fa fa-star fa-fw fa-lg icon"></i>&nbsp;${starred}</span>
     <span class="topHeader top-menu-item" onclick="showPage('playlists.view')"><i class="fa fa-music fa-fw fa-lg icon"></i>&nbsp;${playlists}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('podcasts.view')"><i class="fa fa-rss fa-lg icon"></i>&nbsp;${podcast}</span>
+    <span class="topHeader top-menu-item" onclick="showPage('podcastChannels.view')"><i class="fa fa-rss fa-lg icon"></i>&nbsp;${podcast}</span>
     <span class="topHeader top-menu-item" onclick="showPage('settings.view')"><i class="fa fa-cog fa-lg icon"></i>&nbsp;${settings}</span>
     <span class="topHeader top-menu-item" onclick="showPage('more.view')"><i class="fa fa-mobile fa-lg icon"></i>&nbsp;${more}</span>
 

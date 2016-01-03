@@ -20,24 +20,24 @@ Update amazon app
 ID3 lyrics
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=12595
 HTML5 player?
+  Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Set estimateContentLength=true
   primary flash
   Test stream role
   Simplify code for update current song
-  Show elapsed / duration
-  Colorize scrubbers and play/pause
-  Font icon
-  Return -1 from onclick?
-  Add icon to buttons (start radio etc)
-  Add to play queue broken
-  Compilations  •  Farinelli, doesn't play to completion
-Replace ">>" with dot (in podcast)
+  Disable play button when seeking etc
+  Load player initially
+
+
+
+Headers are unaligned.
+Use font icons in videoplayer
+Add icon to buttons (start radio etc)
 Don't use blue link color
-Test other themes.
 Smaller star icons in h1
-Scanning progress indicator
-Don't use transparency, but set color for icons.
+Move top menu items to left page.
+Show artists/browse in main frame?
 Use Bootstrap?
   http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
 
@@ -165,7 +165,8 @@ New player controls
   Create screen mocks
   Use html5 audio
   "Previous" button should restart current song
-
+  Links from artist/song name
+    Similar in right.view
 Bundle release notes
 Move media statistics to About page.
 Fade out text in auto cover art
