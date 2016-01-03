@@ -80,6 +80,8 @@ public class StreamController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        logRequest(request);
+
         TransferStatus status = null;
         PlayQueueInputStream in = null;
         Player player = playerService.getPlayer(request, response, false, true);
@@ -149,7 +151,6 @@ public class StreamController implements Controller {
 
                 range = getRange(request, file);
                 if (range != null && !file.isVideo()) {
-                    LOG.info("Got HTTP range: " + range);
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                     Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());
                     long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
@@ -188,7 +189,7 @@ public class StreamController implements Controller {
             status = statusService.createStreamStatus(player);
 
             in = new PlayQueueInputStream(player, status, maxBitRate, preferredTargetFormat, videoTranscodingSettings, transcodingService,
-                    audioScrobblerService, mediaFileService, searchService);
+                                          audioScrobblerService, mediaFileService, searchService);
             OutputStream out = RangeOutputStream.wrap(response.getOutputStream(), range);
 
             // Enabled SHOUTcast, if requested.
@@ -242,6 +243,11 @@ public class StreamController implements Controller {
             IOUtils.closeQuietly(in);
         }
         return null;
+    }
+
+    private void logRequest(HttpServletRequest request) {
+        LOG.debug(request.getMethod() + " " + request.getRequestURI() + "?" + request.getQueryString()
+                  + ", Range: " + request.getHeader("Range"));
     }
 
     private void setContentDuration(HttpServletResponse response, MediaFile file) {
