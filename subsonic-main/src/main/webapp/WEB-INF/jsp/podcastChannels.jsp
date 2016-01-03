@@ -26,8 +26,7 @@
 </head><body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
-    <img src="<spring:theme code="podcastLargeImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="podcastreceiver.title"/></span>
+    <i class="fa fa-rss fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="podcastreceiver.title"/>
 </h1>
 
 <c:if test="${empty model.channels}">
@@ -89,14 +88,16 @@
     </table>
 </c:if>
 
-<table style="padding-top:1em"><tr>
+
+<div style="padding-top:1em; padding-bottom:1em">
     <c:if test="${model.user.podcastRole}">
-        <td style="padding-right:2em"><div class="forward"><a href="podcastReceiverAdmin.view?refresh"><fmt:message key="podcastreceiver.check"/></a></div></td>
+        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>
+            <a href="podcastReceiverAdmin.view?refresh"><fmt:message key="podcastreceiver.check"/></a></span>
     </c:if>
     <c:if test="${model.user.adminRole}">
-        <td style="padding-right:2em"><div class="forward"><a href="podcastSettings.view?"><fmt:message key="podcastreceiver.settings"/></a></div></td>
+        <i class="fa fa-chevron-right icon"></i> <a href="podcastSettings.view"><fmt:message key="podcastreceiver.settings"/></a>
     </c:if>
-</tr></table>
+</div>
 
 <c:if test="${model.user.podcastRole}">
     <form method="post" action="podcastReceiverAdmin.view?">

@@ -3,24 +3,32 @@
 <html>
 <head>
     <%@ include file="head.jsp" %>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-7.2.4/jwplayer.js"/>"></script>
+    <script type="text/javascript">jwplayer.key="fnCY1zPzsH/DE/Uo+pvsBes6gTdfOCcLCCnD6g==";</script>
+
+    <script type="text/javascript">
+
+        function createPlayer() {
+            jwplayer("jwplayer").setup({
+                file: "foo.mp3",
+//                skin: "five",
+                height: 160,
+//                primary: "flash",
+                width: "100%"
+                //            skin: {
+                //                name: "five",
+                //                active: "red",
+                //                inactive: "green",
+                //                background: "#00121212"
+                //            }
+            });
+        }
+    </script>
 </head>
-<body style="padding-top: 10em">
 
+<body onload="createPlayer()">
 
-<audio id="demo" autoplay preload="none" controls src="http://localhost:4040/stream?id=1009&maxBitRate=64&foo=3bar"></audio>
-<%--<audio id="demo" autoplay preload="none" controls src="http://localhost:4040/stream?id=98"></audio>--%>
-<div>
-    <button onclick="document.getElementById('demo').play()">Play the Audio</button>
-    <button onclick="document.getElementById('demo').pause()">Pause the Audio</button>
-    <button onclick="document.getElementById('demo').volume+=0.1">Increase Volume</button>
-    <button onclick="document.getElementById('demo').volume-=0.1">Decrease Volume</button>
-</div>
+<div id="jwplayer"></div>
 
-<script>
-    var a = document.getElementById("demo");
-    a.addEventListener("seeked", function() { console.log("seeked") }, true);
-//    a.addEventListener("timeupdate", function() { console.log("timeupdate " + a.currentTime) }, true);
-    a.addEventListener("progress", function() { console.log("progress " + a.buffered.end(0)) }, true);
-</script>
 </body>
 </html>

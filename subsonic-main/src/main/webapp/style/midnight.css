@@ -17,7 +17,7 @@
 }
 
 /* The primary foreground color. */
-body {
+body, .icon {
     color: #DDDDDD;
 }
 

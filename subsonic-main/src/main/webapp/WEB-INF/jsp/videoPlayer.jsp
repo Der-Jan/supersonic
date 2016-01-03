@@ -12,15 +12,9 @@
     <%@ include file="videoPlayerCast.jsp" %>
 
     <script type="text/javascript" language="javascript">
-        function toggleStar(mediaFileId, imageId) {
-            if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOnImage"/>") != -1) {
-                $(imageId).attr("src", "<spring:theme code="ratingOffImage"/>");
-                starService.unstar(mediaFileId);
-            }
-            else if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOffImage"/>") != -1) {
-                $(imageId).attr("src", "<spring:theme code="ratingOnImage"/>");
-                starService.star(mediaFileId);
-            }
+        function toggleStar(mediaFileId, element) {
+            starService.star(mediaFileId, !$(element).hasClass("fa-star"));
+            $(element).toggleClass("fa-star fa-star-o starred");
         }
     </script>
 </head>
@@ -71,15 +65,13 @@
 </c:if>
 
 <h1 style="padding-top:1em;padding-bottom:0.5em;">
-    <img id="starImage" src="<spring:theme code="${not empty model.video.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-         onclick="toggleStar(${model.video.id}, '#starImage'); return false;" style="cursor:pointer" alt="">
-    <span style="vertical-align:middle">${fn:escapeXml(model.video.title)}</span>
+    <i class="fa ${not empty model.video.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
+       onclick="toggleStar(${model.video.id}, this)" style="padding-right:0.25em"></i>&nbsp;${fn:escapeXml(model.video.title)}
 </h1>
 
 <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
 
-<div class="back" style="float:left;padding-right:2em"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
-<div style="clear: both"></div>
+<i class="fa fa-chevron-left icon"></i>&nbsp;<a href="${backUrl}"><fmt:message key="common.back"/></a>
 
 </body>
 </html>

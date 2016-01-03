@@ -80,16 +80,14 @@
 </div>
 
 <div style="padding-bottom:0.5em">
-    <div class="forward">
-        <c:choose>
-            <c:when test="${model.scanning}">
-                <a href="left.view"><fmt:message key="common.refresh"/></a>
-            </c:when>
-            <c:otherwise>
-                <a href="left.view?refresh=true"><fmt:message key="common.refresh"/></a>
-            </c:otherwise>
-        </c:choose>
-    </div>
+    <c:choose>
+        <c:when test="${model.scanning}">
+            <i class="fa fa-chevron-right icon"></i>&nbsp;<a href="left.view"><fmt:message key="common.refresh"/></a>
+        </c:when>
+        <c:otherwise>
+            <i class="fa fa-chevron-right icon"></i>&nbsp;<a href="left.view?refresh=true"><fmt:message key="common.refresh"/></a>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 <c:if test="${not empty model.shortcuts}">
@@ -109,27 +107,17 @@
     <div id="playlists"></div>
     <div id="playlistOverflow" style="display:none"></div>
     <div style="padding-top: 0.3em"></div>
-    <div class="forward" id="showAllPlaylists" style="display: none"><a href="javascript:noop()" onclick="showAllPlaylists()"><fmt:message key="left.showallplaylists"/></a></div>
-    <div class="forward"><a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></div>
-    <div class="forward"><a href="importPlaylist.view" target="main"><fmt:message key="left.importplaylist"/></a></div>
+    <div id="showAllPlaylists" style="display: none"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:noop()" onclick="showAllPlaylists()"><fmt:message key="left.showallplaylists"/></a></div>
+    <div><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></div>
+    <div><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="importPlaylist.view" target="main"><fmt:message key="left.importplaylist"/></a></div>
 </div>
 
 <c:if test="${not empty model.radios}">
     <h2 class="bgcolor1" style="padding-left: 2px"><fmt:message key="left.radio"/></h2>
     <c:forEach items="${model.radios}" var="radio">
         <p class="dense" style="padding-left: 2px">
-            <a target="hidden" href="${radio.streamUrl}">
-                <img src="<spring:theme code="playImage"/>" alt="<fmt:message key="common.play"/>" title="<fmt:message key="common.play"/>"></a>
-            <span style="vertical-align: middle">
-                <c:choose>
-                <c:when test="${empty radio.homepageUrl}">
-                        ${fn:escapeXml(radio.name)}
-                    </c:when>
-                    <c:otherwise>
-                    <a target="main" href="${radio.homepageUrl}">${fn:escapeXml(radio.name)}</a>
-                    </c:otherwise>
-                    </c:choose>
-            </span>
+            <i class="fa fa-play icon"></i>
+            <a target="hidden" href="${radio.streamUrl}">${fn:escapeXml(radio.name)}</a>
         </p>
     </c:forEach>
 </c:if>
@@ -141,7 +129,7 @@
                 <h2 style="padding:0;margin:0;border:0">${fn:escapeXml(entry.key.index)}</h2>
             </th>
             <th style="text-align:right;">
-                <a href="#top"><img src="<spring:theme code="upImage"/>" alt=""></a>
+                <i class="fa fa-arrow-up icon clickable" onclick="location.href='#top'"></i>
             </th>
         </tr>
     </table>

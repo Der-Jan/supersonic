@@ -23,10 +23,7 @@
 </head>
 <body class="mainframe bgcolor1">
 
-<h1>
-    <img src="<spring:theme code="searchImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="search.title"/></span>
-</h1>
+<h1 style="padding-bottom:1em"><i class="fa fa-search fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="search.title"/></h1>
 
 <c:if test="${command.indexBeingCreated}">
     <p class="warning"><fmt:message key="search.index"/></p>
@@ -58,7 +55,7 @@
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.artists) gt 5}">
-        <div id="moreArtists" class="forward"><a href="javascript:showMoreArtists()"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreArtists"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:showMoreArtists()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -86,7 +83,7 @@
             </c:forEach>
     </table>
     <c:if test="${fn:length(command.albums) gt 5}">
-        <div id="moreAlbums" class="forward"><a href="javascript:showMoreAlbums()"><fmt:message key="search.hits.more"/></a></div>
+        <div id="moreAlbums"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:showMoreAlbums()"><fmt:message key="search.hits.more"/></a></div>
     </c:if>
 </c:if>
 
@@ -117,7 +114,7 @@
             </c:forEach>
     </table>
 <c:if test="${fn:length(command.songs) gt 15}">
-    <div id="moreSongs" class="forward"><a href="javascript:showMoreSongs()"><fmt:message key="search.hits.more"/></a></div>
+    <div id="moreSongs"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:showMoreSongs()"><fmt:message key="search.hits.more"/></a></div>
 </c:if>
 </c:if>
 

@@ -11,6 +11,10 @@
         var previousQuery = "";
         var instantSearchTimeout;
 
+        function showPage(url) {
+            parent.frames.main.location.href = url;
+        }
+
         function triggerInstantSearch() {
             if (instantSearchTimeout) {
                 window.clearTimeout(instantSearchTimeout);
@@ -53,6 +57,12 @@
             });
         }
     </script>
+
+    <style type="text/css">
+        .top-menu-item {
+            min-width:4em; padding-right:3em; text-align:center; cursor:pointer
+        }
+    </style>
 </head>
 
 <body class="bgcolor2 topframe" style="margin:0.4em 1em 0 1em;">
@@ -71,50 +81,48 @@
 
 <table style="margin:0;padding-top:5px">
     <tr>
-        <td style="padding-right:4.5em;">
-            <img id="show-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="showLeftFrame()" alt="" style="display:${model.showSideBar ? 'none' : 'inline'};cursor:pointer">
-            <img id="hide-left-frame" src="<spring:theme code="viewAsListImage"/>" onclick="hideLeftFrame()" alt="" style="display:${model.showSideBar ? 'inline' : 'none'};cursor:pointer">
+        <td style="padding-right:5.5em;">
+            <span class="icon icon-20 clickable">
+                <i id="show-left-frame" class="fa fa-bars" onclick="showLeftFrame()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
+                <i id="hide-left-frame" class="fa fa-bars" onclick="hideLeftFrame()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
+            </span>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="home.view?" target="main"><img src="<spring:theme code="homeImage"/>" title="${home}" alt="${home}"></a>
-            <div class="topHeader"><a href="home.view?" target="main">${home}</a></div>
+        <td class="top-menu-item" onclick="showPage('home.view')">
+            <span class="icon icon-26"><i class="fa fa-home fa-fw"></i></span>
+            <div class="topHeader">${home}</div>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="nowPlaying.view?" target="main"><img src="<spring:theme code="nowPlayingImage"/>" title="${nowPlaying}" alt="${nowPlaying}"></a>
-            <div class="topHeader"><a href="nowPlaying.view?" target="main">${nowPlaying}</a></div>
+        <td class="top-menu-item" onclick="showPage('nowPlaying.view')">
+            <span class="icon icon-26"><i class="fa fa-headphones fa-fw"></i></span>
+            <div class="topHeader">${nowPlaying}</div>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="starred.view?" target="main"><img src="<spring:theme code="starredImage"/>" title="${starred}" alt="${starred}"></a>
-            <div class="topHeader"><a href="starred.view?" target="main">${starred}</a></div>
+        <td class="top-menu-item" onclick="showPage('starred.view')">
+            <span class="icon icon-26"><i class="fa fa-star fa-fw"></i></span>
+            <div class="topHeader">${starred}</div>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="playlists.view?" target="main"><img src="<spring:theme code="playlistImage"/>" title="${playlists}" alt="${playlists}"></a>
-            <div class="topHeader"><a href="playlists.view?" target="main">${playlists}</a></div>
+        <td class="top-menu-item" onclick="showPage('playlists.view')">
+            <span class="icon icon-26"><i class="fa fa-music fa-fw"></i></span>
+            <div class="topHeader">${playlists}</div>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="podcastChannels.view?" target="main"><img src="<spring:theme code="podcastLargeImage"/>" title="${podcast}" alt="${podcast}"></a>
-            <div class="topHeader"><a href="podcastChannels.view?" target="main">${podcast}</a></div>
+        <td class="top-menu-item" onclick="showPage('podcastChannels.view')">
+            <span class="icon icon-26"><i class="fa fa-rss fa-fw"></i></span>
+            <div class="topHeader">${podcast}</div>
         </td>
         <c:if test="${model.user.settingsRole}">
-            <td style="min-width:4em;padding-right:2em;text-align: center">
-                <a href="settings.view?" target="main"><img src="<spring:theme code="settingsImage"/>" title="${settings}" alt="${settings}"></a>
-                <div class="topHeader"><a href="settings.view?" target="main">${settings}</a></div>
+            <td class="top-menu-item" onclick="showPage('settings.view')">
+                <span class="icon icon-26"><i class="fa fa-cog fa-fw"></i></span>
+                <div class="topHeader">${settings}</div>
             </td>
         </c:if>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="more.view?" target="main"><img src="<spring:theme code="moreImage"/>" title="${more}" alt="${more}"></a>
-            <div class="topHeader"><a href="more.view?" target="main">${more}</a></div>
+        <td class="top-menu-item" onclick="showPage('more.view')">
+            <span class="icon icon-26"><i class="fa fa-mobile fa-fw"></i></span>
+            <div class="topHeader">${more}</div>
         </td>
-        <td style="min-width:4em;padding-right:2em;text-align: center">
-            <a href="help.view?" target="main"><img src="<spring:theme code="helpImage"/>" title="${help}" alt="${help}"></a>
-            <div class="topHeader"><a href="help.view?" target="main">${help}</a></div>
-        </td>
-
         <td style="padding-left:1em">
             <form method="post" action="search.view" target="main" name="searchForm">
                 <td><input type="text" name="query" id="query" size="28" placeholder="${search}" onclick="select();"
                            onkeyup="triggerInstantSearch();"></td>
-                <td><a href="javascript:document.searchForm.submit()"><img src="<spring:theme code="searchImage"/>" alt="${search}" title="${search}"></a></td>
+                <td>
+                    <span class="icon icon-20 clickable" onclick="document.searchForm.submit()"><i class="fa fa-search"></i></span>
             </form>
         </td>
 

@@ -31,10 +31,7 @@
     </script>
 </head>
 <body class="mainframe bgcolor1" onload="init();">
-<h1>
-    <img src="<spring:theme code="homeImage"/>" alt="">
-    <span style="vertical-align: middle">${model.welcomeTitle}</span>
-</h1>
+<h1><i class="fa fa-home fa-lg icon"></i>&nbsp;&nbsp;${model.welcomeTitle}</h1>
 
 <c:if test="${not empty model.welcomeSubtitle}">
     <h2>${model.welcomeSubtitle}</h2>

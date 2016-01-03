@@ -10,7 +10,7 @@
         </c:if>
         <c:choose>
             <c:when test="${model.listType eq 'random'}">
-                <td><div class="forward"><a href="home.view?listType=random"><fmt:message key="common.more"/></a></div></td>
+                <td><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="home.view?listType=random"><fmt:message key="common.more"/></a></td>
             </c:when>
             <c:otherwise>
                 <sub:url value="home.view" var="previousUrl">
@@ -36,11 +36,11 @@
                 </c:if>
 
                 <c:if test="${model.listOffset gt 0}">
-                    <td><a href="${previousUrl}"><img src="<spring:theme code="backImage"/>" alt=""></a></td>
+                    <td onclick="location.href='${previousUrl}'"><i class="fa fa-chevron-left icon clickable"></i></td>
                 </c:if>
 
                 <c:if test="${fn:length(model.albums) eq model.listSize}">
-                    <td><a href="${nextUrl}"><img src="<spring:theme code="forwardImage"/>" alt=""></a></td>
+                    <td onclick="location.href='${nextUrl}'"><i class="fa fa-chevron-right icon clickable"></i></td>
                 </c:if>
 
                 <c:if test="${model.listType eq 'decade'}">
@@ -72,8 +72,9 @@
         </c:choose>
 
         <c:if test="${not empty model.albums}">
-            <td style="padding-left: 2em">
-                <a href="javascript:playShuffle()"><img src="<spring:theme code="shuffleImage"/>" alt="">&nbsp;<fmt:message key="home.shuffle"/></a></td>
+            <td style="padding-left:2em" onclick="playShuffle()">
+                <i class="fa fa-random fa-lg icon clickable"></i>&nbsp;&nbsp;<a href="javascript:playShuffle()"><fmt:message key="home.shuffle"/></a>
+            </td>
         </c:if>
     </tr>
 </table>

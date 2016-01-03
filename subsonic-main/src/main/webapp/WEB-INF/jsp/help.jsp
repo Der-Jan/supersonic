@@ -25,10 +25,7 @@
     </c:otherwise>
 </c:choose>
 
-<h1>
-    <img src="<spring:theme code="helpImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></span>
-</h1>
+<h1 style="padding-bottom:0.5em"><i class="fa fa-info-circle fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></h1>
 
 <c:if test="${model.newVersionAvailable}">
     <p class="warning"><fmt:message key="help.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message></p>
@@ -74,12 +71,7 @@
     <tr><td class="ruleTableHeader"><fmt:message key="help.contact.title"/></td><td class="ruleTableCell"><fmt:message key="help.contact.text"><fmt:param value="${model.brand}"/></fmt:message></td></tr>
 </table>
 
-<p></p>
-
-<h2>
-    <img src="<spring:theme code="logImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="help.log"/></span>
-</h2>
+<h2 style="padding-top:1em"><i class="fa fa-list fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="help.log"/></h2>
 
 <table cellpadding="2" class="log indent">
     <c:forEach items="${model.logEntries}" var="entry">
@@ -92,6 +84,6 @@
 
 <p><fmt:message key="help.logfile"><fmt:param value="${model.logFile}"/></fmt:message> </p>
 
-<div class="forward"><a href="help.view?"><fmt:message key="common.refresh"/></a></div>
+<i class="fa fa-chevron-right icon"></i>&nbsp;<a href="help.view?"><fmt:message key="common.refresh"/></a>
 
 </body></html>

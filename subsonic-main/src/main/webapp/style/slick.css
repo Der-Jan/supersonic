@@ -40,7 +40,7 @@ body {
 }
 
 /* The secondary foreground color used for h1, details etc. */
-h1, .detail, .albumComment {
+h1, .detail, .albumComment, .icon {
     color: #ccd5dc;
 }
 

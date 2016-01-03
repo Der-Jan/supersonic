@@ -41,16 +41,10 @@
 </head>
 <body class="mainframe bgcolor1" onload="${model.user.uploadRole ? "refreshProgress()" : ""}">
 
-<h1>
-    <img src="<spring:theme code="moreImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.title"/></span>
-</h1>
+<h1><fmt:message key="more.title"/></h1>
 
 <c:if test="${model.user.streamRole}">
-    <h2>
-        <img src="<spring:theme code="shuffleImage"/>" alt=""/>
-        <span style="vertical-align: middle"><fmt:message key="more.random.title"/></span>
-    </h2>
+    <h2><i class="fa fa-random fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.random.title"/></h2>
 
     <form method="post" action="randomPlayQueue.view?">
         <table>
@@ -122,42 +116,25 @@
 
 <a href="http://subsonic.org/pages/apps.jsp" target="_blank"><img alt="Apps" src="<c:url value="/icons/default_light/apps.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/></a>
 
-<h2>
-    <img src="<spring:theme code="androidImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.apps.title"/></span>
-</h2>
+<h2><i class="fa fa-android fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.apps.title"/></h2>
 <fmt:message key="more.apps.text"/>
-
 
 <a href="<c:url value="${model.jamstashUrl}"/>" target="_blank">
     <img alt="Jamstash" src="<c:url value="/icons/default_light/jamstash.png"/>" style="float: right;margin-left: 3em; margin-right: 3em"/>
 </a>
 
-<h2>
-    <img src="<spring:theme code="html5Image"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.jamstash.title"/></span>
-</h2>
+<h2><i class="fa fa-html5 fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.jamstash.title"/></h2>
 <fmt:message key="more.jamstash.text"><fmt:param>${model.jamstashUrl}</fmt:param></fmt:message>
 
-<h2>
-    <img src="<spring:theme code="statusSmallImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.status.title"/></span>
-</h2>
+<h2><i class="fa fa-area-chart fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.status.title"/></h2>
 <fmt:message key="more.status.text"/>
 
-<h2>
-    <img src="<spring:theme code="podcastImage"/>" alt=""/>
-    <span style="vertical-align: middle"><fmt:message key="more.podcast.title"/></span>
-</h2>
+<h2><i class="fa fa-rss fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.podcast.title"/></h2>
 <fmt:message key="more.podcast.text"/>
 
 <c:if test="${model.user.uploadRole}">
 
-    <h2>
-        <img src="<spring:theme code="uploadImage"/>" alt=""/>
-        <span style="vertical-align: middle"><fmt:message key="more.upload.title"/></span>
-    </h2>
-
+    <h2><i class="fa fa-upload fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.upload.title"/></h2>
     <form method="post" enctype="multipart/form-data" action="upload.view">
         <table>
             <tr>

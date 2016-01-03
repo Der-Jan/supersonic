@@ -17,7 +17,7 @@
 
 
 /* Text colour used for h1, h2, b, tr, details and albumcomments. */
-h1, h2, b, tr, .detail, .albumComment {
+h1, h2, b, tr, .detail, .albumComment, .icon {
     color: #FFFFFF;
 }
 

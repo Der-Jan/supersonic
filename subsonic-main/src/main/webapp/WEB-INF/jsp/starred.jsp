@@ -38,10 +38,7 @@
 </head>
 <body class="mainframe bgcolor1">
 
-<h1>
-    <img src="<spring:theme code="starredImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="starred.title"/></span>
-</h1>
+<h1><i class="fa fa-star fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="starred.title"/></h1>
 
 <c:if test="${empty model.artists and empty model.albums and empty model.songs}">
     <p style="padding-top: 1em"><em><fmt:message key="starred.empty"/></em></p>
@@ -141,13 +138,10 @@
         </c:forEach>
     </table>
 
-    <div class="forward" style="float:left;padding-right:1.5em">
-        <a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a>
-    </div>
-    <div class="forward" style="float: left">
-        <a href="javascript:noop()" onclick="onPlayAll()"><fmt:message key="main.playall"/></a>
-    </div>
-    <div style="clear: both"></div>
+    <i class="fa fa-chevron-right icon"></i>
+    <a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a>
+    <i style="padding-left:1.5em" class="fa fa-chevron-right icon"></i>
+    <a href="javascript:noop()" onclick="onPlayAll()"><fmt:message key="main.playall"/></a>
 
 </c:if>
 

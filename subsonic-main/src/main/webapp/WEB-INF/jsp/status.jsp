@@ -8,10 +8,7 @@
 </head>
 <body class="mainframe bgcolor1">
 
-<h1>
-    <img src="<spring:theme code="statusImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="status.title"/></span>
-</h1>
+<h1 style="padding-bottom:0.5em"><i class="fa fa-area-chart fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="status.title"/></h1>
 
 <table width="100%" class="ruleTable indent">
     <tr>
@@ -107,6 +104,6 @@
     </tr>
 </table>
 
-<div class="forward"><a href="status.view?"><fmt:message key="common.refresh"/></a></div>
+<i class="fa fa-chevron-right icon"></i>&nbsp;<a href="status.view?"><fmt:message key="common.refresh"/></a>
 
 </body></html>

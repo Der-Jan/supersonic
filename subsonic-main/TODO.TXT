@@ -16,13 +16,35 @@ Bugfix: Ensure changed cover art is displayed
 
 TODO IN 5.4
 ------------
+Update amazon app
+ID3 lyrics
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=12595
 HTML5 player?
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
+  Set estimateContentLength=true
+  primary flash
+  Test stream role
+  Simplify code for update current song
+  Show elapsed / duration
+  Colorize scrubbers and play/pause
+  Font icon
+  Return -1 from onclick?
+  Add icon to buttons (start radio etc)
+  Add to play queue broken
+  Compilations  •  Farinelli, doesn't play to completion
+Replace ">>" with dot (in podcast)
+Don't use blue link color
+Test other themes.
+Smaller star icons in h1
+Scanning progress indicator
+Don't use transparency, but set color for icons.
+Use Bootstrap?
+  http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
+
 Google image search broken?
   Ensure https
   Cover art caching
 Review scanning algorithm. Always visit children?
-Ensure cover art is refreshed when changed.
 REST: Artist image url?
 Sonos: Star button missing on ipad
 Don't queue following songs when playing from search results / starred songs.

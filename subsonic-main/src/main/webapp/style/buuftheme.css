@@ -27,7 +27,7 @@
 }
 
 /* Foreground colour used for h1, h2, b, tr, details and albumcomments. */
-h1, h2, b, tr, .detail, .albumComment {
+h1, h2, b, tr, body, .detail, .albumComment, .icon {
     color: #ffAE00;
 }
 

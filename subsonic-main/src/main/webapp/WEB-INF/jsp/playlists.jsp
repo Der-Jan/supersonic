@@ -7,8 +7,7 @@
 </head><body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
-    <img src="<spring:theme code="playlistImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="left.playlists"/></span>
+    <i class="fa fa-music fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="left.playlists"/>
 </h1>
 
 <c:if test="${empty model.playlists}">

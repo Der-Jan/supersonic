@@ -56,8 +56,8 @@
 
                 html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>";
                 if (nowPlaying[i].lyricsUrl != null) {
-                    html += "<span class='forward'><a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 500, 550)\">" +
-                            "<fmt:message key="main.lyrics"/>" + "</a></span>";
+                    html += "<i class='fa fa-chevron-right icon'></i>&nbsp;<a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 500, 550)\">" +
+                            "<fmt:message key="main.lyrics"/>" + "</a>";
                 }
                 html += "</td><td>" +
                         "<a title='" + nowPlaying[i].tooltip + "' target='main' href='" + nowPlaying[i].albumUrl + "'>" +
@@ -155,8 +155,8 @@
 
 <c:if test="${not model.licenseInfo.licenseValid}">
     <div class="detail" style="text-align: center;padding-bottom: 1em">
-        <a href="premiumSettings.view" target="main"><img src="<spring:theme code="donateSmallImage"/>" alt="">
-            <fmt:message key="top.getpremium"/></a>
+
+        <i class="fa fa-trophy fa-lg icon"></i>&nbsp;&nbsp;<a href="premiumSettings.view" target="main"><fmt:message key="top.getpremium"/></a>
         <c:if test="${model.licenseInfo.trialDaysLeft gt 0}">
             <br>
             <a href="premiumSettings.view" target="main"><fmt:message key="top.trialdaysleft"><fmt:param value="${model.licenseInfo.trialDaysLeft}"/></fmt:message></a>
@@ -171,7 +171,7 @@
 </c:if>
 
 <div id="scanningStatus" style="display: none;" class="warning">
-    <img src="<spring:theme code="scanningImage"/>" title="" alt=""> <fmt:message key="main.scanning"/> <span id="scanCount"></span>
+    <i class="fa fa-refresh fa-spin"></i>&nbsp;&nbsp;<fmt:message key="main.scanning"/> <span id="scanCount"></span>
 </div>
 
 <div id="nowPlaying"></div>
@@ -191,7 +191,7 @@
     </table>
 
     <c:if test="${model.user.adminRole}">
-        <div id="clearDiv" style="display:none;" class="forward"><a href="javascript:clearMessages()"> <fmt:message key="main.clearchat"/></a></div>
+        <div id="clearDiv" style="display:none;"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:clearMessages()"><fmt:message key="main.clearchat"/></a></div>
     </c:if>
 </c:if>
 

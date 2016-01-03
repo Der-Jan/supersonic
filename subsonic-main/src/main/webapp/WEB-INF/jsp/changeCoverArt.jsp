@@ -107,7 +107,7 @@
 </form>
 <sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.id}"/></sub:url>
 <div style="padding-top:0.5em;padding-bottom:0.5em">
-    <div class="back"><a href="${backUrl}"><fmt:message key="common.back"/></a></div>
+    <i class="fa fa-chevron-left icon"></i>&nbsp;<a href="${backUrl}"><fmt:message key="common.back"/></a>
 </div>
 
 <h2 id="wait" style="display:none"><fmt:message key="changecoverart.wait"/></h2>

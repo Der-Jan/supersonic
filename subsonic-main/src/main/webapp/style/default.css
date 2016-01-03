@@ -50,6 +50,10 @@ body {
     color: black;
 }
 
+.icon {
+    color: #565656;
+}
+
 /* The secondary foreground color used for h1, h2, details etc (gray). */
 h1, h2, .detail, .albumComment {
     color: #696969;
@@ -297,10 +301,11 @@ img.circle {
     border-radius: 6px;
 }
 
-.header, .headerSelected {
+.header, .header a, .headerSelected {
     padding-left: 0.25em;
     padding-right: 0.25em;
     vertical-align: middle;
+    font-weight: 300;
 }
 
 .similar-artist-divider {
@@ -320,6 +325,7 @@ img.circle {
 
 .topHeader, .topHeader a {
     font-size: 102%;
+    font-weight: 300;
     padding: 0.15em 0 0 0;
     margin: 0;
     border: 0;
@@ -389,4 +395,20 @@ img.circle {
 
 .context-menu-item {
     color: black;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.icon-20 {
+    font-size: 20px;
+}
+
+.icon-26 {
+     font-size: 26px;
+ }
+
+.starred {
+    color: darkorange;
 }

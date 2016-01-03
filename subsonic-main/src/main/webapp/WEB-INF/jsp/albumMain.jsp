@@ -118,15 +118,9 @@
         }
     }
 
-    function toggleStar(mediaFileId, imageId) {
-        if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOnImage"/>") != -1) {
-            $(imageId).attr("src", "<spring:theme code="ratingOffImage"/>");
-            starService.unstar(mediaFileId);
-        }
-        else if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOffImage"/>") != -1) {
-            $(imageId).attr("src", "<spring:theme code="ratingOnImage"/>");
-            starService.star(mediaFileId);
-        }
+    function toggleStar(mediaFileId, element) {
+        starService.star(mediaFileId, !$(element).hasClass("fa-star"));
+        $(element).toggleClass("fa-star fa-star-o starred");
     }
 
     function playAll() {
@@ -218,8 +212,8 @@
 
 <c:if test="${not model.partyMode}">
     <h2>
-        <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-             onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer;padding-right:0.25em" alt="">
+        <i id="starImage" class="fa ${not empty model.dir.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
+           onclick="toggleStar(${model.dir.id}, this)" style="padding-right:0.25em"></i>
         <c:set var="needSep" value="true"/>
 
         <c:if test="${model.user.streamRole}">
@@ -262,7 +256,8 @@
     </c:if>
 
     <c:if test="${model.user.shareRole}">
-        <span class="header"><a href="${shareUrl}"><img src="<spring:theme code="shareSmallImage"/>" alt=""></a>
+        <span class="header" style="padding-left:1em">
+            <i class="fa fa-share-alt clickable" onclick="location.href='${shareUrl}'"></i>
             <a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> </span> |
     </c:if>
 
@@ -432,7 +427,7 @@
                     <p>Your personal server address: <em>you</em>.subsonic.org</p>
                     <p>Podcast receiver.</p>
                 </div>
-                <p class="forward" style="white-space: nowrap"><a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
+                <p style="white-space:nowrap"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
             </td>
         </c:if>
     </tr>

@@ -81,7 +81,7 @@
 </c:import>
 </div>
 
-<h1 id="name"><a href="podcastChannels.view"><fmt:message key="podcastreceiver.title"/></a> &raquo; ${fn:escapeXml(model.channel.title)}</h1>
+<h1 id="name"><a href="podcastChannels.view"><fmt:message key="podcastreceiver.title"/></a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${fn:escapeXml(model.channel.title)}</h1>
 <h2>
     <span class="header"><a href="javascript:top.playQueue.onPlayPodcastChannel(${model.channel.id})"><fmt:message key="common.play"/></a></span>
 
@@ -166,16 +166,18 @@
 
 </table>
 
-<table style="padding-top:1em"><tr>
+
+
+<div style="padding-top:1em">
     <c:if test="${model.user.podcastRole}">
-        <td style="padding-right:2em"><div class="forward"><a href="javascript:downloadSelected()"><fmt:message key="podcastreceiver.downloadselected"/></a></div></td>
-        <td style="padding-right:2em"><div class="forward"><a href="javascript:deleteSelected()"><fmt:message key="podcastreceiver.deleteselected"/></a></div></td>
+        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:downloadSelected()"><fmt:message key="podcastreceiver.downloadselected"/></a></span>
+        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:deleteSelected()"><fmt:message key="podcastreceiver.deleteselected"/></a></span>
     </c:if>
-    <td style="padding-right:2em"><div class="forward"><a href="javascript:refreshPage()"><fmt:message key="podcastreceiver.refresh"/></a></div></td>
+    <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:refreshPage()"><fmt:message key="podcastreceiver.refresh"/></a></span>
     <c:if test="${model.user.adminRole}">
-        <td style="padding-right:2em"><div class="forward"><a href="podcastSettings.view?"><fmt:message key="podcastreceiver.settings"/></a></div></td>
+        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="podcastSettings.view?"><fmt:message key="podcastreceiver.settings"/></a></span>
     </c:if>
-</tr></table>
+</tr></div>
 
 
 <div id="dialog-delete" title="<fmt:message key="common.confirm"/>" style="display: none;">
