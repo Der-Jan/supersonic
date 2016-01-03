@@ -21,29 +21,6 @@
     border-bottom: 3px solid darkorange;
 }
 
-/* Put stuff here if you need to customize any of the frames. */
-.mainframe {
-    padding-left:1em
-}
-.topframe {
-}
-.leftframe {
-}
-.rightframe {
-}
-.playlistframe {
-}
-
-.topframe::-webkit-scrollbar:vertical {
-    display:none
-}
-.playlistframe::-webkit-scrollbar:vertical {
-    display:none
-}
-.leftframe::-webkit-scrollbar:horizontal {
-    display:none
-}
-
 /* Background color for form controls (use default). */
 input, select {
 }
@@ -69,13 +46,12 @@ b, tr {
 
 /* Link color */
 a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #006699
+    color: inherit
 }
 
 /* Link hover color */
 a:hover, a:hover * {
     text-decoration: underline;
-    color: #DD6900
 }
 
 /* Color for warning messages. */
@@ -111,6 +87,29 @@ h1, h1 a {
 h2, h2 a, .topHeader a {
     font-family: 'Roboto', arial, sans-serif;
     font-weight: normal;
+}
+
+/* Put stuff here if you need to customize any of the frames. */
+.mainframe {
+    padding-left:1em
+}
+.topframe {
+}
+.leftframe {
+}
+.rightframe {
+}
+.playlistframe {
+}
+
+.topframe::-webkit-scrollbar:vertical {
+    display:none
+}
+.playlistframe::-webkit-scrollbar:vertical {
+    display:none
+}
+.leftframe::-webkit-scrollbar:horizontal {
+    display:none
 }
 
 /***************************************************************************************
@@ -200,7 +199,7 @@ table.indent {
 }
 
 table.music {
-    line-height: 190%;
+    line-height: 210%;
     border-collapse:collapse;
     white-space:nowrap;
     width: 100%;
@@ -304,10 +303,9 @@ img.circle {
     border-radius: 6px;
 }
 
-.header, .headerSelected {
+.header, .header a, .headerSelected, .headerSelected a {
     padding-left: 0.25em;
     padding-right: 0.25em;
-    vertical-align: middle;
     font-weight: 300;
 }
 

@@ -180,7 +180,7 @@
 
 <h1><a href="playlists.view"><fmt:message key="left.playlists"/></a> &nbsp;&bull;&nbsp; <span id="name">${fn:escapeXml(model.playlist.name)}</span></h1>
 <h2>
-    <span class="header"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
+    <span class="header" style="padding-left:0"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
     <c:if test="${model.user.downloadRole}">
         <c:url value="download.view" var="downloadUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
