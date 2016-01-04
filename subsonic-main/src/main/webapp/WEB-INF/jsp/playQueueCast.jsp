@@ -126,8 +126,9 @@
         this.castSession = s;
 
         var position = -1;
-        if (jwplayer().getState() == "PLAYING") {
-            position = jwplayer().getPosition();
+        if (jwPlayer && jwPlayer.getState() == "playing") {
+            position = jwPlayer.getPosition();
+            jwPlayer.stop();
         }
 
         this.setCastControlsVisible(true);
