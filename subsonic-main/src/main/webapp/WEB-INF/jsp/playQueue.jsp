@@ -45,10 +45,13 @@
             cursor:pointer; font-size:20px; padding:8px
         }
         #songName {
-            font-weight: 500;
+            cursor:pointer; font-weight: 500;
         }
         #artistName {
-            font-weight: 300;
+            cursor:pointer; font-weight: 300;
+        }
+        #coverArt {
+            cursor:pointer; width:80px; height:80px
         }
     </style>
 </head>
@@ -545,9 +548,16 @@
 
         updateWindowTitle(song);
 
+        var showAlbum = function () {
+            parent.frames.main.location.href = "main.view?id=" + song.id
+        };
+
         $("#coverArt").attr("src", "coverArt.view?id=" + song.id + "&size=80");
         $("#songName").text(song.title);
         $("#artistName").text(song.artist);
+        $("#songName").click(showAlbum);
+        $("#artistName").click(showAlbum);
+        $("#coverArt").click(showAlbum);
 
         if (${model.notify}) {
             showNotification(song);
@@ -669,7 +679,7 @@
 
     <table border="0" style="width:100%;padding-right:20px;padding-top:5px;padding-bottom:0px">
         <tr>
-            <td rowspan="2"><img id="coverArt" style="width:80px;height:80px"></td>
+            <td rowspan="2"><img id="coverArt"></td>
             <td colspan="9" style="padding-left:20px">
                 <div id="progress" style="width:100%;height:3px"></div>
             </td>
