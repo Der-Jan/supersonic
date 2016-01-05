@@ -176,23 +176,13 @@
 
 <div style="float:left">
     <h1>
-        <span style="vertical-align: middle">
-            <c:forEach items="${model.ancestors}" var="ancestor">
-                <sub:url value="main.view" var="ancestorUrl">
-                    <sub:param name="id" value="${ancestor.id}"/>
-                </sub:url>
-                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
-            </c:forEach>
-            ${fn:escapeXml(model.dir.name)}
-        </span>
-
-        <c:if test="${model.averageRating gt 0}">
-            &nbsp;&nbsp;
-            <c:import url="rating.jsp">
-                <c:param name="readonly" value="true"/>
-                <c:param name="rating" value="${model.averageRating}"/>
-            </c:import>
-        </c:if>
+        <c:forEach items="${model.ancestors}" var="ancestor">
+            <sub:url value="main.view" var="ancestorUrl">
+                <sub:param name="id" value="${ancestor.id}"/>
+            </sub:url>
+            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
+        </c:forEach>
+        ${fn:escapeXml(model.dir.name)}
     </h1>
 
     <div class="detail" style="padding-top:1.0em;padding-bottom:0">

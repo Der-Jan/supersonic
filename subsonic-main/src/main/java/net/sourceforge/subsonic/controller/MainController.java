@@ -128,18 +128,12 @@ public class MainController extends AbstractController {
         }
 
         Integer userRating = ratingService.getRatingForUser(username, dir);
-        Double averageRating = ratingService.getAverageRating(dir);
 
         if (userRating == null) {
             userRating = 0;
         }
 
-        if (averageRating == null) {
-            averageRating = 0.0D;
-        }
-
         map.put("userRating", 10 * userRating);
-        map.put("averageRating", Math.round(10.0D * averageRating));
         map.put("starred", mediaFileService.getMediaFileStarredDate(dir.getId(), username) != null);
 
         String view;

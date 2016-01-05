@@ -66,10 +66,12 @@
     var repeatEnabled = false;
     var castPlayer = new CastPlayer();
     var jwPlayer;
+    var jukeboxPlayer = false;
     var ignore = false;
 
     function init() {
 
+        jukeboxPlayer = ${model.player.jukebox};
         initMouseListener();
 
         dwr.engine.setErrorHandler(null);
@@ -116,7 +118,12 @@
         });
 
         <c:if test="${model.player.web}">createPlayer();</c:if>
-        <c:if test="${not model.player.web}">startTimer();</c:if>
+
+        if (!jwPlayer) {
+            startTimer();
+            $("#progress").hide();
+            $("#progress-and-duration").hide();
+        }
 
         getPlayQueue();
     }
@@ -124,7 +131,7 @@
     function initMouseListener() {
         $(window).mouseleave(function (event) {
             if (event.clientY < 30) {
-                setFrameHeight(100);
+                setFrameHeight(95);
                 $(".ui-slider-handle").fadeOut();
             }
         });
@@ -161,10 +168,10 @@
     function nowPlayingCallback(nowPlayingInfo) {
         if (nowPlayingInfo != null && nowPlayingInfo.streamUrl != currentStreamUrl) {
             getPlayQueue();
-        <c:if test="${not model.player.web}">
-            currentStreamUrl = nowPlayingInfo.streamUrl;
-            updateCurrentImage();
-        </c:if>
+            if (!jwPlayer) {
+                currentStreamUrl = nowPlayingInfo.streamUrl;
+                updateCurrentImage();
+            }
         }
     }
     function createPlayer() {
@@ -266,10 +273,9 @@
             castPlayer.setCastVolume(value / 100, false);
         } else if (jwPlayer) {
             jwPlayer.setVolume(value);
+        } else if (jukeboxPlayer) {
+            playQueueService.setGain(value / 100);
         }
-        <c:if test="${model.player.jukebox}">
-        playQueueService.setGain(value / 100);
-        </c:if>
     }
     function onProgressChanged() {
         var value = parseInt($("#progress").slider("option", "value") / 1000);
@@ -285,15 +291,12 @@
         }
     }
     function onSkip(index) {
-        <c:choose>
-        <c:when test="${model.player.web}">
-        skip(index);
-        </c:when>
-        <c:otherwise>
-        currentStreamUrl = songs[index].streamUrl;
-        playQueueService.skip(index, playQueueCallback);
-        </c:otherwise>
-        </c:choose>
+        if (jwPlayer) {
+            skip(index);
+        } else {
+//            currentStreamUrl = songs[index].streamUrl;
+            playQueueService.skip(index, playQueueCallback);
+        }
     }
     function onNext(wrap) {
         var index = parseInt(getCurrentSongIndex()) + 1;
@@ -537,13 +540,15 @@
 
         if (castPlayer.castSession) {
             castPlayer.loadCastMedia(song, position);
-        } else {
+        } else if (jwPlayer) {
             jwPlayer.load({
                 file: song.streamUrl,
                 type: song.format
             });
             jwplayer().play();
             console.log(song.streamUrl);
+        } else if (jukeboxPlayer) {
+            console.log("TODO: Update jukebox");
         }
 
         updateWindowTitle(song);
@@ -714,7 +719,7 @@
                 <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="castPlayer.stopCastApp()" style="cursor:pointer;display:none">
             </td>
             <td style="width:50%;padding-right:20px">
-                <div class="detail" style="text-align:right">
+                <div id="progress-and-duration" class="detail" style="text-align:right">
                     <span id="progress-text">0:00</span> /
                     <span id="duration-text">0:00</span>
                 </div>

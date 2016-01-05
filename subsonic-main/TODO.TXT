@@ -23,18 +23,33 @@ HTML5 player?
   Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Set estimateContentLength=true
-  primary flash
+  primary flash?
   Test stream role
   Simplify code for update current song
-  Disable play button when seeking etc
-  Load player initially
+  Make cast work
+  Fix bug when having same song twice in play queue
+  Make jukebox work
+  Show buffering spinner in cast mode.
+  Cast unmute
+  Cast progress bar
+  Cast background image
+  Make external player work
+  Auto-hide in firefox not quite right
+  Jukebox mute
 
-
-
-Headers are unaligned.
+Move logout to left.jsp
+Close button in lyrics
+Slider padding for easier use.
+Consider to drop player concept.
+Nicer design of logout
+Hide left frame by default.
+Add about link in left.view
+Don't show average rating
+  Add category "Top rated by me"? Also consider REST
+Check link colors in themes.
+Improve Subsonic logo
 Use font icons in videoplayer
 Add icon to buttons (start radio etc)
-Don't use blue link color
 Smaller star icons in h1
 Move top menu items to left page.
 Show artists/browse in main frame?
@@ -96,7 +111,6 @@ Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
 Remember visibility of left.jsp?
-Make logout float right
 Check jwplayer in external player
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
 Change chromecast background.
