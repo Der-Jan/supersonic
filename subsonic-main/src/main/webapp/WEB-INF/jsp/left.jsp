@@ -39,13 +39,13 @@
     </div>
 </c:if>
 
-<div style="padding-bottom:0.7em" class="topHeader">
+<div style="padding-bottom:1em" class="topHeader">
     <fmt:message key="top.logout" var="logout"><fmt:param value="${model.user.username}"/></fmt:message>
     <i class="fa fa-sign-out fa-lg fa-fw icon"></i>&nbsp;<a href="j_acegi_logout" target="_top">${fn:escapeXml(logout)}</a>
 </div>
 
 <c:if test="${model.user.settingsRole}">
-    <div style="padding-bottom:0.7em" class="topHeader">
+    <div style="padding-bottom:1em" class="topHeader">
         <i class="fa fa-cog fa-lg fa-fw icon"></i>&nbsp;<a href="settings.view" target="main"><fmt:message key="top.settings"/></a>
     </div>
 </c:if>

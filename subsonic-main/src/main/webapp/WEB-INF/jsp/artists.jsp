@@ -64,7 +64,7 @@
 
 <div style="padding-bottom:1.5em">
     <c:if test="${not empty model.selectedMusicFolder}">
-        <span class="browse-selected-music-folder bgcolor2">${fn:escapeXml(model.selectedMusicFolder.name)}</span>
+        <span class="browse-selected-music-folder bgcolor2"><i class="fa fa-folder-open-o fa-fw icon"></i>&nbsp;${fn:escapeXml(model.selectedMusicFolder.name)}</span>
     </c:if>
     <span>
         <c:choose>
