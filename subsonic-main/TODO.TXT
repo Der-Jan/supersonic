@@ -39,8 +39,6 @@ HTML5 player?
 
 Show artists/browse in main frame?
   Vertical align index
-  Remove Internet radio
-    Remove hidden frame
   Simplify LeftController
   Move logout to left.jsp
   Hide left frame by default.
@@ -48,6 +46,8 @@ Show artists/browse in main frame?
   Improve Subsonic logo
   Move statistics to about page
   Use flex layout in top.jsp
+  Move settings to left.jsp?
+  Add header to music folder selector.
 
 Close button in lyrics
 Slider padding for easier use.

@@ -152,7 +152,7 @@
         $("#dummy-animation-target").stop();
         $("#dummy-animation-target").animate({"max-width": height}, {
             step: function (now, fx) {
-                top.document.getElementById("playQueueFrameset").rows = "42,*," + now + ",0";
+                top.document.getElementById("playQueueFrameset").rows = "42,*," + now;
             },
             duration: duration
         });

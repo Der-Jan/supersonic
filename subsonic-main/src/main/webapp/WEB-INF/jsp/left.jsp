@@ -44,15 +44,5 @@
     <i class="fa fa-info-circle fa-lg fa-fw icon"></i>&nbsp;<a href="help.view" target="main"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></a>
 </div>
 
-<c:if test="${not empty model.radios}">
-    <h2 class="bgcolor1" style="padding-left: 2px"><fmt:message key="left.radio"/></h2>
-    <c:forEach items="${model.radios}" var="radio">
-        <p class="dense" style="padding-left: 2px">
-            <i class="fa fa-play icon"></i>
-            <a target="hidden" href="${radio.streamUrl}">${fn:escapeXml(radio.name)}</a>
-        </p>
-    </c:forEach>
-</c:if>
-
-
-</body></html>
+</body>
+</html>
