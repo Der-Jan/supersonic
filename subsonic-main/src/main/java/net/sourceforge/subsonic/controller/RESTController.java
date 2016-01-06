@@ -168,7 +168,7 @@ public class RESTController extends MultiActionController {
     private CoverArtController coverArtController;
     private AvatarController avatarController;
     private UserSettingsController userSettingsController;
-    private LeftController leftController;
+    private ArtistsController artistsController;
     private StatusService statusService;
     private StreamController streamController;
     private HLSController hlsController;
@@ -249,7 +249,7 @@ public class RESTController extends MultiActionController {
         String username = securityService.getCurrentUser(request).getUsername();
 
         long ifModifiedSince = getLongParameter(request, "ifModifiedSince", 0L);
-        long lastModified = leftController.getLastModified(request);
+        long lastModified = artistsController.getLastModified(request);
 
         if (lastModified <= ifModifiedSince) {
             jaxbWriter.writeResponse(request, response, res);
@@ -2447,8 +2447,8 @@ public class RESTController extends MultiActionController {
         this.userSettingsController = userSettingsController;
     }
 
-    public void setLeftController(LeftController leftController) {
-        this.leftController = leftController;
+    public void setArtistsController(ArtistsController artistsController) {
+        this.artistsController = artistsController;
     }
 
     public void setStatusService(StatusService statusService) {

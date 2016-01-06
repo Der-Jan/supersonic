@@ -18,35 +18,20 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import net.sourceforge.subsonic.domain.AvatarScheme;
-import net.sourceforge.subsonic.domain.InternetRadio;
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
 import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.UserSettings;
-import net.sourceforge.subsonic.service.MediaScannerService;
-import net.sourceforge.subsonic.service.MusicIndexService;
-import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
-import net.sourceforge.subsonic.util.FileUtil;
-import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller for the left index frame.
@@ -55,99 +40,22 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class LeftController extends ParameterizableViewController {
 
-    // Update this time if you want to force a refresh in clients.
-    private static final Calendar LAST_COMPATIBILITY_TIME = Calendar.getInstance();
-    static {
-        LAST_COMPATIBILITY_TIME.set(2012, Calendar.MARCH, 6, 0, 0, 0);
-        LAST_COMPATIBILITY_TIME.set(Calendar.MILLISECOND, 0);
-    }
-
-    private MediaScannerService mediaScannerService;
     private SettingsService settingsService;
     private SecurityService securityService;
-    private MusicIndexService musicIndexService;
-    private PlayerService playerService;
-
-    /**
-     * Note: This class intentionally does not implement org.springframework.web.servlet.mvc.LastModified
-     * as we don't need browser-side caching of left.jsp.  This method is only used by RESTController.
-     */
-    public long getLastModified(HttpServletRequest request) {
-        saveSelectedMusicFolder(request);
-
-        if (mediaScannerService.isScanning()) {
-            return -1L;
-        }
-
-        long lastModified = LAST_COMPATIBILITY_TIME.getTimeInMillis();
-        String username = securityService.getCurrentUsername(request);
-
-        // When was settings last changed?
-        lastModified = Math.max(lastModified, settingsService.getSettingsChanged());
-
-        // When was music folder(s) on disk last changed?
-        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
-        if (selectedMusicFolder != null) {
-            File file = selectedMusicFolder.getPath();
-            lastModified = Math.max(lastModified, FileUtil.lastModified(file));
-        } else {
-            for (MusicFolder musicFolder : allMusicFolders) {
-                File file = musicFolder.getPath();
-                lastModified = Math.max(lastModified, FileUtil.lastModified(file));
-            }
-        }
-
-        // When was music folder table last changed?
-        for (MusicFolder musicFolder : allMusicFolders) {
-            lastModified = Math.max(lastModified, musicFolder.getChanged().getTime());
-        }
-
-        // When was internet radio table last changed?
-        for (InternetRadio internetRadio : settingsService.getAllInternetRadios()) {
-            lastModified = Math.max(lastModified, internetRadio.getChanged().getTime());
-        }
-
-        // When was user settings last changed?
-        UserSettings userSettings = settingsService.getUserSettings(username);
-        lastModified = Math.max(lastModified, userSettings.getChanged().getTime());
-
-        return lastModified;
-    }
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
-
-        boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
-        if (refresh) {
-            settingsService.clearMusicFolderCache();
-        }
-
         String username = securityService.getCurrentUsername(request);
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
         MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
-        List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
-        UserSettings userSettings = settingsService.getUserSettings(username);
-        MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
 
-        map.put("player", playerService.getPlayer(request, response));
-        map.put("scanning", mediaScannerService.isScanning());
         map.put("musicFolders", allMusicFolders);
         map.put("selectedMusicFolder", selectedMusicFolder);
-        map.put("radios", settingsService.getAllInternetRadios());
-        map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
-        map.put("partyMode", userSettings.isPartyModeEnabled());
-        map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
         map.put("musicFolderChanged", musicFolderChanged);
-        map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
         map.put("brand", settingsService.getBrand());
-
-        map.put("indexedArtists", musicFolderContent.getIndexedArtists());
-        map.put("singleSongs", musicFolderContent.getSingleSongs());
-        map.put("indexes", musicFolderContent.getIndexedArtists().keySet());
         map.put("user", securityService.getCurrentUser(request));
 
         ModelAndView result = super.handleRequestInternal(request, response);
@@ -170,9 +78,6 @@ public class LeftController extends ParameterizableViewController {
         return true;
     }
 
-    public void setMediaScannerService(MediaScannerService mediaScannerService) {
-        this.mediaScannerService = mediaScannerService;
-    }
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
@@ -180,14 +85,6 @@ public class LeftController extends ParameterizableViewController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
-    }
-
-    public void setMusicIndexService(MusicIndexService musicIndexService) {
-        this.musicIndexService = musicIndexService;
-    }
-
-    public void setPlayerService(PlayerService playerService) {
-        this.playerService = playerService;
     }
 
 }

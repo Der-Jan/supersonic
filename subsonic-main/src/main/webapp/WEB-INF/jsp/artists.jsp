@@ -69,15 +69,15 @@
     <span>
         <c:choose>
             <c:when test="${model.scanning}">
-                <i class="fa fa-chevron-right icon"></i>&nbsp;<a href="artists.view"><fmt:message key="common.refresh"/></a>
+                <i class="fa fa-refresh fa-fw icon"></i>&nbsp;<a href="artists.view"><fmt:message key="common.refresh"/></a>
             </c:when>
             <c:otherwise>
-                <i class="fa fa-chevron-right icon"></i>&nbsp;<a href="artists.view?refresh=true"><fmt:message key="common.refresh"/></a>
+                <i class="fa fa-refresh fa-fw icon"></i>&nbsp;<a href="artists.view?refresh=true"><fmt:message key="common.refresh"/></a>
             </c:otherwise>
         </c:choose>
     </span>
     <div style="float:right; padding-right:3em">
-        <input type="text" size="20" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
+        <input type="text" size="28" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
     </div>
 </div>
 

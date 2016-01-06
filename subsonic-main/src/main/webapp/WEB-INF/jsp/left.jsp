@@ -20,12 +20,16 @@
 <body class="bgcolor2 leftframe" onload="init()">
 <a name="top"></a>
 
-<div style="padding-bottom:1.5em">
+<div style="padding-top:1em; padding-bottom:2.5em; text-align:center">
     <a href="help.view" target="main"><img src="<spring:theme code="logoImage"/>" title="<fmt:message key="top.help"/>" alt=""></a>
 </div>
 
 <c:if test="${fn:length(model.musicFolders) > 1}">
-    <div style="padding-bottom:1.0em">
+    <div style="padding-bottom:0.5em" class="topHeader">
+        <i class="fa fa-folder-open-o fa-lg fa-fw icon"></i>&nbsp;<fmt:message key="settingsheader.musicFolder"/>
+    </div>
+
+    <div style="padding-bottom:2.0em">
         <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;">
             <option value="-1"><fmt:message key="left.allfolders"/></option>
             <c:forEach items="${model.musicFolders}" var="musicFolder">

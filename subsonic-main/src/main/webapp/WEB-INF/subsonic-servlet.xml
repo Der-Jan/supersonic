@@ -6,11 +6,8 @@
 
     <bean id="leftController" class="net.sourceforge.subsonic.controller.LeftController">
         <property name="viewName" value="left"/>
-        <property name="mediaScannerService" ref="mediaScannerService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
-        <property name="musicIndexService" ref="musicIndexService"/>
-        <property name="playerService" ref="playerService"/>
     </bean>
     <bean id="artistsController" class="net.sourceforge.subsonic.controller.ArtistsController">
         <property name="viewName" value="artists"/>
@@ -407,7 +404,7 @@
         <property name="coverArtController" ref="coverArtController"/>
         <property name="avatarController" ref="avatarController"/>
         <property name="userSettingsController" ref="userSettingsController"/>
-        <property name="leftController" ref="leftController"/>
+        <property name="artistsController" ref="artistsController"/>
     </bean>
     <bean id="dbController" class="net.sourceforge.subsonic.controller.DBController">
         <property name="viewName" value="db"/>
