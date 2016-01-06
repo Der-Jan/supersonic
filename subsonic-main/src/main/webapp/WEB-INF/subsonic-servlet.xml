@@ -12,6 +12,15 @@
         <property name="musicIndexService" ref="musicIndexService"/>
         <property name="playerService" ref="playerService"/>
     </bean>
+    <bean id="artistsController" class="net.sourceforge.subsonic.controller.ArtistsController">
+        <property name="viewName" value="artists"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="mediaScannerService" ref="mediaScannerService"/>
+        <property name="securityService" ref="securityService"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="musicIndexService" ref="musicIndexService"/>
+        <property name="playerService" ref="playerService"/>
+    </bean>
     <bean id="rightController" class="net.sourceforge.subsonic.controller.RightController">
         <property name="viewName" value="right"/>
         <property name="securityService" ref="securityService"/>
@@ -421,6 +430,7 @@
                 <prop key="/playlists.view">playlistsController</prop>
                 <prop key="/help.view">helpController</prop>
                 <prop key="/lyrics.view">lyricsController</prop>
+                <prop key="/artists.view">artistsController</prop>
                 <prop key="/left.view">leftController</prop>
                 <prop key="/right.view">rightController</prop>
                 <prop key="/status.view">statusController</prop>

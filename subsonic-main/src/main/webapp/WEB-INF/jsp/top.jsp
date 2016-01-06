@@ -71,6 +71,7 @@
 <span id="dummy-animation-target" style="max-width:0;display: none"></span>
 
 <fmt:message key="top.home" var="home"/>
+<fmt:message key="top.artists" var="artists"/>
 <fmt:message key="top.now_playing" var="nowPlaying"/>
 <fmt:message key="top.starred" var="starred"/>
 <fmt:message key="left.playlists" var="playlists"/>
@@ -88,6 +89,7 @@
     </span>
 
     <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
+    <span class="topHeader top-menu-item" onclick="showPage('artists.view')"><i class="fa fa-microphone fa-fw fa-lg icon"></i>&nbsp;${artists}</span>
     <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>
     <span class="topHeader top-menu-item" onclick="showPage('starred.view')"><i class="fa fa-star fa-fw fa-lg icon"></i>&nbsp;${starred}</span>
     <span class="topHeader top-menu-item" onclick="showPage('playlists.view')"><i class="fa fa-music fa-fw fa-lg icon"></i>&nbsp;${playlists}</span>
@@ -95,21 +97,9 @@
     <span class="topHeader top-menu-item" onclick="showPage('settings.view')"><i class="fa fa-cog fa-lg icon"></i>&nbsp;${settings}</span>
     <span class="topHeader top-menu-item" onclick="showPage('more.view')"><i class="fa fa-mobile fa-lg icon"></i>&nbsp;${more}</span>
 
-    <input type="text" name="query" id="query" size="28" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch();" style="margin-left:1em">
-    <i class="fa fa-search icon clickable" onclick="document.searchForm.submit()"></i>
-
-    <span class="topHeader" style="float:right">
-    <c:if test="${model.showAvatar}">
-        <sub:url value="avatar.view" var="avatarUrl">
-            <sub:param name="username" value="${model.user.username}"/>
-        </sub:url>
-            <c:if test="${model.user.settingsRole}"><a href="personalSettings.view" target="main"></c:if>
-            <img src="${avatarUrl}" alt="" width="24" height="24">
-            <c:if test="${model.user.settingsRole}"></a></c:if>
-    </c:if>
-
-        <fmt:message key="top.logout" var="logout"><fmt:param value="${model.user.username}"/></fmt:message>
-        <a href="j_acegi_logout" target="_top">${fn:escapeXml(logout)}</a>
+    <span class="topHeader top-menu-item" style="float:right">
+        <input type="text" name="query" id="query" size="28" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch();" style="margin-left:1em">
+        <i class="fa fa-search icon clickable" onclick="document.searchForm.submit()"></i>
     </span>
 
 </form>

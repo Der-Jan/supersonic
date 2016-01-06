@@ -3,7 +3,7 @@
     <tr>
         <c:if test="${not empty model.musicFolder}">
             <td style="padding-right: 2em">
-                <div style="border:1px solid #<spring:theme code="detailColor"/>; padding-left: 0.5em;padding-right: 0.5em">
+                <div class="bgcolor2" style="border:1px solid #<spring:theme code="detailColor"/>; padding-left: 0.5em;padding-right: 0.5em">
                         ${fn:escapeXml(model.musicFolder.name)}
                 </div>
             </td>

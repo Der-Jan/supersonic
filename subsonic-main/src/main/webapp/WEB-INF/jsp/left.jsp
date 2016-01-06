@@ -16,7 +16,8 @@
 
             var mainLocation = top.main.location.href;
             if (${model.musicFolderChanged}) {
-                if (mainLocation.indexOf("/home.view") != -1) {
+                if (mainLocation.indexOf("/home.view") != -1 ||
+                        mainLocation.indexOf("/artists.view") != -1 ) {
                     top.main.location.href = mainLocation;
                 }
             }
@@ -73,12 +74,6 @@
     </div>
 </c:if>
 
-<div style="margin-bottom:0.5em;padding-left: 2px" class="bgcolor1">
-    <c:forEach items="${model.indexes}" var="index">
-        <a href="#${index.index}" accesskey="${index.index}">${index.index}</a>
-    </c:forEach>
-</div>
-
 <div style="padding-bottom:0.5em">
     <c:choose>
         <c:when test="${model.scanning}">
@@ -90,17 +85,21 @@
     </c:choose>
 </div>
 
-<c:if test="${not empty model.shortcuts}">
-    <h2 class="bgcolor1" style="padding-left: 2px"><fmt:message key="left.shortcut"/></h2>
-    <c:forEach items="${model.shortcuts}" var="shortcut">
-        <p class="dense" style="padding-left:2px">
-            <sub:url value="main.view" var="mainUrl">
-                <sub:param name="id" value="${shortcut.id}"/>
+<div style="padding-bottom:0.5em">
+    <c:choose>
+        <c:when test="${model.showAvatar}">
+            <sub:url value="avatar.view" var="avatarUrl">
+                <sub:param name="username" value="${model.user.username}"/>
             </sub:url>
-            <a target="main" href="${mainUrl}">${fn:escapeXml(shortcut.name)}</a>
-        </p>
-    </c:forEach>
-</c:if>
+            <img src="${avatarUrl}" alt="" width="36" height="36">
+        </c:when>
+        <c:otherwise>
+            <i class="fa fa-user fa-lg fa-fw icon"></i>
+        </c:otherwise>
+    </c:choose>
+    <fmt:message key="top.logout" var="logout"><fmt:param value="${model.user.username}"/></fmt:message>
+    <a href="j_acegi_logout" target="_top">${fn:escapeXml(logout)}</a>
+</div>
 
 <h2 class="bgcolor1" style="padding-left: 2px"><fmt:message key="left.playlists"/></h2>
 <div id="playlistWrapper" style='padding-left:2px'>
@@ -122,49 +121,6 @@
     </c:forEach>
 </c:if>
 
-<c:forEach items="${model.indexedArtists}" var="entry">
-    <table class="bgcolor1" style="width:100%;padding:0;margin:1em 0 0 0;border:0">
-        <tr style="padding:0;margin:0;border:0">
-            <th style="text-align:left;padding:0;margin:0;border:0"><a name="${fn:escapeXml(entry.key.index)}"></a>
-                <h2 style="padding:0;margin:0;border:0">${fn:escapeXml(entry.key.index)}</h2>
-            </th>
-            <th style="text-align:right;">
-                <i class="fa fa-arrow-up icon clickable" onclick="location.href='#top'"></i>
-            </th>
-        </tr>
-    </table>
-
-    <c:forEach items="${entry.value}" var="artist">
-        <p class="dense" style="padding-left:2px">
-            <span title="${artist.name}">
-                <sub:url value="main.view" var="mainUrl">
-                    <c:forEach items="${artist.mediaFiles}" var="mediaFile">
-                        <sub:param name="id" value="${mediaFile.id}"/>
-                    </c:forEach>
-                </sub:url>
-                <a target="main" href="${mainUrl}"><str:truncateNicely upper="${35}">${fn:escapeXml(artist.name)}</str:truncateNicely></a>
-            </span>
-        </p>
-    </c:forEach>
-</c:forEach>
-
-<div style="padding-top:1em"></div>
-
-<c:forEach items="${model.singleSongs}" var="song">
-    <p class="dense" style="padding-left:2px">
-        <span class="songTitle" title="${fn:escapeXml(song.title)}">
-            <c:import url="playButtons.jsp">
-                <c:param name="id" value="${song.id}"/>
-                <c:param name="playEnabled" value="${model.user.streamRole and not model.partyMode}"/>
-                <c:param name="addEnabled" value="${model.user.streamRole}"/>
-                <c:param name="downloadEnabled" value="${model.user.downloadRole and not model.partyMode}"/>
-                <c:param name="video" value="${song.video and model.player.web}"/>
-            </c:import>
-            <str:truncateNicely upper="${35}">${fn:escapeXml(song.title)}</str:truncateNicely>
-        </span>
-    </p>
-</c:forEach>
-
 <c:if test="${model.statistics.songCount gt 0}">
     <div class="detail" style="padding-top: 0.6em; padding-left: 2px">
         <fmt:message key="left.statistics">
@@ -176,15 +132,5 @@
         </fmt:message>
     </div>
 </c:if>
-
-<div style="height:5em"></div>
-
-
-<div class="bgcolor2" style="opacity: 1.0; clear: both; position: fixed; bottom: 0; right: 0; left: 0;
-      padding: 0.25em 0.75em 0.25em 0.75em; border-top:1px solid black; max-width: 850px;">
-    <c:forEach items="${model.indexes}" var="index">
-        <a href="#${index.index}">${index.index}</a>
-    </c:forEach>
-</div>
 
 </body></html>

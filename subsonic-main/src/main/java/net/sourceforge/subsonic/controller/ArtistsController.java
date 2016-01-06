@@ -1,20 +1,20 @@
 /*
- This file is part of Subsonic.
-
- Subsonic is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Subsonic is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
-
- Copyright 2009 (C) Sindre Mehus
+ * This file is part of Subsonic.
+ *
+ *  Subsonic is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Subsonic is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Copyright 2016 (C) Sindre Mehus
  */
 package net.sourceforge.subsonic.controller;
 
@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,36 +31,36 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.InternetRadio;
-import net.sourceforge.subsonic.domain.MediaLibraryStatistics;
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.MediaScannerService;
 import net.sourceforge.subsonic.service.MusicIndexService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.util.FileUtil;
-import net.sourceforge.subsonic.util.StringUtil;
 
 /**
- * Controller for the left index frame.
+ * Controller for the browse artists page.
  *
  * @author Sindre Mehus
  */
-public class LeftController extends ParameterizableViewController {
+public class ArtistsController extends ParameterizableViewController {
 
     // Update this time if you want to force a refresh in clients.
     private static final Calendar LAST_COMPATIBILITY_TIME = Calendar.getInstance();
+
     static {
         LAST_COMPATIBILITY_TIME.set(2012, Calendar.MARCH, 6, 0, 0, 0);
         LAST_COMPATIBILITY_TIME.set(Calendar.MILLISECOND, 0);
     }
 
+    private MediaFileService mediaFileService;
     private MediaScannerService mediaScannerService;
     private SettingsService settingsService;
     private SecurityService securityService;
@@ -70,7 +69,7 @@ public class LeftController extends ParameterizableViewController {
 
     /**
      * Note: This class intentionally does not implement org.springframework.web.servlet.mvc.LastModified
-     * as we don't need browser-side caching of left.jsp.  This method is only used by RESTController.
+     * as we don't need browser-side caching of browse.jsp.  This method is only used by RESTController.
      */
     public long getLastModified(HttpServletRequest request) {
         saveSelectedMusicFolder(request);
@@ -117,11 +116,7 @@ public class LeftController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
-
-        MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
-        Locale locale = RequestContextUtils.getLocale(request);
 
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
         if (refresh) {
@@ -134,28 +129,18 @@ public class LeftController extends ParameterizableViewController {
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         UserSettings userSettings = settingsService.getUserSettings(username);
         MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
+        List<MediaFile> singleSongs = musicFolderContent.getSingleSongs();
+        mediaFileService.populateStarredDate(singleSongs, username);
 
         map.put("player", playerService.getPlayer(request, response));
         map.put("scanning", mediaScannerService.isScanning());
-        map.put("musicFolders", allMusicFolders);
         map.put("selectedMusicFolder", selectedMusicFolder);
-        map.put("radios", settingsService.getAllInternetRadios());
         map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
-        map.put("musicFolderChanged", musicFolderChanged);
-        map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
-
-        if (statistics != null) {
-            map.put("statistics", statistics);
-            long bytes = statistics.getTotalLengthInBytes();
-            long hours = statistics.getTotalDurationInSeconds() / 3600L;
-            map.put("hours", hours);
-            map.put("bytes", StringUtil.formatBytes(bytes, locale));
-        }
-
+        map.put("visibility", userSettings.getMainVisibility());
         map.put("indexedArtists", musicFolderContent.getIndexedArtists());
-        map.put("singleSongs", musicFolderContent.getSingleSongs());
+        map.put("singleSongs", singleSongs);
         map.put("indexes", musicFolderContent.getIndexedArtists().keySet());
         map.put("user", securityService.getCurrentUser(request));
 
@@ -199,4 +184,7 @@ public class LeftController extends ParameterizableViewController {
         this.playerService = playerService;
     }
 
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
+    }
 }

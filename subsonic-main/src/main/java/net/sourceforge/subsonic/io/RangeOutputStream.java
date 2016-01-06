@@ -96,6 +96,9 @@ public class RangeOutputStream extends FilterOutputStream {
             out.write(b, (int) newOff, (int) newLen);
         }
         pos += len;
+        if (end != null && pos > end) {
+            throw new IOException();
+        }
     }
 
     private long min(long a, long b, long c) {
