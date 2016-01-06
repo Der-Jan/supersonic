@@ -40,6 +40,12 @@
     <i class="fa fa-sign-out fa-lg fa-fw icon"></i>&nbsp;<a href="j_acegi_logout" target="_top">${fn:escapeXml(logout)}</a>
 </div>
 
+<c:if test="${model.user.settingsRole}">
+    <div style="padding-bottom:0.7em" class="topHeader">
+        <i class="fa fa-cog fa-lg fa-fw icon"></i>&nbsp;<a href="settings.view" target="main"><fmt:message key="top.settings"/></a>
+    </div>
+</c:if>
+
 <div style="padding-bottom:1.5em" class="topHeader">
     <i class="fa fa-info-circle fa-lg fa-fw icon"></i>&nbsp;<a href="help.view" target="main"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></a>
 </div>

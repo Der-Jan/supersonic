@@ -75,7 +75,6 @@
 <fmt:message key="top.now_playing" var="nowPlaying"/>
 <fmt:message key="top.starred" var="starred"/>
 <fmt:message key="left.playlists" var="playlists"/>
-<fmt:message key="top.settings" var="settings"/>
 <fmt:message key="top.podcast" var="podcast"/>
 <fmt:message key="top.more" var="more"/>
 <fmt:message key="top.help" var="help"/>
@@ -94,7 +93,6 @@
     <span class="topHeader top-menu-item" onclick="showPage('starred.view')"><i class="fa fa-star fa-fw fa-lg icon"></i>&nbsp;${starred}</span>
     <span class="topHeader top-menu-item" onclick="showPage('playlists.view')"><i class="fa fa-music fa-fw fa-lg icon"></i>&nbsp;${playlists}</span>
     <span class="topHeader top-menu-item" onclick="showPage('podcastChannels.view')"><i class="fa fa-rss fa-lg icon"></i>&nbsp;${podcast}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('settings.view')"><i class="fa fa-cog fa-lg icon"></i>&nbsp;${settings}</span>
     <span class="topHeader top-menu-item" onclick="showPage('more.view')"><i class="fa fa-mobile fa-lg icon"></i>&nbsp;${more}</span>
 
     <span class="topHeader top-menu-item" style="float:right">
