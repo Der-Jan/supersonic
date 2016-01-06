@@ -69,6 +69,21 @@
     <tr><td class="ruleTableHeader"><fmt:message key="help.homepage.title"/></td><td class="ruleTableCell"><a target="_blank" href="http://www.subsonic.org/">subsonic.org</a></td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.forum.title"/></td><td class="ruleTableCell"><a target="_blank" href="http://forum.subsonic.org/">forum.subsonic.org</a></td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.contact.title"/></td><td class="ruleTableCell"><fmt:message key="help.contact.text"><fmt:param value="${model.brand}"/></fmt:message></td></tr>
+
+    <c:if test="${model.statistics.songCount gt 0}">
+        <tr>
+            <td class="ruleTableHeader"><fmt:message key="help.statistics.title"/></td>
+            <td class="ruleTableCell">
+                <fmt:message key="left.statistics">
+                    <fmt:param value="${model.statistics.artistCount}"/>
+                    <fmt:param value="${model.statistics.albumCount}"/>
+                    <fmt:param value="${model.statistics.songCount}"/>
+                    <fmt:param value="${model.bytes}"/>
+                    <fmt:param value="${model.hours}"/>
+                </fmt:message>
+            </td>
+        </tr>
+    </c:if>
 </table>
 
 <h2 style="padding-top:1em"><i class="fa fa-list fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="help.log"/></h2>

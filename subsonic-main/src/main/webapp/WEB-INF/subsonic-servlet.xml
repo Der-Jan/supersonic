@@ -66,6 +66,7 @@
         <property name="versionService" ref="versionService"/>
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="mediaScannerService" ref="mediaScannerService"/>
     </bean>
     <bean id="moreController" class="net.sourceforge.subsonic.controller.MoreController">
         <property name="viewName" value="more"/>

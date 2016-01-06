@@ -40,6 +40,7 @@ HTML5 player?
 Show artists/browse in main frame?
   Vertical align index
   Remove Internet radio
+    Remove hidden frame
   Simplify LeftController
   Move logout to left.jsp
   Hide left frame by default.

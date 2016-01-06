@@ -120,8 +120,6 @@ public class LeftController extends ParameterizableViewController {
         boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
-        MediaLibraryStatistics statistics = mediaScannerService.getStatistics();
-        Locale locale = RequestContextUtils.getLocale(request);
 
         boolean refresh = ServletRequestUtils.getBooleanParameter(request, "refresh", false);
         if (refresh) {
@@ -145,14 +143,7 @@ public class LeftController extends ParameterizableViewController {
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
         map.put("musicFolderChanged", musicFolderChanged);
         map.put("showAvatar", userSettings.getAvatarScheme() != AvatarScheme.NONE);
-
-        if (statistics != null) {
-            map.put("statistics", statistics);
-            long bytes = statistics.getTotalLengthInBytes();
-            long hours = statistics.getTotalDurationInSeconds() / 3600L;
-            map.put("hours", hours);
-            map.put("bytes", StringUtil.formatBytes(bytes, locale));
-        }
+        map.put("brand", settingsService.getBrand());
 
         map.put("indexedArtists", musicFolderContent.getIndexedArtists());
         map.put("singleSongs", musicFolderContent.getSingleSongs());
