@@ -23,7 +23,7 @@
                         var shared = $("#newShared").is(":checked");
                         $("#name").text(name);
                         $("#comment").text(comment);
-                        playlistService.updatePlaylist(playlist.id, name, comment, shared, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
+                        playlistService.updatePlaylist(playlist.id, name, comment, shared, function (playlistInfo){playlistCallback(playlistInfo)});
                     },
                     "<fmt:message key="common.cancel"/>": function() {
                         $(this).dialog("close");
@@ -34,7 +34,7 @@
                 buttons: {
                     "<fmt:message key="common.delete"/>": function() {
                         $(this).dialog("close");
-                        playlistService.deletePlaylist(playlist.id, function (){top.left.updatePlaylists(); location = "playlists.view";});
+                        playlistService.deletePlaylist(playlist.id, function (){location.href = "playlists.view";});
                     },
                     "<fmt:message key="common.cancel"/>": function() {
                         $(this).dialog("close");
@@ -142,7 +142,7 @@
             playlistService.toggleStar(playlist.id, index, playlistCallback);
         }
         function onRemove(index) {
-            playlistService.remove(playlist.id, index, function (playlistInfo){playlistCallback(playlistInfo); top.left.updatePlaylists()});
+            playlistService.remove(playlist.id, index, function (playlistInfo){playlistCallback(playlistInfo)});
         }
         function onRearrange(indexes) {
             playlistService.rearrange(playlist.id, indexes, playlistCallback);

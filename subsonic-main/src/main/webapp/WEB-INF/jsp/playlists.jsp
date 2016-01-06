@@ -4,7 +4,23 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-</head><body class="mainframe bgcolor1">
+
+    <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
+    <script type="text/javascript" language="javascript">
+
+        function createEmptyPlaylist() {
+            playlistService.createEmptyPlaylist(playlistCallback);
+        }
+
+        function playlistCallback(playlist) {
+            location.href = "playlist.view?id=" + playlist.id;
+        }
+    </script>
+</head>
+
+<body class="mainframe bgcolor1">
 
 <h1 style="padding-bottom: 1em">
     <i class="fa fa-music fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="left.playlists"/>
@@ -32,6 +48,11 @@
     </div>
 
 </c:forEach>
+
+<div style="padding-top:1em; padding-bottom:1em">
+    <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></span>
+    <span><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="importPlaylist.view"><fmt:message key="left.importplaylist"/></a></span>
+</div>
 
 </body>
 </html>

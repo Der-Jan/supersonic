@@ -393,8 +393,6 @@
     }
     function onSavePlaylist() {
         playlistService.createPlaylistForPlayQueue(function (playlistId) {
-            top.left.updatePlaylists();
-            top.left.showAllPlaylists();
             top.main.location.href = "playlist.view?id=" + playlistId;
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
         });
@@ -421,7 +419,6 @@
             }
         }
         playlistService.appendToPlaylist(playlistId, mediaFileIds, function (){
-            top.left.updatePlaylists();
             top.main.location.href = "playlist.view?id=" + playlistId;
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });

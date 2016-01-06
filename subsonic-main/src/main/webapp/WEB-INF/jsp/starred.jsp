@@ -23,8 +23,6 @@
 
         function onSavePlaylist() {
             playlistService.createPlaylistForStarredSongs(function (playlistId) {
-                top.left.updatePlaylists();
-                top.left.showAllPlaylists();
                 top.main.location.href = "playlist.view?id=" + playlistId;
                 $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
             });
