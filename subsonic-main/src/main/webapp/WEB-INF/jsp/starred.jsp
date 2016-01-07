@@ -3,6 +3,9 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <style type="text/css">
+        .starred-header {padding-top: 1em;}
+    </style>
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
     <script type="text/javascript" src="<c:url value='/dwr/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
@@ -43,7 +46,7 @@
 </c:if>
 
 <c:if test="${not empty model.albums}">
-    <h2><fmt:message key="search.hits.albums"/></h2>
+    <h2 class="starred-header"><fmt:message key="search.hits.albums"/></h2>
 
 <div style="padding-top:0.5em">
     <c:forEach items="${model.albums}" var="album" varStatus="loopStatus">
@@ -75,7 +78,7 @@
 </div>
 
 <c:if test="${not empty model.artists}">
-    <h2><fmt:message key="search.hits.artists"/></h2>
+    <h2 class="starred-header"><fmt:message key="search.hits.artists"/></h2>
     <table class="music indent">
         <c:forEach items="${model.artists}" var="artist">
 
@@ -101,7 +104,7 @@
 </c:if>
 
 <c:if test="${not empty model.songs}">
-    <h2><fmt:message key="search.hits.songs"/></h2>
+    <h2 class="starred-header"><fmt:message key="search.hits.songs"/></h2>
     <table class="music indent">
         <c:forEach items="${model.songs}" var="song">
 
@@ -136,15 +139,14 @@
         </c:forEach>
     </table>
 
-    <i class="fa fa-chevron-right icon"></i>
-    <a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a>
-    <i style="padding-left:1.5em" class="fa fa-chevron-right icon"></i>
-    <a href="javascript:noop()" onclick="onPlayAll()"><fmt:message key="main.playall"/></a>
+    <div style="padding-top:0.6em"></div>
+    <i class="fa fa-save fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:noop()" onclick="onSavePlaylist()"><fmt:message key="playlist.save"/></a>
+    <i style="padding-left:3em" class="fa fa-play fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:noop()" onclick="onPlayAll()"><fmt:message key="main.playall"/></a>
 
 </c:if>
 
 <c:if test="${not empty model.videos}">
-    <h2><fmt:message key="search.hits.videos"/></h2>
+    <h2 class="starred-header"><fmt:message key="search.hits.videos"/></h2>
     <table class="music indent">
         <c:forEach items="${model.videos}" var="video">
 
@@ -169,5 +171,7 @@
         </c:forEach>
     </table>
 </c:if>
+
+<div style="padding-top:2em"></div>
 
 </body></html>

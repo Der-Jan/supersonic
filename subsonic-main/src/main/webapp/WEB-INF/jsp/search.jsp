@@ -4,6 +4,9 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <style type="text/css">
+        .search-header {padding-top: 1em;}
+    </style>
 
     <script type="text/javascript" language="javascript">
 
@@ -23,7 +26,7 @@
 </head>
 <body class="mainframe bgcolor1">
 
-<h1 style="padding-bottom:1em"><i class="fa fa-search fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="search.title"/></h1>
+<h1><i class="fa fa-search fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="search.title"/></h1>
 
 <c:if test="${command.indexBeingCreated}">
     <p class="warning"><fmt:message key="search.index"/></p>
@@ -34,7 +37,7 @@
 </c:if>
 
 <c:if test="${not empty command.artists}">
-    <h2><b><fmt:message key="search.hits.artists"/></b></h2>
+    <h2 class="search-header"><fmt:message key="search.hits.artists"/></h2>
     <table class="music indent">
         <c:forEach items="${command.artists}" var="match" varStatus="loopStatus">
 
@@ -60,7 +63,7 @@
 </c:if>
 
 <c:if test="${not empty command.albums}">
-    <h2><b><fmt:message key="search.hits.albums"/></b></h2>
+    <h2 class="search-header"><fmt:message key="search.hits.albums"/></h2>
     <table class="music indent">
         <c:forEach items="${command.albums}" var="match" varStatus="loopStatus">
 
@@ -87,9 +90,8 @@
     </c:if>
 </c:if>
 
-
 <c:if test="${not empty command.songs}">
-    <h2><b><fmt:message key="search.hits.songs"/></b></h2>
+    <h2 class="search-header"><fmt:message key="search.hits.songs"/></h2>
     <table class="music indent">
         <c:forEach items="${command.songs}" var="match" varStatus="loopStatus">
 
@@ -117,5 +119,7 @@
     <div id="moreSongs"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:showMoreSongs()"><fmt:message key="search.hits.more"/></a></div>
 </c:if>
 </c:if>
+
+<div style="padding-top:2em"></div>
 
 </body></html>

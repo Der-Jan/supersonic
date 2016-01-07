@@ -99,6 +99,7 @@
 
 <p><fmt:message key="help.logfile"><fmt:param value="${model.logFile}"/></fmt:message> </p>
 
-<i class="fa fa-chevron-right icon"></i>&nbsp;<a href="help.view?"><fmt:message key="common.refresh"/></a>
+<i class="fa fa-refresh fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="help.view"><fmt:message key="common.refresh"/></a>
 
+<div style="padding-top:2em"></div>
 </body></html>

@@ -104,6 +104,8 @@
     </tr>
 </table>
 
-<i class="fa fa-chevron-right icon"></i>&nbsp;<a href="status.view?"><fmt:message key="common.refresh"/></a>
+<i class="fa fa-refresh fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="status.view?"><fmt:message key="common.refresh"/></a>
+
+<div style="padding-top:2em"></div>
 
 </body></html>

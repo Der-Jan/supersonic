@@ -42,7 +42,11 @@ Show artists/browse in main frame?
   Improve Subsonic logo
   Use flex layout in top.jsp
 
-Replace chevron with more specific icons.
+Table in artists.jsp crashes with index.
+Links invisible in more.jsp
+Show video wxh?
+Consolidate rendering of selected media folder. Add more space.
+  onclick: Open left.jsp
 Play queue icon.
 Don't remove shortcut artists from artist list.
 Close button in lyrics

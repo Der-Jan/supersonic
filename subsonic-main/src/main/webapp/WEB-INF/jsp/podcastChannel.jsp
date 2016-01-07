@@ -166,19 +166,16 @@
 
 </table>
 
-
-
 <div style="padding-top:1em">
     <c:if test="${model.user.podcastRole}">
-        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:downloadSelected()"><fmt:message key="podcastreceiver.downloadselected"/></a></span>
-        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:deleteSelected()"><fmt:message key="podcastreceiver.deleteselected"/></a></span>
+        <span style="padding-right:3em"><i class="fa fa-download fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:downloadSelected()"><fmt:message key="podcastreceiver.downloadselected"/></a></span>
+        <span style="padding-right:3em"><i class="fa fa-remove fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:deleteSelected()"><fmt:message key="podcastreceiver.deleteselected"/></a></span>
     </c:if>
-    <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:refreshPage()"><fmt:message key="podcastreceiver.refresh"/></a></span>
+    <span style="padding-right:3em"><i class="fa fa-refresh fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:refreshPage()"><fmt:message key="podcastreceiver.refresh"/></a></span>
     <c:if test="${model.user.adminRole}">
-        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="podcastSettings.view?"><fmt:message key="podcastreceiver.settings"/></a></span>
+        <span style="padding-right:2em"><i class="fa fa-cog fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="podcastSettings.view?"><fmt:message key="podcastreceiver.settings"/></a></span>
     </c:if>
 </tr></div>
-
 
 <div id="dialog-delete" title="<fmt:message key="common.confirm"/>" style="display: none;">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>

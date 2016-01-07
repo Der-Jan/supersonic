@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<table>
+<table style="padding-top:0.3em; padding-bottom:0.25em">
     <tr>
         <c:if test="${not empty model.musicFolder}">
             <td style="padding-right: 2em">
@@ -10,7 +10,7 @@
         </c:if>
         <c:choose>
             <c:when test="${model.listType eq 'random'}">
-                <td><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="home.view?listType=random"><fmt:message key="common.more"/></a></td>
+                <td><i class="fa fa-plus fa-lg fa-fw icon"></i>&nbsp;<a href="home.view?listType=random"><fmt:message key="common.more"/></a></td>
             </c:when>
             <c:otherwise>
                 <sub:url value="home.view" var="previousUrl">
@@ -26,8 +26,12 @@
                     <sub:param name="decade" value="${model.decade}"/>
                 </sub:url>
 
+                <c:if test="${model.listOffset gt 0}">
+                    <td onclick="location.href='${previousUrl}'"><i class="fa fa-arrow-left fa-lg fa-fw icon clickable"></i></td>
+                </c:if>
+
                 <c:if test="${fn:length(model.albums) gt 0}">
-                    <td style="padding-right:0.5em">
+                    <td style="padding-left:0.5em; padding-right:0.5em">
                         <fmt:message key="home.albums">
                             <fmt:param value="${model.listOffset + 1}"/>
                             <fmt:param value="${model.listOffset + fn:length(model.albums)}"/>
@@ -35,12 +39,8 @@
                     </td>
                 </c:if>
 
-                <c:if test="${model.listOffset gt 0}">
-                    <td onclick="location.href='${previousUrl}'"><i class="fa fa-chevron-left icon clickable"></i></td>
-                </c:if>
-
                 <c:if test="${fn:length(model.albums) eq model.listSize}">
-                    <td onclick="location.href='${nextUrl}'"><i class="fa fa-chevron-right icon clickable"></i></td>
+                    <td onclick="location.href='${nextUrl}'"><i class="fa fa-arrow-right fa-lg fa-fw icon clickable"></i></td>
                 </c:if>
 
                 <c:if test="${model.listType eq 'decade'}">
@@ -72,8 +72,8 @@
         </c:choose>
 
         <c:if test="${not empty model.albums}">
-            <td style="padding-left:2em" onclick="playShuffle()">
-                <i class="fa fa-random fa-lg icon clickable"></i>&nbsp;&nbsp;<a href="javascript:playShuffle()"><fmt:message key="home.shuffle"/></a>
+            <td style="padding-left:3em">
+                <i class="fa fa-random fa-lg fa-fw icon"></i>&nbsp;<a href="javascript:playShuffle()"><fmt:message key="home.shuffle"/></a>
             </td>
         </c:if>
     </tr>

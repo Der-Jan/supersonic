@@ -49,9 +49,9 @@
 
 </c:forEach>
 
-<div style="padding-top:1em; padding-bottom:1em">
-    <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></span>
-    <span><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="importPlaylist.view"><fmt:message key="left.importplaylist"/></a></span>
+<div style="padding-top:1em; padding-bottom:2em">
+    <span style="padding-right:3em"><i class="fa fa-music fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="javascript:noop()" onclick="createEmptyPlaylist()"><fmt:message key="left.createplaylist"/></a></span>
+    <span><i class="fa fa-download fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="importPlaylist.view"><fmt:message key="left.importplaylist"/></a></span>
 </div>
 
 </body>

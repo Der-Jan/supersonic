@@ -91,11 +91,10 @@
 
 <div style="padding-top:1em; padding-bottom:1em">
     <c:if test="${model.user.podcastRole}">
-        <span style="padding-right:2em"><i class="fa fa-chevron-right icon"></i>
-            <a href="podcastReceiverAdmin.view?refresh"><fmt:message key="podcastreceiver.check"/></a></span>
+        <span style="padding-right:3em"><i class="fa fa-refresh fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="podcastReceiverAdmin.view?refresh"><fmt:message key="podcastreceiver.check"/></a></span>
     </c:if>
     <c:if test="${model.user.adminRole}">
-        <i class="fa fa-chevron-right icon"></i> <a href="podcastSettings.view"><fmt:message key="podcastreceiver.settings"/></a>
+        <i class="fa fa-cog fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="podcastSettings.view"><fmt:message key="podcastreceiver.settings"/></a>
     </c:if>
 </div>
 
@@ -113,6 +112,8 @@
 
 <c:set var="licenseInfo" value="${model.licenseInfo}"/>
 <%@ include file="licenseNotice.jsp" %>
+
+<div style="padding-top:2em"></div>
 
 </body>
 </html>

@@ -56,7 +56,7 @@
 
                 html += "<span class='songTitle'>" + nowPlaying[i].title + "</span></a><br/>";
                 if (nowPlaying[i].lyricsUrl != null) {
-                    html += "<i class='fa fa-chevron-right icon'></i>&nbsp;<a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 500, 550)\">" +
+                    html += "<i class='fa fa-microphone icon'></i>&nbsp;&nbsp;<a href='" + nowPlaying[i].lyricsUrl + "' onclick=\"return popupSize(this, 'lyrics', 500, 550)\">" +
                             "<fmt:message key="main.lyrics"/>" + "</a>";
                 }
                 html += "</td><td>" +
@@ -191,7 +191,7 @@
     </table>
 
     <c:if test="${model.user.adminRole}">
-        <div id="clearDiv" style="display:none;"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="javascript:clearMessages()"><fmt:message key="main.clearchat"/></a></div>
+        <div id="clearDiv" style="display:none;"><i class="fa fa-remove fa-lg fa-fw icon"></i>&nbsp;<a href="javascript:clearMessages()"><fmt:message key="main.clearchat"/></a></div>
     </c:if>
 </c:if>
 

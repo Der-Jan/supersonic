@@ -13,7 +13,9 @@
             margin-right: 2em;
         }
         .browse-index-shortcut {
-            padding-top: 3px;
+            padding-bottom: 8px;
+            font-size: 105%;
+            line-height: 100%;
         }
         .browse-index-title {
             clear: both;
@@ -55,7 +57,7 @@
 <a name="top"></a>
 <h1 style="padding-bottom:1em"><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
 
-<div style="clear:both; position:fixed; top:0; right:0; padding:3.25em 0.75em 0.25em 0.75em; text-align:center">
+<div style="clear:both; position:fixed; top:0; right:0; padding:1.25em 0.75em 0.25em 0.75em; text-align:center">
     <div class="browse-index-shortcut"><i class="fa fa-arrow-up fa-fw icon clickable" onclick="location.href='#top'"></i></div>
     <c:forEach items="${model.indexes}" var="index">
         <div class="browse-index-shortcut"><a href="#${index.index}">${index.index}</a></div>
