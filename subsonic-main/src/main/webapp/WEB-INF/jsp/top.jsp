@@ -60,8 +60,9 @@
 
     <style type="text/css">
         .top-menu-item {
-            margin-right:2em;
-            cursor:pointer
+            margin-right: 2em;
+            cursor: pointer;
+            flex-grow: 1;
         }
     </style>
 </head>
@@ -82,23 +83,26 @@
 
 <form method="post" action="search.view" target="main" name="searchForm">
 
-    <span class="topHeader top-menu-item" style="margin-right:3em">
-        <i id="show-left-frame" class="fa fa-bars fa-lg icon" onclick="showLeftFrame()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
-        <i id="hide-left-frame" class="fa fa-bars fa-lg icon" onclick="hideLeftFrame()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
-    </span>
+    <div style="display:flex; align-items:center">
+        <span class="topHeader top-menu-item" style="margin-right:3em">
+            <i id="show-left-frame" class="fa fa-bars fa-lg icon" onclick="showLeftFrame()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
+            <i id="hide-left-frame" class="fa fa-bars fa-lg icon" onclick="hideLeftFrame()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
+        </span>
 
-    <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('artists.view')"><i class="fa fa-microphone fa-fw fa-lg icon"></i>&nbsp;${artists}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('starred.view')"><i class="fa fa-star fa-fw fa-lg icon"></i>&nbsp;${starred}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('playlists.view')"><i class="fa fa-music fa-fw fa-lg icon"></i>&nbsp;${playlists}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('podcastChannels.view')"><i class="fa fa-rss fa-lg icon"></i>&nbsp;${podcast}</span>
-    <span class="topHeader top-menu-item" onclick="showPage('more.view')"><i class="fa fa-mobile fa-lg icon"></i>&nbsp;${more}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('artists.view')"><i class="fa fa-microphone fa-fw fa-lg icon"></i>&nbsp;${artists}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('starred.view')"><i class="fa fa-star fa-fw fa-lg icon"></i>&nbsp;${starred}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('playlists.view')"><i class="fa fa-music fa-fw fa-lg icon"></i>&nbsp;${playlists}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('podcastChannels.view')"><i class="fa fa-rss fa-lg icon"></i>&nbsp;${podcast}</span>
+        <span class="topHeader top-menu-item" onclick="showPage('more.view')"><i class="fa fa-mobile fa-lg icon"></i>&nbsp;${more}</span>
 
-    <span class="topHeader top-menu-item" style="float:right">
-        <input type="text" name="query" id="query" size="28" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch();" style="margin-left:1em">
+        <span style="flex-grow:8"></span>
+
+        <input type="text" name="query" id="query" size="20" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch();"
+               style="flex-grow:8; margin-left:1em;margin-right:0.5em">
         <i class="fa fa-search icon clickable" onclick="document.searchForm.submit()"></i>
-    </span>
+    </div>
 
 </form>
 

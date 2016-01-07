@@ -37,26 +37,26 @@ HTML5 player?
   Auto-hide in firefox not quite right
   Jukebox mute
   Slider padding for easier use.
+  Video player
+  External player (for shares)
 
 Show artists/browse in main frame?
   Vertical align index
   Improve Subsonic logo
-  Use flex layout in top.jsp
+
 
 Table in artists.jsp crashes with index.
 Consolidate rendering of selected media folder. Add more space.
   onclick: Open left.jsp
-Play queue icon.
-Consider to drop player concept.
 Don't show average rating
   Add category "Top rated by me"? Also consider REST
 Check link colors in themes.
 
-Use font icons in videoplayer
 Add icon to buttons (start radio etc)
 Use Bootstrap?
   http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
 
+Keyboard shortcuts
 Google image search broken?
   Ensure https
   Cover art caching
@@ -70,7 +70,6 @@ Remove Thumper?
 
 Last.fm song matching and playlists
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126
-Keyboard shortcuts
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15926
 Status and log should only be available for admin.
 
