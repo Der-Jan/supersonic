@@ -304,7 +304,7 @@
 <table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
-            <table class="music" style="width: 100%">
+            <table class="music">
                 <c:forEach items="${model.files}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <tr style="margin:0;padding:0;border:0">

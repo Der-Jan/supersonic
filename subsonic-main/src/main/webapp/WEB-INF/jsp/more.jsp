@@ -3,6 +3,7 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <style type="text/css">
+        body a {text-decoration: underline;}
         .more-header {padding-top: 1em;}
         #progressBar {width: 350px; height: 10px; border: 1px solid black; display:none;}
         #progressBarContent {width: 0; height: 10px; background: url("<c:url value="/icons/default_light/progress.png"/>") repeat;}

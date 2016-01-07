@@ -36,6 +36,7 @@ HTML5 player?
   Make external player work
   Auto-hide in firefox not quite right
   Jukebox mute
+  Slider padding for easier use.
 
 Show artists/browse in main frame?
   Vertical align index
@@ -43,14 +44,9 @@ Show artists/browse in main frame?
   Use flex layout in top.jsp
 
 Table in artists.jsp crashes with index.
-Links invisible in more.jsp
-Show video wxh?
 Consolidate rendering of selected media folder. Add more space.
   onclick: Open left.jsp
 Play queue icon.
-Don't remove shortcut artists from artist list.
-Close button in lyrics
-Slider padding for easier use.
 Consider to drop player concept.
 Don't show average rating
   Add category "Top rated by me"? Also consider REST

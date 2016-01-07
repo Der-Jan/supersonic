@@ -110,7 +110,7 @@
 
 <div style="clear:both; padding-top:2em"></div>
 
-<table class="music" style="width:100%">
+<table class="music">
     <c:forEach items="${model.singleSongs}" var="song" varStatus="loopStatus">
         <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
         <tr style="margin:0;padding:0;border:0">
