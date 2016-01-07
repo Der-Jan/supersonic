@@ -13,6 +13,7 @@ REST: Added getAlbumInfo and getAlbumInfo2
 REST: Added playCount
 Bugfix: Reimplemented cover art search using Last.fm
 Bugfix: Ensure changed cover art is displayed
+Show personal rather than average rating.
 
 TODO IN 5.4
 ------------
@@ -23,6 +24,7 @@ HTML5 player?
   Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Set estimateContentLength=true
+  Use flex layout in player?
   primary flash?
   Test stream role
   Simplify code for update current song
@@ -40,17 +42,13 @@ HTML5 player?
   Video player
   External player (for shares)
 
-Show artists/browse in main frame?
-  Vertical align index
-  Improve Subsonic logo
-
-
+Ugly "No matches found"
+Improve Subsonic logo
 Table in artists.jsp crashes with index.
 Consolidate rendering of selected media folder. Add more space.
-  onclick: Open left.jsp
-Don't show average rating
-  Add category "Top rated by me"? Also consider REST
+  onclick: Open left.jsp?
 Check link colors in themes.
+Ugly dropdown in firefox
 
 Add icon to buttons (start radio etc)
 Use Bootstrap?

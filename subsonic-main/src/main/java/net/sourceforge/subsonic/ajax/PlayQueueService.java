@@ -44,7 +44,6 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.PodcastEpisode;
 import net.sourceforge.subsonic.domain.PodcastStatus;
 import net.sourceforge.subsonic.domain.SavedPlayQueue;
-import net.sourceforge.subsonic.domain.UrlRedirectType;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.JukeboxService;
 import net.sourceforge.subsonic.service.LastFmService;
@@ -360,7 +359,7 @@ public class PlayQueueService {
                                                                                 selectedMusicFolder == null ? null : selectedMusicFolder.getId());
         List<MediaFile> albums;
         if ("highest".equals(albumListType)) {
-            albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);
+            albums = ratingService.getHighestRatedAlbumsForUser(offset, count, username, musicFolders);
         } else if ("frequent".equals(albumListType)) {
             albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, count, musicFolders);
         } else if ("recent".equals(albumListType)) {

@@ -88,7 +88,7 @@ public class HomeController extends ParameterizableViewController {
         List<Album> albums = Collections.emptyList();
         switch (listType) {
             case HIGHEST:
-                albums = getHighestRated(listOffset, LIST_SIZE, musicFolders);
+                albums = getHighestRated(listOffset, LIST_SIZE, user.getUsername(), musicFolders);
                 break;
             case FREQUENT:
                 albums = getMostFrequent(listOffset, LIST_SIZE, musicFolders);
@@ -145,11 +145,11 @@ public class HomeController extends ParameterizableViewController {
         return result;
     }
 
-    private List<Album> getHighestRated(int offset, int count, List<MusicFolder> musicFolders) {
+    private List<Album> getHighestRated(int offset, int count, String username, List<MusicFolder> musicFolders) {
         List<Album> result = new ArrayList<Album>();
-        for (MediaFile mediaFile : ratingService.getHighestRatedAlbums(offset, count, musicFolders)) {
+        for (MediaFile mediaFile : ratingService.getHighestRatedAlbumsForUser(offset, count, username, musicFolders)) {
             Album album = createAlbum(mediaFile);
-            album.setRating((int) Math.round(ratingService.getAverageRating(mediaFile) * 10.0D));
+            album.setRating(ratingService.getRatingForUser(username, mediaFile) * 10);
             result.add(album);
         }
         return result;

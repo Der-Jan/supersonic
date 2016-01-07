@@ -424,7 +424,7 @@ public class SonosHelper {
                 total = mediaFileService.getStarredAlbumCount(username, musicFolders);
                 break;
             case HIGHEST:
-                albums = ratingService.getHighestRatedAlbums(offset, count, musicFolders);
+                albums = ratingService.getHighestRatedAlbumsForUser(offset, count, username, musicFolders);
                 total = ratingService.getRatedAlbumCount(username, musicFolders);
                 break;
             case FREQUENT:
