@@ -519,6 +519,10 @@
             $("#startButton").toggle(!playQueue.stopEnabled);
             $("#stopButton").toggle(playQueue.stopEnabled);
             $(".fa-circle-o-notch").toggleClass("fa-spin", playQueue.stopEnabled);
+            if (playQueue.startPlayerAt != -1) {
+                currentStreamUrl = songs[playQueue.startPlayerAt].streamUrl;
+                updateCoverArt(songs[playQueue.startPlayerAt]);
+            }
             updateCurrentImage();
         }
     }

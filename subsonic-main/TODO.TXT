@@ -41,11 +41,11 @@ HTML5 player?
   External player (for shares)
   Make prev button 'go to beginning of song
   Don't show cast button if in jukebox mode?
-  Jukebox: Doesn't update when playing.
+  Jukebox: Doesn't update when playing or clearing.
 Ellipsise buttons in left.jsp
 Ellipsise "now playing" in right.jsp
-Icon for "Chat messages"?
 
+Rename "Artists" to "Index"?
 Jukebox mute: Add REST support
 Play queue "shadow" on top.
 Ugly "No matches found"
