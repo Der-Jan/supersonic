@@ -41,6 +41,9 @@ HTML5 player?
   Slider padding for easier use.
   Video player
   External player (for shares)
+  Clear playqueue doesn't clear player
+  Make prev button go to beginning of song
+Ellipsise buttons in left.jsp
 
 Ugly "No matches found"
 Improve Subsonic logo

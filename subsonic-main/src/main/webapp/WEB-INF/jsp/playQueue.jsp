@@ -188,7 +188,7 @@
         jwPlayer.on("play", function() {updateControls()});
         jwPlayer.on("pause", function() {updateControls()});
         jwPlayer.on("mute", function() {updateControls()});
-        jwPlayer.on("time", function(event) {updateProgressBar(event)});
+        jwPlayer.on("time", function(event) {updateProgressBar(event.position, event.duration)});
         $("#volume").slider("option", "value", jwPlayer.getVolume());
     }
     function updateControls() {
@@ -204,11 +204,11 @@
         $("#muteOn").toggle(!muted);
         $("#muteOff").toggle(muted);
     }
-    function updateProgressBar(event) {
-        $("#progress").slider("option", "max", Math.round(event.duration * 1000));
-        $("#progress").slider("option", "value", Math.round(event.position * 1000));
-        $("#progress-text").html(formatDuration(Math.round(event.position)));
-        $("#duration-text").html(formatDuration(Math.round(event.duration)));
+    function updateProgressBar(position, duration) {
+        $("#progress").slider("option", "max", Math.round(duration * 1000));
+        $("#progress").slider("option", "value", Math.round(position * 1000));
+        $("#progress-text").html(formatDuration(Math.round(position)));
+        $("#duration-text").html(formatDuration(Math.round(duration)));
     }
     function formatDuration(duration) {
         var hours = Math.floor(duration / 3600);
@@ -523,6 +523,25 @@
         if (songs.length == 0) {
             jwPlayer.stop();
             jwPlayer.load({file:"foo.mp3"});
+            updateCoverArt(null);
+            updateProgressBar(0, 0);
+        }
+    }
+
+    function updateCoverArt(song) {
+        var showAlbum = function () {
+            parent.frames.main.location.href = "main.view?id=" + song.id
+        };
+        $("#coverArt").attr("src", song ? "coverArt.view?id=" + song.id + "&size=80" : "");
+        $("#songName").text(song ? song.title : "");
+        $("#artistName").text(song ? song.artist : "");
+        $("#songName").off("click");
+        $("#artistName").off("click");
+        $("#coverArt").off("click");
+        if (song) {
+            $("#songName").click(showAlbum);
+            $("#artistName").click(showAlbum);
+            $("#coverArt").click(showAlbum);
         }
     }
 
@@ -549,17 +568,7 @@
         }
 
         updateWindowTitle(song);
-
-        var showAlbum = function () {
-            parent.frames.main.location.href = "main.view?id=" + song.id
-        };
-
-        $("#coverArt").attr("src", "coverArt.view?id=" + song.id + "&size=80");
-        $("#songName").text(song.title);
-        $("#artistName").text(song.artist);
-        $("#songName").click(showAlbum);
-        $("#artistName").click(showAlbum);
-        $("#coverArt").click(showAlbum);
+        updateCoverArt(song);
 
         if (${model.notify}) {
             showNotification(song);

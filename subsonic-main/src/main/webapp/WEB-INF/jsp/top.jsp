@@ -33,7 +33,7 @@
         function showLeftFrame() {
             $("#show-left-frame").hide();
             $("#hide-left-frame").show();
-            toggleLeftFrame(230);
+            toggleLeftFrame(210);
             multiService.setShowSideBar(true);
         }
 
