@@ -290,14 +290,6 @@
             jwPlayer.setMute(mute);
         }
     }
-    function onSkip(index) {
-        if (jwPlayer) {
-            skip(index);
-        } else {
-//            currentStreamUrl = songs[index].streamUrl;
-            playQueueService.skip(index, playQueueCallback);
-        }
-    }
     function onNext(wrap) {
         var index = parseInt(getCurrentSongIndex()) + 1;
         if (wrap) {
@@ -462,7 +454,7 @@
             if ($("#titleUrl" + id)) {
                 $("#titleUrl" + id).html(song.title);
                 $("#titleUrl" + id).attr("title", song.title);
-                $("#titleUrl" + id).click(function () {onSkip(this.id.substring(8) - 1)});
+                $("#titleUrl" + id).click(function () {skip(this.id.substring(8) - 1, 0)});
             }
             if ($("#album" + id)) {
                 $("#album" + id).html(song.album);
@@ -563,8 +555,8 @@
             });
             jwplayer().play();
             console.log(song.streamUrl);
-        } else if (jukeboxPlayer) {
-            console.log("TODO: Update jukebox");
+        } else {
+            playQueueService.skip(index, playQueueCallback);
         }
 
         updateWindowTitle(song);

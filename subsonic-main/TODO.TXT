@@ -37,14 +37,15 @@ HTML5 player?
   Cast background image
   Make external player work
   Auto-hide in firefox not quite right
-  Jukebox mute
+  Jukebox: mute
+  Jukebox: current image, current song title
   Slider padding for easier use.
   Video player
   External player (for shares)
-  Clear playqueue doesn't clear player
   Make prev button go to beginning of song
 Ellipsise buttons in left.jsp
 
+Play queue "shadow" on top.
 Ugly "No matches found"
 Improve Subsonic logo
 Table in artists.jsp crashes with index.
