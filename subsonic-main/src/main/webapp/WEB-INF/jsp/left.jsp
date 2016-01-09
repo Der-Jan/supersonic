@@ -50,7 +50,11 @@
     </div>
 </c:if>
 
-<div style="padding-bottom:1.5em" class="topHeader">
+<div style="padding-bottom:1em" class="topHeader">
+    <i class="fa fa-plus-square fa-lg fa-fw icon"></i>&nbsp;<a href="more.view" target="main"><fmt:message key="top.more"/></a>
+</div>
+
+<div style="padding-bottom:1em" class="topHeader">
     <i class="fa fa-info-circle fa-lg fa-fw icon"></i>&nbsp;<a href="help.view" target="main"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></a>
 </div>
 

@@ -40,10 +40,10 @@ HTML5 player?
   Video player
   External player (for shares)
   Make prev button 'go to beginning of song
-  Show cast button if in jukebox mode?
+  Don't show cast button if in jukebox mode?
+  Jukebox: Doesn't update when playing.
 Ellipsise buttons in left.jsp
 Ellipsise "now playing" in right.jsp
-Move "More" to left.jsp
 Icon for "Chat messages"?
 
 Jukebox mute: Add REST support
