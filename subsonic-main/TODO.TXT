@@ -57,7 +57,6 @@ Use Bootstrap?
 Keyboard shortcuts
 Google image search broken?
   Ensure https
-  Cover art caching
 Review scanning algorithm. Always visit children?
 REST: Artist image url?
 Sonos: Star button missing on ipad

@@ -5,7 +5,7 @@
  *
  */
 
-@import "default.css";
+@import "base.css";
 
 /* The primary background colour. */
 .bgcolor1, table.music tr:nth-of-type(even) {

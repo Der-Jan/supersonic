@@ -18,7 +18,7 @@
     <style type="text/css">
         .ui-slider .ui-slider-handle {
             width: 12px; height: 12px; cursor: pointer;
-            background: darkorange;
+            background: #E65100;
             display:none;
             border:none;
         }
@@ -27,16 +27,16 @@
             border:none;
         }
         .ui-slider-range-min {
-            background: darkorange;
+            background: #E65100;
         }
         .ui-slider-handle:focus {
             outline:none;
         }
         #startButton, #stopButton {
-            cursor:pointer; font-size:30px; color:darkorange
+            cursor:pointer; font-size:30px; color:#E65100
         }
         #bufferButton {
-            font-size:30px; color:darkorange
+            font-size:30px; color:#E65100
         }
         #previousButton, #nextButton {
             cursor:pointer; font-size:18px; padding:10px; margin-left:10px; margin-right:10px

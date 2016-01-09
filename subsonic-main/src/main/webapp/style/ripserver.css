@@ -4,7 +4,7 @@
  * Author: Ralph Hill
  */
 
-@import "default.css";
+@import "base.css";
 
 /* The primary background color (light blue). */
 .bgcolor1, table.music tr:nth-of-type(even) {
