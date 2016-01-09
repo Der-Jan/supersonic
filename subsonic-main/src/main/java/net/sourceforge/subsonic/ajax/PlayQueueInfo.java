@@ -33,16 +33,19 @@ public class PlayQueueInfo {
     private final boolean stopEnabled;
     private final boolean repeatEnabled;
     private final boolean sendM3U;
-    private final float gain;
+    private final float jukeboxGain;
+    private final boolean jukeboxMute;
     private int startPlayerAt = -1;
     private long startPlayerAtPosition; // millis
 
-    public PlayQueueInfo(List<Entry> entries, boolean stopEnabled, boolean repeatEnabled, boolean sendM3U, float gain) {
+    public PlayQueueInfo(List<Entry> entries, boolean stopEnabled, boolean repeatEnabled, boolean sendM3U,
+                         float jukeboxGain, boolean jukeboxMute) {
         this.entries = entries;
         this.stopEnabled = stopEnabled;
         this.repeatEnabled = repeatEnabled;
         this.sendM3U = sendM3U;
-        this.gain = gain;
+        this.jukeboxGain = jukeboxGain;
+        this.jukeboxMute = jukeboxMute;
     }
 
     public List<Entry> getEntries() {
@@ -71,8 +74,12 @@ public class PlayQueueInfo {
         return repeatEnabled;
     }
 
-    public float getGain() {
-        return gain;
+    public float getJukeboxGain() {
+        return jukeboxGain;
+    }
+
+    public boolean isJukeboxMute() {
+        return jukeboxMute;
     }
 
     public int getStartPlayerAt() {

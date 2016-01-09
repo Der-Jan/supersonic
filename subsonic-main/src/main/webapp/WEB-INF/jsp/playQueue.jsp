@@ -268,13 +268,15 @@
         }
     }
     function onVolumeChanged() {
+        $("#muteOn").show();
+        $("#muteOff").hide();
         var value = parseInt($("#volume").slider("option", "value"));
         if (castPlayer.castSession) {
             castPlayer.setCastVolume(value / 100, false);
         } else if (jwPlayer) {
             jwPlayer.setVolume(value);
         } else if (jukeboxPlayer) {
-            playQueueService.setGain(value / 100);
+            playQueueService.setJukeboxGain(value / 100);
         }
     }
     function onProgressChanged() {
@@ -284,10 +286,15 @@
         }
     }
     function onMute(mute) {
+        $("#muteOn").toggle(!mute);
+        $("#muteOff").toggle(mute);
+
         if (castPlayer.castSession) {
             castPlayer.castMute(mute);
         } else if (jwPlayer) {
             jwPlayer.setMute(mute);
+        } else if (jukeboxPlayer) {
+            playQueueService.setJukeboxMute(mute);
         }
     }
     function onNext(wrap) {
@@ -492,11 +499,11 @@
             parent.frames.main.location.href="play.m3u?";
         }
 
-//        todo
-//        var jukeboxVolume = $("#jukeboxVolume");
-//        if (jukeboxVolume) {
-//            jukeboxVolume.slider("option", "value", Math.floor(playQueue.gain * 100));
-//        }
+        if (jukeboxPlayer) {
+            $("#volume").slider("option", "value", Math.floor(playQueue.jukeboxGain * 100));
+            $("#muteOn").toggle(!playQueue.jukeboxMute);
+            $("#muteOff").toggle(playQueue.jukeboxMute);
+        }
 
         if (jwPlayer) {
             triggerPlayer(playQueue.startPlayerAt, playQueue.startPlayerAtPosition);

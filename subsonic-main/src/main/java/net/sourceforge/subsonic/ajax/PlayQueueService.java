@@ -600,8 +600,12 @@ public class PlayQueueService {
         return convert(request, player, false);
     }
 
-    public void setGain(float gain) {
+    public void setJukeboxGain(float gain) {
         jukeboxService.setGain(gain);
+    }
+
+    public void setJukeboxMute(boolean mute) {
+        jukeboxService.setMute(mute);
     }
 
     private PlayQueueInfo convert(HttpServletRequest request, Player player, boolean serverSidePlaylist) throws Exception {
@@ -649,8 +653,8 @@ public class PlayQueueService {
                     coverArtUrl, remoteCoverArtUrl));
         }
         boolean isStopEnabled = playQueue.getStatus() == PlayQueue.Status.PLAYING && !player.isExternalWithPlaylist();
-        float gain = jukeboxService.getGain();
-        return new PlayQueueInfo(entries, isStopEnabled, playQueue.isRepeatEnabled(), serverSidePlaylist, gain);
+        return new PlayQueueInfo(entries, isStopEnabled, playQueue.isRepeatEnabled(), serverSidePlaylist,
+                                 jukeboxService.getGain(), jukeboxService.isMute());
     }
 
     private String formatFileSize(Long fileSize, Locale locale) {

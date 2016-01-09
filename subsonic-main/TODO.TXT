@@ -45,6 +45,7 @@ HTML5 player?
   Make prev button go to beginning of song
 Ellipsise buttons in left.jsp
 
+Jukebox mute: Add REST support
 Play queue "shadow" on top.
 Ugly "No matches found"
 Improve Subsonic logo
