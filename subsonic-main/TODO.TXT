@@ -37,12 +37,11 @@ HTML5 player?
   Cast background image
   Make external player work
   Auto-hide in firefox not quite right
-  Jukebox: mute
-  Jukebox: current image, current song title
   Slider padding for easier use.
   Video player
   External player (for shares)
   Make prev button go to beginning of song
+  Show cast button if in jukebox mode?
 Ellipsise buttons in left.jsp
 
 Jukebox mute: Add REST support

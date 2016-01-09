@@ -53,14 +53,12 @@
         #coverArt {
             cursor:pointer; width:80px; height:80px
         }
+        #dummy-animation-target {
+            max-width:50px;display:none;
+        }
     </style>
-</head>
 
-<body class="bgcolor2 playlistframe" onload="init()">
-
-<span id="dummy-animation-target" style="max-width:50px;display:none" class="bgcolor1"></span>
-
-<script type="text/javascript" language="javascript">
+    <script type="text/javascript" language="javascript">
     var songs = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
@@ -237,16 +235,16 @@
 
     function onClear() {
         var ok = true;
-    <c:if test="${model.partyMode}">
+        <c:if test="${model.partyMode}">
         ok = confirm("<fmt:message key="playlist.confirmclear"/>");
-    </c:if>
+        </c:if>
         if (ok) {
             playQueueService.clear(playQueueCallback);
         }
     }
     function onStart() {
         if (castPlayer.castSession) {
-         castPlayer.playCast();
+            castPlayer.playCast();
         } else if (jwPlayer) {
             if (jwPlayer.getPlaylistItem().file == "foo.mp3") {
                 skip(0);
@@ -510,6 +508,8 @@
         } else {
             $("#startButton").toggle(!playQueue.stopEnabled);
             $("#stopButton").toggle(playQueue.stopEnabled);
+            $(".fa-circle-o-notch").toggleClass("fa-spin", playQueue.stopEnabled);
+            updateCurrentImage();
         }
     }
 
@@ -682,8 +682,12 @@
         }
     }
 
-</script>
+    </script>
+</head>
 
+<body class="bgcolor2 playlistframe" onload="init()">
+
+<span id="dummy-animation-target" class="bgcolor1"></span>
 <div class="bgcolor2" style="position:fixed;bottom:0;width:100%;z-index: 2">
     <div id="jwplayer"></div>
 
