@@ -177,7 +177,7 @@
 <div id="nowPlaying"></div>
 
 <c:if test="${model.showChat}">
-    <h2><fmt:message key="main.chat"/></h2>
+    <h2 style="padding-top:1.5em"><i class="fa fa-comment-o fa-lg fa-fw icon"></i>&nbsp;<fmt:message key="main.chat"/></h2>
     <div style="padding-top:0.3em;padding-bottom:0.3em">
         <input type="text" id="message" placeholder="<fmt:message key="main.message"/>" style="width:100%" onkeypress="dwr.util.onReturn(event, addMessage)"/>
     </div>

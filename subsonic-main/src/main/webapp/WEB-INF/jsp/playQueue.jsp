@@ -160,18 +160,18 @@
     function startTimer() {
         <!-- Periodically check if the current song has changed. -->
         nowPlayingService.getNowPlayingForCurrentPlayer(nowPlayingCallback);
-        setTimeout("startTimer()", 10000);
+        setTimeout("startTimer()", 5000);
     }
 
     function nowPlayingCallback(nowPlayingInfo) {
         if (nowPlayingInfo != null && nowPlayingInfo.streamUrl != currentStreamUrl) {
             getPlayQueue();
-            if (!jwPlayer) {
-                currentStreamUrl = nowPlayingInfo.streamUrl;
-                updateCurrentImage();
-            }
+            currentStreamUrl = nowPlayingInfo.streamUrl;
+            updateCurrentImage();
+            updateCoverArt(songs[getCurrentSongIndex()]);
         }
     }
+
     function createPlayer() {
         jwPlayer = jwplayer("jwplayer");
         jwPlayer.setup({
@@ -189,6 +189,7 @@
         jwPlayer.on("time", function(event) {updateProgressBar(event.position, event.duration)});
         $("#volume").slider("option", "value", jwPlayer.getVolume());
     }
+
     function updateControls() {
         var state = jwPlayer.getState();
         var playing = state == "playing";
@@ -202,12 +203,14 @@
         $("#muteOn").toggle(!muted);
         $("#muteOff").toggle(muted);
     }
+
     function updateProgressBar(position, duration) {
         $("#progress").slider("option", "max", Math.round(duration * 1000));
         $("#progress").slider("option", "value", Math.round(position * 1000));
         $("#progress-text").html(formatDuration(Math.round(position)));
         $("#duration-text").html(formatDuration(Math.round(duration)));
     }
+
     function formatDuration(duration) {
         var hours = Math.floor(duration / 3600);
         duration = duration % 3600;
@@ -229,6 +232,7 @@
 
         return result;
     }
+
     function getPlayQueue() {
         playQueueService.getPlayQueue(playQueueCallback);
     }
@@ -242,6 +246,7 @@
             playQueueService.clear(playQueueCallback);
         }
     }
+
     function onStart() {
         if (castPlayer.castSession) {
             castPlayer.playCast();
@@ -256,6 +261,7 @@
             playQueueService.start(playQueueCallback);
         }
     }
+
     function onStop() {
         if (castPlayer.castSession) {
             castPlayer.pauseCast();
@@ -265,6 +271,7 @@
             playQueueService.stop(playQueueCallback);
         }
     }
+
     function onVolumeChanged() {
         $("#muteOn").show();
         $("#muteOff").hide();
@@ -277,12 +284,14 @@
             playQueueService.setJukeboxGain(value / 100);
         }
     }
+
     function onProgressChanged() {
         var value = parseInt($("#progress").slider("option", "value") / 1000);
         if (jwPlayer) {
             jwPlayer.seek(value);
         }
     }
+
     function onMute(mute) {
         $("#muteOn").toggle(!mute);
         $("#muteOff").toggle(mute);
@@ -295,6 +304,7 @@
             playQueueService.setJukeboxMute(mute);
         }
     }
+
     function onNext(wrap) {
         var index = parseInt(getCurrentSongIndex()) + 1;
         if (wrap) {

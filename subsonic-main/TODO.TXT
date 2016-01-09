@@ -30,7 +30,6 @@ HTML5 player?
   Simplify code for update current song
   Make cast work
   Fix bug when having same song twice in play queue
-  Make jukebox work
   Show buffering spinner in cast mode.
   Cast unmute
   Cast progress bar
@@ -40,9 +39,12 @@ HTML5 player?
   Slider padding for easier use.
   Video player
   External player (for shares)
-  Make prev button go to beginning of song
+  Make prev button 'go to beginning of song
   Show cast button if in jukebox mode?
 Ellipsise buttons in left.jsp
+Ellipsise "now playing" in right.jsp
+Move "More" to left.jsp
+Icon for "Chat messages"?
 
 Jukebox mute: Add REST support
 Play queue "shadow" on top.
