@@ -320,6 +320,37 @@
         }
     }
 
+    function keyboardShortcut(action) {
+        if (action == "togglePlayPause") {
+            if ($("#startButton").is(":visible")) {
+                $("#startButton").click();
+            } else if ($("#stopButton").is(":visible")) {
+                $("#stopButton").click();
+            }
+        } else if (action == "previous" && $("#previousButton").is(":visible")) {
+            $("#previousButton").click();
+        } else if (action == "next" && $("#nextButton").is(":visible")) {
+            $("#nextButton").click();
+        } else if (action == "volumeDown" && $("#volume").is(":visible")) {
+            var volume = parseInt($("#volume").slider("option", "value"));
+            $("#volume").slider("option", "value", Math.max(0, volume - 5));
+            onVolumeChanged();
+        } else if (action == "volumeUp" && $("#volume").is(":visible")) {
+            var volume = parseInt($("#volume").slider("option", "value"));
+            $("#volume").slider("option", "value", Math.min(100, volume + 5));
+            onVolumeChanged();
+        } else if (action == "seekForward" && jwPlayer && $("#stopButton").is(":visible")) {
+            var position = parseInt($("#progress").slider("option", "value"));
+            var duration = parseInt($("#progress").slider("option", "max"));
+            $("#progress").slider("option", "value", Math.min(duration, position + 1000));
+            onProgressChanged();
+        } else if (action == "seekBackward" && jwPlayer && $("#stopButton").is(":visible")) {
+            var position = parseInt($("#progress").slider("option", "value"));
+            $("#progress").slider("option", "value", Math.max(0, position - 1000));
+            onProgressChanged();
+        }
+    }
+
     function onNext(wrap) {
         var index = parseInt(getCurrentSongIndex()) + 1;
         if (wrap) {

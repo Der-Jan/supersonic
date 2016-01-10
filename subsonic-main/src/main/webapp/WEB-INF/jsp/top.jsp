@@ -30,21 +30,21 @@
             }
         }
 
-        function showLeftFrame() {
-            $("#show-left-frame").hide();
-            $("#hide-left-frame").show();
-            toggleLeftFrame(210);
+        function showSideBar() {
+            $("#show-side-bar").hide();
+            $("#hide-side-bar").show();
+            toggleSideBar(210);
             multiService.setShowSideBar(true);
         }
 
-        function hideLeftFrame() {
-            $("#hide-left-frame").hide();
-            $("#show-left-frame").show();
-            toggleLeftFrame(0);
+        function hideSideBar() {
+            $("#hide-side-bar").hide();
+            $("#show-side-bar").show();
+            toggleSideBar(0);
             multiService.setShowSideBar(false);
         }
 
-        function toggleLeftFrame(width) {
+        function toggleSideBar(width) {
             <%-- Disable animation in Chrome. It stopped working in Chrome 44. --%>
             var duration = navigator.userAgent.indexOf("Chrome") != -1 ? 0 : 400;
 
@@ -56,6 +56,35 @@
                 duration: duration
             });
         }
+
+        function keyboardShortcut(action) {
+            if (action == "toggleSideBar") {
+                if ($("#show-side-bar").is(":visible")) {
+                    $("#show-side-bar").click();
+                } else if ($("#hide-side-bar").is(":visible")) {
+                    $("#hide-side-bar").click();
+                }
+            } else if (action == "showHome") {
+                showPage("home.view");
+            } else if (action == "showIndex") {
+                showPage("artists.view");
+            } else if (action == "showPlaylists") {
+                showPage("playlists.view");
+            } else if (action == "showPodcasts") {
+                showPage("podcastChannels.view");
+            } else if (action == "showSettings") {
+                showPage("settings.view");
+            } else if (action == "showStarred") {
+                showPage("starred.view");
+            } else if (action == "showMore") {
+                showPage("more.view");
+            } else if (action == "showAbout") {
+                showPage("help.view");
+            } else if (action == "search") {
+                $("#query").focus().select();
+            }
+        }
+
     </script>
 
     <style type="text/css">
@@ -84,8 +113,8 @@
 
     <div style="display:flex; align-items:center">
         <span class="topHeader top-menu-item" style="margin-right:3em">
-            <i id="show-left-frame" class="fa fa-bars fa-lg icon" onclick="showLeftFrame()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
-            <i id="hide-left-frame" class="fa fa-bars fa-lg icon" onclick="hideLeftFrame()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
+            <i id="show-side-bar" class="fa fa-bars fa-lg icon" onclick="showSideBar()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
+            <i id="hide-side-bar" class="fa fa-bars fa-lg icon" onclick="hideSideBar()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
         </span>
 
         <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
