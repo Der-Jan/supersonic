@@ -25,8 +25,8 @@ HTML5 player?
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Set estimateContentLength=true
   Use flex layout in player?
-  primary flash?
   Test stream role
+  Verify that html5 is used
   Simplify code for update current song
   Make cast work
   Fix bug when having same song twice in play queue
@@ -35,7 +35,6 @@ HTML5 player?
   Cast progress bar
   Cast background image
   Auto-hide in firefox not quite right
-  Slider padding for easier use.
   Video player
   External player (for shares)
   Make prev button go to beginning of song

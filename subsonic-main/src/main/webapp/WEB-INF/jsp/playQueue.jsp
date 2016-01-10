@@ -561,8 +561,8 @@
             parent.frames.main.location.href = "main.view?id=" + song.id
         };
         $("#coverArt").attr("src", song ? "coverArt.view?id=" + song.id + "&size=80" : "");
-        $("#songName").text(song ? song.title : "");
-        $("#artistName").text(song ? song.artist : "");
+        $("#songName").text(song && song.title ? song.title : "");
+        $("#artistName").text(song && song.artist ? song.artist : "");
         $("#songName").off("click");
         $("#artistName").off("click");
         $("#coverArt").off("click");
@@ -604,7 +604,17 @@
     }
 
     function updateWindowTitle(song) {
-        top.document.title = song.title + " - " + song.artist + " - Subsonic";
+        var title = "";
+        if (song.title) {
+            title += song.title;
+        }
+        if (song.title && song.artist) {
+            title += " - ";
+        }
+        if (song.artist) {
+            title += song.artist;
+        }
+        top.document.title = title  + " - Subsonic";
     }
 
     function showNotification(song) {
@@ -625,9 +635,20 @@
     }
 
     function createNotification(song) {
+        var body = "";
+        if (song.artist) {
+            body += song.artist;
+        }
+        if (song.artist && song.album) {
+            body += " - ";
+        }
+        if (song.album) {
+            body += song.album;
+        }
+
         var n = new Notification(song.title, {
             tag: "subsonic",
-            body: song.artist + " - " + song.album,
+            body: body,
             icon: "coverArt.view?id=" + song.id + "&size=110"
         });
         n.onshow = function() {
