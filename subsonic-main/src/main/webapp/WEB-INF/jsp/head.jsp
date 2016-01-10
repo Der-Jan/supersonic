@@ -27,7 +27,7 @@
     Mousetrap.bind('g t', function() { parent.frames.upper.keyboardShortcut("showStarred") });
     Mousetrap.bind('g r', function() { parent.frames.upper.keyboardShortcut("showMore") });
     Mousetrap.bind('g a', function() { parent.frames.upper.keyboardShortcut("showAbout") });
-    Mousetrap.bind('/', function() { parent.frames.upper.keyboardShortcut("search") });
+    Mousetrap.bind('/', function() { parent.frames.upper.keyboardShortcut("search"); return false });
 
 </script>
 

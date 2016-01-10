@@ -15,7 +15,11 @@
             parent.frames.main.location.href = url;
         }
 
-        function triggerInstantSearch() {
+        function triggerInstantSearch(event) {
+            if (event.keyCode == 27) { // Escape key
+                $("#query").blur();
+                return;
+            }
             if (instantSearchTimeout) {
                 window.clearTimeout(instantSearchTimeout);
             }
@@ -126,7 +130,7 @@
 
         <span style="flex-grow:8"></span>
 
-        <input type="text" name="query" id="query" size="20" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch();"
+        <input type="text" name="query" id="query" size="20" placeholder="${search}" onclick="select();" onkeyup="triggerInstantSearch(event);"
                style="flex-grow:8; margin-left:1em;margin-right:0.5em">
         <i class="fa fa-search icon clickable" onclick="document.searchForm.submit()"></i>
     </div>
