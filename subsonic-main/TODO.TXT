@@ -34,20 +34,18 @@ HTML5 player?
   Cast unmute
   Cast progress bar
   Cast background image
-  Make external player work
   Auto-hide in firefox not quite right
   Slider padding for easier use.
   Video player
   External player (for shares)
-  Make prev button 'go to beginning of song
+  Make prev button go to beginning of song
   Don't show cast button if in jukebox mode?
   Jukebox: Doesn't update when playing or clearing.
 Ellipsise buttons in left.jsp
 Ellipsise "now playing" in right.jsp
+Keyboard shortcuts
 
-Rename "Artists" to "Index"?
 Jukebox mute: Add REST support
-Play queue "shadow" on top.
 Ugly "No matches found"
 Improve Subsonic logo
 Table in artists.jsp crashes with index.
@@ -59,8 +57,6 @@ Ugly dropdown in firefox
 Add icon to buttons (start radio etc)
 Use Bootstrap?
   http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
-
-Keyboard shortcuts
 Google image search broken?
   Ensure https
 Review scanning algorithm. Always visit children?

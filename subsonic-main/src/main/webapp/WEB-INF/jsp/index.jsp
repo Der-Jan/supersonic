@@ -16,7 +16,7 @@
             <frame name="right" src="right.view?" class="bgcolor1">
         </frameset>
     </frameset>
-    <frame name="playQueue" src="playQueue.view?" class="bgcolor2">
+    <frame name="playQueue" src="playQueue.view?" class="bgcolor2" style="border-top:1px solid rgba(0, 0, 0, 0.1)">
 </frameset>
 
 </html>
