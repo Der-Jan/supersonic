@@ -43,11 +43,8 @@ HTML5 player?
   Jukebox: Doesn't update when playing or clearing.
 Ellipsise buttons in left.jsp
 Ellipsise "now playing" in right.jsp
-Keyboard shortcuts
-  "?" should show explanation
-  Or show in "More" page.
 Mute icon changed when setting volume 0
-Esc should unfocus search input
+Make it simple to star currently playing song.
 
 Jukebox mute: Add REST support
 Ugly "No matches found"

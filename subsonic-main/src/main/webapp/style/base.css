@@ -30,13 +30,9 @@ body {
     color: black;
 }
 
-.icon {
-    color: #565656;
-}
-
 /* The secondary foreground color used for h1, h2, details etc (gray). */
-h1, h2, .detail, .albumComment {
-    color: #696969;
+h1, h2, .detail, .albumComment, .icon {
+    color: #565656;
 }
 
 /* Foreground color used for bold and tr. */

@@ -29,5 +29,17 @@
     Mousetrap.bind('g a', function() { parent.frames.upper.keyboardShortcut("showAbout") });
     Mousetrap.bind('/', function() { parent.frames.upper.keyboardShortcut("search"); return false });
 
+    var indices = "abcdefghijklmnopqrstuvwxyz";
+    for (var i = 0, len = indices.length; i < len; i++) {
+        var target = indices.substring(i, i + 1);
+        createKeyboardShortcutForIndex(target);
+    }
+
+    function createKeyboardShortcutForIndex(index) {
+        Mousetrap.bind("i " + index, function() {
+            parent.frames.upper.keyboardShortcut("showIndex", index.toUpperCase());
+        });
+    }
+
 </script>
 

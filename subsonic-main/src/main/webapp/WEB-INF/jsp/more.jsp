@@ -177,8 +177,13 @@
         <td></td><td></td>
     </tr>
     <tr>
-        <td class="more-shortcut"></td><td></td>
+        <td></td><td></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> a</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.about"/></td>
+        <td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td>
+        <td class="more-shortcut">i <fmt:message key="more.keyboard.then"/> a, b, c &hellip;</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.indexletter"/></td>
         <td></td><td></td>
     </tr>
 </table>

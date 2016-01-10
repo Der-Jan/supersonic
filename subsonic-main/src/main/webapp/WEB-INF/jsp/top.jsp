@@ -61,7 +61,7 @@
             });
         }
 
-        function keyboardShortcut(action) {
+        function keyboardShortcut(action, param) {
             if (action == "toggleSideBar") {
                 if ($("#show-side-bar").is(":visible")) {
                     $("#show-side-bar").click();
@@ -71,7 +71,7 @@
             } else if (action == "showHome") {
                 showPage("home.view");
             } else if (action == "showIndex") {
-                showPage("artists.view");
+                showPage(param ? "artists.view#" + param : "artists.view");
             } else if (action == "showPlaylists") {
                 showPage("playlists.view");
             } else if (action == "showPodcasts") {
