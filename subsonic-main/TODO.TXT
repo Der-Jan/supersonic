@@ -47,6 +47,7 @@ Keyboard shortcuts
   "?" should show explanation
   Or show in "More" page.
 Mute icon changed when setting volume 0
+Esc should unfocus search input
 
 Jukebox mute: Add REST support
 Ugly "No matches found"

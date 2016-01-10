@@ -44,6 +44,10 @@ b, tr {
     color: #333333;
 }
 
+b {
+    font-weight: 500;
+}
+
 /* Link color */
 a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
     color: inherit
