@@ -133,6 +133,7 @@
 <h2 class="more-header"><i class="fa fa-area-chart fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.status.title"/></h2>
 <fmt:message key="more.status.text"/>
 
+<a name="shortcuts"></a>
 <h2 class="more-header"><i class="fa fa-keyboard-o fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="more.keyboard.title"/></h2>
 
 <table class="indent music" style="width:inherit">
@@ -154,7 +155,7 @@
     <tr>
         <td class="more-shortcut"><i class="fa fa-long-arrow-right"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.next"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> p</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.playlists"/></td>
-        <td></td><td></td>
+        <td class="more-shortcut">?</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.shortcuts"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">Shift <i class="fa fa-long-arrow-left"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.seekbackward"/></td>

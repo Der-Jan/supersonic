@@ -81,7 +81,7 @@
             } else if (action == "showStarred") {
                 showPage("starred.view");
             } else if (action == "showMore") {
-                showPage("more.view");
+                showPage(param ? "more.view#" + param : "more.view");
             } else if (action == "showAbout") {
                 showPage("help.view");
             } else if (action == "search") {

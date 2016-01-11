@@ -28,6 +28,7 @@
     Mousetrap.bind('g r', function() { parent.frames.upper.keyboardShortcut("showMore") });
     Mousetrap.bind('g a', function() { parent.frames.upper.keyboardShortcut("showAbout") });
     Mousetrap.bind('/', function() { parent.frames.upper.keyboardShortcut("search"); return false });
+    Mousetrap.bind('?', function() { parent.frames.upper.keyboardShortcut("showMore", "shortcuts")});
 
     var indices = "abcdefghijklmnopqrstuvwxyz";
     for (var i = 0, len = indices.length; i < len; i++) {

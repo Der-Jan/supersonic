@@ -54,7 +54,7 @@
             cursor:pointer; width:80px; height:80px
         }
         #dummy-animation-target {
-            max-width:50px;display:none;
+            max-width:95px;display:none;
         }
     </style>
 
