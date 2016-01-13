@@ -288,9 +288,11 @@
     }
 
     function onVolumeChanged() {
-        $("#muteOn").show();
-        $("#muteOff").hide();
         var value = parseInt($("#volume").slider("option", "value"));
+        if (value != 0) {
+            $("#muteOn").show();
+            $("#muteOff").hide();
+        }
         if (castPlayer.castSession) {
             castPlayer.setCastVolume(value / 100, false);
         } else if (jwPlayer) {
