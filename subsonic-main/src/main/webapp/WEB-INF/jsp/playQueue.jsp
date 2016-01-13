@@ -266,7 +266,8 @@
         if (castPlayer.castSession) {
             castPlayer.playCast();
         } else if (jwPlayer) {
-            if (jwPlayer.getPlaylistItem().file == "foo.mp3") {
+            if (jwPlayer.getPlaylistItem().file == "foo.mp3" ||
+                    jwPlayer.getState() == "complete" && getCurrentSongIndex() == songs.length -1) {
                 skip(0);
             } else {
                 jwPlayer.play(true);
@@ -361,7 +362,11 @@
         skip(index);
     }
     function onPrevious() {
-        skip(parseInt(getCurrentSongIndex()) - 1);
+        if (jwPlayer && jwPlayer.getPosition() > 4.0) {
+            skip(parseInt(getCurrentSongIndex()));
+        } else {
+            skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1));
+        }
     }
     function onPlay(id) {
         playQueueService.play(id, playQueueCallback);
