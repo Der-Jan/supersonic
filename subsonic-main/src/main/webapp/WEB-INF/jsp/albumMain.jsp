@@ -13,6 +13,18 @@
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
+    <style type="text/css">
+        #playButton {
+            cursor: pointer;
+            font-size:24px;
+            color:#E65100;
+            margin-left:0.5em;
+            margin-right:0.5em;
+            flex-grow:1;
+            text-align:left
+        }
+    </style>
+
 </head><body class="mainframe bgcolor1" onload="init();">
 
 <sub:url value="createShare.view" var="shareUrl">
@@ -171,33 +183,40 @@
     }
 </script>
 
-<img id="artistThumbImage" alt="" class="circle dropshadow" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
+<div style="display:flex; align-items:center">
 
-<div style="float:left">
-    <h1>
-        <c:forEach items="${model.ancestors}" var="ancestor">
-            <sub:url value="main.view" var="ancestorUrl">
-                <sub:param name="id" value="${ancestor.id}"/>
-            </sub:url>
-            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
-        </c:forEach>
-        ${fn:escapeXml(model.dir.name)}
-    </h1>
+    <img id="artistThumbImage" alt="" class="circle dropshadow" style="display:none;width:4em;height:4em;margin-right:1em">
 
-    <div class="detail" style="padding-top:1.0em;padding-bottom:0">
-        <c:if test="${not empty model.dir.year}">
-            ${model.dir.year}&nbsp;&nbsp;&bull;&nbsp;&nbsp;
-        </c:if>
-        ${fn:length(model.files)} <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.duration}
-        <c:if test="${not empty model.dir.genre}">
-            &nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.dir.genre}
-        </c:if>
+    <div style="flex-shrink:1" class="ellipsis">
+        <h1 class="ellipsis">
+            <c:forEach items="${model.ancestors}" var="ancestor">
+                <sub:url value="main.view" var="ancestorUrl">
+                    <sub:param name="id" value="${ancestor.id}"/>
+                </sub:url>
+                <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
+            </c:forEach>
+            ${fn:escapeXml(model.dir.name)}
+        </h1>
+
+        <div class="detail ellipsis" style="padding-top:1.0em;padding-bottom:0">
+            <c:if test="${not empty model.dir.year}">
+                ${model.dir.year}&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            </c:if>
+            ${fn:length(model.files)} <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.duration}
+            <c:if test="${not empty model.dir.genre}">
+                &nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.dir.genre}
+            </c:if>
+        </div>
     </div>
 
-</div>
+    <span id="playButton" class="fa-stack fa-lg" onclick="playAll()">
+        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+        <i class="fa fa-play-circle fa-stack-2x"></i>
+    </span>
 
-<%@ include file="viewSelector.jsp" %>
-<div style="clear:both"></div>
+    <%@ include file="viewSelector.jsp" %>
+
+</div>
 
 <c:if test="${not model.partyMode}">
     <h2>
@@ -477,7 +496,7 @@
 </table>
 
 <c:if test="${not model.viewAsList}">
-    <div style="float: left">
+    <div style="float:left">
         <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
             <div class="albumThumb" style="display:${loopStatus.count < 10 ? 'inline-block' : 'none'}">
                 <c:import url="coverArt.jsp">

@@ -139,7 +139,7 @@ p {
 h1 {
     white-space: nowrap;
     font-size: 150%;
-    padding: 0;
+    padding: 0 0 0.1em;
     border: 0;
     margin: 0;
 }
@@ -401,6 +401,12 @@ img.circle {
 
 .clickable {
     cursor: pointer;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .starred {

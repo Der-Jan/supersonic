@@ -78,8 +78,9 @@
 
 </head><body class="mainframe bgcolor1">
 
-<h1 style="float:left">
-    <span style="vertical-align: middle;">
+<div style="display:flex; align-items:center; padding-bottom:2em">
+
+    <h1 class="ellipsis">
         <c:forEach items="${model.ancestors}" var="ancestor">
             <sub:url value="main.view" var="ancestorUrl">
                 <sub:param name="id" value="${ancestor.id}"/>
@@ -87,11 +88,12 @@
             <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
         </c:forEach>
         ${fn:escapeXml(model.dir.name)}
-    </span>
-</h1>
+    </h1>
 
-<%@ include file="viewSelector.jsp" %>
-<div style="clear:both;padding-bottom:2em"></div>
+    <div style="flex-grow:1; text-align:right">
+        <%@ include file="viewSelector.jsp" %>
+    </div>
+</div>
 
 <table class="music">
     <c:forEach items="${model.subDirs}" var="subDir" varStatus="loopStatus">

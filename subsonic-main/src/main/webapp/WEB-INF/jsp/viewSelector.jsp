@@ -25,7 +25,7 @@
 </c:url>
 
 
-<h1 style="float:right;padding-right:1em">
+<h1 style="padding-right:1em">
     <c:choose>
         <c:when test="${model.viewAsList}">
             <i class="fa fa-bars fa-fw headerSelected clickable"></i>

@@ -152,11 +152,12 @@
     }
 </script>
 
-<img id="artistThumbImage" alt="" class="circle dropshadow" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
+<div style="display:flex; align-items:center">
 
-<div style="float:left">
-    <h1>
-        <span style="vertical-align: middle">
+    <img id="artistThumbImage" alt="" class="circle dropshadow" style="display:none;width:4em;height:4em;margin-right:1em">
+
+    <div style="flex-shrink:1" class="ellipsis">
+        <h1 class="ellipsis">
             <c:forEach items="${model.ancestors}" var="ancestor">
                 <sub:url value="main.view" var="ancestorUrl">
                     <sub:param name="id" value="${ancestor.id}"/>
@@ -164,33 +165,35 @@
                 <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
             </c:forEach>
             ${fn:escapeXml(model.dir.name)}
-        </span>
-    </h1>
+        </h1>
 
-    <c:if test="${not model.partyMode}">
-        <h2>
-            <i class="fa ${not empty model.dir.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
-               onclick="toggleStar(${model.dir.id}, this)" style="padding-right:0.25em"></i>
-            <c:set var="needSep" value="true"/>
-
-            <c:if test="${model.user.streamRole}">
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
-                <span class="header"><a href="javascript:playRandom(0)"><fmt:message key="main.playrandom"/></a></span> |
-                <span class="header"><a href="javascript:addAll(0)"><fmt:message key="main.addall"/></a></span>
+        <c:if test="${not model.partyMode}">
+            <h2 class="ellipsis">
+                <i class="fa ${not empty model.dir.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
+                   onclick="toggleStar(${model.dir.id}, this)" style="padding-right:0.25em"></i>
                 <c:set var="needSep" value="true"/>
-            </c:if>
 
-            <c:if test="${model.user.commentRole}">
-                <c:if test="${needSep}">|</c:if>
-                <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
-            </c:if>
-        </h2>
-    </c:if>
+                <c:if test="${model.user.streamRole}">
+                    <c:if test="${needSep}">|</c:if>
+                    <span class="header"><a href="javascript:playAll()"><fmt:message key="main.playall"/></a></span> |
+                    <span class="header"><a href="javascript:playRandom(0)"><fmt:message key="main.playrandom"/></a></span> |
+                    <span class="header"><a href="javascript:addAll(0)"><fmt:message key="main.addall"/></a></span>
+                    <c:set var="needSep" value="true"/>
+                </c:if>
+
+                <c:if test="${model.user.commentRole}">
+                    <c:if test="${needSep}">|</c:if>
+                    <span class="header"><a href="javascript:toggleComment()"><fmt:message key="main.comment"/></a></span>
+                </c:if>
+            </h2>
+        </c:if>
+    </div>
+
+    <div style="flex-grow:1; text-align:right">
+        <%@ include file="viewSelector.jsp" %>
+    </div>
+
 </div>
-
-<%@ include file="viewSelector.jsp" %>
-<div style="clear:both"></div>
 
 <div id="comment" class="albumComment"><sub:wiki text="${model.dir.comment}"/></div>
 
