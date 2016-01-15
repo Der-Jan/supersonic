@@ -44,14 +44,23 @@
         #muteOn, #muteOff {
             cursor:pointer; font-size:20px; padding:8px
         }
+        #castOn, #castOff {
+            margin-left:15px; cursor:pointer;display:none;
+        }
         #songName {
-            cursor:pointer; font-weight: 500;
+            cursor:pointer; font-weight:500;
         }
         #artistName {
-            cursor:pointer; font-weight: 300;
+            cursor:pointer; font-weight:300;
         }
         #coverArt {
-            cursor:pointer; width:80px; height:80px
+            cursor:pointer; width:80px; height:80px;
+        }
+        #volume {
+            width:100px; height:3px; margin-right:20px
+        }
+        #progress {
+            height:3px; margin: 5px 20px 10px 10px;
         }
         #dummy-animation-target {
             max-width:95px;display:none;
@@ -776,25 +785,22 @@
 <body class="bgcolor2 playlistframe" onload="init()">
 
 <span id="dummy-animation-target" class="bgcolor1"></span>
-<div class="bgcolor2" style="position:fixed;bottom:0;width:100%;z-index: 2">
+
+<div class="bgcolor2" style="position:fixed; bottom:0; width:100%; z-index:2">
     <div id="jwplayer"></div>
 
-    <table border="0" style="width:100%;padding-right:20px;padding-top:5px;padding-bottom:0px">
-        <tr>
-            <td rowspan="2"><img id="coverArt"></td>
-            <td colspan="9" style="padding-left:20px">
-                <div id="progress" style="width:100%;height:3px"></div>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding-left:20px;width:50%">
-                <div id="songName"></div>
-                <div id="artistName"></div>
-            </td>
-            <td>
+    <div style="display:flex; margin-top:5px; margin-bottom:7px">
+        <img id="coverArt">
+        <div class="ellipsis" style="flex-grow:1">
+            <div id="progress"></div>
+
+            <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
+                <div class="ellipsis" style="flex:1">
+                    <div id="songName" class="ellipsis"></div>
+                    <div id="artistName" class="ellipsis"></div>
+                </div>
+
                 <i id="previousButton" class="fa fa-step-backward" onclick="onPrevious()"></i>
-            </td>
-            <td>
                 <span id="startButton" class="fa-stack fa-lg" onclick="onStart()">
                     <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                     <i class="fa fa-play-circle fa-stack-2x"></i>
@@ -807,29 +813,20 @@
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
                 </span>
-            </td>
-            <td>
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
-            </td>
-            <td style="text-align:center;padding-left:20px">
-                <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="castPlayer.launchCastApp()" style="cursor:pointer;display:none">
-                <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="castPlayer.stopCastApp()" style="cursor:pointer;display:none">
-            </td>
-            <td style="width:50%;padding-right:20px">
-                <div id="progress-and-duration" class="detail" style="text-align:right">
+                <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="castPlayer.launchCastApp()">
+                <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="castPlayer.stopCastApp()">
+
+                <div id="progress-and-duration" class="detail" style="flex:1; text-align:right">
                     <span id="progress-text">0:00</span> /
                     <span id="duration-text">0:00</span>
                 </div>
-            </td>
-            <td>
                 <i id="muteOn" class="fa fa-volume-up fa-fw" onclick="onMute(true)"></i>
                 <i id="muteOff" class="fa fa-volume-off fa-fw" onclick="onMute(false)" style="display:none"></i>
-            </td>
-            <td>
-                <div id="volume" style="width:100px;height:3px"></div>
-            </td>
-        </tr>
-    </table>
+                <div id="volume"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <h2 style="float:left"><fmt:message key="playlist.more.playlist"/></h2>
