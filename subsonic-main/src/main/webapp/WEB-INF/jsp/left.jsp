@@ -8,9 +8,10 @@
         function init() {
             var mainLocation = top.main.location.href;
             if (${model.musicFolderChanged}) {
-                if (mainLocation.indexOf("/home.view") != -1 ||
-                        mainLocation.indexOf("/artists.view") != -1 ) {
+                if (mainLocation.indexOf("/home.view") != -1) {
                     top.main.location.href = mainLocation;
+                } else {
+                    top.main.location.href = "artists.view";
                 }
             }
         }

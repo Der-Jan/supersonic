@@ -16,6 +16,7 @@
             padding-bottom: 8px;
             font-size: 105%;
             line-height: 100%;
+            font-weight: 300;
         }
         .browse-index-title {
             clear: both;
