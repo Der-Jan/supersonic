@@ -80,7 +80,7 @@
 
 <div style="display:flex; align-items:center; padding-bottom:2em">
 
-    <h1 class="ellipsis">
+    <h1 class="ellipsis" style="flex-grow:1">
         <c:forEach items="${model.ancestors}" var="ancestor">
             <sub:url value="main.view" var="ancestorUrl">
                 <sub:param name="id" value="${ancestor.id}"/>
@@ -90,7 +90,7 @@
         ${fn:escapeXml(model.dir.name)}
     </h1>
 
-    <div style="flex-grow:1; text-align:right">
+    <div>
         <%@ include file="viewSelector.jsp" %>
     </div>
 </div>

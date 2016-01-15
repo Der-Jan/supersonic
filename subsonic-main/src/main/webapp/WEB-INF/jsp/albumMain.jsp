@@ -18,10 +18,8 @@
             cursor: pointer;
             font-size:24px;
             color:#E65100;
-            margin-left:0.5em;
+            margin-left:1.0em;
             margin-right:0.5em;
-            flex-grow:1;
-            text-align:left
         }
     </style>
 
@@ -213,6 +211,8 @@
         <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
         <i class="fa fa-play-circle fa-stack-2x"></i>
     </span>
+
+    <span style="flex-grow:1"></span>
 
     <%@ include file="viewSelector.jsp" %>
 

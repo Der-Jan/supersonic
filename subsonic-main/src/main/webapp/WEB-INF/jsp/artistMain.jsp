@@ -156,7 +156,7 @@
 
     <img id="artistThumbImage" alt="" class="circle dropshadow" style="display:none;width:4em;height:4em;margin-right:1em">
 
-    <div style="flex-shrink:1" class="ellipsis">
+    <div style="flex-grow:1" class="ellipsis">
         <h1 class="ellipsis">
             <c:forEach items="${model.ancestors}" var="ancestor">
                 <sub:url value="main.view" var="ancestorUrl">
@@ -189,7 +189,7 @@
         </c:if>
     </div>
 
-    <div style="flex-grow:1; text-align:right">
+    <div>
         <%@ include file="viewSelector.jsp" %>
     </div>
 
