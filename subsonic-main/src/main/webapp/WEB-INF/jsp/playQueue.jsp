@@ -221,11 +221,15 @@
         $("#startButton").toggle(!playing && !buffering);
         $("#stopButton").toggle(playing && !buffering);
         $("#bufferButton").toggle(buffering);
-        $(".fa-circle-o-notch").toggleClass("fa-spin", playing);
+        toggleSpinner(playing);
 
         var muted = jwPlayer.getMute();
         $("#muteOn").toggle(!muted);
         $("#muteOff").toggle(muted);
+    }
+
+    function toggleSpinner(spin) {
+        $(".fa-circle-o-notch").toggleClass("fa-spin", spin);
     }
 
     function updateProgressBar(position, duration) {
@@ -371,7 +375,7 @@
         skip(index);
     }
     function onPrevious() {
-        if (jwPlayer && jwPlayer.getPosition() > 4.0) {
+        if (jwPlayer && !castPlayer.castSession && jwPlayer.getPosition() > 4.0) {
             skip(parseInt(getCurrentSongIndex()));
         } else {
             skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1));
@@ -492,7 +496,6 @@
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });
     }
-
     function playQueueCallback(playQueue) {
         songs = playQueue.entries;
         repeatEnabled = playQueue.repeatEnabled;
@@ -580,7 +583,7 @@
         } else {
             $("#startButton").toggle(!playQueue.stopEnabled);
             $("#stopButton").toggle(playQueue.stopEnabled);
-            $(".fa-circle-o-notch").toggleClass("fa-spin", playQueue.stopEnabled);
+            toggleSpinner(playQueue.stopEnabled);
             if (playQueue.startPlayerAt != -1) {
                 currentStreamUrl = songs[playQueue.startPlayerAt].streamUrl;
                 updateCoverArt(songs[playQueue.startPlayerAt]);
@@ -816,10 +819,11 @@
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
                 <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="castPlayer.launchCastApp()">
                 <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="castPlayer.stopCastApp()">
-
-                <div id="progress-and-duration" class="detail" style="flex:1; text-align:right">
-                    <span id="progress-text">0:00</span> /
-                    <span id="duration-text">0:00</span>
+                <div style="flex:1">
+                    <div id="progress-and-duration" class="detail" style="text-align:right">
+                        <span id="progress-text">0:00</span> /
+                        <span id="duration-text">0:00</span>
+                    </div>
                 </div>
                 <i id="muteOn" class="fa fa-volume-up fa-fw" onclick="onMute(true)"></i>
                 <i id="muteOff" class="fa fa-volume-off fa-fw" onclick="onMute(false)" style="display:none"></i>

@@ -83,6 +83,8 @@
     CastPlayer.prototype.setCastControlsVisible = function (visible) {
         $("#castOff").toggle(visible);
         $("#castOn").toggle(!visible);
+        $("#progress").toggle(!visible);
+        $("#progress-and-duration").toggle(!visible);
     };
 
     /**
@@ -113,7 +115,7 @@
      */
     CastPlayer.prototype.onStopAppSuccess = function (message) {
         console.log(message);
-        this.currentMediaSession = null;
+        this.mediaSession = null;
         this.syncControls();
     };
 
@@ -182,6 +184,7 @@
         this.log("new media session ID:" + this.mediaSession.mediaSessionId + ' (' + how + ')');
         this.log(ms);
         this.mediaSession.addUpdateListener(this.onMediaStatusUpdate.bind(this));
+        this.syncControls();
     };
 
     /**
@@ -231,18 +234,11 @@
     CastPlayer.prototype.setCastVolume = function (level, mute) {
         if (!this.castSession)
             return;
-
-        if (!mute) {
-            this.castSession.setReceiverVolumeLevel(level, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
-                    this.onError.bind(this));
-            this.volume = level;
-        }
-        else {
-            this.castSession.setReceiverMuted(true, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
-                    this.onError.bind(this));
-        }
-        $("#muteOn").toggle(!mute);
-        $("#muteOff").toggle(mute);
+        this.castSession.setReceiverVolumeLevel(level, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
+                this.onError.bind(this));
+        this.castSession.setReceiverMuted(mute, this.mediaCommandSuccessCallback.bind(this, 'media set-volume done'),
+                this.onError.bind(this));
+        this.volume = level;
     };
 
     CastPlayer.prototype.castMute = function (mute) {
@@ -266,9 +262,12 @@
             $("#volume").slider("option", "value", Math.round(this.volume * 100));
         }
 
-        var playing = this.mediaSession && this.mediaSession.playerState === chrome.cast.media.PlayerState.PLAYING;
-        $("#stopButton").toggle(playing);
-        $("#startButton").toggle(!playing);
+        var playing = this.mediaSession != null && (this.mediaSession.playerState === chrome.cast.media.PlayerState.PLAYING);
+        var buffering = this.mediaSession != null && (this.mediaSession.playerState === chrome.cast.media.PlayerState.BUFFERING);
+        $("#stopButton").toggle(playing && !buffering);
+        $("#startButton").toggle(!playing && !buffering);
+        $("#bufferButton").toggle(buffering);
+        $(".fa-circle-o-notch").toggleClass("fa-spin", playing);
     };
 
     CastPlayer.prototype.log = function (message) {
