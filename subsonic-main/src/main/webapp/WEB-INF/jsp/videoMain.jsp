@@ -97,7 +97,10 @@
 
 <table class="music">
     <c:forEach items="${model.subDirs}" var="subDir" varStatus="loopStatus">
-        <tr><td class="truncate" colspan="9"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td></tr>
+        <tr>
+            <td class="fit"><i class="fa fa-folder-open-o icon>"></i></td>
+            <td class="truncate" colspan="8"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
+        </tr>
     </c:forEach>
     <c:if test="${model.viewAsList}">
         <c:forEach items="${model.files}" var="child">

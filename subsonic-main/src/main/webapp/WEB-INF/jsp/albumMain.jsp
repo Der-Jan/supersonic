@@ -465,14 +465,8 @@
                         <sub:param name="id" value="${child.id}"/>
                     </sub:url>
                     <tr>
-                        <c:import url="playButtons.jsp">
-                            <c:param name="id" value="${child.id}"/>
-                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="asTable" value="true"/>
-                        </c:import>
-                        <td class="truncate"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
-                        <td></td>
+                        <td class="fit"><i class="fa fa-folder-open-o icon>"></i></td>
+                        <td class="truncate" colspan="5"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
                     </tr>
                 </c:forEach>
                 <c:if test="${model.viewAsList}">
@@ -543,5 +537,6 @@
     <div id="dialog-select-playlist-list"></div>
 </div>
 
+<div style="padding-top:3em"></div>
 </body>
 </html>

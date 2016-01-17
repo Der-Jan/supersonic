@@ -32,7 +32,7 @@
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
-</head><body class="mainframe bgcolor1" onload="init();">
+</head>
 
 <script type="text/javascript" language="javascript">
 
@@ -152,6 +152,8 @@
     }
 </script>
 
+<body class="mainframe bgcolor1" onload="init();">
+
 <div style="display:flex; align-items:center">
 
     <img id="artistThumbImage" alt="" class="circle dropshadow" style="display:none;width:4em;height:4em;margin-right:1em">
@@ -219,14 +221,24 @@
         <table class="music indent">
             <c:forEach items="${model.subDirs}" var="subDir">
                 <tr>
-                    <c:import url="playButtons.jsp">
-                        <c:param name="id" value="${subDir.id}"/>
-                        <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                        <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                        <c:param name="asTable" value="true"/>
-                    </c:import>
-                    <td class="truncate"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
-                    <td class="fit rightalign detail">${subDir.year}</td>
+
+                    <c:choose>
+                        <c:when test="${subDir.album}">
+                            <c:import url="playButtons.jsp">
+                                <c:param name="id" value="${subDir.id}"/>
+                                <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                                <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
+                                <c:param name="asTable" value="true"/>
+                            </c:import>
+                            <td class="truncate"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
+                            <td class="fit rightalign detail">${subDir.year}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td class="fit"><i class="fa fa-folder-open-o icon>"></i></td>
+                            <td class="truncate" colspan="5"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
+                        </c:otherwise>
+                    </c:choose>
+
                 </tr>
             </c:forEach>
         </table>
@@ -237,12 +249,7 @@
             <c:forEach items="${model.subDirs}" var="subDir">
                 <c:if test="${not subDir.album}">
                     <tr>
-                        <c:import url="playButtons.jsp">
-                            <c:param name="id" value="${subDir.id}"/>
-                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="asTable" value="true"/>
-                        </c:import>
+                        <td class="fit"><i class="fa fa-folder-open-o icon>"></i></td>
                         <td class="truncate"><a href="main.view?id=${subDir.id}" title="${fn:escapeXml(subDir.name)}">${fn:escapeXml(subDir.name)}</a></td>
                         <td class="fit rightalign detail">${subDir.year}</td>
                     </tr>
@@ -324,5 +331,6 @@
     </tbody>
 </table>
 
+<div style="padding-top:3em"></div>
 </body>
 </html>
