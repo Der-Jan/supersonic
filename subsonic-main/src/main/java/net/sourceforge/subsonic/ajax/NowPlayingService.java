@@ -144,9 +144,6 @@ public class NowPlayingService {
             if (StringUtils.isNotBlank(player.getName())) {
                 username += "@" + player.getName();
             }
-            artist = StringUtil.toHtml(StringUtils.abbreviate(artist, 25));
-            title = StringUtil.toHtml(StringUtils.abbreviate(title, 25));
-            username = StringUtil.toHtml(StringUtils.abbreviate(username, 25));
 
             long minutesAgo = status.getMinutesAgo();
 

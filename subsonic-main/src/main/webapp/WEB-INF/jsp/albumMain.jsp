@@ -25,12 +25,12 @@
 
 </head><body class="mainframe bgcolor1" onload="init();">
 
-<sub:url value="createShare.view" var="shareUrl">
-    <sub:param name="id" value="${model.dir.id}"/>
-</sub:url>
-<sub:url value="download.view" var="downloadUrl">
-    <sub:param name="id" value="${model.dir.id}"/>
-</sub:url>
+<c:url value="createShare.view" var="shareUrl">
+    <c:param name="id" value="${model.dir.id}"/>
+</c:url>
+<c:url value="download.view" var="downloadUrl">
+    <c:param name="id" value="${model.dir.id}"/>
+</c:url>
 
 <script type="text/javascript" language="javascript">
     function init() {
