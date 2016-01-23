@@ -27,25 +27,27 @@
     <script type="text/javascript">
         var image;
         var id;
+        var hash;
         var duration;
         var timer;
         var offset;
         var step;
         var size = 120;
 
-        function startPreview(img, id, duration) {
+        function startPreview(img, id, hash, duration) {
             stopPreview();
             image = $(img);
             step = Math.max(5, Math.round(duration / 50));
             offset = step;
             this.id = id;
+            this.hash = hash;
             this.duration = duration;
             updatePreview();
             timer = window.setInterval(updatePreview, 1000);
         }
 
         function updatePreview() {
-            image.attr("src", "coverArt.view?id=" + id + "&size=" + size + "&offset=" + offset);
+            image.attr("src", "coverArt.view?id=" + id + "&auth=" + hash + "&size=" + size + "&offset=" + offset);
             offset += step;
             if (offset > duration) {
                 stopPreview();
@@ -58,7 +60,7 @@
                 timer = null;
             }
             if (image != null) {
-                image.attr("src", "coverArt.view?id=" + id + "&size=" + size);
+                image.attr("src", "coverArt.view?id=" + id + "&auth=" + hash + "&size=" + size);
             }
         }
     </script>
@@ -136,6 +138,7 @@
         </c:url>
         <c:url value="/coverArt.view" var="coverArtUrl">
             <c:param name="id" value="${child.id}"/>
+            <c:param name="auth" value="${child.hash}"/>
             <c:param name="size" value="120"/>
         </c:url>
 
@@ -144,7 +147,7 @@
                 <div style="position:relative">
                     <div>
                         <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
-                                                   onmouseover="startPreview(this, ${child.id}, ${child.durationSeconds})"
+                                                   onmouseover="startPreview(this, ${child.id}, ${child.hash}, ${child.durationSeconds})"
                                                    onmouseout="stopPreview()"></a>
                     </div>
                     <div class="detail duration">${child.durationString}</div>

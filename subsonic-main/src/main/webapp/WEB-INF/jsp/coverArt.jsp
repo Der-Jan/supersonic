@@ -6,6 +6,7 @@ PARAMETERS
   albumId: ID of album.
   playlistId: ID of playlist.
   podcastChannelId: ID of podcast channel
+  auth: Authentication token
   coverArtSize: Height and width of cover art.
   caption1: Caption line 1
   caption2: Caption line 2
@@ -62,6 +63,9 @@ PARAMETERS
             </c:if>
             <c:if test="${not empty param.playlistId}">
                 <c:param name="id" value="pl-${param.playlistId}"/>
+            </c:if>
+            <c:if test="${not empty param.auth}">
+                <c:param name="auth" value="${param.auth}"/>
             </c:if>
         </c:url>
 

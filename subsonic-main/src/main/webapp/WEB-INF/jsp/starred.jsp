@@ -65,6 +65,7 @@
         <div class="albumThumb">
             <c:import url="coverArt.jsp">
                 <c:param name="albumId" value="${album.id}"/>
+                <c:param name="auth" value="${album.hash}"/>
                 <c:param name="caption1" value="${albumTitle}"/>
                 <c:param name="caption2" value="${fn:escapeXml(album.artist)}"/>
                 <c:param name="captionCount" value="2"/>

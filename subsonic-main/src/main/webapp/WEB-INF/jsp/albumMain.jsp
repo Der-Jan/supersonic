@@ -413,6 +413,7 @@
             <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
+                    <c:param name="auth" value="${model.dir.hash}"/>
                     <c:param name="coverArtSize" value="${model.coverArtSizeLarge}"/>
                     <c:param name="showZoom" value="true"/>
                     <c:param name="showChange" value="${model.user.coverArtRole}"/>
@@ -495,6 +496,7 @@
             <div class="albumThumb" style="display:${loopStatus.count < 10 ? 'inline-block' : 'none'}">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${album.id}"/>
+                    <c:param name="auth" value="${album.hash}"/>
                     <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
                     <c:param name="caption2" value="${album.year}"/>
                     <c:param name="captionCount" value="2"/>

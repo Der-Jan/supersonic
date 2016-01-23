@@ -243,6 +243,7 @@ public class HomeController extends ParameterizableViewController {
     private Album createAlbum(MediaFile file) {
         Album album = new Album();
         album.setId(file.getId());
+        album.setHash(file.getHash());
         album.setPath(file.getPath());
         album.setArtist(file.getArtist());
         album.setAlbumTitle(file.getAlbumName());
@@ -278,6 +279,8 @@ public class HomeController extends ParameterizableViewController {
      * Contains info for a single album.
      */
     public static class Album {
+        private int id;
+        private String hash;
         private String path;
         private String coverArtPath;
         private String artist;
@@ -286,7 +289,6 @@ public class HomeController extends ParameterizableViewController {
         private Date lastPlayed;
         private Integer playCount;
         private Integer rating;
-        private int id;
         private Integer year;
 
         public int getId() {
@@ -295,6 +297,14 @@ public class HomeController extends ParameterizableViewController {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public String getHash() {
+            return hash;
+        }
+
+        public void setHash(String hash) {
+            this.hash = hash;
         }
 
         public String getPath() {

@@ -1464,7 +1464,7 @@ public class RESTController extends MultiActionController {
             return null;
         }
 
-        streamController.handleRequest(request, response);
+        streamController.handleRequest(request, response, false);
         return null;
     }
 
@@ -1485,7 +1485,8 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
             return null;
         }
-        hlsController.handleRequest(request, response);
+
+        hlsController.handleRequest(request, response, false);
         return null;
     }
 
@@ -2021,7 +2022,7 @@ public class RESTController extends MultiActionController {
     @SuppressWarnings("UnusedDeclaration")
     public ModelAndView getCoverArt(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        return coverArtController.handleRequest(request, response);
+        return coverArtController.handleRequest(request, response, false);
     }
 
     @SuppressWarnings("UnusedDeclaration")

@@ -296,6 +296,7 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="playlistService" ref="playlistService"/>
         <property name="podcastService" ref="podcastService"/>
+        <property name="securityService" ref="securityService"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
     </bean>

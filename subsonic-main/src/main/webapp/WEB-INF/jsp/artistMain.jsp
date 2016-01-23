@@ -265,6 +265,7 @@
                     <div class="albumThumb" style="display:${loopStatus.count < 40 ? 'inline-block' : 'none'}">
                         <c:import url="coverArt.jsp">
                             <c:param name="albumId" value="${subDir.id}"/>
+                            <c:param name="auth" value="${subDir.hash}"/>
                             <c:param name="caption1" value="${fn:escapeXml(subDir.name)}"/>
                             <c:param name="caption2" value="${subDir.year}"/>
                             <c:param name="captionCount" value="2"/>

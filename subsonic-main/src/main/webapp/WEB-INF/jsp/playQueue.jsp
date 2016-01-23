@@ -598,7 +598,7 @@
         var showAlbum = function () {
             parent.frames.main.location.href = "main.view?id=" + song.id
         };
-        $("#coverArt").attr("src", song ? "coverArt.view?id=" + song.id + "&size=80" : "");
+        $("#coverArt").attr("src", song ? "coverArt.view?id=" + song.id + "&auth=" + song.hash + "&size=80" : "");
         $("#songName").text(song && song.title ? song.title : "");
         $("#artistName").text(song && song.artist ? song.artist : "");
         $("#songName").off("click");

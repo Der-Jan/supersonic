@@ -79,6 +79,10 @@ public class StreamController implements Controller {
     private SearchService searchService;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return handleRequest(request, response, true);
+    }
+
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response, boolean authenticate) throws Exception {
 
         logRequest(request);
 
@@ -128,7 +132,8 @@ public class StreamController implements Controller {
 
             if (isSingleFile) {
 
-                if (!securityService.isFolderAccessAllowed(file, user.getUsername())) {
+                if (authenticate && !securityService.isAuthenticated(file, request) ||
+                    !securityService.isFolderAccessAllowed(file, user.getUsername())) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN,
                                        "Access to file " + file.getId() + " is forbidden for user " + user.getUsername());
                     return null;

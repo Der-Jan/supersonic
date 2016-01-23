@@ -293,7 +293,7 @@ public class SonosHelper {
             mediaCollection.setCanPlay(true);
 
             AlbumArtUrl albumArtUrl = new AlbumArtUrl();
-            albumArtUrl.setValue(getCoverArtUrl(String.valueOf(dir.getId()), request));
+            albumArtUrl.setValue(getCoverArtUrl(dir, request));
             mediaCollection.setAlbumArtURI(albumArtUrl);
         } else {
             mediaCollection.setItemType(ItemType.ARTIST);
@@ -629,7 +629,7 @@ public class SonosHelper {
 //        result.setDynamic();// TODO: For starred songs
 
         AlbumArtUrl albumArtUrl = new AlbumArtUrl();
-        albumArtUrl.setValue(getCoverArtUrl(String.valueOf(song.getId()), request));
+        albumArtUrl.setValue(getCoverArtUrl(song, request));
 
         TrackMetadata trackMetadata = new TrackMetadata();
         trackMetadata.setArtist(song.getArtist());
@@ -658,6 +658,10 @@ public class SonosHelper {
 
     private String getCoverArtUrl(String id, HttpServletRequest request) {
         return getBaseUrl(request) + "coverArt.view?id=" + id + "&size=" + CoverArtScheme.LARGE.getSize();
+    }
+
+    private String getCoverArtUrl(MediaFile file, HttpServletRequest request) {
+        return getBaseUrl(request) + "coverArt.view?id=" + file.getId() + "&auth=" + file.getHash() + "&size=" + CoverArtScheme.LARGE.getSize();
     }
 
     public static MediaList createSubList(int index, int count, List<? extends AbstractMedia> media) {
@@ -697,7 +701,7 @@ public class SonosHelper {
         Player player = createPlayerIfNecessary(username);
         MediaFile song = mediaFileService.getMediaFile(mediaFileId);
 
-        return getBaseUrl(request) + "stream?id=" + song.getId() + "&player=" + player.getId();
+        return getBaseUrl(request) + "stream?id=" + song.getId() + "&auth=" + song.getHash() + "&player=" + player.getId();
     }
 
     private Player createPlayerIfNecessary(String username) {

@@ -15,6 +15,8 @@ Bugfix: Reimplemented cover art search using Last.fm
 Bugfix: Ensure changed cover art is displayed
 Show personal rather than average rating.
 Keyboard shortcuts
+Tech: Replace frameset with iframes.
+Security: Authenticate stream endpoint with token
 
 TODO IN 5.4
 ------------
@@ -25,7 +27,6 @@ HTML5 player?
   Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Set estimateContentLength=true
-  Use flex layout in player?
   Test stream role
   Verify that html5 is used
   Simplify code for update current song
@@ -38,14 +39,40 @@ HTML5 player?
   Auto-hide in firefox not quite right
   Video player
   External player (for shares)
-  Make prev button go to beginning of song
   Don't show cast button if in jukebox mode?
   Jukebox: Doesn't update when playing or clearing.
+createShare.jsp: No space after h1
 Ellipsise buttons in left.jsp
-Ellipsise "now playing" in right.jsp
-Mute icon changed when setting volume 0
 Make it simple to star currently playing song.
+Dont show lyrics link for videos
+Fix broken unit test
+createShare.jsp using path for back button
+Test with IE
 
+Fix security issue
+  http://forum.subsonic.org/forum/viewtopic.php?f=5&t=16316&p=69915#p69915
+  Also download
+  HLS
+
+#play:hover, #pause:hover {
+    opacity: 0.8;
+}
+
+Video
+  Fullscreen
+  Open in new window
+  Update volume slider
+  No transcoding?
+  Test chromecast
+  Autoconvert to mp4
+  Open video in separate window
+  JW bg color
+  Handle end-of-stream
+
+Test HLS
+Site: Add video
+REST: Support musicFolderId in getArtists
+  https://mail.google.com/mail/ca/u/0/#inbox/15252a362df06a1b
 Jukebox mute: Add REST support
 Ugly "No matches found"
 Improve Subsonic logo
