@@ -47,6 +47,9 @@
         #castOn, #castOff {
             margin-left:15px; cursor:pointer;display:none;
         }
+        #startButton:hover, #stopButton:hover {
+            opacity: 0.8;
+        }
         #songName {
             cursor:pointer; font-weight:500;
         }

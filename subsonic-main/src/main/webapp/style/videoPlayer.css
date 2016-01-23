@@ -38,6 +38,10 @@
     color: #E65100;
 }
 
+#play:hover, #pause:hover {
+    opacity: 0.8;
+}
+
 #pause {
     display: none;
 }
