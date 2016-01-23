@@ -65,8 +65,8 @@ public class VideoPlayerController extends ParameterizableViewController {
         Integer duration = file.getDurationSeconds();
         Player player = playerService.getPlayer(request, response);
         String url = request.getRequestURL().toString();
-        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "auth=" + file.getHash() + "&player=" + player.getId() + "&format=raw");
-        String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&auth=" + file.getHash() + "&player=" + player.getId() + "&format=raw");
+        String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId() + "&auth=" + file.getHash());
 
         // Rewrite URLs in case we're behind a proxy.
         if (settingsService.isRewriteUrlEnabled()) {

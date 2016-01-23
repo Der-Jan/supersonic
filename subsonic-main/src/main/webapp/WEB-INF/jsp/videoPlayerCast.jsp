@@ -100,7 +100,7 @@
         this.localPlayer.setup({
             height: "85%",
             width: "100%",
-            image: "coverArt.view?id=" + ${model.video.id} + "&size=" + 600 + "&offset=" + this.duration / 10,
+            image: "coverArt.view?id=" + ${model.video.id} + "&size=" + 600 + "&auth=" + ${model.video.hash} + "&offset=" + this.duration / 10,
             sources: [{
                 file: "stream?id=${model.video.id}&player=${model.player.id}&auth=${model.video.hash}&format=raw",
                 type: "${model.video.format}"
