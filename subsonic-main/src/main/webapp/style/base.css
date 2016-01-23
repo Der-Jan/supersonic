@@ -412,3 +412,9 @@ img.circle {
 .starred {
     color: #FF9800;
 }
+
+.nospace {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}

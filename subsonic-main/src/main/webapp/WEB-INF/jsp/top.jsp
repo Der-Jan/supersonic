@@ -34,31 +34,11 @@
             }
         }
 
-        function showSideBar() {
-            $("#show-side-bar").hide();
-            $("#hide-side-bar").show();
-            toggleSideBar(210);
-            multiService.setShowSideBar(true);
-        }
-
-        function hideSideBar() {
-            $("#hide-side-bar").hide();
-            $("#show-side-bar").show();
-            toggleSideBar(0);
-            multiService.setShowSideBar(false);
-        }
-
-        function toggleSideBar(width) {
-            <%-- Disable animation in Chrome. It stopped working in Chrome 44. --%>
-            var duration = navigator.userAgent.indexOf("Chrome") != -1 ? 0 : 400;
-
-            $("#dummy-animation-target").stop();
-            $("#dummy-animation-target").animate({"max-width": width}, {
-                step: function (now, fx) {
-                    top.document.getElementById("mainFrameset").cols = now + ",*";
-                },
-                duration: duration
-            });
+        function toggleSideBar(show) {
+            $("#hide-side-bar").toggle(show);
+            $("#show-side-bar").toggle(!show);
+            parent.toggleSideBar(show);
+            multiService.setShowSideBar(show);
         }
 
         function keyboardShortcut(action, param) {
@@ -102,8 +82,6 @@
 
 <body class="bgcolor2 topframe" style="margin:10px 10px 0 20px;white-space:nowrap">
 
-<span id="dummy-animation-target" style="max-width:0;display: none"></span>
-
 <fmt:message key="top.home" var="home"/>
 <fmt:message key="top.artists" var="artists"/>
 <fmt:message key="top.now_playing" var="nowPlaying"/>
@@ -116,11 +94,8 @@
 <form method="post" action="search.view" target="main" name="searchForm">
 
     <div style="display:flex; align-items:center">
-        <span class="topHeader top-menu-item" style="margin-right:3em">
-            <i id="show-side-bar" class="fa fa-bars fa-lg icon" onclick="showSideBar()" style="display:${model.showSideBar ? 'none' : 'inline'}"></i>
-            <i id="hide-side-bar" class="fa fa-bars fa-lg icon" onclick="hideSideBar()" style="display:${model.showSideBar ? 'inline' : 'none'}"></i>
-        </span>
-
+        <span id="show-side-bar" class="topHeader top-menu-item" style="display:${model.showSideBar ? 'none' : 'inline'}; margin-right:3em" onclick="toggleSideBar(true)"><i class="fa fa-bars fa-lg icon"></i></span>
+        <span id="hide-side-bar" class="topHeader top-menu-item" style="display:${model.showSideBar ? 'inline' : 'none'}; margin-right:3em" onclick="toggleSideBar(false)"><i class="fa fa-bars fa-lg icon"></i></span>
         <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
         <span class="topHeader top-menu-item" onclick="showPage('artists.view')"><i class="fa fa-microphone fa-fw fa-lg icon"></i>&nbsp;${artists}</span>
         <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>

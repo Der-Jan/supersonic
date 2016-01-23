@@ -62,9 +62,6 @@
         #progress {
             height:3px; margin: 5px 20px 10px 10px;
         }
-        #dummy-animation-target {
-            max-width:95px;display:none;
-        }
     </style>
 
     <script type="text/javascript" language="javascript">
@@ -98,7 +95,7 @@
         $("#volume").slider({max: 100, value: 50, animate: "fast", range: "min"});
         $("#volume").on("slidestop", onVolumeChanged);
         $("#progress").on("slidestop", onProgressChanged);
-        $(".ui-slider").css("background", $("#dummy-animation-target").css("background-color"));
+        $(".ui-slider").css("background", $("#dummy").css("background-color"));
 
         if (!externalPlayerWithPlaylist) {
             $("#playlistBody").sortable({
@@ -168,16 +165,7 @@
 
     function setFrameHeight(height) {
         <c:if test="${model.autoHide}">
-        <%-- Disable animation in Chrome. It stopped working in Chrome 44. --%>
-        var duration = navigator.userAgent.indexOf("Chrome") != -1 ? 0 : 400;
-
-        $("#dummy-animation-target").stop();
-        $("#dummy-animation-target").animate({"max-width": height}, {
-            step: function (now, fx) {
-                top.document.getElementById("playQueueFrameset").rows = "42,*," + now;
-            },
-            duration: duration
-        });
+        parent.setPlayQueueHeight(height);
         </c:if>
     }
 
@@ -787,7 +775,7 @@
 
 <body class="bgcolor2 playlistframe" onload="init()">
 
-<span id="dummy-animation-target" class="bgcolor1"></span>
+<span id="dummy" class="bgcolor1" style="display:none"></span>
 
 <div class="bgcolor2" style="position:fixed; bottom:0; width:100%; z-index:2">
     <div id="jwplayer"></div>
