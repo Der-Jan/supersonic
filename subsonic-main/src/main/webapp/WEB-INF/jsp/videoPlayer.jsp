@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/style/videoPlayer.css"/>">
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/jwplayer-5.10.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/script/jwplayer-7.2.4/jwplayer.js"/>"></script>
+    <script type="text/javascript">jwplayer.key="fnCY1zPzsH/DE/Uo+pvsBes6gTdfOCcLCCnD6g==";</script>
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="videoPlayerCast.jsp" %>
 
@@ -27,51 +28,59 @@
 <c:if test="${licenseInfo.licenseOrTrialValid}">
     <div>
         <div id="overlay">
-            <div id="overlay_text">Playing on Chromecast</div>
+            <span>Playing on Chromecast</span>
         </div>
-        <div id="jwplayer"><a href="http://www.adobe.com/go/getflashplayer" target="_blank">Get Flash</a></div>
-        <div id="media_control">
-            <div id="progress_slider"></div>
-            <div id="play"></div>
-            <div id="pause"></div>
-            <div id="progress">0:00</div>
-            <div id="duration">0:00</div>
-            <div id="audio_on"></div>
-            <div id="audio_off"></div>
-            <div id="volume_slider"></div>
-            <select name="bitrate_menu" id="bitrate_menu">
-                <c:forEach items="${model.bitRates}" var="bitRate">
-                    <c:choose>
-                        <c:when test="${bitRate eq model.defaultBitRate}">
-                            <option selected="selected" value="${bitRate}">${bitRate} Kbps</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="${bitRate}">${bitRate} Kbps</option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </select>
-            <div id="share"></div>
-            <div id="download"></div>
-            <div id="casticonactive"></div>
-            <div id="casticonidle"></div>
+        <div id="jwplayer"></div>
+        <div id="media-control" class="bgcolor2">
+            <div class="ellipsis" style="flex-grow:1">
+                <div id="progress-slider"></div>
+
+                <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
+                    <div id="title" class="ellipsis" style="flex:1">
+                        <i class="fa ${not empty model.video.starredDate ? 'fa-star starred' : 'fa-star-o'} fa-lg clickable"
+                           onclick="toggleStar(${model.video.id}, this)" style="padding-right:0.25em"></i>&nbsp;${fn:escapeXml(model.video.title)}
+                    </div>
+
+                    <span id="play" class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                        <i class="fa fa-play-circle fa-stack-2x"></i>
+                    </span>
+                    <span id="pause" class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                        <i class="fa fa-pause-circle fa-stack-2x"></i>
+                    </span>
+                        <%--<span id="bufferButton" class="fa-stack fa-lg" style="display:none">--%>
+                        <%--<i class="fa fa-circle fa-stack-2x"></i>--%>
+                        <%--<i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>--%>
+                        <%--</span>--%>
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items: center">
+                            <span style="flex-grow:1"></span>
+                            <img id="cast-idle" src="<spring:theme code="castIdleImage"/>">
+                            <img id="cast-active" src="<spring:theme code="castActiveImage"/>">
+                            <span id="new-window"><i class="fa fa-external-link-square fa-fw"></i></span>
+                            <span id="share"><i class="fa fa-share-alt fa-fw"></i></span>
+                            <span id="download"><i class="fa fa-download fa-fw"></i></span>
+                            <span id="progress-and-duration" class="detail">
+                                <span id="progress">0:00</span> /
+                                <span id="duration">0:00</span>
+                            </span>
+                            <i id="audio-on" class="fa fa-volume-up fa-fw"></i>
+                            <i id="audio-off" class="fa fa-volume-off fa-fw"></i>
+                            <div id="volume-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <div id="debug"></div>
 
     <script type="text/javascript">
-        var CastPlayer = new CastPlayer();
+        var castPlayer = new CastPlayer();
     </script>
 </c:if>
-
-<h1 style="padding-top:1em;padding-bottom:0.5em;">
-    <i class="fa ${not empty model.video.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
-       onclick="toggleStar(${model.video.id}, this)" style="padding-right:0.25em"></i>&nbsp;${fn:escapeXml(model.video.title)}
-</h1>
-
-<sub:url value="main.view" var="backUrl"><sub:param name="id" value="${model.video.id}"/></sub:url>
-
-<i class="fa fa-chevron-left icon"></i>&nbsp;<a href="${backUrl}"><fmt:message key="common.back"/></a>
 
 </body>
 </html>

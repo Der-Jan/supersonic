@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MediaFile;
+import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
@@ -44,8 +44,8 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class VideoPlayerController extends ParameterizableViewController {
 
+    @Deprecated
     public static final int DEFAULT_BIT_RATE = 2000;
-    public static final int[] BIT_RATES = {200, 300, 400, 500, 700, 1000, 1200, 1500, 2000, 3000, 5000};
 
     private MediaFileService mediaFileService;
     private SettingsService settingsService;
@@ -58,13 +58,14 @@ public class VideoPlayerController extends ParameterizableViewController {
         User user = securityService.getCurrentUser(request);
         Map<String, Object> map = new HashMap<String, Object>();
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        Integer position = ServletRequestUtils.getIntParameter(request, "position");
         MediaFile file = mediaFileService.getMediaFile(id);
         mediaFileService.populateStarredDate(file, user.getUsername());
 
         Integer duration = file.getDurationSeconds();
-        String playerId = playerService.getPlayer(request, response).getId();
+        Player player = playerService.getPlayer(request, response);
         String url = request.getRequestURL().toString();
-        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + playerId);
+        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&player=" + player.getId() + "&format=raw");
         String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId());
 
         // Rewrite URLs in case we're behind a proxy.
@@ -78,25 +79,16 @@ public class VideoPlayerController extends ParameterizableViewController {
         String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
 
         map.put("video", file);
-        map.put("streamUrl", streamUrl);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("duration", duration);
-        map.put("bitRates", BIT_RATES);
-        map.put("defaultBitRate", DEFAULT_BIT_RATE);
+        map.put("position", position);
         map.put("licenseInfo", settingsService.getLicenseInfo());
         map.put("user", user);
+        map.put("player", player);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
-        return result;
-    }
-
-    public static Map<String, Integer> createSkipOffsets(int durationSeconds) {
-        LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
-        for (int i = 0; i < durationSeconds; i += 60) {
-            result.put(StringUtil.formatDuration(i), i);
-        }
         return result;
     }
 

@@ -62,6 +62,7 @@
         /* Local player variables */
 
         // @type {PLAYER_STATE} A state for local media player
+        // TODO: Necessary?
         this.localPlayerState = PLAYER_STATE.IDLE;
 
         // @type {jwplayer} local player
@@ -72,66 +73,90 @@
         // @type {Boolean} Muted audio
         this.muted = false;
 
-        // @type {Number} A number for current media offset
-        this.currentMediaOffset = 0;
-
-        // @type {Number} A number for current media time, relative to offset
+        // @type {Number} A number for current media time
         this.currentMediaTime = 0;
 
         // @type {Number} A number for current media duration
         this.currentMediaDuration = ${empty model.duration ? 0: model.duration};
 
         // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
-        this.seekInProgress = false;
+        this.seekInProgress = false; // TODO
+
+        this.initialPosition = ${empty model.position ? null : model.position}
 
         this.updateDurationLabel();
         this.initializeUI();
         this.initializeLocalPlayer();
         this.initializeCastPlayer();
-        this.playMediaLocally(0);
+//        this.playMediaLocally(0);
     };
 
     /**
      * Initialize local media player
      */
     CastPlayer.prototype.initializeLocalPlayer = function () {
-        jwplayer("jwplayer").setup({
-            flashplayer: "<c:url value="/flash/jw-player-5.10.swf"/>",
-            height: 360,
-            width: 640,
-            skin: "<c:url value="/flash/jw-player-subsonic-skin.zip"/>",
-            screencolor: "000000",
-            controlbar: "over",
-            autostart: "false",
-            bufferlength: 3,
-            provider: "video",
-            events: {
-                onTime: this.updateLocalProgress.bind(this),
-                onPlay: this.updateLocalState.bind(this),
-                onPause: this.updateLocalState.bind(this),
-                onIdle: this.updateLocalState.bind(this)
-            }
+        this.localPlayer = jwplayer("jwplayer");
+
+        this.localPlayer.setup({
+            height: "85%",
+            width: "100%",
+            image: "coverArt.view?id=" + ${model.video.id} + "&size=" + 600 + "&offset=" + this.duration / 10,
+            sources: [{
+                file: "stream?id=${model.video.id}&player=${model.player.id}&format=raw",
+                type: "${model.video.format}"
+            }]
+//            autostart: "true"
         });
 
-        this.localPlayer = jwplayer();
+        this.localPlayer.on("play", this.updateLocalState.bind(this));
+        this.localPlayer.on("pause", this.updateLocalState.bind(this));
+        this.localPlayer.on("idle", this.updateLocalState.bind(this));
+        this.localPlayer.on("mute", this.updateLocalVolume.bind(this));
+        this.localPlayer.on("volume", this.updateLocalVolume.bind(this));
+        this.localPlayer.on("time", this.updateLocalProgress.bind(this));
+        this.localPlayer.on("ready", this.onPlayerReady.bind(this));
+        this.localPlayer.on("resize", this.onPlayerResize.bind(this));
+    };
+
+    CastPlayer.prototype.onPlayerReady = function () {
+        $(".jw-controlbar-center-group, .jw-text-duration, .jw-text-elapsed").hide();
+
         this.localPlayer.setMute(false);
         this.localPlayer.setVolume(this.currentVolume);
+        if (this.initialPosition) {
+            this.localPlayer.seek(this.initialPosition);
+        }
+    };
+
+    CastPlayer.prototype.onPlayerResize = function (event) {
+        $("#overlay")
+                .width($("#jwplayer").width())
+                .height($("#jwplayer").height());
     };
 
     CastPlayer.prototype.updateLocalProgress = function (event) {
         var newTime = Math.round(event.position);
-        if (newTime != this.currentMediaTime && !this.seekInProgress) {
+        if (newTime != this.currentMediaTime) {
             this.currentMediaTime = newTime;
             this.updateProgressBar();
         }
     };
 
+    CastPlayer.prototype.updateLocalVolume = function (event) {
+        var mute = this.localPlayer.getMute();
+        $("#volume-slider").slider("option", "value", this.localPlayer.getVolume());
+        $("#audio-off").toggle(mute);
+        $("#audio-on").toggle(!mute);
+    };
+
     CastPlayer.prototype.updateLocalState = function () {
-        if (this.localPlayer.getState() == "PLAYING" || this.localPlayer.getState() == "BUFFERING") {
+        var state = this.localPlayer.getState();
+        console.log("JW player state: " + state);
+        if (state == "playing" || state == "buffering") {
             this.localPlayerState = PLAYER_STATE.PLAYING;
-        } else if (this.localPlayer.getState() == "PAUSED") {
+        } else if (state == "paused") {
             this.localPlayerState = PLAYER_STATE.PAUSED;
-        } else if (this.localPlayer.getState() == "IDLE") {
+        } else if (state == "idle") {
             this.localPlayerState = PLAYER_STATE.IDLE;
         }
         this.updateMediaControlUI();
@@ -229,7 +254,7 @@
             this.currentMediaSession = null;
 
             // continue to play media locally
-            this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
+            this.playMediaLocally(this.currentMediaTime);
             this.updateMediaControlUI();
         }
     };
@@ -285,7 +310,7 @@
         this.currentMediaSession = null;
 
         // continue to play media locally
-        this.playMediaLocally(this.currentMediaOffset + this.currentMediaTime);
+        this.playMediaLocally(this.currentMediaTime);
         this.updateMediaControlUI();
     };
 
@@ -297,11 +322,9 @@
             console.log("no session");
             return;
         }
-        var offset = this.currentMediaOffset + this.currentMediaTime;
-        this.currentMediaOffset = offset;
         this.currentMediaTime = 0;
 
-        var url = "${model.remoteStreamUrl}" + "&maxBitRate=" + this.getBitRate() + "&format=mkv&timeOffset=" + offset;
+        var url = "${model.remoteStreamUrl}";
         console.log("casting " + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
         mediaInfo.contentType = 'video/x-matroska';
@@ -383,7 +406,7 @@
      */
     CastPlayer.prototype.incrementMediaTime = function () {
         if (this.castPlayerState == PLAYER_STATE.PLAYING) {
-            if (this.currentMediaOffset + this.currentMediaTime < this.currentMediaDuration) {
+            if (this.currentMediaTime < this.currentMediaDuration) {
                 this.currentMediaTime += 1;
                 this.updateProgressBar();
             }
@@ -456,29 +479,25 @@
      * @param {Number} offset A number for media current position
      */
     CastPlayer.prototype.playMediaLocally = function (offset) {
+        this.localPlayer.play();
 
-        if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
-            this.localPlayer.play();
-        } else {
-            this.currentMediaOffset = offset;
-            this.currentMediaTime = 0;
+        <%--if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {--%>
+            <%--this.localPlayer.play();--%>
+        <%--} else {--%>
+            <%--this.currentMediaTime = 0;--%>
 
-            var url = "${model.streamUrl}" + "&maxBitRate=" + this.getBitRate() + "&timeOffset=" + offset;
-            console.log("playing local: " + url);
+            <%--var url = "${model.streamUrl}" + "&maxBitRate=" + this.getBitRate() + "&timeOffset=" + offset;--%>
+            <%--console.log("playing local: " + url);--%>
 
-            this.localPlayer.load({
-                file: url,
-                duration: this.currentMediaDuration,
-                provider: "video"
-            });
-            this.localPlayer.play();
-            this.seekInProgress = false;
-        }
+            <%--this.localPlayer.load({--%>
+                <%--file: url,--%>
+                <%--duration: this.currentMediaDuration,--%>
+                <%--provider: "video"--%>
+            <%--});--%>
+            <%--this.localPlayer.play();--%>
+            <%--this.seekInProgress = false;--%>
+        <%--}--%>
         this.updateMediaControlUI();
-    };
-
-    CastPlayer.prototype.getBitRate = function () {
-        return $("#bitrate_menu").val();
     };
 
     /**
@@ -501,14 +520,6 @@
     };
 
     /**
-     * Changes the bit rate.
-     */
-    CastPlayer.prototype.changeBitRate = function () {
-        // This effectively restarts streaming with the new bit rate.
-        this.seekMedia();
-    };
-
-    /**
      * Share the video.
      */
     CastPlayer.prototype.share = function () {
@@ -520,6 +531,16 @@
      */
     CastPlayer.prototype.download = function () {
         location.href = "download.view?id=${model.video.id}";
+    };
+
+    /**
+     * Open the video in a new window.
+     */
+    CastPlayer.prototype.newWindow = function () {
+//        todo: position
+//        location.href = "home.view";
+        this.localPlayer.pause();
+        window.open("videoPlayer.view?id=${model.video.id}&position=" + Math.round(this.localPlayer.getPosition()));
     };
 
     /**
@@ -543,7 +564,7 @@
      * @param {Boolean} mute A boolean
      */
     CastPlayer.prototype.setVolume = function (mute) {
-        this.currentVolume = parseInt($("#volume_slider").slider("option", "value"));
+        this.currentVolume = parseInt($("#volume-slider").slider("option", "value"));
 
         if (!this.currentMediaSession) {
             this.localPlayer.setMute(mute);
@@ -581,14 +602,11 @@
      */
     CastPlayer.prototype.seekMedia = function () {
 
-        var offset = parseInt($("#progress_slider").slider("option", "value"));
-        this.seekInProgress = true;
-        this.currentMediaOffset = offset;
+        var offset = parseInt($("#progress-slider").slider("option", "value"));
         this.currentMediaTime = 0;
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
-            this.localPlayerState = PLAYER_STATE.SEEKING;
-            this.playMediaLocally(offset);
+            this.localPlayer.seek(offset);
             return;
         }
 
@@ -596,8 +614,15 @@
             return;
         }
 
+        var seekRequest = new chrome.cast.media.SeekRequest();
+        seekRequest.currentTime = offset;
+        console.log(seekRequest);
+        this.seekInProgress = true;
+        this.currentMediaSession.seek(seekRequest,
+                this.mediaCommandSuccessCallback.bind(this, "seek " + this.currentMediaSession.sessionId),
+                this.onError.bind(this));
+
         this.castPlayerState = PLAYER_STATE.SEEKING;
-        this.loadMedia();
         this.updateMediaControlUI();
     };
 
@@ -615,13 +640,12 @@
      * Update progress bar with the current media time.
      */
     CastPlayer.prototype.updateProgressBar = function () {
-        $("#progress_slider").slider("option", "value", this.currentMediaOffset + this.currentMediaTime);
-        $("#progress").html(this.formatDuration(this.currentMediaOffset + this.currentMediaTime));
+        $("#progress-slider").slider("option", "value", this.currentMediaTime);
+        $("#progress").html(this.formatDuration(this.currentMediaTime));
     };
 
     CastPlayer.prototype.updateDebug = function () {
-        var debug = "<br>currentMediaOffset: " + this.currentMediaOffset + "<br>"
-                + "currentMediaTime: " + this.currentMediaTime + "<br>"
+        var debug = "<br>currentMediaTime: " + this.currentMediaTime + "<br>"
                 + "localPlayerState: " + this.localPlayerState + "<br>"
                 + "castPlayerState: " + this.castPlayerState;
         $("#debug").html(debug);
@@ -635,23 +659,18 @@
         var playerState = this.localPlayerState;
 
         if (this.deviceState == DEVICE_STATE.NOT_PRESENT) {
-            $("#casticonactive").hide();
-            $("#casticonidle").hide();
-            $("#overlay_text").hide();
-            var loaded = this.localPlayer.getPlaylist().length > 0;
-            $("#overlay").toggle(!loaded);
+            $("#cast-active").hide();
+            $("#cast-idle").hide();
+            $("#overlay").hide();
         } else if (this.deviceState == DEVICE_STATE.ACTIVE) {
-            $("#casticonactive").show();
-            $("#casticonidle").hide();
-            $("#overlay_text").show();
-            $("#overlay").show();
+            $("#cast-active").show();
+            $("#cast-idle").hide();
+            $("#overlay").css("display", "flex");
             playerState = this.castPlayerState;
         } else {
-            $("#casticonactive").hide();
-            $("#casticonidle").show();
-            $("#overlay_text").hide();
-            var loaded = this.localPlayer.getPlaylist().length > 0;
-            $("#overlay").toggle(!loaded);
+            $("#cast-active").hide();
+            $("#cast-idle").show();
+            $("#overlay").hide();
         }
 
         switch (playerState) {
@@ -676,21 +695,21 @@
      */
     CastPlayer.prototype.initializeUI = function () {
 
-        $("#progress_slider").slider({max: this.currentMediaDuration, animate: "fast", range: "min"});
-        $("#volume_slider").slider({max: 100, value: 50, animate: "fast", range: "min"});
+        $("#progress-slider").slider({max: this.currentMediaDuration, animate: "fast", range: "min"});
+        $("#volume-slider").slider({max: 100, value: 50, animate: "fast", range: "min"});
 
         // add event handlers to UI components
-        $("#casticonidle").on('click', this.launchApp.bind(this));
-        $("#casticonactive").on('click', this.stopApp.bind(this));
-        $("#progress_slider").on('slidestop', this.seekMedia.bind(this));
-        $("#volume_slider").on('slidestop', this.setVolume.bind(this, false));
-        $("#audio_on").on('click', this.muteMedia.bind(this));
-        $("#audio_off").on('click', this.muteMedia.bind(this));
+        $("#cast-idle").on('click', this.launchApp.bind(this));
+        $("#cast-active").on('click', this.stopApp.bind(this));
+        $("#progress-slider").on('slidestop', this.seekMedia.bind(this));
+        $("#volume-slider").on('slidestop', this.setVolume.bind(this, false));
+        $("#audio-on").on('click', this.muteMedia.bind(this));
+        $("#audio-off").on('click', this.muteMedia.bind(this));
         $("#play").on('click', this.playMedia.bind(this));
         $("#pause").on('click', this.pauseMedia.bind(this));
-        $("#bitrate_menu").on('change', this.changeBitRate.bind(this));
         $("#share").on('click', this.share.bind(this));
         $("#download").on('click', this.download.bind(this));
+        $("#new-window").on('click', this.newWindow.bind(this)).toggle(this.initialPosition == null);
 
         <c:if test="${not model.user.shareRole}">
         $("#share").hide();
@@ -698,6 +717,13 @@
         <c:if test="${not model.user.downloadRole}">
         $("#download").hide();
         </c:if>
+
+        $("#media-control").mouseenter(function (event) {
+                $(".ui-slider-handle").fadeIn();
+        });
+        $("#media-control").mouseleave(function (event) {
+                $(".ui-slider-handle").fadeOut();
+        });
 
 //        setInterval(this.updateDebug.bind(this), 100);
     };

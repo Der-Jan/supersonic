@@ -138,10 +138,8 @@ public class StreamController implements Controller {
                 playQueue.addFiles(true, file);
                 player.setPlayQueue(playQueue);
 
-                if (!file.isVideo()) {
-                    response.setIntHeader("ETag", file.getId());
-                    response.setHeader("Accept-Ranges", "bytes");
-                }
+                response.setIntHeader("ETag", file.getId());
+                response.setHeader("Accept-Ranges", "bytes");
 
                 TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, null);
                 long fileLength = getFileLength(parameters);
@@ -149,12 +147,14 @@ public class StreamController implements Controller {
                 boolean estimateContentLength = ServletRequestUtils.getBooleanParameter(request, "estimateContentLength", false);
                 boolean isHls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
 
-                range = getRange(request, file);
-                if (range != null && !file.isVideo()) {
+                range = getRange(request);
+                if (range != null) {
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                     Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());
                     long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
                     response.setHeader("Content-Range", "bytes " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
+                    LOG.info("Content-Length: " + (range.isClosed() ? range.size() : fileLength - range.getFirstBytePos()));
+                    LOG.info("Content-Range: " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
                 } else if (!isHls && (!isConversion || estimateContentLength)) {
                     Util.setContentLength(response, fileLength);
                 }
@@ -197,7 +197,7 @@ public class StreamController implements Controller {
             if (isShoutCastRequested && !isSingleFile) {
                 response.setHeader("icy-metaint", "" + ShoutCastOutputStream.META_DATA_INTERVAL);
                 response.setHeader("icy-notice1", "This stream is served using Subsonic");
-                response.setHeader("icy-notice2", "Subsonic - Free media streamer - subsonic.org");
+                response.setHeader("icy-notice2", "Subsonic media streamer - subsonic.org");
                 response.setHeader("icy-name", "Subsonic");
                 response.setHeader("icy-genre", "Mixed");
                 response.setHeader("icy-url", "http://subsonic.org/");
@@ -290,7 +290,7 @@ public class StreamController implements Controller {
         return duration * maxBitRate * 1000L / 8L;
     }
 
-    private HttpRange getRange(HttpServletRequest request, MediaFile file) {
+    private HttpRange getRange(HttpServletRequest request) {
 
         // First, look for "Range" HTTP header.
         HttpRange range = HttpRange.valueOf(request.getHeader("Range"));
@@ -298,37 +298,7 @@ public class StreamController implements Controller {
             return range;
         }
 
-        // Second, look for "offsetSeconds" request parameter.
-        String offsetSeconds = request.getParameter("offsetSeconds");
-        range = parseAndConvertOffsetSeconds(offsetSeconds, file);
-        if (range != null) {
-            return range;
-        }
-
         return null;
-    }
-
-    private HttpRange parseAndConvertOffsetSeconds(String offsetSeconds, MediaFile file) {
-        if (offsetSeconds == null) {
-            return null;
-        }
-
-        try {
-            Integer duration = file.getDurationSeconds();
-            Long fileSize = file.getFileSize();
-            if (duration == null || fileSize == null) {
-                return null;
-            }
-            float offset = Float.parseFloat(offsetSeconds);
-
-            // Convert from time offset to byte offset.
-            long byteOffset = (long) (fileSize * (offset / duration));
-            return new HttpRange(byteOffset, null);
-
-        } catch (Exception x) {
-            LOG.error("Failed to parse and convert time offset: " + offsetSeconds, x);
-            return null;
-        }
     }
 
     private VideoTranscodingSettings createVideoTranscodingSettings(MediaFile file, HttpServletRequest request) throws ServletRequestBindingException {
