@@ -123,6 +123,16 @@ public class MultiService {
         settingsService.updateUserSettings(userSettings);
     }
 
+    public void setSelectedMusicFolder(int musicFolderId) {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
+
+        // Note: UserSettings.setChanged() is intentionally not called. This would break browser caching
+        // of the index frame.
+        settings.setSelectedMusicFolderId(musicFolderId);
+        settingsService.updateUserSettings(settings);
+    }
+
     public void setNetworkService(NetworkService networkService) {
         this.networkService = networkService;
     }

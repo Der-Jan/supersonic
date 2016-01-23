@@ -3,22 +3,24 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" language="javascript">
 
-        function init() {
-            var mainLocation = top.main.location.href;
-            if (${model.musicFolderChanged}) {
+        function changeMusicFolder(musicFolderId) {
+            multiService.setSelectedMusicFolder(musicFolderId, function() {
+                var mainLocation = top.main.location.href;
                 if (mainLocation.indexOf("/home.view") != -1) {
                     top.main.location.href = mainLocation;
                 } else {
                     top.main.location.href = "artists.view";
                 }
-            }
+            });
         }
     </script>
 </head>
 
-<body class="bgcolor2 leftframe" onload="init()">
+<body class="bgcolor2 leftframe">
 <a name="top"></a>
 
 <div style="padding-top:1em; padding-bottom:2.5em; text-align:center">
@@ -31,7 +33,7 @@
     </div>
 
     <div style="padding-bottom:2.0em">
-        <select name="musicFolderId" style="width:100%" onchange="location='left.view?musicFolderId=' + options[selectedIndex].value;">
+        <select name="musicFolderId" style="width:100%" onchange="changeMusicFolder(options[selectedIndex].value);">
             <option value="-1"><fmt:message key="left.allfolders"/></option>
             <c:forEach items="${model.musicFolders}" var="musicFolder">
                 <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${fn:escapeXml(musicFolder.name)}</option>
