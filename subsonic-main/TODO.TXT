@@ -30,15 +30,10 @@ HTML5 player?
   Test stream role
   Verify that html5 is used
   Simplify code for update current song
-  Make cast work
   Fix bug when having same song twice in play queue
   Show buffering spinner in cast mode.
-  Cast unmute
-  Cast progress bar
   Cast background image
-  Auto-hide in firefox not quite right
   Video player
-  External player (for shares)
   Don't show cast button if in jukebox mode?
   Jukebox: Doesn't update when playing or clearing.
 createShare.jsp: No space after h1
@@ -48,29 +43,29 @@ Dont show lyrics link for videos
 Fix broken unit test
 createShare.jsp using path for back button
 Test with IE
-
-Fix security issue
-  http://forum.subsonic.org/forum/viewtopic.php?f=5&t=16316&p=69915#p69915
-  Also download
-  HLS
-
-#play:hover, #pause:hover {
-    opacity: 0.8;
-}
+Upate dsub in apps page
 
 Video
-  Fullscreen
-  Open in new window
-  Update volume slider
+  Show media format in thumb
+  Create translation of "Playing on Chromecast"
   No transcoding?
   Test chromecast
-  Autoconvert to mp4
-  Open video in separate window
-  JW bg color
   Handle end-of-stream
+  Improve range performance
+  Clean up transcodings
+  Missing scrubber in full-screen
+  
+Conversion
+  Only admin user?
+  REST support
+  Link to logfile
+  Store tmp and log file in db?
 
 Test HLS
+Test UPnP video streaming.  Ensure non-conversion
 Site: Add video
+Site: Update screenshots
+Demo: Add video
 REST: Support musicFolderId in getArtists
   https://mail.google.com/mail/ca/u/0/#inbox/15252a362df06a1b
 Jukebox mute: Add REST support
@@ -138,8 +133,6 @@ Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
 Remember visibility of left.jsp?
-Check jwplayer in external player
-  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
 Change chromecast background.
 Upgrade sonos wsdl.
   AbstractMedia.summary

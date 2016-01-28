@@ -30,10 +30,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -213,7 +218,36 @@ public class MediaFileService {
             result = new ArrayList<MediaFile>(set);
         }
 
+        result = filterConvertedVideos(result);
+
         return result;
+    }
+
+    private List<MediaFile> filterConvertedVideos(List<MediaFile> files) {
+        final Set<String> mp4Filenames = FluentIterable.from(files)
+                                                       .filter(new Predicate<MediaFile>() {
+                                                           @Override
+                                                           public boolean apply(MediaFile input) {
+                                                               return input.isVideo() && FilenameUtils.getExtension(input.getPath()).equalsIgnoreCase("mp4");
+                                                           }
+                                                       })
+                                                       .transform(new Function<MediaFile, String>() {
+                                                           @Override
+                                                           public String apply(MediaFile input) {
+                                                               return FilenameUtils.getBaseName(input.getPath());
+                                                           }
+                                                       })
+                                                       .toSet();
+
+        return FluentIterable.from(files)
+                             .filter(new Predicate<MediaFile>() {
+                                 @Override
+                                 public boolean apply(MediaFile input) {
+                                     return FilenameUtils.getExtension(input.getPath()).equalsIgnoreCase("mp4") ||
+                                            !mp4Filenames.contains(FilenameUtils.getBaseName(input.getPath()));
+                                 }
+                             })
+                             .toList();
     }
 
     /**

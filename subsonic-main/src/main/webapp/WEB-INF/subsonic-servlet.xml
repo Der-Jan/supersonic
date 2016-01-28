@@ -338,6 +338,10 @@
         <property name="playerService" ref="playerService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
+    <bean id="videoConverterController" class="net.sourceforge.subsonic.controller.VideoConverterController">
+        <property name="viewName" value="videoConverter"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+    </bean>
     <bean id="externalPlayerController" class="net.sourceforge.subsonic.controller.ExternalPlayerController">
         <property name="viewName" value="externalPlayer"/>
         <property name="mediaFileService" ref="mediaFileService"/>
@@ -451,6 +455,7 @@
                 <prop key="/gettingStarted.view">multiController</prop>
                 <prop key="/index.view">multiController</prop>
                 <prop key="/videoPlayer.view">videoPlayerController</prop>
+                <prop key="/videoConverter.view">videoConverterController</prop>
                 <prop key="/nowPlaying.view">nowPlayingController</prop>
                 <prop key="/starred.view">starredController</prop>
                 <prop key="/search.view">searchController</prop>

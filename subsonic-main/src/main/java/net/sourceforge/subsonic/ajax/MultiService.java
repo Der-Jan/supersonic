@@ -33,11 +33,14 @@ import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.domain.VideoConversion;
 import net.sourceforge.subsonic.service.LastFmService;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.NetworkService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.VideoConversionService;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Provides miscellaneous AJAX-enabled services.
@@ -55,6 +58,7 @@ public class MultiService {
     private LastFmService lastFmService;
     private SecurityService securityService;
     private SettingsService settingsService;
+    private VideoConversionService videoConversionService;
 
     /**
      * Returns status for port forwarding and URL redirection.
@@ -133,6 +137,53 @@ public class MultiService {
         settingsService.updateUserSettings(settings);
     }
 
+    public VideoConversionStatus getVideoConversionStatus(int mediaFileId) {
+        VideoConversion conversion = videoConversionService.getVideoConversionForFile(mediaFileId);
+        if (conversion == null) {
+            return null;
+        }
+        VideoConversionStatus result = new VideoConversionStatus();
+        result.setProgressSeconds(conversion.getProgressSeconds());
+        result.setProgressString(StringUtil.formatDuration(conversion.getProgressSeconds()));
+
+        switch (conversion.getStatus()) {
+            case NEW:
+                result.setStatusNew(true);
+                break;
+            case IN_PROGRESS:
+                result.setStatusInProgress(true);
+                break;
+            case COMPLETED:
+                result.setStatusCompleted(true);
+                break;
+            case ERROR:
+                result.setStatusError(true);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    public VideoConversionStatus startVideoConversion(int mediaFileId) {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        String username = securityService.getCurrentUsername(request);
+        VideoConversion conversion = new VideoConversion(null, mediaFileId, username, VideoConversion.Status.NEW,
+                                                         null, null, null, new Date(), new Date(), null);
+        videoConversionService.createVideoConversion(conversion);
+
+        return getVideoConversionStatus(mediaFileId);
+    }
+
+    public VideoConversionStatus cancelVideoConversion(int mediaFileId) {
+        VideoConversion conversion = videoConversionService.getVideoConversionForFile(mediaFileId);
+        if (conversion != null) {
+            videoConversionService.cancelVideoConversion(conversion);
+        }
+
+        return getVideoConversionStatus(mediaFileId);
+    }
+
     public void setNetworkService(NetworkService networkService) {
         this.networkService = networkService;
     }
@@ -151,5 +202,9 @@ public class MultiService {
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    public void setVideoConversionService(VideoConversionService videoConversionService) {
+        this.videoConversionService = videoConversionService;
     }
 }

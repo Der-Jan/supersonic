@@ -24,9 +24,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
@@ -54,12 +56,16 @@ public class VideoPlayerController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        MediaFile file = mediaFileService.getMediaFile(id);
+
+        if (!isStreamable(file)) {
+            return new ModelAndView(new RedirectView("videoConverter.view?id=" + id));
+        }
 
         User user = securityService.getCurrentUser(request);
         Map<String, Object> map = new HashMap<String, Object>();
-        int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         Integer position = ServletRequestUtils.getIntParameter(request, "position");
-        MediaFile file = mediaFileService.getMediaFile(id);
         mediaFileService.populateStarredDate(file, user.getUsername());
 
         Integer duration = file.getDurationSeconds();
@@ -90,6 +96,10 @@ public class VideoPlayerController extends ParameterizableViewController {
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
+    }
+
+    private boolean isStreamable(MediaFile file) {
+        return StringUtils.equalsIgnoreCase("mp4", file.getFormat());
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {

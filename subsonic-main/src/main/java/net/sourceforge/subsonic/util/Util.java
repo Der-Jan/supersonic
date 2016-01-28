@@ -199,4 +199,12 @@ public final class Util {
         }
         return result;
     }
+
+    public static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            LOG.error("Sleep interrupted.", e);
+        }
+    }
 }
