@@ -1,23 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1"%>
-<%--
-  ~ This file is part of Subsonic.
-  ~
-  ~  Subsonic is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as published by
-  ~  the Free Software Foundation, either version 3 of the License, or
-  ~  (at your option) any later version.
-  ~
-  ~  Subsonic is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with Subsonic.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  ~  Copyright 2014 (C) Sindre Mehus
-  --%>
-
 <%--@elvariable id="model" type="java.util.Map"--%>
 
 <html><head>
@@ -66,15 +47,20 @@
     </script>
 
     <style type="text/css">
-        .duration {
+        .video-duration, .video-format {
             position: absolute;
             bottom: 3px;
-            right: 3px;
             color: #d3d3d3;
             background-color: black;
             opacity: 0.8;
             padding-right:3px;
             padding-left:3px;
+        }
+        .video-duration {
+            right: 3px;
+        }
+        .video-format {
+            left: 3px;
         }
     </style>
 
@@ -150,7 +136,8 @@
                                                    onmouseover="startPreview(this, ${child.id}, ${child.hash}, ${child.durationSeconds})"
                                                    onmouseout="stopPreview()"></a>
                     </div>
-                    <div class="detail duration">${child.durationString}</div>
+                    <div class="detail video-format">${child.format}</div>
+                    <div class="detail video-duration">${child.durationString}</div>
                 </div>
                 <div class="caption1" title="${fn:escapeXml(child.name)}"><a href="${videoUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></div>
             </div>

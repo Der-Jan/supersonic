@@ -46,13 +46,14 @@ Test with IE
 Upate dsub in apps page
 
 Video
-  Show media format in thumb
   Create translation of "Playing on Chromecast"
   No transcoding?
   Test chromecast
+  Clean up javascript
   Handle end-of-stream
   Improve range performance
   Clean up transcodings
+  Chromecast icon
 
 Conversion
   Only admin user?
