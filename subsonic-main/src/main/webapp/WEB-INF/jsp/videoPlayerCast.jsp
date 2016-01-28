@@ -117,11 +117,11 @@
         this.localPlayer.on("time", this.updateLocalProgress.bind(this));
         this.localPlayer.on("ready", this.onPlayerReady.bind(this));
         this.localPlayer.on("resize", this.onPlayerResize.bind(this));
+        this.localPlayer.on("fullscreen", this.onPlayerFullscreen.bind(this));
     };
 
     CastPlayer.prototype.onPlayerReady = function () {
-        $(".jw-controlbar-center-group, .jw-text-duration, .jw-text-elapsed").hide();
-
+        $(".jw-controlbar").hide();
         this.localPlayer.setMute(false);
         this.localPlayer.setVolume(this.currentVolume);
         if (this.initialPosition) {
@@ -133,6 +133,10 @@
         $("#overlay")
                 .width($("#jwplayer").width())
                 .height($("#jwplayer").height());
+    };
+
+    CastPlayer.prototype.onPlayerFullscreen = function (event) {
+        $(".jw-controlbar").toggle(event.fullscreen);
     };
 
     CastPlayer.prototype.updateLocalProgress = function (event) {

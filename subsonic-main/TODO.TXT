@@ -53,8 +53,7 @@ Video
   Handle end-of-stream
   Improve range performance
   Clean up transcodings
-  Missing scrubber in full-screen
-  
+
 Conversion
   Only admin user?
   REST support
