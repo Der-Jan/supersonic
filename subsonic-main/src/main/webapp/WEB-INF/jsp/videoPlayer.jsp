@@ -4,7 +4,8 @@
 <head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <link rel="stylesheet" type="text/css" href="<c:url value="/style/videoPlayer.css"/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value="/style/videoPlayer.css"/>">
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-7.2.4/jwplayer.js"/>"></script>
@@ -28,7 +29,7 @@
 <c:if test="${licenseInfo.licenseOrTrialValid}">
     <div>
         <div id="overlay">
-            <span>Playing on Chromecast</span>
+            <span><fmt:message key="videoPlayer.chromecast"/></span>
         </div>
         <div id="jwplayer"></div>
         <div id="media-control" class="bgcolor2">
@@ -56,11 +57,11 @@
                     <div style="flex:1;">
                         <div style="display:flex; align-items: center">
                             <span style="flex-grow:1"></span>
-                            <img id="cast-idle" src="<spring:theme code="castIdleImage"/>">
-                            <img id="cast-active" src="<spring:theme code="castActiveImage"/>">
-                            <span id="new-window"><i class="fa fa-external-link-square fa-fw"></i></span>
-                            <span id="share"><i class="fa fa-share-alt fa-fw"></i></span>
-                            <span id="download"><i class="fa fa-download fa-fw"></i></span>
+                            <i id="cast-idle" class="material-icons">cast</i>
+                            <i id="cast-active" class="material-icons">cast_connected</i>
+                            <i id="new-window" class="material-icons">open_in_new</i>
+                            <i id="share" class="material-icons">share</i>
+                            <i id="download" class="material-icons">file_download</i>
                             <span id="progress-and-duration" class="detail">
                                 <span id="progress">0:00</span> /
                                 <span id="duration">0:00</span>

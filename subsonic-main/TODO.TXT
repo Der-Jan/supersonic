@@ -47,13 +47,13 @@ Upate dsub in apps page
 
 Video
   Create translation of "Playing on Chromecast"
-  No transcoding?
   Test chromecast
   Clean up javascript
   Handle end-of-stream
   Improve range performance
   Clean up transcodings
   Chromecast icon
+  Buffer button
 
 Conversion
   Only admin user?

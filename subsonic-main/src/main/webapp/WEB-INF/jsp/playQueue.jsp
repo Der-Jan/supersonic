@@ -15,6 +15,8 @@
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="playQueueCast.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <style type="text/css">
         .ui-slider .ui-slider-handle {
             width: 12px; height: 12px; cursor: pointer;
@@ -808,8 +810,8 @@
                     <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
                 </span>
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
-                <img id="castOn" src="<spring:theme code="castIdleImage"/>" onclick="castPlayer.launchCastApp()">
-                <img id="castOff" src="<spring:theme code="castActiveImage"/>" onclick="castPlayer.stopCastApp()">
+                <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
+                <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
                 <div style="flex:1">
                     <div id="progress-and-duration" class="detail" style="text-align:right">
                         <span id="progress-text">0:00</span> /

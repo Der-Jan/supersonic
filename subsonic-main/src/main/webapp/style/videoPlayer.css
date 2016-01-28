@@ -53,6 +53,7 @@
 
 #cast-active, #cast-idle {
     padding: 8px;
+    margin: 0 4px;
     cursor: pointer;
     display: none;
 }
@@ -60,7 +61,7 @@
 #audio-on, #audio-off {
     cursor: pointer;
     font-size: 20px;
-    padding: 8px
+    padding: 8px;
 }
 
 #audio-off {
@@ -70,6 +71,7 @@
 #new-window, #share, #download {
     font-size: 20px;
     padding: 8px;
+    margin: 0 4px;
     cursor: pointer;
 }
 .ui-slider .ui-slider-handle {
