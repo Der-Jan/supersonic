@@ -692,7 +692,7 @@
         var n = new Notification(song.title, {
             tag: "subsonic",
             body: body,
-            icon: "coverArt.view?id=" + song.id + "&size=110"
+            icon: "coverArt.view?id=" + song.id + "&auth=" + song.hash + "&size=110"
         });
         n.onshow = function() {
             setTimeout(function() {n.close()}, 5000);

@@ -19,6 +19,7 @@
 package net.sourceforge.subsonic.controller;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -33,6 +34,8 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+
+import com.google.common.io.Files;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.domain.MediaFile;
@@ -123,11 +126,13 @@ public class StreamController implements Controller {
 
             VideoTranscodingSettings videoTranscodingSettings = null;
 
-            // Is this a request for a single file (typically from the embedded Flash player)?
+            // Is this a request for a single file?
             // In that case, create a separate playlist (in order to support multiple parallel streams).
             // Also, enable partial download (HTTP byte range).
             MediaFile file = getSingleFile(request);
             boolean isSingleFile = file != null;
+            boolean isHls = false;
+            boolean isConversion = false;
             HttpRange range = null;
 
             if (isSingleFile) {
@@ -148,9 +153,9 @@ public class StreamController implements Controller {
 
                 TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, null);
                 long fileLength = getFileLength(parameters);
-                boolean isConversion = parameters.isDownsample() || parameters.isTranscode();
+                isConversion = parameters.isDownsample() || parameters.isTranscode();
                 boolean estimateContentLength = ServletRequestUtils.getBooleanParameter(request, "estimateContentLength", false);
-                boolean isHls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
+                isHls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
 
                 range = getRange(request);
                 if (range != null) {
@@ -192,6 +197,12 @@ public class StreamController implements Controller {
             }
 
             status = statusService.createStreamStatus(player);
+
+            // Optimize the case where no conversion is to take place
+            if (isSingleFile && !isHls && !isConversion) {
+                sendFile(file, range, status, response, player);
+                return null;
+            }
 
             in = new PlayQueueInputStream(player, status, maxBitRate, preferredTargetFormat, videoTranscodingSettings, transcodingService,
                                           audioScrobblerService, mediaFileService, searchService);
@@ -248,6 +259,35 @@ public class StreamController implements Controller {
             IOUtils.closeQuietly(in);
         }
         return null;
+    }
+
+    private void sendFile(MediaFile mediaFile, HttpRange range, TransferStatus transferStatus, HttpServletResponse response, Player player) throws IOException {
+        File file = mediaFile.getFile();
+
+        long offset = 0;
+        long length = file.length();
+        if (range != null) {
+            offset = range.getFirstBytePos();
+            length = range.isClosed() ? range.size() : file.length() - range.getFirstBytePos();
+        }
+
+        transferStatus.setFile(file);
+        scrobble(mediaFile, player, false);
+
+        long n = Files.asByteSource(file)
+                      .slice(offset, length)
+                      .copyTo(response.getOutputStream());
+
+        transferStatus.addBytesTransfered(n);
+        scrobble(mediaFile, player, true);
+        LOG.info("Wrote " + n + " bytes of " + length + " requested");
+    }
+
+    private void scrobble(MediaFile video, Player player, boolean submission) {
+        // Don't scrobble REST players (except Sonos)
+        if (player.getClientId() == null || player.getClientId().equals(SonosHelper.SUBSONIC_CLIENT_ID)) {
+            audioScrobblerService.register(video, player.getUsername(), submission, null);
+        }
     }
 
     private void logRequest(HttpServletRequest request) {

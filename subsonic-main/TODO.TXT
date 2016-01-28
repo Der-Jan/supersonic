@@ -46,17 +46,15 @@ Test with IE
 Upate dsub in apps page
 
 Video
-  Create translation of "Playing on Chromecast"
   Test chromecast
   Clean up javascript
   Handle end-of-stream
-  Improve range performance
   Clean up transcodings
-  Chromecast icon
   Buffer button
+  Use slice() also when converting
 
 Conversion
-  Only admin user?
+  Only admin user? Or new role.
   REST support
   Link to logfile
   Store tmp and log file in db?
