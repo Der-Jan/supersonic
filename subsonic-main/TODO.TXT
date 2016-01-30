@@ -45,9 +45,9 @@ Video
   Test chromecast
   Clean up javascript
   Handle end-of-stream
-  Clean up transcodings
   Buffer button
-  Arrow shortcuts should swallow event
+
+Arrow shortcuts should swallow event
 
 Conversion
   Only admin user? Or new role.

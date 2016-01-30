@@ -40,6 +40,9 @@ public class Schema60 extends Schema {
         if (template.queryForInt("select count(*) from version where version = 26") == 0) {
             LOG.info("Updating database schema to version 26.");
             template.execute("insert into version values (26)");
+
+            LOG.info("Deleting obsolete video transcodings.");
+            template.execute("delete from transcoding2 where name in ('flv/h264 video', 'mkv video')");
         }
 
         if (!tableExists(template, "video_conversion")) {
