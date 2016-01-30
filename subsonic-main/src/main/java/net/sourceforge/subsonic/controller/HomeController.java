@@ -81,6 +81,7 @@ public class HomeController extends ParameterizableViewController {
         }
 
         MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(user.getUsername());
+        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(user.getUsername());
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(user.getUsername(),
                                                                                 selectedMusicFolder == null ? null : selectedMusicFolder.getId());
 
@@ -138,7 +139,8 @@ public class HomeController extends ParameterizableViewController {
         map.put("listSize", LIST_SIZE);
         map.put("coverArtSize", CoverArtScheme.MEDIUM.getSize());
         map.put("listOffset", listOffset);
-        map.put("musicFolder", selectedMusicFolder);
+        map.put("musicFolders", allMusicFolders);
+        map.put("selectedMusicFolder", selectedMusicFolder);
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);

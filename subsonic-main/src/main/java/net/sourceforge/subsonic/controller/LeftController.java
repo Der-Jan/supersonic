@@ -19,7 +19,6 @@
 package net.sourceforge.subsonic.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
-import net.sourceforge.subsonic.domain.MusicFolder;
-import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -45,16 +42,8 @@ public class LeftController extends ParameterizableViewController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean musicFolderChanged = saveSelectedMusicFolder(request);
         Map<String, Object> map = new HashMap<String, Object>();
 
-        String username = securityService.getCurrentUsername(request);
-        List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
-
-        map.put("musicFolders", allMusicFolders);
-        map.put("selectedMusicFolder", selectedMusicFolder);
-        map.put("musicFolderChanged", musicFolderChanged);
         map.put("brand", settingsService.getBrand());
         map.put("user", securityService.getCurrentUser(request));
 
@@ -62,22 +51,6 @@ public class LeftController extends ParameterizableViewController {
         result.addObject("model", map);
         return result;
     }
-
-    private boolean saveSelectedMusicFolder(HttpServletRequest request) {
-        if (request.getParameter("musicFolderId") == null) {
-            return false;
-        }
-        int musicFolderId = Integer.parseInt(request.getParameter("musicFolderId"));
-
-        // Note: UserSettings.setChanged() is intentionally not called. This would break browser caching
-        // of the left frame.
-        UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        settings.setSelectedMusicFolderId(musicFolderId);
-        settingsService.updateUserSettings(settings);
-
-        return true;
-    }
-
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;

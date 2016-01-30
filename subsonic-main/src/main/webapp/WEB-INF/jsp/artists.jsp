@@ -4,14 +4,9 @@
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
 
     <style type="text/css">
-        .browse-selected-music-folder {
-            padding: 0.1em 0.5em;
-            border:1px solid #<spring:theme code="detailColor"/>;
-            margin-right: 2em;
-        }
         .browse-index-shortcut {
             padding-bottom: 8px;
             font-size: 105%;
@@ -38,9 +33,10 @@
 
     <script type="text/javascript" language="javascript">
 
-        function toggleStar(mediaFileId, element) {
-            starService.star(mediaFileId, !$(element).hasClass("fa-star"));
-            $(element).toggleClass("fa-star fa-star-o starred");
+        function changeMusicFolder(musicFolderId) {
+            multiService.setSelectedMusicFolder(musicFolderId, function() {
+                location.href = "artists.view";
+            });
         }
 
         function filterArtists(element) {
@@ -66,8 +62,13 @@
 </div>
 
 <div style="padding-bottom:1.5em">
-    <c:if test="${not empty model.selectedMusicFolder}">
-        <span class="browse-selected-music-folder bgcolor2"><i class="fa fa-folder-open-o fa-fw icon"></i>&nbsp;${fn:escapeXml(model.selectedMusicFolder.name)}</span>
+    <c:if test="${fn:length(model.musicFolders) > 1}">
+        <i class="fa fa-folder-open-o fa-fw icon"></i>&nbsp;<select name="musicFolderId" onchange="changeMusicFolder(options[selectedIndex].value);" style="margin-right:2em">
+        <option value="-1"><fmt:message key="left.allfolders"/></option>
+        <c:forEach items="${model.musicFolders}" var="musicFolder">
+            <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${fn:escapeXml(musicFolder.name)}</option>
+        </c:forEach>
+        </select>
     </c:if>
     <span>
         <c:choose>

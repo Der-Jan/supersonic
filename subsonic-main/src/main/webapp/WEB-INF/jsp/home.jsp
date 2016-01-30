@@ -4,6 +4,8 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
 
     <script type="text/javascript" language="javascript">
         function init() {
@@ -18,6 +20,10 @@
             <c:if test="${model.isIndexBeingCreated}">
             $().toastmessage("showNoticeToast", "<fmt:message key="home.scan"/>");
             </c:if>
+        }
+
+        function changeMusicFolder(musicFolderId) {
+            multiService.setSelectedMusicFolder(musicFolderId, refresh);
         }
 
         function refresh() {

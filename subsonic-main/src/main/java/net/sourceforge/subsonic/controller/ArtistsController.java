@@ -134,6 +134,7 @@ public class ArtistsController extends ParameterizableViewController {
 
         map.put("player", playerService.getPlayer(request, response));
         map.put("scanning", mediaScannerService.isScanning());
+        map.put("musicFolders", allMusicFolders);
         map.put("selectedMusicFolder", selectedMusicFolder);
         map.put("shortcuts", musicIndexService.getShortcuts(musicFoldersToUse));
         map.put("partyMode", userSettings.isPartyModeEnabled());

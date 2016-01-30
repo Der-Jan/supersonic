@@ -3,21 +3,6 @@
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
-    <script type="text/javascript" language="javascript">
-
-        function changeMusicFolder(musicFolderId) {
-            multiService.setSelectedMusicFolder(musicFolderId, function() {
-                var mainLocation = top.main.location.href;
-                if (mainLocation.indexOf("/home.view") != -1) {
-                    top.main.location.href = mainLocation;
-                } else {
-                    top.main.location.href = "artists.view";
-                }
-            });
-        }
-    </script>
 </head>
 
 <body class="bgcolor2 leftframe">
@@ -26,21 +11,6 @@
 <div style="padding-top:1em; padding-bottom:2.5em; text-align:center">
     <a href="help.view" target="main"><img src="<spring:theme code="logoImage"/>" title="<fmt:message key="top.help"/>" alt=""></a>
 </div>
-
-<c:if test="${fn:length(model.musicFolders) > 1}">
-    <div style="padding-bottom:0.5em" class="topHeader">
-        <i class="fa fa-folder-open-o fa-lg fa-fw icon"></i>&nbsp;<fmt:message key="settingsheader.musicFolder"/>
-    </div>
-
-    <div style="padding-bottom:2.0em">
-        <select name="musicFolderId" style="width:100%" onchange="changeMusicFolder(options[selectedIndex].value);">
-            <option value="-1"><fmt:message key="left.allfolders"/></option>
-            <c:forEach items="${model.musicFolders}" var="musicFolder">
-                <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${fn:escapeXml(musicFolder.name)}</option>
-            </c:forEach>
-        </select>
-    </div>
-</c:if>
 
 <div style="padding-bottom:1em" class="topHeader">
     <fmt:message key="top.logout" var="logout"><fmt:param value="${model.user.username}"/></fmt:message>
