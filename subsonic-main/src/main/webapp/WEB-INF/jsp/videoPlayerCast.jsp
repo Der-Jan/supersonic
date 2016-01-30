@@ -50,9 +50,6 @@
         // @type {Number} volume between 0 and 100
         this.currentVolume = 50;
 
-        // @type {Boolean} A flag for autoplay after load
-        this.autoplay = true;
-
         // @type {string} a chrome.cast.Session object
         this.session = null;
 
@@ -106,7 +103,6 @@
                 file: "stream?id=${model.video.id}&player=${model.player.id}&auth=${model.video.hash}&format=raw",
                 type: "${model.video.format}"
             }]
-//            autostart: "true"
         });
 
         this.localPlayer.on("play", this.updateLocalState.bind(this));
@@ -327,7 +323,6 @@
             console.log("no session");
             return;
         }
-        this.currentMediaTime = 0;
 
         var url = "${model.remoteStreamUrl}";
         console.log("casting " + url);
@@ -341,8 +336,8 @@
         mediaInfo.metadata.images = [new chrome.cast.Image("${model.remoteCoverArtUrl}&size=384")];
 
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
-        request.autoplay = this.autoplay;
-        request.currentTime = 0;
+        request.autoplay = true;
+        request.currentTime = this.currentMediaTime;
 
         this.castPlayerState = PLAYER_STATE.LOADING;
         console.log(this.castPlayerState + " (loadMedia)");
@@ -485,23 +480,7 @@
      */
     CastPlayer.prototype.playMediaLocally = function (offset) {
         this.localPlayer.play();
-
-        <%--if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {--%>
-            <%--this.localPlayer.play();--%>
-        <%--} else {--%>
-            <%--this.currentMediaTime = 0;--%>
-
-            <%--var url = "${model.streamUrl}" + "&maxBitRate=" + this.getBitRate() + "&timeOffset=" + offset;--%>
-            <%--console.log("playing local: " + url);--%>
-
-            <%--this.localPlayer.load({--%>
-                <%--file: url,--%>
-                <%--duration: this.currentMediaDuration,--%>
-                <%--provider: "video"--%>
-            <%--});--%>
-            <%--this.localPlayer.play();--%>
-            <%--this.seekInProgress = false;--%>
-        <%--}--%>
+        this.localPlayer.seek(offset);
         this.updateMediaControlUI();
     };
 
@@ -608,7 +587,7 @@
     CastPlayer.prototype.seekMedia = function () {
 
         var offset = parseInt($("#progress-slider").slider("option", "value"));
-        this.currentMediaTime = 0;
+        this.currentMediaTime = offset;
 
         if (this.localPlayerState == PLAYER_STATE.PLAYING || this.localPlayerState == PLAYER_STATE.PAUSED) {
             this.localPlayer.seek(offset);
