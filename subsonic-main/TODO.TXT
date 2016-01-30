@@ -17,6 +17,7 @@ Show personal rather than average rating.
 Keyboard shortcuts
 Tech: Replace frameset with iframes.
 Security: Authenticate stream endpoint with token
+Video conversion
 
 TODO IN 5.4
 ------------
@@ -26,24 +27,19 @@ ID3 lyrics
 HTML5 player?
   Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
-  Set estimateContentLength=true
   Test stream role
-  Verify that html5 is used
   Simplify code for update current song
   Fix bug when having same song twice in play queue
   Show buffering spinner in cast mode.
   Cast background image
-  Video player
   Don't show cast button if in jukebox mode?
   Jukebox: Doesn't update when playing or clearing.
 createShare.jsp: No space after h1
 Ellipsise buttons in left.jsp
 Make it simple to star currently playing song.
-Dont show lyrics link for videos
-Fix broken unit test
 createShare.jsp using path for back button
 Test with IE
-Upate dsub in apps page
+Update dsub in apps page
 
 Video
   Test chromecast
@@ -51,28 +47,18 @@ Video
   Handle end-of-stream
   Clean up transcodings
   Buffer button
-  Use slice() also when converting
   Arrow shortcuts should swallow event
-  Skipping transcoded streams in firefox broken (wrong duration)
 
 Conversion
   Only admin user? Or new role.
   REST support
   Link to logfile
+  Clean up schema
   Store tmp and log file in db?
-
-
-[2016-01-30 10:26:29,467] DEBUG StreamController - GET /stream?player=17&id=6965&auth=1164442660, Range: bytes=0-
-[2016-01-30 10:26:29,469] INFO StreamController - Content-Length: 696000
-[2016-01-30 10:26:29,470] INFO StreamController - Content-Range: 0-695999/696000
-
-[2016-01-30 10:29:18,927] DEBUG StreamController - GET /stream?player=17&id=6965&auth=1164442660, Range: bytes=0-
-[2016-01-30 10:29:18,933] INFO StreamController - Content-Length: 18442253
-[2016-01-30 10:29:18,933] INFO StreamController - Content-Range: 0-695999/696000
-
 
 Don't transcode m4a?
 Test HLS
+  Don't convert?
 Test UPnP video streaming.  Ensure non-conversion
 Site: Add video
 Site: Update screenshots

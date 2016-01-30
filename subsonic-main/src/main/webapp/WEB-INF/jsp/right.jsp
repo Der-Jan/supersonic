@@ -58,6 +58,7 @@
                 var title = clone.find(".now-playing-title");
                 var artist = clone.find(".now-playing-artist");
                 var lyrics = clone.find(".now-playing-lyrics");
+                var lyricsContainer = clone.find(".now-playing-lyrics-container");
                 var coverart = clone.find(".now-playing-coverart");
                 var albumlink = clone.find(".now-playing-album-link");
                 var when = clone.find(".now-playing-when");
@@ -68,6 +69,7 @@
                 lyrics.attr("href", entry.lyricsUrl);
                 coverart.attr("src", entry.coverArtUrl);
                 albumlink.attr("href", entry.albumUrl);
+                lyricsContainer.toggle(entry.lyricsUrl != null);
 
                 if (entry.avatarUrl) {
                     avatar.attr("src", entry.avatarUrl);
@@ -197,8 +199,8 @@
         <div class="ellipsis" style="flex-grow:1">
             <div class="ellipsis"><a class="now-playing-album-link" target="main"><b><span class="now-playing-title"></span></b></a></div>
             <div class="now-playing-artist ellipsis"></div>
-            <div style="margin-top:0.5em">
-                <i class='fa fa-microphone icon'></i>&nbsp;&nbsp;<a class="now-playing-lyrics" onclick="return popupSize(this, 'lyrics', 500, 550)"><fmt:message key="main.lyrics"/></a>
+            <div class="now-playing-lyrics-container" style="margin-top:0.5em">
+                <i class='fa fa-microphone icon'></i>&nbsp;&nbsp;<a class="now-playing-lyrics clickable" onclick="return popupSize(this, 'lyrics', 500, 550)"><fmt:message key="main.lyrics"/></a>
             </div>
             <div class="now-playing-when" style="margin-top:0.5em"></div>
         </div>
