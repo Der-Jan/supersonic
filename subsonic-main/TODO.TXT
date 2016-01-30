@@ -52,6 +52,8 @@ Video
   Clean up transcodings
   Buffer button
   Use slice() also when converting
+  Arrow shortcuts should swallow event
+  Skipping transcoded streams in firefox broken (wrong duration)
 
 Conversion
   Only admin user? Or new role.
@@ -59,6 +61,17 @@ Conversion
   Link to logfile
   Store tmp and log file in db?
 
+
+[2016-01-30 10:26:29,467] DEBUG StreamController - GET /stream?player=17&id=6965&auth=1164442660, Range: bytes=0-
+[2016-01-30 10:26:29,469] INFO StreamController - Content-Length: 696000
+[2016-01-30 10:26:29,470] INFO StreamController - Content-Range: 0-695999/696000
+
+[2016-01-30 10:29:18,927] DEBUG StreamController - GET /stream?player=17&id=6965&auth=1164442660, Range: bytes=0-
+[2016-01-30 10:29:18,933] INFO StreamController - Content-Length: 18442253
+[2016-01-30 10:29:18,933] INFO StreamController - Content-Range: 0-695999/696000
+
+
+Don't transcode m4a?
 Test HLS
 Test UPnP video streaming.  Ensure non-conversion
 Site: Add video

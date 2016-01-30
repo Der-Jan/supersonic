@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.controller;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -45,7 +46,6 @@ import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.io.PlayQueueInputStream;
-import net.sourceforge.subsonic.io.RangeOutputStream;
 import net.sourceforge.subsonic.io.ShoutCastOutputStream;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
 import net.sourceforge.subsonic.service.MediaFileService;
@@ -90,7 +90,7 @@ public class StreamController implements Controller {
         logRequest(request);
 
         TransferStatus status = null;
-        PlayQueueInputStream in = null;
+        InputStream in = null;
         Player player = playerService.getPlayer(request, response, false, true);
         User user = securityService.getUserByName(player.getUsername());
 
@@ -157,13 +157,13 @@ public class StreamController implements Controller {
                 boolean estimateContentLength = ServletRequestUtils.getBooleanParameter(request, "estimateContentLength", false);
                 isHls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
 
-                range = getRange(request);
+                range = HttpRange.of(request, fileLength);
                 if (range != null) {
                     response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-                    Util.setContentLength(response, range.isClosed() ? range.size() : fileLength - range.getFirstBytePos());
+                    Util.setContentLength(response, range.getLength());
                     long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
                     response.setHeader("Content-Range", "bytes " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
-                    LOG.info("Content-Length: " + (range.isClosed() ? range.size() : fileLength - range.getFirstBytePos()));
+                    LOG.info("Content-Length: " + range.getLength());
                     LOG.info("Content-Range: " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
                 } else if (!isHls && (!isConversion || estimateContentLength)) {
                     Util.setContentLength(response, fileLength);
@@ -206,7 +206,8 @@ public class StreamController implements Controller {
 
             in = new PlayQueueInputStream(player, status, maxBitRate, preferredTargetFormat, videoTranscodingSettings, transcodingService,
                                           audioScrobblerService, mediaFileService, searchService);
-            OutputStream out = RangeOutputStream.wrap(response.getOutputStream(), range);
+            in = Util.sliceInputStream(in, range);
+            OutputStream out = response.getOutputStream();
 
             // Enabled SHOUTcast, if requested.
             boolean isShoutCastRequested = "1".equals(request.getHeader("icy-metadata"));
@@ -267,8 +268,8 @@ public class StreamController implements Controller {
         long offset = 0;
         long length = file.length();
         if (range != null) {
-            offset = range.getFirstBytePos();
-            length = range.isClosed() ? range.size() : file.length() - range.getFirstBytePos();
+            offset = range.getOffset();
+            length = range.getLength();
         }
 
         transferStatus.setFile(file);
@@ -333,17 +334,6 @@ public class StreamController implements Controller {
         }
 
         return duration * maxBitRate * 1000L / 8L;
-    }
-
-    private HttpRange getRange(HttpServletRequest request) {
-
-        // First, look for "Range" HTTP header.
-        HttpRange range = HttpRange.valueOf(request.getHeader("Range"));
-        if (range != null) {
-            return range;
-        }
-
-        return null;
     }
 
     private VideoTranscodingSettings createVideoTranscodingSettings(MediaFile file, HttpServletRequest request) throws ServletRequestBindingException {
