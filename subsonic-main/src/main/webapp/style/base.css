@@ -252,6 +252,10 @@ img.circle {
     box-shadow: 0 0 20px 3px #555555;
 }
 
+.space-above {
+    margin-top: 1em;
+}
+
 .coverart {
     background-color: white;
     color: #323232;

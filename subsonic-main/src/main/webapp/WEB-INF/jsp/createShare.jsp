@@ -31,7 +31,7 @@
         </p>
     </c:when>
     <c:otherwise>
-        <p>
+        <p class="space-above">
             <fmt:message key="share.disabled"/>
         </p>
     </c:otherwise>
@@ -46,7 +46,7 @@
         <span style="padding-right:2em"><i class="fa fa-chevron-left icon"></i>&nbsp;<a href="${backUrl}"><fmt:message key="common.back"/></a></span>
     </c:if>
     <c:if test="${model.user.settingsRole}">
-    <i class="fa fa-chevron-right icon"></i>&nbsp;<a href="shareSettings.view"><fmt:message key="share.manage"/>
+    <i class="fa fa-cog icon"></i>&nbsp;<a href="shareSettings.view"><fmt:message key="share.manage"/>
     </c:if>
 </div>
 </body>

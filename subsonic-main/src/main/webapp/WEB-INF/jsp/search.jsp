@@ -29,11 +29,11 @@
 <h1><i class="fa fa-search fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="search.title"/></h1>
 
 <c:if test="${command.indexBeingCreated}">
-    <p class="warning"><fmt:message key="search.index"/></p>
+    <p class="warning space-above"><fmt:message key="search.index"/></p>
 </c:if>
 
 <c:if test="${not command.indexBeingCreated and empty command.artists and empty command.albums and empty command.songs}">
-    <p class="warning"><fmt:message key="search.hits.none"/></p>
+    <p class="warning space-above"><fmt:message key="search.hits.none"/></p>
 </c:if>
 
 <c:if test="${not empty command.artists}">
