@@ -58,18 +58,6 @@ table {
     background-image:url( "../icons/simplify/forward.png" );
 }
 
-
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #FFFFFF;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #FFFFFF;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #e7238b;

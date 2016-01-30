@@ -56,17 +56,6 @@ h2, b, tr {
     background-image:url( "../icons/sonic_blue/forward.png" );
 }
 
-
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #B6BEC2;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    color: #B6BEC2;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #990099;

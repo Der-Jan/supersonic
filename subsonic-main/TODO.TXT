@@ -25,7 +25,6 @@ Update amazon app
 ID3 lyrics
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=12595
 HTML5 player?
-  Log http response from stream.view
   http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
   Test stream role
   Simplify code for update current song
@@ -69,7 +68,6 @@ Improve Subsonic logo
 Table in artists.jsp crashes with index.
 Consolidate rendering of selected media folder. Add more space.
   onclick: Open left.jsp?
-Check link colors in themes.
 Ugly dropdown in firefox
 
 Add icon to buttons (start radio etc)

@@ -31,22 +31,6 @@ h2, b, tr {
     color: #DDDDDD;
 }
 
-/* Link color */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #BAD9F2
-}
-
-/* Link hover color */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: orange;
-}
-
-/* Color for warning messages. */
-.warning {
-    color: orange;
-}
-
 /* Simple border. */
 .border1, .ruleTableHeader, .ruleTableCell, .log {
     border: 1px solid white;

@@ -58,18 +58,6 @@ table {
     background-image:url( "../icons/denim/forward.png" );
 }
 
-
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #B6BEC2;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #B6BEC2;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #990099;

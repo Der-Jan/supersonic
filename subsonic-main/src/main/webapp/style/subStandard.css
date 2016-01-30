@@ -59,18 +59,6 @@ table {
     background-image:url( "../icons/subStandard/forward.png" );
 }
 
-/* Links. */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #FFFFFF;
-}
-
-/* Link hovers. */
-a:hover, a:hover * {
-    text-shadow: 0.1em 0.1em 0.2em grey;
-    text-decoration: none;
-    color: #FFDA23;
-}
-
 /* Warning messages. */
 .warning {
     color: #AA1F15;

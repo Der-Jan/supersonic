@@ -54,17 +54,6 @@ table {
     background-image:url("../icons/midnightfun/midnightfun_forward.png");
 }
 
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #656569;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #000000;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #990099;

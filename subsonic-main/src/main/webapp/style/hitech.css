@@ -20,10 +20,6 @@ table {
     background-color: #090a09;
 }
 
-body.bgcolor2 {
-    border-bottom: 1px solid #272727;
-}
-
 .bgcolor2 {
 	background-image:url(../icons/hitech/bg.jpg);
 }

@@ -36,17 +36,6 @@ table {
     background-color: #EEE;
 }
 
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #000000;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #FFFFFF;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #990099;

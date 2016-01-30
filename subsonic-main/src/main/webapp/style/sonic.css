@@ -62,18 +62,6 @@ table {
     background-image:url( "../icons/sonic/forward.png" );
 }
 
-
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #333333;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #696969;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #e7238b;

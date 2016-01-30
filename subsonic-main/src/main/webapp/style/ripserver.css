@@ -23,16 +23,6 @@
     background-color: #FFFFFF
 }
 
-/* Link color */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #0076B6
-}
-
-/* Link hover color */
-a:hover, a:hover * {
-    color: orange
-}
-
 body {
     scrollbar-face-color: #DEE3E7;
     scrollbar-highlight-color: #FFFFFF;

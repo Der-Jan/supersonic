@@ -58,23 +58,10 @@ table {
     background-image:url( "../icons/pinkpanther/forward.png" );
 }
 
-
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #11bdcb;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: underline;
-    color: #11bdcb;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #990099;
 }
-
 
 /* The primary foreground colour. */
 body {

@@ -61,17 +61,6 @@ table {
     background-image:url( "../icons/coolandclean/forward.png" );
 }
 
-/* Link colour */
-a:link, a:active, a:visited, a:link *, a:active *, a:visited * {
-    color: #656569;
-}
-
-/* Link hover colour */
-a:hover, a:hover * {
-    text-decoration: none;
-    color: #333333;
-}
-
 /* Colour for warning messages. */
 .warning {
     color: #AA1F15;
