@@ -32,8 +32,7 @@ HTML5 player?
   Fix bug when having same song twice in play queue
   Show buffering spinner in cast mode.
   Cast background image
-  Don't show cast button if in jukebox mode?
-  Jukebox: Doesn't update when playing or clearing.
+  Jukebox: Doesn't update when clearing.
 createShare.jsp: No space after h1
 Ellipsise buttons in left.jsp
 Make it simple to star currently playing song.

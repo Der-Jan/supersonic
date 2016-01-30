@@ -73,7 +73,7 @@
     var songs = null;
     var currentStreamUrl = null;
     var repeatEnabled = false;
-    var castPlayer = new CastPlayer();
+    var castPlayer;
     var jwPlayer;
     var jukeboxPlayer = false;
     var externalPlayer = false;
@@ -85,6 +85,7 @@
         jukeboxPlayer = ${model.player.jukebox};
         externalPlayer = ${model.player.external};
         externalPlayerWithPlaylist = ${model.player.externalWithPlaylist};
+        castPlayer = new CastPlayer(!jukeboxPlayer && !externalPlayer && !externalPlayerWithPlaylist);
         initMouseListener();
 
         dwr.engine.setErrorHandler(null);

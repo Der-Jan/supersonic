@@ -2,13 +2,15 @@
 (function () {
     'use strict';
 
-    var CastPlayer = function () {
+    var CastPlayer = function (init) {
 
         this.castSession = null;
         this.mediaSession = null;
         this.volume = 1.0;
 
-        this.initializeCastPlayer();
+        if (init) {
+            this.initializeCastPlayer();
+        }
     };
 
     CastPlayer.prototype.initializeCastPlayer = function () {
