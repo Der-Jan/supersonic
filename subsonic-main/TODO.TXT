@@ -57,8 +57,7 @@ Conversion
   Store tmp and log file in db?
 
 Don't transcode m4a?
-Test HLS
-  Don't convert?
+Create simple webapp with responsive design
 Test UPnP video streaming.  Ensure non-conversion
 Site: Add video
 Site: Update screenshots

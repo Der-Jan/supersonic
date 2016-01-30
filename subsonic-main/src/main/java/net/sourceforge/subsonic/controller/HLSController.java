@@ -48,7 +48,7 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class HLSController implements Controller {
 
-    private static final int SEGMENT_DURATION = 10;
+    private static final int SEGMENT_DURATION = 40;
     private static final Pattern BITRATE_PATTERN = Pattern.compile("(\\d+)(@(\\d+)x(\\d+))?");
 
     private PlayerService playerService;
