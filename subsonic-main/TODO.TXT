@@ -45,11 +45,13 @@ Conversion
   Select bitrate
 
 Video
+  Allow <filename>*.srt for subtitles
   Convert srt to vtt
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
 
 Conversion
+  Check for premium.
   Only admin user? Or new role.
   REST support
   Link to logfile
@@ -66,8 +68,6 @@ Demo: Add video
 Jukebox mute: Add REST support
 Improve Subsonic logo
 Table in artists.jsp crashes with index.
-Consolidate rendering of selected media folder. Add more space.
-  onclick: Open left.jsp?
 Ugly dropdown in firefox
 
 Add icon to buttons (start radio etc)

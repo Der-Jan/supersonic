@@ -358,7 +358,7 @@
 
         if (this.hasCaptions) {
             var track = new chrome.cast.media.Track(1, chrome.cast.media.TrackType.TEXT);
-            track.trackContentId = "${model.remoteCaptionsUrl}";
+            track.trackContentId = "${model.remoteCaptionsUrl}&format=vtt";
             track.trackContentType = 'text/vtt';
             track.subtype = chrome.cast.media.TextTrackType.SUBTITLES;
             track.name = 'Subtitles';

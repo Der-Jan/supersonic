@@ -19,11 +19,18 @@
 package net.sourceforge.subsonic.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -33,6 +40,8 @@ import com.google.common.io.Files;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.captions.SrtToVtt;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller for serving closed captions.
@@ -41,7 +50,10 @@ import net.sourceforge.subsonic.service.SecurityService;
  */
 public class CaptionsController implements Controller {
 
-    private static final String[] CAPTIONS_FORMATS = {"vtt", "srt"};
+    private static final String CAPTION_FORMAT_VTT = "vtt";
+    private static final String CAPTION_FORMAT_SRT = "srt";
+
+    private static final String[] CAPTIONS_FORMATS = {CAPTION_FORMAT_VTT, CAPTION_FORMAT_SRT};
 
     private MediaFileService mediaFileService;
     private SecurityService securityService;
@@ -51,6 +63,7 @@ public class CaptionsController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+        String requiredFormat = request.getParameter("format");
         MediaFile video = mediaFileService.getMediaFile(id);
 
         if (!securityService.isAuthenticated(video, request)) {
@@ -58,7 +71,7 @@ public class CaptionsController implements Controller {
             return null;
         }
 
-        File captionsFile = findCaptionsFile(video);
+        File captionsFile = findCaptionsVideo(video);
         if (captionsFile == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
@@ -66,12 +79,32 @@ public class CaptionsController implements Controller {
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("text/plain");
-        Files.copy(captionsFile, response.getOutputStream());
+        response.setCharacterEncoding(StringUtil.ENCODING_UTF8);
+
+        String actualFormat = FilenameUtils.getExtension(captionsFile.getName());
+        if (requiredFormat == null || requiredFormat.equalsIgnoreCase(actualFormat)) {
+            Files.copy(captionsFile, response.getOutputStream());
+        } else if (CAPTION_FORMAT_SRT.equals(actualFormat) &&
+                   CAPTION_FORMAT_VTT.equals(requiredFormat)) {
+            convertAndSend(captionsFile, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
 
         return null;
     }
 
-    public File findCaptionsFile(MediaFile video) {
+    private void convertAndSend(File captionsFile, HttpServletResponse response) throws IOException {
+        Reader reader = new InputStreamReader(new FileInputStream(captionsFile), StringUtil.ENCODING_UTF8);
+        try {
+            Writer writer = new OutputStreamWriter(response.getOutputStream(), StringUtil.ENCODING_UTF8);
+            SrtToVtt.convert(reader, writer);
+        } finally {
+            IOUtils.closeQuietly(reader);
+        }
+    }
+
+    public File findCaptionsVideo(MediaFile video) {
         for (String captionsFormat : CAPTIONS_FORMATS) {
             File captionsFile = new File(video.getParentFile(),
                                          FilenameUtils.getBaseName(video.getFile().getName()) + "." + captionsFormat);
