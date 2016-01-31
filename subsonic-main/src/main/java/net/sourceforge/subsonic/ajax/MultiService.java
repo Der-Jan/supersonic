@@ -169,7 +169,7 @@ public class MultiService {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         String username = securityService.getCurrentUsername(request);
         VideoConversion conversion = new VideoConversion(null, mediaFileId, username, VideoConversion.Status.NEW,
-                                                         null, null, null, new Date(), new Date(), null);
+                                                         null, new Date(), new Date(), null);
         videoConversionService.createVideoConversion(conversion);
 
         return getVideoConversionStatus(mediaFileId);

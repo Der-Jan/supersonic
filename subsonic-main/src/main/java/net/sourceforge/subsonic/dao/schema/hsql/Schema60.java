@@ -52,8 +52,6 @@ public class Schema60 extends Schema {
                              "media_file_id int not null," +
                              "username varchar not null," +
                              "status varchar not null," +
-                             "command varchar," +
-                             "log_file varchar," +
                              "progress_seconds int," +
                              "created datetime not null," +
                              "changed datetime not null," +

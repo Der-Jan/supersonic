@@ -40,20 +40,19 @@ createShare.jsp using path for back button
 Test with IE
 Update dsub in apps page
 
+Conversion
+  Select audio track
+  Select bitrate
+
 Video
   Convert srt to vtt
-  Audio tracks
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
-
-Arrow shortcuts should swallow event
 
 Conversion
   Only admin user? Or new role.
   REST support
   Link to logfile
-  Clean up schema
-  Store tmp and log file in db?
   Show conversion queue?
 
 Don't transcode m4a?

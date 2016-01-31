@@ -31,21 +31,17 @@ public class VideoConversion {
     private int mediaFileId;
     private String username;
     private Status status;
-    private String command;
-    private String logFile;
     private final Integer progressSeconds;
     private Date created;
     private Date changed;
     private Date started;
 
-    public VideoConversion(Integer id, int mediaFileId, String username, Status status, String command, String logFile,
+    public VideoConversion(Integer id, int mediaFileId, String username, Status status,
                            Integer progressSeconds, Date created, Date changed, Date started) {
         this.id = id;
         this.mediaFileId = mediaFileId;
         this.username = username;
         this.status = status;
-        this.command = command;
-        this.logFile = logFile;
         this.progressSeconds = progressSeconds;
         this.created = created;
         this.changed = changed;
@@ -82,22 +78,6 @@ public class VideoConversion {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public String getLogFile() {
-        return logFile;
-    }
-
-    public void setLogFile(String logFile) {
-        this.logFile = logFile;
     }
 
     public Integer getProgressSeconds() {
