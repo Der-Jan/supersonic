@@ -35,6 +35,7 @@
 #play, #pause, #buffer {
     font-size: 24px;
     color: #E65100;
+    margin-right: 12px;
 }
 
 #play, #pause {
@@ -71,12 +72,22 @@
     display: none;
 }
 
-#new-window, #share, #download {
+#new-window, #share, #download, #cc-on, #cc-off {
     font-size: 20px;
     padding: 8px;
     margin: 0 4px;
     cursor: pointer;
 }
+
+#cc-off, #cc-on {
+    font-size: 26px;
+    display: none;
+}
+
+#cc-on, #cast-active {
+    color: #E65100;
+}
+
 .ui-slider .ui-slider-handle {
     width: 12px;
     height: 12px;

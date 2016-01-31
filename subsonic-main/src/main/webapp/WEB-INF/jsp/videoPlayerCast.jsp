@@ -76,7 +76,8 @@
         // @type {Number} A number for current media duration
         this.currentMediaDuration = ${empty model.duration ? 0: model.duration};
 
-        this.initialPosition = ${empty model.position ? null : model.position}
+        this.initialPosition = ${empty model.position ? 'null' : model.position};
+        this.hasCaptions = ${model.hasCaptions};
 
         this.updateDurationLabel();
         this.initializeUI();
@@ -90,16 +91,22 @@
     CastPlayer.prototype.initializeLocalPlayer = function () {
         this.localPlayer = jwplayer("jwplayer");
 
+        var tracks = this.hasCaptions ? [{
+            file: "videoPlayer.view?id=${model.video.id}&captions=true",
+            kind: "captions",
+            "default": true
+        }] : [];
+
         this.localPlayer.setup({
             height: "85%",
             width: "100%",
             title: "${fn:escapeXml(model.video.title)}",
-            image: "coverArt.view?id=" + ${model.video.id} + "&size=" + 600 + "&auth=" + ${model.video.hash} + "&offset=" + this.duration / 10,
+            image: "coverArt.view?id=${model.video.id}&size=600&auth=${model.video.hash}&offset=" + this.duration / 10,
             sources: [{
                 file: "stream?id=${model.video.id}&player=${model.player.id}&auth=${model.video.hash}&format=raw",
                 type: "${model.video.format}"
-            }]
-//            autostart: true
+            }],
+            tracks: tracks
         });
 
         this.localPlayer.on("play", this.updateLocalState.bind(this));
@@ -116,6 +123,7 @@
         this.localPlayer.on("ready", this.onPlayerReady.bind(this));
         this.localPlayer.on("resize", this.onPlayerResize.bind(this));
         this.localPlayer.on("fullscreen", this.onPlayerFullscreen.bind(this));
+        this.localPlayer.on("captionsChanged", this.onCaptionsChanged.bind(this));
     };
 
     CastPlayer.prototype.onPlayerReady = function () {
@@ -124,6 +132,9 @@
         this.localPlayer.setVolume(this.currentVolume);
         if (this.initialPosition) {
             this.localPlayer.seek(this.initialPosition);
+        }
+        if (this.hasCaptions) {
+            this.toggleCaptions(true);
         }
     };
 
@@ -135,6 +146,12 @@
 
     CastPlayer.prototype.onPlayerFullscreen = function (event) {
         $(".jw-controlbar").toggle(event.fullscreen);
+    };
+
+    CastPlayer.prototype.onCaptionsChanged = function (event) {
+        var enabled = event.track > 0;
+        $("#cc-on").toggle(enabled);
+        $("#cc-off").toggle(!enabled);
     };
 
     CastPlayer.prototype.updateLocalProgress = function (event) {
@@ -524,6 +541,13 @@
     };
 
     /**
+     * Turns captions on/off.
+     */
+    CastPlayer.prototype.toggleCaptions = function (enabled) {
+        this.localPlayer.setCurrentCaptions(enabled ? 1 : 0);
+    };
+
+    /**
      * Open the video in a new window.
      */
     CastPlayer.prototype.newWindow = function () {
@@ -702,9 +726,13 @@
         $("#audio-off").on('click', this.muteMedia.bind(this));
         $("#play").on('click', this.playMedia.bind(this));
         $("#pause").on('click', this.pauseMedia.bind(this));
+        $("#cc-on").on('click', this.toggleCaptions.bind(this, false));
+        $("#cc-off").on('click', this.toggleCaptions.bind(this, true));
         $("#share").on('click', this.share.bind(this));
         $("#download").on('click', this.download.bind(this));
         $("#new-window").on('click', this.newWindow.bind(this)).toggle(this.initialPosition == null);
+
+        $("#cc-on").toggle(this.hasCaptions);
 
         <c:if test="${not model.user.shareRole}">
         $("#share").hide();

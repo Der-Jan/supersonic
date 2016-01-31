@@ -18,17 +18,22 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.google.common.io.Files;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
@@ -46,6 +51,8 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class VideoPlayerController extends ParameterizableViewController {
 
+    private static final String[] CAPTIONS_FORMATS = {"srt", "vtt"};
+
     @Deprecated
     public static final int DEFAULT_BIT_RATE = 2000;
 
@@ -58,6 +65,11 @@ public class VideoPlayerController extends ParameterizableViewController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile file = mediaFileService.getMediaFile(id);
+
+        boolean captions = ServletRequestUtils.getBooleanParameter(request, "captions", false);
+        if (captions) {
+            return handleCaptionsRequest(file, response);
+        }
 
         if (!isStreamable(file)) {
             return new ModelAndView(new RedirectView("videoConverter.view?id=" + id));
@@ -85,6 +97,7 @@ public class VideoPlayerController extends ParameterizableViewController {
         String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
 
         map.put("video", file);
+        map.put("hasCaptions", findCaptionsFile(file) != null);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
         map.put("duration", duration);
@@ -96,6 +109,30 @@ public class VideoPlayerController extends ParameterizableViewController {
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
+    }
+
+    private ModelAndView handleCaptionsRequest(MediaFile video, HttpServletResponse response) throws IOException {
+        File captionsFile = findCaptionsFile(video);
+        if (captionsFile == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+
+        response.setContentType("text/plain");
+        Files.copy(captionsFile, response.getOutputStream());
+
+        return null;
+    }
+
+    private File findCaptionsFile(MediaFile video) {
+        for (String captionsFormat : CAPTIONS_FORMATS) {
+            File captionsFile = new File(video.getParentFile(),
+                                         FilenameUtils.getBaseName(video.getFile().getName()) + "." + captionsFormat);
+            if (captionsFile.exists() && captionsFile.isFile()) {
+                return captionsFile;
+            }
+        }
+        return null;
     }
 
     private boolean isStreamable(MediaFile file) {

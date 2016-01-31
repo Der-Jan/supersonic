@@ -50,7 +50,7 @@
                         <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                         <i class="fa fa-pause-circle fa-stack-2x"></i>
                     </span>
-                    <span id="buffer" class="fa-stack fa-lg"">
+                    <span id="buffer" class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
                     </span>
@@ -59,6 +59,8 @@
                             <span style="flex-grow:1"></span>
                             <i id="cast-idle" class="material-icons">cast</i>
                             <i id="cast-active" class="material-icons">cast_connected</i>
+                            <i id="cc-on" class="material-icons">closed_caption</i>
+                            <i id="cc-off" class="material-icons">closed_caption</i>
                             <i id="new-window" class="material-icons">open_in_new</i>
                             <i id="share" class="material-icons">share</i>
                             <i id="download" class="material-icons">file_download</i>

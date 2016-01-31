@@ -19,6 +19,7 @@ Tech: Replace frameset with iframes.
 Security: Authenticate stream endpoint with token
 Video conversion
 REST: Add musicFolderId parameter to getArtists.
+Subtitle support (.vtt, .srt)
 
 TODO IN 5.4
 ------------
@@ -39,14 +40,10 @@ createShare.jsp using path for back button
 Test with IE
 Update dsub in apps page
 
-Remove music folder selector
-
 Video
-  Test chromecast
-  Clean up javascript
-  Handle end-of-stream
-  Buffer button
-  Improve scrubbing.
+  Subtitles
+    Also when casting
+  Audio tracks
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
 
