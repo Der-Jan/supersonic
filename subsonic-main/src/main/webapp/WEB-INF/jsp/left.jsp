@@ -8,7 +8,7 @@
 <body class="bgcolor2 leftframe">
 <a name="top"></a>
 
-<div style="padding-top:1em; padding-bottom:2.5em; text-align:center">
+<div style="padding-top:1em; padding-bottom:2.5em">
     <a href="help.view" target="main"><img src="<spring:theme code="logoImage"/>" title="<fmt:message key="top.help"/>" alt=""></a>
 </div>
 

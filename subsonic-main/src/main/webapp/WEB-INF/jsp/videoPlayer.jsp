@@ -50,10 +50,10 @@
                         <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                         <i class="fa fa-pause-circle fa-stack-2x"></i>
                     </span>
-                        <%--<span id="bufferButton" class="fa-stack fa-lg" style="display:none">--%>
-                        <%--<i class="fa fa-circle fa-stack-2x"></i>--%>
-                        <%--<i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>--%>
-                        <%--</span>--%>
+                    <span id="buffer" class="fa-stack fa-lg"">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
+                    </span>
                     <div style="flex:1;">
                         <div style="display:flex; align-items: center">
                             <span style="flex-grow:1"></span>

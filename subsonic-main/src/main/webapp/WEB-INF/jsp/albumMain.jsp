@@ -21,6 +21,9 @@
             margin-left:1.0em;
             margin-right:0.5em;
         }
+        #playButton:hover {
+            opacity: 0.8;
+        }
     </style>
 
 </head><body class="mainframe bgcolor1" onload="init();">

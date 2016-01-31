@@ -97,7 +97,7 @@
                 }
             }});
 
-        $("#progress").slider({max: 0, animate: "fast", range: "min"});
+        $("#progress").slider({max: 0, range: "min"});
         $("#volume").slider({max: 100, value: 50, animate: "fast", range: "min"});
         $("#volume").on("slidestop", onVolumeChanged);
         $("#progress").on("slidestop", onProgressChanged);

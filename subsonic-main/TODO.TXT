@@ -18,6 +18,7 @@ Keyboard shortcuts
 Tech: Replace frameset with iframes.
 Security: Authenticate stream endpoint with token
 Video conversion
+REST: Add musicFolderId parameter to getArtists.
 
 TODO IN 5.4
 ------------
@@ -32,18 +33,22 @@ HTML5 player?
   Show buffering spinner in cast mode.
   Cast background image
   Jukebox: Doesn't update when clearing.
-createShare.jsp: No space after h1
 Ellipsise buttons in left.jsp
 Make it simple to star currently playing song.
 createShare.jsp using path for back button
 Test with IE
 Update dsub in apps page
 
+Remove music folder selector
+
 Video
   Test chromecast
   Clean up javascript
   Handle end-of-stream
   Buffer button
+  Improve scrubbing.
+  Some videos doesn't start in Firefox (e.g., House of cards)
+    castPlayer.localPlayer.play(true).pause(true).play(true)
 
 Arrow shortcuts should swallow event
 
@@ -53,18 +58,17 @@ Conversion
   Link to logfile
   Clean up schema
   Store tmp and log file in db?
+  Show conversion queue?
 
 Don't transcode m4a?
 Create simple webapp with responsive design
   Bootstrap?
+  https://mail.google.com/mail/ca/u/0/#inbox/152945938b13b9c5
 Test UPnP video streaming.  Ensure non-conversion
 Site: Add video
 Site: Update screenshots
 Demo: Add video
-REST: Support musicFolderId in getArtists
-  https://mail.google.com/mail/ca/u/0/#inbox/15252a362df06a1b
 Jukebox mute: Add REST support
-Ugly "No matches found"
 Improve Subsonic logo
 Table in artists.jsp crashes with index.
 Consolidate rendering of selected media folder. Add more space.
@@ -74,8 +78,6 @@ Ugly dropdown in firefox
 Add icon to buttons (start radio etc)
 Use Bootstrap?
   http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
-Google image search broken?
-  Ensure https
 Review scanning algorithm. Always visit children?
 REST: Artist image url?
 Sonos: Star button missing on ipad

@@ -20,6 +20,7 @@
         'LOADED': 'LOADED',
         'PLAYING': 'PLAYING',
         'PAUSED': 'PAUSED',
+        'BUFFERING': 'BUFFERING',
         'SEEKING': 'SEEKING'
     };
 
@@ -59,7 +60,6 @@
         /* Local player variables */
 
         // @type {PLAYER_STATE} A state for local media player
-        // TODO: Necessary?
         this.localPlayerState = PLAYER_STATE.IDLE;
 
         // @type {jwplayer} local player
@@ -76,16 +76,12 @@
         // @type {Number} A number for current media duration
         this.currentMediaDuration = ${empty model.duration ? 0: model.duration};
 
-        // @type {Boolean} A boolean to stop timer update of progress when triggered by media status event
-        this.seekInProgress = false; // TODO
-
         this.initialPosition = ${empty model.position ? null : model.position}
 
         this.updateDurationLabel();
         this.initializeUI();
         this.initializeLocalPlayer();
         this.initializeCastPlayer();
-//        this.playMediaLocally(0);
     };
 
     /**
@@ -103,11 +99,17 @@
                 file: "stream?id=${model.video.id}&player=${model.player.id}&auth=${model.video.hash}&format=raw",
                 type: "${model.video.format}"
             }]
+//            autostart: true
         });
 
         this.localPlayer.on("play", this.updateLocalState.bind(this));
         this.localPlayer.on("pause", this.updateLocalState.bind(this));
+        this.localPlayer.on("buffer", this.updateLocalState.bind(this));
         this.localPlayer.on("idle", this.updateLocalState.bind(this));
+        this.localPlayer.on("complete", this.updateLocalState.bind(this));
+        this.localPlayer.on("error", this.updateLocalState.bind(this));
+        this.localPlayer.on("seek", this.updateLocalState.bind(this));
+        this.localPlayer.on("seeked", this.updateLocalState.bind(this));
         this.localPlayer.on("mute", this.updateLocalVolume.bind(this));
         this.localPlayer.on("volume", this.updateLocalVolume.bind(this));
         this.localPlayer.on("time", this.updateLocalProgress.bind(this));
@@ -153,11 +155,13 @@
     CastPlayer.prototype.updateLocalState = function () {
         var state = this.localPlayer.getState();
         console.log("JW player state: " + state);
-        if (state == "playing" || state == "buffering") {
+        if (state == "playing") {
             this.localPlayerState = PLAYER_STATE.PLAYING;
+        } else if (state == "buffering") {
+            this.localPlayerState = PLAYER_STATE.BUFFERING;
         } else if (state == "paused") {
             this.localPlayerState = PLAYER_STATE.PAUSED;
-        } else if (state == "idle") {
+        } else if (state == "idle" || state == 'complete') {
             this.localPlayerState = PLAYER_STATE.IDLE;
         }
         this.updateMediaControlUI();
@@ -345,6 +349,8 @@
         this.session.loadMedia(request,
                 this.onMediaDiscovered.bind(this, 'loadMedia'),
                 this.onLoadMediaError.bind(this));
+
+        this.updateMediaControlUI();
     };
 
     /**
@@ -356,7 +362,7 @@
         console.log("new media session ID:" + mediaSession.mediaSessionId + ' (' + how + ')');
         this.currentMediaSession = mediaSession;
         if (how == 'loadMedia') {
-            this.castPlayerState = this.castPlayerState = PLAYER_STATE.LOADED;
+            this.castPlayerState = PLAYER_STATE.LOADED;
             console.log(this.castPlayerState + " (onMediaDiscovered-loadMedia)");
         }
 
@@ -521,9 +527,7 @@
      * Open the video in a new window.
      */
     CastPlayer.prototype.newWindow = function () {
-//        todo: position
-//        location.href = "home.view";
-        this.localPlayer.pause();
+        this.localPlayer.pause(true);
         window.open("videoPlayer.view?id=${model.video.id}&position=" + Math.round(this.localPlayer.getPosition()));
     };
 
@@ -601,7 +605,6 @@
         var seekRequest = new chrome.cast.media.SeekRequest();
         seekRequest.currentTime = offset;
         console.log(seekRequest);
-        this.seekInProgress = true;
         this.currentMediaSession.seek(seekRequest,
                 this.mediaCommandSuccessCallback.bind(this, "seek " + this.currentMediaSession.sessionId),
                 this.onError.bind(this));
@@ -658,16 +661,24 @@
         }
 
         switch (playerState) {
-            case PLAYER_STATE.LOADED:
+            case PLAYER_STATE.PAUSED:
+            case PLAYER_STATE.IDLE:
+                $("#play").show();
+                $("#pause").hide();
+                $("#buffer").hide();
+                break;
             case PLAYER_STATE.PLAYING:
                 $("#play").hide();
                 $("#pause").show();
+                $("#buffer").hide();
                 break;
-            case PLAYER_STATE.PAUSED:
-            case PLAYER_STATE.IDLE:
+            case PLAYER_STATE.LOADED:
             case PLAYER_STATE.LOADING:
-                $("#play").show();
+            case PLAYER_STATE.BUFFERING:
+            case PLAYER_STATE.SEEKING:
+                $("#play").hide();
                 $("#pause").hide();
+                $("#buffer").show();
                 break;
             default:
                 break;
@@ -679,7 +690,7 @@
      */
     CastPlayer.prototype.initializeUI = function () {
 
-        $("#progress-slider").slider({max: this.currentMediaDuration, animate: "fast", range: "min"});
+        $("#progress-slider").slider({max: this.currentMediaDuration, range: "min"});
         $("#volume-slider").slider({max: 100, value: 50, animate: "fast", range: "min"});
 
         // add event handlers to UI components

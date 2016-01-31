@@ -32,17 +32,20 @@
     margin-right: 8px;
 }
 
-#play, #pause {
-    cursor: pointer;
+#play, #pause, #buffer {
     font-size: 24px;
     color: #E65100;
+}
+
+#play, #pause {
+    cursor: pointer;
 }
 
 #play:hover, #pause:hover {
     opacity: 0.8;
 }
 
-#pause {
+#pause, #buffer {
     display: none;
 }
 
