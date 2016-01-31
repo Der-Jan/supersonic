@@ -18,22 +18,17 @@
  */
 package net.sourceforge.subsonic.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
-
-import com.google.common.io.Files;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
@@ -51,8 +46,6 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class VideoPlayerController extends ParameterizableViewController {
 
-    private static final String[] CAPTIONS_FORMATS = {"srt", "vtt"};
-
     @Deprecated
     public static final int DEFAULT_BIT_RATE = 2000;
 
@@ -60,16 +53,12 @@ public class VideoPlayerController extends ParameterizableViewController {
     private SettingsService settingsService;
     private PlayerService playerService;
     private SecurityService securityService;
+    private CaptionsController captionsController;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile file = mediaFileService.getMediaFile(id);
-
-        boolean captions = ServletRequestUtils.getBooleanParameter(request, "captions", false);
-        if (captions) {
-            return handleCaptionsRequest(file, response);
-        }
 
         if (!isStreamable(file)) {
             return new ModelAndView(new RedirectView("videoConverter.view?id=" + id));
@@ -85,21 +74,25 @@ public class VideoPlayerController extends ParameterizableViewController {
         String url = request.getRequestURL().toString();
         String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&auth=" + file.getHash() + "&player=" + player.getId() + "&format=raw");
         String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId() + "&auth=" + file.getHash());
+        String captionsUrl = url.replaceFirst("/videoPlayer.view.*", "/captions.view?id=" + file.getId() + "&auth=" + file.getHash());
 
         // Rewrite URLs in case we're behind a proxy.
         if (settingsService.isRewriteUrlEnabled()) {
             String referer = request.getHeader("referer");
             streamUrl = StringUtil.rewriteUrl(streamUrl, referer);
             coverArtUrl = StringUtil.rewriteUrl(coverArtUrl, referer);
+            captionsUrl = StringUtil.rewriteUrl(captionsUrl, referer);
         }
 
         String remoteStreamUrl = settingsService.rewriteRemoteUrl(streamUrl);
         String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
+        String remoteCaptionsUrl = settingsService.rewriteRemoteUrl(captionsUrl);
 
         map.put("video", file);
-        map.put("hasCaptions", findCaptionsFile(file) != null);
+        map.put("hasCaptions", captionsController.findCaptionsFile(file) != null);
         map.put("remoteStreamUrl", remoteStreamUrl);
         map.put("remoteCoverArtUrl", remoteCoverArtUrl);
+        map.put("remoteCaptionsUrl", remoteCaptionsUrl);
         map.put("duration", duration);
         map.put("position", position);
         map.put("licenseInfo", settingsService.getLicenseInfo());
@@ -109,30 +102,6 @@ public class VideoPlayerController extends ParameterizableViewController {
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
-    }
-
-    private ModelAndView handleCaptionsRequest(MediaFile video, HttpServletResponse response) throws IOException {
-        File captionsFile = findCaptionsFile(video);
-        if (captionsFile == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-
-        response.setContentType("text/plain");
-        Files.copy(captionsFile, response.getOutputStream());
-
-        return null;
-    }
-
-    private File findCaptionsFile(MediaFile video) {
-        for (String captionsFormat : CAPTIONS_FORMATS) {
-            File captionsFile = new File(video.getParentFile(),
-                                         FilenameUtils.getBaseName(video.getFile().getName()) + "." + captionsFormat);
-            if (captionsFile.exists() && captionsFile.isFile()) {
-                return captionsFile;
-            }
-        }
-        return null;
     }
 
     private boolean isStreamable(MediaFile file) {
@@ -153,5 +122,9 @@ public class VideoPlayerController extends ParameterizableViewController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setCaptionsController(CaptionsController captionsController) {
+        this.captionsController = captionsController;
     }
 }

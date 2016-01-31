@@ -92,7 +92,7 @@
         this.localPlayer = jwplayer("jwplayer");
 
         var tracks = this.hasCaptions ? [{
-            file: "videoPlayer.view?id=${model.video.id}&captions=true",
+            file: "captions.view?id=${model.video.id}&auth=${model.video.hash}",
             kind: "captions",
             "default": true
         }] : [];
@@ -348,7 +348,7 @@
         var url = "${model.remoteStreamUrl}";
         console.log("casting " + url);
         var mediaInfo = new chrome.cast.media.MediaInfo(url);
-        mediaInfo.contentType = 'video/x-matroska';
+        mediaInfo.contentType = 'video/mp4';
         mediaInfo.streamType = chrome.cast.media.StreamType.BUFFERED;
         mediaInfo.duration = this.currentMediaDuration;
         mediaInfo.metadata = new chrome.cast.media.MovieMediaMetadata();
@@ -356,9 +356,25 @@
         mediaInfo.metadata.title = "${model.video.title}";
         mediaInfo.metadata.images = [new chrome.cast.Image("${model.remoteCoverArtUrl}&size=384")];
 
+        if (this.hasCaptions) {
+            var track = new chrome.cast.media.Track(1, chrome.cast.media.TrackType.TEXT);
+            track.trackContentId = "${model.remoteCaptionsUrl}";
+            track.trackContentType = 'text/vtt';
+            track.subtype = chrome.cast.media.TextTrackType.SUBTITLES;
+            track.name = 'Subtitles';
+            track.language = 'en-US';
+            track.customData = null;
+
+            mediaInfo.tracks = [track];
+        }
+
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = true;
         request.currentTime = this.currentMediaTime;
+
+        if (this.hasCaptions && this.localPlayer.getCurrentCaptions() == 1) {
+            request.activeTrackIds = [1];
+        }
 
         this.castPlayerState = PLAYER_STATE.LOADING;
         console.log(this.castPlayerState + " (loadMedia)");
@@ -545,6 +561,14 @@
      */
     CastPlayer.prototype.toggleCaptions = function (enabled) {
         this.localPlayer.setCurrentCaptions(enabled ? 1 : 0);
+
+        if (this.currentMediaSession) {
+            var request = new chrome.cast.media.EditTracksInfoRequest(enabled ? [1] : []);
+            this.currentMediaSession.editTracksInfo(request,
+                    this.mediaCommandSuccessCallback.bind(this, "editTracksInfo " + this.currentMediaSession.sessionId),
+                    this.onError.bind(this));
+
+        }
     };
 
     /**

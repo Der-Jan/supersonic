@@ -41,8 +41,7 @@ Test with IE
 Update dsub in apps page
 
 Video
-  Subtitles
-    Also when casting
+  Convert srt to vtt
   Audio tracks
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
