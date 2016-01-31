@@ -105,11 +105,16 @@ public class CaptionsController implements Controller {
     }
 
     public File findCaptionsVideo(MediaFile video) {
-        for (String captionsFormat : CAPTIONS_FORMATS) {
-            File captionsFile = new File(video.getParentFile(),
-                                         FilenameUtils.getBaseName(video.getFile().getName()) + "." + captionsFormat);
-            if (captionsFile.exists() && captionsFile.isFile()) {
-                return captionsFile;
+        File file = video.getFile();
+
+        for (File candidate : file.getParentFile().listFiles()) {
+            for (String format : CAPTIONS_FORMATS) {
+                if (candidate.isFile() &&
+                    format.equals(FilenameUtils.getExtension(candidate.getName())) &&
+                    (FilenameUtils.getBaseName(candidate.getName()).startsWith(FilenameUtils.getBaseName(file.getName())) ||
+                     FilenameUtils.getBaseName(file.getName()).startsWith(FilenameUtils.getBaseName(candidate.getName())))) {
+                    return candidate;
+                }
             }
         }
         return null;

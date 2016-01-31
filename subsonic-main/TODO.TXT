@@ -45,8 +45,6 @@ Conversion
   Select bitrate
 
 Video
-  Allow <filename>*.srt for subtitles
-  Convert srt to vtt
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
 
