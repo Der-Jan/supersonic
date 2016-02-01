@@ -346,6 +346,7 @@
     <bean id="videoConverterController" class="net.sourceforge.subsonic.controller.VideoConverterController">
         <property name="viewName" value="videoConverter"/>
         <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="securityService" ref="securityService"/>
     </bean>
     <bean id="externalPlayerController" class="net.sourceforge.subsonic.controller.ExternalPlayerController">
         <property name="viewName" value="externalPlayer"/>

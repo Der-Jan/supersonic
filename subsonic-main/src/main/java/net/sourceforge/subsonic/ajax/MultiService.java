@@ -32,6 +32,7 @@ import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
+import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.domain.VideoConversion;
 import net.sourceforge.subsonic.service.LastFmService;
@@ -168,6 +169,8 @@ public class MultiService {
     public VideoConversionStatus startVideoConversion(int mediaFileId) {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         String username = securityService.getCurrentUsername(request);
+        authorizeVideoConversion();
+
         VideoConversion conversion = new VideoConversion(null, mediaFileId, username, VideoConversion.Status.NEW,
                                                          null, new Date(), new Date(), null);
         videoConversionService.createVideoConversion(conversion);
@@ -176,12 +179,22 @@ public class MultiService {
     }
 
     public VideoConversionStatus cancelVideoConversion(int mediaFileId) {
+        authorizeVideoConversion();
         VideoConversion conversion = videoConversionService.getVideoConversionForFile(mediaFileId);
         if (conversion != null) {
             videoConversionService.cancelVideoConversion(conversion);
         }
 
         return getVideoConversionStatus(mediaFileId);
+    }
+
+    private void authorizeVideoConversion() {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        User user = securityService.getCurrentUser(request);
+        if (!user.isVideoConversionRole()) {
+            LOG.warn("User " + user.getUsername() + " is not allowed to convert videos.");
+            throw new RuntimeException("User " + user.getUsername() + " is not allowed to convert videos.");
+        }
     }
 
     public void setNetworkService(NetworkService networkService) {

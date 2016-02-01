@@ -482,11 +482,11 @@
     };
 
     /**
-     * Play media in Cast mode
+     * Play media in Cast or local mode
      */
     CastPlayer.prototype.playMedia = function () {
         if (!this.currentMediaSession) {
-            this.playMediaLocally(0);
+            this.localPlayer.play(true);
             return;
         }
 

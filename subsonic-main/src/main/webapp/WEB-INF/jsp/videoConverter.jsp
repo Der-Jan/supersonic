@@ -15,6 +15,7 @@
 
     <script type="text/javascript" language="javascript">
 
+        var authorized = ${model.user.videoConversionRole};
         var updateInterval = 2000;
 
         function init() {
@@ -35,8 +36,8 @@
             $("#conversion-status-completed").toggle(conversionStatus != null && conversionStatus.statusCompleted);
             $("#conversion-status-error").toggle(conversionStatus != null && conversionStatus.statusError);
 
-            $("#conversion-start").toggle(conversionStatus == null || conversionStatus.statusError);
-            $("#conversion-cancel").toggle(conversionStatus != null && (conversionStatus.statusNew || conversionStatus.statusInProgress));
+            $("#conversion-start").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
+            $("#conversion-cancel").toggle(authorized && (conversionStatus != null && (conversionStatus.statusNew || conversionStatus.statusInProgress)));
 
             if (conversionStatus != null && conversionStatus.statusInProgress) {
                 $("#conversion-thumb").attr("src", "coverArt.view?id=${model.video.id}&auth=${model.video.hash}&size=120&offset=" + conversionStatus.progressSeconds);
@@ -97,7 +98,14 @@
 
 <div style="clear:both"></div>
 <p style="margin-top:2em">
-    <fmt:message key="videoConverter.info"/>
+<c:choose>
+    <c:when test="${model.user.videoConversionRole}">
+        <fmt:message key="videoConverter.info"/>
+    </c:when>
+    <c:otherwise>
+        <span class="warning"><fmt:message key="videoConverter.notallowed"/></span>
+    </c:otherwise>
+</c:choose>
 </p>
 
 <p>

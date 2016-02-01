@@ -593,6 +593,7 @@
         <xs:attribute name="streamRole" type="xs:boolean" use="required"/>
         <xs:attribute name="jukeboxRole" type="xs:boolean" use="required"/>
         <xs:attribute name="shareRole" type="xs:boolean" use="required"/> <!-- Added in 1.7.0 -->
+        <xs:attribute name="videoConversionRole" type="xs:boolean" use="required"/> <!-- Added in 1.15.0 -->
     </xs:complexType>
 
     <xs:complexType name="Error">

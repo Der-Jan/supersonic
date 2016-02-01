@@ -40,19 +40,21 @@ createShare.jsp using path for back button
 Test with IE
 Update dsub in apps page
 
-Conversion
+Conversion (advanced options)
   Select audio track
   Select bitrate
 
 Video
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
+  Disable keyboard shortcuts when playing video
+  Hide playQueue?
+  Resume restarts video.
 
 Conversion
   Check for premium.
-  Only admin user? Or new role.
   REST support
-  Link to logfile
+  Link to logfile if error?
   Show conversion queue?
 
 Don't transcode m4a?

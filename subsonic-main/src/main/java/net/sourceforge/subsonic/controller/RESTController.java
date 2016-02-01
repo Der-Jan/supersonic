@@ -2118,6 +2118,7 @@ public class RESTController extends MultiActionController {
         result.setStreamRole(user.isStreamRole());
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
+        result.setVideoConversionRole(user.isVideoConversionRole());
 
         TranscodeScheme transcodeScheme = userSettings.getTranscodeScheme();
         if (transcodeScheme != null && transcodeScheme != TranscodeScheme.OFF) {
@@ -2155,6 +2156,7 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", false));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", true));
         command.setShareRole(getBooleanParameter(request, "shareRole", false));
+        command.setVideoConversionRole(getBooleanParameter(request, "videoConversionRole", false));
         command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
 
         int[] folderIds = ServletRequestUtils.getIntParameters(request, "musicFolderId");
@@ -2202,6 +2204,7 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
         command.setShareRole(getBooleanParameter(request, "shareRole", u.isShareRole()));
+        command.setVideoConversionRole(getBooleanParameter(request, "videoConversionRole", u.isVideoConversionRole()));
 
         int maxBitRate = getIntParameter(request, "maxBitRate", s.getTranscodeScheme().getMaxBitRate());
         command.setTranscodeSchemeName(TranscodeScheme.fromMaxBitRate(maxBitRate).name());

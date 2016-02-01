@@ -172,7 +172,7 @@ public class VideoConversionService {
                 LOG.info("ffmpeg exit value: " + retval);
 
                 boolean success =
-                        videoConversionDao.getVideoConversionById(conversion.getId()) != null  // conversion was not canceled (i.e., removed)
+                        videoConversionDao.getVideoConversionById(conversion.getId()) != null  // conversion was canceled (i.e., removed)
                         && tmpFile.exists()
                         && tmpFile.length() > 0;
 
@@ -186,8 +186,7 @@ public class VideoConversionService {
                     LOG.info("Completed video conversion of " + mediaFile);
                 } else {
                     tmpFile.delete();
-                    logFile.delete();
-                    LOG.error("An error occurred while converting video " + mediaFile);
+                    LOG.error("An error occurred while converting video " + mediaFile + ". See log file " + logFile.getAbsolutePath());
                     videoConversionDao.updateStatus(conversion.getId(), VideoConversion.Status.ERROR);
                 }
 

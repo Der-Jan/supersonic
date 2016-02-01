@@ -64,5 +64,14 @@ public class Schema60 extends Schema {
 
             LOG.info("Database table 'video_conversion' was created successfully.");
         }
-   }
+
+        if (template.queryForInt("select count(*) from role where id = 12") == 0) {
+            LOG.info("Role 'video_conversion' not found in database. Creating it.");
+            template.execute("insert into role values (12, 'video_conversion')");
+            template.execute("insert into user_role " +
+                             "select distinct u.username, 12 from user u, user_role ur " +
+                             "where u.username = ur.username and ur.role_id = 1");
+            LOG.info("Role 'video_conversion' was created successfully.");
+        }
+    }
 }

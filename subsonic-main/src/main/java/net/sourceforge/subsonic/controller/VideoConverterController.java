@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
+import net.sourceforge.subsonic.service.SecurityService;
 
 /**
  * Controller for the page used to convert videos.
@@ -39,6 +40,7 @@ import net.sourceforge.subsonic.service.MediaFileService;
 public class VideoConverterController extends ParameterizableViewController {
 
     private MediaFileService mediaFileService;
+    private SecurityService securityService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -47,6 +49,7 @@ public class VideoConverterController extends ParameterizableViewController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("video", video);
+        map.put("user", securityService.getCurrentUser(request));
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -55,5 +58,9 @@ public class VideoConverterController extends ParameterizableViewController {
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }
