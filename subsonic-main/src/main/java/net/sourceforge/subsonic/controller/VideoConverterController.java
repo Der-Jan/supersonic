@@ -18,8 +18,11 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +31,17 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Ordering;
+
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.VideoConversionService;
+import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.Track;
 
 /**
  * Controller for the page used to convert videos.
@@ -41,19 +52,45 @@ public class VideoConverterController extends ParameterizableViewController {
 
     private MediaFileService mediaFileService;
     private SecurityService securityService;
+    private VideoConversionService videoConversionService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile video = mediaFileService.getMediaFile(id);
 
+        List<Track> audioTracks = Collections.emptyList();
+        MetaData metaData = videoConversionService.getVideoMetaData(video);
+        String audioCodecs = null;
+        String videoCodecs = null;
+        if (metaData != null) {
+            audioTracks = metaData.getAudioTracks();
+            audioCodecs = getCodecs(audioTracks);
+            videoCodecs = getCodecs(metaData.getVideoTracks());
+        }
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("video", video);
+        map.put("audioTracks", audioTracks);
+        map.put("audioCodecs", audioCodecs);
+        map.put("videoCodecs", videoCodecs);
         map.put("user", securityService.getCurrentUser(request));
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
         return result;
+    }
+
+    private String getCodecs(List<Track> tracks) {
+        Set<String> codecs = FluentIterable.from(tracks)
+                                           .transform(new Function<Track, String>() {
+                                               @Override
+                                               public String apply(Track input) {
+                                                   return input.getCodec();
+                                               }
+                                           })
+                                           .toSortedSet(Ordering.natural());
+        return Joiner.on(", ").join(codecs);
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {
@@ -62,5 +99,9 @@ public class VideoConverterController extends ParameterizableViewController {
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setVideoConversionService(VideoConversionService videoConversionService) {
+        this.videoConversionService = videoConversionService;
     }
 }

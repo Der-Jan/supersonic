@@ -37,6 +37,7 @@
             $("#conversion-status-error").toggle(conversionStatus != null && conversionStatus.statusError);
 
             $("#conversion-start").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
+            $("#conversion-audio-track").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
             $("#conversion-cancel").toggle(authorized && (conversionStatus != null && (conversionStatus.statusNew || conversionStatus.statusInProgress)));
 
             if (conversionStatus != null && conversionStatus.statusInProgress) {
@@ -48,7 +49,11 @@
             }
         }
         function startConversion() {
-            multiService.startVideoConversion(${model.video.id}, conversionStatusCallback);
+            var audioTrackId = null;
+            if ($("#conversion-audio-track").length > 0) {
+                audioTrackId = parseInt($("#conversion-audio-track").val());
+            }
+            multiService.startVideoConversion(${model.video.id}, audioTrackId, conversionStatusCallback);
         }
         function cancelConversion() {
             multiService.cancelVideoConversion(${model.video.id}, conversionStatusCallback);
@@ -75,6 +80,15 @@
     <div style="float:left; width:213px; margin-right: 3em">
         <img id="conversion-thumb" src="coverArt.view?id=${model.video.id}&auth=${model.video.hash}&size=120" height="120" width="213">
         <div id="conversion-progressbar" style="width:100%; height:7px;margin-top: 0.5em"></div>
+
+        <c:if test="${fn:length(model.audioTracks) gt 1}">
+            <select id="conversion-audio-track" style="width:100%; margin-top:1em">
+                <c:forEach items="${model.audioTracks}" var="track">
+                    <option value="${track.id}"><fmt:message key="videoConverter.audiotrack"/> ${track.id} &ndash; ${track.language}</option>
+                </c:forEach>
+            </select>
+        </c:if>
+
         <input id="conversion-start" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.start"/>" onclick="startConversion()">
         <input id="conversion-cancel" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.cancel"/>" onclick="cancelConversion()">
     </div>
@@ -82,6 +96,8 @@
     <table class="detail" style="float:left">
         <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.title"/></b></td><td>${model.video.title}</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.format"/></b></td><td>${model.video.format}</td></tr>
+        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.videocodec"/></b></td><td>${model.videoCodecs}</td></tr>
+        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.audiocodec"/></b></td><td>${model.audioCodecs}</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.duration"/></b></td><td>${model.video.durationString}</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.bitrate"/></b></td><td>${model.video.bitRate} Kbps</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.filesize"/></b></td><td><sub:formatBytes bytes="${model.video.fileSize}"/></td></tr>
@@ -97,6 +113,7 @@
 </div>
 
 <div style="clear:both"></div>
+
 <p style="margin-top:2em">
 <c:choose>
     <c:when test="${model.user.videoConversionRole}">

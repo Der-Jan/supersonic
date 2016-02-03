@@ -37,6 +37,10 @@ import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.VideoConversionDao;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.VideoConversion;
+import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.MetaDataParser;
+import net.sourceforge.subsonic.service.metadata.MetaDataParserFactory;
+import net.sourceforge.subsonic.service.metadata.Track;
 import net.sourceforge.subsonic.util.Util;
 
 /**
@@ -47,11 +51,11 @@ public class VideoConversionService {
 
     private static final Logger LOG = Logger.getLogger(VideoConversionService.class);
 
-    private SettingsService settingsService;
     private MediaFileService mediaFileService;
     private TranscodingService transcodingService;
     private VideoConversionDao videoConversionDao;
     private VideoConverter videoConverter;
+    private MetaDataParserFactory metaDataParserFactory;
 
     public void init() {
         videoConversionDao.cleanUp();
@@ -77,6 +81,11 @@ public class VideoConversionService {
         return conversion;
     }
 
+    public MetaData getVideoMetaData(MediaFile video) {
+        MetaDataParser parser = metaDataParserFactory.getParser(video.getFile());
+        return parser != null ? parser.getMetaData(video.getFile()) : null;
+    }
+
     private File getTempFile(VideoConversion conversion) {
         return getFile(conversion, ".tmp");
     }
@@ -95,10 +104,6 @@ public class VideoConversionService {
         return new File(originalFile.getParentFile(), FilenameUtils.getBaseName(originalFile.getName()) + extension);
     }
 
-    public void setSettingsService(SettingsService settingsService) {
-        this.settingsService = settingsService;
-    }
-
     public void setVideoConversionDao(VideoConversionDao videoConversionDao) {
         this.videoConversionDao = videoConversionDao;
     }
@@ -109,6 +114,10 @@ public class VideoConversionService {
 
     public void setTranscodingService(TranscodingService transcodingService) {
         this.transcodingService = transcodingService;
+    }
+
+    public void setMetaDataParserFactory(MetaDataParserFactory metaDataParserFactory) {
+        this.metaDataParserFactory = metaDataParserFactory;
     }
 
     private class VideoConverter extends Thread{
@@ -151,14 +160,9 @@ public class VideoConversionService {
                 File logFile = getLogFile(conversion);
                 File targetFile = getTargetFile(conversion);
 
-                List<String> command = new ArrayList<String>();
-                for (String part : settingsService.getVideoConversionCommand().split(" ")) {
-                    command.add(part.replace("%s", originalFile.getAbsolutePath()));
-                }
-                command.set(0, transcodingService.getTranscodeDirectory() + File.separator + command.get(0));
-                command.add(tmpFile.getAbsolutePath());
+                List<String> command = buildFFmpegCommand(originalFile, tmpFile);
 
-                StringBuffer buf = new StringBuffer("Starting transcoder: ");
+                StringBuffer buf = new StringBuffer("Starting video converter: ");
                 for (String s : command) {
                     buf.append(s).append(" ");
                 }
@@ -194,6 +198,74 @@ public class VideoConversionService {
                 LOG.error("An error occurred while converting video " + mediaFile + ": " + x, x);
                 videoConversionDao.updateStatus(conversion.getId(), VideoConversion.Status.ERROR);
             }
+        }
+
+        private List<String> buildFFmpegCommand(File originalFile, File tmpFile) {
+            List<String> command = new ArrayList<String>();
+
+            command.add(transcodingService.getTranscodeDirectory() + File.separator + "ffmpeg");
+            command.add("-i");
+            command.add(originalFile.getAbsolutePath());
+            command.add("-ac");
+            command.add("2");
+            command.add("-f");
+            command.add("mp4");
+            command.add("-preset");
+            command.add("superfast");
+            command.add("-y");
+
+            // Look for video track with streamable codec. If found, copy it.
+            MetaData metaData = getVideoMetaData(mediaFile);
+            Track videoTrack = null;
+            List<Track> videoTracks = metaData.getVideoTracks();
+            for (Track track : videoTracks) {
+                if (track.isStreamable()) {
+                    command.add("-c:v");
+                    command.add("copy");
+                    videoTrack = track;
+                    break;
+                }
+            }
+            if (videoTrack == null && !videoTracks.isEmpty()) {
+                videoTrack = videoTracks.get(0);
+            }
+
+            // Find audio track, taking user-preferred track into account.
+            List<Track> audioTracks = metaData.getAudioTracks();
+            Track audioTrack = null;
+            if (conversion.getAudioTrackId() != null) {
+                for (Track track : audioTracks) {
+                    if (conversion.getAudioTrackId().equals(track.getId())) {
+                        audioTrack = track;
+                        break;
+                    }
+                }
+            }
+            if (audioTrack == null && !audioTracks.isEmpty()) {
+                audioTrack = audioTracks.get(0);
+            }
+
+            // Copy audio track if streamable.
+            if (audioTrack != null && audioTrack.isStreamable()) {
+                command.add("-c:a");
+                command.add("copy");
+            }
+
+            // If container has multiple audio or video tracks, add "-map" options to specify which
+            // tracks to include.
+            if (videoTracks.size() > 1 || audioTracks.size() > 1) {
+                if (videoTrack != null) {
+                    command.add("-map");
+                    command.add("0:" + videoTrack.getId());
+                }
+                if (audioTrack != null) {
+                    command.add("-map");
+                    command.add("0:" + audioTrack.getId());
+                }
+            }
+
+            command.add(tmpFile.getAbsolutePath());
+            return command;
         }
     }
 

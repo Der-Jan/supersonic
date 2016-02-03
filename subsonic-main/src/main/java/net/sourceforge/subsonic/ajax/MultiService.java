@@ -166,12 +166,12 @@ public class MultiService {
         return result;
     }
 
-    public VideoConversionStatus startVideoConversion(int mediaFileId) {
+    public VideoConversionStatus startVideoConversion(int mediaFileId, Integer audioTrackId) {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         String username = securityService.getCurrentUsername(request);
         authorizeVideoConversion();
 
-        VideoConversion conversion = new VideoConversion(null, mediaFileId, username, VideoConversion.Status.NEW,
+        VideoConversion conversion = new VideoConversion(null, mediaFileId, audioTrackId, username, VideoConversion.Status.NEW,
                                                          null, new Date(), new Date(), null);
         videoConversionService.createVideoConversion(conversion);
 

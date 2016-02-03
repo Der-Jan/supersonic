@@ -33,13 +33,14 @@ import net.sourceforge.subsonic.domain.VideoConversion;
  */
 public class VideoConversionDao extends AbstractDao {
 
-    private static final String COLUMNS = "id, media_file_id, username, status, progress_seconds, created, changed, started";
+    private static final String COLUMNS = "id, media_file_id, audio_track_id, username, status, progress_seconds, created, changed, started";
 
     private VideoConversionRowMapper rowMapper = new VideoConversionRowMapper();
 
     public synchronized void createVideoConversion(VideoConversion conversion) {
+        Integer audioTrackId = conversion.getAudioTrackId() == null ? -1 : conversion.getAudioTrackId();
         update("insert into video_conversion (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")", null,
-               conversion.getMediaFileId(), conversion.getUsername(), conversion.getStatus().name(),
+               conversion.getMediaFileId(), audioTrackId, conversion.getUsername(), conversion.getStatus().name(),
                conversion.getProgressSeconds(), conversion.getCreated(), conversion.getChanged(), conversion.getStarted());
     }
 
@@ -77,8 +78,13 @@ public class VideoConversionDao extends AbstractDao {
 
     private static class VideoConversionRowMapper implements ParameterizedRowMapper<VideoConversion> {
         public VideoConversion mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new VideoConversion(rs.getInt(1), rs.getInt(2), rs.getString(3), VideoConversion.Status.valueOf(rs.getString(4)),
-                                       rs.getInt(5), rs.getTimestamp(6), rs.getTimestamp(7), rs.getTimestamp(8));
+            Integer audioTrackId = rs.getInt(3);
+            if (audioTrackId == -1) {
+                audioTrackId = null;
+            }
+
+            return new VideoConversion(rs.getInt(1), rs.getInt(2), audioTrackId, rs.getString(4), VideoConversion.Status.valueOf(rs.getString(5)),
+                                       rs.getInt(6), rs.getTimestamp(7), rs.getTimestamp(8), rs.getTimestamp(9));
         }
     }
 }

@@ -29,6 +29,7 @@ public class VideoConversion {
 
     private Integer id;
     private int mediaFileId;
+    private Integer audioTrackId;
     private String username;
     private Status status;
     private final Integer progressSeconds;
@@ -36,10 +37,11 @@ public class VideoConversion {
     private Date changed;
     private Date started;
 
-    public VideoConversion(Integer id, int mediaFileId, String username, Status status,
+    public VideoConversion(Integer id, int mediaFileId, Integer audioTrackId, String username, Status status,
                            Integer progressSeconds, Date created, Date changed, Date started) {
         this.id = id;
         this.mediaFileId = mediaFileId;
+        this.audioTrackId = audioTrackId;
         this.username = username;
         this.status = status;
         this.progressSeconds = progressSeconds;
@@ -62,6 +64,14 @@ public class VideoConversion {
 
     public void setMediaFileId(int mediaFileId) {
         this.mediaFileId = mediaFileId;
+    }
+
+    public Integer getAudioTrackId() {
+        return audioTrackId;
+    }
+
+    public void setAudioTrackId(Integer audioTrackId) {
+        this.audioTrackId = audioTrackId;
     }
 
     public String getUsername() {

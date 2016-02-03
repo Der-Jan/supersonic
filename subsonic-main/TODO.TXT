@@ -42,7 +42,9 @@ Update dsub in apps page
 
 Conversion (advanced options)
   Select audio track
-  Select bitrate
+  Make non-streamable mp4 streamable
+  Display codecs.
+  Select bitrate?
 
 Video
   Some videos doesn't start in Firefox (e.g., House of cards)

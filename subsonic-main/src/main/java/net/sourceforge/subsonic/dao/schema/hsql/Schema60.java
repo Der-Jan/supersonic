@@ -50,6 +50,7 @@ public class Schema60 extends Schema {
             template.execute("create table video_conversion (" +
                              "id identity," +
                              "media_file_id int not null," +
+                             "audio_track_id int," +
                              "username varchar not null," +
                              "status varchar not null," +
                              "progress_seconds int," +
