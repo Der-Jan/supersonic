@@ -18,6 +18,35 @@
             starService.star(mediaFileId, !$(element).hasClass("fa-star"));
             $(element).toggleClass("fa-star fa-star-o starred");
         }
+
+        function keyboardShortcut(action) {
+            if (action == "togglePlayPause") {
+                if ($("#play").is(":visible")) {
+                    $("#play").click();
+                } else if ($("#pause").is(":visible")) {
+                    $("#pause").click();
+                }
+            } else if (action == "volumeDown") {
+                var volume = parseInt($("#volume-slider").slider("option", "value"));
+                $("#volume-slider").slider("option", "value", Math.max(0, volume - 5));
+                castPlayer.setVolume(false);
+            } else if (action == "volumeUp") {
+                var volume = parseInt($("#volume-slider").slider("option", "value"));
+                $("#volume-slider").slider("option", "value", Math.min(100, volume + 5));
+                castPlayer.setVolume(false);
+            } else if (action == "seekForward" && $("#pause").is(":visible")) {
+                var position = parseInt($("#progress-slider").slider("option", "value"));
+                var duration = parseInt($("#progress-slider").slider("option", "max"));
+                $("#progress-slider").slider("option", "value", Math.min(duration, position + duration / 100));
+                castPlayer.seekMedia();
+            } else if (action == "seekBackward" && $("#pause").is(":visible")) {
+                var position = parseInt($("#progress-slider").slider("option", "value"));
+                var duration = parseInt($("#progress-slider").slider("option", "max"));
+                $("#progress-slider").slider("option", "value", Math.max(0, position - duration / 100));
+                castPlayer.seekMedia();
+            }
+        }
+
     </script>
 </head>
 

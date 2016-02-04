@@ -11,13 +11,13 @@
 <script type="text/javascript" src="<c:url value="/script/mousetrap-1.5.3.js"/>"></script>
 <script type="text/javascript">
 
-    Mousetrap.bind('space', function() { parent.frames.playQueue.keyboardShortcut("togglePlayPause"); return false });
-    Mousetrap.bind('left', function() { parent.frames.playQueue.keyboardShortcut("previous") });
-    Mousetrap.bind('right', function() { parent.frames.playQueue.keyboardShortcut("next") });
-    Mousetrap.bind('shift+left', function() { parent.frames.playQueue.keyboardShortcut("seekBackward") });
-    Mousetrap.bind('shift+right', function() { parent.frames.playQueue.keyboardShortcut("seekForward") });
-    Mousetrap.bind('-', function() { parent.frames.playQueue.keyboardShortcut("volumeDown") });
-    Mousetrap.bind('plus', function() { parent.frames.playQueue.keyboardShortcut("volumeUp") });
+    Mousetrap.bind('space', function() { getPlayerWindow().keyboardShortcut("togglePlayPause"); return false });
+    Mousetrap.bind('left', function() { getPlayerWindow().keyboardShortcut("previous") });
+    Mousetrap.bind('right', function() { getPlayerWindow().keyboardShortcut("next") });
+    Mousetrap.bind('shift+left', function() { getPlayerWindow().keyboardShortcut("seekBackward") });
+    Mousetrap.bind('shift+right', function() { getPlayerWindow().keyboardShortcut("seekForward") });
+    Mousetrap.bind('-', function() { getPlayerWindow().keyboardShortcut("volumeDown") });
+    Mousetrap.bind('plus', function() { getPlayerWindow().keyboardShortcut("volumeUp") });
     Mousetrap.bind('m', function() { parent.frames.upper.keyboardShortcut("toggleSideBar") });
     Mousetrap.bind('g h', function() { parent.frames.upper.keyboardShortcut("showHome") });
     Mousetrap.bind('g i', function() { parent.frames.upper.keyboardShortcut("showIndex") });
@@ -34,6 +34,16 @@
     for (var i = 0, len = indices.length; i < len; i++) {
         var target = indices.substring(i, i + 1);
         createKeyboardShortcutForIndex(target);
+    }
+
+    function getPlayerWindow() {
+        if (parent.frames.main == null) {
+            return window;
+        }
+        if (parent.frames.main.location.href.indexOf("videoPlayer.view") == -1) {
+            return parent.frames.playQueue;
+        }
+        return parent.frames.main;
     }
 
     function createKeyboardShortcutForIndex(index) {

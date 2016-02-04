@@ -48,11 +48,10 @@ Make proper Back buttons.
 Add Beta Beats
   https://mail.google.com/mail/u/1/?tab=cm#inbox/15222fd6c2682067
 Video
-  Wrong aspect rate when video preview image.
+  Wrong aspect rate in video preview image.
   Some videos doesn't start in Firefox (e.g., House of cards)
     castPlayer.localPlayer.play(true).pause(true).play(true)
-  Disable keyboard shortcuts when playing video
-  Hide playQueue?
+    Hide playQueue?
 
 Scrubbing works poorly in IE.
 
