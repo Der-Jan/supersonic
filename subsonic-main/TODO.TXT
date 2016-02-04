@@ -37,7 +37,6 @@ HTML5 player?
 Ellipsise buttons in left.jsp
 Make it simple to star currently playing song.
 createShare.jsp using path for back button
-Test with IE
 Update dsub in apps page
 
 Add Play button to playlist
@@ -56,7 +55,6 @@ Video
 Scrubbing works poorly in IE.
 
 Conversion
-  Check for premium.
   REST support
   Link to logfile if error?
   Show conversion queue?

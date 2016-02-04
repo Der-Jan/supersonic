@@ -39,6 +39,7 @@ import com.google.common.collect.FluentIterable;
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.SecurityService;
+import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.VideoConversionService;
 import net.sourceforge.subsonic.service.metadata.MetaData;
 import net.sourceforge.subsonic.service.metadata.Track;
@@ -53,6 +54,7 @@ public class VideoConverterController extends ParameterizableViewController {
     private MediaFileService mediaFileService;
     private SecurityService securityService;
     private VideoConversionService videoConversionService;
+    private SettingsService settingsService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -75,6 +77,7 @@ public class VideoConverterController extends ParameterizableViewController {
         map.put("audioCodecs", audioCodecs);
         map.put("videoCodecs", videoCodecs);
         map.put("user", securityService.getCurrentUser(request));
+        map.put("licenseInfo", settingsService.getLicenseInfo());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
@@ -104,5 +107,9 @@ public class VideoConverterController extends ParameterizableViewController {
 
     public void setVideoConversionService(VideoConversionService videoConversionService) {
         this.videoConversionService = videoConversionService;
+    }
+
+    public void setSettingsService(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 }

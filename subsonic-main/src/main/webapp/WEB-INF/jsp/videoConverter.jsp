@@ -89,8 +89,10 @@
             </select>
         </c:if>
 
-        <input id="conversion-start" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.start"/>" onclick="startConversion()">
-        <input id="conversion-cancel" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.cancel"/>" onclick="cancelConversion()">
+        <c:if test="${model.licenseInfo.licenseOrTrialValid}">
+            <input id="conversion-start" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.start"/>" onclick="startConversion()">
+            <input id="conversion-cancel" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.cancel"/>" onclick="cancelConversion()">
+        </c:if>
     </div>
 
     <table class="detail" style="float:left">
@@ -114,15 +116,18 @@
 
 <div style="clear:both"></div>
 
+<c:set var="licenseInfo" value="${model.licenseInfo}"/>
+<%@ include file="licenseNotice.jsp" %>
+
 <p style="margin-top:2em">
-<c:choose>
-    <c:when test="${model.user.videoConversionRole}">
-        <fmt:message key="videoConverter.info"/>
-    </c:when>
-    <c:otherwise>
-        <span class="warning"><fmt:message key="videoConverter.notallowed"/></span>
-    </c:otherwise>
-</c:choose>
+    <c:choose>
+        <c:when test="${model.user.videoConversionRole}">
+            <fmt:message key="videoConverter.info"/>
+        </c:when>
+        <c:otherwise>
+            <span class="warning"><fmt:message key="videoConverter.notallowed"/></span>
+        </c:otherwise>
+    </c:choose>
 </p>
 
 <p>
