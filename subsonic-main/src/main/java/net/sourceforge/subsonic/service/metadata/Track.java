@@ -71,6 +71,6 @@ public class Track {
     }
 
     public boolean isStreamable() {
-        return Arrays.asList("h264", "aac", "mp3").contains(codec);
+        return Arrays.asList("h264", "aac").contains(codec);
     }
 }

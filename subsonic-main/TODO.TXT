@@ -40,12 +40,6 @@ createShare.jsp using path for back button
 Test with IE
 Update dsub in apps page
 
-Conversion (advanced options)
-  Select audio track
-  Make non-streamable mp4 streamable
-  Display codecs.
-  Select bitrate?
-
 Add Play button to playlist
 Add "Add" and "Play random" to playlist menu
 Add second level playlist menu (with share, edit, delete, ...)
@@ -59,7 +53,8 @@ Video
     castPlayer.localPlayer.play(true).pause(true).play(true)
   Disable keyboard shortcuts when playing video
   Hide playQueue?
-  Resume restarts video.
+
+Scrubbing works poorly in IE.
 
 Conversion
   Check for premium.

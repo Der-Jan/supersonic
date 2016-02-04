@@ -21,12 +21,29 @@
     </script>
 
     <style type="text/css">
-        #upper     { height: 42px }
-        #left      { width: ${model.showSideBar ? 210 : 0}px }
-        #main      { flex-grow: 1 }
-        #right     { width: ${model.showRight ? 200 : 0}px }
-        #playQueue { height: ${model.autoHidePlayQueue ? 95 : 250}px;
-                     border-top: 1px solid rgba(0, 0, 0, 0.1) }
+        #upper {
+            height: 42px;
+            width: 100%;
+        }
+        #left {
+            width: ${model.showSideBar ? 210 : 0}px;
+        }
+        #main {
+            flex-grow: 1;
+        }
+        #right {
+            width: ${model.showRight ? 200 : 0}px;
+        }
+        #playQueue {
+            height: ${model.autoHidePlayQueue ? 95 : 250}px;
+            width:100%;
+            border-top: 1px solid rgba(0, 0, 0, 0.1)
+        }
+
+        /* Ugly hack to make it work in IE */
+        @media all and (-ms-high-contrast:none) {
+            #left, #main, #right { height: 100% }
+        }
     </style>
 </head>
 
