@@ -1,29 +1,9 @@
-DONE IN 5.4
------------
-Artist thumbnail image
-Show album year, song count, genre and duration
-Show album notes
-Sonos: Star/unstar tracks
-Sonos: Artist bio and album notes
-Sonos: Improved radio feature
-Sonos: Artist top songs
-Sonos: Nicer presentation on Android and iOS controllers
-Sonos: Show artist image, if cached.
-REST: Added getAlbumInfo and getAlbumInfo2
-REST: Added playCount
-Bugfix: Reimplemented cover art search using Last.fm
-Bugfix: Ensure changed cover art is displayed
-Show personal rather than average rating.
-Keyboard shortcuts
-Tech: Replace frameset with iframes.
-Security: Authenticate stream endpoint with token
-Video conversion
-REST: Add musicFolderId parameter to getArtists.
-Subtitle support (.vtt, .srt)
-
-TODO IN 5.4
+TODO IN 6.0
 ------------
-Update amazon app
+REST authentication not supported for LDAP users.
+  https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
+  https://sourceforge.net/p/subsonic/bugs/158/
+
 ID3 lyrics
   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=12595
 HTML5 player?
@@ -90,9 +70,6 @@ Status and log should only be available for admin.
 
 Content length of FLAC transcoded to WAV incorrect
   http://sourceforge.net/p/subsonic/bugs/121/
-REST authentication not supported for LDAP users.
-  https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
-  https://sourceforge.net/p/subsonic/bugs/158/
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
