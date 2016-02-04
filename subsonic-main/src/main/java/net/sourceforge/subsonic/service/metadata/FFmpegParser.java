@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 public class FFmpegParser extends MetaDataParser {
 
     private static final Logger LOG = Logger.getLogger(FFmpegParser.class);
-    private static final Pattern TRACK_PATTERN = Pattern.compile("Stream #0.(?<id>\\d+)(\\((?<lang>.*?)\\))?: (?<type>.*?): (?<codec>\\w+)");
+    private static final Pattern TRACK_PATTERN = Pattern.compile("Stream #0.(\\d+)(\\((.*?)\\))?: (.*?): (\\w+)");
     private static final Pattern DURATION_PATTERN = Pattern.compile("Duration: (\\d+):(\\d+):(\\d+).(\\d+)");
     private static final Pattern BITRATE_PATTERN = Pattern.compile("bitrate: (\\d+) kb/s");
     private static final Pattern DIMENSION_PATTERN = Pattern.compile("Video.*?, (\\d+)x(\\d+)");
@@ -92,10 +92,10 @@ public class FFmpegParser extends MetaDataParser {
 
                 Matcher matcher = TRACK_PATTERN.matcher(line);
                 if (matcher.find()) {
-                    int id = Integer.parseInt(matcher.group("id"));
-                    String type = matcher.group("type");
-                    String language = matcher.group("lang");
-                    String codec = matcher.group("codec");
+                    int id = Integer.parseInt(matcher.group(1));
+                    String type = matcher.group(4);
+                    String language = matcher.group(3);
+                    String codec = matcher.group(5);
                     metaData.addTrack(new Track(id, type, language, codec));
                 }
 
