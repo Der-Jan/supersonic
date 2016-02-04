@@ -224,27 +224,26 @@ public class MediaFileService {
     }
 
     private List<MediaFile> filterConvertedVideos(List<MediaFile> files) {
-        final Set<String> mp4Filenames = FluentIterable.from(files)
-                                                       .filter(new Predicate<MediaFile>() {
-                                                           @Override
-                                                           public boolean apply(MediaFile input) {
-                                                               return input.isVideo() && FilenameUtils.getExtension(input.getPath()).equalsIgnoreCase("mp4");
-                                                           }
-                                                       })
-                                                       .transform(new Function<MediaFile, String>() {
-                                                           @Override
-                                                           public String apply(MediaFile input) {
-                                                               return FilenameUtils.getBaseName(input.getPath());
-                                                           }
-                                                       })
-                                                       .toSet();
+        final Set<String> convertedFilenames = FluentIterable.from(files)
+                                                             .filter(new Predicate<MediaFile>() {
+                                                                 @Override
+                                                                 public boolean apply(MediaFile input) {
+                                                                     return input.isVideo() && input.getFile().getName().endsWith(".streamable.mp4");
+                                                                 }
+                                                             })
+                                                             .transform(new Function<MediaFile, String>() {
+                                                                 @Override
+                                                                 public String apply(MediaFile input) {
+                                                                     return input.getFile().getName();
+                                                                 }
+                                                             })
+                                                             .toSet();
 
         return FluentIterable.from(files)
                              .filter(new Predicate<MediaFile>() {
                                  @Override
                                  public boolean apply(MediaFile input) {
-                                     return FilenameUtils.getExtension(input.getPath()).equalsIgnoreCase("mp4") ||
-                                            !mp4Filenames.contains(FilenameUtils.getBaseName(input.getPath()));
+                                     return !convertedFilenames.contains(FilenameUtils.getBaseName(input.getPath()) + ".streamable.mp4");
                                  }
                              })
                              .toList();

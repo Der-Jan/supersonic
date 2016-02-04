@@ -99,9 +99,7 @@ public class CoverArtController implements Controller, LastModified {
 
     public long getLastModified(HttpServletRequest request) {
         CoverArtRequest coverArtRequest = createCoverArtRequest(request, true);
-        long result = coverArtRequest.lastModified();
-//        LOG.info("getLastModified - " + coverArtRequest + ": " + new Date(result));
-        return result;
+        return coverArtRequest == null ? -1 : coverArtRequest.lastModified();
     }
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -199,7 +197,8 @@ public class CoverArtController implements Controller, LastModified {
         }
 
         if (mediaFile.isVideo()) {
-            int offset = ServletRequestUtils.getIntParameter(request, "offset", 60);
+            int defaultOffset = mediaFile.getDurationSeconds() == null ? 60 : mediaFile.getDurationSeconds() / 10;
+            int offset = ServletRequestUtils.getIntParameter(request, "offset", defaultOffset);
             return new VideoCoverArtRequest(mediaFile, offset);
         }
         return new MediaFileCoverArtRequest(mediaFile);

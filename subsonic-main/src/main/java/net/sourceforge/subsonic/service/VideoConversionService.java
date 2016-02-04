@@ -95,7 +95,7 @@ public class VideoConversionService {
     }
 
     private File getTargetFile(VideoConversion conversion) {
-        return getFile(conversion, ".mp4");
+        return getFile(conversion, ".streamable.mp4");
     }
 
     private File getFile(VideoConversion conversion, String extension) {

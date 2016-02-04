@@ -341,6 +341,7 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="playerService" ref="playerService"/>
         <property name="securityService" ref="securityService"/>
+        <property name="videoConversionService" ref="videoConversionService"/>
         <property name="captionsController" ref="captionsController"/>
     </bean>
     <bean id="videoConverterController" class="net.sourceforge.subsonic.controller.VideoConverterController">

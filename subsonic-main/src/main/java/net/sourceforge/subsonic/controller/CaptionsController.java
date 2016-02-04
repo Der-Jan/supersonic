@@ -106,13 +106,14 @@ public class CaptionsController implements Controller {
 
     public File findCaptionsVideo(MediaFile video) {
         File file = video.getFile();
+        String videoFileBaseName = FilenameUtils.getBaseName(file.getName()).replace(".streamable", "");
 
         for (File candidate : file.getParentFile().listFiles()) {
             for (String format : CAPTIONS_FORMATS) {
                 if (candidate.isFile() &&
                     format.equals(FilenameUtils.getExtension(candidate.getName())) &&
-                    (FilenameUtils.getBaseName(candidate.getName()).startsWith(FilenameUtils.getBaseName(file.getName())) ||
-                     FilenameUtils.getBaseName(file.getName()).startsWith(FilenameUtils.getBaseName(candidate.getName())))) {
+                    (FilenameUtils.getBaseName(candidate.getName()).startsWith(videoFileBaseName) ||
+                     videoFileBaseName.startsWith(FilenameUtils.getBaseName(candidate.getName())))) {
                     return candidate;
                 }
             }

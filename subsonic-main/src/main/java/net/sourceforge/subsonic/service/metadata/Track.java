@@ -67,7 +67,7 @@ public class Track {
     }
 
     public boolean isVideo() {
-        return "Video".equals(type) && !"mjpeg".equals(codec);
+        return "Video".equals(type) && !"mjpeg".equals(codec) && !"bmp".equals(codec);
     }
 
     public boolean isStreamable() {

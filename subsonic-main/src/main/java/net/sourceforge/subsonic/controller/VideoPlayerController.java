@@ -37,6 +37,8 @@ import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
+import net.sourceforge.subsonic.service.VideoConversionService;
+import net.sourceforge.subsonic.service.metadata.MetaData;
 import net.sourceforge.subsonic.util.StringUtil;
 
 /**
@@ -53,6 +55,7 @@ public class VideoPlayerController extends ParameterizableViewController {
     private SettingsService settingsService;
     private PlayerService playerService;
     private SecurityService securityService;
+    private VideoConversionService videoConversionService;
     private CaptionsController captionsController;
 
     @Override
@@ -105,7 +108,22 @@ public class VideoPlayerController extends ParameterizableViewController {
     }
 
     private boolean isStreamable(MediaFile file) {
-        return StringUtils.equalsIgnoreCase("mp4", file.getFormat());
+        if (!StringUtils.equalsIgnoreCase("mp4", file.getFormat())) {
+            return false;
+        }
+
+        // Only h264/aac/mp3 codecs are generally supported.
+        MetaData metaData = videoConversionService.getVideoMetaData(file);
+        if (metaData == null) {
+            return true;
+        }
+        if (!metaData.getVideoTracks().isEmpty() && !metaData.getVideoTracks().get(0).isStreamable()) {
+            return false;
+        }
+        if (!metaData.getAudioTracks().isEmpty() && !metaData.getAudioTracks().get(0).isStreamable()) {
+            return false;
+        }
+        return true;
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {
@@ -126,5 +144,9 @@ public class VideoPlayerController extends ParameterizableViewController {
 
     public void setCaptionsController(CaptionsController captionsController) {
         this.captionsController = captionsController;
+    }
+
+    public void setVideoConversionService(VideoConversionService videoConversionService) {
+        this.videoConversionService = videoConversionService;
     }
 }

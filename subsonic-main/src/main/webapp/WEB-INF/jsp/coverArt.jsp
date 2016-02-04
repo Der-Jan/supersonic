@@ -71,6 +71,7 @@ PARAMETERS
 
         <c:url value="/coverArt.view" var="zoomCoverArtUrl">
             <c:param name="id" value="${param.albumId}"/>
+            <c:param name="auth" value="${param.auth}"/>
         </c:url>
 
         <div style="position: relative; width: 0; height: 0">

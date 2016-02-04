@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.controller;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,7 +35,6 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Ordering;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.service.MediaFileService;
@@ -82,14 +82,15 @@ public class VideoConverterController extends ParameterizableViewController {
     }
 
     private String getCodecs(List<Track> tracks) {
-        Set<String> codecs = FluentIterable.from(tracks)
-                                           .transform(new Function<Track, String>() {
-                                               @Override
-                                               public String apply(Track input) {
-                                                   return input.getCodec();
-                                               }
-                                           })
-                                           .toSortedSet(Ordering.natural());
+        Set<String> codecs = new LinkedHashSet<String>();
+        FluentIterable.from(tracks)
+                      .transform(new Function<Track, String>() {
+                          @Override
+                          public String apply(Track input) {
+                              return input.getCodec();
+                          }
+                      })
+                      .copyInto(codecs);
         return Joiner.on(", ").join(codecs);
     }
 
