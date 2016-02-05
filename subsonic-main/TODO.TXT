@@ -1,5 +1,6 @@
 TODO IN 6.0
 ------------
+Site: Links to xsd broken.
 Podcast:
   Doesn't play on demo.subsonic.org
   Title doesn't show
