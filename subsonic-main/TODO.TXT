@@ -1,5 +1,16 @@
 TODO IN 6.0
 ------------
+Podcast:
+  Doesn't play on demo.subsonic.org
+  Title doesn't show
+
+Playcount and "last played" not updated.
+
+Rename "Save/Load play queue" to "Save/Load bookmark"?
+   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16368&sid=f893f69cd8b78513d949b968a84c1db9&p=70040#p70040
+Remove "Podcast" from shortcuts.
+
+Update recommended transcoding settings on web.
 Create hover effect in top and left.
 REST authentication not supported for LDAP users.
   https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
@@ -1037,17 +1048,17 @@ order by n desc
 
 Update subsonic.org
 -----------------------------------
-mkdir /var/lib/tomcat/webapps-2015-10-25/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/pages.war
+mkdir /var/lib/tomcat/webapps-2016-02-05/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2016-02-05/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2016-02-05/pages.war
 
 cd /var/lib/tomcat
-chown -R tomcat:tomcat webapps-2015-10-25
+chown -R tomcat:tomcat webapps-2016-02-05
 Checkpoint database (db.view)
 ps -elf | grep tomcat
 systemctl stop tomcat
 rm webapps
-ln -s webapps-2015-10-25 webapps
+ln -s webapps-2016-02-05 webapps
 ln -s /var/lib/tomcat/download webapps/download
 ll webapps/
 rm -rf work logs/*
@@ -1056,13 +1067,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-10-25/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-10-25/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2016-02-05/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2016-02-05/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-10-25 webapps
+ln -s webapps-2016-02-05 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log
