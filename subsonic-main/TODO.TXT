@@ -1,10 +1,46 @@
+DONE IN 6.0
+-----------
+Replace JW Player with native HTML5 audio.
+
 TODO IN 6.0
 ------------
-Site: Links to xsd broken.
+
+html5 audio
+  Test chromecast.
+
+Allow m4v
+
+Jwplayer
+  1 mill plays / month
+
+HLS
+  Use jwplayer?
+    Supported on Safari and Edge
+    Falls back to Flash on other browsers.
+  http://www.flashls.org/latest/examples/chromeless/
+
+Internet radio
+
+DASH
+  http://castlabs.com/open-source/dashas/ (Flash)
+    Seems to use range requests
+  http://www.dash-player.com/demo/multi-language-and-multi-audio/
+  manifest validator: http://dashif.org/software/
+  http://www.dash-player.com/blog/2014/11/mpeg-dash-content-generation-using-mp4box-and-x264/
+  http://dashif.org/reference/players/javascript/1.4.0/samples/dash-if-reference-player/
+  http://dashif.org/reference/players/javascript/1.4.0/samples/
+    Seems to work in all browsers? Buggy in Safari and Firefox
+
+Change media folder sometimes doesn't work. Broken DWR?
+Hide left menu by default.
+Make it work with Edge and qutebrowser.
 Podcast:
   Doesn't play on demo.subsonic.org
   Title doesn't show
 
+Play queue shows wrong format for transcoded files.
+
+Video: Feature-detect HLS support?
 Playcount and "last played" not updated.
 
 Rename "Save/Load play queue" to "Save/Load bookmark"?
