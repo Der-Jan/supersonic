@@ -555,7 +555,7 @@
                 $("#duration" + id).html(song.durationAsString);
             }
             if ($("#format" + id)) {
-                $("#format" + id).html(song.format);
+                $("#format" + id).html(song.sourceFormat);
             }
             if ($("#fileSize" + id)) {
                 $("#fileSize" + id).html(song.fileSize);

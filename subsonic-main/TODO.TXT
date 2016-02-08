@@ -1,17 +1,21 @@
 DONE IN 6.0
 -----------
-Replace JW Player with native HTML5 audio.
+playqueue: Replace JW Player with native HTML5 audio.
+Bugfix: Play queue doesn't collapse in Firefox.
+Hide left menu by default.
+Bugfix: Play queue shows wrong format for transcoded files.
+
 
 TODO IN 6.0
 ------------
-
-html5 audio
-  Test chromecast.
-
 Allow m4v
 
 Jwplayer
   1 mill plays / month
+  10 websites
+
+Use timeoffset, without ranges.
+Test with Subsonic 5.3, without Flash.
 
 HLS
   Use jwplayer?
@@ -21,10 +25,7 @@ HLS
 
 Internet radio
 
-Play queue doesn't subtract in Firefox (windows)
 IE: Shows spinner if playlist empty.
-FF: Scrollbar in left.jsp
-left/right have different widths in FF, Chrome and IE.
 
 DASH
   http://castlabs.com/open-source/dashas/ (Flash)
@@ -37,13 +38,10 @@ DASH
     Seems to work in all browsers? Buggy in Safari and Firefox
 
 Change media folder sometimes doesn't work. Broken DWR?
-Hide left menu by default.
 Make it work with Edge and qutebrowser.
 Podcast:
   Doesn't play on demo.subsonic.org
   Title doesn't show
-
-Play queue shows wrong format for transcoded files.
 
 Video: Feature-detect HLS support?
 Playcount and "last played" not updated.
