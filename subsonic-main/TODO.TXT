@@ -21,6 +21,11 @@ HLS
 
 Internet radio
 
+Play queue doesn't subtract in Firefox (windows)
+IE: Shows spinner if playlist empty.
+FF: Scrollbar in left.jsp
+left/right have different widths in FF, Chrome and IE.
+
 DASH
   http://castlabs.com/open-source/dashas/ (Flash)
     Seems to use range requests
