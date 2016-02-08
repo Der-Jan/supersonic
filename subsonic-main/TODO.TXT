@@ -4,6 +4,7 @@ playqueue: Replace JW Player with native HTML5 audio.
 Bugfix: Play queue doesn't collapse in Firefox.
 Hide left menu by default.
 Bugfix: Play queue shows wrong format for transcoded files.
+Bugfix: Play count and "last played" not always updated.
 
 
 TODO IN 6.0
@@ -44,11 +45,9 @@ Podcast:
   Title doesn't show
 
 Video: Feature-detect HLS support?
-Playcount and "last played" not updated.
 
 Rename "Save/Load play queue" to "Save/Load bookmark"?
    http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16368&sid=f893f69cd8b78513d949b968a84c1db9&p=70040#p70040
-Remove "Podcast" from shortcuts.
 
 Update recommended transcoding settings on web.
 Create hover effect in top and left.
