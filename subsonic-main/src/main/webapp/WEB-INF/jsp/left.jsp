@@ -24,6 +24,10 @@
 </c:if>
 
 <div style="padding-bottom:1em" class="topHeader">
+    <i class="fa fa-globe fa-lg fa-fw icon"></i>&nbsp;<a href="internetRadio.view" target="main"><fmt:message key="left.radio"/></a>
+</div>
+
+<div style="padding-bottom:1em" class="topHeader">
     <i class="fa fa-plus-square fa-lg fa-fw icon"></i>&nbsp;<a href="more.view" target="main"><fmt:message key="top.more"/></a>
 </div>
 

@@ -5,7 +5,7 @@ Bugfix: Play queue doesn't collapse in Firefox.
 Hide left menu by default.
 Bugfix: Play queue shows wrong format for transcoded files.
 Bugfix: Play count and "last played" not always updated.
-
+New page for playing internet radio stations.
 
 TODO IN 6.0
 ------------
