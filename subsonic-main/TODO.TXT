@@ -9,7 +9,15 @@ New page for playing internet radio stations.
 
 TODO IN 6.0
 ------------
-Allow m4v
+
+Video conversion:
+  Allow m4v
+  Rephrase to "optimize"
+  Configurable directory (default SUBSONIC_HOME/conversion)
+  Configurable disk usage threshold
+  Store path to target file and log file in db
+  Add control panel
+  Automatic delete if target file missing.
 
 Jwplayer
   1 mill plays / month
@@ -23,8 +31,6 @@ HLS
     Supported on Safari and Edge
     Falls back to Flash on other browsers.
   http://www.flashls.org/latest/examples/chromeless/
-
-Internet radio
 
 IE: Shows spinner if playlist empty.
 

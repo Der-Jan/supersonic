@@ -17,11 +17,10 @@
 <script type="text/javascript" src="<c:url value="/script/wz_tooltip.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/script/tip_balloon.js"/>"></script>
 
-<c:import url="settingsHeader.jsp">
-    <c:param name="cat" value="personal"/>
-    <c:param name="restricted" value="${not command.user.adminRole}"/>
-    <c:param name="toast" value="${command.reloadNeeded}"/>
-</c:import>
+<c:set var="category" value="personal"/>
+<c:set var="user" value="${command.user}"/>
+<c:set var="toast" value="${command.reloadNeeded}"/>
+<%@ include file="settingsHeader.jsp" %>
 
 <fmt:message key="personalsettings.title" var="title"><fmt:param>${command.user.username}</fmt:param></fmt:message>
 <h2>${fn:escapeXml(title)}</h2>
