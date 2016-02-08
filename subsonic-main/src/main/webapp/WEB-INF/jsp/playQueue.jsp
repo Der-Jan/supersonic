@@ -314,7 +314,7 @@
 
     function onProgressChanged() {
         var value = parseInt($("#progress").slider("option", "value") / 1000);
-        if (localPlayer && Math.round(localPlayer.currentTime) != value) {
+        if (localPlayer && !castPlayer.castSession && Math.round(localPlayer.currentTime) != value) {
             localPlayer.currentTime = value;
             localPlayer.play();
         }
