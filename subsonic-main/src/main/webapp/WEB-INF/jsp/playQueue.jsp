@@ -149,14 +149,14 @@
     }
 
     function initMouseListener() {
-        $(window).mouseleave(function (event) {
+        $("body").mouseleave(function (event) {
             if (event.clientY < 30) {
                 setFrameHeight(95);
                 $(".ui-slider-handle").fadeOut();
             }
         });
 
-        $(window).mouseenter(function () {
+        $("body").mouseenter(function () {
             var height = $("body").height() + 25;
             height = Math.min(height, window.top.innerHeight * 0.8);
             setFrameHeight(height);
