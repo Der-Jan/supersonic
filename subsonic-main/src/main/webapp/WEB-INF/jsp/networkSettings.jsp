@@ -5,8 +5,8 @@
 <head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
     <script type="text/javascript" language="javascript">
 
         function init() {
