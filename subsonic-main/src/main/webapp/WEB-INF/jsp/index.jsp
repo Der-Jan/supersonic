@@ -43,7 +43,7 @@
             width: 100%;
         }
         #left {
-            width: 0;
+            width: ${model.showSideBar ? 210 : 0}px;
         }
         #main {
             flex-grow: 1;

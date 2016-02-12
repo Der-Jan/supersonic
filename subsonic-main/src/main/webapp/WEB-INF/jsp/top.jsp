@@ -38,6 +38,7 @@
             $("#hide-side-bar").toggle(show);
             $("#show-side-bar").toggle(!show);
             parent.toggleSideBar(show);
+            multiService.setShowSideBar(show);
         }
 
         function keyboardShortcut(action, param) {
@@ -95,8 +96,8 @@
 <form method="post" action="search.view" target="main" name="searchForm">
 
     <div style="display:flex; align-items:center">
-        <span id="show-side-bar" class="topHeader top-menu-item" style="display:inline; margin-right:3em" onclick="toggleSideBar(true)"><i class="fa fa-bars fa-lg icon"></i></span>
-        <span id="hide-side-bar" class="topHeader top-menu-item" style="display:none; margin-right:3em" onclick="toggleSideBar(false)"><i class="fa fa-bars fa-lg icon"></i></span>
+        <span id="show-side-bar" class="topHeader top-menu-item" style="display:${model.showSideBar ? 'none' : 'inline'}; margin-right:3em" onclick="toggleSideBar(true)"><i class="fa fa-bars fa-lg icon"></i></span>
+        <span id="hide-side-bar" class="topHeader top-menu-item" style="display:${model.showSideBar ? 'inline' : 'none'}; margin-right:3em" onclick="toggleSideBar(false)"><i class="fa fa-bars fa-lg icon"></i></span>
         <span class="topHeader top-menu-item" onclick="showPage('home.view')"><i class="fa fa-home fa-fw fa-lg icon"></i>&nbsp;${home}</span>
         <span class="topHeader top-menu-item" onclick="showPage('artists.view')"><i class="fa fa-microphone fa-fw fa-lg icon"></i>&nbsp;${artists}</span>
         <span class="topHeader top-menu-item" onclick="showPage('nowPlaying.view')"><i class="fa fa-headphones fa-fw fa-lg icon"></i>&nbsp;${nowPlaying}</span>

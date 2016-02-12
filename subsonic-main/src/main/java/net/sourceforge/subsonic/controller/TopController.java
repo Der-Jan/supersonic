@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -45,8 +46,10 @@ public class TopController extends ParameterizableViewController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         User user = securityService.getCurrentUser(request);
+        UserSettings userSettings = settingsService.getUserSettings(user.getUsername());
 
         map.put("user", user);
+        map.put("showSideBar", userSettings.isShowSideBar());
 
         ModelAndView result = super.handleRequestInternal(request, response);
         result.addObject("model", map);
