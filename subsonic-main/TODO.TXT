@@ -7,6 +7,7 @@ Bugfix: Play queue shows wrong format for transcoded files.
 Bugfix: Play count and "last played" not always updated.
 New page for playing internet radio stations.
 Added "View as list" option for podcasts and playlists.
+Show last 100 chat messages (instead of 10)
 
 TODO IN 6.0
 ------------

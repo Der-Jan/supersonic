@@ -45,7 +45,7 @@ import net.sourceforge.subsonic.util.BoundedList;
  */
 public class ChatService {
 
-    private static final int MAX_MESSAGES = 10;
+    private static final int MAX_MESSAGES = 100;
     private static final long TTL_MILLIS = 3L * 24L * 60L * 60L * 1000L; // 3 days.
 
     private final LinkedList<Message> messages = new BoundedList<Message>(MAX_MESSAGES);
@@ -82,9 +82,10 @@ public class ChatService {
         }
     }
 
-    public synchronized void addMessage(String message) {
+    public synchronized Messages addMessage(String message) {
         WebContext webContext = WebContextFactory.get();
         doAddMessage(message, webContext.getHttpServletRequest());
+        return getMessages(0L);
     }
 
     public synchronized void doAddMessage(String message, HttpServletRequest request) {
@@ -97,9 +98,10 @@ public class ChatService {
         }
     }
 
-    public synchronized void clearMessages() {
+    public synchronized Messages clearMessages() {
         messages.clear();
         revision++;
+        return getMessages(0L);
     }
 
     /**
