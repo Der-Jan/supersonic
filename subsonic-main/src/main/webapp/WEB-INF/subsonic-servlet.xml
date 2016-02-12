@@ -47,6 +47,7 @@
         <property name="viewName" value="playlists"/>
         <property name="securityService" ref="securityService"/>
         <property name="playlistService" ref="playlistService"/>
+        <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="importPlaylistController" class="net.sourceforge.subsonic.controller.ImportPlaylistController">
         <property name="viewName" value="importPlaylist"/>

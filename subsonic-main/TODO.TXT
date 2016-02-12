@@ -6,18 +6,36 @@ Hide left menu by default.
 Bugfix: Play queue shows wrong format for transcoded files.
 Bugfix: Play count and "last played" not always updated.
 New page for playing internet radio stations.
+Added "View as list" option for podcasts and playlists.
 
 TODO IN 6.0
 ------------
+https://www.wowza.com/forums/content.php?213-How-to-use-FFmpeg-with-Wowza-Media-Server-(MPEG-TS)
+https://ffmpeg.org/ffmpeg-formats.html#segment_002c-stream_005fsegment_002c-ssegment
+ffmpeg hls works without audio
+Put audio in separate track?
+https://en.wikipedia.org/wiki/Presentation_timestamp
+
+ffmpeg -ss %o -t %d -i %s -async 1 -b:v %bk -s %wx%h -ar 44100 -ac 2 -f mpegts -c:v libx264 -preset superfast -x264-params keyint=125:no-scenecut=1 -c:a libmp3lame -b:a 128k -threads 0 -
+
+Revert rev 4687.
+Upgrade ffmpeg.
 
 Video conversion:
-  Allow m4v
+  Allow m4v (mp4, m4v, f4v, mov)
   Rephrase to "optimize"
   Configurable directory (default SUBSONIC_HOME/conversion)
   Configurable disk usage threshold
   Store path to target file and log file in db
   Add control panel
   Automatic delete if target file missing.
+
+Use <!DOCTYPE html>
+
+Fix sorting in index.
+Support list mode in podcast and playlists.
+
+Use premium icon.
 
 Jwplayer
   1 mill plays / month
