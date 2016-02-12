@@ -8,6 +8,7 @@
         <property name="viewName" value="left"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="musicIndexService" ref="musicIndexService"/>
     </bean>
     <bean id="artistsController" class="net.sourceforge.subsonic.controller.ArtistsController">
         <property name="viewName" value="artists"/>

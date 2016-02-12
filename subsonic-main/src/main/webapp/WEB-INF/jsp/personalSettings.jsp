@@ -149,8 +149,8 @@
         <tr>
             <td><form:checkbox path="queueFollowingSongs" id="queueFollowingSongs" cssClass="checkbox"/></td>
             <td><label for="queueFollowingSongs"><fmt:message key="personalsettings.queuefollowingsongs"/></label></td>
-            <td></td>
-            <td></td>
+            <td style="padding-left:2em"><form:checkbox path="showIndexInSideBar" id="showIndexInSideBar" cssClass="checkbox"/></td>
+            <td><label for="showIndexInSideBar"><fmt:message key="personalsettings.showindexinsidebar"/></label></td>
             <td></td>
             <td></td>
         </tr>
