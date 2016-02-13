@@ -41,10 +41,10 @@
         #muteOn, #muteOff {
             cursor:pointer; font-size:20px; padding:8px
         }
-        #collapse, #expand, #castOn, #castOff {
-            margin-left:25px; cursor:pointer; display:none;
+        #collapse, #expand, #castOn, #castOff, #repeatOn, #repeatOff {
+            margin-left:12px; margin-right:12px; cursor:pointer; display:none;
         }
-        #castOff, #collapse {
+        #castOff, #collapse, #repeatOff {
             color: #E65100;
         }
         #startButton:hover, #stopButton:hover {
@@ -456,8 +456,8 @@
     function onRearrange(indexes) {
         playQueueService.rearrange(indexes, playQueueCallback);
     }
-    function onToggleRepeat() {
-        playQueueService.toggleRepeat(playQueueCallback);
+    function onToggleRepeat(repeat) {
+        playQueueService.toggleRepeat(repeat, playQueueCallback);
     }
     function onUndo() {
         playQueueService.undo(playQueueCallback);
@@ -515,10 +515,8 @@
         songs = playQueue.entries;
         repeatEnabled = playQueue.repeatEnabled;
 
-        if ($("#toggleRepeat")) {
-            var text = repeatEnabled ? "<fmt:message key="playlist.repeat_on"/>" : "<fmt:message key="playlist.repeat_off"/>";
-            $("#toggleRepeat").html(text);
-        }
+        $("#repeatOn").toggle(!repeatEnabled);
+        $("#repeatOff").toggle(repeatEnabled);
 
         if (songs.length == 0) {
             $("#songCountAndDuration").html("");
@@ -815,9 +813,13 @@
             <div id="progress"></div>
 
             <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
-                <div class="ellipsis" style="flex:1">
-                    <div id="songName" class="ellipsis"></div>
-                    <div id="artistName" class="ellipsis"></div>
+                <div class="ellipsis" style="display:flex; flex:1; align-items:center; margin-right:30px">
+                    <div class="ellipsis" style="flex:1">
+                        <div id="songName" class="ellipsis"></div>
+                        <div id="artistName" class="ellipsis"></div>
+                    </div>
+                    <i id="repeatOn" class="material-icons" onclick="onToggleRepeat(true)">repeat</i>
+                    <i id="repeatOff" class="material-icons" onclick="onToggleRepeat(false)">repeat</i>
                 </div>
 
                 <i id="previousButton" class="fa fa-step-backward" onclick="onPrevious()"></i>
@@ -835,10 +837,10 @@
                 </span>
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
                 <div style="flex:1; display:flex; align-items:center; margin-left:30px">
-                    <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
-                    <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
                     <i id="expand" class="material-icons" onclick="expand()">queue_music</i>
                     <i id="collapse" class="material-icons" onclick="collapse()">queue_music</i>
+                    <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
+                    <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
                     <div id="progress-and-duration" class="detail" style="flex:1; text-align:right">
                         <span id="progress-text">0:00</span> /
                         <span id="duration-text">0:00</span>
@@ -926,7 +928,6 @@
         <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
             <td style="white-space:nowrap;"><span class="header"><a href="javascript:onClear()"><fmt:message key="playlist.clear"/></a></span> |</td>
             <td style="white-space:nowrap;"><span class="header"><a href="javascript:onShuffle()"><fmt:message key="playlist.shuffle"/></a></span> |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onToggleRepeat()"><span id="toggleRepeat"><fmt:message key="playlist.repeat_on"/></span></a></span>  |</td>
             <td style="white-space:nowrap;"><span class="header"><a href="javascript:onUndo()"><fmt:message key="playlist.undo"/></a></span>  |</td>
         </c:if>
 

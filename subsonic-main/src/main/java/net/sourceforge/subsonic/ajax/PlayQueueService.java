@@ -578,11 +578,11 @@ public class PlayQueueService {
         return convert(request, player, false);
     }
 
-    public PlayQueueInfo toggleRepeat() throws Exception {
+    public PlayQueueInfo toggleRepeat(boolean repeat) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
         Player player = getCurrentPlayer(request, response);
-        player.getPlayQueue().setRepeatEnabled(!player.getPlayQueue().isRepeatEnabled());
+        player.getPlayQueue().setRepeatEnabled(repeat);
         return convert(request, player, false);
     }
 

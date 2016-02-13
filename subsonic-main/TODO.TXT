@@ -11,6 +11,7 @@ Show last 100 chat messages (instead of 10)
 Added option "Show index in left sidebar" in Settings > Personal
 Bugfix: Unstarring from starred.jsp broken
 Add button to show/hide play queue. Only visible if "Settings > Personal > Auto-expand play queue" is selected.
+Add repeat button
 
 TODO IN 6.0
 ------------
@@ -19,6 +20,7 @@ External player broken
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=16084
 
 Make it simple to star currently playing song.
+Add repeat button.
 
 Test with SONOS
   Also transcoded
