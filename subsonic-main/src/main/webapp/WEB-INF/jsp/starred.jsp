@@ -13,15 +13,9 @@
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
     <script type="text/javascript" language="javascript">
 
-        function toggleStar(mediaFileId, imageId) {
-            if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOnImage"/>") != -1) {
-                $(imageId).attr("src", "<spring:theme code="ratingOffImage"/>");
-                starService.unstar(mediaFileId);
-            }
-            else if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOffImage"/>") != -1) {
-                $(imageId).attr("src", "<spring:theme code="ratingOnImage"/>");
-                starService.star(mediaFileId);
-            }
+        function toggleStar(mediaFileId, element) {
+            starService.star(mediaFileId, !$(element).hasClass("fa-star"));
+            $(element).toggleClass("fa-star fa-star-o starred");
         }
 
         function onSavePlaylist() {
