@@ -6,16 +6,19 @@ Hide left menu by default.
 Bugfix: Play queue shows wrong format for transcoded files.
 Bugfix: Play count and "last played" not always updated.
 New page for playing internet radio stations.
-Added "View as list" option for podcasts and playlists.
+Added "View as list" option for podcasts, playlists and starred pages.
 Show last 100 chat messages (instead of 10)
 Added option "Show index in left sidebar" in Settings > Personal
 
 TODO IN 6.0
 ------------
 Make it simple to star currently playing song.
-Show error/status message in internet radio.
-
 Add button to show/hide play queue
+Unstarring from starred.jsp broken
+
+Uncaught SyntaxError: Unexpected identifier
+
+Starred: Support list mode
 
 Use BrowserStack for testing.
 
