@@ -17,6 +17,7 @@
     Mousetrap.bind('shift+left', function() { getPlayerWindow().keyboardShortcut("seekBackward") });
     Mousetrap.bind('shift+right', function() { getPlayerWindow().keyboardShortcut("seekForward") });
     Mousetrap.bind('-', function() { getPlayerWindow().keyboardShortcut("volumeDown") });
+    Mousetrap.bind('*', function() { getPlayerWindow().keyboardShortcut("star") });
     Mousetrap.bind('plus', function() { getPlayerWindow().keyboardShortcut("volumeUp") });
     Mousetrap.bind('m', function() { parent.frames.upper.keyboardShortcut("toggleSideBar") });
     Mousetrap.bind('g h', function() { parent.frames.upper.keyboardShortcut("showHome") });

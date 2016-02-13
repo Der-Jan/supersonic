@@ -379,6 +379,12 @@
             var position = parseInt($("#progress").slider("option", "value"));
             $("#progress").slider("option", "value", Math.max(0, position - 1000));
             onProgressChanged();
+        } else if (action == "star") {
+            if ($("#starCurrentSong").is(":visible")) {
+                $("#starCurrentSong").click();
+            } else if ($("#unstarCurrentSong").is(":visible")) {
+                $("#unstarCurrentSong").click();
+            }
         }
     }
 

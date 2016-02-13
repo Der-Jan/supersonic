@@ -178,7 +178,7 @@
         <td></td><td></td>
     </tr>
     <tr>
-        <td></td><td></td>
+        <td class="more-shortcut">*</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.star"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> r</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.more"/></td>
         <td></td><td></td>
     </tr>
