@@ -20,6 +20,7 @@
     Mousetrap.bind('*', function() { getPlayerWindow().keyboardShortcut("star") });
     Mousetrap.bind('plus', function() { getPlayerWindow().keyboardShortcut("volumeUp") });
     Mousetrap.bind('m', function() { parent.frames.upper.keyboardShortcut("toggleSideBar") });
+    Mousetrap.bind('q', function() { parent.frames.playQueue.keyboardShortcut("togglePlayQueue") });
     Mousetrap.bind('g h', function() { parent.frames.upper.keyboardShortcut("showHome") });
     Mousetrap.bind('g i', function() { parent.frames.upper.keyboardShortcut("showIndex") });
     Mousetrap.bind('g p', function() { parent.frames.upper.keyboardShortcut("showPlaylists") });

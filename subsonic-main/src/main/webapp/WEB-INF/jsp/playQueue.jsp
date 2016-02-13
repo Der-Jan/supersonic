@@ -77,6 +77,7 @@
     var externalPlayer = false;
     var externalPlayerWithPlaylist = false;
     var autoHide = ${model.autoHide};
+    var collapsed = true;
 
     function init() {
 
@@ -171,21 +172,19 @@
     }
 
     function collapse() {
-        setFrameHeight(95);
+        collapsed = true;
+        parent.setPlayQueueHeight(95);
         $("#collapse").hide();
         $("#expand").toggle(!autoHide);
     }
 
     function expand() {
+        collapsed = false;
         var height = $("body").height() + 25;
         height = Math.min(height, window.top.innerHeight * 0.8);
-        setFrameHeight(height);
+        parent.setPlayQueueHeight(height);
         $("#expand").hide();
         $("#collapse").toggle(!autoHide);
-    }
-
-    function setFrameHeight(height) {
-        parent.setPlayQueueHeight(height);
     }
 
     function startTimer() {
@@ -385,6 +384,8 @@
             } else if ($("#unstarCurrentSong").is(":visible")) {
                 $("#unstarCurrentSong").click();
             }
+        } else if (action == "togglePlayQueue") {
+            collapsed ? expand() : collapse();
         }
     }
 

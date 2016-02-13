@@ -155,12 +155,12 @@
     <tr>
         <td class="more-shortcut"><i class="fa fa-long-arrow-right"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.next"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> p</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.playlists"/></td>
-        <td class="more-shortcut">?</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.shortcuts"/></td>
+        <td class="more-shortcut">q</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.playqueue"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">Shift <i class="fa fa-long-arrow-left"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.seekbackward"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> o</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.podcasts"/></td>
-        <td></td><td></td>
+        <td class="more-shortcut">?</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.shortcuts"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">Shift <i class="fa fa-long-arrow-right"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.seekforward"/></td>

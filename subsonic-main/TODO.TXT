@@ -13,6 +13,7 @@ Bugfix: Unstarring from starred.jsp broken
 Add button to show/hide play queue. Only visible if "Settings > Personal > Auto-expand play queue" is selected.
 Add button to star currently playing song (keyboard shortcut "*")
 Add repeat button
+Keyboard shortcut "q" to toggle play queue.
 
 TODO IN 6.0
 ------------
@@ -21,7 +22,8 @@ External player broken
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=16084
 
 Make "*" keyboard shortcut work in video.
-Keyboard shortcut to open play queue.
+
+Index page: Use tabs for media folders.
 
 Web Font Loader
 
