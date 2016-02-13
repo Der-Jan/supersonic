@@ -12,10 +12,10 @@ Added option "Show index in left sidebar" in Settings > Personal
 
 TODO IN 6.0
 ------------
+Make it simple to star currently playing song.
+Show error/status message in internet radio.
 
 Add button to show/hide play queue
-
-DWR(?) problem in Chrome.
 
 Use BrowserStack for testing.
 
@@ -69,7 +69,6 @@ DASH
   http://dashif.org/reference/players/javascript/1.4.0/samples/
     Seems to work in all browsers? Buggy in Safari and Firefox
 
-Change media folder sometimes doesn't work. Broken DWR?
 Make it work with Edge and qutebrowser.
 Podcast:
   Doesn't play on demo.subsonic.org
@@ -97,7 +96,6 @@ HTML5 player?
   Cast background image
   Jukebox: Doesn't update when clearing.
 Ellipsise buttons in left.jsp
-Make it simple to star currently playing song.
 createShare.jsp using path for back button
 Update dsub in apps page
 

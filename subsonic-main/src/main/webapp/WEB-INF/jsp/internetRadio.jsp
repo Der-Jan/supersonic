@@ -12,6 +12,30 @@
             margin-right: 2em;
         }
     </style>
+
+    <script>
+        function onError(e, stationId) {
+            var message;
+            switch (e.target.error.code) {
+                case e.target.error.MEDIA_ERR_ABORTED:
+                    message = "<fmt:message key="internetradio.error.aborted"/>";
+                    break;
+                case e.target.error.MEDIA_ERR_NETWORK:
+                    message = "<fmt:message key="internetradio.error.network"/>";
+                    break;
+                case e.target.error.MEDIA_ERR_DECODE:
+                    message = "<fmt:message key="internetradio.error.decode"/>";
+                    break;
+                case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    message = "<fmt:message key="internetradio.error.notsupported"/>";
+                    break;
+                default:
+                    message = "<fmt:message key="internetradio.error.unknown"/>";
+                    break;
+            }
+            $("#status" + stationId).text(message).prop("title", message);
+        }
+    </script>
 </head>
 
 <body class="mainframe bgcolor1">
@@ -32,17 +56,16 @@
                     <span style="margin-left: 2em"><b>${fn:escapeXml(station.name)}</b></span>
                 </td>
                 <td class="fit">
-                    <audio controls preload="none" src="${station.streamUrl}"></audio>
+                    <audio controls preload="none" src="${station.streamUrl}" onerror="onError(event, ${station.id})"></audio>
                 </td>
                 <td class="fit">
                     <i class="material-icons clickable" onclick="window.open('${station.streamUrl}', '_blank');">open_in_new</i>
                 </td>
-                <td class="truncate"></td>
+                <td class="truncate warning" id="status${station.id}"></td>
             </tr>
         </c:forEach>
     </table>
 </c:if>
-
 
 <c:if test="${model.user.adminRole}">
     <div style="padding-top:2em;">
