@@ -56,7 +56,8 @@
 
 <a name="top"></a>
 
-<div style="float:right; margin-right:3em">
+<div style="display:flex; align-items:center">
+    <h1 style="flex:1"><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
     <span style="margin-right:3em">
         <c:choose>
             <c:when test="${model.scanning}">
@@ -67,10 +68,8 @@
             </c:otherwise>
         </c:choose>
     </span>
-    <input type="text" size="28" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
+    <input style="margin-right:3em; flex-shrink:1; width:180px" type="text" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
 </div>
-
-<h1><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
 
 <div style="clear:both; position:fixed; top:0; right:0; padding:1.25em 0.75em 0.25em 0.75em; text-align:center">
     <div class="browse-index-shortcut"><i class="fa fa-arrow-up fa-fw icon clickable" onclick="location.href='#top'"></i></div>
