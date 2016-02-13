@@ -55,25 +55,9 @@
 <body class="bgcolor1 mainframe">
 
 <a name="top"></a>
-<h1 style="padding-bottom:1em"><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
 
-<div style="clear:both; position:fixed; top:0; right:0; padding:1.25em 0.75em 0.25em 0.75em; text-align:center">
-    <div class="browse-index-shortcut"><i class="fa fa-arrow-up fa-fw icon clickable" onclick="location.href='#top'"></i></div>
-    <c:forEach items="${model.indexes}" var="index">
-        <div class="browse-index-shortcut"><a href="#${index.index}">${index.index}</a></div>
-    </c:forEach>
-</div>
-
-<div style="padding-bottom:1.5em">
-    <c:if test="${fn:length(model.musicFolders) > 1}">
-        <i class="fa fa-folder-open-o fa-fw icon"></i>&nbsp;<select name="musicFolderId" onchange="changeMusicFolder(options[selectedIndex].value);" style="margin-right:2em">
-        <option value="-1"><fmt:message key="left.allfolders"/></option>
-        <c:forEach items="${model.musicFolders}" var="musicFolder">
-            <option ${model.selectedMusicFolder.id == musicFolder.id ? "selected" : ""} value="${musicFolder.id}">${fn:escapeXml(musicFolder.name)}</option>
-        </c:forEach>
-        </select>
-    </c:if>
-    <span>
+<div style="float:right; margin-right:3em">
+    <span style="margin-right:3em">
         <c:choose>
             <c:when test="${model.scanning}">
                 <i class="fa fa-refresh fa-fw icon"></i>&nbsp;<a href="artists.view"><fmt:message key="common.refresh"/></a>
@@ -83,12 +67,40 @@
             </c:otherwise>
         </c:choose>
     </span>
-    <div style="float:right; padding-right:3em">
-        <input type="text" size="28" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
-    </div>
+    <input type="text" size="28" placeholder="<fmt:message key="common.filter"/>" onclick="select();" onkeyup="filterArtists(this)">
 </div>
 
-<div style="padding-bottom:0.4em">
+<h1><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
+
+<div style="clear:both; position:fixed; top:0; right:0; padding:1.25em 0.75em 0.25em 0.75em; text-align:center">
+    <div class="browse-index-shortcut"><i class="fa fa-arrow-up fa-fw icon clickable" onclick="location.href='#top'"></i></div>
+    <c:forEach items="${model.indexes}" var="index">
+        <div class="browse-index-shortcut"><a href="#${index.index}">${index.index}</a></div>
+    </c:forEach>
+</div>
+
+<c:if test="${fn:length(model.musicFolders) > 1}">
+    <h2>
+    <c:forEach items="${model.musicFolders}" var="musicFolder" varStatus="loopStatus">
+        <c:choose>
+            <c:when test="${loopStatus.count > 1 and  (loopStatus.count - 1) % 8 != 0}">&nbsp;|&nbsp;</c:when>
+            <c:otherwise></h2><h2></c:otherwise>
+        </c:choose>
+
+        <c:choose>
+            <c:when test="${model.selectedMusicFolder.id == musicFolder.id}">
+                <span class="headerSelected">${fn:escapeXml(musicFolder.name)}</span>
+            </c:when>
+            <c:otherwise>
+                <span class="header"><a href="#" onclick="changeMusicFolder(${musicFolder.id})">${fn:escapeXml(musicFolder.name)}</a></span>
+            </c:otherwise>
+        </c:choose>
+
+    </c:forEach>
+    </h2>
+</c:if>
+
+<div style="padding-top:1em; padding-bottom:0.4em">
     <c:forEach items="${model.shortcuts}" var="shortcut">
         <sub:url value="main.view" var="mainUrl">
             <sub:param name="id" value="${shortcut.id}"/>
