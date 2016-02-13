@@ -41,8 +41,11 @@
         #muteOn, #muteOff {
             cursor:pointer; font-size:20px; padding:8px
         }
-        #castOn, #castOff {
-            margin-left:15px; cursor:pointer;display:none;
+        #collapse, #expand, #castOn, #castOff {
+            margin-left:25px; cursor:pointer; display:none;
+        }
+        #castOff, #collapse {
+            color: #E65100;
         }
         #startButton:hover, #stopButton:hover {
             opacity: 0.8;
@@ -73,7 +76,7 @@
     var jukeboxPlayer = false;
     var externalPlayer = false;
     var externalPlayerWithPlaylist = false;
-    var ignore = false;
+    var autoHide = ${model.autoHide};
 
     function init() {
 
@@ -97,6 +100,7 @@
         $("#volume").on("slidestop", onVolumeChanged);
         $("#progress").on("slidestop", onProgressChanged);
         $(".ui-slider").css("background", $("#dummy").css("background-color"));
+        $("#expand").toggle(!autoHide);
 
         if (!externalPlayerWithPlaylist) {
             $("#playlistBody").sortable({
@@ -151,23 +155,37 @@
     function initMouseListener() {
         $("body").mouseleave(function (event) {
             if (event.clientY < 30) {
-                setFrameHeight(95);
+                if (autoHide) {
+                    collapse();
+                }
                 $(".ui-slider-handle").fadeOut();
             }
         });
 
         $("body").mouseenter(function () {
-            var height = $("body").height() + 25;
-            height = Math.min(height, window.top.innerHeight * 0.8);
-            setFrameHeight(height);
+            if (autoHide) {
+                expand();
+            }
             $(".ui-slider-handle").fadeIn();
         });
     }
 
+    function collapse() {
+        setFrameHeight(95);
+        $("#collapse").hide();
+        $("#expand").toggle(!autoHide);
+    }
+
+    function expand() {
+        var height = $("body").height() + 25;
+        height = Math.min(height, window.top.innerHeight * 0.8);
+        setFrameHeight(height);
+        $("#expand").hide();
+        $("#collapse").toggle(!autoHide);
+    }
+
     function setFrameHeight(height) {
-        <c:if test="${model.autoHide}">
         parent.setPlayQueueHeight(height);
-        </c:if>
     }
 
     function startTimer() {
@@ -816,10 +834,12 @@
                     <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
                 </span>
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
-                <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
-                <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
-                <div style="flex:1">
-                    <div id="progress-and-duration" class="detail" style="text-align:right">
+                <div style="flex:1; display:flex; align-items:center; margin-left:30px">
+                    <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
+                    <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
+                    <i id="expand" class="material-icons" onclick="expand()">queue_music</i>
+                    <i id="collapse" class="material-icons" onclick="collapse()">queue_music</i>
+                    <div id="progress-and-duration" class="detail" style="flex:1; text-align:right">
                         <span id="progress-text">0:00</span> /
                         <span id="duration-text">0:00</span>
                     </div>
