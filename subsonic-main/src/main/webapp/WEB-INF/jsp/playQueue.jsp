@@ -41,7 +41,7 @@
         #muteOn, #muteOff {
             cursor:pointer; font-size:20px; padding:8px
         }
-        #collapse, #expand, #castOn, #castOff, #repeatOn, #repeatOff {
+        #collapse, #expand, #castOn, #castOff, #repeatOn, #repeatOff, #starCurrentSong, #unstarCurrentSong {
             margin-left:12px; margin-right:12px; cursor:pointer; display:none;
         }
         #castOff, #collapse, #repeatOff {
@@ -438,6 +438,14 @@
     function onStar(index) {
         playQueueService.toggleStar(index, playQueueCallback);
     }
+    function onStarCurrentSong(star) {
+        var i = getCurrentSongIndex();
+        if (i != -1) {
+            onStar(i);
+            $("#starCurrentSong").toggle(!star);
+            $("#unstarCurrentSong").toggle(star);
+        }
+    }
     function onRemove(index) {
         playQueueService.remove(index, playQueueCallback);
     }
@@ -641,6 +649,9 @@
             $("#artistName").click(showAlbum);
             $("#coverArt").click(showAlbum);
         }
+        var starred = song != null && song.starred;
+        $("#starCurrentSong").toggle(!starred);
+        $("#unstarCurrentSong").toggle(starred);
     }
 
     function skip(index, position) {
@@ -818,6 +829,8 @@
                         <div id="songName" class="ellipsis"></div>
                         <div id="artistName" class="ellipsis"></div>
                     </div>
+                    <i id="starCurrentSong" class="material-icons" onclick="onStarCurrentSong(true)">star_border</i>
+                    <i id="unstarCurrentSong" class="material-icons starred" onclick="onStarCurrentSong(false)">star</i>
                     <i id="repeatOn" class="material-icons" onclick="onToggleRepeat(true)">repeat</i>
                     <i id="repeatOff" class="material-icons" onclick="onToggleRepeat(false)">repeat</i>
                 </div>
