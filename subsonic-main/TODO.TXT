@@ -20,9 +20,6 @@ Use Open Sans font.
 
 TODO IN 6.0
 ------------
-
-Broken player layout in Safari
-
 External player broken
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=16084
 

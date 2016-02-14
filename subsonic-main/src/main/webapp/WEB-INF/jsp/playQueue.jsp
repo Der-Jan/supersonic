@@ -64,6 +64,11 @@
         #progress {
             height:3px; margin: 5px 20px 10px 10px;
         }
+
+        /* Work-around for Safari */
+        #starCurrentSong, #unstarCurrentSong, #repeatOn, #repeatOff, #expand, #collapse {
+            width: 24px;
+        }
     </style>
 
     <script type="text/javascript" language="javascript">
