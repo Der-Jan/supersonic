@@ -57,7 +57,7 @@
 <a name="top"></a>
 
 <div style="display:flex; align-items:center">
-    <h1 style="flex:1"><i class="fa fa-microphone fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
+    <h1 style="flex:1"><i class="fa fa-sort-alpha-asc icon"></i>&nbsp;&nbsp;<fmt:message key="top.artists"/></h1>
     <span style="margin-right:3em">
         <c:choose>
             <c:when test="${model.scanning}">
