@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1" %>
-
 <html>
 <head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
     <link type="text/css" rel="stylesheet" href="<c:url value="/style/videoPlayer.css"/>">
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/jwplayer-7.2.4/jwplayer.js"/>"></script>
@@ -44,6 +42,8 @@
                 var duration = parseInt($("#progress-slider").slider("option", "max"));
                 $("#progress-slider").slider("option", "value", Math.max(0, position - duration / 100));
                 castPlayer.seekMedia();
+            } else if (action == "star") {
+                $("#star").click();
             }
         }
 
@@ -67,7 +67,7 @@
 
                 <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
                     <div id="title" class="ellipsis" style="flex:1">
-                        <i class="fa ${not empty model.video.starredDate ? 'fa-star starred' : 'fa-star-o'} fa-lg clickable"
+                        <i id="star" class="fa ${not empty model.video.starredDate ? 'fa-star starred' : 'fa-star-o'} fa-lg clickable"
                            onclick="toggleStar(${model.video.id}, this)" style="padding-right:0.25em"></i>&nbsp;${fn:escapeXml(model.video.title)}
                     </div>
 

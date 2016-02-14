@@ -26,9 +26,6 @@ Broken player layout in Safari
 External player broken
   http://forum.subsonic.org/forum/viewtopic.php?f=2&t=16084
 
-Make "*" keyboard shortcut work in video.
-Remove fonts.googleapis.com from videoPlayer.jsp
-
 Preconvert audio?
 
 Test with SONOS
