@@ -80,12 +80,17 @@
 
 <c:if test="${fn:length(model.musicFolders) > 1}">
     <h2>
-    <c:forEach items="${model.musicFolders}" var="musicFolder" varStatus="loopStatus">
-        <c:choose>
-            <c:when test="${loopStatus.count > 1 and  (loopStatus.count - 1) % 8 != 0}">&nbsp;|&nbsp;</c:when>
-            <c:otherwise></h2><h2></c:otherwise>
-        </c:choose>
+    <c:choose>
+        <c:when test="${empty model.selectedMusicFolder}">
+            <span class="headerSelected"><fmt:message key="left.allfolders"/></span>
+        </c:when>
+        <c:otherwise>
+            <span class="header"><a href="#" onclick="changeMusicFolder(-1)"><fmt:message key="left.allfolders"/></a></span>
+        </c:otherwise>
+    </c:choose>
 
+    <c:forEach items="${model.musicFolders}" var="musicFolder" varStatus="loopStatus">
+        |
         <c:choose>
             <c:when test="${model.selectedMusicFolder.id == musicFolder.id}">
                 <span class="headerSelected">${fn:escapeXml(musicFolder.name)}</span>

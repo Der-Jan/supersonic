@@ -16,11 +16,10 @@ Add repeat button
 Keyboard shortcut "q" to toggle play queue.
 Index page: Use tabs for media folders.
 Self-host fonts.
+Use Open Sans font.
 
 TODO IN 6.0
 ------------
-
-Make it possible to select all folders in Index.
 
 Broken player layout in Safari
 
@@ -31,8 +30,6 @@ Make "*" keyboard shortcut work in video.
 Remove fonts.googleapis.com from videoPlayer.jsp
 
 Preconvert audio?
-
-Web Font Loader
 
 Test with SONOS
   Also transcoded
