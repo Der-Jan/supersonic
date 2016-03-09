@@ -1,14 +1,81 @@
-DONE IN 5.4
------------
-Artist thumbnail image
-Show album year, song count, genre and duration
-
-TODO IN 5.4
+TODO IN 6.0
 ------------
+REST authentication not supported for LDAP users.
+  https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
+  https://sourceforge.net/p/subsonic/bugs/158/
+
+ID3 lyrics
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=12595
+HTML5 player?
+  http://forum.subsonic.org/forum/viewtopic.php?f=6&t=16239&p=69649
+  Test stream role
+  Simplify code for update current song
+  Fix bug when having same song twice in play queue
+  Show buffering spinner in cast mode.
+  Cast background image
+  Jukebox: Doesn't update when clearing.
+Ellipsise buttons in left.jsp
+Make it simple to star currently playing song.
+createShare.jsp using path for back button
+Update dsub in apps page
+
+Add Play button to playlist
+Add "Add" and "Play random" to playlist menu
+Add second level playlist menu (with share, edit, delete, ...)
+
+Make proper Back buttons.
+Add Beta Beats
+  https://mail.google.com/mail/u/1/?tab=cm#inbox/15222fd6c2682067
+Video
+  Wrong aspect rate in video preview image.
+  Some videos doesn't start in Firefox (e.g., House of cards)
+    castPlayer.localPlayer.play(true).pause(true).play(true)
+    Hide playQueue?
+
+Scrubbing works poorly in IE.
+
+Conversion
+  REST support
+  Link to logfile if error?
+  Show conversion queue?
+
+Don't transcode m4a?
+Create simple webapp with responsive design
+  Bootstrap?
+  https://mail.google.com/mail/ca/u/0/#inbox/152945938b13b9c5
+Test UPnP video streaming.  Ensure non-conversion
+Site: Add video
+Site: Update screenshots
+Demo: Add video
+Jukebox mute: Add REST support
+Improve Subsonic logo
+Table in artists.jsp crashes with index.
+Ugly dropdown in firefox
+
+Add icon to buttons (start radio etc)
+Use Bootstrap?
+  http://fortawesome.github.io/Font-Awesome/examples/#bootstrap
+Review scanning algorithm. Always visit children?
+REST: Artist image url?
+Sonos: Star button missing on ipad
+Don't queue following songs when playing from search results / starred songs.
+  https://mail.google.com/mail/ca/u/0/?zx=nmcjqt3dyrzj#inbox/15169f6c8b06cc1b
+Remove Thumper?
+  https://mail.google.com/mail/ca/u/0/?zx=nmcjqt3dyrzj#inbox/151634428b1feffc
+
+Last.fm song matching and playlists
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16126
+  http://forum.subsonic.org/forum/viewtopic.php?f=3&t=15926
+Status and log should only be available for admin.
+
+Content length of FLAC transcoded to WAV incorrect
+  http://sourceforge.net/p/subsonic/bugs/121/
 New server:
   subsonic.canaca.com: 66.49.215.227
   backup: forum -> subsonic.org
 
+Site: Update SubStreamer
+  https://mail.google.com/mail/ca/u/0/#inbox/1505f8232760c3bf
 Support ID3 lyrics
   https://mail.google.com/mail/ca/u/0/#inbox/150960f1fc7133ac
 Google Chart API
@@ -32,16 +99,11 @@ Port-forward https port also
 Outdated SSL
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ef975868d1aaa5
 Test with Windows 10
-Status and log should only be available for admin.
 Problem with updating "deep" folders?
   https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ee79c0a22dc5ed
 Integrate with iTunes playlists
 Remember visibility of left.jsp?
-Make logout float right
-Check jwplayer in external player
-  https://mail.google.com/mail/ca/u/0/?zx=8dc6yomg8opi#inbox/14ec51aec7f9f483
 Change chromecast background.
-Custom Sonos texts for starring.
 Upgrade sonos wsdl.
   AbstractMedia.summary
   AbstractMedia.isFavorite
@@ -107,7 +169,8 @@ New player controls
   Create screen mocks
   Use html5 audio
   "Previous" button should restart current song
-
+  Links from artist/song name
+    Similar in right.view
 Bundle release notes
 Move media statistics to About page.
 Fade out text in auto cover art

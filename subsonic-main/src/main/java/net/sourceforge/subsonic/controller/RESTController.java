@@ -21,7 +21,6 @@ package net.sourceforge.subsonic.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -38,6 +37,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.subsonic.restapi.AlbumID3;
+import org.subsonic.restapi.AlbumInfo;
 import org.subsonic.restapi.AlbumList;
 import org.subsonic.restapi.AlbumList2;
 import org.subsonic.restapi.AlbumWithSongsID3;
@@ -95,6 +95,7 @@ import net.sourceforge.subsonic.dao.BookmarkDao;
 import net.sourceforge.subsonic.dao.MediaFileDao;
 import net.sourceforge.subsonic.dao.PlayQueueDao;
 import net.sourceforge.subsonic.domain.Album;
+import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.ArtistBio;
 import net.sourceforge.subsonic.domain.Bookmark;
@@ -166,7 +167,7 @@ public class RESTController extends MultiActionController {
     private CoverArtController coverArtController;
     private AvatarController avatarController;
     private UserSettingsController userSettingsController;
-    private LeftController leftController;
+    private ArtistsController artistsController;
     private StatusService statusService;
     private StreamController streamController;
     private HLSController hlsController;
@@ -247,7 +248,7 @@ public class RESTController extends MultiActionController {
         String username = securityService.getCurrentUser(request).getUsername();
 
         long ifModifiedSince = getLongParameter(request, "ifModifiedSince", 0L);
-        long lastModified = leftController.getLastModified(request);
+        long lastModified = artistsController.getLastModified(request);
 
         if (lastModified <= ifModifiedSince) {
             jaxbWriter.writeResponse(request, response, res);
@@ -357,7 +358,9 @@ public class RESTController extends MultiActionController {
 
         ArtistsID3 result = new ArtistsID3();
         result.setIgnoredArticles(settingsService.getIgnoredArticles());
-        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
+
+        Integer musicFolderId = getIntParameter(request, "musicFolderId");
+        List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username, musicFolderId);
 
         List<Artist> artists = artistDao.getAlphabetialArtists(0, Integer.MAX_VALUE, musicFolders);
         SortedMap<MusicIndex, List<MusicIndex.SortableArtistWithArtist>> indexedArtists = musicIndexService.getIndexedArtists(artists);
@@ -525,6 +528,60 @@ public class RESTController extends MultiActionController {
         jaxbWriter.writeResponse(request, response, res);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
+    public void getAlbumInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        MediaFile mediaFile = mediaFileService.getMediaFile(id);
+        if (mediaFile == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Media file not found.");
+            return;
+        }
+
+        AlbumInfo result = new AlbumInfo();
+        AlbumNotes albumNotes = lastFmService.getAlbumNotes(mediaFile);
+        if (albumNotes != null) {
+            result.setNotes(albumNotes.getNotes());
+            result.setMusicBrainzId(albumNotes.getMusicBrainzId());
+            result.setLastFmUrl(albumNotes.getLastFmUrl());
+            result.setSmallImageUrl(albumNotes.getSmallImageUrl());
+            result.setMediumImageUrl(albumNotes.getMediumImageUrl());
+            result.setLargeImageUrl(albumNotes.getLargeImageUrl());
+        }
+
+        Response res = createResponse();
+        res.setAlbumInfo(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void getAlbumInfo2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request = wrapRequest(request);
+
+        int id = getRequiredIntParameter(request, "id");
+        Album album = albumDao.getAlbum(id);
+        if (album == null) {
+            error(request, response, ErrorCode.NOT_FOUND, "Album not found.");
+            return;
+        }
+
+        AlbumInfo result = new AlbumInfo();
+        AlbumNotes albumNotes = lastFmService.getAlbumNotes(album);
+        if (albumNotes != null) {
+            result.setNotes(albumNotes.getNotes());
+            result.setMusicBrainzId(albumNotes.getMusicBrainzId());
+            result.setLastFmUrl(albumNotes.getLastFmUrl());
+            result.setSmallImageUrl(albumNotes.getSmallImageUrl());
+            result.setMediumImageUrl(albumNotes.getMediumImageUrl());
+            result.setLargeImageUrl(albumNotes.getLargeImageUrl());
+        }
+
+        Response res = createResponse();
+        res.setAlbumInfo(result);
+        jaxbWriter.writeResponse(request, response, res);
+    }
+
     private <T extends ArtistID3> T createJaxbArtist(T jaxbArtist, Artist artist, String username) {
         jaxbArtist.setId(String.valueOf(artist.getId()));
         jaxbArtist.setName(artist.getName());
@@ -584,6 +641,7 @@ public class RESTController extends MultiActionController {
         jaxbAlbum.setDuration(album.getDurationSeconds());
         jaxbAlbum.setCreated(jaxbWriter.convertDate(album.getCreated()));
         jaxbAlbum.setStarred(jaxbWriter.convertDate(albumDao.getAlbumStarredDate(album.getId(), username)));
+        jaxbAlbum.setPlayCount((long) album.getPlayCount());
         jaxbAlbum.setYear(album.getYear());
         jaxbAlbum.setGenre(album.getGenre());
         return jaxbAlbum;
@@ -685,6 +743,7 @@ public class RESTController extends MultiActionController {
         if (dir.isAlbum()) {
             directory.setAverageRating(ratingService.getAverageRating(dir));
             directory.setUserRating(ratingService.getRatingForUser(username, dir));
+            directory.setPlayCount((long) dir.getPlayCount());
         }
 
         for (MediaFile child : mediaFileService.getChildrenOf(dir, true, true, true)) {
@@ -1101,7 +1160,7 @@ public class RESTController extends MultiActionController {
 
         List<MediaFile> albums;
         if ("highest".equals(type)) {
-            albums = ratingService.getHighestRatedAlbums(offset, size, musicFolders);
+            albums = ratingService.getHighestRatedAlbumsForUser(offset, size, username, musicFolders);
         } else if ("frequent".equals(type)) {
             albums = mediaFileService.getMostFrequentlyPlayedAlbums(offset, size, musicFolders);
         } else if ("recent".equals(type)) {
@@ -1282,6 +1341,7 @@ public class RESTController extends MultiActionController {
         child.setStarred(jaxbWriter.convertDate(mediaFileDao.getMediaFileStarredDate(mediaFile.getId(), username)));
         child.setUserRating(ratingService.getRatingForUser(username, mediaFile));
         child.setAverageRating(ratingService.getAverageRating(mediaFile));
+        child.setPlayCount((long) mediaFile.getPlayCount());
 
         if (mediaFile.isFile()) {
             child.setDuration(mediaFile.getDurationSeconds());
@@ -1406,7 +1466,7 @@ public class RESTController extends MultiActionController {
             return null;
         }
 
-        streamController.handleRequest(request, response);
+        streamController.handleRequest(request, response, false);
         return null;
     }
 
@@ -1427,7 +1487,8 @@ public class RESTController extends MultiActionController {
             error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
             return null;
         }
-        hlsController.handleRequest(request, response);
+
+        hlsController.handleRequest(request, response, false);
         return null;
     }
 
@@ -1960,44 +2021,10 @@ public class RESTController extends MultiActionController {
         return result;
     }
 
-    @SuppressWarnings("UnusedParameters")
-    public ModelAndView videoPlayer(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request = wrapRequest(request);
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        int id = getRequiredIntParameter(request, "id");
-        MediaFile file = mediaFileService.getMediaFile(id);
-
-        int timeOffset = getIntParameter(request, "timeOffset", 0);
-        timeOffset = Math.max(0, timeOffset);
-        Integer duration = file.getDurationSeconds();
-        if (duration != null) {
-            map.put("skipOffsets", VideoPlayerController.createSkipOffsets(duration));
-            timeOffset = Math.min(duration, timeOffset);
-            duration -= timeOffset;
-        }
-
-        map.put("id", request.getParameter("id"));
-        map.put("u", request.getParameter("u"));
-        map.put("p", request.getParameter("p"));
-        map.put("c", request.getParameter("c"));
-        map.put("v", request.getParameter("v"));
-        map.put("video", file);
-        map.put("maxBitRate", getIntParameter(request, "maxBitRate", VideoPlayerController.DEFAULT_BIT_RATE));
-        map.put("duration", duration);
-        map.put("timeOffset", timeOffset);
-        map.put("bitRates", VideoPlayerController.BIT_RATES);
-        map.put("autoplay", getBooleanParameter(request, "autoplay", true));
-
-        ModelAndView result = new ModelAndView("rest/videoPlayer");
-        result.addObject("model", map);
-        return result;
-    }
-
     @SuppressWarnings("UnusedDeclaration")
     public ModelAndView getCoverArt(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
-        return coverArtController.handleRequest(request, response);
+        return coverArtController.handleRequest(request, response, false);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -2091,6 +2118,7 @@ public class RESTController extends MultiActionController {
         result.setStreamRole(user.isStreamRole());
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
+        result.setVideoConversionRole(user.isVideoConversionRole());
 
         TranscodeScheme transcodeScheme = userSettings.getTranscodeScheme();
         if (transcodeScheme != null && transcodeScheme != TranscodeScheme.OFF) {
@@ -2128,6 +2156,7 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", false));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", true));
         command.setShareRole(getBooleanParameter(request, "shareRole", false));
+        command.setVideoConversionRole(getBooleanParameter(request, "videoConversionRole", false));
         command.setTranscodeSchemeName(TranscodeScheme.OFF.name());
 
         int[] folderIds = ServletRequestUtils.getIntParameters(request, "musicFolderId");
@@ -2175,6 +2204,7 @@ public class RESTController extends MultiActionController {
         command.setPodcastRole(getBooleanParameter(request, "podcastRole", u.isPodcastRole()));
         command.setSettingsRole(getBooleanParameter(request, "settingsRole", u.isSettingsRole()));
         command.setShareRole(getBooleanParameter(request, "shareRole", u.isShareRole()));
+        command.setVideoConversionRole(getBooleanParameter(request, "videoConversionRole", u.isVideoConversionRole()));
 
         int maxBitRate = getIntParameter(request, "maxBitRate", s.getTranscodeScheme().getMaxBitRate());
         command.setTranscodeSchemeName(TranscodeScheme.fromMaxBitRate(maxBitRate).name());
@@ -2388,8 +2418,8 @@ public class RESTController extends MultiActionController {
         this.userSettingsController = userSettingsController;
     }
 
-    public void setLeftController(LeftController leftController) {
-        this.leftController = leftController;
+    public void setArtistsController(ArtistsController artistsController) {
+        this.artistsController = artistsController;
     }
 
     public void setStatusService(StatusService statusService) {

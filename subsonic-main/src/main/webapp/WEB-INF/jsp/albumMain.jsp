@@ -13,14 +13,27 @@
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoom.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/script/fancyzoom/FancyZoomHTML.js"/>"></script>
 
+    <style type="text/css">
+        #playButton {
+            cursor: pointer;
+            font-size:24px;
+            color:#E65100;
+            margin-left:1.0em;
+            margin-right:0.5em;
+        }
+        #playButton:hover {
+            opacity: 0.8;
+        }
+    </style>
+
 </head><body class="mainframe bgcolor1" onload="init();">
 
-<sub:url value="createShare.view" var="shareUrl">
-    <sub:param name="id" value="${model.dir.id}"/>
-</sub:url>
-<sub:url value="download.view" var="downloadUrl">
-    <sub:param name="id" value="${model.dir.id}"/>
-</sub:url>
+<c:url value="createShare.view" var="shareUrl">
+    <c:param name="id" value="${model.dir.id}"/>
+</c:url>
+<c:url value="download.view" var="downloadUrl">
+    <c:param name="id" value="${model.dir.id}"/>
+</c:url>
 
 <script type="text/javascript" language="javascript">
     function init() {
@@ -34,13 +47,15 @@
             }});
 
         <c:if test="${model.showArtistInfo}">
-        loadArtistInfo();
+        loadAlbumInfo();
         </c:if>
     }
 
-    function loadArtistInfo() {
-        multiService.getArtistInfo(${model.dir.id}, 8, 0, function (artistInfo) {
+    function loadAlbumInfo() {
+        multiService.getAlbumInfo(${model.dir.id}, 8, function (albumInfo) {
+            var artistInfo = albumInfo.artistInfo;
             if (artistInfo.similarArtists.length > 0) {
+
                 var html = "";
                 for (var i = 0; i < artistInfo.similarArtists.length; i++) {
                     html += "<a href='main.view?id=" + artistInfo.similarArtists[i].mediaFileId + "' target='main'>" +
@@ -53,10 +68,21 @@
                 $("#similarArtists").show();
                 $("#similarArtistsTitle").show();
                 $("#similarArtistsRadio").show();
+                $("#albumInfoTable").show();
+            }
+
+            if (artistInfo.artistBio && artistInfo.artistBio.largeImageUrl) {
+                $("#artistImage").attr("src", artistInfo.artistBio.largeImageUrl);
+                $("#artistImageZoom").attr("href", artistInfo.artistBio.largeImageUrl);
+                $("#artistImage").show();
             }
             if (artistInfo.artistBio && artistInfo.artistBio.mediumImageUrl) {
                 $("#artistThumbImage").attr("src", artistInfo.artistBio.mediumImageUrl);
                 $("#artistThumbImage").show();
+            }
+            if (albumInfo.notes) {
+                $("#artistBio").append(albumInfo.notes);
+                $("#albumInfoTable").show();
             }
         });
     }
@@ -105,15 +131,9 @@
         }
     }
 
-    function toggleStar(mediaFileId, imageId) {
-        if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOnImage"/>") != -1) {
-            $(imageId).attr("src", "<spring:theme code="ratingOffImage"/>");
-            starService.unstar(mediaFileId);
-        }
-        else if ($(imageId).attr("src").indexOf("<spring:theme code="ratingOffImage"/>") != -1) {
-            $(imageId).attr("src", "<spring:theme code="ratingOnImage"/>");
-            starService.star(mediaFileId);
-        }
+    function toggleStar(mediaFileId, element) {
+        starService.star(mediaFileId, !$(element).hasClass("fa-star"));
+        $(element).toggleClass("fa-star fa-star-o starred");
     }
 
     function playAll() {
@@ -155,7 +175,6 @@
             }
         }
         playlistService.appendToPlaylist(playlistId, mediaFileIds, function (){
-            top.left.updatePlaylists();
             $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });
     }
@@ -165,11 +184,12 @@
     }
 </script>
 
-<img id="artistThumbImage" alt="" class="circle" style="float:left;display:none;width:4em;height:4em;margin-right:1em">
+<div style="display:flex; align-items:center">
 
-<div style="float:left">
-    <h1>
-        <span style="vertical-align: middle">
+    <img id="artistThumbImage" alt="" class="circle dropshadow" style="display:none;width:4em;height:4em;margin-right:1em">
+
+    <div style="flex-shrink:1" class="ellipsis">
+        <h1 class="ellipsis">
             <c:forEach items="${model.ancestors}" var="ancestor">
                 <sub:url value="main.view" var="ancestorUrl">
                     <sub:param name="id" value="${ancestor.id}"/>
@@ -177,36 +197,34 @@
                 <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
             </c:forEach>
             ${fn:escapeXml(model.dir.name)}
-        </span>
+        </h1>
 
-        <c:if test="${model.averageRating gt 0}">
-            &nbsp;&nbsp;
-            <c:import url="rating.jsp">
-                <c:param name="readonly" value="true"/>
-                <c:param name="rating" value="${model.averageRating}"/>
-            </c:import>
-        </c:if>
-    </h1>
-
-    <div class="detail" style="padding-top:1.0em;padding-bottom:0">
-        <c:if test="${not empty model.dir.year}">
-            ${model.dir.year}&nbsp;&nbsp;&bull;&nbsp;&nbsp;
-        </c:if>
-        ${fn:length(model.files)} <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.duration}
-        <c:if test="${not empty model.dir.genre}">
-            &nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.dir.genre}
-        </c:if>
+        <div class="detail ellipsis" style="padding-top:1.0em;padding-bottom:0">
+            <c:if test="${not empty model.dir.year}">
+                ${model.dir.year}&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            </c:if>
+            ${fn:length(model.files)} <fmt:message key="playlist2.songs"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.duration}
+            <c:if test="${not empty model.dir.genre}">
+                &nbsp;&nbsp;&bull;&nbsp;&nbsp;${model.dir.genre}
+            </c:if>
+        </div>
     </div>
+
+    <span id="playButton" class="fa-stack fa-lg" onclick="playAll()">
+        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+        <i class="fa fa-play-circle fa-stack-2x"></i>
+    </span>
+
+    <span style="flex-grow:1"></span>
+
+    <%@ include file="viewSelector.jsp" %>
 
 </div>
 
-<%@ include file="viewSelector.jsp" %>
-<div style="clear:both"></div>
-
 <c:if test="${not model.partyMode}">
     <h2>
-        <img id="starImage" src="<spring:theme code="${not empty model.dir.starredDate ? 'ratingOnImage' : 'ratingOffImage'}"/>"
-             onclick="toggleStar(${model.dir.id}, '#starImage'); return false;" style="cursor:pointer;padding-right:0.25em" alt="">
+        <i id="starImage" class="fa ${not empty model.dir.starredDate ? 'fa-star starred' : 'fa-star-o'} clickable"
+           onclick="toggleStar(${model.dir.id}, this)" style="padding-right:0.25em"></i>
         <c:set var="needSep" value="true"/>
 
         <c:if test="${model.user.streamRole}">
@@ -249,7 +267,8 @@
     </c:if>
 
     <c:if test="${model.user.shareRole}">
-        <span class="header"><a href="${shareUrl}"><img src="<spring:theme code="shareSmallImage"/>" alt=""></a>
+        <span class="header" style="padding-left:1em">
+            <i class="fa fa-share-alt clickable" onclick="location.href='${shareUrl}'"></i>
             <a href="${shareUrl}"><fmt:message key="main.sharealbum"/></a> </span> |
     </c:if>
 
@@ -307,7 +326,7 @@
 <table cellpadding="0" style="width:100%;padding-top: 0.3em;padding-bottom: 1em">
     <tr style="vertical-align:top;">
         <td style="vertical-align:top;padding-bottom: 1em">
-            <table class="music" style="width: 100%">
+            <table class="music">
                 <c:forEach items="${model.files}" var="song" varStatus="loopStatus">
                     <%--@elvariable id="song" type="net.sourceforge.subsonic.domain.MediaFile"--%>
                     <tr style="margin:0;padding:0;border:0">
@@ -397,6 +416,7 @@
             <div class="albumThumb">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${model.dir.id}"/>
+                    <c:param name="auth" value="${model.dir.hash}"/>
                     <c:param name="coverArtSize" value="${model.coverArtSizeLarge}"/>
                     <c:param name="showZoom" value="true"/>
                     <c:param name="showChange" value="${model.user.coverArtRole}"/>
@@ -419,7 +439,7 @@
                     <p>Your personal server address: <em>you</em>.subsonic.org</p>
                     <p>Podcast receiver.</p>
                 </div>
-                <p class="forward" style="white-space: nowrap"><a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
+                <p style="white-space:nowrap"><i class="fa fa-chevron-right icon"></i>&nbsp;<a href="http://subsonic.org/pages/premium.jsp" target="_blank">Get Subsonic Premium</a></p>
             </td>
         </c:if>
     </tr>
@@ -449,14 +469,8 @@
                         <sub:param name="id" value="${child.id}"/>
                     </sub:url>
                     <tr>
-                        <c:import url="playButtons.jsp">
-                            <c:param name="id" value="${child.id}"/>
-                            <c:param name="playEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="addEnabled" value="${model.user.streamRole and not model.partyModeEnabled}"/>
-                            <c:param name="asTable" value="true"/>
-                        </c:import>
-                        <td class="truncate"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
-                        <td></td>
+                        <td class="fit"><i class="fa fa-folder-open-o icon>"></i></td>
+                        <td class="truncate" colspan="5"><a href="${albumUrl}" title="${fn:escapeXml(child.name)}">${fn:escapeXml(child.name)}</a></td>
                     </tr>
                 </c:forEach>
                 <c:if test="${model.viewAsList}">
@@ -480,11 +494,12 @@
 </table>
 
 <c:if test="${not model.viewAsList}">
-    <div style="float: left">
+    <div style="float:left">
         <c:forEach items="${model.sieblingAlbums}" var="album" varStatus="loopStatus">
             <div class="albumThumb" style="display:${loopStatus.count < 10 ? 'inline-block' : 'none'}">
                 <c:import url="coverArt.jsp">
                     <c:param name="albumId" value="${album.id}"/>
+                    <c:param name="auth" value="${album.hash}"/>
                     <c:param name="caption1" value="${fn:escapeXml(album.name)}"/>
                     <c:param name="caption2" value="${album.year}"/>
                     <c:param name="captionCount" value="2"/>
@@ -500,15 +515,24 @@
     </div>
 </c:if>
 
-<table style="width: 90%">
-    <tr><td>
+<table id="albumInfoTable" style="padding:2em;clear:both;display:none" class="bgcolor2 dropshadow">
+    <tr>
+        <td rowspan="5" style="vertical-align: top">
+            <a id="artistImageZoom" rel="zoom" href="void">
+                <img id="artistImage" class="dropshadow" alt="" style="margin-right:2em; display:none; max-width:300px; max-height:300px">
+            </a>
+        </td>
+        <td style="text-align:center"><h2>${fn:escapeXml(model.dir.name)}</h2></td>
+    </tr>
+    <tr>
+        <td id="artistBio" style="padding-bottom: 0.5em"></td>
+    </tr>
+    <tr><td style="padding-bottom: 0.5em">
         <span id="similarArtistsTitle" style="padding-right: 0.5em; display: none"><fmt:message key="main.similarartists"/>:</span>
         <span id="similarArtists"></span>
     </td></tr>
-    <tr><td style="padding-bottom: 0.5em">
-        <div id="similarArtistsRadio" class="forward" style="display: none">
-            <a href="javascript:playSimilar()"><fmt:message key="main.startradio"/></a>
-        </div>
+    <tr><td style="text-align:center">
+        <input id="similarArtistsRadio" style="display:none;margin-top:1em;margin-right:0.3em;cursor:pointer" type="button" value="<fmt:message key="main.startradio"/>" onclick="playSimilar()">
     </td></tr>
     <tr><td style="height: 100%"></td></tr>
 </table>
@@ -518,5 +542,6 @@
     <div id="dialog-select-playlist-list"></div>
 </div>
 
+<div style="padding-top:3em"></div>
 </body>
 </html>

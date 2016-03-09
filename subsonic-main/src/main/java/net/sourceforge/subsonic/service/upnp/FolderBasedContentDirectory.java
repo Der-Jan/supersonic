@@ -275,7 +275,7 @@ public class FolderBasedContentDirectory extends SubsonicContentDirectory {
     }
 
     private URI getAlbumArtUrl(MediaFile album) throws URISyntaxException {
-        return new URI(getBaseUrl() + "coverArt.view?id=" + album.getId() + "&size=" + CoverArtScheme.LARGE.getSize());
+        return new URI(getBaseUrl() + "coverArt.view?id=" + album.getId() + "&auth=" + album.getHash() + "&size=" + CoverArtScheme.LARGE.getSize());
     }
 
     public void setMediaFileService(MediaFileService mediaFileService) {

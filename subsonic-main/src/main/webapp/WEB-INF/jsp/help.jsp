@@ -25,10 +25,7 @@
     </c:otherwise>
 </c:choose>
 
-<h1>
-    <img src="<spring:theme code="helpImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></span>
-</h1>
+<h1 style="padding-bottom:0.5em"><i class="fa fa-info-circle fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="help.title"><fmt:param value="${model.brand}"/></fmt:message></h1>
 
 <c:if test="${model.newVersionAvailable}">
     <p class="warning"><fmt:message key="help.upgrade"><fmt:param value="${model.brand}"/><fmt:param value="${model.latestVersion}"/></fmt:message></p>
@@ -72,14 +69,24 @@
     <tr><td class="ruleTableHeader"><fmt:message key="help.homepage.title"/></td><td class="ruleTableCell"><a target="_blank" href="http://www.subsonic.org/">subsonic.org</a></td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.forum.title"/></td><td class="ruleTableCell"><a target="_blank" href="http://forum.subsonic.org/">forum.subsonic.org</a></td></tr>
     <tr><td class="ruleTableHeader"><fmt:message key="help.contact.title"/></td><td class="ruleTableCell"><fmt:message key="help.contact.text"><fmt:param value="${model.brand}"/></fmt:message></td></tr>
+
+    <c:if test="${model.statistics.songCount gt 0}">
+        <tr>
+            <td class="ruleTableHeader"><fmt:message key="help.statistics.title"/></td>
+            <td class="ruleTableCell">
+                <fmt:message key="left.statistics">
+                    <fmt:param value="${model.statistics.artistCount}"/>
+                    <fmt:param value="${model.statistics.albumCount}"/>
+                    <fmt:param value="${model.statistics.songCount}"/>
+                    <fmt:param value="${model.bytes}"/>
+                    <fmt:param value="${model.hours}"/>
+                </fmt:message>
+            </td>
+        </tr>
+    </c:if>
 </table>
 
-<p></p>
-
-<h2>
-    <img src="<spring:theme code="logImage"/>" alt="">
-    <span style="vertical-align: middle"><fmt:message key="help.log"/></span>
-</h2>
+<h2 style="padding-top:1em"><i class="fa fa-list fa-lg icon"></i>&nbsp;&nbsp;<fmt:message key="help.log"/></h2>
 
 <table cellpadding="2" class="log indent">
     <c:forEach items="${model.logEntries}" var="entry">
@@ -92,6 +99,7 @@
 
 <p><fmt:message key="help.logfile"><fmt:param value="${model.logFile}"/></fmt:message> </p>
 
-<div class="forward"><a href="help.view?"><fmt:message key="common.refresh"/></a></div>
+<i class="fa fa-refresh fa-lg fa-fw icon"></i>&nbsp;&nbsp;<a href="help.view"><fmt:message key="common.refresh"/></a>
 
+<div style="padding-top:2em"></div>
 </body></html>
