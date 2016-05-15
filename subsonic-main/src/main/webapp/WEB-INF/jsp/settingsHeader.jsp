@@ -11,7 +11,7 @@
 
 <c:choose>
     <c:when test="${empty user or user.adminRole}">
-        <c:set var="categories" value="musicFolder general advanced personal user player network share premium dlna sonos transcoding internetRadio podcast"/>
+        <c:set var="categories" value="musicFolder general advanced personal user player network share premium dlna sonos transcoding internetRadio podcast videoConversion"/>
     </c:when>
     <c:otherwise>
         <c:set var="categories" value="personal password player share premium"/>

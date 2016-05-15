@@ -15,7 +15,7 @@
             margin-top: 1.5em;
             padding-top: 2px;
             padding-bottom: 2px;
-            font-weight: 500;
+            font-weight: 600;
         }
         .left-index-shortcut-letter {
             flex-grow: 1;
@@ -53,8 +53,9 @@
 <body class="bgcolor2 leftframe">
 <a name="top"></a>
 
-<div style="padding-top:1em; padding-bottom:2.5em">
-    <a href="help.view" target="main"><img src="<spring:theme code="logoImage"/>" title="<fmt:message key="top.help"/>" alt=""></a>
+<div style="padding-top:0.5em; padding-bottom:1.0em; white-space:nowrap">
+    <a href="help.view" target="main"><img src="<c:url value="/icons/subsonic_logo.png"/>" style="height:50px; vertical-align:middle" title="<fmt:message key="top.help"/>" alt=""></a>
+    <span style="font-size:20px; font-weight:400; vertical-align:middle; padding-left:3px">Subsonic</span>
 </div>
 
 <div style="padding-bottom:1em" class="topHeader">

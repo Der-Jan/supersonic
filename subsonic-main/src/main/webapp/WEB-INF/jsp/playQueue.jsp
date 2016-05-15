@@ -50,10 +50,10 @@
             opacity: 0.8;
         }
         #songName {
-            cursor:pointer; font-weight:500;
+            cursor:pointer; font-weight:600; display:block;
         }
         #artistName {
-            cursor:pointer; font-weight:300;
+            cursor:pointer; font-weight:300; display:block;
         }
         #coverArt {
             cursor:pointer; width:80px; height:80px;
@@ -218,6 +218,8 @@
         localPlayer.addEventListener("seeked", function() {updateControls()});
         localPlayer.addEventListener("seeking", function() {updateControls()});
         localPlayer.addEventListener("stalled", function() {updateControls()});
+        localPlayer.addEventListener("suspend", function() {updateControls()});
+        localPlayer.addEventListener("error", function() {updateControls()});
         localPlayer.addEventListener("waiting", function() {updateControls()});
         localPlayer.addEventListener("play", function() {updateControls()});
         localPlayer.addEventListener("playing", function() {updateControls()});
@@ -301,7 +303,7 @@
             castPlayer.playCast();
         } else if (localPlayer) {
             if (localPlayer.ended && getCurrentSongIndex() == songs.length -1) {
-                skip(0);
+                skip(0, 0, true);
             } else {
                 localPlayer.play();
             }
@@ -398,13 +400,13 @@
         if (wrap) {
             index = index % songs.length;
         }
-        skip(index);
+        skip(index, 0, true);
     }
     function onPrevious() {
         if (localPlayer && !castPlayer.castSession && localPlayer.currentTime > 4.0) {
-            skip(parseInt(getCurrentSongIndex()));
+            skip(parseInt(getCurrentSongIndex()), 0, true);
         } else {
-            skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1));
+            skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1), 0, true);
         }
     }
     function onPlay(id) {
@@ -413,14 +415,20 @@
     function onPlayShuffle(albumListType, offset, size, genre, decade) {
         playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
     }
-    function onPlayPlaylist(id, index) {
-        playQueueService.playPlaylist(id, index, playQueueCallback);
+    function onPlayPlaylist(id, append, index) {
+        playQueueService.playPlaylist(id, append, index, playQueueCallback);
+        if (append) {
+            toast("<fmt:message key="main.addlast.toast"/>");
+        }
     }
     function onPlayTopSong(id, index) {
         playQueueService.playTopSong(id, index, playQueueCallback);
     }
-    function onPlayPodcastChannel(id) {
-        playQueueService.playPodcastChannel(id, playQueueCallback);
+    function onPlayPodcastChannel(id, append) {
+        playQueueService.playPodcastChannel(id, append, playQueueCallback);
+        if (append) {
+            toast("<fmt:message key="main.addlast.toast"/>");
+        }
     }
     function onPlayPodcastEpisode(id) {
         playQueueService.playPodcastEpisode(id, playQueueCallback);
@@ -439,9 +447,11 @@
     }
     function onAdd(id) {
         playQueueService.add(id, playQueueCallback);
+        toast("<fmt:message key="main.addlast.toast"/>");
     }
     function onAddNext(id) {
         playQueueService.addAt(id, getCurrentSongIndex() + 1, playQueueCallback);
+        toast("<fmt:message key="main.addnext.toast"/>");
     }
     function onShuffle() {
         playQueueService.shuffle(playQueueCallback);
@@ -460,18 +470,6 @@
     function onRemove(index) {
         playQueueService.remove(index, playQueueCallback);
     }
-    function onRemoveSelected() {
-        var indexes = new Array();
-        var counter = 0;
-        for (var i = 0; i < songs.length; i++) {
-            var index = i + 1;
-            if ($("#songIndex" + index).is(":checked")) {
-                indexes[counter++] = i;
-            }
-        }
-        playQueueService.removeMany(indexes, playQueueCallback);
-    }
-
     function onRearrange(indexes) {
         playQueueService.rearrange(indexes, playQueueCallback);
     }
@@ -481,19 +479,10 @@
     function onUndo() {
         playQueueService.undo(playQueueCallback);
     }
-    function onSortByTrack() {
-        playQueueService.sortByTrack(playQueueCallback);
-    }
-    function onSortByArtist() {
-        playQueueService.sortByArtist(playQueueCallback);
-    }
-    function onSortByAlbum() {
-        playQueueService.sortByAlbum(playQueueCallback);
-    }
     function onSavePlayQueue() {
         var positionMillis = localPlayer ? Math.round(1000.0 * localPlayer.currentTime) : 0;
         playQueueService.savePlayQueue(getCurrentSongIndex(), positionMillis);
-        $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveplayqueue"/>");
+        toast("<fmt:message key="playlist.toast.saveplayqueue"/>");
     }
     function onLoadPlayQueue() {
         playQueueService.loadPlayQueue(playQueueCallback);
@@ -501,7 +490,7 @@
     function onSavePlaylist() {
         playlistService.createPlaylistForPlayQueue(function (playlistId) {
             top.main.location.href = "playlist.view?id=" + playlistId;
-            $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
+            toast("<fmt:message key="playlist.toast.saveasplaylist"/>");
         });
     }
     function onAppendPlaylist() {
@@ -527,7 +516,7 @@
         }
         playlistService.appendToPlaylist(playlistId, mediaFileIds, function (){
             top.main.location.href = "playlist.view?id=" + playlistId;
-            $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
+            toast("<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });
     }
     function playQueueCallback(playQueue) {
@@ -566,7 +555,7 @@
             if ($("#titleUrl" + id)) {
                 $("#titleUrl" + id).html(song.title);
                 $("#titleUrl" + id).attr("title", song.title);
-                $("#titleUrl" + id).click(function () {skip(this.id.substring(8) - 1, 0)});
+                $("#titleUrl" + id).click(function () {skip(this.id.substring(8) - 1, 0, true)});
             }
             if ($("#album" + id)) {
                 $("#album" + id).html(song.album);
@@ -627,12 +616,14 @@
     function triggerLocalPlayer(index, positionMillis) {
 
         // Load first song (but don't play) if this is the initial case.
-        if (localPlayer.networkState == localPlayer.NETWORK_EMPTY && localPlayer.readyState == localPlayer.HAVE_NOTHING) {
-            skip(0);
-            localPlayer.pause();
+        if (index == -1 &&
+            (localPlayer.networkState == localPlayer.NETWORK_EMPTY || localPlayer.networkState == localPlayer.NETWORK_NO_SOURCE) &&
+            localPlayer.readyState == localPlayer.HAVE_NOTHING) {
+            skip(0, 0, false);
+        } else {
+            skip(index, 0, true);
         }
 
-        skip(index);
         if (positionMillis != 0) {
             localPlayer.currentTime = positionMillis / 1000;
         }
@@ -665,7 +656,7 @@
         $("#unstarCurrentSong").toggle(starred);
     }
 
-    function skip(index, position) {
+    function skip(index, position, play) {
         if (index < 0 || index >= songs.length) {
             return;
         }
@@ -679,7 +670,9 @@
         } else if (localPlayer) {
             console.log(song.streamUrl);
             localPlayer.src = song.streamUrl;
-            localPlayer.play();
+            if (play) {
+                localPlayer.play();
+            }
         } else {
             playQueueService.skip(index, playQueueCallback);
         }
@@ -687,7 +680,7 @@
         updateWindowTitle(song);
         updateCoverArt(song);
 
-        if (${model.notify}) {
+        if (play && ${model.notify}) {
             showNotification(song);
         }
     }
@@ -775,24 +768,8 @@
             onSavePlayQueue();
         } else if (id == "loadPlayQueue") {
             onLoadPlayQueue();
-        } else if (id == "savePlaylist") {
-            onSavePlaylist();
         } else if (id == "downloadPlaylist") {
             location.href = "download.view?player=${model.player.id}";
-        } else if (id == "sharePlaylist") {
-            parent.frames.main.location.href = "createShare.view?player=${model.player.id}&" + getSelectedIndexes();
-        } else if (id == "sortByTrack") {
-            onSortByTrack();
-        } else if (id == "sortByArtist") {
-            onSortByArtist();
-        } else if (id == "sortByAlbum") {
-            onSortByAlbum();
-        } else if (id == "selectAll") {
-            selectAll(true);
-        } else if (id == "selectNone") {
-            selectAll(false);
-        } else if (id == "removeSelected") {
-            onRemoveSelected();
         } else if (id == "download" && selectedIndexes != "") {
             location.href = "download.view?player=${model.player.id}&" + selectedIndexes;
         } else if (id == "appendPlaylist" && selectedIndexes != "") {
@@ -811,14 +788,13 @@
         return result;
     }
 
-    function selectAll(b) {
-        for (var i = 0; i < songs.length; i++) {
-            if (b) {
-                $("#songIndex" + (i + 1)).attr("checked", "checked");
-            } else {
-                $("#songIndex" + (i + 1)).removeAttr("checked");
-            }
-        }
+    function toast(text) {
+        $().toastmessage("showToast", {
+            text     : text,
+            sticky   : false,
+            position : "middle-center",
+            type     : "success"
+        });
     }
 
     </script>
@@ -837,8 +813,8 @@
             <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
                 <div class="ellipsis" style="display:flex; flex:1; align-items:center; margin-right:30px">
                     <div class="ellipsis" style="flex:1">
-                        <div id="songName" class="ellipsis"></div>
-                        <div id="artistName" class="ellipsis"></div>
+                        <div><a id="songName" class="ellipsis"></a></div>
+                        <div><a id="artistName" class="ellipsis"></a></div>
                     </div>
                     <i id="starCurrentSong" class="material-icons" onclick="onStarCurrentSong(true)">star_border</i>
                     <i id="unstarCurrentSong" class="material-icons starred" onclick="onStarCurrentSong(false)">star</i>
@@ -939,57 +915,50 @@
     </tbody>
 </table>
 
-<table style="white-space:nowrap;">
-    <tr style="white-space:nowrap;">
-        <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
-            <td style="padding-right: 5px"><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
-                <c:forEach items="${model.players}" var="player">
-                    <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
-                </c:forEach>
-            </select></td>
-        </c:if>
+<div style="display:flex; align-items:center; margin-top:1.5em">
 
-        <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onClear()"><fmt:message key="playlist.clear"/></a></span> |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onShuffle()"><fmt:message key="playlist.shuffle"/></a></span> |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onUndo()"><fmt:message key="playlist.undo"/></a></span>  |</td>
-        </c:if>
+    <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
+        <select name="player" style="margin-right: 2.5em" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
+            <c:forEach items="${model.players}" var="player">
+                <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
+            </c:forEach>
+        </select>
+    </c:if>
 
-        <c:if test="${model.user.settingsRole}">
-            <td style="white-space:nowrap;"><span class="header"><a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a></span>  |</td>
-        </c:if>
+    <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-trash icon"></i>&nbsp;<a href="javascript:onClear()"><fmt:message key="playlist.clear"/></a></div>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-random icon"></i>&nbsp;<a href="javascript:onShuffle()"><fmt:message key="playlist.shuffle"/></a></div>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-undo icon"></i>&nbsp;<a href="javascript:onUndo()"><fmt:message key="playlist.undo"/></a></div>
+    </c:if>
 
-        <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
-            <td style="white-space:nowrap;"><select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
-                <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
-                <optgroup label="<fmt:message key="playlist.more.playlist"/>">
-                    <option id="savePlayQueue"><fmt:message key="playlist.saveplayqueue"/></option>
-                    <option id="loadPlayQueue"><fmt:message key="playlist.loadplayqueue"/></option>
-                    <option id="savePlaylist"><fmt:message key="playlist.save"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="downloadPlaylist"><fmt:message key="common.download"/></option>
-                    </c:if>
-                    <c:if test="${model.user.shareRole}">
-                        <option id="sharePlaylist"><fmt:message key="main.more.share"/></option>
-                    </c:if>
-                    <option id="sortByTrack"><fmt:message key="playlist.more.sortbytrack"/></option>
-                    <option id="sortByAlbum"><fmt:message key="playlist.more.sortbyalbum"/></option>
-                    <option id="sortByArtist"><fmt:message key="playlist.more.sortbyartist"/></option>
-                </optgroup>
-                <optgroup label="<fmt:message key="playlist.more.selection"/>">
-                    <option id="selectAll"><fmt:message key="playlist.more.selectall"/></option>
-                    <option id="selectNone"><fmt:message key="playlist.more.selectnone"/></option>
-                    <option id="removeSelected"><fmt:message key="playlist.remove"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="download"><fmt:message key="common.download"/></option>
-                    </c:if>
+    <c:if test="${model.user.settingsRole}">
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-cog icon"></i>&nbsp;<a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a></div>
+    </c:if>
+
+    <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
+        <c:if test="${model.user.shareRole}">
+            <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-share-alt icon"></i>&nbsp;<a href="createShare.view?player=${model.player.id}" target="main"><fmt:message key="main.more.share"/></a></div>
+        </c:if>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-music icon"></i>&nbsp;<a href="javascript:onSavePlaylist()" target="main"><fmt:message key="playlist.save"/></a></div>
+
+        <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
+            <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
+            <optgroup label="<fmt:message key="playlist.more.playlist"/>">
+                <option id="savePlayQueue"><fmt:message key="playlist.saveplayqueue"/></option>
+                <option id="loadPlayQueue"><fmt:message key="playlist.loadplayqueue"/></option>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="downloadPlaylist"><fmt:message key="common.download"/></option>
+                </c:if>
+            </optgroup>
+            <optgroup label="<fmt:message key="playlist.more.selection"/>">
                     <option id="appendPlaylist"><fmt:message key="playlist.append"/></option>
-                </optgroup>
-            </select>
-            </td>
-        </c:if>
-
-    </tr></table>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="download"><fmt:message key="common.download"/></option>
+                </c:if>
+            </optgroup>
+        </select>
+    </c:if>
+</div>
 
 <div style="height:100px"></div>
 

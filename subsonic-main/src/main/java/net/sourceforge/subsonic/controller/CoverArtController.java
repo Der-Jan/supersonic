@@ -300,7 +300,7 @@ public class CoverArtController implements Controller, LastModified {
     }
 
     private InputStream getImageInputStreamForVideo(MediaFile mediaFile, int width, int height, int offset) throws Exception {
-        VideoTranscodingSettings videoSettings = new VideoTranscodingSettings(width, height, offset, 0, false);
+        VideoTranscodingSettings videoSettings = new VideoTranscodingSettings(width, height, offset, 0, false, null);
         TranscodingService.Parameters parameters = new TranscodingService.Parameters(mediaFile, videoSettings);
         String command = settingsService.getVideoImageCommand();
         parameters.setTranscoding(new Transcoding(null, null, null, null, command, null, null, false));
@@ -646,8 +646,13 @@ public class CoverArtController implements Controller, LastModified {
 
         @Override
         public BufferedImage createImage(int size) {
-            int height = size;
-            int width = height * 16 / 9;
+			double aspectRate = 1.7777777777777777D;
+			if ((mediaFile.getWidth() != null) && (mediaFile.getHeight() != null)) {
+				aspectRate = mediaFile.getWidth().doubleValue() / mediaFile.getHeight().doubleValue();
+			}
+			
+			int height = size;
+            int width = (int)Math.round(height * aspectRate);
             InputStream in = null;
             try {
                 in = getImageInputStreamForVideo(mediaFile, width, height, offset);

@@ -113,6 +113,7 @@
                 /ws/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /share/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /style/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /fonts/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /icons/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /flash/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /script/**=IS_AUTHENTICATED_ANONYMOUSLY

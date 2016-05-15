@@ -111,7 +111,7 @@ public class DownloadController implements Controller, LastModified {
                 }
 
                 if (mediaFile.isFile()) {
-                    downloadFile(response, status, mediaFile.getFile());
+                    downloadFile(response, status, mediaFile);
                 } else {
                     List<MediaFile> children = mediaFileService.getChildrenOf(mediaFile, true, false, true);
                     String zipFileName = FilenameUtils.getBaseName(mediaFile.getPath()) + ".zip";
@@ -155,9 +155,10 @@ public class DownloadController implements Controller, LastModified {
      * @param file     The file to download.
      * @throws IOException If an I/O error occurs.
      */
-    private void downloadFile(HttpServletResponse response, TransferStatus status, File file) throws IOException {
+    private void downloadFile(HttpServletResponse response, TransferStatus status, MediaFile mediaFile) throws IOException {
+		File file = mediaFile.getFile();
         LOG.info("Starting to download '" + FileUtil.getShortPath(file) + "' to " + status.getPlayer());
-        status.setFile(file);
+        status.setFile(mediaFile);
 
         response.setContentType("application/x-download");
         response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodeAsRFC5987(file.getName()));
@@ -198,7 +199,7 @@ public class DownloadController implements Controller, LastModified {
     private void downloadFiles(HttpServletResponse response, TransferStatus status, List<MediaFile> files, int[] indexes,
                                File coverArtFile, String zipFileName) throws IOException {
         if (indexes != null && indexes.length == 1) {
-            downloadFile(response, status, files.get(indexes[0]).getFile());
+            downloadFile(response, status, files.get(indexes[0]));
             return;
         }
 
@@ -309,7 +310,7 @@ public class DownloadController implements Controller, LastModified {
         String zipName = file.getCanonicalPath().substring(root.getCanonicalPath().length() + 1);
 
         if (file.isFile()) {
-            status.setFile(file);
+            status.setFile(mediaFileService.getMediaFileIfExists(file));
 
             ZipEntry zipEntry = new ZipEntry(zipName);
             zipEntry.setSize(file.length());

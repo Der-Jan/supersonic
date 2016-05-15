@@ -113,7 +113,7 @@ public class FFmpegParser extends MetaDataParser {
                 }
 
                 matcher = DIMENSION_PATTERN.matcher(line);
-                if (matcher.find()) {
+                if (matcher.find() && (width == null)) {
                     width = Integer.valueOf(matcher.group(1));
                     height = Integer.valueOf(matcher.group(2));
                 }

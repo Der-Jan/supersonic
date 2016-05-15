@@ -5,6 +5,7 @@
     <%@ include file="jquery.jsp" %>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/multiService.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/starService.js"/>"></script>
 
     <style type="text/css">
         .browse-index-shortcut {
@@ -44,10 +45,20 @@
 
         function filterArtists(element) {
             var filter = $(element).val().toLowerCase();
-            $(".browse-artist").each(function(i) {
+            $(".browse-artist").each(function() {
                 var artist = $(this).text().toLowerCase();
                 $(this).toggle(artist.indexOf(filter) != -1);
             });
+
+            $(".browse-index-title").each(function() {
+                var show = $(this).nextUntil(".browse-index-title", ".browse-artist:visible").length > 0;
+                $(this).toggle(show);
+            });
+        }
+
+        function toggleStar(mediaFileId, element) {
+            starService.star(mediaFileId, !$(element).hasClass("fa-star"));
+            $(element).toggleClass("fa-star fa-star-o starred");
         }
     </script>
 </head>

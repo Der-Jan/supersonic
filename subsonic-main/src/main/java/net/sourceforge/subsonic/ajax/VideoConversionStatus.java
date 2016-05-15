@@ -31,6 +31,8 @@ public class VideoConversionStatus {
     private boolean statusCompleted;
     private Integer progressSeconds;
     private String progressString;
+    private String targetFile;
+    private String logFile;
 
     public boolean isStatusNew() {
         return statusNew;
@@ -78,5 +80,21 @@ public class VideoConversionStatus {
 
     public String getProgressString() {
         return progressString;
+    }
+    
+    public String getTargetFile() {
+        return targetFile;
+    }
+
+    public void setTargetFile(String targetFile) {
+        this.targetFile = targetFile;
+    }
+
+    public String getLogFile() {
+        return logFile;
+    }
+
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
     }
 }

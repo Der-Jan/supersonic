@@ -141,7 +141,7 @@
 
         // Continue song at same position?
         if (position != -1) {
-            skip(getCurrentSongIndex(), position);
+            skip(getCurrentSongIndex(), position, true);
         }
     };
 

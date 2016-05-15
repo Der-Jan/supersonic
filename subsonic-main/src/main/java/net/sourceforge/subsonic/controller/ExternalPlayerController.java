@@ -35,11 +35,15 @@ import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.MusicFolder;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.Share;
+import net.sourceforge.subsonic.domain.VideoConversion;
+import net.sourceforge.subsonic.domain.VideoConversion.Status;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.VideoConversionService;
+import net.sourceforge.subsonic.util.StringUtil;
 
 /**
  * Controller for the page used to play shared music (Twitter, Facebook etc).
@@ -53,6 +57,8 @@ public class ExternalPlayerController extends ParameterizableViewController {
     private ShareService shareService;
     private MediaFileService mediaFileService;
     private TranscodingService transcodingService;
+	private VideoConversionService videoConversionService;
+	private CaptionsController captionsController;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -111,7 +117,21 @@ public class ExternalPlayerController extends ParameterizableViewController {
     }
 
     private Entry createEntry(MediaFile file, Player player) {
-        return new Entry(file, transcodingService.getSuffix(player, file, null));
+		boolean converted = isConverted(file);
+		boolean streamable = (converted) || (videoConversionService.isStreamable(file));
+		String contentType;
+		if (file.isVideo()) {
+			contentType = streamable ? "video/mp4" : "application/x-mpegurl";
+		} else {
+			contentType = StringUtil.getMimeType(transcodingService.getSuffix(player, file, null));
+		}
+		boolean hasCaptions = (file.isVideo()) && (captionsController.findCaptionsVideo(file) != null);
+		return new Entry(file, contentType, converted, streamable, hasCaptions);
+	}
+
+	private boolean isConverted(MediaFile file) {
+		VideoConversion conversion = videoConversionService.getVideoConversionForFile(file.getId());
+		return (conversion != null) && (conversion.getStatus() == VideoConversion.Status.COMPLETED);
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -133,22 +153,48 @@ public class ExternalPlayerController extends ParameterizableViewController {
     public void setTranscodingService(TranscodingService transcodingService) {
         this.transcodingService = transcodingService;
     }
-
+	
+	public void setVideoConversionService(VideoConversionService videoConversionService) {
+		this.videoConversionService = videoConversionService;
+	}
+	
+	public void setCaptionsController(CaptionsController captionsController) {
+		this.captionsController = captionsController;
+	}
+	
     public static class Entry {
         private final MediaFile file;
-        private final String format;
+		private final String contentType;
+		private final boolean converted;
+		private final boolean streamable;
+		private final boolean captions;
 
-        public Entry(MediaFile file, String format) {
+		public Entry(MediaFile file, String contentType, boolean converted, boolean streamable, boolean captions) {
             this.file = file;
-            this.format = format;
+			this.contentType = contentType;
+			this.converted = converted;
+			this.streamable = streamable;
+			this.captions = captions;
         }
 
         public MediaFile getFile() {
             return file;
         }
-
-        public String getFormat() {
-            return format;
-        }
+		
+		public String getContentType() {
+			return contentType;
+		}
+		
+		public boolean isConverted() {
+			return converted;
+		}
+		
+		public boolean isStreamable() {
+			return streamable;
+		}
+		
+		public boolean isCaptions() {
+			return captions;
+		}
     }
 }

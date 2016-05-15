@@ -43,7 +43,8 @@
         <table class="music">
             <c:forEach items="${model.playlists}" var="playlist">
                 <tr>
-                    <td class="fit"><i class="fa fa-play clickable icon" onclick="top.playQueue.onPlayPlaylist(${playlist.id})"></i></td>
+                    <td class="fit"><i class="fa fa-play clickable icon" onclick="top.playQueue.onPlayPlaylist(${playlist.id}, false)"></i></td>
+                    <td class="fit"><i class="fa fa-plus clickable icon" onclick="top.playQueue.onPlayPlaylist(${playlist.id}, true)"></i></td>
                     <td class="fit"><a href="playlist.view?id=${playlist.id}">${fn:escapeXml(playlist.name)}</a></td>
                     <td class="truncate detail">${fn:escapeXml(playlist.comment)}</td>
                     <td class="fit rightalign detail"><fmt:formatDate type="date" dateStyle="medium" value="${playlist.created}"/></td>

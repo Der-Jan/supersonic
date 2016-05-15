@@ -225,17 +225,17 @@ public class PlayQueueService {
             } else {
                 songs = Arrays.asList(file);
             }
-            return doPlay(request, player, songs).setStartPlayerAt(0);
+            return doPlay(request, player, songs, false);
         } else {
             List<MediaFile> songs = mediaFileService.getDescendantsOf(file, true);
-            return doPlay(request, player, songs).setStartPlayerAt(0);
+            return doPlay(request, player, songs, false);
         }
     }
 
     /**
      * @param index Start playing at this index, or play whole playlist if {@code null}.
      */
-    public PlayQueueInfo playPlaylist(int id, Integer index) throws Exception {
+    public PlayQueueInfo playPlaylist(int id, boolean append, Integer index) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
@@ -260,7 +260,7 @@ public class PlayQueueService {
             }
         }
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, append);
     }
 
     /**
@@ -284,10 +284,10 @@ public class PlayQueueService {
         }
 
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, false);
     }
 
-    public PlayQueueInfo playPodcastChannel(int id) throws Exception {
+    public PlayQueueInfo playPodcastChannel(int id, boolean append) throws Exception {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
 
@@ -302,7 +302,7 @@ public class PlayQueueService {
             }
         }
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, append);
     }
 
     public PlayQueueInfo playPodcastEpisode(int id) throws Exception {
@@ -326,7 +326,7 @@ public class PlayQueueService {
             }
         }
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, false);
     }
 
     public PlayQueueInfo playNewestPodcastEpisode(Integer index) throws Exception {
@@ -353,7 +353,7 @@ public class PlayQueueService {
         }
 
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, false);
     }
 
     public PlayQueueInfo playStarred() throws Exception {
@@ -364,7 +364,7 @@ public class PlayQueueService {
         List<MusicFolder> musicFolders = settingsService.getMusicFoldersForUser(username);
         List<MediaFile> files = mediaFileDao.getStarredFiles(0, Integer.MAX_VALUE, username, musicFolders);
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, files).setStartPlayerAt(0);
+        return doPlay(request, player, files, false);
     }
 
     public PlayQueueInfo playShuffle(String albumListType, int offset, int count, String genre, String decade) throws Exception {
@@ -409,16 +409,21 @@ public class PlayQueueService {
         songs = songs.subList(0, Math.min(40, songs.size()));
 
         Player player = getCurrentPlayer(request, response);
-        return doPlay(request, player, songs).setStartPlayerAt(0);
+        return doPlay(request, player, songs, false);
     }
 
-    private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files) throws Exception {
+    private PlayQueueInfo doPlay(HttpServletRequest request, Player player, List<MediaFile> files, boolean append) throws Exception {
         if (player.isWeb()) {
             mediaFileService.removeVideoFiles(files);
         }
-        player.getPlayQueue().addFiles(false, files);
+        player.getPlayQueue().addFiles(append, files);
         player.getPlayQueue().setRandomSearchCriteria(null);
-        return convert(request, player, true);
+		PlayQueueInfo info = convert(request, player, true);
+		
+		if (!append) {
+			info.setStartPlayerAt(0);
+		}
+		return info;
     }
 
     public PlayQueueInfo playRandom(int id, int count) throws Exception {

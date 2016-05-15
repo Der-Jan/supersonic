@@ -47,7 +47,7 @@
         <table class="music" style="margin-bottom:2em">
             <c:forEach items="${model.channels}" var="channel">
                 <tr>
-                    <td class="fit"><i class="fa fa-play clickable icon" onclick="top.playQueue.onPlayPodcastChannel(${channel.key.id})"></i></td>
+                    <td class="fit"><i class="fa fa-play clickable icon" onclick="top.playQueue.onPlayPodcastChannel(${channel.key.id}, false)"></i></td>
                     <td class="fit"><a href="podcastChannel.view?id=${channel.key.id}">${fn:escapeXml(channel.key.title)}</a></td>
                     <td class="truncate detail">${fn:escapeXml(channel.key.description)}</td>
                     <td class="fit rightalign detail"><fmt:message key="podcastreceiver.episodes"><fmt:param value="${fn:length(channel.value)}"/></fmt:message></td>

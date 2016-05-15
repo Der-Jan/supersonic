@@ -20,6 +20,8 @@
 package net.sourceforge.subsonic.service.metadata;
 
 import java.util.Arrays;
+import java.util.Locale;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A track within a media file container (e.g., mp4 or mkv)
@@ -36,9 +38,9 @@ public class Track {
 
     public Track(int id, String type, String language, String codec) {
         this.id = id;
-        this.type = type;
-        this.language = language;
-        this.codec = codec;
+		this.type = StringUtils.trimToNull(type);
+		this.language = StringUtils.trimToNull(language);
+		this.codec = StringUtils.trimToNull(codec);
     }
 
     public int getId() {
@@ -53,6 +55,18 @@ public class Track {
         return language;
     }
 
+	public String getLanguageName() {
+		if (language == null) {
+			return String.valueOf(id);
+		}
+		Locale locale = Locale.forLanguageTag(language);
+		if (locale == null) {
+			return language;
+		}
+		String languageName = StringUtils.trimToNull(locale.getDisplayLanguage(Locale.ENGLISH));
+		return (languageName == null) ? language : languageName;
+	}
+	
     public String getCodec() {
         return codec;
     }

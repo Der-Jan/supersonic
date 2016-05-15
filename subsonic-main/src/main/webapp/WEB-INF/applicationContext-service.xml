@@ -213,6 +213,7 @@
     <bean id="videoConversionService" class="net.sourceforge.subsonic.service.VideoConversionService" init-method="init">
         <property name="mediaFileService" ref="mediaFileService"/>
         <property name="transcodingService" ref="transcodingService"/>
+        <property name="settingsService" ref="settingsService"/>
         <property name="videoConversionDao" ref="videoConversionDao"/>
         <property name="metaDataParserFactory" ref="metaDataParserFactory"/>
     </bean>

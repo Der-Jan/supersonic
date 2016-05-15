@@ -8,7 +8,6 @@ PARAMETERS
   topic: Refers to a key in the resource bundle containing the text to display in the tool tip.
 --%>
 
-<spring:theme code="helpPopupImage" var="imageUrl"/>
 <fmt:message key="common.help" var="help"/>
 
 <div id="placeholder-${param.topic}" style="display:none">

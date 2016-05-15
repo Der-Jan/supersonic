@@ -1,6 +1,15 @@
+
+.flowplayer, .flowplayer.is-playing, .flowplayer.is-fullscreen .fp-player {
+    background-color:black;
+}
+
+.flowplayer .fp-subtitle p {
+    font-size: 20px;
+}
+
 #overlay {
     position: absolute;
-    z-index: 1;
+    z-index: 20;
     font-size: 19px;
     color: white;
     background-color: black;
@@ -18,7 +27,12 @@
 
 #title {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+#audio-track {
+    margin-left: 14px;
+    margin-right: 14px;
 }
 
 #progress-slider {
@@ -72,7 +86,7 @@
     display: none;
 }
 
-#new-window, #share, #download, #cc-on, #cc-off {
+#new-window, #fullscreen, #share, #download, #cc-on, #cc-off {
     font-size: 20px;
     padding: 8px;
     margin: 0 4px;
@@ -86,6 +100,26 @@
 
 #cc-on, #cast-active {
     color: #E65100;
+}
+
+#fullscreen {
+    font-size: 26px;
+}
+
+/* Work-around for Safari */
+#new-window, #share, #download, #audio-on, #audio-off {
+    width: 20px;
+}
+#cast-active, #cast-idle {
+    width: 24px;
+}
+#cc-on, #cc-off, #fullscreen {
+    width: 26px;
+}
+
+/* TODO: Layout work-around */
+#new-window, #share, #download, #cc-on, #cc-off, #fullscreen, #audio-on, #audio-off, #cast-active, #cast-idle, #star, #audio-track {
+    z-index: 1
 }
 
 .ui-slider .ui-slider-handle {

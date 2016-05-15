@@ -44,6 +44,8 @@ import net.sourceforge.subsonic.domain.PlayQueue;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.VideoConversion;
+import net.sourceforge.subsonic.domain.VideoConversion.Status;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.io.PlayQueueInputStream;
 import net.sourceforge.subsonic.io.ShoutCastOutputStream;
@@ -56,6 +58,7 @@ import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.VideoConversionService;
 import net.sourceforge.subsonic.service.sonos.SonosHelper;
 import net.sourceforge.subsonic.util.HttpRange;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -80,6 +83,7 @@ public class StreamController implements Controller {
     private AudioScrobblerService audioScrobblerService;
     private MediaFileService mediaFileService;
     private SearchService searchService;
+    private VideoConversionService videoConversionService;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return handleRequest(request, response, true);
@@ -134,6 +138,7 @@ public class StreamController implements Controller {
             boolean isHls = false;
             boolean isConversion = false;
             HttpRange range = null;
+            VideoConversion videoConversion = null;
 
             if (isSingleFile) {
 
@@ -144,6 +149,8 @@ public class StreamController implements Controller {
                     return null;
                 }
 
+                videoConversion = getVideoConversion(file, request);
+
                 PlayQueue playQueue = new PlayQueue();
                 playQueue.addFiles(true, file);
                 player.setPlayQueue(playQueue);
@@ -151,7 +158,7 @@ public class StreamController implements Controller {
                 response.setIntHeader("ETag", file.getId());
                 response.setHeader("Accept-Ranges", "bytes");
 
-                TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, null);
+                TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, null, videoConversion);
                 long fileLength = getFileLength(parameters);
                 isConversion = parameters.isDownsample() || parameters.isTranscode();
                 boolean estimateContentLength = ServletRequestUtils.getBooleanParameter(request, "estimateContentLength", false);
@@ -163,8 +170,8 @@ public class StreamController implements Controller {
                     Util.setContentLength(response, range.getLength());
                     long lastBytePos = range.getLastBytePos() != null ? range.getLastBytePos() : fileLength - 1;
                     response.setHeader("Content-Range", "bytes " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
-                    LOG.info("Content-Length: " + range.getLength());
-                    LOG.info("Content-Range: " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
+                    LOG.debug("Content-Length: " + range.getLength());
+                    LOG.debug("Content-Range: " + range.getFirstBytePos() + "-" + lastBytePos + "/" + fileLength);
                 } else if (!isHls && (!isConversion || estimateContentLength)) {
                     Util.setContentLength(response, fileLength);
                 }
@@ -172,7 +179,7 @@ public class StreamController implements Controller {
                 if (isHls) {
                     response.setContentType(StringUtil.getMimeType("ts")); // HLS is always MPEG TS.
                 } else {
-                    String transcodedSuffix = transcodingService.getSuffix(player, file, preferredTargetFormat);
+                    String transcodedSuffix = (videoConversion != null) ? "mp4" : transcodingService.getSuffix(player, file, preferredTargetFormat);
                     boolean sonos = SonosHelper.SUBSONIC_CLIENT_ID.equals(player.getClientId());
                     response.setContentType(StringUtil.getMimeType(transcodedSuffix, sonos));
                     setContentDuration(response, file);
@@ -200,7 +207,7 @@ public class StreamController implements Controller {
 
             // Optimize the case where no conversion is to take place
             if (isSingleFile && !isHls && !isConversion) {
-                sendFile(file, range, status, response, player);
+                sendFile(file, videoConversion, range, status, response, player);
                 return null;
             }
 
@@ -262,8 +269,18 @@ public class StreamController implements Controller {
         return null;
     }
 
-    private void sendFile(MediaFile mediaFile, HttpRange range, TransferStatus transferStatus, HttpServletResponse response, Player player) throws IOException {
-        File file = mediaFile.getFile();
+    private VideoConversion getVideoConversion(MediaFile file, HttpServletRequest request) {
+        if (ServletRequestUtils.getBooleanParameter(request, "converted", false)) {
+            VideoConversion conversion = videoConversionService.getVideoConversionForFile(file.getId());
+            if (conversion.getStatus() == VideoConversion.Status.COMPLETED) {
+                return conversion;
+            }
+        }
+        return null;
+    }
+
+    private void sendFile(MediaFile mediaFile, VideoConversion videoConversion, HttpRange range, TransferStatus transferStatus, HttpServletResponse response, Player player) throws IOException {
+        File file = (videoConversion != null) ? new File(videoConversion.getTargetFile()) : mediaFile.getFile();
 
         long offset = 0;
         long length = file.length();
@@ -276,7 +293,7 @@ public class StreamController implements Controller {
             mediaFileService.incrementPlayCount(mediaFile);
         }
 
-        transferStatus.setFile(file);
+        transferStatus.setFile(mediaFile);
         scrobble(mediaFile, player, false);
 
         long n = Files.asByteSource(file)
@@ -285,7 +302,7 @@ public class StreamController implements Controller {
 
         transferStatus.addBytesTransfered(n);
         scrobble(mediaFile, player, true);
-        LOG.info("Wrote " + n + " bytes of " + length + " requested");
+        LOG.debug("Wrote " + n + " bytes of " + length + " requested");
     }
 
     private void scrobble(MediaFile video, Player player, boolean submission) {
@@ -319,6 +336,10 @@ public class StreamController implements Controller {
     }
 
     private long getFileLength(TranscodingService.Parameters parameters) {
+        VideoConversion videoConversion = parameters.getVideoConversion();
+        if (videoConversion != null) {
+            return new File(videoConversion.getTargetFile()).length();
+        }
         MediaFile file = parameters.getMediaFile();
 
         if (!parameters.isDownsample() && !parameters.isTranscode()) {
@@ -348,13 +369,14 @@ public class StreamController implements Controller {
         int defaultDuration = file.getDurationSeconds() == null ? Integer.MAX_VALUE : file.getDurationSeconds() - timeOffset;
         int duration = ServletRequestUtils.getIntParameter(request, "duration", defaultDuration);
         boolean hls = ServletRequestUtils.getBooleanParameter(request, "hls", false);
+        Integer audioTrack = ServletRequestUtils.getIntParameter(request, "audioTrack");
 
         Dimension dim = getRequestedVideoSize(request.getParameter("size"));
         if (dim == null) {
-            dim = getSuitableVideoSize(existingWidth, existingHeight, maxBitRate);
+            dim = Util.getSuitableVideoSize(existingWidth, existingHeight, maxBitRate);
         }
 
-        return new VideoTranscodingSettings(dim.width, dim.height, timeOffset, duration, hls);
+        return new VideoTranscodingSettings(dim.width, dim.height, timeOffset, duration, hls, audioTrack);
     }
 
     protected Dimension getRequestedVideoSize(String sizeSpec) {
@@ -372,42 +394,6 @@ public class StreamController implements Controller {
             }
         }
         return null;
-    }
-
-    protected Dimension getSuitableVideoSize(Integer existingWidth, Integer existingHeight, Integer maxBitRate) {
-        if (maxBitRate == null) {
-            return new Dimension(400, 224);
-        }
-
-        int w;
-        if (maxBitRate < 400) {
-            w = 400;
-        } else if (maxBitRate < 600) {
-            w = 480;
-        } else if (maxBitRate < 1800) {
-            w = 640;
-        } else {
-            w = 960;
-        }
-        int h = even(w * 9 / 16);
-
-        if (existingWidth == null || existingHeight == null) {
-            return new Dimension(w, h);
-        }
-
-        if (existingWidth < w || existingHeight < h) {
-            return new Dimension(even(existingWidth), even(existingHeight));
-        }
-
-        double aspectRate = existingWidth.doubleValue() / existingHeight.doubleValue();
-        h = (int) Math.round(w / aspectRate);
-
-        return new Dimension(even(w), even(h));
-    }
-
-    // Make sure width and height are multiples of two, as some versions of ffmpeg require it.
-    private int even(int size) {
-        return size + (size % 2);
     }
 
     /**
@@ -459,4 +445,8 @@ public class StreamController implements Controller {
     public void setSearchService(SearchService searchService) {
         this.searchService = searchService;
     }
+	
+	public void setVideoConversionService(VideoConversionService videoConversionService) {
+		this.videoConversionService = videoConversionService;
+	}
 }

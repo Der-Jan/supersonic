@@ -34,6 +34,7 @@ import net.sourceforge.subsonic.domain.MusicFolderContent;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
 import net.sourceforge.subsonic.service.MusicIndexService;
+import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 
@@ -47,6 +48,7 @@ public class LeftController extends ParameterizableViewController {
     private SettingsService settingsService;
     private SecurityService securityService;
     private MusicIndexService musicIndexService;
+	private PlayerService playerService;
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -63,6 +65,7 @@ public class LeftController extends ParameterizableViewController {
 
         map.put("brand", settingsService.getBrand());
         map.put("user", user);
+		map.put("player", playerService.getPlayer(request, response));
         map.put("indexedArtists", musicFolderContent.getIndexedArtists());
         map.put("singleSongs", musicFolderContent.getSingleSongs());
         map.put("indexes", musicFolderContent.getIndexedArtists().keySet());
@@ -86,4 +89,8 @@ public class LeftController extends ParameterizableViewController {
     public void setMusicIndexService(MusicIndexService musicIndexService) {
         this.musicIndexService = musicIndexService;
     }
+	
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
 }

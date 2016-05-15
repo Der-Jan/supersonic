@@ -146,7 +146,10 @@ public class RESTRequestParameterProcessingFilter implements Filter {
             if (user == null) {
                 return RESTController.ErrorCode.NOT_AUTHENTICATED;
             }
-            String expectedToken = DigestUtils.md5Hex(user.getPassword() + salt);
+			if (user.isLdapAuthenticated()) {
+				return RESTController.ErrorCode.NOT_AUTHENTICATED_LDAP;
+			}            
+			String expectedToken = DigestUtils.md5Hex(user.getPassword() + salt);
             if (!expectedToken.equals(token)) {
                 return RESTController.ErrorCode.NOT_AUTHENTICATED;
             }

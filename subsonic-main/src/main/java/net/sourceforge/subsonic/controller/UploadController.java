@@ -47,6 +47,7 @@ public class UploadController extends ParameterizableViewController {
     private PlayerService playerService;
     private StatusService statusService;
     private SettingsService settingsService;
+    private MediaFileService mediaFileService;
     public static final String UPLOAD_STATUS = "uploadStatus";
 
     @Override
@@ -211,6 +212,10 @@ public class UploadController extends ParameterizableViewController {
         this.settingsService = settingsService;
     }
 
+    public void setMediaFileService(MediaFileService mediaFileService) {
+        this.mediaFileService = mediaFileService;
+    }
+
     /**
      * Receives callbacks as the file upload progresses.
      */
@@ -224,7 +229,7 @@ public class UploadController extends ParameterizableViewController {
         }
 
         public void start(String fileName) {
-            status.setFile(new File(fileName));
+            status.setFile(mediaFileService.getMediaFileIfExists(new File(fileName)));
         }
 
         public void bytesRead(long bytesRead) {

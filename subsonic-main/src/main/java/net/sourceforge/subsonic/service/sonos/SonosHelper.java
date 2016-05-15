@@ -272,6 +272,7 @@ public class SonosHelper {
 
             MediaCollection topSongs = new MediaCollection();
             topSongs.setItemType(ItemType.TRACK);
+			topSongs.setCanPlay(true);
             topSongs.setId(SonosService.ID_TOP_SONGS_PREFIX + mediaFileId);
             topSongs.setTitle(String.format("Top Songs - %s", dir.getName()));
             result.add(2, topSongs);

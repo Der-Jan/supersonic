@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -123,7 +124,7 @@ public class ArtistsController extends ParameterizableViewController {
 
         String username = securityService.getCurrentUsername(request);
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
+        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request, username);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         UserSettings userSettings = settingsService.getUserSettings(username);
         MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
@@ -149,6 +150,11 @@ public class ArtistsController extends ParameterizableViewController {
         return result;
     }
 
+	private MusicFolder getSelectedMusicFolder(HttpServletRequest request, String username) throws ServletRequestBindingException {
+		Integer musicFolderId = ServletRequestUtils.getIntParameter(request, "musicFolderId");
+		return musicFolderId == null ? settingsService.getSelectedMusicFolder(username) : settingsService.getMusicFolderById(musicFolderId);
+	}
+	
     public void setMediaScannerService(MediaScannerService mediaScannerService) {
         this.mediaScannerService = mediaScannerService;
     }

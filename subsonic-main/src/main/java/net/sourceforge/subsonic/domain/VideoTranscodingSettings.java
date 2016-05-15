@@ -31,13 +31,15 @@ public class VideoTranscodingSettings {
     private final int timeOffset;
     private final int duration;
     private final boolean hls;
+	private final Integer audioTrack;
 
-    public VideoTranscodingSettings(int width, int height, int timeOffset, int duration, boolean hls) {
+    public VideoTranscodingSettings(int width, int height, int timeOffset, int duration, boolean hls, Integer audioTrack) {
         this.width = width;
         this.height = height;
         this.timeOffset = timeOffset;
         this.duration = duration;
         this.hls = hls;
+		this.audioTrack = audioTrack;
     }
 
     public int getWidth() {
@@ -59,4 +61,8 @@ public class VideoTranscodingSettings {
     public boolean isHls() {
         return hls;
     }
+	
+	public Integer getAudioTrack() {
+		return audioTrack;
+	}
 }
