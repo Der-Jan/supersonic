@@ -59,10 +59,7 @@ public class Track {
 		if (language == null) {
 			return String.valueOf(id);
 		}
-		Locale locale = Locale.forLanguageTag(language);
-		if (locale == null) {
-			return language;
-		}
+		Locale locale = new Locale(language);
 		String languageName = StringUtils.trimToNull(locale.getDisplayLanguage(Locale.ENGLISH));
 		return (languageName == null) ? language : languageName;
 	}

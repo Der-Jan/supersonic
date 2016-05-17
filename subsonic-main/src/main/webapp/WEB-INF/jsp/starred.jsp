@@ -149,6 +149,7 @@
                     <c:param name="starred" value="${not empty song.starredDate}"/>
                     <c:param name="video" value="false"/>
                     <c:param name="asTable" value="true"/>
+                    <c:param name="onPlay" value="top.playQueue.onPlaySingle(${song.id})"/>
                 </c:import>
 
                 <td class="truncate">

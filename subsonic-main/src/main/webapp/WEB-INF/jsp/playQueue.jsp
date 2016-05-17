@@ -82,6 +82,7 @@
     var externalPlayerWithPlaylist = false;
     var autoHide = ${model.autoHide};
     var collapsed = true;
+    var currentPosition = 0;
 
     function init() {
 
@@ -253,11 +254,16 @@
     }
 
     function updateProgressBar() {
-        var position = localPlayer.currentTime;
+        var position = Math.round(localPlayer.currentTime);
         var duration = localPlayer.duration;
         duration = isNaN(duration) ? 0 : duration;
+
+        if (position != currentPosition) {
+            currentPosition = position;
+            $("#progress").slider("option", "value", position * 1000);
+        }
+
         $("#progress").slider("option", "max", Math.round(duration * 1000));
-        $("#progress").slider("option", "value", Math.round(position * 1000));
         $("#progress-text").html(formatDuration(Math.round(position)));
         $("#duration-text").html(formatDuration(Math.round(duration)));
     }
@@ -411,6 +417,9 @@
     }
     function onPlay(id) {
         playQueueService.play(id, playQueueCallback);
+    }
+    function onPlaySingle(id) {
+        playQueueService.playSingle(id, playQueueCallback);
     }
     function onPlayShuffle(albumListType, offset, size, genre, decade) {
         playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
@@ -632,7 +641,7 @@
             localPlayer.pause();
             localPlayer.src = "";
             updateCoverArt(null);
-            updateProgressBar(0, 0);
+            updateProgressBar();
         }
     }
 

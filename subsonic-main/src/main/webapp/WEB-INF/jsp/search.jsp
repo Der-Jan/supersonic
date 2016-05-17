@@ -106,6 +106,7 @@
                     <c:param name="addEnabled" value="${command.user.streamRole and (not command.partyModeEnabled or not match.directory)}"/>
                     <c:param name="video" value="${match.video and command.player.web}"/>
                     <c:param name="asTable" value="true"/>
+                    <c:param name="onPlay" value="top.playQueue.onPlaySingle(${match.id})"/>
                 </c:import>
 
                 <td class="truncate"><span class="songTitle">${fn:escapeXml(match.title)}</span></td>

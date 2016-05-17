@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
@@ -180,8 +181,7 @@ public class VideoConversionService {
 			while (true) {
 				Util.sleep(3000L);
 				List<VideoConversion> conversions = videoConversionDao.getVideoConversionsByStatus(VideoConversion.Status.NEW);
-				if (!conversions.isEmpty())
-				{
+				if (!conversions.isEmpty())	{
 					conversion = ((VideoConversion)conversions.get(0));
 					convert();
 				}
@@ -212,12 +212,7 @@ public class VideoConversionService {
 				}
 				
 				List<String> command = buildFFmpegCommand(targetFile);
-
-                StringBuffer buf = new StringBuffer("Starting video converter: ");
-                for (String s : command) {
-                    buf.append(s).append(" ");
-                }
-                LOG.info(buf);
+				LOG.info("Starting video converter: " + Joiner.on(" ").join(command));
 
                 process = new ProcessBuilder(command).redirectErrorStream(true)
                                                      .start();

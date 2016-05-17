@@ -106,6 +106,11 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="securityService" ref="securityService"/>
     </bean>
+    <bean id="internetRadioStreamController" class="net.sourceforge.subsonic.controller.InternetRadioStreamController">
+        <property name="viewName" value="internetRadioStream"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="transcodingService" ref="transcodingService"/>
+    </bean>
     <bean id="podcastChannelController" class="net.sourceforge.subsonic.controller.PodcastChannelController">
         <property name="viewName" value="podcastChannel"/>
         <property name="podcastService" ref="podcastService"/>
@@ -520,6 +525,7 @@
                 <prop key="/db.view">dbController</prop>
                 <prop key="/test.view">multiController</prop>
                 <prop key="/internetRadio.view">internetRadioController</prop>
+                <prop key="/internetRadioStream.view">internetRadioStreamController</prop>
                 <prop key="/podcastChannels.view">podcastChannelsController</prop>
                 <prop key="/podcastChannel.view">podcastChannelController</prop>
                 <prop key="/podcastReceiverAdmin.view">podcastReceiverAdminController</prop>

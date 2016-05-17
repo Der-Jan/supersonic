@@ -232,6 +232,16 @@ public class PlayQueueService {
         }
     }
 
+	public PlayQueueInfo playSingle(int id) throws Exception
+	{
+		HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+		HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+	
+		Player player = getCurrentPlayer(request, response);
+		MediaFile file = mediaFileService.getMediaFile(id);
+		return doPlay(request, player, Collections.singletonList(file), false);
+	}
+	
     /**
      * @param index Start playing at this index, or play whole playlist if {@code null}.
      */
