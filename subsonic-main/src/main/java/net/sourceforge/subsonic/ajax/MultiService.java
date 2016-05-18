@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.ajax;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -54,12 +55,22 @@ public class MultiService {
 
     private static final Logger LOG = Logger.getLogger(MultiService.class);
 
-    private NetworkService networkService;
-    private MediaFileService mediaFileService;
-    private LastFmService lastFmService;
-    private SecurityService securityService;
-    private SettingsService settingsService;
-    private VideoConversionService videoConversionService;
+    private final NetworkService networkService;
+    private final MediaFileService mediaFileService;
+    private final LastFmService lastFmService;
+    private final SecurityService securityService;
+    private final SettingsService settingsService;
+    private final VideoConversionService videoConversionService;
+
+    public MultiService(NetworkService networkService, MediaFileService mediaFileService, LastFmService lastFmService,
+                        SecurityService securityService, SettingsService settingsService, VideoConversionService videoConversionService) {
+        this.networkService = networkService;
+        this.mediaFileService = mediaFileService;
+        this.lastFmService = lastFmService;
+        this.securityService = securityService;
+        this.settingsService = settingsService;
+        this.videoConversionService = videoConversionService;
+    }
 
     /**
      * Returns status for port forwarding and URL redirection.
@@ -144,6 +155,8 @@ public class MultiService {
             return null;
         }
         VideoConversionStatus result = new VideoConversionStatus();
+        result.setTargetFile(conversion.getTargetFile());
+        result.setLogFile(conversion.getLogFile());
         result.setProgressSeconds(conversion.getProgressSeconds());
         result.setProgressString(StringUtil.formatDuration(conversion.getProgressSeconds()));
 
@@ -166,13 +179,18 @@ public class MultiService {
         return result;
     }
 
-    public VideoConversionStatus startVideoConversion(int mediaFileId, Integer audioTrackId) {
+    public VideoConversionStatus startVideoConversion(int mediaFileId, Integer audioTrackId, Integer bitRate) {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         String username = securityService.getCurrentUsername(request);
-        authorizeVideoConversion();
-
-        VideoConversion conversion = new VideoConversion(null, mediaFileId, audioTrackId, username, VideoConversion.Status.NEW,
-                                                         null, new Date(), new Date(), null);
+        authorizeVideoConversion(); 
+        
+        File dir = new File(this.settingsService.getVideoConversionDirectory());
+        dir.mkdirs(); 
+        
+        String targetFile = new File(dir, mediaFileId + ".mp4").getPath();
+        String logFile = new File(dir, mediaFileId + ".log").getPath();
+        VideoConversion conversion = new VideoConversion(null, mediaFileId, audioTrackId, username, VideoConversion.Status.NEW, 
+                                                         targetFile, logFile, bitRate, null, new Date(), new Date(), null);
         videoConversionService.createVideoConversion(conversion);
 
         return getVideoConversionStatus(mediaFileId);
@@ -182,10 +200,10 @@ public class MultiService {
         authorizeVideoConversion();
         VideoConversion conversion = videoConversionService.getVideoConversionForFile(mediaFileId);
         if (conversion != null) {
-            videoConversionService.cancelVideoConversion(conversion);
+            videoConversionService.deleteVideoConversion(conversion);
         }
 
-        return getVideoConversionStatus(mediaFileId);
+        return null;
     }
 
     private void authorizeVideoConversion() {
@@ -195,29 +213,5 @@ public class MultiService {
             LOG.warn("User " + user.getUsername() + " is not allowed to convert videos.");
             throw new RuntimeException("User " + user.getUsername() + " is not allowed to convert videos.");
         }
-    }
-
-    public void setNetworkService(NetworkService networkService) {
-        this.networkService = networkService;
-    }
-
-    public void setMediaFileService(MediaFileService mediaFileService) {
-        this.mediaFileService = mediaFileService;
-    }
-
-    public void setLastFmService(LastFmService lastFmService) {
-        this.lastFmService = lastFmService;
-    }
-
-    public void setSecurityService(SecurityService securityService) {
-        this.securityService = securityService;
-    }
-
-    public void setSettingsService(SettingsService settingsService) {
-        this.settingsService = settingsService;
-    }
-
-    public void setVideoConversionService(VideoConversionService videoConversionService) {
-        this.videoConversionService = videoConversionService;
     }
 }

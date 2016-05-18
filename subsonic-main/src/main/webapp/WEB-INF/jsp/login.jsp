@@ -13,14 +13,15 @@
 <body class="mainframe bgcolor1" onload="document.getElementById('j_username').focus()">
 
 <form action="<c:url value="/j_acegi_security_check"/>" method="POST">
-    <div class="bgcolor2 shadow" align="center" style="padding:20px 50px 20px 50px; margin-top:100px;margin-left:50px;margin-right:50px">
+    <div class="bgcolor2 dropshadow" align="center" style="padding:20px 50px 20px 50px; margin-top:100px;margin-left:50px;margin-right:50px">
 
         <div style="margin-bottom:1em;max-width:50em;text-align:left;"><sub:wiki text="${model.loginMessage}"/></div>
 
         <table>
         <tr>
-            <td colspan="2" align="left" style="padding-bottom:10px">
-                <img src="<spring:theme code="logoImage"/>" alt="">
+            <td colspan="2" align="center" style="padding-bottom:10px">
+                <img src="<c:url value="/icons/subsonic_logo.png"/>" style="height:50px; vertical-align:middle" alt="">
+                <span style="font-size:20px; font-weight:400; vertical-align:middle; padding-left:3px">Subsonic</span>
             </td>
         </tr>
         <tr>

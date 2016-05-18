@@ -44,20 +44,22 @@ public class SrtToVttTestCase extends TestCase {
         StringWriter writer = new StringWriter();
         SrtToVtt.convert(reader, writer);
 
-        assertEquals("WEBVTT\n" +
-                     "\n" +
-                     "1\n" +
-                     "00:00:00.010 --> 00:00:04.500\n" +
-                     "Armed Police! Get on the ground!\n" +
-                     "Armed police! Get your hands up.\n" +
-                     "\n" +
-                     "2\n" +
-                     "00:00:05.500 --> 00:00:07.500\n" +
-                     "Man down!\n" +
-                     "\n" +
-                     "3\n" +
-                     "00:00:09.160 --> 00:00:10.310\n" +
-                     "It's a girl.\n",
+        String sep = System.getProperty("line.separator");
+        
+        assertEquals("WEBVTT" + sep +
+                     sep +
+                     "1" + sep +
+                     "00:00:00.010 --> 00:00:04.500" + sep +
+                     "Armed Police! Get on the ground!" + sep +
+                     "Armed police! Get your hands up." + sep +
+                     "" + sep +
+                     "2" + sep +
+                     "00:00:05.500 --> 00:00:07.500" + sep +
+                     "Man down!" + sep +
+                     sep +
+                     "3" + sep +
+                     "00:00:09.160 --> 00:00:10.310" + sep +
+                     "It's a girl." + sep, 
                      writer.toString());
     }
 }

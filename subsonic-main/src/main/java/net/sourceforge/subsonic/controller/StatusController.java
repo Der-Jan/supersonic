@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.TransferStatus;
 import net.sourceforge.subsonic.service.StatusService;
@@ -130,7 +131,8 @@ public class StatusController extends ParameterizableViewController {
         }
 
         public String getPath() {
-            return FileUtil.getShortPath(transferStatus.getFile());
+            MediaFile file = transferStatus.getFile();
+            return (file == null) ? "(unknown)" : FileUtil.getShortPath(file.getFile());
         }
 
         public String getBytes() {

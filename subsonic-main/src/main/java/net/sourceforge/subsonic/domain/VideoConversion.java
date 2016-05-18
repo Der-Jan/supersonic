@@ -32,18 +32,24 @@ public class VideoConversion {
     private Integer audioTrackId;
     private String username;
     private Status status;
+    private String targetFile;
+    private String logFile;
+    private Integer bitRate;
     private final Integer progressSeconds;
     private Date created;
     private Date changed;
     private Date started;
 
-    public VideoConversion(Integer id, int mediaFileId, Integer audioTrackId, String username, Status status,
+    public VideoConversion(Integer id, int mediaFileId, Integer audioTrackId, String username, Status status, String targetFile, String logFile, Integer bitRate,
                            Integer progressSeconds, Date created, Date changed, Date started) {
         this.id = id;
         this.mediaFileId = mediaFileId;
         this.audioTrackId = audioTrackId;
         this.username = username;
         this.status = status;
+        this.targetFile = targetFile;
+        this.logFile = logFile;
+        this.bitRate = bitRate;
         this.progressSeconds = progressSeconds;
         this.created = created;
         this.changed = changed;
@@ -54,40 +60,32 @@ public class VideoConversion {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public int getMediaFileId() {
         return mediaFileId;
-    }
-
-    public void setMediaFileId(int mediaFileId) {
-        this.mediaFileId = mediaFileId;
     }
 
     public Integer getAudioTrackId() {
         return audioTrackId;
     }
 
-    public void setAudioTrackId(Integer audioTrackId) {
-        this.audioTrackId = audioTrackId;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public String getTargetFile() {
+        return this.targetFile;
+    }
+
+    public String getLogFile() {
+        return this.logFile;
+    }
+
+    public Integer getBitRate() {
+        return this.bitRate;
     }
 
     public Integer getProgressSeconds() {
@@ -98,24 +96,12 @@ public class VideoConversion {
         return created;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
     public Date getChanged() {
         return changed;
     }
 
-    public void setChanged(Date changed) {
-        this.changed = changed;
-    }
-
     public Date getStarted() {
         return started;
-    }
-
-    public void setStarted(Date started) {
-        this.started = started;
     }
 
     public enum Status {

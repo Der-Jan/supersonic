@@ -1,21 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="iso-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
     <%@ include file="head.jsp" %>
     <%@ include file="jquery.jsp" %>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
     <script type="text/javascript" src="<c:url value="/script/scripts-2.0.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/nowPlayingService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playQueueService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/interface/playlistService.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/script/jwplayer-7.2.4/jwplayer.js"/>"></script>
-    <script type="text/javascript">jwplayer.key="fnCY1zPzsH/DE/Uo+pvsBes6gTdfOCcLCCnD6g==";</script>
     <script type="text/javascript" src="<c:url value="/script/cast_sender-v1.js"/>"></script>
     <%@ include file="playQueueCast.jsp" %>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/script/webfx/luna.css"/>">
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <style type="text/css">
         .ui-slider .ui-slider-handle {
@@ -46,17 +40,20 @@
         #muteOn, #muteOff {
             cursor:pointer; font-size:20px; padding:8px
         }
-        #castOn, #castOff {
-            margin-left:15px; cursor:pointer;display:none;
+        #collapse, #expand, #castOn, #castOff, #repeatOn, #repeatOff, #starCurrentSong, #unstarCurrentSong {
+            margin-left:12px; margin-right:12px; cursor:pointer; display:none;
+        }
+        #castOff, #collapse, #repeatOff {
+            color: #E65100;
         }
         #startButton:hover, #stopButton:hover {
             opacity: 0.8;
         }
         #songName {
-            cursor:pointer; font-weight:500;
+            cursor:pointer; font-weight:600; display:block;
         }
         #artistName {
-            cursor:pointer; font-weight:300;
+            cursor:pointer; font-weight:300; display:block;
         }
         #coverArt {
             cursor:pointer; width:80px; height:80px;
@@ -67,6 +64,11 @@
         #progress {
             height:3px; margin: 5px 20px 10px 10px;
         }
+
+        /* Work-around for Safari */
+        #starCurrentSong, #unstarCurrentSong, #repeatOn, #repeatOff, #expand, #collapse {
+            width: 24px;
+        }
     </style>
 
     <script type="text/javascript" language="javascript">
@@ -74,11 +76,13 @@
     var currentStreamUrl = null;
     var repeatEnabled = false;
     var castPlayer;
-    var jwPlayer;
+    var localPlayer = null;
     var jukeboxPlayer = false;
     var externalPlayer = false;
     var externalPlayerWithPlaylist = false;
-    var ignore = false;
+    var autoHide = ${model.autoHide};
+    var collapsed = true;
+    var currentPosition = 0;
 
     function init() {
 
@@ -102,6 +106,7 @@
         $("#volume").on("slidestop", onVolumeChanged);
         $("#progress").on("slidestop", onProgressChanged);
         $(".ui-slider").css("background", $("#dummy").css("background-color"));
+        $("#expand").toggle(!autoHide);
 
         if (!externalPlayerWithPlaylist) {
             $("#playlistBody").sortable({
@@ -154,25 +159,37 @@
     }
 
     function initMouseListener() {
-        $(window).mouseleave(function (event) {
+        $("body").mouseleave(function (event) {
             if (event.clientY < 30) {
-                setFrameHeight(95);
+                if (autoHide) {
+                    collapse();
+                }
                 $(".ui-slider-handle").fadeOut();
             }
         });
 
-        $(window).mouseenter(function () {
-            var height = $("body").height() + 25;
-            height = Math.min(height, window.top.innerHeight * 0.8);
-            setFrameHeight(height);
+        $("body").mouseenter(function () {
+            if (autoHide) {
+                expand();
+            }
             $(".ui-slider-handle").fadeIn();
         });
     }
 
-    function setFrameHeight(height) {
-        <c:if test="${model.autoHide}">
+    function collapse() {
+        collapsed = true;
+        parent.setPlayQueueHeight(95);
+        $("#collapse").hide();
+        $("#expand").toggle(!autoHide);
+    }
+
+    function expand() {
+        collapsed = false;
+        var height = $("body").height() + 25;
+        height = Math.min(height, window.top.innerHeight * 0.8);
         parent.setPlayQueueHeight(height);
-        </c:if>
+        $("#expand").hide();
+        $("#collapse").toggle(!autoHide);
     }
 
     function startTimer() {
@@ -191,33 +208,43 @@
     }
 
     function createPlayer() {
-        jwPlayer = jwplayer("jwplayer");
-        jwPlayer.setup({
-            file: "foo.mp3",
-            height: 0,
-            width: 0
-        });
+        localPlayer = new Audio();
 
-        jwPlayer.on("complete", function() {onNext(repeatEnabled)});
-        jwPlayer.on("idle", function() {updateControls()});
-        jwPlayer.on("buffer", function() {updateControls()});
-        jwPlayer.on("play", function() {updateControls()});
-        jwPlayer.on("pause", function() {updateControls()});
-        jwPlayer.on("mute", function() {updateControls()});
-        jwPlayer.on("time", function(event) {updateProgressBar(event.position, event.duration)});
-        $("#volume").slider("option", "value", jwPlayer.getVolume());
+        localPlayer.addEventListener("ended", function() {onNext(repeatEnabled)});
+        localPlayer.addEventListener("canplay", function() {updateControls()});
+        localPlayer.addEventListener("canplaythrough", function() {updateControls()});
+        localPlayer.addEventListener("loadeddata", function() {updateControls()});
+        localPlayer.addEventListener("loadedmetadata", function() {updateControls()});
+        localPlayer.addEventListener("loadstart", function() {updateControls()});
+        localPlayer.addEventListener("seeked", function() {updateControls()});
+        localPlayer.addEventListener("seeking", function() {updateControls()});
+        localPlayer.addEventListener("stalled", function() {updateControls()});
+        localPlayer.addEventListener("suspend", function() {updateControls()});
+        localPlayer.addEventListener("error", function() {updateControls()});
+        localPlayer.addEventListener("waiting", function() {updateControls()});
+        localPlayer.addEventListener("play", function() {updateControls()});
+        localPlayer.addEventListener("playing", function() {updateControls()});
+        localPlayer.addEventListener("pause", function() {updateControls()});
+        localPlayer.addEventListener("volumechange", function() {updateControls()});
+        localPlayer.addEventListener("timeupdate", function() {updateProgressBar()});
+
+        localPlayer.volume = 0.66;
     }
 
     function updateControls() {
-        var state = jwPlayer.getState();
-        var playing = state == "playing";
-        var buffering = state == "buffering";
-        $("#startButton").toggle(!playing && !buffering);
-        $("#stopButton").toggle(playing && !buffering);
-        $("#bufferButton").toggle(buffering);
-        toggleSpinner(playing);
+        var ready = localPlayer.readyState == localPlayer.HAVE_FUTURE_DATA ||
+                    localPlayer.readyState == localPlayer.HAVE_ENOUGH_DATA ||
+                    localPlayer.networkState == localPlayer.NETWORK_NO_SOURCE;
 
-        var muted = jwPlayer.getMute();
+        var paused = localPlayer.paused;
+        $("#startButton").toggle(ready && paused);
+        $("#stopButton").toggle(ready && !paused);
+        $("#bufferButton").toggle(!ready);
+        toggleSpinner(ready && !paused);
+
+        $("#volume").slider("option", "value", Math.round(localPlayer.volume * 100));
+
+        var muted = localPlayer.muted;
         $("#muteOn").toggle(!muted);
         $("#muteOff").toggle(muted);
     }
@@ -226,9 +253,17 @@
         $(".fa-circle-o-notch").toggleClass("fa-spin", spin);
     }
 
-    function updateProgressBar(position, duration) {
+    function updateProgressBar() {
+        var position = Math.round(localPlayer.currentTime);
+        var duration = localPlayer.duration;
+        duration = isNaN(duration) ? 0 : duration;
+
+        if (position != currentPosition) {
+            currentPosition = position;
+            $("#progress").slider("option", "value", position * 1000);
+        }
+
         $("#progress").slider("option", "max", Math.round(duration * 1000));
-        $("#progress").slider("option", "value", Math.round(position * 1000));
         $("#progress-text").html(formatDuration(Math.round(position)));
         $("#duration-text").html(formatDuration(Math.round(duration)));
     }
@@ -272,12 +307,11 @@
     function onStart() {
         if (castPlayer.castSession) {
             castPlayer.playCast();
-        } else if (jwPlayer) {
-            if (jwPlayer.getPlaylistItem().file == "foo.mp3" ||
-                    jwPlayer.getState() == "complete" && getCurrentSongIndex() == songs.length -1) {
-                skip(0);
+        } else if (localPlayer) {
+            if (localPlayer.ended && getCurrentSongIndex() == songs.length -1) {
+                skip(0, 0, true);
             } else {
-                jwPlayer.play(true);
+                localPlayer.play();
             }
 
         } else {
@@ -288,8 +322,8 @@
     function onStop() {
         if (castPlayer.castSession) {
             castPlayer.pauseCast();
-        } else if (jwPlayer) {
-            jwPlayer.pause(true);
+        } else if (localPlayer) {
+            localPlayer.pause();
         } else {
             playQueueService.stop(playQueueCallback);
         }
@@ -297,14 +331,11 @@
 
     function onVolumeChanged() {
         var value = parseInt($("#volume").slider("option", "value"));
-        if (value != 0) {
-            $("#muteOn").show();
-            $("#muteOff").hide();
-        }
         if (castPlayer.castSession) {
             castPlayer.setCastVolume(value / 100, false);
-        } else if (jwPlayer) {
-            jwPlayer.setVolume(value);
+        } else if (localPlayer) {
+            localPlayer.volume = value / 100.0;
+            localPlayer.muted = false;
         } else if (jukeboxPlayer) {
             playQueueService.setJukeboxGain(value / 100);
         }
@@ -312,8 +343,9 @@
 
     function onProgressChanged() {
         var value = parseInt($("#progress").slider("option", "value") / 1000);
-        if (jwPlayer) {
-            jwPlayer.seek(value);
+        if (localPlayer && !castPlayer.castSession && Math.round(localPlayer.currentTime) != value) {
+            localPlayer.currentTime = value;
+            localPlayer.play();
         }
     }
 
@@ -323,8 +355,8 @@
 
         if (castPlayer.castSession) {
             castPlayer.castMute(mute);
-        } else if (jwPlayer) {
-            jwPlayer.setMute(mute);
+        } else if (localPlayer) {
+            localPlayer.muted = mute;
         } else if (jukeboxPlayer) {
             playQueueService.setJukeboxMute(mute);
         }
@@ -349,15 +381,23 @@
             var volume = parseInt($("#volume").slider("option", "value"));
             $("#volume").slider("option", "value", Math.min(100, volume + 5));
             onVolumeChanged();
-        } else if (action == "seekForward" && jwPlayer && $("#stopButton").is(":visible")) {
+        } else if (action == "seekForward") {
             var position = parseInt($("#progress").slider("option", "value"));
             var duration = parseInt($("#progress").slider("option", "max"));
             $("#progress").slider("option", "value", Math.min(duration, position + 1000));
             onProgressChanged();
-        } else if (action == "seekBackward" && jwPlayer && $("#stopButton").is(":visible")) {
+        } else if (action == "seekBackward") {
             var position = parseInt($("#progress").slider("option", "value"));
             $("#progress").slider("option", "value", Math.max(0, position - 1000));
             onProgressChanged();
+        } else if (action == "star") {
+            if ($("#starCurrentSong").is(":visible")) {
+                $("#starCurrentSong").click();
+            } else if ($("#unstarCurrentSong").is(":visible")) {
+                $("#unstarCurrentSong").click();
+            }
+        } else if (action == "togglePlayQueue") {
+            collapsed ? expand() : collapse();
         }
     }
 
@@ -366,29 +406,38 @@
         if (wrap) {
             index = index % songs.length;
         }
-        skip(index);
+        skip(index, 0, true);
     }
     function onPrevious() {
-        if (jwPlayer && !castPlayer.castSession && jwPlayer.getPosition() > 4.0) {
-            skip(parseInt(getCurrentSongIndex()));
+        if (localPlayer && !castPlayer.castSession && localPlayer.currentTime > 4.0) {
+            skip(parseInt(getCurrentSongIndex()), 0, true);
         } else {
-            skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1));
+            skip(Math.max(0, parseInt(getCurrentSongIndex()) - 1), 0, true);
         }
     }
     function onPlay(id) {
         playQueueService.play(id, playQueueCallback);
     }
+    function onPlaySingle(id) {
+        playQueueService.playSingle(id, playQueueCallback);
+    }
     function onPlayShuffle(albumListType, offset, size, genre, decade) {
         playQueueService.playShuffle(albumListType, offset, size, genre, decade, playQueueCallback);
     }
-    function onPlayPlaylist(id, index) {
-        playQueueService.playPlaylist(id, index, playQueueCallback);
+    function onPlayPlaylist(id, append, index) {
+        playQueueService.playPlaylist(id, append, index, playQueueCallback);
+        if (append) {
+            toast("<fmt:message key="main.addlast.toast"/>");
+        }
     }
     function onPlayTopSong(id, index) {
         playQueueService.playTopSong(id, index, playQueueCallback);
     }
-    function onPlayPodcastChannel(id) {
-        playQueueService.playPodcastChannel(id, playQueueCallback);
+    function onPlayPodcastChannel(id, append) {
+        playQueueService.playPodcastChannel(id, append, playQueueCallback);
+        if (append) {
+            toast("<fmt:message key="main.addlast.toast"/>");
+        }
     }
     function onPlayPodcastEpisode(id) {
         playQueueService.playPodcastEpisode(id, playQueueCallback);
@@ -407,9 +456,11 @@
     }
     function onAdd(id) {
         playQueueService.add(id, playQueueCallback);
+        toast("<fmt:message key="main.addlast.toast"/>");
     }
     function onAddNext(id) {
         playQueueService.addAt(id, getCurrentSongIndex() + 1, playQueueCallback);
+        toast("<fmt:message key="main.addnext.toast"/>");
     }
     function onShuffle() {
         playQueueService.shuffle(playQueueCallback);
@@ -417,43 +468,30 @@
     function onStar(index) {
         playQueueService.toggleStar(index, playQueueCallback);
     }
+    function onStarCurrentSong(star) {
+        var i = getCurrentSongIndex();
+        if (i != -1) {
+            onStar(i);
+            $("#starCurrentSong").toggle(!star);
+            $("#unstarCurrentSong").toggle(star);
+        }
+    }
     function onRemove(index) {
         playQueueService.remove(index, playQueueCallback);
     }
-    function onRemoveSelected() {
-        var indexes = new Array();
-        var counter = 0;
-        for (var i = 0; i < songs.length; i++) {
-            var index = i + 1;
-            if ($("#songIndex" + index).is(":checked")) {
-                indexes[counter++] = i;
-            }
-        }
-        playQueueService.removeMany(indexes, playQueueCallback);
-    }
-
     function onRearrange(indexes) {
         playQueueService.rearrange(indexes, playQueueCallback);
     }
-    function onToggleRepeat() {
-        playQueueService.toggleRepeat(playQueueCallback);
+    function onToggleRepeat(repeat) {
+        playQueueService.toggleRepeat(repeat, playQueueCallback);
     }
     function onUndo() {
         playQueueService.undo(playQueueCallback);
     }
-    function onSortByTrack() {
-        playQueueService.sortByTrack(playQueueCallback);
-    }
-    function onSortByArtist() {
-        playQueueService.sortByArtist(playQueueCallback);
-    }
-    function onSortByAlbum() {
-        playQueueService.sortByAlbum(playQueueCallback);
-    }
     function onSavePlayQueue() {
-        var positionMillis = jwPlayer ? Math.round(1000.0 * jwPlayer.getPosition()) : 0;
+        var positionMillis = localPlayer ? Math.round(1000.0 * localPlayer.currentTime) : 0;
         playQueueService.savePlayQueue(getCurrentSongIndex(), positionMillis);
-        $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveplayqueue"/>");
+        toast("<fmt:message key="playlist.toast.saveplayqueue"/>");
     }
     function onLoadPlayQueue() {
         playQueueService.loadPlayQueue(playQueueCallback);
@@ -461,7 +499,7 @@
     function onSavePlaylist() {
         playlistService.createPlaylistForPlayQueue(function (playlistId) {
             top.main.location.href = "playlist.view?id=" + playlistId;
-            $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.saveasplaylist"/>");
+            toast("<fmt:message key="playlist.toast.saveasplaylist"/>");
         });
     }
     function onAppendPlaylist() {
@@ -487,17 +525,15 @@
         }
         playlistService.appendToPlaylist(playlistId, mediaFileIds, function (){
             top.main.location.href = "playlist.view?id=" + playlistId;
-            $().toastmessage("showSuccessToast", "<fmt:message key="playlist.toast.appendtoplaylist"/>");
+            toast("<fmt:message key="playlist.toast.appendtoplaylist"/>");
         });
     }
     function playQueueCallback(playQueue) {
         songs = playQueue.entries;
         repeatEnabled = playQueue.repeatEnabled;
 
-        if ($("#toggleRepeat")) {
-            var text = repeatEnabled ? "<fmt:message key="playlist.repeat_on"/>" : "<fmt:message key="playlist.repeat_off"/>";
-            $("#toggleRepeat").html(text);
-        }
+        $("#repeatOn").toggle(!repeatEnabled);
+        $("#repeatOff").toggle(repeatEnabled);
 
         if (songs.length == 0) {
             $("#songCountAndDuration").html("");
@@ -528,7 +564,7 @@
             if ($("#titleUrl" + id)) {
                 $("#titleUrl" + id).html(song.title);
                 $("#titleUrl" + id).attr("title", song.title);
-                $("#titleUrl" + id).click(function () {skip(this.id.substring(8) - 1, 0)});
+                $("#titleUrl" + id).click(function () {skip(this.id.substring(8) - 1, 0, true)});
             }
             if ($("#album" + id)) {
                 $("#album" + id).html(song.album);
@@ -552,7 +588,7 @@
                 $("#duration" + id).html(song.durationAsString);
             }
             if ($("#format" + id)) {
-                $("#format" + id).html(song.format);
+                $("#format" + id).html(song.sourceFormat);
             }
             if ($("#fileSize" + id)) {
                 $("#fileSize" + id).html(song.fileSize);
@@ -572,8 +608,8 @@
             $("#muteOff").toggle(playQueue.jukeboxMute);
         }
 
-        if (jwPlayer) {
-            triggerPlayer(playQueue.startPlayerAt, playQueue.startPlayerAtPosition);
+        if (localPlayer) {
+            triggerLocalPlayer(playQueue.startPlayerAt, playQueue.startPlayerAtPosition);
         } else {
             $("#startButton").toggle(!playQueue.stopEnabled);
             $("#stopButton").toggle(playQueue.stopEnabled);
@@ -586,17 +622,26 @@
         }
     }
 
-    function triggerPlayer(index, positionMillis) {
-        skip(index);
+    function triggerLocalPlayer(index, positionMillis) {
+
+        // Load first song (but don't play) if this is the initial case.
+        if (index == -1 &&
+            (localPlayer.networkState == localPlayer.NETWORK_EMPTY || localPlayer.networkState == localPlayer.NETWORK_NO_SOURCE) &&
+            localPlayer.readyState == localPlayer.HAVE_NOTHING) {
+            skip(0, 0, false);
+        } else {
+            skip(index, 0, true);
+        }
+
         if (positionMillis != 0) {
-            jwPlayer.seek(positionMillis / 1000);
+            localPlayer.currentTime = positionMillis / 1000;
         }
         updateCurrentImage();
         if (songs.length == 0) {
-            jwPlayer.stop();
-            jwPlayer.load({file:"foo.mp3"});
+            localPlayer.pause();
+            localPlayer.src = "";
             updateCoverArt(null);
-            updateProgressBar(0, 0);
+            updateProgressBar();
         }
     }
 
@@ -615,9 +660,12 @@
             $("#artistName").click(showAlbum);
             $("#coverArt").click(showAlbum);
         }
+        var starred = song != null && song.starred;
+        $("#starCurrentSong").toggle(!starred);
+        $("#unstarCurrentSong").toggle(starred);
     }
 
-    function skip(index, position) {
+    function skip(index, position, play) {
         if (index < 0 || index >= songs.length) {
             return;
         }
@@ -628,13 +676,12 @@
 
         if (castPlayer.castSession) {
             castPlayer.loadCastMedia(song, position);
-        } else if (jwPlayer) {
-            jwPlayer.load({
-                file: song.streamUrl,
-                type: song.format
-            });
-            jwplayer().play();
+        } else if (localPlayer) {
             console.log(song.streamUrl);
+            localPlayer.src = song.streamUrl;
+            if (play) {
+                localPlayer.play();
+            }
         } else {
             playQueueService.skip(index, playQueueCallback);
         }
@@ -642,7 +689,7 @@
         updateWindowTitle(song);
         updateCoverArt(song);
 
-        if (${model.notify}) {
+        if (play && ${model.notify}) {
             showNotification(song);
         }
     }
@@ -730,24 +777,8 @@
             onSavePlayQueue();
         } else if (id == "loadPlayQueue") {
             onLoadPlayQueue();
-        } else if (id == "savePlaylist") {
-            onSavePlaylist();
         } else if (id == "downloadPlaylist") {
             location.href = "download.view?player=${model.player.id}";
-        } else if (id == "sharePlaylist") {
-            parent.frames.main.location.href = "createShare.view?player=${model.player.id}&" + getSelectedIndexes();
-        } else if (id == "sortByTrack") {
-            onSortByTrack();
-        } else if (id == "sortByArtist") {
-            onSortByArtist();
-        } else if (id == "sortByAlbum") {
-            onSortByAlbum();
-        } else if (id == "selectAll") {
-            selectAll(true);
-        } else if (id == "selectNone") {
-            selectAll(false);
-        } else if (id == "removeSelected") {
-            onRemoveSelected();
         } else if (id == "download" && selectedIndexes != "") {
             location.href = "download.view?player=${model.player.id}&" + selectedIndexes;
         } else if (id == "appendPlaylist" && selectedIndexes != "") {
@@ -766,14 +797,13 @@
         return result;
     }
 
-    function selectAll(b) {
-        for (var i = 0; i < songs.length; i++) {
-            if (b) {
-                $("#songIndex" + (i + 1)).attr("checked", "checked");
-            } else {
-                $("#songIndex" + (i + 1)).removeAttr("checked");
-            }
-        }
+    function toast(text) {
+        $().toastmessage("showToast", {
+            text     : text,
+            sticky   : false,
+            position : "middle-center",
+            type     : "success"
+        });
     }
 
     </script>
@@ -784,17 +814,21 @@
 <span id="dummy" class="bgcolor1" style="display:none"></span>
 
 <div class="bgcolor2" style="position:fixed; bottom:0; width:100%; z-index:2">
-    <div id="jwplayer"></div>
-
     <div style="display:flex; margin-top:5px; margin-bottom:7px">
         <img id="coverArt">
         <div class="ellipsis" style="flex-grow:1">
             <div id="progress"></div>
 
             <div class="ellipsis" style="display:flex; align-items:center; margin-left:10px">
-                <div class="ellipsis" style="flex:1">
-                    <div id="songName" class="ellipsis"></div>
-                    <div id="artistName" class="ellipsis"></div>
+                <div class="ellipsis" style="display:flex; flex:1; align-items:center; margin-right:30px">
+                    <div class="ellipsis" style="flex:1">
+                        <div><a id="songName" class="ellipsis"></a></div>
+                        <div><a id="artistName" class="ellipsis"></a></div>
+                    </div>
+                    <i id="starCurrentSong" class="material-icons" onclick="onStarCurrentSong(true)">star_border</i>
+                    <i id="unstarCurrentSong" class="material-icons starred" onclick="onStarCurrentSong(false)">star</i>
+                    <i id="repeatOn" class="material-icons" onclick="onToggleRepeat(true)">repeat</i>
+                    <i id="repeatOff" class="material-icons" onclick="onToggleRepeat(false)">repeat</i>
                 </div>
 
                 <i id="previousButton" class="fa fa-step-backward" onclick="onPrevious()"></i>
@@ -811,10 +845,12 @@
                     <i class="fa fa-refresh fa-stack-1x fa-inverse fa-spin"></i>
                 </span>
                 <i id="nextButton" class="fa fa-step-forward" onclick="onNext(repeatEnabled)"></i>
-                <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
-                <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
-                <div style="flex:1">
-                    <div id="progress-and-duration" class="detail" style="text-align:right">
+                <div style="flex:1; display:flex; align-items:center; margin-left:30px">
+                    <i id="expand" class="material-icons" onclick="expand()">queue_music</i>
+                    <i id="collapse" class="material-icons" onclick="collapse()">queue_music</i>
+                    <i id="castOn" class="material-icons" onclick="castPlayer.launchCastApp()">cast</i>
+                    <i id="castOff" class="material-icons" onclick="castPlayer.stopCastApp()">cast_connected</i>
+                    <div id="progress-and-duration" class="detail" style="flex:1; text-align:right">
                         <span id="progress-text">0:00</span> /
                         <span id="duration-text">0:00</span>
                     </div>
@@ -888,58 +924,50 @@
     </tbody>
 </table>
 
-<table style="white-space:nowrap;">
-    <tr style="white-space:nowrap;">
-        <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
-            <td style="padding-right: 5px"><select name="player" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
-                <c:forEach items="${model.players}" var="player">
-                    <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
-                </c:forEach>
-            </select></td>
-        </c:if>
+<div style="display:flex; align-items:center; margin-top:1.5em">
 
-        <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onClear()"><fmt:message key="playlist.clear"/></a></span> |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onShuffle()"><fmt:message key="playlist.shuffle"/></a></span> |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onToggleRepeat()"><span id="toggleRepeat"><fmt:message key="playlist.repeat_on"/></span></a></span>  |</td>
-            <td style="white-space:nowrap;"><span class="header"><a href="javascript:onUndo()"><fmt:message key="playlist.undo"/></a></span>  |</td>
-        </c:if>
+    <c:if test="${model.user.settingsRole and fn:length(model.players) gt 1}">
+        <select name="player" style="margin-right: 2.5em" onchange="location='playQueue.view?player=' + options[selectedIndex].value;">
+            <c:forEach items="${model.players}" var="player">
+                <option ${player.id eq model.player.id ? "selected" : ""} value="${player.id}">${player.shortDescription}</option>
+            </c:forEach>
+        </select>
+    </c:if>
 
-        <c:if test="${model.user.settingsRole}">
-            <td style="white-space:nowrap;"><span class="header"><a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a></span>  |</td>
-        </c:if>
+    <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-trash icon"></i>&nbsp;<a href="javascript:onClear()"><fmt:message key="playlist.clear"/></a></div>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-random icon"></i>&nbsp;<a href="javascript:onShuffle()"><fmt:message key="playlist.shuffle"/></a></div>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-undo icon"></i>&nbsp;<a href="javascript:onUndo()"><fmt:message key="playlist.undo"/></a></div>
+    </c:if>
 
-        <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
-            <td style="white-space:nowrap;"><select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
-                <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
-                <optgroup label="<fmt:message key="playlist.more.playlist"/>">
-                    <option id="savePlayQueue"><fmt:message key="playlist.saveplayqueue"/></option>
-                    <option id="loadPlayQueue"><fmt:message key="playlist.loadplayqueue"/></option>
-                    <option id="savePlaylist"><fmt:message key="playlist.save"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="downloadPlaylist"><fmt:message key="common.download"/></option>
-                    </c:if>
-                    <c:if test="${model.user.shareRole}">
-                        <option id="sharePlaylist"><fmt:message key="main.more.share"/></option>
-                    </c:if>
-                    <option id="sortByTrack"><fmt:message key="playlist.more.sortbytrack"/></option>
-                    <option id="sortByAlbum"><fmt:message key="playlist.more.sortbyalbum"/></option>
-                    <option id="sortByArtist"><fmt:message key="playlist.more.sortbyartist"/></option>
-                </optgroup>
-                <optgroup label="<fmt:message key="playlist.more.selection"/>">
-                    <option id="selectAll"><fmt:message key="playlist.more.selectall"/></option>
-                    <option id="selectNone"><fmt:message key="playlist.more.selectnone"/></option>
-                    <option id="removeSelected"><fmt:message key="playlist.remove"/></option>
-                    <c:if test="${model.user.downloadRole}">
-                        <option id="download"><fmt:message key="common.download"/></option>
-                    </c:if>
+    <c:if test="${model.user.settingsRole}">
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-cog icon"></i>&nbsp;<a href="playerSettings.view?id=${model.player.id}" target="main"><fmt:message key="playlist.settings"/></a></div>
+    </c:if>
+
+    <c:if test="${model.player.web or model.player.jukebox or model.player.external}">
+        <c:if test="${model.user.shareRole}">
+            <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-share-alt icon"></i>&nbsp;<a href="createShare.view?player=${model.player.id}" target="main"><fmt:message key="main.more.share"/></a></div>
+        </c:if>
+        <div class="header ellipsis" style="padding-right:1.5em"><i class="fa fa-music icon"></i>&nbsp;<a href="javascript:onSavePlaylist()" target="main"><fmt:message key="playlist.save"/></a></div>
+
+        <select id="moreActions" onchange="actionSelected(this.options[selectedIndex].id)">
+            <option id="top" selected="selected"><fmt:message key="playlist.more"/></option>
+            <optgroup label="<fmt:message key="playlist.more.playlist"/>">
+                <option id="savePlayQueue"><fmt:message key="playlist.saveplayqueue"/></option>
+                <option id="loadPlayQueue"><fmt:message key="playlist.loadplayqueue"/></option>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="downloadPlaylist"><fmt:message key="common.download"/></option>
+                </c:if>
+            </optgroup>
+            <optgroup label="<fmt:message key="playlist.more.selection"/>">
                     <option id="appendPlaylist"><fmt:message key="playlist.append"/></option>
-                </optgroup>
-            </select>
-            </td>
-        </c:if>
-
-    </tr></table>
+                <c:if test="${model.user.downloadRole}">
+                    <option id="download"><fmt:message key="common.download"/></option>
+                </c:if>
+            </optgroup>
+        </select>
+    </c:if>
+</div>
 
 <div style="height:100px"></div>
 

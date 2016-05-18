@@ -68,18 +68,19 @@
 
 <div style="display:flex; align-items:center; padding-bottom:2em">
 
-    <h1 class="ellipsis" style="flex-grow:1">
-        <c:forEach items="${model.ancestors}" var="ancestor">
-            <sub:url value="main.view" var="ancestorUrl">
-                <sub:param name="id" value="${ancestor.id}"/>
-            </sub:url>
-            <a href="${ancestorUrl}">${fn:escapeXml(ancestor.name)}</a> &nbsp;&bull;&nbsp;
-        </c:forEach>
-        ${fn:escapeXml(model.dir.name)}
-    </h1>
-
+    <div style="flex-grow:1" class="ellipsis">
+        <div class="ellipsis" style="margin-bottom:0.5em">
+            <c:set var="musicFolder" value="${model.musicFolder}"/>
+            <c:set var="ancestors" value="${model.ancestors}"/>
+            <%@ include file="indexLink.jsp" %>
+        </div>
+        <h1 class="ellipsis" style="flex-grow:1">${fn:escapeXml(model.dir.name)}</h1>
+    </div>
     <div>
-        <%@ include file="viewSelector.jsp" %>
+        <c:import url="viewSelector.jsp">
+            <c:param name="changeViewUrl" value="main.view?id=${model.dir.id}&viewAsList=${not model.viewAsList}"/>
+            <c:param name="viewAsList" value="${model.viewAsList}"/>
+        </c:import>
     </div>
 </div>
 
@@ -129,10 +130,11 @@
         </c:url>
 
         <div class="albumThumb">
-            <div class="coverart dropshadow" style="width:213px">
+            <div class="coverart dropshadow hoverable" style="width:213px">
                 <div style="position:relative">
                     <div>
-                        <a href="${videoUrl}"><img src="${coverArtUrl}" height="120" width="213" alt=""
+                        <a href="${videoUrl}"><img src="${coverArtUrl}"
+                                                   style="height:120px; width:213px; object-fit:cover; object-position:center" alt=""
                                                    onmouseover="startPreview(this, ${child.id}, ${child.hash}, ${child.durationSeconds})"
                                                    onmouseout="stopPreview()"></a>
                     </div>

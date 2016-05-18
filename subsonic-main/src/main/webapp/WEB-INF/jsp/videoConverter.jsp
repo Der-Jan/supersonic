@@ -37,8 +37,12 @@
             $("#conversion-status-error").toggle(conversionStatus != null && conversionStatus.statusError);
 
             $("#conversion-start").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
-            $("#conversion-audio-track").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
+            $("#conversion-audio-track-container").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
+            $("#conversion-bit-rate-container").toggle(authorized && (conversionStatus == null || conversionStatus.statusError));
             $("#conversion-cancel").toggle(authorized && (conversionStatus != null && (conversionStatus.statusNew || conversionStatus.statusInProgress)));
+
+            $("#conversion-target-file").text(conversionStatus == null ? "" : conversionStatus.targetFile);
+            $("#conversion-log-file").text(conversionStatus == null ? "" : conversionStatus.logFile);
 
             if (conversionStatus != null && conversionStatus.statusInProgress) {
                 $("#conversion-thumb").attr("src", "coverArt.view?id=${model.video.id}&auth=${model.video.hash}&size=120&offset=" + conversionStatus.progressSeconds);
@@ -53,7 +57,12 @@
             if ($("#conversion-audio-track").length > 0) {
                 audioTrackId = parseInt($("#conversion-audio-track").val());
             }
-            multiService.startVideoConversion(${model.video.id}, audioTrackId, conversionStatusCallback);
+            var bitRate = parseInt($("#conversion-bit-rate").val());
+            if (bitRate == 0) {
+                bitRate = null;
+            }
+            console.log(bitRate);
+            multiService.startVideoConversion(${model.video.id}, audioTrackId, bitRate, conversionStatusCallback);
         }
         function cancelConversion() {
             multiService.cancelVideoConversion(${model.video.id}, conversionStatusCallback);
@@ -70,30 +79,65 @@
 
 <body class="mainframe bgcolor1" style="padding-bottom:0.5em" onload="init()">
 
+<div class="ellipsis" style="margin-bottom:0.5em">
+    <c:set var="musicFolder" value="${model.musicFolder}"/>
+    <c:set var="ancestors" value="${model.ancestors}"/>
+    <%@ include file="indexLink.jsp" %>
+</div>
+
 <h1><i class="fa fa-film fa-fw icon"></i>&nbsp;&nbsp;<fmt:message key="videoConverter.title"/></h1>
 
-<p style="margin-top:1.5em">
+<p style="margin-top:1.5em;max-width:70%">
     <fmt:message key="videoConverter.intro"/>
 </p>
 
 <div style="margin: 2em 3em;">
-    <div style="float:left; width:213px; margin-right: 3em">
-        <img id="conversion-thumb" src="coverArt.view?id=${model.video.id}&auth=${model.video.hash}&size=120" height="120" width="213">
-        <div id="conversion-progressbar" style="width:100%; height:7px;margin-top: 0.5em"></div>
+
+    <table style="float:left; margin-right:5em">
+        <tr>
+            <td colspan="2">
+                <img id="conversion-thumb" src="coverArt.view?id=${model.video.id}&auth=${model.video.hash}&size=120" height="120" width="213">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-top:0.5em; padding-bottom:1em">
+                <div id="conversion-progressbar" style="width:100%; height:7px"></div>
+            </td>
+        </tr>
+        <tr id="conversion-bit-rate-container">
+            <td class="detail"><b><fmt:message key="personalsettings.bitrate"/></b></td>
+            <td>
+                <select id="conversion-bit-rate" style="width:100%">
+                    <option value="0"><fmt:message key="common.default"/></option>
+                    <c:forEach items="${model.bitRates}" var="bitRate">
+                        <option value="${bitRate}">${bitRate} Kbps</option>
+                    </c:forEach>
+                </select>
+            </td>
+        </tr>
 
         <c:if test="${fn:length(model.audioTracks) gt 1}">
-            <select id="conversion-audio-track" style="width:100%; margin-top:1em">
-                <c:forEach items="${model.audioTracks}" var="track">
-                    <option value="${track.id}"><fmt:message key="videoConverter.audiotrack"/> ${track.id} &ndash; ${track.language}</option>
-                </c:forEach>
-            </select>
+            <tr id="conversion-audio-track-container">
+                <td class="detail"><b><fmt:message key="videoConverter.audiotrack"/></b></td>
+                <td>
+                    <select id="conversion-audio-track" style="width:100%">
+                        <c:forEach items="${model.audioTracks}" var="track">
+                            <option value="${track.id}">${track.languageName}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
         </c:if>
 
         <c:if test="${model.licenseInfo.licenseOrTrialValid}">
-            <input id="conversion-start" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.start"/>" onclick="startConversion()">
-            <input id="conversion-cancel" style="display:none; width:100%; margin-top:1em;cursor:pointer" type="button" value="<fmt:message key="videoConverter.cancel"/>" onclick="cancelConversion()">
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:1em">
+                    <input id="conversion-start" style="display:none; cursor:pointer" type="button" value="<fmt:message key="videoConverter.start"/>" onclick="startConversion()">
+                    <input id="conversion-cancel" style="display:none; cursor:pointer" type="button" value="<fmt:message key="videoConverter.cancel"/>" onclick="cancelConversion()">
+                </td>
+            </tr>
         </c:if>
-    </div>
+    </table>
 
     <table class="detail" style="float:left">
         <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.title"/></b></td><td>${model.video.title}</td></tr>
@@ -103,7 +147,7 @@
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.duration"/></b></td><td>${model.video.durationString}</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.bitrate"/></b></td><td>${model.video.bitRate} Kbps</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="personalsettings.filesize"/></b></td><td><sub:formatBytes bytes="${model.video.fileSize}"/></td></tr>
-        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.dimension"/></b></td><td>${model.video.width} x ${model.video.height}</td></tr>
+        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.dimension"/></b></td><td>${model.video.width} &times; ${model.video.height}</td></tr>
         <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.status"/></b></td><td>
             <span style="display:none" id="conversion-status-new"><fmt:message key="videoConverter.status.new"/></span>
             <span style="display:none" id="conversion-status-in-progress"><i class="fa fa-refresh fa-spin"></i>&nbsp;&nbsp;<fmt:message key="videoConverter.status.in_progress"/>
@@ -111,6 +155,8 @@
             <span style="display:none" id="conversion-status-completed"><fmt:message key="videoConverter.status.completed"/></span>
             <span style="display:none" id="conversion-status-error"><fmt:message key="videoConverter.status.error"/></span>
         </td></tr>
+        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.targetfile"/></b></td><td><span id="conversion-target-file"></span></td></tr>
+        <tr><td style="padding-right:1em"><b><fmt:message key="videoConverter.details.logfile"/></b></td><td><span id="conversion-log-file"></span></td></tr>
     </table>
 </div>
 
@@ -119,7 +165,7 @@
 <c:set var="licenseInfo" value="${model.licenseInfo}"/>
 <%@ include file="licenseNotice.jsp" %>
 
-<p style="margin-top:2em">
+<p style="margin-top:2em; max-width:70%">
     <c:choose>
         <c:when test="${model.user.videoConversionRole}">
             <fmt:message key="videoConverter.info"/>
@@ -131,7 +177,13 @@
 </p>
 
 <p>
-    <i class="fa fa-chevron-left icon"></i>&nbsp;<a href="javascript:back()"><fmt:message key="common.back"/></a>
+    <i class="fa fa-chevron-left icon"></i>&nbsp;<a href="videoPlayer.view?id=${model.video.id}"><fmt:message key="common.back"/></a>
+
+    <c:if test="${model.user.adminRole}">
+        <span style="margin-left:3em">
+            <i class="fa fa-cog fa-lg icon"></i>&nbsp;<a href="videoConversionSettings.view"><fmt:message key="top.settings"/></a>
+        </span>
+    </c:if>
 </p>
 </body>
 </html>

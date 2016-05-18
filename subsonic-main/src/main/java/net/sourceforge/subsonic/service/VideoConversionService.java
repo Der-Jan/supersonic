@@ -19,6 +19,7 @@
 
 package net.sourceforge.subsonic.service;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,12 +27,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FilenameUtils;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.lang.StringUtils;
 
 import net.sourceforge.subsonic.Logger;
 import net.sourceforge.subsonic.dao.VideoConversionDao;
@@ -53,14 +60,18 @@ public class VideoConversionService {
 
     private MediaFileService mediaFileService;
     private TranscodingService transcodingService;
+    private SettingsService settingsService;
     private VideoConversionDao videoConversionDao;
     private VideoConverter videoConverter;
     private MetaDataParserFactory metaDataParserFactory;
 
     public void init() {
-        videoConversionDao.cleanUp();
         videoConverter = new VideoConverter();
         videoConverter.start();
+
+        for (VideoConversion conversion : videoConversionDao.getVideoConversionsByStatus(VideoConversion.Status.IN_PROGRESS)) {
+            deleteVideoConversion(conversion);
+        }
     }
 
     public void createVideoConversion(VideoConversion conversion) {
@@ -68,41 +79,72 @@ public class VideoConversionService {
         videoConversionDao.createVideoConversion(conversion);
     }
 
-    public void cancelVideoConversion(VideoConversion conversion) {
-        videoConversionDao.deleteVideoConversionsForFile(conversion.getMediaFileId());
-        videoConverter.cancel(conversion);
+	public void deleteVideoConversion(VideoConversion conversion) {
+		if (conversion.getTargetFile() != null) {
+			File targetFile = new File(conversion.getTargetFile());
+			if (targetFile.exists()) {
+				targetFile.delete();
+			}
+		}
+		if (conversion.getLogFile() != null) {
+			File logFile = new File(conversion.getLogFile());
+			if (logFile.exists()) {
+				logFile.delete();
+			}
+		}
+		
+		videoConversionDao.deleteVideoConversion(conversion.getId().intValue());
+		videoConverter.cancel(conversion);
     }
 
     public VideoConversion getVideoConversionForFile(int mediaFileId) {
         VideoConversion conversion = videoConversionDao.getVideoConversionForFile(mediaFileId);
-        if (conversion != null && conversion.getStatus() == VideoConversion.Status.COMPLETED && !getTargetFile(conversion).exists()) {
+		if (conversion == null) {
             return null;
         }
-        return conversion;
-    }
+		
+		List<VideoConversion> conversions = deleteIfFileMissing(Collections.singletonList(conversion));
+		return (VideoConversion)Iterables.getFirst(conversions, null);
+	}
+		
+	public List<VideoConversion> getAllVideoConversions() {
+		return deleteIfFileMissing(this.videoConversionDao.getAllVideoConversions());
+	}
 
     public MetaData getVideoMetaData(MediaFile video) {
         MetaDataParser parser = metaDataParserFactory.getParser(video.getFile());
         return parser != null ? parser.getMetaData(video.getFile()) : null;
     }
 
-    private File getTempFile(VideoConversion conversion) {
-        return getFile(conversion, ".tmp");
-    }
+	public boolean isStreamable(MediaFile file) {
+		if (!Arrays.asList(new String[] { "mp4", "m4v" }).contains(StringUtils.lowerCase(file.getFormat()))) {
+			return false;
+		}
+		MetaData metaData = getVideoMetaData(file);
+		if (metaData == null) {
+			return true;
+		}
+		if ((!metaData.getVideoTracks().isEmpty()) && (!((Track)metaData.getVideoTracks().get(0)).isStreamable())) {
+			return false;
+		}
+		if ((!metaData.getAudioTracks().isEmpty()) && (!((Track)metaData.getAudioTracks().get(0)).isStreamable())) {
+			return false;
+		}
+		return true;
+	}
 
-    private File getLogFile(VideoConversion conversion) {
-        return getFile(conversion, ".convert.log");
-    }
-
-    private File getTargetFile(VideoConversion conversion) {
-        return getFile(conversion, ".streamable.mp4");
-    }
-
-    private File getFile(VideoConversion conversion, String extension) {
-        MediaFile mediaFile = mediaFileService.getMediaFile(conversion.getMediaFileId());
-        File originalFile = mediaFile.getFile();
-        return new File(originalFile.getParentFile(), FilenameUtils.getBaseName(originalFile.getName()) + extension);
-    }
+	private List<VideoConversion> deleteIfFileMissing(List<VideoConversion> conversions) {
+		List<VideoConversion> result = new ArrayList();
+		for (VideoConversion conversion : conversions) {
+			if ((conversion.getStatus() == VideoConversion.Status.COMPLETED) && (
+			(conversion.getTargetFile() == null) || (!new File(conversion.getTargetFile()).exists()))) {
+				deleteVideoConversion(conversion);
+			} else {
+				result.add(conversion);
+			}
+		}
+		return result;
+	}
 
     public void setVideoConversionDao(VideoConversionDao videoConversionDao) {
         this.videoConversionDao = videoConversionDao;
@@ -119,7 +161,11 @@ public class VideoConversionService {
     public void setMetaDataParserFactory(MetaDataParserFactory metaDataParserFactory) {
         this.metaDataParserFactory = metaDataParserFactory;
     }
-
+	
+	public void setSettingsService(SettingsService settingsService) {
+		this.settingsService = settingsService;
+	}
+	
     private class VideoConverter extends Thread{
 
         private VideoConversion conversion;
@@ -131,15 +177,16 @@ public class VideoConversionService {
         }
 
         @Override
-        public void run() {
-            while (true) {
-                Util.sleep(3000L);
-                conversion = videoConversionDao.getNextVideoConversion();
-                if (conversion != null) {
-                    convert();
-                }
-            }
-        }
+		public void run() {
+			while (true) {
+				Util.sleep(3000L);
+				List<VideoConversion> conversions = videoConversionDao.getVideoConversionsByStatus(VideoConversion.Status.NEW);
+				if (!conversions.isEmpty())	{
+					conversion = ((VideoConversion)conversions.get(0));
+					convert();
+				}
+			}
+		}
 
         private void cancel(VideoConversion conversion) {
             if (process != null && this.conversion != null && this.conversion.getId().equals(conversion.getId())) {
@@ -153,20 +200,19 @@ public class VideoConversionService {
 
             mediaFile = mediaFileService.getMediaFile(conversion.getMediaFileId());
             try {
+				checkDiskLimit();
+				
                 LOG.info("Starting video conversion of " + mediaFile);
 
-                File originalFile = mediaFile.getFile();
-                File tmpFile = getTempFile(conversion);
-                File logFile = getLogFile(conversion);
-                File targetFile = getTargetFile(conversion);
+				File logFile = new File(conversion.getLogFile());
+				File targetFile = new File(conversion.getTargetFile());
 
-                List<String> command = buildFFmpegCommand(originalFile, tmpFile);
-
-                StringBuffer buf = new StringBuffer("Starting video converter: ");
-                for (String s : command) {
-                    buf.append(s).append(" ");
-                }
-                LOG.info(buf);
+				if (!targetFile.getParentFile().canWrite()) {
+					throw new Exception("Write access denied to " + targetFile);
+				}
+				
+				List<String> command = buildFFmpegCommand(targetFile);
+				LOG.info("Starting video converter: " + Joiner.on(" ").join(command));
 
                 process = new ProcessBuilder(command).redirectErrorStream(true)
                                                      .start();
@@ -177,19 +223,13 @@ public class VideoConversionService {
 
                 boolean success =
                         videoConversionDao.getVideoConversionById(conversion.getId()) != null  // conversion was canceled (i.e., removed)
-                        && tmpFile.exists()
-                        && tmpFile.length() > 0;
+                        && targetFile.exists()
+                        && targetFile.length() > 0;
 
                 if (success) {
-                    tmpFile.renameTo(targetFile);
-                    MediaFile dir = mediaFileService.getMediaFile(originalFile.getParentFile());
-                    if (dir != null) {
-                        mediaFileService.refreshMediaFile(dir);
-                    }
-                    videoConversionDao.updateStatus(conversion.getId(), VideoConversion.Status.COMPLETED);
                     LOG.info("Completed video conversion of " + mediaFile);
+                    videoConversionDao.updateStatus(conversion.getId(), VideoConversion.Status.COMPLETED);
                 } else {
-                    tmpFile.delete();
                     LOG.error("An error occurred while converting video " + mediaFile + ". See log file " + logFile.getAbsolutePath());
                     videoConversionDao.updateStatus(conversion.getId(), VideoConversion.Status.ERROR);
                 }
@@ -200,32 +240,96 @@ public class VideoConversionService {
             }
         }
 
-        private List<String> buildFFmpegCommand(File originalFile, File tmpFile) {
-            List<String> command = new ArrayList<String>();
+		private void checkDiskLimit() {
+			int limitInGB = settingsService.getVideoConversionDiskLimit();
+			if (limitInGB == 0) {
+				return;
+			}
+			long limitInBytes = limitInGB * 1073741824L;
+			
+			File dir = new File(settingsService.getVideoConversionDirectory());
+			if ((!dir.canRead()) || (!dir.isDirectory())) {
+				return;
+			}
+			
+			List<File> files = new ArrayList();
+			long usedBytes = 0L;
+			for (File file : dir.listFiles((java.io.FileFilter)FileFileFilter.FILE)) {
+				files.add(file);
+				usedBytes += file.length();
+			}
+			
+			if (usedBytes < limitInBytes) {
+				return;
+			}
+			
+			
+			Collections.sort(files, new Comparator()
+			{
+				public int compare(Object a, Object b) {
+					long lastModifiedA = ((File)a).lastModified();
+					long lastModifiedB = ((File)b).lastModified();
+					if (lastModifiedA < lastModifiedB) {
+						return -1;
+					}
+					if (lastModifiedA > lastModifiedB) {
+						return 1;
+					}
+					return 0;
+				}
+			});
+			
+			
+			while ((usedBytes > limitInBytes) && (!files.isEmpty())) {
+				File victim = (File)files.remove(0);
+				usedBytes -= victim.length();
+				victim.delete();
+				VideoConversionService.LOG.info("Deleted converted video file " + victim);
+			}
+		}
+			
+		private List<String> buildFFmpegCommand(File targetFile) {
+			List<String> command = new ArrayList<String>();
 
             command.add(transcodingService.getTranscodeDirectory() + File.separator + "ffmpeg");
             command.add("-i");
-            command.add(originalFile.getAbsolutePath());
+			command.add(mediaFile.getFile().getAbsolutePath());
             command.add("-ac");
             command.add("2");
             command.add("-f");
             command.add("mp4");
             command.add("-preset");
             command.add("superfast");
+			command.add("-strict");
+			command.add("-2");
             command.add("-y");
-
+			
+			Integer bitRate = conversion.getBitRate();
+			if (bitRate != null) {
+				command.add("-b:v");
+				command.add(bitRate + "k");
+			
+				if (bitRate.intValue() < 2000) {
+					Dimension dim = Util.getSuitableVideoSize(mediaFile.getWidth(), mediaFile.getHeight(), bitRate);
+					command.add("-s");
+					command.add(dim.width + "x" + dim.height);
+				}
+			}
+			
             // Look for video track with streamable codec. If found, copy it.
             MetaData metaData = getVideoMetaData(mediaFile);
             Track videoTrack = null;
             List<Track> videoTracks = metaData.getVideoTracks();
-            for (Track track : videoTracks) {
-                if (track.isStreamable()) {
-                    command.add("-c:v");
-                    command.add("copy");
-                    videoTrack = track;
-                    break;
-                }
-            }
+			if (bitRate == null) {
+				for (Track track : videoTracks) {
+					if (track.isStreamable()) {
+						command.add("-c:v");
+						command.add("copy");
+						videoTrack = track;
+						break;
+					}
+				}
+			}
             if (videoTrack == null && !videoTracks.isEmpty()) {
                 videoTrack = videoTracks.get(0);
             }
@@ -264,7 +368,7 @@ public class VideoConversionService {
                 }
             }
 
-            command.add(tmpFile.getAbsolutePath());
+            command.add(targetFile.getAbsolutePath());
             return command;
         }
     }

@@ -8,6 +8,8 @@
         <property name="viewName" value="left"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="musicIndexService" ref="musicIndexService"/>
+        <property name="playerService" ref="playerService"/>
     </bean>
     <bean id="artistsController" class="net.sourceforge.subsonic.controller.ArtistsController">
         <property name="viewName" value="artists"/>
@@ -47,6 +49,7 @@
         <property name="viewName" value="playlists"/>
         <property name="securityService" ref="securityService"/>
         <property name="playlistService" ref="playlistService"/>
+        <property name="settingsService" ref="settingsService"/>
     </bean>
     <bean id="importPlaylistController" class="net.sourceforge.subsonic.controller.ImportPlaylistController">
         <property name="viewName" value="importPlaylist"/>
@@ -78,6 +81,7 @@
         <property name="statusService" ref="statusService"/>
         <property name="playerService" ref="playerService"/>
         <property name="settingsService" ref="settingsService"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
     </bean>
     <bean id="lyricsController" class="net.sourceforge.subsonic.controller.LyricsController">
         <property name="viewName" value="lyrics"/>
@@ -96,6 +100,16 @@
         <property name="podcastService" ref="podcastService"/>
         <property name="securityService" ref="securityService"/>
         <property name="settingsService" ref="settingsService"/>
+    </bean>
+    <bean id="internetRadioController" class="net.sourceforge.subsonic.controller.InternetRadioController">
+        <property name="viewName" value="internetRadio"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="securityService" ref="securityService"/>
+    </bean>
+    <bean id="internetRadioStreamController" class="net.sourceforge.subsonic.controller.InternetRadioStreamController">
+        <property name="viewName" value="internetRadioStream"/>
+        <property name="settingsService" ref="settingsService"/>
+        <property name="transcodingService" ref="transcodingService"/>
     </bean>
     <bean id="podcastChannelController" class="net.sourceforge.subsonic.controller.PodcastChannelController">
         <property name="viewName" value="podcastChannel"/>
@@ -228,6 +242,12 @@
         <property name="settingsService" ref="settingsService"/>
         <property name="podcastService" ref="podcastService"/>
     </bean>
+    <bean id="videoConversionSettingsController" class="net.sourceforge.subsonic.controller.VideoConversionSettingsController">
+        <property name="viewName" value="videoConversionSettings"/>
+        <property name="videoConversionService" ref="videoConversionService"/>
+        <property name="mediaFileService" ref="mediaFileService"/>
+        <property name="settingsService" ref="settingsService"/>
+    </bean>
     <bean id="generalSettingsController" class="net.sourceforge.subsonic.controller.GeneralSettingsController">
         <property name="commandClass" value="net.sourceforge.subsonic.command.GeneralSettingsCommand"/>
         <property name="successView" value="generalSettings"/>
@@ -329,6 +349,7 @@
         <property name="searchService" ref="searchService"/>
         <property name="transcodingService" ref="transcodingService"/>
         <property name="audioScrobblerService" ref="audioScrobblerService"/>
+        <property name="videoConversionService" ref="videoConversionService"/>
     </bean>
     <bean id="hlsController" class="net.sourceforge.subsonic.controller.HLSController">
         <property name="playerService" ref="playerService"/>
@@ -358,6 +379,8 @@
         <property name="playerService" ref="playerService"/>
         <property name="shareService" ref="shareService"/>
         <property name="transcodingService" ref="transcodingService"/>
+        <property name="videoConversionService" ref="videoConversionService"/>
+        <property name="captionsController" ref="captionsController"/>
     </bean>
     <bean id="downloadController" class="net.sourceforge.subsonic.controller.DownloadController">
         <property name="playerService" ref="playerService"/>
@@ -408,6 +431,7 @@
         <property name="lyricsService" ref="ajaxLyricsService"/>
         <property name="podcastService" ref="podcastService"/>
         <property name="shareService" ref="shareService"/>
+        <property name="videoConversionService" ref="videoConversionService"/>
         <property name="mediaFileDao" ref="mediaFileDao"/>
         <property name="artistDao" ref="artistDao"/>
         <property name="albumDao" ref="albumDao"/>
@@ -420,6 +444,7 @@
         <property name="avatarController" ref="avatarController"/>
         <property name="userSettingsController" ref="userSettingsController"/>
         <property name="artistsController" ref="artistsController"/>
+        <property name="captionsController" ref="captionsController"/>
     </bean>
     <bean id="dbController" class="net.sourceforge.subsonic.controller.DBController">
         <property name="viewName" value="db"/>
@@ -478,6 +503,7 @@
                 <prop key="/transcodingSettings.view">transcodingSettingsController</prop>
                 <prop key="/internetRadioSettings.view">internetRadioSettingsController</prop>
                 <prop key="/podcastSettings.view">podcastSettingsController</prop>
+                <prop key="/videoConversionSettings.view">videoConversionSettingsController</prop>
                 <prop key="/generalSettings.view">generalSettingsController</prop>
                 <prop key="/advancedSettings.view">advancedSettingsController</prop>
                 <prop key="/personalSettings.view">personalSettingsController</prop>
@@ -498,6 +524,8 @@
                 <prop key="/download.view">downloadController</prop>
                 <prop key="/db.view">dbController</prop>
                 <prop key="/test.view">multiController</prop>
+                <prop key="/internetRadio.view">internetRadioController</prop>
+                <prop key="/internetRadioStream.view">internetRadioStreamController</prop>
                 <prop key="/podcastChannels.view">podcastChannelsController</prop>
                 <prop key="/podcastChannel.view">podcastChannelController</prop>
                 <prop key="/podcastReceiverAdmin.view">podcastReceiverAdminController</prop>

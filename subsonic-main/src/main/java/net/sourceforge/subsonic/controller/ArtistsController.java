@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -72,8 +73,6 @@ public class ArtistsController extends ParameterizableViewController {
      * as we don't need browser-side caching of artists.jsp.  This method is only used by RESTController.
      */
     public long getLastModified(HttpServletRequest request) {
-        saveSelectedMusicFolder(request);
-
         if (mediaScannerService.isScanning()) {
             return -1L;
         }
@@ -125,7 +124,7 @@ public class ArtistsController extends ParameterizableViewController {
 
         String username = securityService.getCurrentUsername(request);
         List<MusicFolder> allMusicFolders = settingsService.getMusicFoldersForUser(username);
-        MusicFolder selectedMusicFolder = settingsService.getSelectedMusicFolder(username);
+        MusicFolder selectedMusicFolder = getSelectedMusicFolder(request, username);
         List<MusicFolder> musicFoldersToUse = selectedMusicFolder == null ? allMusicFolders : Arrays.asList(selectedMusicFolder);
         UserSettings userSettings = settingsService.getUserSettings(username);
         MusicFolderContent musicFolderContent = musicIndexService.getMusicFolderContent(musicFoldersToUse, refresh);
@@ -140,6 +139,7 @@ public class ArtistsController extends ParameterizableViewController {
         map.put("partyMode", userSettings.isPartyModeEnabled());
         map.put("organizeByFolderStructure", settingsService.isOrganizeByFolderStructure());
         map.put("visibility", userSettings.getMainVisibility());
+        map.put("showIndexInSideBar", userSettings.isShowIndexInSideBar());
         map.put("indexedArtists", musicFolderContent.getIndexedArtists());
         map.put("singleSongs", singleSongs);
         map.put("indexes", musicFolderContent.getIndexedArtists().keySet());
@@ -150,21 +150,11 @@ public class ArtistsController extends ParameterizableViewController {
         return result;
     }
 
-    private boolean saveSelectedMusicFolder(HttpServletRequest request) {
-        if (request.getParameter("musicFolderId") == null) {
-            return false;
-        }
-        int musicFolderId = Integer.parseInt(request.getParameter("musicFolderId"));
-
-        // Note: UserSettings.setChanged() is intentionally not called. This would break browser caching
-        // of the left frame.
-        UserSettings settings = settingsService.getUserSettings(securityService.getCurrentUsername(request));
-        settings.setSelectedMusicFolderId(musicFolderId);
-        settingsService.updateUserSettings(settings);
-
-        return true;
-    }
-
+	private MusicFolder getSelectedMusicFolder(HttpServletRequest request, String username) throws ServletRequestBindingException {
+		Integer musicFolderId = ServletRequestUtils.getIntParameter(request, "musicFolderId");
+		return musicFolderId == null ? settingsService.getSelectedMusicFolder(username) : settingsService.getMusicFolderById(musicFolderId);
+	}
+	
     public void setMediaScannerService(MediaScannerService mediaScannerService) {
         this.mediaScannerService = mediaScannerService;
     }

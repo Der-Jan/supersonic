@@ -18,8 +18,6 @@
  */
 package net.sourceforge.subsonic.domain;
 
-import java.io.File;
-
 import net.sourceforge.subsonic.util.BoundedList;
 
 /**
@@ -33,7 +31,7 @@ public class TransferStatus {
     private static final long SAMPLE_INTERVAL_MILLIS = 5000;
 
     private Player player;
-    private File file;
+    private MediaFile file;
     private long bytesTransfered;
     private long bytesSkipped;
     private long bytesTotal;
@@ -147,7 +145,7 @@ public class TransferStatus {
      *
      * @return The file that is currently being transferred.
      */
-    public synchronized File getFile() {
+    public synchronized MediaFile getFile() {
         return file;
     }
 
@@ -156,7 +154,7 @@ public class TransferStatus {
      *
      * @param file The file that is currently being transferred.
      */
-    public synchronized void setFile(File file) {
+    public synchronized void setFile(MediaFile file) {
         this.file = file;
     }
 

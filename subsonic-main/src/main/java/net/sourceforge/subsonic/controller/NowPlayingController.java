@@ -51,7 +51,7 @@ public class NowPlayingController extends AbstractController {
         Player player = playerService.getPlayer(request, response);
         List<TransferStatus> statuses = statusService.getStreamStatusesForPlayer(player);
 
-        MediaFile current = statuses.isEmpty() ? null : mediaFileService.getMediaFile(statuses.get(0).getFile());
+        MediaFile current = statuses.isEmpty() ? null :  ((TransferStatus)statuses.get(0)).getFile();
         MediaFile dir = current == null ? null : mediaFileService.getParentOf(current);
 
         String url;

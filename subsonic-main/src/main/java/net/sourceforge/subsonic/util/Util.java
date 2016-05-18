@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.util;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet4Address;
@@ -218,5 +219,41 @@ public final class Util {
         }
         ByteStreams.skipFully(in, range.getOffset());
         return ByteStreams.limit(in, range.getLength());
+    }
+	
+    public static Dimension getSuitableVideoSize(Integer existingWidth, Integer existingHeight, Integer maxBitRate) {
+        if (maxBitRate == null) {
+            return new Dimension(400, 224);
+        }
+
+        int w;
+        if (maxBitRate < 400) {
+            w = 400;
+        } else if (maxBitRate < 600) {
+            w = 480;
+        } else if (maxBitRate < 1800) {
+            w = 640;
+        } else {
+            w = 960;
+        }
+        int h = even(w * 9 / 16);
+
+        if (existingWidth == null || existingHeight == null) {
+            return new Dimension(w, h);
+        }
+
+        if (existingWidth < w || existingHeight < h) {
+            return new Dimension(even(existingWidth), even(existingHeight));
+        }
+
+        double aspectRate = existingWidth.doubleValue() / existingHeight.doubleValue();
+        h = (int) Math.round(w / aspectRate);
+
+        return new Dimension(even(w), even(h));
+    }
+
+    // Make sure width and height are multiples of two, as some versions of ffmpeg require it.
+    private static int even(int size) {
+        return size + (size % 2);
     }
 }

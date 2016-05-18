@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -108,7 +107,8 @@ public class MainController extends AbstractController {
         map.put("dir", dir);
         map.put("files", files);
         map.put("subDirs", subDirs);
-        map.put("ancestors", getAncestors(dir));
+		map.put("ancestors", mediaFileService.getAncestorsOf(dir));
+		map.put("musicFolder", settingsService.getMusicFolderByPath(dir.getFolder()));
         map.put("coverArtSizeMedium", CoverArtScheme.MEDIUM.getSize());
         map.put("coverArtSizeLarge", CoverArtScheme.LARGE.getSize());
         map.put("player", player);
@@ -227,21 +227,6 @@ public class MainController extends AbstractController {
             result.addAll(mediaFileService.getChildrenOf(mediaFile, true, true, true));
         }
         return new ArrayList<MediaFile>(result);
-    }
-
-    private List<MediaFile> getAncestors(MediaFile dir) throws IOException {
-        LinkedList<MediaFile> result = new LinkedList<MediaFile>();
-
-        try {
-            MediaFile parent = mediaFileService.getParentOf(dir);
-            while (parent != null && !mediaFileService.isRoot(parent)) {
-                result.addFirst(parent);
-                parent = mediaFileService.getParentOf(parent);
-            }
-        } catch (SecurityException x) {
-            // Happens if Podcast directory is outside music folder.
-        }
-        return result;
     }
 
     private List<MediaFile> getSieblingAlbums(MediaFile dir) {

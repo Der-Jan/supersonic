@@ -119,7 +119,6 @@ public class PlayQueueInputStream extends InputStream {
             close();
         } else if (!file.equals(currentFile)) {
             close();
-            LOG.info(player.getUsername() + " listening to \"" + FileUtil.getShortPath(file.getFile()) + "\"");
             mediaFileService.incrementPlayCount(file);
 
             // Don't scrobble REST players (except Sonos)
@@ -127,10 +126,10 @@ public class PlayQueueInputStream extends InputStream {
                 audioScrobblerService.register(file, player.getUsername(), false, null);
             }
 
-            TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, videoTranscodingSettings);
+            TranscodingService.Parameters parameters = transcodingService.getParameters(file, player, maxBitRate, preferredTargetFormat, videoTranscodingSettings, null);
             currentInputStream = transcodingService.getTranscodedInputStream(parameters);
             currentFile = file;
-            status.setFile(currentFile.getFile());
+            status.setFile(currentFile);
         }
     }
 

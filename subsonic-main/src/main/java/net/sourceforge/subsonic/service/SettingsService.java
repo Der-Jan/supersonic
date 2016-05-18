@@ -111,7 +111,7 @@ public class SettingsService {
     private static final String KEY_LICENSE_CODE = "LicenseCode";
     private static final String KEY_LICENSE_DATE = "LicenseDate";
     private static final String KEY_DOWNSAMPLING_COMMAND = "DownsamplingCommand4";
-    private static final String KEY_HLS_COMMAND = "HlsCommand3";
+    private static final String KEY_HLS_COMMAND = "HlsCommand4";
     private static final String KEY_JUKEBOX_COMMAND = "JukeboxCommand2";
     private static final String KEY_VIDEO_IMAGE_COMMAND = "VideoImageCommand";
     private static final String KEY_REWRITE_URL = "RewriteUrl";
@@ -143,6 +143,8 @@ public class SettingsService {
     private static final String KEY_SONOS_SERVICE_NAME = "SonosServiceName";
     private static final String KEY_SONOS_SERVICE_ID = "SonosServiceId";
     private static final String KEY_ARTIST_BIO_LAST_UPDATED = "ArtistBioLastUpdated";
+    private static final String KEY_VIDEO_CONVERSION_DIRECTORY = "VideoConversionDirectory";
+    private static final String KEY_VIDEO_CONVERSION_DISK_LIMIT = "VideoConversionDiskLimit";
 
     // Default values.
     private static final String DEFAULT_INDEX_STRING = "A B C D E F G H I J K L M N O P Q R S T U V W X-Z(XYZ)";
@@ -181,7 +183,7 @@ public class SettingsService {
     private static final String DEFAULT_LICENSE_CODE = null;
     private static final String DEFAULT_LICENSE_DATE = null;
     private static final String DEFAULT_DOWNSAMPLING_COMMAND = "ffmpeg -i %s -map 0:0 -b:a %bk -v 0 -f mp3 -";
-    private static final String DEFAULT_HLS_COMMAND = "ffmpeg -ss %o -t %d -i %s -async 1 -b:v %bk -s %wx%h -ar 44100 -ac 2 -v 0 -f mpegts -c:v libx264 -preset superfast -c:a libmp3lame -threads 0 -";
+    private static final String DEFAULT_HLS_COMMAND = "ffmpeg -ss %o -t %d -i %s -s %wx%h -v 0 -b:v %bk -maxrate %bk -bufsize 256k -flags -global_header -map 0:0 -map 0:%k -ac 2 -f mpegts -c:v libx264 -preset superfast -c:a aac -b:a 96k -strict -2 -threads 0 -copyts -";
     private static final String DEFAULT_JUKEBOX_COMMAND = "ffmpeg -ss %o -i %s -map 0:0 -v 0 -ar 44100 -ac 2 -f s16be -";
     private static final String DEFAULT_VIDEO_IMAGE_COMMAND = "ffmpeg -r 1 -ss %o -t 1 -i %s -s %wx%h -v 0 -f mjpeg -";
     private static final boolean DEFAULT_REWRITE_URL = true;
@@ -212,11 +214,13 @@ public class SettingsService {
     private static final String DEFAULT_SONOS_SERVICE_NAME = "Subsonic";
     private static final int DEFAULT_SONOS_SERVICE_ID = 242;
     private static final long DEFAULT_ARTIST_BIO_LAST_UPDATED = 0L;
+    private static final String DEFAULT_VIDEO_CONVERSION_DIRECTORY = new File(getSubsonicHome(), "video").getPath();
+    private static final int DEFAULT_VIDEO_CONVERSION_DISK_LIMIT = 0;
 
     // Array of obsolete keys.  Used to clean property file.
     private static final List<String> OBSOLETE_KEYS = Arrays.asList("PortForwardingPublicPort", "PortForwardingLocalPort",
             "DownsamplingCommand", "DownsamplingCommand2", "DownsamplingCommand3", "AutoCoverBatch", "MusicMask",
-            "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
+            "VideoMask", "CoverArtMask, HlsCommand", "HlsCommand2", "HlsCommand3", "JukeboxCommand", "UrlRedirectTrialExpires", "VideoTrialExpires",
             "CoverArtFileTypes", "UrlRedirectCustomHost", "CoverArtLimit", "StreamPort");
 
     private static final String LOCALES_FILE = "/net/sourceforge/subsonic/i18n/locales.txt";
@@ -1046,6 +1050,15 @@ public class SettingsService {
         return getAllMusicFolders(false, false);
     }
 
+    public MusicFolder getMusicFolderByPath(String path) {
+        for (MusicFolder musicFolder : getAllMusicFolders()) {
+            if (musicFolder.getPath().getPath().equals(path)) {
+                return musicFolder;
+            }
+        }
+        return null;
+    }
+
     /**
      * Returns all music folders.
      *
@@ -1256,6 +1269,7 @@ public class SettingsService {
         settings.setNowPlayingAllowed(true);
         settings.setAutoHidePlayQueue(true);
         settings.setShowSideBar(false);
+        settings.setShowIndexInSideBar(false);
         settings.setShowArtistInfoEnabled(true);
         settings.setViewAsList(false);
         settings.setQueueFollowingSongs(true);
@@ -1376,6 +1390,22 @@ public class SettingsService {
 
     public void setArtistBioLastUpdated(long updated) {
         setLong(KEY_ARTIST_BIO_LAST_UPDATED, updated);
+    }
+
+    public String getVideoConversionDirectory() {
+        return getString("VideoConversionDirectory", DEFAULT_VIDEO_CONVERSION_DIRECTORY);
+    }
+
+    public void setVideoConversionDirectory(String dir) {
+        setString("VideoConversionDirectory", dir);
+    }
+
+    public int getVideoConversionDiskLimit() {
+        return getInt("VideoConversionDiskLimit", 0);
+    }
+
+    public void setVideoConversionDiskLimit(int limit) { 
+        setInt("VideoConversionDiskLimit", limit); 
     }
 
     public String getLocalIpAddress() {

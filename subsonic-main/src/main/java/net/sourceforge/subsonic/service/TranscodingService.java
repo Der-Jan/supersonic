@@ -39,6 +39,7 @@ import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.Transcoding;
 import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.domain.VideoConversion;
 import net.sourceforge.subsonic.domain.VideoTranscodingSettings;
 import net.sourceforge.subsonic.io.TranscodeInputStream;
 import net.sourceforge.subsonic.util.StringUtil;
@@ -185,9 +186,14 @@ public class TranscodingService {
      * @return Parameters to be used in the {@link #getTranscodedInputStream} method.
      */
     public Parameters getParameters(MediaFile mediaFile, Player player, Integer maxBitRate, String preferredTargetFormat,
-                                    VideoTranscodingSettings videoTranscodingSettings) {
+                                    VideoTranscodingSettings videoTranscodingSettings, VideoConversion videoConversion) {
 
         Parameters parameters = new Parameters(mediaFile, videoTranscodingSettings);
+
+        if (videoConversion != null) {
+            parameters.setVideoConversion(videoConversion);
+            return parameters;
+        }
 
         TranscodeScheme transcodeScheme = getTranscodeScheme(player);
         if (maxBitRate == null && transcodeScheme != TranscodeScheme.OFF) {
@@ -199,7 +205,7 @@ public class TranscodingService {
         if (transcoding != null) {
             parameters.setTranscoding(transcoding);
             if (maxBitRate == null) {
-                maxBitRate = mediaFile.isVideo() ? VideoPlayerController.DEFAULT_BIT_RATE : TranscodeScheme.MAX_192.getMaxBitRate();
+                maxBitRate = mediaFile.isVideo() ? VideoPlayerController.DEFAULT_BIT_RATE : TranscodeScheme.MAX_320.getMaxBitRate();
             }
         } else if (maxBitRate != null) {
             boolean supported = isDownsamplingSupported(mediaFile);
@@ -359,6 +365,10 @@ public class TranscodingService {
             if (cmd.contains("%h") && videoTranscodingSettings != null) {
                 cmd = cmd.replace("%h", String.valueOf(videoTranscodingSettings.getHeight()));
             }
+            if (cmd.contains("%k") && videoTranscodingSettings != null) {
+                cmd = cmd.replace("%k", (videoTranscodingSettings.getAudioTrack() == null) ? "1" : String.valueOf(videoTranscodingSettings.getAudioTrack()));
+            }
+
             if (cmd.contains("%s")) {
 
                 // Work-around for filename character encoding problem on Windows.
@@ -501,6 +511,7 @@ public class TranscodingService {
         private final VideoTranscodingSettings videoTranscodingSettings;
         private Integer maxBitRate;
         private Transcoding transcoding;
+        private VideoConversion videoConversion;
 
         public Parameters(MediaFile mediaFile, VideoTranscodingSettings videoTranscodingSettings) {
             this.mediaFile = mediaFile;
@@ -542,5 +553,14 @@ public class TranscodingService {
         public VideoTranscodingSettings getVideoTranscodingSettings() {
             return videoTranscodingSettings;
         }
+
+        public void setVideoConversion(VideoConversion videoConversion) {
+            this.videoConversion = videoConversion;
+        }
+
+        public VideoConversion getVideoConversion() {
+            return videoConversion;
+        }
+
     }
 }

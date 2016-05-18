@@ -95,13 +95,12 @@
         }
 
         function addMessage() {
-            chatService.addMessage($("#message").val());
+            chatService.addMessage($("#message").val(), getMessagesCallback);
             $("#message").val(null);
-            setTimeout("startGetMessagesTimer()", 500);
         }
+
         function clearMessages() {
-            chatService.clearMessages();
-            setTimeout("startGetMessagesTimer()", 500);
+            chatService.clearMessages(getMessagesCallback);
         }
 
         function getMessagesCallback(messages) {
@@ -204,7 +203,7 @@
             </div>
             <div class="now-playing-when" style="margin-top:0.5em"></div>
         </div>
-        <a class="now-playing-album-link" target="main"><img class="now-playing-coverart" style="height:60px; width:60px; margin-left:0.4em"></a>
+        <a class="now-playing-album-link" target="main"><img class="now-playing-coverart" style="height:60px; width:60px; object-fit:cover; object-position:center; margin-left:0.4em"></a>
     </div>
 </div>
 

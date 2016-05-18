@@ -48,7 +48,7 @@ import net.sourceforge.subsonic.util.StringUtil;
  */
 public class HLSController implements Controller {
 
-    private static final int SEGMENT_DURATION = 40;
+    private static final int SEGMENT_DURATION = 10;
     private static final Pattern BITRATE_PATTERN = Pattern.compile("(\\d+)(@(\\d+)x(\\d+))?");
 
     private PlayerService playerService;
@@ -89,11 +89,13 @@ public class HLSController implements Controller {
         response.setContentType("application/vnd.apple.mpegurl");
         response.setCharacterEncoding(StringUtil.ENCODING_UTF8);
         List<Pair<Integer, Dimension>> bitRates = parseBitRates(request);
+		Integer audioTrack = getAudioTrack(request);
+		
         PrintWriter writer = response.getWriter();
         if (bitRates.size() > 1) {
-            generateVariantPlaylist(request, id, player, bitRates, writer);
+            generateVariantPlaylist(request, mediaFile, player, bitRates, audioTrack, writer);
         } else {
-            generateNormalPlaylist(request, mediaFile, player, bitRates.size() == 1 ? bitRates.get(0) : null, duration, writer);
+            generateNormalPlaylist(request, mediaFile, player, bitRates.size() == 1 ? bitRates.get(0) : null, audioTrack, duration, writer);
         }
 
         return null;
@@ -129,7 +131,7 @@ public class HLSController implements Controller {
         }
     }
 
-    private void generateVariantPlaylist(HttpServletRequest request, int id, Player player, List<Pair<Integer, Dimension>> bitRates, PrintWriter writer) {
+    private void generateVariantPlaylist(HttpServletRequest request, MediaFile file, Player player, List<Pair<Integer, Dimension>> bitRates, Integer audioTrack, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
 //        writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
@@ -138,17 +140,21 @@ public class HLSController implements Controller {
         for (Pair<Integer, Dimension> bitRate : bitRates) {
             Integer kbps = bitRate.getFirst();
             writer.println("#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=" + kbps * 1000L);
-            writer.print(contextPath + "hls/hls.m3u8?id=" + id + "&player=" + player.getId() + "&bitRate=" + kbps);
+            writer.print(contextPath + "hls/hls.m3u8?id=" + file.getId() + "&auth=" + file.getHash() + "&player=" + player.getId() + "&bitRate=" + kbps);
             Dimension dimension = bitRate.getSecond();
             if (dimension != null) {
                 writer.print("@" + dimension.width + "x" + dimension.height);
             }
+			if (audioTrack != null) {
+				writer.print("&audioTrack=" + audioTrack);
+			}
+			
             writer.println();
         }
 //        writer.println("#EXT-X-ENDLIST");
     }
 
-    private void generateNormalPlaylist(HttpServletRequest request, MediaFile file, Player player, Pair<Integer, Dimension> bitRate, int totalDuration, PrintWriter writer) {
+    private void generateNormalPlaylist(HttpServletRequest request, MediaFile file, Player player, Pair<Integer, Dimension> bitRate, Integer audioTrack, int totalDuration, PrintWriter writer) {
         writer.println("#EXTM3U");
         writer.println("#EXT-X-VERSION:1");
         writer.println("#EXT-X-TARGETDURATION:" + SEGMENT_DURATION);
@@ -156,19 +162,19 @@ public class HLSController implements Controller {
         for (int i = 0; i < totalDuration / SEGMENT_DURATION; i++) {
             int offset = i * SEGMENT_DURATION;
             writer.println("#EXTINF:" + SEGMENT_DURATION + ",");
-            writer.println(createStreamUrl(request, player, file, offset, SEGMENT_DURATION, bitRate));
+            writer.println(createStreamUrl(request, player, file, offset, SEGMENT_DURATION, bitRate, audioTrack));
         }
 
         int remainder = totalDuration % SEGMENT_DURATION;
         if (remainder > 0) {
             writer.println("#EXTINF:" + remainder + ",");
             int offset = totalDuration - remainder;
-            writer.println(createStreamUrl(request, player, file, offset, remainder, bitRate));
+            writer.println(createStreamUrl(request, player, file, offset, remainder, bitRate, audioTrack));
         }
         writer.println("#EXT-X-ENDLIST");
     }
 
-    private String createStreamUrl(HttpServletRequest request, Player player, MediaFile file, int offset, int duration, Pair<Integer, Dimension> bitRate) {
+    private String createStreamUrl(HttpServletRequest request, Player player, MediaFile file, int offset, int duration, Pair<Integer, Dimension> bitRate, Integer audioTrack) {
         StringBuilder builder = new StringBuilder();
         builder.append(getContextPath(request)).append("stream/stream.ts?id=").append(file.getId()).append("&auth=")
                .append(file.getHash()).append("&hls=true&timeOffset=").append(offset)
@@ -180,9 +186,17 @@ public class HLSController implements Controller {
                 builder.append("&size=").append(dimension.width).append("x").append(dimension.height);
             }
         }
+		if (audioTrack != null) {
+			builder.append("&audioTrack=").append(audioTrack);
+		}
+		
         return builder.toString();
     }
-
+	
+	private Integer getAudioTrack(HttpServletRequest request) throws Exception {
+		return ServletRequestUtils.getIntParameter(request, "audioTrack");
+	}
+	
     private String getContextPath(HttpServletRequest request) {
         String contextPath = request.getContextPath();
         if (StringUtils.isEmpty(contextPath)) {

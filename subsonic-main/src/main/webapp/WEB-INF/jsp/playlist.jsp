@@ -125,10 +125,10 @@
         }
 
         function onPlay(index) {
-            top.playQueue.onPlayPlaylist(playlist.id, index);
+            top.playQueue.onPlayPlaylist(playlist.id, false, index);
         }
         function onPlayAll() {
-            top.playQueue.onPlayPlaylist(playlist.id);
+            top.playQueue.onPlayPlaylist(playlist.id, false);
         }
         function onAdd(index) {
             top.playQueue.onAdd(songs[index].id);
@@ -166,8 +166,17 @@
             padding-right: 5px;
             margin-right: 5px;
         }
+        #playButton {
+            cursor: pointer;
+            font-size:24px;
+            color:#E65100;
+            margin-left:1.0em;
+            margin-right:0.5em;
+        }
+        #playButton:hover {
+            opacity: 0.8;
+        }
     </style>
-
 </head>
 <body class="mainframe bgcolor1" onload="init()">
 
@@ -178,26 +187,40 @@
 </c:import>
 </div>
 
-<h1><a href="playlists.view"><fmt:message key="left.playlists"/></a> &nbsp;&bull;&nbsp; <span id="name">${fn:escapeXml(model.playlist.name)}</span></h1>
-<h2>
-    <span class="header" style="padding-left:0"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
 
-    <c:if test="${model.user.downloadRole}">
-        <c:url value="download.view" var="downloadUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
-        | <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
-    </c:if>
-    <c:if test="${model.user.shareRole}">
-        <c:url value="createShare.view" var="shareUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
-        | <span class="header"><a href="${shareUrl}"><fmt:message key="share.title"/></a></span>
-    </c:if>
-    <c:if test="${model.editAllowed}">
-        | <span class="header"><a href="javascript:void(0)" onclick="onEditPlaylist();"><fmt:message key="common.edit"/></a></span>
-        | <span class="header"><a href="javascript:void(0)" onclick="onDeletePlaylist();"><fmt:message key="common.delete"/></a></span>
-    </c:if>
-    <c:url value="exportPlaylist.view" var="exportUrl"><c:param name="id" value="${model.playlist.id}"/></c:url>
-    | <span class="header"><a href="${exportUrl}"><fmt:message key="playlist2.export"/></a></span>
+<div style="display:flex; align-items:center">
 
-</h2>
+    <div style="flex-shrink:1" class="ellipsis">
+        <h1 class="ellipsis"><a href="playlists.view"><fmt:message key="left.playlists"/></a> &nbsp;&bull;&nbsp; <span id="name">${fn:escapeXml(model.playlist.name)}</span></h1>
+        <h2 class="ellipsis">
+            <span class="header" style="padding-left:0"><a href="javascript:void(0)" onclick="onPlayAll();"><fmt:message key="common.play"/></a></span>
+
+            <c:if test="${model.user.downloadRole}">
+                <c:url value="download.view" var="downloadUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
+                | <span class="header"><a href="${downloadUrl}"><fmt:message key="common.download"/></a></span>
+            </c:if>
+            <c:if test="${model.user.shareRole}">
+                <c:url value="createShare.view" var="shareUrl"><c:param name="playlist" value="${model.playlist.id}"/></c:url>
+                | <span class="header"><a href="${shareUrl}"><fmt:message key="share.title"/></a></span>
+            </c:if>
+            <c:if test="${model.editAllowed}">
+                | <span class="header"><a href="javascript:void(0)" onclick="onEditPlaylist();"><fmt:message key="common.edit"/></a></span>
+                | <span class="header"><a href="javascript:void(0)" onclick="onDeletePlaylist();"><fmt:message key="common.delete"/></a></span>
+            </c:if>
+            <c:url value="exportPlaylist.view" var="exportUrl"><c:param name="id" value="${model.playlist.id}"/></c:url>
+            | <span class="header"><a href="${exportUrl}"><fmt:message key="playlist2.export"/></a></span>
+        </h2>
+    </div>
+
+    <span id="playButton" class="fa-stack fa-lg" onclick="onPlayAll()">
+        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+        <i class="fa fa-play-circle fa-stack-2x"></i>
+    </span>
+
+</div>
+
+
+
 
 <div id="comment" class="detail" style="padding-top:0.2em">${fn:escapeXml(model.playlist.comment)}</div>
 

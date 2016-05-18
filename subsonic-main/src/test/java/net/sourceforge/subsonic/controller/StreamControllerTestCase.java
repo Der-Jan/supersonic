@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.controller;
 import java.awt.Dimension;
 
 import junit.framework.TestCase;
+import net.sourceforge.subsonic.util.Util;
 
 /**
  * @author Sindre Mehus
@@ -113,7 +114,7 @@ public class StreamControllerTestCase extends TestCase {
 
     private void doTestGetSuitableVideoSize(Integer existingWidth, Integer existingHeight, Integer maxBitRate, int expectedWidth, int expectedHeight) {
         StreamController controller = new StreamController();
-        Dimension dimension = controller.getSuitableVideoSize(existingWidth, existingHeight, maxBitRate);
+        Dimension dimension = Util.getSuitableVideoSize(existingWidth, existingHeight, maxBitRate);
         assertEquals("Wrong width.", expectedWidth, dimension.width);
         assertEquals("Wrong height.", expectedHeight, dimension.height);
     }

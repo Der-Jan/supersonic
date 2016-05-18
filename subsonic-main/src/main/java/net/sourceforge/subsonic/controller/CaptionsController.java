@@ -29,8 +29,10 @@ import java.io.Writer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -61,12 +63,16 @@ public class CaptionsController implements Controller {
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		return handleRequest(request, response, true);
+	}
+		
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response, boolean authenticate) throws Exception
+	{
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         String requiredFormat = request.getParameter("format");
         MediaFile video = mediaFileService.getMediaFile(id);
 
-        if (!securityService.isAuthenticated(video, request)) {
+        if ((authenticate) &&!securityService.isAuthenticated(video, request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access to file " + id + " is forbidden");
             return null;
         }
@@ -83,9 +89,10 @@ public class CaptionsController implements Controller {
 
         String actualFormat = FilenameUtils.getExtension(captionsFile.getName());
         if (requiredFormat == null || requiredFormat.equalsIgnoreCase(actualFormat)) {
-            Files.copy(captionsFile, response.getOutputStream());
+            send(captionsFile, response, actualFormat);
         } else if (CAPTION_FORMAT_SRT.equals(actualFormat) &&
                    CAPTION_FORMAT_VTT.equals(requiredFormat)) {
+			response.setContentType("text/vtt");
             convertAndSend(captionsFile, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -94,19 +101,45 @@ public class CaptionsController implements Controller {
         return null;
     }
 
+    private void send(File captionsFile, HttpServletResponse response, String format) throws IOException {
+        if (CAPTION_FORMAT_VTT.equals(format)) {
+            Files.copy(captionsFile, response.getOutputStream());
+        } else {
+
+            BOMInputStream bomInputStream = null;
+            Reader reader = null;
+            try {
+                bomInputStream = new BOMInputStream(new FileInputStream(captionsFile));
+                String encoding = ByteOrderMark.UTF_8.equals(bomInputStream.getBOM()) ? StringUtil.ENCODING_UTF8 : StringUtil.ENCODING_LATIN;
+
+                reader = new InputStreamReader(bomInputStream, encoding);
+                IOUtils.copy(reader, response.getOutputStream(), StringUtil.ENCODING_UTF8);
+            } finally {
+                IOUtils.closeQuietly(bomInputStream);
+                IOUtils.closeQuietly(reader);
+            }
+        }
+    }
+
     private void convertAndSend(File captionsFile, HttpServletResponse response) throws IOException {
-        Reader reader = new InputStreamReader(new FileInputStream(captionsFile), StringUtil.ENCODING_UTF8);
+        BOMInputStream bomInputStream = null;
+        Reader reader = null;
         try {
+            bomInputStream = new BOMInputStream(new FileInputStream(captionsFile));
+            String encoding = ByteOrderMark.UTF_8.equals(bomInputStream.getBOM()) ? StringUtil.ENCODING_UTF8 : StringUtil.ENCODING_LATIN;
+
+            reader = new InputStreamReader(bomInputStream, encoding);
             Writer writer = new OutputStreamWriter(response.getOutputStream(), StringUtil.ENCODING_UTF8);
             SrtToVtt.convert(reader, writer);
         } finally {
+            IOUtils.closeQuietly(bomInputStream);
             IOUtils.closeQuietly(reader);
         }
     }
 
     public File findCaptionsVideo(MediaFile video) {
         File file = video.getFile();
-        String videoFileBaseName = FilenameUtils.getBaseName(file.getName()).replace(".streamable", "");
+        String videoFileBaseName = FilenameUtils.getBaseName(file.getName());
 
         for (File candidate : file.getParentFile().listFiles()) {
             for (String format : CAPTIONS_FORMATS) {

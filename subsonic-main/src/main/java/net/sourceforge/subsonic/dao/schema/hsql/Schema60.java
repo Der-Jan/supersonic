@@ -57,15 +57,19 @@ public class Schema60 extends Schema {
                              "created datetime not null," +
                              "changed datetime not null," +
                              "started datetime," +
-                             "foreign key (media_file_id) references media_file(id) on delete cascade,"+
-                             "foreign key (username) references user(username) on delete cascade)");
-
+                             "foreign key (media_file_id) references media_file(id) on delete cascade)");
             template.execute("create index idx_video_conversion_media_file_id on video_conversion(media_file_id)");
             template.execute("create index idx_video_conversion_status on video_conversion(status)");
 
             LOG.info("Database table 'video_conversion' was created successfully.");
         }
-
+		
+		if (!columnExists(template, "target_file", "video_conversion")) {
+			template.execute("alter table video_conversion add target_file varchar");
+			template.execute("alter table video_conversion add log_file varchar");
+			template.execute("alter table video_conversion add bit_rate int");
+		}
+		
         if (template.queryForInt("select count(*) from role where id = 12") == 0) {
             LOG.info("Role 'video_conversion' not found in database. Creating it.");
             template.execute("insert into role values (12, 'video_conversion')");
@@ -74,5 +78,12 @@ public class Schema60 extends Schema {
                              "where u.username = ur.username and ur.role_id = 1");
             LOG.info("Role 'video_conversion' was created successfully.");
         }
+
+        if (!columnExists(template, "show_index_in_side_bar", "user_settings")) {
+            LOG.info("Database column 'user_settings.show_index_in_side_bar' not found.  Creating it.");
+            template.execute("alter table user_settings add show_index_in_side_bar boolean default false not null");
+            LOG.info("Database column 'user_settings.show_index_in_side_bar' was added successfully.");
+        }
+
     }
 }

@@ -5,14 +5,14 @@
     <style type="text/css">
         body a {text-decoration: underline;}
         .more-header {padding-top: 1em; padding-bottom: 0.3em;}
-        .more-shortcut {font-weight: 500; padding-left: 2em; padding-right: 0.5em;}
+        .more-shortcut {font-weight: 600; padding-left: 2em; padding-right: 0.5em;}
         .more-shortcut-descr {padding-left: 1em; padding-right: 3em; font-weight: 300;}
         #progressBar {width: 350px; height: 10px; border: 1px solid black; display:none;}
         #progressBarContent {width: 0; height: 10px; background: url("<c:url value="/icons/default_light/progress.png"/>") repeat;}
     </style>
-    <script type="text/javascript" src="<c:url value="/dwr/interface/transferService.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/transferService.js"/>"></script>
 
     <script type="text/javascript">
         function refreshProgress() {
@@ -155,25 +155,30 @@
     <tr>
         <td class="more-shortcut"><i class="fa fa-long-arrow-right"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.next"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> p</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.playlists"/></td>
-        <td class="more-shortcut">?</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.shortcuts"/></td>
+        <td class="more-shortcut">q</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.playqueue"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">Shift <i class="fa fa-long-arrow-left"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.seekbackward"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> o</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.podcasts"/></td>
-        <td></td><td></td>
+        <td class="more-shortcut">l</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.listgrid"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">Shift <i class="fa fa-long-arrow-right"></i></td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.seekforward"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> s</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.settings"/></td>
-        <td></td><td></td>
+        <td class="more-shortcut">?</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.shortcuts"/></td>
     </tr>
     <tr>
         <td class="more-shortcut">&ndash;</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.volumedown"/></td>
-        <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> t</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.starred"/></td>
+        <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> d</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.radio"/></td>
         <td></td><td></td>
     </tr>
     <tr>
         <td class="more-shortcut">+</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.volumeup"/></td>
+        <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> t</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.starred"/></td>
+        <td></td><td></td>
+    </tr>
+    <tr>
+        <td class="more-shortcut">*</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.star"/></td>
         <td class="more-shortcut">g <fmt:message key="more.keyboard.then"/> r</td><td class="more-shortcut-descr"><fmt:message key="more.keyboard.more"/></td>
         <td></td><td></td>
     </tr>

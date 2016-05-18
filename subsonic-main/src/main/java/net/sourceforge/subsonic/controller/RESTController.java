@@ -18,6 +18,8 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.subsonic.restapi.AlbumID3;
+import org.subsonic.restapi.AudioTrack;
 import org.subsonic.restapi.AlbumInfo;
 import org.subsonic.restapi.AlbumList;
 import org.subsonic.restapi.AlbumList2;
@@ -47,6 +50,7 @@ import org.subsonic.restapi.ArtistInfo2;
 import org.subsonic.restapi.ArtistWithAlbumsID3;
 import org.subsonic.restapi.ArtistsID3;
 import org.subsonic.restapi.Bookmarks;
+import org.subsonic.restapi.Captions;
 import org.subsonic.restapi.ChatMessage;
 import org.subsonic.restapi.ChatMessages;
 import org.subsonic.restapi.Child;
@@ -81,6 +85,7 @@ import org.subsonic.restapi.Starred;
 import org.subsonic.restapi.Starred2;
 import org.subsonic.restapi.TopSongs;
 import org.subsonic.restapi.Users;
+import org.subsonic.restapi.VideoInfo;
 import org.subsonic.restapi.Videos;
 
 import net.sourceforge.subsonic.Logger;
@@ -98,6 +103,8 @@ import net.sourceforge.subsonic.domain.Album;
 import net.sourceforge.subsonic.domain.AlbumNotes;
 import net.sourceforge.subsonic.domain.Artist;
 import net.sourceforge.subsonic.domain.ArtistBio;
+import net.sourceforge.subsonic.domain.Avatar;
+import net.sourceforge.subsonic.domain.AvatarScheme;
 import net.sourceforge.subsonic.domain.Bookmark;
 import net.sourceforge.subsonic.domain.Genre;
 import net.sourceforge.subsonic.domain.InternetRadio;
@@ -121,6 +128,7 @@ import net.sourceforge.subsonic.domain.Share;
 import net.sourceforge.subsonic.domain.TranscodeScheme;
 import net.sourceforge.subsonic.domain.User;
 import net.sourceforge.subsonic.domain.UserSettings;
+import net.sourceforge.subsonic.domain.VideoConversion.Status;
 import net.sourceforge.subsonic.service.AudioScrobblerService;
 import net.sourceforge.subsonic.service.JukeboxService;
 import net.sourceforge.subsonic.service.LastFmService;
@@ -136,6 +144,9 @@ import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.ShareService;
 import net.sourceforge.subsonic.service.StatusService;
 import net.sourceforge.subsonic.service.TranscodingService;
+import net.sourceforge.subsonic.service.VideoConversionService;
+import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.Track;
 import net.sourceforge.subsonic.util.Pair;
 import net.sourceforge.subsonic.util.StringUtil;
 import net.sourceforge.subsonic.util.Util;
@@ -163,6 +174,8 @@ public class RESTController extends MultiActionController {
     private LastFmService lastFmService;
     private MusicIndexService musicIndexService;
     private TranscodingService transcodingService;
+	private VideoConversionService videoConversionService;
+	private CaptionsController captionsController;
     private DownloadController downloadController;
     private CoverArtController coverArtController;
     private AvatarController avatarController;
@@ -205,7 +218,7 @@ public class RESTController extends MultiActionController {
     public void ping(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Response res = createResponse();
         jaxbWriter.writeResponse(request, response, res);
-    }
+	}
 
     @SuppressWarnings("UnusedDeclaration")
     public void getLicense(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1014,6 +1027,7 @@ public class RESTController extends MultiActionController {
     public void createPlaylist(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request, true);
         String username = securityService.getCurrentUsername(request);
+		Player player = playerService.getPlayer(request, response);
 
         Integer playlistId = getIntParameter(request, "playlistId");
         String name = request.getParameter("name");
@@ -1052,7 +1066,17 @@ public class RESTController extends MultiActionController {
         }
         playlistService.setFilesInPlaylist(playlist.getId(), songs);
 
-        writeEmptyResponse(request, response);
+		playlist = playlistService.getPlaylist(playlist.getId());
+		PlaylistWithSongs result = (PlaylistWithSongs)createJaxbPlaylist(new PlaylistWithSongs(), playlist);
+		for (MediaFile mediaFile : playlistService.getFilesInPlaylist(playlist.getId())) {
+			if (securityService.isFolderAccessAllowed(mediaFile, username)) {
+				result.getEntry().add(createJaxbChild(player, mediaFile, username));
+			}
+		}
+		
+		Response res = createResponse();
+		res.setPlaylist(result);
+		jaxbWriter.writeResponse(request, response, res);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -1280,7 +1304,59 @@ public class RESTController extends MultiActionController {
         res.setVideos(result);
         jaxbWriter.writeResponse(request, response, res);
     }
-
+	
+	public void getVideoInfo(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		request = wrapRequest(request);
+		String username = securityService.getCurrentUsername(request);
+	
+		int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+		MediaFile video = mediaFileDao.getMediaFile(id);
+		if ((video == null) || (!video.isVideo())) {
+			error(request, response, ErrorCode.NOT_FOUND, "Video not found.");
+			return;
+		}
+		if (!securityService.isFolderAccessAllowed(video, username)) {
+			error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
+			return;
+		}
+	
+		VideoInfo result = new VideoInfo();
+		result.setId(String.valueOf(id));
+	
+		net.sourceforge.subsonic.domain.VideoConversion conversion = videoConversionService.getVideoConversionForFile(id);
+		if ((conversion != null) && (conversion.getStatus() == net.sourceforge.subsonic.domain.VideoConversion.Status.COMPLETED)) {
+			org.subsonic.restapi.VideoConversion restConversion = new org.subsonic.restapi.VideoConversion();
+			restConversion.setId(String.valueOf(conversion.getId()));
+			restConversion.setAudioTrackId(conversion.getAudioTrackId());
+			restConversion.setBitRate(conversion.getBitRate());
+			result.getConversion().add(restConversion);
+		}
+	
+		File captionsFile = captionsController.findCaptionsVideo(video);
+		if (captionsFile != null) {
+			Captions captions = new Captions();
+			captions.setId("0");
+			captions.setName(captionsFile.getName());
+			result.getCaptions().add(captions);
+		}
+	
+		MetaData videoMetaData = videoConversionService.getVideoMetaData(video);
+		if (videoMetaData != null) {
+			for (Track track : videoMetaData.getAudioTracks()) {
+				AudioTrack restTrack = new AudioTrack();
+				restTrack.setId(String.valueOf(track.getId()));
+				restTrack.setName(track.getLanguageName());
+				restTrack.setLanguageCode(track.getLanguage());
+				result.getAudioTrack().add(restTrack);
+			}
+		}
+	
+		Response res = createResponse();
+		res.setVideoInfo(result);
+		jaxbWriter.writeResponse(request, response, res);
+	}
+	
     @SuppressWarnings("UnusedDeclaration")
     public void getNowPlaying(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
@@ -1352,7 +1428,6 @@ public class RESTController extends MultiActionController {
             String suffix = mediaFile.getFormat();
             child.setSuffix(suffix);
             child.setContentType(StringUtil.getMimeType(suffix));
-            child.setIsVideo(mediaFile.isVideo());
             child.setPath(getRelativePath(mediaFile));
 
             Bookmark bookmark = bookmarkCache.get(new BookmarkKey(username, mediaFile.getId()));
@@ -1386,6 +1461,7 @@ public class RESTController extends MultiActionController {
                     child.setType(MediaType.VIDEO);
                     child.setOriginalWidth(mediaFile.getWidth());
                     child.setOriginalHeight(mediaFile.getHeight());
+		            child.setIsVideo(true);
                     break;
                 default:
                     break;
@@ -1491,7 +1567,25 @@ public class RESTController extends MultiActionController {
         hlsController.handleRequest(request, response, false);
         return null;
     }
-
+	
+	public ModelAndView getCaptions(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request = wrapRequest(request);
+		User user = securityService.getCurrentUser(request);
+		int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+		MediaFile video = mediaFileDao.getMediaFile(id);
+		if ((video == null) || (video.isDirectory())) {
+			error(request, response, ErrorCode.NOT_FOUND, "Video not found.");
+			return null;
+		}
+		if (!securityService.isFolderAccessAllowed(video, user.getUsername())) {
+			error(request, response, ErrorCode.NOT_AUTHORIZED, "Access denied");
+			return null;
+		}
+	
+		captionsController.handleRequest(request, response, false);
+		return null;
+	}
+	
     @SuppressWarnings("UnusedDeclaration")
     public void scrobble(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
@@ -2119,6 +2213,7 @@ public class RESTController extends MultiActionController {
         result.setJukeboxRole(user.isJukeboxRole());
         result.setShareRole(user.isShareRole());
         result.setVideoConversionRole(user.isVideoConversionRole());
+		result.setAvatarLastChanged(jaxbWriter.convertDate(getAvatarLastChanged(userSettings)));
 
         TranscodeScheme transcodeScheme = userSettings.getTranscodeScheme();
         if (transcodeScheme != null && transcodeScheme != TranscodeScheme.OFF) {
@@ -2132,6 +2227,20 @@ public class RESTController extends MultiActionController {
         return result;
     }
 
+	private Date getAvatarLastChanged(UserSettings userSettings) {
+		Avatar avatar = null;
+		if (userSettings.getAvatarScheme() == AvatarScheme.CUSTOM) {
+			avatar = settingsService.getCustomAvatar(userSettings.getUsername());
+		} else if (userSettings.getAvatarScheme() == AvatarScheme.SYSTEM) {
+			avatar = settingsService.getSystemAvatar(userSettings.getSystemAvatarId().intValue());
+		}
+	
+		if (avatar == null) {
+			return userSettings.getChanged();
+		}
+		return new Date(Math.max(avatar.getCreatedDate().getTime(), userSettings.getChanged().getTime()));
+	}
+	
     @SuppressWarnings("UnusedDeclaration")
     public void createUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request = wrapRequest(request);
@@ -2510,6 +2619,14 @@ public class RESTController extends MultiActionController {
         this.playQueueDao = playQueueDao;
     }
 
+	public void setVideoConversionService(VideoConversionService videoConversionService) {
+		this.videoConversionService = videoConversionService;
+	}
+	
+	public void setCaptionsController(CaptionsController captionsController) {
+		this.captionsController = captionsController;
+	}
+	
     public enum ErrorCode {
 
         GENERIC(0, "A generic error."),
@@ -2517,6 +2634,7 @@ public class RESTController extends MultiActionController {
         PROTOCOL_MISMATCH_CLIENT_TOO_OLD(20, "Incompatible Subsonic REST protocol version. Client must upgrade."),
         PROTOCOL_MISMATCH_SERVER_TOO_OLD(30, "Incompatible Subsonic REST protocol version. Server must upgrade."),
         NOT_AUTHENTICATED(40, "Wrong username or password."),
+		NOT_AUTHENTICATED_LDAP(41, "Token authentication not supported for LDAP users"),
         NOT_AUTHORIZED(50, "User is not authorized for the given operation."),
         NOT_LICENSED(60, "The trial period for the Subsonic server is over. Please upgrade to Subsonic Premium. Visit subsonic.org for details."),
         NOT_FOUND(70, "Requested data was not found.");

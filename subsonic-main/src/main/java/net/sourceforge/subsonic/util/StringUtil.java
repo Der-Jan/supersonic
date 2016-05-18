@@ -509,7 +509,7 @@ public final class StringUtil {
                     URL customUrl = new URL(urlRedirectCustomUrl);
                     urlBuilder.setProtocol(customUrl.getProtocol());
                     urlBuilder.setHost(customUrl.getHost());
-                    urlBuilder.setPort(localPort);
+                    urlBuilder.setPort(customUrl.getPort());
                 }
 
             } else {

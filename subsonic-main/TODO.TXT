@@ -1,5 +1,98 @@
+DONE IN 6.0
+-----------
+playqueue: Replace JW Player with native HTML5 audio.
+Bugfix: Play queue doesn't collapse in Firefox.
+Hide left menu by default.
+Bugfix: Play queue shows wrong format for transcoded files.
+Bugfix: Play count and "last played" not always updated.
+New page for playing internet radio stations.
+Added "View as list" option for podcasts, playlists and starred pages.
+Show last 100 chat messages (instead of 10)
+Added option "Show index in left sidebar" in Settings > Personal
+Bugfix: Unstarring from starred.jsp broken
+Add button to show/hide play queue. Only visible if "Settings > Personal > Auto-expand play queue" is selected.
+Add button to star currently playing song (keyboard shortcut "*")
+Add repeat button
+Keyboard shortcut "q" to toggle play queue.
+Index page: Use tabs for media folders.
+Self-host fonts.
+Use Open Sans font.
+
 TODO IN 6.0
 ------------
+External player broken
+  http://forum.subsonic.org/forum/viewtopic.php?f=2&t=16084
+
+Preconvert audio?
+
+Test with SONOS
+  Also transcoded
+Uncaught SyntaxError: Unexpected identifier
+
+Use BrowserStack for testing.
+
+https://www.wowza.com/forums/content.php?213-How-to-use-FFmpeg-with-Wowza-Media-Server-(MPEG-TS)
+https://ffmpeg.org/ffmpeg-formats.html#segment_002c-stream_005fsegment_002c-ssegment
+ffmpeg hls works without audio
+Put audio in separate track?
+https://en.wikipedia.org/wiki/Presentation_timestamp
+
+ffmpeg -ss %o -t %d -i %s -async 1 -b:v %bk -s %wx%h -ar 44100 -ac 2 -f mpegts -c:v libx264 -preset superfast -x264-params keyint=125:no-scenecut=1 -c:a libmp3lame -b:a 128k -threads 0 -
+
+Upgrade ffmpeg.
+
+Video conversion:
+  Allow m4v (mp4, m4v, f4v, mov)
+  Rephrase to "optimize"
+  Configurable directory (default SUBSONIC_HOME/conversion)
+  Configurable disk usage threshold
+  Store path to target file and log file in db
+  Add control panel
+  Automatic delete if target file missing.
+
+Use <!DOCTYPE html>
+
+Fix sorting in index.
+
+Use premium icon.
+
+Jwplayer
+  1 mill plays / month
+  10 websites
+
+Use timeoffset, without ranges.
+Test with Subsonic 5.3, without Flash.
+
+HLS
+  Use jwplayer?
+    Supported on Safari and Edge
+    Falls back to Flash on other browsers.
+  http://www.flashls.org/latest/examples/chromeless/
+
+IE: Shows spinner if playlist empty.
+
+DASH
+  http://castlabs.com/open-source/dashas/ (Flash)
+    Seems to use range requests
+  http://www.dash-player.com/demo/multi-language-and-multi-audio/
+  manifest validator: http://dashif.org/software/
+  http://www.dash-player.com/blog/2014/11/mpeg-dash-content-generation-using-mp4box-and-x264/
+  http://dashif.org/reference/players/javascript/1.4.0/samples/dash-if-reference-player/
+  http://dashif.org/reference/players/javascript/1.4.0/samples/
+    Seems to work in all browsers? Buggy in Safari and Firefox
+
+Make it work with Edge and qutebrowser.
+Podcast:
+  Doesn't play on demo.subsonic.org
+  Title doesn't show
+
+Video: Feature-detect HLS support?
+
+Rename "Save/Load play queue" to "Save/Load bookmark"?
+   http://forum.subsonic.org/forum/viewtopic.php?f=3&t=16368&sid=f893f69cd8b78513d949b968a84c1db9&p=70040#p70040
+
+Update recommended transcoding settings on web.
+Create hover effect in top and left.
 REST authentication not supported for LDAP users.
   https://mail.google.com/mail/ca/u/0/#inbox/14fc35534d00d8e4
   https://sourceforge.net/p/subsonic/bugs/158/
@@ -15,7 +108,6 @@ HTML5 player?
   Cast background image
   Jukebox: Doesn't update when clearing.
 Ellipsise buttons in left.jsp
-Make it simple to star currently playing song.
 createShare.jsp using path for back button
 Update dsub in apps page
 
@@ -986,7 +1078,7 @@ Check that correct local version is displayed.
 Upload files to SourceForge (in separate shell, REMEMBER TO CHANGE VERSION BELOW). 
 
 On Mac OS:
-  scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.3/
+  scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/6.0.beta1/
   scp subsonic-installer-mac/target/subsonic-*.pkg subsonic-assembly/target/subsonic* root@subsonic.org:/var/lib/tomcat/download/
 
 On Windows
@@ -994,7 +1086,7 @@ On Windows
   svn info
   svn update
   mvn clean install -Pfull
-  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.3/
+  scp subsonic-installer-windows/target/subsonic*-setup.exe  sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/6.0.beta1/
   scp subsonic-installer-windows/target/subsonic*-setup.exe  root@subsonic.org:/var/lib/tomcat/download/
 
 On demo.subsonic.org (Ubuntu)
@@ -1005,7 +1097,7 @@ On demo.subsonic.org (Ubuntu)
   mvn clean -Pfull,debian
   svn st
   mvn install -Pfull,debian
-  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.3/
+  scp subsonic-installer-debian/target/subsonic*.deb sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/6.0.beta1/
   scp subsonic-installer-debian/target/subsonic*.deb root@subsonic.org:/var/lib/tomcat/download/
 
 On subsonic.org (Fedora)
@@ -1016,7 +1108,7 @@ On subsonic.org (Fedora)
   mvn clean -Pfull,rpm
   svn st
   mvn install -Pfull,rpm
-  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/5.3/
+  scp subsonic-installer-rpm/target/subsonic*.rpm sindre_mehus,subsonic@frs.sourceforge.net:/home/frs/project/s/su/subsonic/subsonic/6.0.beta1/
 #  scp subsonic-installer-rpm/target/subsonic*.rpm root@subsonic.org:/usr/local/jakarta/tomcat/download/
   cp subsonic-installer-rpm/target/subsonic*.rpm /var/lib/tomcat/download/
 
@@ -1026,7 +1118,7 @@ Modify FRS properties
 Upload site (OLD):
  rsync -avP -e ssh --exclude ".*" subsonic-web/  sindre_mehus,subsonic@web.sourceforge.net:htdocs/
 
-svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-5.3 -m "Tagging 5.3"
+svn copy svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/trunk svn+ssh://sindre_mehus@svn.code.sf.net/p/subsonic/code/tags/release-6.0.beta1 -m "Tagging 6.0.beta1"
 Post message on forum.
 
 Checking for license abuse:
@@ -1036,17 +1128,17 @@ order by n desc
 
 Update subsonic.org
 -----------------------------------
-mkdir /var/lib/tomcat/webapps-2015-10-25/
-scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/ROOT.war
-scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2015-10-25/pages.war
+mkdir /var/lib/tomcat/webapps-2016-02-05/
+scp subsonic-backend/target/subsonic-backend-*.war root@subsonic.org:/var/lib/tomcat/webapps-2016-02-05/ROOT.war
+scp subsonic-site/target/pages.war root@subsonic.org:/var/lib/tomcat/webapps-2016-02-05/pages.war
 
 cd /var/lib/tomcat
-chown -R tomcat:tomcat webapps-2015-10-25
+chown -R tomcat:tomcat webapps-2016-02-05
 Checkpoint database (db.view)
 ps -elf | grep tomcat
 systemctl stop tomcat
 rm webapps
-ln -s webapps-2015-10-25 webapps
+ln -s webapps-2016-02-05 webapps
 ln -s /var/lib/tomcat/download webapps/download
 ll webapps/
 rm -rf work logs/*
@@ -1055,13 +1147,13 @@ tail -f /var/subsonic-backend/subsonic-backend.log
 
 Update demo.subsonic.org (192.157.241.116)
 ------------------------------------------
-mkdir /var/lib/tomcat6/webapps-2015-10-25/
-scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2015-10-25/ROOT.war
+mkdir /var/lib/tomcat6/webapps-2016-02-05/
+scp subsonic-main/target/subsonic.war root@demo.subsonic.org:/var/lib/tomcat6/webapps-2016-02-05/ROOT.war
 service tomcat6 stop
 cd /var/lib/tomcat6/
 rm -rf work/Catalina logs/*
 rm webapps
-ln -s webapps-2015-10-25 webapps
+ln -s webapps-2016-02-05 webapps
 ll webapps/
 service tomcat6 start
 tail -f /var/subsonic/subsonic.log

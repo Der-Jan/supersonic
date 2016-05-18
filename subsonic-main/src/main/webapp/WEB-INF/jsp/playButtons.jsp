@@ -42,14 +42,14 @@ PARAMETERS
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <i class="fa fa-plus clickable icon" title="<fmt:message key="main.addlast"/>"
-       onclick="top.playQueue.onAdd(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addlast.toast"/>')"></i>
+       onclick="top.playQueue.onAdd(${param.id})"></i>
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 
 <c:if test="${param.asTable}"><td class="fit"></c:if>
 <c:if test="${(empty param.addEnabled or param.addEnabled) and not param.video}">
     <i class="fa fa-arrow-right clickable icon" title="<fmt:message key="main.addnext"/>"
-       onclick="top.playQueue.onAddNext(${param.id}); $().toastmessage('showSuccessToast', '<fmt:message key="main.addnext.toast"/>')"></i>
+       onclick="top.playQueue.onAddNext(${param.id})"></i>
 </c:if>
 <c:if test="${param.asTable}"></td></c:if>
 

@@ -83,7 +83,7 @@
 
 <h1 id="name"><a href="podcastChannels.view"><fmt:message key="podcastreceiver.title"/></a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;${fn:escapeXml(model.channel.title)}</h1>
 <h2>
-    <span class="header" style="padding-left:0"><a href="javascript:top.playQueue.onPlayPodcastChannel(${model.channel.id})"><fmt:message key="common.play"/></a></span>
+    <span class="header" style="padding-left:0"><a href="javascript:top.playQueue.onPlayPodcastChannel(${model.channel.id}, false)"><fmt:message key="common.play"/></a></span>
 
     <c:if test="${model.user.podcastRole}">
         | <span class="header"><a href="javascript:deleteChannel()"><fmt:message key="common.delete"/></a></span>

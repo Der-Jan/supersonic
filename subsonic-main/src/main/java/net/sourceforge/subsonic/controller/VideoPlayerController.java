@@ -18,7 +18,10 @@
  */
 package net.sourceforge.subsonic.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,17 +31,19 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import net.sourceforge.subsonic.domain.MediaFile;
 import net.sourceforge.subsonic.domain.Player;
 import net.sourceforge.subsonic.domain.User;
+import net.sourceforge.subsonic.domain.VideoConversion;
+import net.sourceforge.subsonic.domain.VideoConversion.Status;
 import net.sourceforge.subsonic.service.MediaFileService;
 import net.sourceforge.subsonic.service.PlayerService;
 import net.sourceforge.subsonic.service.SecurityService;
 import net.sourceforge.subsonic.service.SettingsService;
 import net.sourceforge.subsonic.service.VideoConversionService;
 import net.sourceforge.subsonic.service.metadata.MetaData;
+import net.sourceforge.subsonic.service.metadata.Track;
 import net.sourceforge.subsonic.util.StringUtil;
 
 /**
@@ -63,39 +68,46 @@ public class VideoPlayerController extends ParameterizableViewController {
         int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
         MediaFile file = mediaFileService.getMediaFile(id);
 
-        if (!isStreamable(file)) {
-            return new ModelAndView(new RedirectView("videoConverter.view?id=" + id));
-        }
-
         User user = securityService.getCurrentUser(request);
         Map<String, Object> map = new HashMap<String, Object>();
         Integer position = ServletRequestUtils.getIntParameter(request, "position");
         mediaFileService.populateStarredDate(file, user.getUsername());
 
-        Integer duration = file.getDurationSeconds();
+		boolean converted = isConverted(file);
+		boolean streamable = (converted) || (videoConversionService.isStreamable(file));
+		boolean castable = (converted) || (isCastable(file));
+		Integer duration = file.getDurationSeconds();
         Player player = playerService.getPlayer(request, response);
+		
+		List<Track> audioTracks = Collections.emptyList();
+		if (!streamable) {
+			MetaData metaData = videoConversionService.getVideoMetaData(file);
+			if (metaData != null) {
+				audioTracks = metaData.getAudioTracks();
+			}
+		}
+		
         String url = request.getRequestURL().toString();
-        String streamUrl = url.replaceFirst("/videoPlayer.view.*", "/stream?id=" + file.getId() + "&auth=" + file.getHash() + "&player=" + player.getId() + "&format=raw");
-        String coverArtUrl = url.replaceFirst("/videoPlayer.view.*", "/coverArt.view?id=" + file.getId() + "&auth=" + file.getHash());
-        String captionsUrl = url.replaceFirst("/videoPlayer.view.*", "/captions.view?id=" + file.getId() + "&auth=" + file.getHash());
-
+		String baseUrl = url.replaceFirst("/videoPlayer.view.*", "/");
+		
         // Rewrite URLs in case we're behind a proxy.
         if (settingsService.isRewriteUrlEnabled()) {
             String referer = request.getHeader("referer");
-            streamUrl = StringUtil.rewriteUrl(streamUrl, referer);
-            coverArtUrl = StringUtil.rewriteUrl(coverArtUrl, referer);
-            captionsUrl = StringUtil.rewriteUrl(captionsUrl, referer);
+			baseUrl = StringUtil.rewriteUrl(baseUrl, referer);
         }
 
-        String remoteStreamUrl = settingsService.rewriteRemoteUrl(streamUrl);
-        String remoteCoverArtUrl = settingsService.rewriteRemoteUrl(coverArtUrl);
-        String remoteCaptionsUrl = settingsService.rewriteRemoteUrl(captionsUrl);
+		String remoteBaseUrl = this.settingsService.rewriteRemoteUrl(baseUrl);
 
         map.put("video", file);
+		map.put("converted", Boolean.valueOf(converted));
+		map.put("streamable", Boolean.valueOf(streamable));
+		map.put("castable", Boolean.valueOf(castable));
+		map.put("contentType", (streamable) ? "video/mp4" : StringUtil.getMimeType(file.getFormat()));
+		map.put("audioTracks", audioTracks);
+		map.put("ancestors", mediaFileService.getAncestorsOf(file));
+		map.put("musicFolder", settingsService.getMusicFolderByPath(file.getFolder()));
         map.put("hasCaptions", captionsController.findCaptionsVideo(file) != null);
-        map.put("remoteStreamUrl", remoteStreamUrl);
-        map.put("remoteCoverArtUrl", remoteCoverArtUrl);
-        map.put("remoteCaptionsUrl", remoteCaptionsUrl);
+        map.put("remoteBaseUrl", remoteBaseUrl);
         map.put("duration", duration);
         map.put("position", position);
         map.put("licenseInfo", settingsService.getLicenseInfo());
@@ -107,24 +119,14 @@ public class VideoPlayerController extends ParameterizableViewController {
         return result;
     }
 
-    private boolean isStreamable(MediaFile file) {
-        if (!StringUtils.equalsIgnoreCase("mp4", file.getFormat())) {
-            return false;
-        }
+	private boolean isCastable(MediaFile file) {
+		return Arrays.asList(new String[] { "mp4", "m4v", "mkv" }).contains(StringUtils.lowerCase(file.getFormat()));
+	}
 
-        // Only h264/aac/mp3 codecs are generally supported.
-        MetaData metaData = videoConversionService.getVideoMetaData(file);
-        if (metaData == null) {
-            return true;
-        }
-        if (!metaData.getVideoTracks().isEmpty() && !metaData.getVideoTracks().get(0).isStreamable()) {
-            return false;
-        }
-        if (!metaData.getAudioTracks().isEmpty() && !metaData.getAudioTracks().get(0).isStreamable()) {
-            return false;
-        }
-        return true;
-    }
+	private boolean isConverted(MediaFile file) {
+		VideoConversion conversion = videoConversionService.getVideoConversionForFile(file.getId());
+		return (conversion != null) && (conversion.getStatus() == VideoConversion.Status.COMPLETED);
+	}
 
     public void setMediaFileService(MediaFileService mediaFileService) {
         this.mediaFileService = mediaFileService;
