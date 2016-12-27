@@ -43,7 +43,7 @@ public class Schema38 extends Schema {
 
         if (!columnExists(template, "client_id", "player")) {
             LOG.info("Database column 'player.client_id' not found.  Creating it.");
-            template.execute("alter table player add client_id varchar");
+            template.execute("alter table player add client_id varchar(4096)");
             LOG.info("Database column 'player.client_id' was added successfully.");
         }
 

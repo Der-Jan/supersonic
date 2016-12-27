@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -99,7 +100,7 @@ public class PlayerDao extends AbstractDao {
         String sql = "insert into player (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")";
         update(sql, player.getId(), player.getName(), player.getType(), player.getUsername(),
                player.getIpAddress(), player.isAutoControlEnabled(),
-               player.getLastSeen(), CoverArtScheme.MEDIUM.name(),
+               (player.getLastSeen()==null)?null:new Timestamp(player.getLastSeen().getTime()), CoverArtScheme.MEDIUM.name(),
                player.getTranscodeScheme().name(), player.isDynamicIp(),
                player.getTechnology().name(), player.getClientId());
         addPlaylist(player);
@@ -155,8 +156,8 @@ public class PlayerDao extends AbstractDao {
                      "where id = ?";
         update(sql, player.getName(), player.getType(), player.getUsername(),
                player.getIpAddress(), player.isAutoControlEnabled(),
-               player.getLastSeen(), player.getTranscodeScheme().name(), player.isDynamicIp(),
-               player.getTechnology(), player.getClientId(), player.getId());
+               (player.getLastSeen()==null)?null:new Timestamp(player.getLastSeen().getTime()), player.getTranscodeScheme().name(), player.isDynamicIp(),
+               player.getTechnology().name(), player.getClientId(), player.getId());
     }
 
     private void addPlaylist(Player player) {

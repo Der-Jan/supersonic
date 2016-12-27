@@ -43,8 +43,8 @@ public class Schema26 extends Schema {
             LOG.info("Database table 'music_folder' not found.  Creating it.");
             template.execute("create table music_folder (" +
                              "id identity," +
-                             "path varchar not null," +
-                             "name varchar not null," +
+                             "path varchar(4096) not null," +
+                             "name varchar(4096) not null," +
                              "enabled boolean not null)");
             template.execute("insert into music_folder values (null, '" + Util.getDefaultMusicFolder() + "', 'Music', true)");
             LOG.info("Database table 'music_folder' was created successfully.");
@@ -54,9 +54,9 @@ public class Schema26 extends Schema {
             LOG.info("Database table 'music_file_info' not found.  Creating it.");
             template.execute("create cached table music_file_info (" +
                              "id identity," +
-                             "path varchar not null," +
+                             "path varchar(4096) not null," +
                              "rating int," +
-                             "comment varchar," +
+                             "comment varchar(4096)," +
                              "play_count int," +
                              "last_played datetime)");
             template.execute("create index idx_music_file_info_path on music_file_info(path)");
@@ -67,9 +67,9 @@ public class Schema26 extends Schema {
             LOG.info("Database table 'internet_radio' not found.  Creating it.");
             template.execute("create table internet_radio (" +
                              "id identity," +
-                             "name varchar not null," +
-                             "stream_url varchar not null," +
-                             "homepage_url varchar," +
+                             "name varchar(4096) not null," +
+                             "stream_url varchar(4096) not null," +
+                             "homepage_url varchar(4096)," +
                              "enabled boolean not null)");
             LOG.info("Database table 'internet_radio' was created successfully.");
         }
@@ -78,14 +78,14 @@ public class Schema26 extends Schema {
             LOG.info("Database table 'player' not found.  Creating it.");
             template.execute("create table player (" +
                              "id int not null," +
-                             "name varchar," +
-                             "type varchar," +
-                             "username varchar," +
-                             "ip_address varchar," +
+                             "name varchar(4096)," +
+                             "type varchar(4096)," +
+                             "username varchar(4096)," +
+                             "ip_address varchar(4096)," +
                              "auto_control_enabled boolean not null," +
                              "last_seen datetime," +
-                             "cover_art_scheme varchar not null," +
-                             "transcode_scheme varchar not null," +
+                             "cover_art_scheme varchar(4096) not null," +
+                             "transcode_scheme varchar(4096) not null," +
                              "primary key (id))");
             LOG.info("Database table 'player' was created successfully.");
         }

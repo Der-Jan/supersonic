@@ -21,6 +21,7 @@ package net.sourceforge.subsonic.dao;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -56,7 +57,7 @@ public class MusicFolderDao extends AbstractDao {
      */
     public void createMusicFolder(MusicFolder musicFolder) {
         String sql = "insert into music_folder (" + COLUMNS + ") values (null, ?, ?, ?, ?)";
-        update(sql, musicFolder.getPath(), musicFolder.getName(), musicFolder.isEnabled(), musicFolder.getChanged());
+        update(sql, musicFolder.getPath().getPath(), musicFolder.getName(), musicFolder.isEnabled(), new Timestamp(musicFolder.getChanged().getTime()));
 
         Integer id = queryForInt("select max(id) from music_folder", 0);
         update("insert into music_folder_user (music_folder_id, username) select ?, username from user", id);
@@ -82,7 +83,7 @@ public class MusicFolderDao extends AbstractDao {
     public void updateMusicFolder(MusicFolder musicFolder) {
         String sql = "update music_folder set path=?, name=?, enabled=?, changed=? where id=?";
         update(sql, musicFolder.getPath().getPath(), musicFolder.getName(),
-               musicFolder.isEnabled(), musicFolder.getChanged(), musicFolder.getId());
+               musicFolder.isEnabled(), new Timestamp(musicFolder.getChanged().getTime()), musicFolder.getId());
     }
 
     public List<MusicFolder> getMusicFoldersForUser(String username) {

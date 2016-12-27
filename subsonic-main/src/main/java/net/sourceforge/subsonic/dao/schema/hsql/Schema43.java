@@ -58,7 +58,7 @@ public class Schema43 extends Schema {
 
         if (!columnExists(template, "email", "user")) {
             LOG.info("Database column 'user.email' not found.  Creating it.");
-            template.execute("alter table user add email varchar");
+            template.execute("alter table user add email varchar(4096)");
             LOG.info("Database column 'user.email' was added successfully.");
         }
 

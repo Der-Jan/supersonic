@@ -49,14 +49,14 @@ public class Schema49 extends Schema {
 
         if (!columnExists(template, "genre", "album")) {
             LOG.info("Database column 'album.genre' not found.  Creating it.");
-            template.execute("alter table album add genre varchar");
+            template.execute("alter table album add genre varchar(4096)");
             LOG.info("Database column 'album.genre' was added successfully.");
         }
 
         if (!tableExists(template, "genre")) {
             LOG.info("Database table 'genre' not found.  Creating it.");
             template.execute("create table genre (" +
-                    "name varchar not null," +
+                    "name varchar(4096) not null," +
                     "song_count int not null)");
 
             LOG.info("Database table 'genre' was created successfully.");

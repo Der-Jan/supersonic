@@ -51,7 +51,7 @@ public class Schema53 extends Schema {
 
         if (!columnExists(template, "default_album_list", "user_settings")) {
             LOG.info("Database column 'user_settings.default_album_list' not found.  Creating it.");
-            template.execute("alter table user_settings add default_album_list varchar default '" +
+            template.execute("alter table user_settings add default_album_list varchar(4096) default '" +
                              AlbumListType.RANDOM.getId() + "' not null");
             LOG.info("Database column 'user_settings.default_album_list' was added successfully.");
         }
@@ -64,7 +64,7 @@ public class Schema53 extends Schema {
 
         if (!columnExists(template, "image_url", "podcast_channel")) {
             LOG.info("Database column 'podcast_channel.image_url' not found.  Creating it.");
-            template.execute("alter table podcast_channel add image_url varchar");
+            template.execute("alter table podcast_channel add image_url varchar(4096)");
             LOG.info("Database column 'podcast_channel.image_url' was added successfully.");
         }
 

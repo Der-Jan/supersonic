@@ -42,14 +42,14 @@ public class Schema30 extends Schema {
         if (!columnExists(template, "last_fm_enabled", "user_settings")) {
             LOG.info("Database columns 'user_settings.last_fm_*' not found.  Creating them.");
             template.execute("alter table user_settings add last_fm_enabled boolean default false not null");
-            template.execute("alter table user_settings add last_fm_username varchar null");
-            template.execute("alter table user_settings add last_fm_password varchar null");
+            template.execute("alter table user_settings add last_fm_username varchar(4096) null");
+            template.execute("alter table user_settings add last_fm_password varchar(4096) null");
             LOG.info("Database columns 'user_settings.last_fm_*' were added successfully.");
         }
 
         if (!columnExists(template, "transcode_scheme", "user_settings")) {
             LOG.info("Database column 'user_settings.transcode_scheme' not found.  Creating it.");
-            template.execute("alter table user_settings add transcode_scheme varchar default '" +
+            template.execute("alter table user_settings add transcode_scheme varchar(4096) default '" +
                              TranscodeScheme.OFF.name() + "' not null");
             LOG.info("Database column 'user_settings.transcode_scheme' was added successfully.");
         }

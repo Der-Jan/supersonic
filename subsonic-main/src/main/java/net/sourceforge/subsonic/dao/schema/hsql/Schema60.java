@@ -51,8 +51,8 @@ public class Schema60 extends Schema {
                              "id identity," +
                              "media_file_id int not null," +
                              "audio_track_id int," +
-                             "username varchar not null," +
-                             "status varchar not null," +
+                             "username varchar(4096) not null," +
+                             "status varchar(4096) not null," +
                              "progress_seconds int," +
                              "created datetime not null," +
                              "changed datetime not null," +
@@ -65,8 +65,8 @@ public class Schema60 extends Schema {
         }
 		
 		if (!columnExists(template, "target_file", "video_conversion")) {
-			template.execute("alter table video_conversion add target_file varchar");
-			template.execute("alter table video_conversion add log_file varchar");
+			template.execute("alter table video_conversion add target_file varchar(4096)");
+			template.execute("alter table video_conversion add log_file varchar(4096)");
 			template.execute("alter table video_conversion add bit_rate int");
 		}
 		

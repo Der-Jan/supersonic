@@ -45,7 +45,7 @@ public class Schema52 extends Schema {
             LOG.info("Database table 'music_folder_user' not found.  Creating it.");
             template.execute("create table music_folder_user (" +
                              "music_folder_id int not null," +
-                             "username varchar not null, " +
+                             "username varchar(4096) not null, " +
                              "foreign key (username) references user(username) on delete cascade, " +
                              "foreign key (music_folder_id) references music_folder(id) on delete cascade)");
             template.execute("create index idx_music_folder_user_username on music_folder_user(username)");
@@ -63,11 +63,11 @@ public class Schema52 extends Schema {
             LOG.info("Database table 'play_queue' not found.  Creating it.");
             template.execute("create table play_queue (" +
                              "id identity," +
-                             "username varchar not null," +
+                             "username varchar(4096) not null," +
                              "current int," +
                              "position_millis bigint," +
                              "changed datetime not null," +
-                             "changed_by varchar not null," +
+                             "changed_by varchar(4096) not null," +
                              "foreign key (username) references user(username) on delete cascade)");
             LOG.info("Database table 'play_queue' was created successfully.");
         }

@@ -55,11 +55,11 @@ public class Schema32 extends Schema {
             LOG.info("Database table 'podcast_channel' not found.  Creating it.");
             template.execute("create table podcast_channel (" +
                              "id identity," +
-                             "url varchar not null," +
-                             "title varchar," +
-                             "description varchar," +
-                             "status varchar not null," +
-                             "error_message varchar)");
+                             "url varchar(4096) not null," +
+                             "title varchar(4096)," +
+                             "description varchar(4096)," +
+                             "status varchar(4096) not null," +
+                             "error_message varchar(4096))");
             LOG.info("Database table 'podcast_channel' was created successfully.");
         }
 
@@ -68,16 +68,16 @@ public class Schema32 extends Schema {
             template.execute("create table podcast_episode (" +
                              "id identity," +
                              "channel_id int not null," +
-                             "url varchar not null," +
-                             "path varchar," +
-                             "title varchar," +
-                             "description varchar," +
+                             "url varchar(4096) not null," +
+                             "path varchar(4096)," +
+                             "title varchar(4096)," +
+                             "description varchar(4096)," +
                              "publish_date datetime," +
-                             "duration varchar," +
+                             "duration varchar(4096)," +
                              "bytes_total bigint," +
                              "bytes_downloaded bigint," +
-                             "status varchar not null," +
-                             "error_message varchar," +
+                             "status varchar(4096) not null," +
+                             "error_message varchar(4096)," +
                              "foreign key (channel_id) references podcast_channel(id) on delete cascade)");
             LOG.info("Database table 'podcast_episode' was created successfully.");
         }

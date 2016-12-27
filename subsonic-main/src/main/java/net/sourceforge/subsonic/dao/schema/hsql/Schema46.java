@@ -45,12 +45,12 @@ public class Schema46 extends Schema {
             LOG.info("Database table 'transcoding2' not found.  Creating it.");
             template.execute("create table transcoding2 (" +
                              "id identity," +
-                             "name varchar not null," +
-                             "source_formats varchar not null," +
-                             "target_format varchar not null," +
-                             "step1 varchar not null," +
-                             "step2 varchar," +
-                             "step3 varchar)");
+                             "name varchar(4096) not null," +
+                             "source_formats varchar(4096) not null," +
+                             "target_format varchar(4096) not null," +
+                             "step1 varchar(4096) not null," +
+                             "step2 varchar(4096)," +
+                             "step3 varchar(4096))");
 
             template.execute("insert into transcoding2(name, source_formats, target_format, step1) values('mp3 audio'," +
                     "'ogg oga aac m4a flac wav wma aif aiff ape mpc shn', 'mp3', " +

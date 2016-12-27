@@ -43,7 +43,7 @@ public class Schema36 extends Schema {
 
         if (!columnExists(template, "technology", "player")) {
             LOG.info("Database column 'player.technology' not found.  Creating it.");
-            template.execute("alter table player add technology varchar default 'WEB' not null");
+            template.execute("alter table player add technology varchar(4096) default 'WEB' not null");
             LOG.info("Database column 'player.technology' was added successfully.");
         }
     }

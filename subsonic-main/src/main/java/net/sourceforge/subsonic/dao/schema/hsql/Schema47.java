@@ -45,29 +45,29 @@ public class Schema47 extends Schema {
             LOG.info("Database table 'media_file' not found.  Creating it.");
             template.execute("create cached table media_file (" +
                     "id identity," +
-                    "path varchar not null," +
-                    "folder varchar," +
-                    "type varchar not null," +
-                    "format varchar," +
-                    "title varchar," +
-                    "album varchar," +
-                    "artist varchar," +
-                    "album_artist varchar," +
+                    "path varchar(4096) not null," +
+                    "folder varchar(4096)," +
+                    "type varchar(4096) not null," +
+                    "format varchar(4096)," +
+                    "title varchar(4096)," +
+                    "album varchar(4096)," +
+                    "artist varchar(4096)," +
+                    "album_artist varchar(4096)," +
                     "disc_number int," +
                     "track_number int," +
                     "year int," +
-                    "genre varchar," +
+                    "genre varchar(4096)," +
                     "bit_rate int," +
                     "variable_bit_rate boolean not null," +
                     "duration_seconds int," +
                     "file_size bigint," +
                     "width int," +
                     "height int," +
-                    "cover_art_path varchar," +
-                    "parent_path varchar," +
+                    "cover_art_path varchar(4096)," +
+                    "parent_path varchar(4096)," +
                     "play_count int not null," +
                     "last_played datetime," +
-                    "comment varchar," +
+                    "comment varchar(4096)," +
                     "created datetime not null," +
                     "changed datetime not null," +
                     "last_scanned datetime not null," +
@@ -92,7 +92,7 @@ public class Schema47 extends Schema {
         }
         if (!columnExists(template, "album_artist", "media_file")) {
             LOG.info("Database column 'media_file.album_artist' not found.  Creating it.");
-            template.execute("alter table media_file add album_artist varchar");
+            template.execute("alter table media_file add album_artist varchar(4096)");
             LOG.info("Database column 'album_artist' was added successfully.");
         }
         if (!columnExists(template, "changed", "media_file")) {
@@ -112,8 +112,8 @@ public class Schema47 extends Schema {
             LOG.info("Database table 'artist' not found.  Creating it.");
             template.execute("create cached table artist (" +
                     "id identity," +
-                    "name varchar not null," +
-                    "cover_art_path varchar," +
+                    "name varchar(4096) not null," +
+                    "cover_art_path varchar(4096)," +
                     "album_count int default 0 not null," +
                     "last_scanned datetime not null," +
                     "present boolean not null," +
@@ -129,15 +129,15 @@ public class Schema47 extends Schema {
             LOG.info("Database table 'album' not found.  Creating it.");
             template.execute("create cached table album (" +
                     "id identity," +
-                    "path varchar not null," +
-                    "name varchar not null," +
-                    "artist varchar not null," +
+                    "path varchar(4096) not null," +
+                    "name varchar(4096) not null," +
+                    "artist varchar(4096) not null," +
                     "song_count int default 0 not null," +
                     "duration_seconds int default 0 not null," +
-                    "cover_art_path varchar," +
+                    "cover_art_path varchar(4096)," +
                     "play_count int default 0 not null," +
                     "last_played datetime," +
-                    "comment varchar," +
+                    "comment varchar(4096)," +
                     "created datetime not null," +
                     "last_scanned datetime not null," +
                     "present boolean not null," +
@@ -152,7 +152,7 @@ public class Schema47 extends Schema {
         }
         if (!columnExists(template, "path", "album")) {
             LOG.info("Database column 'album.path' not found.  Creating it.");
-            template.execute("alter table album add path varchar");
+            template.execute("alter table album add path varchar(4096)");
             LOG.info("Database column 'album.path' was added successfully.");
         }
 
@@ -168,7 +168,7 @@ public class Schema47 extends Schema {
             template.execute("create table starred_media_file (" +
                     "id identity," +
                     "media_file_id int not null," +
-                    "username varchar not null," +
+                    "username varchar(4096) not null," +
                     "created datetime not null," +
                     "foreign key (media_file_id) references media_file(id) on delete cascade,"+
                     "foreign key (username) references user(username) on delete cascade," +
@@ -185,7 +185,7 @@ public class Schema47 extends Schema {
             template.execute("create table starred_album (" +
                     "id identity," +
                     "album_id int not null," +
-                    "username varchar not null," +
+                    "username varchar(4096) not null," +
                     "created datetime not null," +
                     "foreign key (album_id) references album(id) on delete cascade," +
                     "foreign key (username) references user(username) on delete cascade," +
@@ -202,7 +202,7 @@ public class Schema47 extends Schema {
             template.execute("create table starred_artist (" +
                     "id identity," +
                     "artist_id int not null," +
-                    "username varchar not null," +
+                    "username varchar(4096) not null," +
                     "created datetime not null," +
                     "foreign key (artist_id) references artist(id) on delete cascade,"+
                     "foreign key (username) references user(username) on delete cascade," +
@@ -218,10 +218,10 @@ public class Schema47 extends Schema {
             LOG.info("Database table 'playlist' not found.  Creating it.");
             template.execute("create table playlist (" +
                     "id identity," +
-                    "username varchar not null," +
+                    "username varchar(4096) not null," +
                     "is_public boolean not null," +
-                    "name varchar not null," +
-                    "comment varchar," +
+                    "name varchar(4096) not null," +
+                    "comment varchar(4096)," +
                     "file_count int default 0 not null," +
                     "duration_seconds int default 0 not null," +
                     "created datetime not null," +
@@ -233,7 +233,7 @@ public class Schema47 extends Schema {
 
         if (!columnExists(template, "imported_from", "playlist")) {
             LOG.info("Database column 'playlist.imported_from' not found.  Creating it.");
-            template.execute("alter table playlist add imported_from varchar");
+            template.execute("alter table playlist add imported_from varchar(4096)");
             LOG.info("Database column 'playlist.imported_from' was added successfully.");
         }
 
@@ -254,7 +254,7 @@ public class Schema47 extends Schema {
             template.execute("create table playlist_user (" +
                     "id identity," +
                     "playlist_id int not null," +
-                    "username varchar not null," +
+                    "username varchar(4096) not null," +
                     "unique(playlist_id, username)," +
                     "foreign key (playlist_id) references playlist(id) on delete cascade," +
                     "foreign key (username) references user(username) on delete cascade)");
@@ -268,8 +268,8 @@ public class Schema47 extends Schema {
                     "id identity," +
                     "media_file_id int not null," +
                     "position_millis bigint not null," +
-                    "username varchar not null," +
-                    "comment varchar," +
+                    "username varchar(4096) not null," +
+                    "comment varchar(4096)," +
                     "created datetime not null," +
                     "changed datetime not null," +
                     "foreign key (media_file_id) references media_file(id) on delete cascade,"+

@@ -42,9 +42,9 @@ public class Schema28 extends Schema {
         if (!tableExists(template, "user_settings")) {
             LOG.info("Database table 'user_settings' not found.  Creating it.");
             template.execute("create table user_settings (" +
-                             "username varchar not null," +
-                             "locale varchar," +
-                             "theme_id varchar," +
+                             "username varchar(4096) not null," +
+                             "locale varchar(4096)," +
+                             "theme_id varchar(4096)," +
                              "final_version_notification boolean default true not null," +
                              "beta_version_notification boolean default false not null," +
                              "main_caption_cutoff int default 35 not null," +
@@ -76,12 +76,12 @@ public class Schema28 extends Schema {
             LOG.info("Database table 'transcoding' not found.  Creating it.");
             template.execute("create table transcoding (" +
                              "id identity," +
-                             "name varchar not null," +
-                             "source_format varchar not null," +
-                             "target_format varchar not null," +
-                             "step1 varchar not null," +
-                             "step2 varchar," +
-                             "step3 varchar," +
+                             "name varchar(4096) not null," +
+                             "source_format varchar(4096) not null," +
+                             "target_format varchar(4096) not null," +
+                             "step1 varchar(4096) not null," +
+                             "step2 varchar(4096)," +
+                             "step3 varchar(4096)," +
                              "enabled boolean not null)");
 
             template.execute("insert into transcoding values(null,'wav > mp3', 'wav', 'mp3','ffmpeg -i %s -v 0 -f wav -','lame -b %b --tt %t --ta %a --tl %l -S --resample 44.1 - -',null,true)");

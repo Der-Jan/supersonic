@@ -59,19 +59,19 @@ public class Schema37 extends Schema {
 
         if (!columnExists(template, "changed", "music_folder")) {
             LOG.info("Database column 'music_folder.changed' not found.  Creating it.");
-            template.execute("alter table music_folder add changed datetime default 0 not null");
+            template.execute("alter table music_folder add changed datetime default '2000-01-01 00:00:00' not null");
             LOG.info("Database column 'music_folder.changed' was added successfully.");
         }
 
         if (!columnExists(template, "changed", "internet_radio")) {
             LOG.info("Database column 'internet_radio.changed' not found.  Creating it.");
-            template.execute("alter table internet_radio add changed datetime default 0 not null");
+            template.execute("alter table internet_radio add changed datetime default '2000-01-01 00:00:00' not null");
             LOG.info("Database column 'internet_radio.changed' was added successfully.");
         }
 
         if (!columnExists(template, "changed", "user_settings")) {
             LOG.info("Database column 'user_settings.changed' not found.  Creating it.");
-            template.execute("alter table user_settings add changed datetime default 0 not null");
+            template.execute("alter table user_settings add changed datetime default '2000-01-01 00:00:00' not null");
             LOG.info("Database column 'user_settings.changed' was added successfully.");
         }
 

@@ -54,9 +54,9 @@ public class Schema45 extends Schema {
             LOG.info("Table 'share' not found in database. Creating it.");
             template.execute("create cached table share (" +
                     "id identity," +
-                    "name varchar not null," +
-                    "description varchar," +
-                    "username varchar not null," +
+                    "name varchar(4096) not null," +
+                    "description varchar(4096)," +
+                    "username varchar(4096) not null," +
                     "created datetime not null," +
                     "expires datetime," +
                     "last_visited datetime," +
@@ -70,7 +70,7 @@ public class Schema45 extends Schema {
             template.execute("create cached table share_file (" +
                     "id identity," +
                     "share_id int not null," +
-                    "path varchar not null," +
+                    "path varchar(4096) not null," +
                     "foreign key (share_id) references share(id) on delete cascade)");
             LOG.info("Table 'share_file' was created successfully.");
         }

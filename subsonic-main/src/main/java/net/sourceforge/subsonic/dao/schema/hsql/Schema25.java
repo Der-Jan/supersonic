@@ -48,7 +48,7 @@ public class Schema25 extends Schema {
             LOG.info("Database table 'role' not found.  Creating it.");
             template.execute("create table role (" +
                              "id int not null," +
-                             "name varchar not null," +
+                             "name varchar(4096) not null," +
                              "primary key (id))");
             template.execute("insert into role values (1, 'admin')");
             template.execute("insert into role values (2, 'download')");
@@ -61,8 +61,8 @@ public class Schema25 extends Schema {
         if (!tableExists(template, "user")) {
             LOG.info("Database table 'user' not found.  Creating it.");
             template.execute("create table user (" +
-                             "username varchar not null," +
-                             "password varchar not null," +
+                             "username varchar(4096) not null," +
+                             "password varchar(4096) not null," +
                              "primary key (username))");
             template.execute("insert into user values ('admin', 'admin')");
             LOG.info("Database table 'user' was created successfully.");
@@ -71,7 +71,7 @@ public class Schema25 extends Schema {
         if (!tableExists(template, "user_role")) {
             LOG.info("Database table 'user_role' not found.  Creating it.");
             template.execute("create table user_role (" +
-                             "username varchar not null," +
+                             "username varchar(4096) not null," +
                              "role_id int not null," +
                              "primary key (username, role_id)," +
                              "foreign key (username) references user(username)," +

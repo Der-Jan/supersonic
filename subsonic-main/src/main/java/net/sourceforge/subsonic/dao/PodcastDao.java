@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -104,7 +105,7 @@ public class PodcastDao extends AbstractDao {
     public void createEpisode(PodcastEpisode episode) {
         String sql = "insert into podcast_episode (" + EPISODE_COLUMNS + ") values (" + questionMarks(EPISODE_COLUMNS) + ")";
         update(sql, null, episode.getChannelId(), episode.getUrl(), episode.getPath(),
-                episode.getTitle(), episode.getDescription(), episode.getPublishDate(),
+                episode.getTitle(), episode.getDescription(), (episode.getPublishDate()==null)?null:new Timestamp(episode.getPublishDate().getTime()),
                 episode.getDuration(), episode.getBytesTotal(), episode.getBytesDownloaded(),
                 episode.getStatus().name(), episode.getErrorMessage());
     }
@@ -118,7 +119,7 @@ public class PodcastDao extends AbstractDao {
     public List<PodcastEpisode> getEpisodes(int channelId) {
         String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where channel_id = ? " +
                      "and status != ? order by publish_date desc";
-        return query(sql, episodeRowMapper, channelId, PodcastStatus.DELETED);
+        return query(sql, episodeRowMapper, channelId, PodcastStatus.DELETED.name());
     }
 
     /**
@@ -130,7 +131,7 @@ public class PodcastDao extends AbstractDao {
     public List<PodcastEpisode> getNewestEpisodes(int count) {
         String sql = "select " + EPISODE_COLUMNS + " from podcast_episode where status = ? and publish_date is not null " +
                      "order by publish_date desc limit ?";
-        return query(sql, episodeRowMapper, PodcastStatus.COMPLETED, count);
+        return query(sql, episodeRowMapper, PodcastStatus.COMPLETED.name(), count);
     }
 
     /**
@@ -159,7 +160,7 @@ public class PodcastDao extends AbstractDao {
         String sql = "update podcast_episode set url=?, path=?, title=?, description=?, publish_date=?, duration=?, " +
                 "bytes_total=?, bytes_downloaded=?, status=?, error_message=? where id=?";
         return update(sql, episode.getUrl(), episode.getPath(), episode.getTitle(),
-                episode.getDescription(), episode.getPublishDate(), episode.getDuration(),
+                episode.getDescription(), (episode.getPublishDate()==null)?null:new Timestamp(episode.getPublishDate().getTime()), episode.getDuration(),
                 episode.getBytesTotal(), episode.getBytesDownloaded(), episode.getStatus().name(),
                 episode.getErrorMessage(), episode.getId());
     }

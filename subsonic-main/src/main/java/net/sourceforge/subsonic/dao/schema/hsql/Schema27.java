@@ -40,7 +40,7 @@ public class Schema27 extends Schema {
 
             LOG.info("Converting database column 'music_file_info.path' to varchar_ignorecase.");
             template.execute("drop index idx_music_file_info_path");
-            template.execute("alter table music_file_info alter column path varchar_ignorecase not null");
+            template.execute("alter table music_file_info alter column path varchar_ignorecase(4096) default '' not null");
             template.execute("create index idx_music_file_info_path on music_file_info(path)");
             LOG.info("Database column 'music_file_info.path' was converted successfully.");
         }

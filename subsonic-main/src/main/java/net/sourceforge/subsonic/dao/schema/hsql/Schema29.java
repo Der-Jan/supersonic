@@ -42,8 +42,8 @@ public class Schema29 extends Schema {
         if (!tableExists(template, "user_rating")) {
             LOG.info("Database table 'user_rating' not found.  Creating it.");
             template.execute("create table user_rating (" +
-                             "username varchar not null," +
-                             "path varchar not null," +
+                             "username varchar(4096) not null," +
+                             "path varchar(4096) not null," +
                              "rating double not null," +
                              "primary key (username, path)," +
                              "foreign key (username) references user(username) on delete cascade)");

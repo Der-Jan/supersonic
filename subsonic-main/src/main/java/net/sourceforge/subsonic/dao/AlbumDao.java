@@ -20,6 +20,7 @@ package net.sourceforge.subsonic.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -131,15 +132,15 @@ public class AlbumDao extends AbstractDao {
                      "where artist=? and name=?";
 
         int n = update(sql, album.getPath(), album.getSongCount(), album.getDurationSeconds(), album.getCoverArtPath(), album.getYear(),
-                       album.getGenre(), album.getPlayCount(), album.getLastPlayed(), album.getComment(), album.getCreated(),
-                       album.getLastScanned(), album.isPresent(), album.getFolderId(), album.getArtist(), album.getName());
+                       album.getGenre(), album.getPlayCount(), new Timestamp(album.getLastPlayed().getTime()), album.getComment(), new Timestamp(album.getCreated().getTime()),
+                       new Timestamp(album.getLastScanned().getTime()), album.isPresent(), album.getFolderId(), album.getArtist(), album.getName());
 
         if (n == 0) {
 
             update("insert into album (" + COLUMNS + ") values (" + questionMarks(COLUMNS) + ")", null, album.getPath(),
                    album.getName(), album.getArtist(), album.getSongCount(), album.getDurationSeconds(),
-                   album.getCoverArtPath(), album.getYear(), album.getGenre(), album.getPlayCount(), album.getLastPlayed(),
-                   album.getComment(), album.getCreated(), album.getLastScanned(), album.isPresent(), album.getFolderId());
+                   album.getCoverArtPath(), album.getYear(), album.getGenre(), album.getPlayCount(), new Timestamp(album.getLastPlayed().getTime()),
+                   album.getComment(), new Timestamp(album.getCreated().getTime()), new Timestamp(album.getLastScanned().getTime()), album.isPresent(), album.getFolderId());
         }
 
         int id = queryForInt("select id from album where artist=? and name=?", null, album.getArtist(), album.getName());
