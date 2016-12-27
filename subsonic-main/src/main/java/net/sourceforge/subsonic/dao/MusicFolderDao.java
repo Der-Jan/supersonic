@@ -57,7 +57,7 @@ public class MusicFolderDao extends AbstractDao {
      */
     public void createMusicFolder(MusicFolder musicFolder) {
         String sql = "insert into music_folder (" + COLUMNS + ") values (null, ?, ?, ?, ?)";
-        update(sql, musicFolder.getPath().getPath(), musicFolder.getName(), musicFolder.isEnabled(), new Timestamp(musicFolder.getChanged().getTime()));
+        update(sql, musicFolder.getPath().getPath(), musicFolder.getName(), musicFolder.isEnabled(), (musicFolder.getChanged()==null)?null:new Timestamp(musicFolder.getChanged().getTime()));
 
         Integer id = queryForInt("select max(id) from music_folder", 0);
         update("insert into music_folder_user (music_folder_id, username) select ?, username from user", id);
@@ -83,7 +83,7 @@ public class MusicFolderDao extends AbstractDao {
     public void updateMusicFolder(MusicFolder musicFolder) {
         String sql = "update music_folder set path=?, name=?, enabled=?, changed=? where id=?";
         update(sql, musicFolder.getPath().getPath(), musicFolder.getName(),
-               musicFolder.isEnabled(), new Timestamp(musicFolder.getChanged().getTime()), musicFolder.getId());
+               musicFolder.isEnabled(), (musicFolder.getChanged()==null)?null:new Timestamp(musicFolder.getChanged().getTime()), musicFolder.getId());
     }
 
     public List<MusicFolder> getMusicFoldersForUser(String username) {
