@@ -557,6 +557,7 @@ public class MediaFileDao extends AbstractDao {
     }
 
     public void expunge() {
+        update("update media_file m set m.present=false where m.type in ('ALBUM','DIRECTORY') and not exists (select id from media_file n where (m.path=n.parent_path))");
         int minId = queryForInt("select top 1 id from media_file where not present", 0);
         int maxId = queryForInt("select max(id) from media_file where not present", 0);
 
