@@ -229,8 +229,9 @@ public class MediaFileService {
      * @see MusicFolder
      */
     public boolean isRoot(MediaFile mediaFile) {
+        if (mediaFile == null || mediaFile.getPath() == null) return false;
         for (MusicFolder musicFolder : settingsService.getAllMusicFolders(false, true)) {
-            if (mediaFile.getPath().equals(musicFolder.getPath().getPath())) {
+            if (musicFolder.getPath() != null && mediaFile.getPath().equals(musicFolder.getPath().getPath())) {
                 return true;
             }
         }

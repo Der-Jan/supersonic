@@ -38,6 +38,8 @@ import net.sourceforge.subsonic.domain.MusicFolder;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType;
 import static net.sourceforge.subsonic.domain.MediaFile.MediaType.*;
 
+import net.sourceforge.subsonic.service.SettingsService;
+
 /**
  * Provides database services for media files.
  *
@@ -566,10 +568,11 @@ public class MediaFileDao extends AbstractDao {
             update("delete from media_file where id between ? and ? and not present", id, id + batchSize);
         }
         update("checkpoint");
+        update("backup database to '" + SettingsService.getSubsonicHome().getPath()+ "/db-bak/' blocking");
     }
 
     public List<String> getArtistNames() {
-        return queryForStrings("select distinct artist from media_file where type=? and artist is not null", MediaType.DIRECTORY);
+        return queryForStrings("select distinct artist from media_file where type=? and artist is not null", "DIRECTORY");
     }
 
     private static class MediaFileMapper implements ParameterizedRowMapper<MediaFile> {

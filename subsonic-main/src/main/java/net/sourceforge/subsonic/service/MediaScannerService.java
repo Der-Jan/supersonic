@@ -144,6 +144,7 @@ public class MediaScannerService {
         Thread thread = new Thread("MediaLibraryScanner") {
             @Override
             public void run() {
+                mediaFileDao.expunge();
                 doScanLibrary();
                 playlistService.importPlaylists();
             }
