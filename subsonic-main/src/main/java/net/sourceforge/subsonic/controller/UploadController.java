@@ -152,10 +152,11 @@ public class UploadController extends ParameterizableViewController {
         try {
 
             Enumeration<?> entries = zipFile.getEntries();
+            File unzipDir = new File(file.getParentFile(), file.getName().substring(0,file.getName().length()-4));
 
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
-                File entryFile = new File(file.getParentFile(), entry.getName());
+                File entryFile = new File(unzipDir, entry.getName());
 
                 if (!entry.isDirectory()) {
 
